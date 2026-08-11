@@ -25,18 +25,19 @@ TurtleGuide.routepacks = {}
 -- Keyed by the locale-independent ChrRaces.dbc token from UnitRaceBase
 -- (ClassicAPI); Turtle's custom races arrive as their DBC filenames, so
 -- High Elf is BloodElf (raceID 10)
-TurtleGuide.turtleRaces = {
-    Human = { route = "Human", faction = "Alliance" },
-    Dwarf = { route = "Dwarf", faction = "Alliance" },
-    NightElf = { route = "NightElf", faction = "Alliance" },
-    Gnome = { route = "Gnome", faction = "Alliance" },
-    BloodElf = { route = "HighElf", faction = "Alliance" },
-    Orc = { route = "Orc", faction = "Horde" },
-    Troll = { route = "Troll", faction = "Horde" },
-    Tauren = { route = "Tauren", faction = "Horde" },
-    Scourge = { route = "Undead", faction = "Horde" },
-    Goblin = { route = "Goblin", faction = "Horde" },
-}
+TurtleGuide.turtleRaces = {}
+do
+    local i = 1
+    local raceInfo = C_CreatureInfo.GetRaceInfo(i)
+    while raceInfo ~= nil do
+        TurtleGuide.turtleRaces[raceInfo.clientFileString] = {
+            route = string.gsub(raceInfo.raceName, "%s+", ""),
+            faction = C_CreatureInfo.GetFactionInfo(i).groupTag,
+        }
+        i = i + 1
+        raceInfo = C_CreatureInfo.GetRaceInfo(i)
+    end
+end
 
 -- Get the normalized route name for a race token (defaults to the player)
 function TurtleGuide:GetRouteForRace(race)
