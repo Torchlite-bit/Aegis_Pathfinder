@@ -3,10 +3,7 @@ TURTLEGUIDE_LOCALE = nil
 
 TurtleGuide = AceLibrary("AceAddon-2.0"):new("AceConsole-2.0", "AceDB-2.0", "AceDebug-2.0", "AceEvent-2.0", "AceHook-2.1",
     "FuBarPlugin-2.0")
-local D = AceLibrary("Dewdrop-2.0")
-local DF = AceLibrary("Deformat-2.0")
 local T = AceLibrary("Tablet-2.0")
-local gratuity = AceLibrary("Gratuity-2.0")
 
 TurtleGuide.guides = {}
 TurtleGuide.guidelist = {}
