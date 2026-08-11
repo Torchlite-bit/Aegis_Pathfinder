@@ -591,27 +591,63 @@ function TurtleGuide:OnClick()
     end
 end
 
+local REGISTER_BATCH = 25       -- guides registered per resume
+local REGISTER_INTERVAL = 0.02  -- seconds between resumes
+local INIT_SETTLE_DELAY = 0.5   -- seconds after registration before the guide loads
+
+function TurtleGuide:GetPlayerFaction()
+    local faction = UnitFactionGroup("player")
+    if faction and faction ~= "" then return faction end
+    local info = C_CreatureInfo.GetFactionInfo(select(2, UnitRaceBase("player")))
+    return info and info.groupTag
+end
+
 function TurtleGuide:PLAYER_ENTERING_WORLD()
-    self:PatchAstrolabe()
-    self.myfaction = UnitFactionGroup("player")
-    -- load static guides
-    for i, t in ipairs(self.deferguides) do
-        local name, nextzone, faction, sequencefunc = t[1], t[2], t[3], t[4]
-        self:RegisterGuide(name, nextzone, faction, sequencefunc)
-    end
-    self.deferguides = {}
-    -- deferred Initialize (VARIABLES_LOADED)
-    if not self.initializeDone then
-        self:InitializeRoute()
-    end
-    -- deferred Enable (PLAYER_LOGIN)
-    if not self.enableDone then
-        for _, event in pairs(self.TrackEvents) do self:RegisterEvent(event) end
-        self.TrackEvents = nil
-        self:UpdateStatusFrame()
-    end
-    self.initializeDone = true
     self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+    self:PatchAstrolabe()
+    self.myfaction = self:GetPlayerFaction()
+
+    local deferred = self.deferguides
+    self.deferguides = {}
+
+    local co = coroutine.create(function()
+        local n = 0
+        for _, t in ipairs(deferred) do
+            self:RegisterGuide(t[1], t[2], t[3], t[4])
+            n = n + 1
+            if n >= REGISTER_BATCH then
+                n = 0
+                coroutine.yield()
+            end
+        end
+    end)
+
+    local function finishLogin()
+        -- deferred Initialize (VARIABLES_LOADED); InitializeRoute also enables
+        if not self.initializeDone then
+            self:InitializeRoute()
+        elseif not self.enableDone then
+            -- deferred Enable (PLAYER_LOGIN)
+            for _, event in pairs(self.TrackEvents) do self:RegisterEvent(event) end
+            self.TrackEvents = nil
+            self:UpdateStatusFrame()
+        end
+        self.initializeDone = true
+    end
+
+    local function pump()
+        local ok, err = coroutine.resume(co)
+        if not ok then
+            self:Print("|cffff3333VanillaGuide+ load error: " .. tostring(err) .. "|r")
+            return
+        end
+        if coroutine.status(co) == "dead" then
+            C_Timer.After(INIT_SETTLE_DELAY, finishLogin)
+        else
+            C_Timer.After(REGISTER_INTERVAL, pump)
+        end
+    end
+    pump()
 end
 
 function TurtleGuide:RegisterGuide(name, nextzone, faction, sequencefunc)

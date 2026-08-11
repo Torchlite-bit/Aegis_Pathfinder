@@ -56,15 +56,11 @@ Guides\Horde\Guides.xml
 Guides\Both\Guides.xml
 
 # RestedXP Converted Guides (Survival routes)
-# TEMP: not loaded at startup. ~3.4 MB of guide Lua across RXP + RXP_Hardcore
-# was compiled into vanilla's fixed Lua pool every login; combined with
-# pfQuest-turtle it exhausted the pool and crashed the client (lmemPool.cpp)
-# before any addon runtime code ran. Re-enable via load-on-demand instead.
-#Guides\RXP\Alliance\Guides.xml
-#Guides\RXP\Horde\Guides.xml
+Guides\RXP\Alliance\Guides.xml
+Guides\RXP\Horde\Guides.xml
 
 # RestedXP Hardcore Converted Guides (Survival routes)
-#Guides\RXP_Hardcore\Alliance\Guides.xml
-#Guides\RXP_Hardcore\Horde\Guides.xml
+Guides\RXP_Hardcore\Alliance\Guides.xml
+Guides\RXP_Hardcore\Horde\Guides.xml
 
 
