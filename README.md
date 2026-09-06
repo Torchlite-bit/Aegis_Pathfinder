@@ -16,7 +16,7 @@ A leveling guide addon for Turtle WoW (1.12 client) based on [Joana's classic sp
 - **Branch system** - temporarily switch to any zone guide, then return to the optimized path
 - **Turtle WoW custom zones** - guides for all custom content available via branching
 - **Smart quest tracking** - automatically detects completed objectives and advances
-- **TomTom integration** - waypoint arrows pointing to your current objective
+- **Waypoint addon of your choice** - TomTom, pfQuest, Cartographer or MetaMap, pointing at your current objective
 - **pfQuest integration** - prerequisite detection and quest chain awareness
 - **Manual navigation** - skip forward/backward through objectives with prev/next buttons
 - **Improved Filter Parser** - Advanced logic for class/race filters supporting multiple targets (e.g., `Mage/Warlock`) and exclusions (e.g., `!Hunter`)
@@ -316,7 +316,7 @@ Each objective has an **action type** shown by its icon:
 
 **Automatic progression:**
 - The addon tracks your quest log and automatically advances when you accept, complete, or turn in quests
-- Travel objectives (RUN, FLY, BOAT) auto-complete when you arrive at the destination (if TomTom is installed)
+- Travel objectives (RUN, FLY, BOAT) auto-complete when you arrive at the destination
 
 **Manual navigation:**
 - **< / >** buttons: Move backward/forward one step
@@ -356,12 +356,22 @@ Click "Return Main" → Resumes at level 37 section of optimized path
 
 ### Waypoints & Map Integration
 
-With **TomTom** installed:
-- Arrow points to your current objective
+Waypoints for the current objective are handed to whichever waypoint addon you
+use. Pick one with the **Waypoints** button in the options panel, or leave it on
+**Auto** to take the first one that is loaded:
+
+| Provider | Notes |
+|----------|-------|
+| **TomTom** | Crazy-arrow waypoint; the only provider that can point at a target in another zone |
+| **pfQuest** | Map/minimap pin plus pfQuest's own route arrow, pinned to the guide step; current zone only |
+| **Cartographer** | Waypoint note |
+| **MetaMap BWP** / **MetaMap** | BWP arrow, or a plain map note |
+
+Regardless of provider:
 - Coordinates from the guide are automatically mapped
 - Travel objectives auto-complete when you arrive
 
-With **pfQuest** installed:
+With **pfQuest** installed (as a database, whichever provider is active):
 - Quest giver/turn-in locations are automatically looked up
 - Prerequisite chains are detected to warn about missing requirements
 

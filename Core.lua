@@ -81,8 +81,7 @@ local defaults = {
     routeselected = false,
     mapquestgivers = true,
     mapnotecoords = true,
-    mapmetamap = true,
-    mapbwp = true,
+    waypointprovider = "auto", -- see Navigation.lua providerorder
     showstatusframe = true,
     showuseitem = true,
     showuseitemcomplete = true,
@@ -139,26 +138,35 @@ local options = {
             type = "execute",
             func = function()
                 TurtleGuide:Print("--- Navigation Status ---")
-                if TomTom then
-                    TurtleGuide:Print("TomTom: YES")
-                    TurtleGuide:Print("  AddMFWaypoint: " .. (TomTom.AddMFWaypoint and "YES" or "NO"))
-                    TurtleGuide:Print("  RemoveWaypoint: " .. (TomTom.RemoveWaypoint and "YES" or "NO"))
-                else
-                    TurtleGuide:Print("TomTom: NO - Install TomTom-TWOW for arrow navigation")
+                TurtleGuide:Print("Setting: " .. (TurtleGuide.db.char.waypointprovider or "auto"))
+                TurtleGuide:Print("Active: " .. TurtleGuide:GetWaypointProviderLabel())
+
+                local available = TurtleGuide:GetWaypointProviders()
+                if table.getn(available) == 0 then
+                    TurtleGuide:Print("No waypoint addon found - install TomTom or pfQuest")
+                    return
                 end
-                if Cartographer_Waypoints then
-                    TurtleGuide:Print("Cartographer_Waypoints: YES")
+                for _, provider in ipairs(available) do
+                    TurtleGuide:Print("  " .. provider.label .. " (" .. provider.name .. ")")
                 end
-                TurtleGuide:Print("MetaMap: " .. (IsAddOnLoaded("MetaMap") and "YES" or "NO"))
+            end,
+        },
+        WaypointProvider = {
+            name = "Waypoint Provider",
+            desc = "Cycle the addon used for waypoints",
+            type = "execute",
+            func = function()
+                TurtleGuide:CycleWaypointProvider()
+                TurtleGuide:Print("Waypoints: " .. TurtleGuide:GetWaypointProviderLabel())
             end,
         },
         TestWaypoint = {
             name = "Test Waypoint",
-            desc = "Create a test TomTom waypoint",
+            desc = "Create a test waypoint at the centre of the current zone",
             type = "execute",
             func = function()
-                if not TomTom then
-                    TurtleGuide:Print("TomTom not found")
+                if not TurtleGuide:GetWaypointProvider() then
+                    TurtleGuide:Print("No waypoint addon found")
                     return
                 end
 
@@ -173,9 +181,9 @@ local options = {
                     return
                 end
 
-                -- Create waypoint at 50, 50
-                local uid = TomTom:AddMFWaypoint(c, z, 0.5, 0.5, { title = "TG Test", crazy = true })
-                TurtleGuide:Print("Waypoint created: " .. tostring(uid))
+                local zone = TurtleGuide.select(z, GetMapZones(c))
+                TurtleGuide:SetWaypoint(50, 50, zone, "Test Waypoint")
+                TurtleGuide:Print("Waypoint sent to " .. TurtleGuide:GetWaypointProviderLabel())
             end,
         },
         TrackQuests = {
@@ -1013,7 +1021,10 @@ end
 
 function TurtleGuide:GetObjectiveInfo(i)
     local i = i or self.current
-    if not self.actions[i] then return end
+    -- self.actions only exists once LoadGuide has parsed a guide; event handlers
+    -- reach this before that (login, "No Guide", or a targeting event fired by
+    -- another addon), so the table itself has to be checked, not just the step.
+    if not self.actions or not self.actions[i] then return end
 
     local action = self.actions[i]
     local name = string.gsub(self.quests[i], "@.*@", "")
@@ -1047,7 +1058,7 @@ end
 
 function TurtleGuide:GetObjectiveStatus(i)
     local i = i or self.current
-    if not self.actions[i] then return end
+    if not self.actions or not self.actions[i] then return end
 
     local turnedin = self.turnedin[self.quests[i]]
     local oidx_str = self:GetObjectiveTag("OIDX", i)

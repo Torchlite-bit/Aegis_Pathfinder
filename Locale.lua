@@ -22,8 +22,7 @@ local engrish = {
 	["Scanning quest log..."] = "Scanning quest log...",
 	["Skipping to step %d (completed content detected)"] = "Skipping to step %d (completed content detected)",
 	["You have learned a new spell: (.*)."] = "You have learned a new spell: (.*).",
-	["Map MetaMap/BWP"] = "Map MetaMap/BWP",
-	["Use BWP arrow"] = "Use BWP arrow",
+	["Waypoints"] = "Waypoints",
 	-- Starting Zone Selector
 	["Choose Starting Zone"] = "Choose Starting Zone",
 	["Select which starting zone you want to level through:"] = "Select which starting zone you want to level through:",

@@ -92,8 +92,9 @@ end)
 local function ResetScrollbar()
 	local f = this
 	local newval = math.max(0, (TurtleGuide.current or 0) - NUMROWS / 2 - 1)
+	local steps = TurtleGuide.actions and table.getn(TurtleGuide.actions) or 0
 
-	scrollbar:SetMinMaxValues(0, math.max(table.getn(TurtleGuide.actions) - NUMROWS, 1))
+	scrollbar:SetMinMaxValues(0, math.max(steps - NUMROWS, 1))
 	scrollbar:SetValue(newval)
 
 	TurtleGuide:UpdateOHPanel()
@@ -359,6 +360,9 @@ local accepted = {}
 local acceptedDirty = true
 function TurtleGuide:UpdateOHPanel(value)
 	if not frame or not frame:IsVisible() then return end
+	-- The panel can be opened before any guide is parsed; everything below reads
+	-- the step list and the current step directly.
+	if not self.actions or not self.current then return end
 
 	-- Update title with branch indicator
 	local guideName = self.db.char.currentguide or L["No Guide Loaded"]

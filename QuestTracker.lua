@@ -450,7 +450,9 @@ UseContainerItem = function(bag, slot, ...)
 end
 
 
--- Distance-based arrival detection for travel objectives (fallback when TomTom not available)
+-- Distance-based arrival detection for travel objectives. Runs for every
+-- waypoint provider: only TomTom offers arrival callbacks of its own, and this
+-- check is cheap enough to run alongside them.
 local ARRIVAL_CHECK_INTERVAL = 0.5 -- Check every 0.5 seconds
 local ARRIVAL_DISTANCE = 0.005     -- Map coordinate distance threshold (~15-18 yards)
 
@@ -495,10 +497,6 @@ C_Timer.NewTicker(ARRIVAL_CHECK_INTERVAL, function()
 		TurtleGuide.recheckCompletion = nil
 		RecheckCurrentObjective()
 	end
-
-	-- Skip if TomTom is handling arrival detection (it has callbacks)
-	-- Commented out to let our own robust distance-based fallback run in parallel
-	-- if TomTom and TomTom.AddMFWaypoint then return end
 
 	-- Only check if guide is loaded
 	if not TurtleGuide.current or not TurtleGuide.actions then return end

@@ -21,6 +21,7 @@ local actiontypes = {
 
 function TurtleGuide:GetObjectiveTag(tag, i)
 	i = i or self.current
+	if not self.tags then return end
 	local tags = self.tags[i]
 	if not tags then return end
 

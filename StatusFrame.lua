@@ -393,7 +393,7 @@ function TurtleGuide:UpdateStatusFrame()
 
 	-- Mapping / Navigation
 	local shouldUpdateWaypoint = (lastmappedquest ~= fullquest or lastmappedaction ~= action) or self.waypointForced
-	if (TomTom or Cartographer_Waypoints or (self.db.char.mapmetamap and IsAddOnLoaded("MetaMap"))) and shouldUpdateWaypoint then
+	if self:GetWaypointProvider() and shouldUpdateWaypoint then
 		lastmappedaction, lastmappedquest = action, fullquest
 		lastmapped = quest
 		self.waypointForced = nil

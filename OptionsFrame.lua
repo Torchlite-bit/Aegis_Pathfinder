@@ -7,7 +7,7 @@ function TurtleGuide:CreateConfigPanel()
 	TurtleGuide.optionsframe = frame
 	frame:SetFrameStrata("DIALOG")
 	frame:SetWidth(310)
-	frame:SetHeight(16 + 28 * 9)
+	frame:SetHeight(16 + 28 * 8)
 	frame:SetPoint("TOPRIGHT", TurtleGuide.statusframe, "BOTTOMRIGHT")
 	frame:SetBackdrop(ww.TooltipBorderBG)
 	frame:SetBackdropColor(0.09, 0.09, 0.19, 1)
@@ -32,25 +32,27 @@ function TurtleGuide:CreateConfigPanel()
 		"LEFT", qskipfollowups, "RIGHT", 5, 0)
 	qskipfollowups:SetScript("OnClick", function() self.db.char.skipfollowups = not self.db.char.skipfollowups end)
 
-	local mapmetamap = ww.SummonCheckBox(22, qskipfollowups, "TOPLEFT", 0, -20)
-	ww.SummonFontString(mapmetamap, "OVERLAY", "GameFontNormalSmall", L["Map MetaMap/BWP"], "LEFT", mapmetamap, "RIGHT",
-		5, 0)
-	mapmetamap:SetScript("OnClick", function() self.db.char.mapmetamap = not self.db.char.mapmetamap end)
-
-	local mapbwp = ww.SummonCheckBox(22, mapmetamap, "TOPLEFT", 0, -20)
-	ww.SummonFontString(mapbwp, "OVERLAY", "GameFontNormalSmall", L["Use BWP arrow"], "LEFT", mapbwp, "RIGHT", 5, 0)
-	mapbwp:SetScript("OnClick", function() self.db.char.mapbwp = not self.db.char.mapbwp end)
-
-	local autobranch = ww.SummonCheckBox(22, mapbwp, "TOPLEFT", 0, -20)
+	local autobranch = ww.SummonCheckBox(22, qskipfollowups, "TOPLEFT", 0, -20)
 	ww.SummonFontString(autobranch, "OVERLAY", "GameFontNormalSmall", "Auto-branch to Turtle WoW zones", "LEFT",
 		autobranch, "RIGHT", 5, 0)
 	autobranch:SetScript("OnClick", function() self.db.char.autobranch = not self.db.char.autobranch end)
+
+	-- Waypoint provider: cycles through "auto" plus every waypoint addon loaded
+	local waypointBtn = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
+	waypointBtn:SetWidth(286)
+	waypointBtn:SetHeight(22)
+	waypointBtn:SetPoint("TOPLEFT", autobranch, "BOTTOMLEFT", 0, -10)
+	waypointBtn:SetScript("OnClick", function()
+		TurtleGuide:CycleWaypointProvider()
+		waypointBtn:SetText(L["Waypoints"] .. ": " .. TurtleGuide:GetWaypointProviderLabel())
+	end)
+	frame.waypointBtn = waypointBtn
 
 	-- Route selector button
 	local routeBtn = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
 	routeBtn:SetWidth(150)
 	routeBtn:SetHeight(22)
-	routeBtn:SetPoint("TOPLEFT", autobranch, "BOTTOMLEFT", 0, -10)
+	routeBtn:SetPoint("TOPLEFT", waypointBtn, "BOTTOMLEFT", 0, -6)
 	routeBtn:SetText("Change Route")
 	routeBtn:SetScript("OnClick", function()
 		frame:Hide()
@@ -120,8 +122,6 @@ function TurtleGuide:CreateConfigPanel()
 
 	frame.qtrack = qtrack
 	frame.qskipfollowups = qskipfollowups
-	frame.mapmetamap = mapmetamap
-	frame.mapbwp = mapbwp
 	frame.autobranch = autobranch
 
 	local function OnShow(f)
@@ -141,9 +141,8 @@ function TurtleGuide:CreateConfigPanel()
 
 		f.qtrack:SetChecked(self.db.char.trackquests)
 		f.qskipfollowups:SetChecked(self.db.char.skipfollowups)
-		f.mapmetamap:SetChecked(self.db.char.mapmetamap)
-		f.mapbwp:SetChecked(self.db.char.mapbwp)
 		f.autobranch:SetChecked(self.db.char.autobranch)
+		f.waypointBtn:SetText(L["Waypoints"] .. ": " .. self:GetWaypointProviderLabel())
 
 		-- Enable/disable return button based on branch status
 		if self.db.char.isbranching then
