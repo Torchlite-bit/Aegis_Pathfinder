@@ -7,3 +7,4 @@ ignore:
     - Tools
     - docs
     - tasks
+    - .luarc.json
