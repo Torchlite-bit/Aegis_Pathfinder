@@ -95,6 +95,10 @@ local function newTexture(name, parent, layer)
 	t.__layer = layer
 	function t:SetTexture(path, g, b, a)
 		if type(path) == "number" then return end -- SetTexture(r,g,b) colour form
+		if path == nil then                       -- clears the texture; legal
+			self.__texture = nil
+			return
+		end
 		if type(path) ~= "string" then
 			complain("Texture:SetTexture(%s) is not a path", tostring(path))
 			return
@@ -202,8 +206,16 @@ local function newFrame(frameType, name, parent)
 	function f:GetValue() return 0 end
 	function f:SetValueStep() end
 	function f:SetOrientation() end
-	function f:Disable() end
-	function f:Enable() end
+	function f:Disable() self.__enabled = false end
+	function f:Enable() self.__enabled = true end
+	function f:IsEnabled() return self.__enabled ~= false end
+	function f:SetChecked(v) self.__checked = v and true or false end
+	function f:GetChecked() return self.__checked end
+	function f:SetButtonState(s)
+		if s ~= "NORMAL" and s ~= "PUSHED" and s ~= "DISABLED" then
+			complain("SetButtonState('%s')", tostring(s))
+		end
+	end
 	function f:SetText() end
 	function f:SetScale() end
 	function f:GetEffectiveScale() return 1 end

@@ -89,6 +89,7 @@ local defaults = {
     mapnotecoords = true,
     waypointprovider = "auto", -- see Navigation.lua providerorder
     showstatusframe = true,
+    shownavcallout = true, -- the concept's arrow/distance callout
     showuseitem = true,
     showuseitemcomplete = true,
     skipfollowups = true,

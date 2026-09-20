@@ -271,8 +271,11 @@ end
 -- The step checkbox: a ring that fills with accent when complete. Distinct
 -- states for auto-detected vs manually ticked completion are handled by
 -- SetAutoEligible / the glow, not by the check itself.
+-- Built as a CheckButton, not a Button, so it keeps the widget API the old
+-- Blizzard checkbox exposed (SetChecked, SetButtonState, Enable/Disable) and
+-- existing call sites keep working. Only the artwork is ours.
 function Theme:StepCheck(parent, size)
-	local b = CreateFrame("Button", nil, parent)
+	local b = CreateFrame("CheckButton", nil, parent)
 	size = size or 15
 	b:SetWidth(size); b:SetHeight(size)
 
@@ -298,15 +301,26 @@ function Theme:StepCheck(parent, size)
 
 	b.ring, b.fill, b.halo = ring, fill, halo
 
-	function b:SetChecked2(done)
-		if done then self.fill:Show() else self.fill:Hide() end
-		Theme:Tint(self.ring, done and "accent" or "subtle")
+	-- Shadows the widget method so the artwork follows the checked state.
+	function b:SetChecked(done)
+		self.__checked = done and true or false
+		if self.__checked then self.fill:Show() else self.fill:Hide() end
+		Theme:Tint(self.ring, self.__checked and "accent" or "subtle")
 	end
+	function b:GetChecked() return self.__checked end
 
+	--[[ Auto-detected completion reads differently from a manual tick.
+
+		ClassicAPI's ID-keyed events are what make Zygor-style advancement
+		possible on this client, and the UI says so: a step the addon can
+		complete on its own wears a halo, so the player knows not to bother
+		ticking it. A step only they can confirm has none.
+	]]
 	function b:SetAutoEligible(eligible)
-		if eligible then self.halo:Show() else self.halo:Hide() end
+		if eligible and not self.__checked then self.halo:Show() else self.halo:Hide() end
 	end
 
+	b:SetChecked(false)
 	return b
 end
 

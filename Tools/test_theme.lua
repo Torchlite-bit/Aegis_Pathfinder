@@ -96,14 +96,27 @@ check(not bar.fill:IsShown(), "nil progress should be treated as empty, not erro
 -- Step check -----------------------------------------------------------------
 
 local chk = Theme:StepCheck(UIParent, 15)
+check(chk.__kind == "CheckButton",
+	"the step check must be a CheckButton so it keeps the widget API the old "
+	.. "Blizzard checkbox exposed, got %s", tostring(chk.__kind))
 check(not chk.fill:IsShown(), "a new step check starts unchecked")
-chk:SetChecked2(true)
-check(chk.fill:IsShown(), "SetChecked2(true) should reveal the fill")
-chk:SetChecked2(false)
-check(not chk.fill:IsShown(), "SetChecked2(false) should hide the fill")
+check(chk:GetChecked() == false, "a new step check reports unchecked")
+chk:SetChecked(true)
+check(chk.fill:IsShown(), "SetChecked(true) should reveal the fill")
+check(chk:GetChecked() == true, "SetChecked(true) should be readable back")
+chk:SetChecked(false)
+check(not chk.fill:IsShown(), "SetChecked(false) should hide the fill")
+
 check(not chk.halo:IsShown(), "the auto-detect halo starts hidden")
 chk:SetAutoEligible(true)
 check(chk.halo:IsShown(), "SetAutoEligible(true) should reveal the halo")
+-- A completed step has nothing left to auto-detect, so the halo must go.
+chk:SetChecked(true)
+chk:SetAutoEligible(true)
+check(not chk.halo:IsShown(), "a checked step should not advertise auto-detection")
+chk:SetChecked(false)
+chk:SetAutoEligible(false)
+check(not chk.halo:IsShown(), "SetAutoEligible(false) should hide the halo")
 
 -- Pill -----------------------------------------------------------------------
 

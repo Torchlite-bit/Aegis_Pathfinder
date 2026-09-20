@@ -19,28 +19,34 @@ local professions = {
 
 local AegisPathfinder = AegisPathfinder
 local ww = WidgetWarlock
+local Theme = AegisPathfinder.Theme
+
+-- Concept geometry: the status bar is a 352px card, not a one-line strip.
+local CARD_WIDTH = 352
 
 local f = CreateFrame("Button", nil, UIParent)
 AegisPathfinder.statusframe = f
 f:SetPoint("BOTTOMRIGHT", QuestWatchFrame, "TOPRIGHT", -60, -15)
+f:SetWidth(CARD_WIDTH)
 f:SetHeight(24)
 f:SetFrameStrata("LOW")
 f:EnableMouse(true)
 f:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-f:SetBackdrop(ww.TooltipBorderBG)
-f:SetBackdropColor(0.09, 0.09, 0.19, 0.5)
-f:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.5)
+AegisPathfinder.statusskin = Theme:Panel(f, "panel")
 
-local check = ww.SummonCheckBox(CHECKSIZE, f, "LEFT", GAP, 0)
+local check = Theme:StepCheck(f, CHECKSIZE)
+check:SetPoint("LEFT", f, "LEFT", GAP, 0)
 
 -- Previous objective button
 local prevBtn = CreateFrame("Button", nil, f)
 prevBtn:SetWidth(14)
-prevBtn:SetHeight(14)
+prevBtn:SetHeight(20)
 prevBtn:SetPoint("LEFT", check, "RIGHT", 2, 0)
-prevBtn:SetNormalTexture("Interface\\Buttons\\UI-SpellbookIcon-PrevPage-Up")
-prevBtn:SetPushedTexture("Interface\\Buttons\\UI-SpellbookIcon-PrevPage-Down")
-prevBtn:SetHighlightTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Highlight")
+local prevGlyph = prevBtn:CreateFontString(nil, "OVERLAY")
+Theme:SetFont(prevGlyph, "display", 18)
+prevGlyph:SetPoint("CENTER", prevBtn, "CENTER", 0, 0)
+prevGlyph:SetText("<")
+Theme:TextColor(prevGlyph, "textDim")
 prevBtn:SetScript("OnClick", function() AegisPathfinder:GoToPreviousObjective() end)
 prevBtn:SetScript("OnEnter", function()
 	GameTooltip:SetOwner(this, "ANCHOR_TOP")
@@ -49,17 +55,23 @@ end)
 prevBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
 local icon = ww.SummonTexture(f, "ARTWORK", ICONSIZE, ICONSIZE, nil, "LEFT", prevBtn, "RIGHT", GAP - 4, 0)
-local text = ww.SummonFontString(f, "OVERLAY", "GameFontNormalSmall", nil, "RIGHT", -GAP - 4 - 18, 0)
+local text = f:CreateFontString(nil, "OVERLAY")
+Theme:SetFont(text, "display", 13)
+Theme:TextColor(text, "text")
+text:SetJustifyH("LEFT")
+text:SetPoint("RIGHT", f, "RIGHT", -GAP - 4 - 18, 0)
 text:SetPoint("LEFT", icon, "RIGHT", GAP - 4, 0)
 
 -- Next objective button
 local nextBtn = CreateFrame("Button", nil, f)
 nextBtn:SetWidth(14)
-nextBtn:SetHeight(14)
+nextBtn:SetHeight(20)
 nextBtn:SetPoint("RIGHT", f, "RIGHT", -GAP, 0)
-nextBtn:SetNormalTexture("Interface\\Buttons\\UI-SpellbookIcon-NextPage-Up")
-nextBtn:SetPushedTexture("Interface\\Buttons\\UI-SpellbookIcon-NextPage-Down")
-nextBtn:SetHighlightTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Highlight")
+local nextGlyph = nextBtn:CreateFontString(nil, "OVERLAY")
+Theme:SetFont(nextGlyph, "display", 18)
+nextGlyph:SetPoint("CENTER", nextBtn, "CENTER", 0, 0)
+nextGlyph:SetText(">")
+Theme:TextColor(nextGlyph, "textDim")
 nextBtn:SetScript("OnClick", function() AegisPathfinder:SkipToNextObjective() end)
 nextBtn:SetScript("OnEnter", function()
 	GameTooltip:SetOwner(this, "ANCHOR_TOP")
@@ -72,21 +84,13 @@ local returnBtn = CreateFrame("Button", nil, f)
 returnBtn:SetWidth(50)
 returnBtn:SetHeight(14)
 returnBtn:SetPoint("LEFT", f, "RIGHT", 4, 0)
-returnBtn:SetBackdrop({
-	bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
-	edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
-	tile = true,
-	tileSize = 8,
-	edgeSize = 8,
-	insets = { left = 2, right = 2, top = 2, bottom = 2 }
-})
-returnBtn:SetBackdropColor(0, 0.4, 0, 0.8)
-returnBtn:SetBackdropBorderColor(0, 0.8, 0, 0.8)
+Theme:NineSlice(returnBtn, Theme.texture.pillFill, "BACKGROUND", "accentDeep")
+Theme:NineSlice(returnBtn, Theme.texture.pillBorder, "BORDER", "border")
 local returnText = returnBtn:CreateFontString(nil, "OVERLAY")
-returnText:SetFontObject(GameFontNormalSmall)
+Theme:SetFont(returnText, "display", 11)
 returnText:SetPoint("CENTER", 0, 0)
-returnText:SetText("|cff00ff00<< Main|r")
-returnText:SetTextColor(0, 1, 0)
+returnText:SetText("<< MAIN")
+Theme:TextColor(returnText, "accentGlow")
 returnBtn:SetScript("OnClick", function() AegisPathfinder:ReturnFromBranch() end)
 returnBtn:SetScript("OnEnter", function()
 	GameTooltip:SetOwner(this, "ANCHOR_TOP")
@@ -116,6 +120,153 @@ item:SetScript("OnEnter", function()
 end)
 item:SetScript("OnLeave", GameTooltip_Hide)
 item:Hide()
+
+--[[ The rest of the status card.
+
+	The original status bar was a single line. The concept turns it into a card
+	that also carries the step's description, its quest id and coordinates, and
+	progress through the guide -- information that previously required opening
+	the objectives panel. Everything below is laid out under the title row and
+	the card grows to fit; AegisPathfinder:LayoutStatusCard() sizes it.
+]]
+
+local ROW_TOP = 24        -- height of the existing title row
+local PAD = 10
+
+-- Gold [Branch] tag, shown while off the main route.
+local branchTag = f:CreateFontString(nil, "OVERLAY")
+Theme:SetFont(branchTag, "display", 10)
+branchTag:SetPoint("RIGHT", text, "RIGHT", 0, 0)
+branchTag:SetText("[BRANCH]")
+Theme:TextColor(branchTag, "gold")
+branchTag:Hide()
+
+-- Step description (the |N| note).
+local desc = f:CreateFontString(nil, "OVERLAY")
+Theme:SetFont(desc, "body", 11)
+desc:SetPoint("TOPLEFT", f, "TOPLEFT", PAD, -ROW_TOP)
+desc:SetPoint("RIGHT", f, "RIGHT", -PAD, 0)
+desc:SetJustifyH("LEFT")
+Theme:TextColor(desc, "textDim")
+desc:Hide()
+
+-- Quest id and coordinates, in the monospace-ish display face.
+local meta = f:CreateFontString(nil, "OVERLAY")
+Theme:SetFont(meta, "body", 10)
+meta:SetPoint("TOPLEFT", desc, "BOTTOMLEFT", 0, -4)
+meta:SetJustifyH("LEFT")
+Theme:TextColor(meta, "accent")
+meta:Hide()
+
+-- Guide progress.
+local progress = Theme:ProgressBar(f, 5)
+progress:SetPoint("TOPLEFT", meta, "BOTTOMLEFT", 0, -6)
+progress:SetWidth(CARD_WIDTH - PAD * 2 - 90)
+
+local progressText = f:CreateFontString(nil, "OVERLAY")
+Theme:SetFont(progressText, "body", 10)
+progressText:SetPoint("LEFT", progress, "RIGHT", 7, 0)
+Theme:TextColor(progressText, "textDim")
+
+AegisPathfinder.statuscard = {
+	branchTag = branchTag, desc = desc, meta = meta,
+	progress = progress, progressText = progressText,
+}
+
+--- Size the card to whatever rows are currently visible.
+function AegisPathfinder:LayoutStatusCard()
+	local card = self.statuscard
+	local h = ROW_TOP
+
+	if card.desc:IsShown() then
+		h = h + card.desc:GetHeight() + 4
+	end
+	if card.meta:IsShown() then
+		h = h + 14
+	end
+	if card.progress:IsShown() then
+		h = h + 11
+	end
+
+	f:SetHeight(h + PAD)
+end
+
+--[[ Navigation callout.
+
+	The concept's signature element: an arrow that points at the current
+	objective, with the instruction, distance and a rough time to walk it. The
+	arrow is a texture rather than a rotated frame because 1.12 can only rotate
+	a texture, and only about its own centre.
+]]
+
+local callout = CreateFrame("Frame", nil, UIParent)
+callout:SetWidth(180)
+callout:SetHeight(96)
+callout:SetPoint("BOTTOM", f, "TOP", 0, 10)
+callout:SetFrameStrata("LOW")
+Theme:NineSlice(callout, Theme.texture.panelFill, "BACKGROUND", "panel2", 0.95)
+
+local calloutArrow = callout:CreateTexture(nil, "ARTWORK")
+calloutArrow:SetTexture(Theme.texture.navArrow)
+calloutArrow:SetWidth(36)
+calloutArrow:SetHeight(36)
+calloutArrow:SetPoint("TOP", callout, "TOP", 0, -12)
+
+local calloutText = callout:CreateFontString(nil, "OVERLAY")
+Theme:SetFont(calloutText, "body2", 12)
+calloutText:SetPoint("TOP", calloutArrow, "BOTTOM", 0, -8)
+calloutText:SetWidth(164)
+Theme:TextColor(calloutText, "text")
+
+local calloutDist = callout:CreateFontString(nil, "OVERLAY")
+Theme:SetFont(calloutDist, "body2", 11)
+calloutDist:SetPoint("TOP", calloutText, "BOTTOM", 0, -6)
+Theme:TextColor(calloutDist, "goldDeep")
+
+AegisPathfinder.navcallout = {
+	frame = callout, arrow = calloutArrow,
+	instruction = calloutText, distance = calloutDist,
+}
+callout:Hide()
+
+-- What the arrow says for each action, mirroring the concept's phrasing.
+local NAV_PHRASES = {
+	ACCEPT = "Head to the quest giver",
+	TURNIN = "Head to the quest giver",
+	COMPLETE = "Continue to the objective",
+	KILL = "Continue to the objective",
+	GRIND = "Continue to the objective",
+	RUN = "Follow the path ahead",
+	HEARTH = "Return to the inn",
+	SETHEARTH = "Return to the inn",
+	FLY = "Head to the flight master",
+	GETFLIGHTPOINT = "Head to the flight master",
+	BOAT = "Head to the dock",
+	BUY = "Head to the vendor",
+	USE = "Head to the vendor",
+	TRAIN = "Head to the trainer",
+}
+
+function AegisPathfinder:UpdateNavCallout(action)
+	local nav = self.navcallout
+	if not self.db.char.shownavcallout then
+		nav.frame:Hide()
+		return
+	end
+
+	nav.frame:Show()
+	nav.instruction:SetText(NAV_PHRASES[action] or "Follow the path")
+
+	-- Distance comes from the waypoint provider when one is active. Without
+	-- it there is nothing honest to show, so the line is left blank rather
+	-- than filled with a made-up number.
+	local dist = self.lastwaypointdistance
+	if dist then
+		nav.distance:SetText(string.format("%d yd", dist))
+	else
+		nav.distance:SetText("")
+	end
+end
 
 local f2 = CreateFrame("Frame", nil, UIParent)
 local f2anchor = "RIGHT"
@@ -164,6 +315,107 @@ function AegisPathfinder:PositionStatusFrame()
 	end
 end
 
+--[[ Which steps the addon can complete without the player ticking anything.
+
+	ClassicAPI gives real, id-keyed quest events, so accepting, completing and
+	turning in a quest, binding a hearthstone, and collecting a tagged item all
+	resolve themselves. Travel steps resolve on arrival when a waypoint
+	provider is active. Profession steps resolve off skill events.
+
+	Everything else -- a note to read, a vendor to visit, a mob to grind for XP
+	-- only the player can confirm. Saying which is which is the point of the
+	concept's halo: it tells you when not to bother reaching for the checkbox.
+]]
+local AUTO_DETECTABLE = {
+	ACCEPT = true, TURNIN = true, COMPLETE = true, SETHEARTH = true,
+	RUN = true, FLY = true, BOAT = true, HEARTH = true, GETFLIGHTPOINT = true,
+}
+
+function AegisPathfinder:IsAutoDetectable(action, i)
+	if not action then return false end
+	if AUTO_DETECTABLE[action] then
+		-- Travel only resolves itself if something is tracking position.
+		if action == "RUN" or action == "FLY" or action == "BOAT"
+			or action == "HEARTH" or action == "GETFLIGHTPOINT" then
+			return self:GetWaypointProvider() ~= nil
+		end
+		return true
+	end
+	if i and self:IsSkillObjective(i) then return true end
+	if i and self:GetObjectiveTag("L", i) then return true end
+
+	return false
+end
+
+--- Fill in the card rows under the title: description, quest id and
+--- coordinates, branch tag, guide progress, and the navigation callout.
+function AegisPathfinder:UpdateStatusCard(i, action, note, totalSteps)
+	local card = self.statuscard
+	if not card then return end
+
+	if self.db.char.isbranching then card.branchTag:Show() else card.branchTag:Hide() end
+
+	-- Description. The note often carries coordinates inline; they are shown
+	-- separately on the meta row, so strip them out of the prose.
+	if note and note ~= "" then
+		local prose = string.gsub(note, "%s*%([%d%.]+%s*,%s*[%d%.]+%)", "")
+		prose = self.trim(prose)
+		if prose ~= "" then
+			card.desc:SetText(prose)
+			card.desc:Show()
+		else
+			card.desc:Hide()
+		end
+	else
+		card.desc:Hide()
+	end
+
+	-- Meta row: quest id, coordinates, and for profession steps the skill
+	-- range, which is that step's equivalent of a quest id.
+	local bits = {}
+	local qid = self:GetObjectiveTag("QID", i)
+	if qid then table.insert(bits, "QID " .. qid) end
+
+	local profession, from, to = self:GetObjectiveTag("SKILL", i)
+	if profession and to then
+		local _, rank = self:GetSkillProgress(i)
+		if rank then
+			table.insert(bits, string.format("%s %d/%d", profession, rank, to))
+		else
+			table.insert(bits, string.format("%s %d-%d", profession, from or 0, to))
+		end
+	end
+
+	if note then
+		local _, _, x, y = string.find(note, "%(([%d%.]+)%s*,%s*([%d%.]+)%)")
+		if x and y then table.insert(bits, x .. ", " .. y) end
+	end
+
+	if table.getn(bits) > 0 then
+		card.meta:SetText(table.concat(bits, "  -  "))
+		card.meta:Show()
+	else
+		card.meta:Hide()
+	end
+
+	-- Progress through the guide.
+	if totalSteps and totalSteps > 0 then
+		local done = 0
+		for n = 1, totalSteps do
+			if self.turnedin[self.quests[n]] then done = done + 1 end
+		end
+		card.progress:Show()
+		card.progress:SetProgress(done / totalSteps)
+		card.progressText:SetText(string.format("%d of %d", done, totalSteps))
+	else
+		card.progress:Hide()
+		card.progressText:SetText("")
+	end
+
+	self:LayoutStatusCard()
+	self:UpdateNavCallout(action)
+end
+
 function AegisPathfinder:SetStatusText(i)
 	self.current = i
 	local action, quest = self:GetObjectiveInfo(i)
@@ -172,6 +424,8 @@ function AegisPathfinder:SetStatusText(i)
 	local stepNum = string.format("[%d/%d] ", i, totalSteps)
 	local branchIndicator = self.db.char.isbranching and "|cff00ff00*|r " or ""
 	local newtext = branchIndicator .. stepNum .. (quest or "???") .. (note and " [?]" or "")
+
+	self:UpdateStatusCard(i, action, note, totalSteps)
 
 	-- Check for unmet prerequisites from other zones (only for ACCEPT actions)
 	-- Only warn once per objective to avoid spam
@@ -217,14 +471,16 @@ function AegisPathfinder:SetStatusText(i)
 
 	icon:SetTexture(self.icons[action])
 	if action ~= "ACCEPT" and action ~= "TURNIN" then icon:SetTexCoord(4 / 48, 44 / 48, 4 / 48, 44 / 48) end
-	if self:GetObjectiveTag("T") then f:SetBackdropColor(0.09, 0.5, 0.19, 0.5) else f:SetBackdropColor(0.09, 0.09, 0.19,
-			0.5) end
+	-- |T| marks an in-town objective; the concept lightens the card for it
+	-- instead of the old blue/green backdrop tint.
+	AegisPathfinder.statusskin.fill:SetTint(self:GetObjectiveTag("T") and "panel3" or "panel")
 	text:SetText(newtext)
 	check:SetChecked(false)
+	check:SetAutoEligible(AegisPathfinder:IsAutoDetectable(action, i))
 	check:SetButtonState("NORMAL")
 	if self.db.char.currentguide == "No Guide" then check:Disable() else check:Enable() end
-	if i == 1 then f:SetWidth(FIXEDWIDTH + text:GetWidth()) end
-	newsize = FIXEDWIDTH + text:GetWidth()
+	if i == 1 then f:SetWidth(CARD_WIDTH) end
+	newsize = CARD_WIDTH
 
 	if self.UpdateFubarPlugin then self.UpdateFubarPlugin(quest, self.icons[action], note) end
 end
@@ -421,8 +677,9 @@ function AegisPathfinder:UpdateStatusFrame()
 	icon:SetTexture(self.icons[action])
 	text:SetText(newtext)
 	check:SetChecked(false)
-	if not f2:IsVisible() then f:SetWidth(FIXEDWIDTH + text:GetWidth()) end
-	newsize = FIXEDWIDTH + text:GetWidth()
+	check:SetAutoEligible(AegisPathfinder:IsAutoDetectable(action, i))
+	if not f2:IsVisible() then f:SetWidth(CARD_WIDTH) end
+	newsize = CARD_WIDTH
 
 	tex = useitem and C_Item.GetItemIconByID(tonumber(useitem))
 	uitem = useitem
