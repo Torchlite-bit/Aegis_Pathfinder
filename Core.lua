@@ -146,6 +146,12 @@ local options = {
             type = "execute",
             func = function() AegisPathfinder:PrintCredits() end,
         },
+        Materials = {
+            name = "Materials",
+            desc = "Reagents the rest of the current guide still needs",
+            type = "execute",
+            func = function() AegisPathfinder:ToggleMaterialsPanel() end,
+        },
         Server = {
             name = "Server",
             desc = "Which server you play on, and whether guide data is verified there",

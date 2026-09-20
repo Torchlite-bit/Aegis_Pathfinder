@@ -34,6 +34,7 @@ That runs everything that can run without a WoW client:
 | `Tools/test_servers.lua` | Guide data provenance and mismatch detection |
 | `Tools/test_dungeons.lua` | Dungeon chips and the guide-reference scan |
 | `Tools/test_guidelist.lua` | Guide categorisation, tabs and badges |
+| `Tools/test_materials.lua` | Materials arithmetic, checked against the source document's own shopping list |
 
 Everything must pass before you open a PR. **None of it proves the UI looks
 right** — that still needs someone to load the addon on a 1.12 client and look

@@ -148,6 +148,18 @@ Placeholder guides carry the concept's grey `TPL` badge (`Theme:Badge`). In a
 list where an unauthored guide looks exactly like an authored one, that badge
 is the only thing distinguishing them.
 
+### Materials panel -- `MaterialsFrame.lua`
+
+Not in the concept, which is leveling-focused. It exists because the
+profession guides need it: the reference document prints one shopping list per
+profession totalled from skill 1, which is the wrong number for anyone
+part-way through, since it counts reagents for crafts already done. The panel
+totals what the *remaining* steps call for.
+
+Nothing in it is profession-specific -- any guide carrying `|MATS|` tags gets
+a materials list. Sorted alphabetically: it is a list you read while hunting
+for one item, not a ranking.
+
 ### Still to do
 
 The objectives panel keeps its own tab bar from the concept — the one with the

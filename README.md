@@ -43,6 +43,7 @@ too — the old `TurtleGuide` global is still an alias.
 | `/aegis next` / `prev` | Step forward or back |
 | `/aegis goto <n>` | Jump to a step |
 | `/aegis reset` | Reset progress in the current guide |
+| `/aegis materials` | Reagents the rest of this guide still needs |
 | `/aegis credits` | Everyone whose work is in this addon |
 | `/aegis server` | Cycle which server you play on |
 | `/aegis serverstatus` | Guide data provenance per server |
@@ -68,6 +69,11 @@ Defaults follow the route pack you chose.
 
 **Professions.** Ten 1–300 routes with trainers, craft counts, reagents and
 recipe sources, tracked against your actual skill level. See below.
+
+**Materials.** `/aegis materials` totals the reagents the rest of the current
+guide still needs — counted from where you actually are, not from step one, so
+it is the number you want at the auction house rather than the one you needed
+when you started.
 
 **Automatic advancement.** Accepting, completing and turning in quests, binding
 a hearthstone, and collecting tagged items all resolve themselves. So do travel
@@ -127,7 +133,7 @@ sh Tools/run_tests.sh
 
 Runs everything that can be checked without a client: Lua syntax, Lua 5.0
 compatibility, `.toc` and `Guides.xml` integrity, TGA validity, that no panel
-has drifted off the theme, and six test suites that execute the addon's own
+has drifted off the theme, and seven test suites that execute the addon's own
 code against a stubbed 1.12 API.
 
 None of it proves the UI looks right. That needs a client.
