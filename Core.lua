@@ -439,7 +439,7 @@ local options = {
 -- FuBar
 ---------
 AegisPathfinder.hasIcon = [[Interface\QuestFrame\UI-QuestLog-BookIcon]]
-AegisPathfinder.title = "VanillaGuide+"
+AegisPathfinder.title = "AEGIS: Pathfinder"
 AegisPathfinder.defaultMinimapPosition = 215
 AegisPathfinder.defaultPosition = "CENTER"
 AegisPathfinder.cannotDetachTooltip = true
@@ -501,11 +501,12 @@ function AegisPathfinder:OnEnable()
     -- untagged dev builds report 99999999). Quest tracking is built on its
     -- C_QuestLog functions and QUEST_ACCEPTED / QUEST_TURNED_IN events.
     if not CLASSIC_API_VERSION or CLASSIC_API_VERSION < 10509 then
-        self:Print("|cffff3333VanillaGuide+ requires ClassicAPI v1.5.9 or newer (https://github.com/brues-code/ClassicAPI). The addon will not load.|r")
+        self:Print("|cffff3333AEGIS: Pathfinder requires ClassicAPI v1.5.9 or newer (https://github.com/brues-code/ClassicAPI). The addon will not load.|r")
         return
     end
 
     self:PatchAstrolabe()
+    self:RegisterProfessionEvents()
 
     if self.db.char.debug then
         self:SetDebugging(true)
@@ -668,7 +669,7 @@ function AegisPathfinder:PLAYER_ENTERING_WORLD()
     local function pump()
         local ok, err = coroutine.resume(co)
         if not ok then
-            self:Print("|cffff3333VanillaGuide+ load error: " .. tostring(err) .. "|r")
+            self:Print("|cffff3333AEGIS: Pathfinder load error: " .. tostring(err) .. "|r")
             return
         end
         if coroutine.status(co) == "dead" then
@@ -2333,7 +2334,7 @@ function AegisPathfinder:CreateErrorLogFrame()
     local title = f:CreateFontString(nil, "ARTWORK")
     title:SetFontObject(GameFontNormalLarge)
     title:SetPoint("TOP", f, "TOP", 0, -16)
-    title:SetText("VanillaGuide+ Error Log")
+    title:SetText("AEGIS: Pathfinder Error Log")
 
     local desc = f:CreateFontString(nil, "ARTWORK")
     desc:SetFontObject(GameFontHighlight)
