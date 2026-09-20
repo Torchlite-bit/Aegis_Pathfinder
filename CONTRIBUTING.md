@@ -1,12 +1,5 @@
 # Contributing to AEGIS: Pathfinder
 
-## Before you start
-
-Read [LICENSE-STATUS.md](LICENSE-STATUS.md). brues-code has given permission to
-build on VanillaGuide+, so development is unblocked. A few licensing details
-are still to be settled before anything is published, which is why there is no
-release yet.
-
 ## Getting credited
 
 Add yourself to [CONTRIBUTORS.md](CONTRIBUTORS.md) in the same pull request as
@@ -21,7 +14,7 @@ mirrors `CONTRIBUTORS.md`. Update both.
 ## Branching
 
 Work on a branch and open a pull request against `main`. Do not push a `v*`
-tag: that triggers the release packager, and releases are blocked (see above).
+tag unless you mean to cut a release — that tag triggers the release packager.
 
 ## Running the checks
 

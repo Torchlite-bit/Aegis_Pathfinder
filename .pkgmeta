@@ -10,5 +10,3 @@ ignore:
     - .luarc.json
     - CONTRIBUTORS.md
     - CONTRIBUTING.md
-    - NOTICE.md
-    - LICENSE-STATUS.md

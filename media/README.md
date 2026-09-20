@@ -61,24 +61,16 @@ must stay in step with the radius used in `make_assets.py`.
 
 ## Fonts
 
-`fonts/` holds the two faces the design concept specifies. Both are licensed
-under the SIL Open Font License 1.1.
+`fonts/` holds the two faces the design concept specifies.
 
-| File | Family | Copyright (from the font's own name table) |
+| File | Family | Author |
 |---|---|---|
-| `Rajdhani-Bold.ttf`, `Rajdhani-SemiBold.ttf` | Rajdhani | Copyright (c) 2014 Indian Type Foundry (info@indiantypefoundry.com) |
-| `Inter-Regular.ttf`, `Inter-SemiBold.ttf` | Inter | Copyright 2016 The Inter Project Authors (https://github.com/rsms/inter) |
+| `Rajdhani-Bold.ttf`, `Rajdhani-SemiBold.ttf` | Rajdhani | Indian Type Foundry (info@indiantypefoundry.com) |
+| `Inter-Regular.ttf`, `Inter-SemiBold.ttf` | Inter | The Inter Project Authors (https://github.com/rsms/inter) |
 
-These are the Latin subsets served by Google Fonts. They were verified to
-cover ASCII plus the punctuation the UI uses.
-
-> **Release blocker.** The OFL requires the full licence text to accompany
-> redistributed font files. `fonts/OFL.txt` is **not** present: the licence
-> text could not be retrieved in the environment this was built in
-> (`openfontlicense.org` and `scripts.sil.org` are blocked by the egress
-> proxy), and writing a legal text from memory would risk an inaccurate one.
-> Download `OFL.txt` from <https://openfontlicense.org> and add it to
-> `media/fonts/` before distributing a build. See `LICENSE-STATUS.md`.
+Both are licensed under the SIL Open Font License 1.1. Author lines are taken
+from each font's own name table. These are the Latin subsets served by Google
+Fonts, verified to cover ASCII plus the punctuation the UI uses.
 
 `Theme:SetFont` falls back to the client's own font if a bundled face fails to
 load, so a missing or rejected TTF degrades to readable text rather than an
