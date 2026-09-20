@@ -503,7 +503,9 @@ function AegisPathfinder:OnInitialize()
     if self.db.char.UseAH == nil then
         self.db.char.UseAH = defaults.UseAH
     end
-    self:RegisterChatCommand({ "/aegis", "/pathfinder", "/vg" }, options)
+    -- /aegis belongs to another addon in the AEGIS suite; registering it
+    -- here would collide with it.
+    self:RegisterChatCommand({ "/apg", "/pathfinder", "/vg" }, options)
     self.OnMenuRequest = options
     self:SetupErrorCapture()
     if not FuBar then
