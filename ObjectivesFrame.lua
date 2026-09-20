@@ -7,7 +7,8 @@ local Theme = AegisPathfinder.Theme
 
 local ROWHEIGHT = 30
 local ROWOFFSET = 6
-local HEADER_HEIGHT = 55
+local TABBAR_H = 26
+local HEADER_HEIGHT = 55 + TABBAR_H
 local DEFAULT_WIDTH = 630
 local DEFAULT_HEIGHT = 305 + 28
 local MIN_WIDTH = 400
@@ -200,11 +201,123 @@ function AegisPathfinder:UpdateObjectivePanel()
 	title:SetPoint("BOTTOM", frame, "TOP", 0, 4)
 	Theme:TextColor(title, "text")
 
+	--[[ Tab bar.
+
+		The concept's model for the branch system: the guide you are on is a
+		tab, branching opens a second one beside it, and closing that tab is
+		how you come back. The addon expressed the same thing as a button plus
+		a status tag, which says less about where you are.
+
+		The badge marks whether the main guide is authored (XP) or a
+		placeholder (TPL) -- the same signal the guide list carries, in the one
+		place you are looking while you follow it.
+	]]
+	local tabbar = CreateFrame("Frame", nil, frame)
+	tabbar:SetHeight(TABBAR_H)
+	tabbar:SetPoint("TOPLEFT", frame, "TOPLEFT", 6, -4)
+	tabbar:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -26, -4)
+	Theme:Strip(tabbar, "tabbg")
+
+	local function MakeTab(width)
+		local t = CreateFrame("Button", nil, tabbar)
+		t:SetHeight(TABBAR_H - 4)
+		t:SetWidth(width)
+		t.fill = Theme:NineSlice(t, Theme.texture.tabFill, "BACKGROUND", "tabbg")
+		t.label = t:CreateFontString(nil, "OVERLAY")
+		Theme:SetFont(t.label, "body", 11)
+		t.label:SetJustifyH("LEFT")
+		Theme:TextColor(t.label, "textDim")
+
+		function t:SetActive(active)
+			if active then
+				self.fill:SetTint("panel")
+				Theme:TextColor(self.label, "text")
+			else
+				self.fill:SetTint("tabbg")
+				Theme:TextColor(self.label, "textDim")
+			end
+		end
+
+		return t
+	end
+
+	local mainTab = MakeTab(210)
+	mainTab:SetPoint("BOTTOMLEFT", tabbar, "BOTTOMLEFT", 8, 0)
+	mainTab.badge = Theme:Badge(mainTab, "XP", "xp")
+	mainTab.badge:SetPoint("LEFT", mainTab, "LEFT", 7, 0)
+	mainTab.label:SetPoint("LEFT", mainTab.badge, "RIGHT", 6, 0)
+	mainTab.label:SetPoint("RIGHT", mainTab, "RIGHT", -6, 0)
+	mainTab:SetScript("OnClick", function()
+		-- Clicking the guide you left is how you go back to it.
+		if AegisPathfinder.db.char.isbranching then
+			AegisPathfinder:ReturnFromBranch()
+		end
+	end)
+	mainTab:SetScript("OnEnter", function()
+		if not AegisPathfinder.db.char.isbranching then return end
+		GameTooltip:SetOwner(this, "ANCHOR_BOTTOM")
+		GameTooltip:SetText("Return to " .. (AegisPathfinder.db.char.branchsavedguide or "the main route"))
+	end)
+	mainTab:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+	local branchTab = MakeTab(190)
+	branchTab:SetPoint("LEFT", mainTab, "RIGHT", 2, 0)
+	branchTab.label:SetPoint("LEFT", branchTab, "LEFT", 8, 0)
+	branchTab.label:SetPoint("RIGHT", branchTab, "RIGHT", -20, 0)
+
+	local branchClose = CreateFrame("Button", nil, branchTab)
+	branchClose:SetWidth(14)
+	branchClose:SetHeight(14)
+	branchClose:SetPoint("RIGHT", branchTab, "RIGHT", -4, 0)
+	local closeGlyph = branchClose:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(closeGlyph, "body", 11)
+	closeGlyph:SetPoint("CENTER", branchClose, "CENTER", 0, 0)
+	closeGlyph:SetText("x")
+	Theme:TextColor(closeGlyph, "textDim")
+	branchClose:SetScript("OnClick", function() AegisPathfinder:ReturnFromBranch() end)
+	branchClose:SetScript("OnEnter", function()
+		Theme:TextColor(closeGlyph, "text")
+		GameTooltip:SetOwner(this, "ANCHOR_BOTTOM")
+		GameTooltip:SetText("Close this branch and return")
+	end)
+	branchClose:SetScript("OnLeave", function()
+		Theme:TextColor(closeGlyph, "textDim")
+		GameTooltip:Hide()
+	end)
+	branchTab:Hide()
+
+	local addTab = CreateFrame("Button", nil, tabbar)
+	addTab:SetWidth(20)
+	addTab:SetHeight(TABBAR_H - 8)
+	addTab:SetPoint("LEFT", branchTab, "RIGHT", 4, 0)
+	Theme:NineSlice(addTab, Theme.texture.tabFill, "BACKGROUND", "panel3")
+	local addGlyph = addTab:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(addGlyph, "display", 14)
+	addGlyph:SetPoint("CENTER", addTab, "CENTER", 0, 0)
+	addGlyph:SetText("+")
+	Theme:TextColor(addGlyph, "textDim")
+	addTab:SetScript("OnClick", function()
+		frame:Hide()
+		AegisPathfinder.guidelistframe:Show()
+	end)
+	addTab:SetScript("OnEnter", function()
+		Theme:TextColor(addGlyph, "accent")
+		GameTooltip:SetOwner(this, "ANCHOR_BOTTOM")
+		GameTooltip:SetText("Branch to another guide")
+	end)
+	addTab:SetScript("OnLeave", function()
+		Theme:TextColor(addGlyph, "textDim")
+		GameTooltip:Hide()
+	end)
+
+	frame.tabbar = tabbar
+	frame.mainTab, frame.branchTab, frame.addTab = mainTab, branchTab, addTab
+
 	-- Current objective header (prominent display)
 	local currentHeader = CreateFrame("Frame", nil, frame)
 	currentHeader:SetHeight(50)
-	currentHeader:SetPoint("TOPLEFT", frame, "TOPLEFT", 6, -6)
-	currentHeader:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -26, -6)
+	currentHeader:SetPoint("TOPLEFT", frame, "TOPLEFT", 6, -(6 + TABBAR_H))
+	currentHeader:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -26, -(6 + TABBAR_H))
 	Theme:Strip(currentHeader, "panel2")
 	Theme:Divider(currentHeader, currentHeader, "BOTTOMLEFT", 0, 0)
 
@@ -258,7 +371,7 @@ function AegisPathfinder:UpdateObjectivePanel()
 	Theme:TextColor(completed, "accent")
 
 	scrollbar, upbutt, downbutt = ww.ConjureScrollBar(frame)
-	scrollbar:SetPoint("TOPRIGHT", frame, -7, -21)
+	scrollbar:SetPoint("TOPRIGHT", frame, -7, -(21 + TABBAR_H))
 	scrollbar:SetPoint("BOTTOM", frame, 0, 22 + 22)
 	scrollbar:SetScript("OnValueChanged", function() local f, val = this, arg1 self:UpdateOHPanel(val) end)
 
@@ -276,7 +389,7 @@ function AegisPathfinder:UpdateObjectivePanel()
 
 	for i = 1, MAX_ROWS do
 		local row = CreateFrame("Button", nil, frame)
-		row:SetPoint("TOPLEFT", i == 1 and frame or rows[i - 1], i == 1 and "TOPLEFT" or "BOTTOMLEFT", 0, i == 1 and -58 or 0)
+		row:SetPoint("TOPLEFT", i == 1 and frame or rows[i - 1], i == 1 and "TOPLEFT" or "BOTTOMLEFT", 0, i == 1 and -(58 + TABBAR_H) or 0)
 		row:SetPoint("RIGHT", scrollbar, "LEFT", -4, 0)
 		row:SetHeight(ROWHEIGHT)
 
@@ -361,6 +474,35 @@ function AegisPathfinder:UpdateObjectivePanel()
 end
 
 
+--- Keep the tab bar in step with which guide is loaded and whether the
+--- player is off on a branch.
+function AegisPathfinder:UpdateObjectiveTabs()
+	if not frame.mainTab then return end
+
+	local branching = self.db.char.isbranching
+	-- While branching, currentguide is the branch; the guide you left is
+	-- saved separately.
+	local mainName = (branching and self.db.char.branchsavedguide)
+		or self.db.char.currentguide or "No Guide"
+
+	frame.mainTab.label:SetText(mainName)
+	frame.mainTab.badge:SetKind(self:IsTemplateGuide(mainName) and "tpl" or "xp",
+		self:IsTemplateGuide(mainName) and "TPL" or "XP")
+	frame.mainTab:SetActive(not branching)
+
+	if branching then
+		frame.branchTab:Show()
+		frame.branchTab.label:SetText(self.db.char.currentguide or "Branch")
+		frame.branchTab:SetActive(true)
+		frame.addTab:SetPoint("LEFT", frame.branchTab, "RIGHT", 4, 0)
+	else
+		frame.branchTab:Hide()
+		-- With no branch tab between them, the + button follows the main tab
+		-- rather than floating where the hidden tab used to be.
+		frame.addTab:SetPoint("LEFT", frame.mainTab, "RIGHT", 4, 0)
+	end
+end
+
 function AegisPathfinder:OnObjectiveFrameResized()
 	local w = frame:GetWidth()
 	local h = frame:GetHeight()
@@ -397,6 +539,8 @@ local accepted = {}
 local acceptedDirty = true
 function AegisPathfinder:UpdateOHPanel(value)
 	if not frame or not frame:IsVisible() then return end
+
+	self:UpdateObjectiveTabs()
 	-- The panel can be opened before any guide is parsed; everything below reads
 	-- the step list and the current step directly.
 	if not self.actions or not self.current then return end

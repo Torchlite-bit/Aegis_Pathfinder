@@ -57,8 +57,10 @@ RestedXP, or RXP Hardcore. Your race's starting zone is selected for you, and
 all races merge into a shared route after level 12.
 
 **Branching.** Jump from the main route to any zone guide, do as much as you
-want, and return — you resume at the step matching your level. A gold
-`[BRANCH]` tag shows while you are off the main path.
+want, and return — you resume at the step matching your level. The objectives
+panel shows this as tabs: the guide you left stays open beside the one you
+branched to, and closing that tab brings you back. A gold `[BRANCH]` tag shows
+on the status bar while you are off the main path.
 
 **Dungeons.** Toggle which of 15 dungeons you intend to run. Opting in promotes
 their setup and prerequisite steps to mandatory; opting out hides them. A blue
@@ -133,7 +135,7 @@ sh Tools/run_tests.sh
 
 Runs everything that can be checked without a client: Lua syntax, Lua 5.0
 compatibility, `.toc` and `Guides.xml` integrity, TGA validity, that no panel
-has drifted off the theme, and seven test suites that execute the addon's own
+has drifted off the theme, and eight test suites that execute the addon's own
 code against a stubbed 1.12 API.
 
 None of it proves the UI looks right. That needs a client.

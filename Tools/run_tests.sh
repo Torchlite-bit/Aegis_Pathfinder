@@ -24,6 +24,7 @@ lua5.1 Tools/test_servers.lua
 lua5.1 Tools/test_dungeons.lua
 lua5.1 Tools/test_guidelist.lua
 lua5.1 Tools/test_materials.lua
+lua5.1 Tools/test_objectivetabs.lua
 
 echo
 echo "All offline checks passed."

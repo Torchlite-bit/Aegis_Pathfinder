@@ -160,12 +160,37 @@ Nothing in it is profession-specific -- any guide carrying `|MATS|` tags gets
 a materials list. Sorted alphabetically: it is a list you read while hunting
 for one item, not a ranking.
 
+### Objectives panel tab bar -- `ObjectivesFrame.lua`
+
+The concept's model for the branch system: the guide you are on is a tab,
+branching opens a second beside it, and closing that tab is how you come back.
+The addon expressed the same thing as a button plus a status tag, which says
+less about where you are.
+
+| Concept element | Implementation |
+|---|---|
+| `.tab` with `.tab-badge` | Main tab, naming the guide, with `Theme:Badge` marking it `XP` (authored) or `TPL` (placeholder) |
+| `.tab.branch-tab` with `.tab-close` | Branch tab, shown only while branching; its `x` returns you |
+| `.tab-add` | `+`, opening the guide list to branch from |
+
+Two things here are subtle enough to be worth stating. While branching,
+`db.char.currentguide` is the **branch** — the guide you left is in
+`db.char.branchsavedguide` — so the main tab reads that one or it names the
+wrong guide. And the `+` button re-anchors when the branch tab hides, or it
+floats in the gap the hidden tab used to occupy.
+
+`TABBAR_H` also feeds `HEADER_HEIGHT`, which drives the visible-row maths in
+`OnObjectiveFrameResized`; the two have to move together.
+
+The bottom button row keeps its **Guides** and **Return Main** buttons, which
+now duplicate `+` and the tab affordances. That is deliberate: they are
+familiar, `Return Main` only appears while branching anyway, and removing a
+working control is a worse surprise than a redundant one.
+
 ### Still to do
 
-The objectives panel keeps its own tab bar from the concept — the one with the
-`XP` badge and a closable branch tab — as an open item. `Theme:Badge` supports
-both kinds already; what is missing is the tab strip in that panel, where the
-branch system currently surfaces as a button and a status tag instead.
+Every surface in the concept is now built. What remains is verification: none
+of it has been loaded in a client.
 
 ## Verification
 

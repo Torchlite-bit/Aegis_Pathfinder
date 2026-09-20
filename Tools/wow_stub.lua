@@ -203,6 +203,17 @@ local function newFrame(frameType, name, parent)
 	function f:RegisterForDrag() end
 	function f:SetMovable() end
 	function f:SetResizable() end
+	function f:SetMinResize() end
+	function f:SetMaxResize() end
+	function f:StartSizing() end
+	function f:EnableMouseWheel() end
+	function f:SetDisabledFontObject() end
+	function f:SetHighlightFontObject() end
+	function f:SetTextFontObject() end
+	function f:SetDisabledTexture() end
+	function f:GetDisabledTexture() return newTexture(nil, self, "ARTWORK") end
+	function f:GetHighlightTexture() return newTexture(nil, self, "HIGHLIGHT") end
+	function f:GetPushedTexture() return newTexture(nil, self, "ARTWORK") end
 	function f:SetClampedToScreen() end
 	function f:SetFrameStrata(s) self.__strata = s end
 	function f:SetFrameLevel(l) self.__level = l end
