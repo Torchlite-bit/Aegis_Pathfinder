@@ -28,6 +28,7 @@ libs\FuBarPlugin-2.0\FuBarPlugin-2.0.lua
 Locale.lua
 Core.lua
 WidgetWarlock.lua
+Theme.lua
 Parser.lua
 QuestShellPlusParser.lua
 Navigation.lua
