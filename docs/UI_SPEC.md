@@ -131,11 +131,29 @@ A negated tag (`|D|!DM|`) still counts as a reference: the step is
 conditional, the relevance is not. Results are cached per guide, since the
 scan walks guides that run to hundreds of steps.
 
+### Guide list -- `GuideListFrame.lua`
+
+The concept's tab bar, replacing five independent category checkboxes with
+`Theme:Tab`. Single-select on its own would have lost the ability to see
+several categories at once, so **All** leads the bar and is the default: the
+concept's layout, none of the old capability removed. An active tab takes the
+panel colour so it reads as continuous with the list below it.
+
+Profession guides get their own tab and their own category. They are named
+"Alchemy (1-300)", which matches none of the name prefixes `GetGuideCategory`
+keys on, so they would otherwise land in with the zone guides — the category
+comes off the guide table instead.
+
+Placeholder guides carry the concept's grey `TPL` badge (`Theme:Badge`). In a
+list where an unauthored guide looks exactly like an authored one, that badge
+is the only thing distinguishing them.
+
 ### Still to do
 
-The concept's tab bar with `XP`/`TPL` badges and the branch modal's tabbed
-categories are specified in the concept but not built -- the existing guide
-list and branch selector cover the same function with different furniture.
+The objectives panel keeps its own tab bar from the concept — the one with the
+`XP` badge and a closable branch tab — as an open item. `Theme:Badge` supports
+both kinds already; what is missing is the tab strip in that panel, where the
+branch system currently surfaces as a button and a status tag instead.
 
 ## Verification
 

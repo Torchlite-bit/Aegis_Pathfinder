@@ -88,8 +88,9 @@ players are not shown Horde trainers), what to craft in each skill band, the
 reagents, where the recipe comes from, and equally viable alternatives. Steps
 complete themselves as your skill climbs.
 
-The four placeholders are listed but unauthored: the reference these guides
-were converted from does not cover them. They appear in the list so the
+The four placeholders are listed but unauthored, and carry a grey `TPL` badge
+in the guide list: the reference these guides were converted from does not
+cover them. They appear in the list so the
 Professions tab matches the design, and are labelled so an unauthored guide is
 obviously unauthored rather than silently missing. Three of them — Herbalism,
 Skinning and Fishing — are gathering professions and need a different kind of
@@ -128,7 +129,7 @@ sh Tools/run_tests.sh
 
 Runs everything that can be checked without a client: Lua syntax, Lua 5.0
 compatibility, `.toc` and `Guides.xml` integrity, TGA validity, that no panel
-has drifted off the theme, and five test suites that execute the addon's own
+has drifted off the theme, and six test suites that execute the addon's own
 code against a stubbed 1.12 API.
 
 None of it proves the UI looks right. That needs a client.

@@ -12,10 +12,6 @@ local offset = 0
 local rows = {}
 local displayList = {}
 local levelFilterOn = false
-local turtleCheck
-local optimizedCheck
-local rxpCheck
-local zoneCheck
 
 local function SortGuidesByLevel(a, b)
     local aMin, aMax = AegisPathfinder:ParseGuideLevelRange(a)
@@ -135,65 +131,42 @@ filterCheck:SetScript("OnClick", function()
     AegisPathfinder:UpdateGuideListPanel()
 end)
 
--- TurtleWoW checkbox
-turtleCheck = ww.SummonCheckBox(18, frame, "TOPLEFT", 145, -6)
-local turtleLabel = ww.SummonFontString(turtleCheck, "OVERLAY", "GameFontNormalSmall", "TurtleWoW", "LEFT",
-    turtleCheck, "RIGHT", 2, 0)
-turtleCheck:SetScript("OnClick", function()
-    if AegisPathfinder.db.char.filterTurtle == nil then AegisPathfinder.db.char.filterTurtle = true end
-    AegisPathfinder.db.char.filterTurtle = not AegisPathfinder.db.char.filterTurtle
-    turtleCheck:SetChecked(AegisPathfinder.db.char.filterTurtle)
-    offset = 0
-    AegisPathfinder:UpdateGuideListPanel()
-end)
+--[[ Category tabs.
 
--- Optimized checkbox
-optimizedCheck = ww.SummonCheckBox(18, frame, "TOPLEFT", 240, -6)
-local optimizedLabel = ww.SummonFontString(optimizedCheck, "OVERLAY", "GameFontNormalSmall", "Optimized", "LEFT",
-    optimizedCheck, "RIGHT", 2, 0)
-optimizedCheck:SetScript("OnClick", function()
-    if AegisPathfinder.db.char.filterOptimized == nil then AegisPathfinder.db.char.filterOptimized = true end
-    AegisPathfinder.db.char.filterOptimized = not AegisPathfinder.db.char.filterOptimized
-    optimizedCheck:SetChecked(AegisPathfinder.db.char.filterOptimized)
-    offset = 0
-    AegisPathfinder:UpdateGuideListPanel()
-end)
+    The concept uses a single-select tab bar here rather than the five
+    independent checkboxes this panel had. Single-select on its own would lose
+    the ability to see several categories at once, so ALL leads the bar and is
+    the default -- the concept's layout, none of the old capability removed.
+]]
+local CATEGORY_TABS = {
+    { key = "all",        label = "All" },
+    { key = "turtle",     label = "Custom" },
+    { key = "optimized",  label = "Optimized" },
+    { key = "rxp",        label = "RestedXP" },
+    { key = "rxp_hc",     label = "Hardcore" },
+    { key = "zone",       label = "Zones" },
+    { key = "profession", label = "Professions" },
+}
 
--- RXP checkbox
-rxpCheck = ww.SummonCheckBox(18, frame, "TOPLEFT", 335, -6)
-local rxpLabel = ww.SummonFontString(rxpCheck, "OVERLAY", "GameFontNormalSmall", "RXP", "LEFT",
-    rxpCheck, "RIGHT", 2, 0)
-rxpCheck:SetScript("OnClick", function()
-    if AegisPathfinder.db.char.filterRXP == nil then AegisPathfinder.db.char.filterRXP = true end
-    AegisPathfinder.db.char.filterRXP = not AegisPathfinder.db.char.filterRXP
-    rxpCheck:SetChecked(AegisPathfinder.db.char.filterRXP)
-    offset = 0
-    AegisPathfinder:UpdateGuideListPanel()
-end)
+local categoryTabs = {}
+local TAB_W, TAB_H, TAB_GAP = 84, 22, 2
 
--- RXP Hardcore checkbox
-rxphcCheck = ww.SummonCheckBox(18, frame, "TOPLEFT", 410, -6)
-local rxphcLabel = ww.SummonFontString(rxphcCheck, "OVERLAY", "GameFontNormalSmall", "RXP Hardcore", "LEFT",
-    rxphcCheck, "RIGHT", 2, 0)
-rxphcCheck:SetScript("OnClick", function()
-    if AegisPathfinder.db.char.filterRXPHC == nil then AegisPathfinder.db.char.filterRXPHC = true end
-    AegisPathfinder.db.char.filterRXPHC = not AegisPathfinder.db.char.filterRXPHC
-    rxphcCheck:SetChecked(AegisPathfinder.db.char.filterRXPHC)
-    offset = 0
-    AegisPathfinder:UpdateGuideListPanel()
-end)
+for idx, def in ipairs(CATEGORY_TABS) do
+    local tab = Theme:Tab(frame, def.label, TAB_W, TAB_H)
+    tab:SetPoint("TOPLEFT", frame, "TOPLEFT", 12 + (idx - 1) * (TAB_W + TAB_GAP), -28)
+    tab.categoryKey = def.key
 
--- Zone checkbox
-zoneCheck = ww.SummonCheckBox(18, frame, "TOPLEFT", 510, -6)
-local zoneLabel = ww.SummonFontString(zoneCheck, "OVERLAY", "GameFontNormalSmall", "Zone", "LEFT",
-    zoneCheck, "RIGHT", 2, 0)
-zoneCheck:SetScript("OnClick", function()
-    if AegisPathfinder.db.char.filterZone == nil then AegisPathfinder.db.char.filterZone = true end
-    AegisPathfinder.db.char.filterZone = not AegisPathfinder.db.char.filterZone
-    zoneCheck:SetChecked(AegisPathfinder.db.char.filterZone)
-    offset = 0
-    AegisPathfinder:UpdateGuideListPanel()
-end)
+    local key = def.key
+    tab:SetScript("OnClick", function()
+        AegisPathfinder.db.char.guidecategory = key
+        offset = 0
+        AegisPathfinder:UpdateGuideListPanel()
+    end)
+
+    table.insert(categoryTabs, tab)
+end
+
+AegisPathfinder.guidecategorytabs = categoryTabs
 
 -- Return to Main button
 local returnBtn = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
@@ -227,17 +200,23 @@ for i = 1, TOTALROWS do
     row:SetHeight(ROWHEIGHT)
     row:SetWidth(COLWIDTH)
 
-    local highlight = ww.SummonTexture(row, nil, nil, nil, "Interface\\HelpFrame\\HelpFrameButton-Highlight")
-    highlight:SetTexCoord(0, 1, 0, 0.578125)
+    local highlight = row:CreateTexture(nil, "HIGHLIGHT")
+    highlight:SetTexture(Theme.texture.solid)
     highlight:SetAllPoints()
-    highlight:SetAlpha(0.5)
+    highlight:SetVertexColor(1, 1, 1, 0.06)
     row:SetHighlightTexture(highlight)
     row:SetCheckedTexture(highlight)
 
-    local text = ww.SummonFontString(row, nil, "GameFontWhite", nil, "LEFT", 6, 0)
-    local fn, fh, ff = title:GetFont()
-    text:SetFont(fn, 11, ff)
-    text:SetTextColor(.79, .79, .79, 1)
+    -- TPL badge, right-aligned so the guide names still line up. Only shown
+    -- for placeholder guides, which would otherwise look authored.
+    local badge = Theme:Badge(row, "TPL", "tpl")
+    badge:SetPoint("RIGHT", row, "RIGHT", -6, 0)
+    badge:Hide()
+
+    local text = row:CreateFontString(nil, "OVERLAY")
+    Theme:SetFont(text, "body", 11)
+    text:SetPoint("LEFT", row, "LEFT", 6, 0)
+    Theme:TextColor(text, "textDim")
     text:SetWidth(COLWIDTH - 12)
     text:SetHeight(ROWHEIGHT)
     text:SetJustifyH("LEFT")
@@ -248,6 +227,7 @@ for i = 1, TOTALROWS do
     row:SetScript("OnLeave", HideTooltip)
 
     row.text = text
+    row.badge = badge
     rows[i] = row
 end
 
@@ -327,20 +307,13 @@ function AegisPathfinder:UpdateGuideListPanel()
         frame.returnBtn:Hide()
     end
 
-    -- Ensure default database filters are initialized
-    if self.db.char.filterTurtle == nil then self.db.char.filterTurtle = true end
-    if self.db.char.filterOptimized == nil then self.db.char.filterOptimized = true end
-    if self.db.char.filterRXP == nil then self.db.char.filterRXP = true end
-    if self.db.char.filterRXPHC == nil then self.db.char.filterRXPHC = true end
-    if self.db.char.filterZone == nil then self.db.char.filterZone = true end
+    if self.db.char.guidecategory == nil then self.db.char.guidecategory = "all" end
+    local activeCategory = self.db.char.guidecategory
 
-    -- Update filter checkboxes state
     filterCheck:SetChecked(levelFilterOn)
-    if turtleCheck then turtleCheck:SetChecked(self.db.char.filterTurtle) end
-    if optimizedCheck then optimizedCheck:SetChecked(self.db.char.filterOptimized) end
-    if rxpCheck then rxpCheck:SetChecked(self.db.char.filterRXP) end
-    if rxphcCheck then rxphcCheck:SetChecked(self.db.char.filterRXPHC) end
-    if zoneCheck then zoneCheck:SetChecked(self.db.char.filterZone) end
+    for _, tab in ipairs(self.guidecategorytabs or {}) do
+        tab:SetActive(tab.categoryKey == activeCategory)
+    end
 
     -- Build categorized display list (fresh table each time)
     displayList = {}
@@ -349,6 +322,7 @@ function AegisPathfinder:UpdateGuideListPanel()
     local rxpGuides = {}
     local rxphcGuides = {}
     local zoneGuides = {}
+    local professionGuides = {}
     local seen = {}
 
     local playerLevel = UnitLevel("player") or 0
@@ -370,26 +344,25 @@ function AegisPathfinder:UpdateGuideListPanel()
 
             if include then
                 local cat = self:GetGuideCategory(name)
+                if activeCategory ~= "all" and cat ~= activeCategory then
+                    include = false
+                end
+            end
+
+            if include then
+                local cat = self:GetGuideCategory(name)
                 if cat == "turtle" then
-                    if self.db.char.filterTurtle then
-                        table.insert(turtleGuides, name)
-                    end
+                    table.insert(turtleGuides, name)
                 elseif cat == "optimized" then
-                    if self.db.char.filterOptimized then
-                        table.insert(optimizedGuides, name)
-                    end
+                    table.insert(optimizedGuides, name)
                 elseif cat == "rxp" then
-                    if self.db.char.filterRXP then
-                        table.insert(rxpGuides, name)
-                    end
+                    table.insert(rxpGuides, name)
                 elseif cat == "rxp_hc" then
-                    if self.db.char.filterRXPHC then
-                        table.insert(rxphcGuides, name)
-                    end
+                    table.insert(rxphcGuides, name)
+                elseif cat == "profession" then
+                    table.insert(professionGuides, name)
                 else
-                    if self.db.char.filterZone then
-                        table.insert(zoneGuides, name)
-                    end
+                    table.insert(zoneGuides, name)
                 end
             end
         end
@@ -400,9 +373,10 @@ function AegisPathfinder:UpdateGuideListPanel()
     table.sort(rxpGuides, SortGuidesByLevel)
     table.sort(rxphcGuides, SortGuidesByLevel)
     table.sort(zoneGuides, SortGuidesByLevel)
+    table.sort(professionGuides, SortGuidesByLevel)
 
     if table.getn(turtleGuides) > 0 then
-        table.insert(displayList, { header = true, text = "--- TurtleWoW Zones ---" })
+        table.insert(displayList, { header = true, text = "--- Turtle-lineage Custom Zones ---" })
         for _, name in ipairs(turtleGuides) do
             table.insert(displayList, { guide = name })
         end
@@ -436,6 +410,13 @@ function AegisPathfinder:UpdateGuideListPanel()
         end
     end
 
+    if table.getn(professionGuides) > 0 then
+        table.insert(displayList, { header = true, text = "--- Professions ---" })
+        for _, name in ipairs(professionGuides) do
+            table.insert(displayList, { guide = name })
+        end
+    end
+
     -- Clamp offset and update slider
     local maxOffset = math.max(0, table.getn(displayList) - TOTALROWS)
     if offset > maxOffset then offset = maxOffset end
@@ -457,12 +438,15 @@ function AegisPathfinder:UpdateGuideListPanel()
         if entry and entry.header then
             row.text:SetText("|cffffd100" .. entry.text .. "|r")
             row.guide = nil
+            row.badge:Hide()
             row:SetChecked(false)
             row:Enable()
         elseif entry and entry.guide then
             row:Enable()
             local name = entry.guide
             row.guide = name
+
+            if self:IsTemplateGuide(name) then row.badge:Show() else row.badge:Hide() end
 
             -- Color by level range: green = in range, yellow = +-5, red = out of range
             local minLevel, maxLevel = self:ParseGuideLevelRange(name)
@@ -504,6 +488,7 @@ function AegisPathfinder:UpdateGuideListPanel()
         else
             row.guide = nil
             row.text:SetText("")
+            row.badge:Hide()
             row:SetChecked(false)
             row:Enable()
         end

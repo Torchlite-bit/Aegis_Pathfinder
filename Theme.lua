@@ -355,6 +355,80 @@ function Theme:Pill(parent, label, width, height)
 	return b
 end
 
+--[[ Category tab.
+
+	The concept's branch-modal tab: uppercase display face, transparent until
+	selected, and accent-on-panel when it is. Tabs sit directly on top of the
+	list they filter, so the active one reads as continuous with it.
+]]
+function Theme:Tab(parent, label, width, height)
+	local b = CreateFrame("Button", nil, parent)
+	b:SetWidth(width or 88)
+	b:SetHeight(height or 22)
+
+	local fill = self:NineSlice(b, self.texture.tabFill, "BACKGROUND", "panel")
+	fill:SetTint("tabbg")
+
+	local fs = b:CreateFontString(nil, "OVERLAY")
+	self:SetFont(fs, "display", 11)
+	fs:SetPoint("CENTER", b, "CENTER", 0, 0)
+	fs:SetText(string.upper(label or ""))
+	self:TextColor(fs, "textDim")
+
+	b.fill, b.label = fill, fs
+
+	function b:SetActive(active)
+		self.__active = active and true or false
+		if self.__active then
+			self.fill:SetTint("panel")
+			Theme:TextColor(self.label, "accent")
+		else
+			self.fill:SetTint("tabbg")
+			Theme:TextColor(self.label, "textDim")
+		end
+	end
+	function b:IsActive() return self.__active end
+
+	b:SetActive(false)
+	return b
+end
+
+--[[ Badge.
+
+	The small gold `XP` / grey `TPL` pill from the concept's tab bar. It marks
+	whether a guide is authored content or a placeholder, which matters most in
+	a list where the two sit side by side and otherwise look identical.
+]]
+function Theme:Badge(parent, text, kind)
+	local f = CreateFrame("Frame", nil, parent)
+	f:SetHeight(12)
+
+	local bg = f:CreateTexture(nil, "BACKGROUND")
+	bg:SetTexture(self.texture.tabFill)
+	bg:SetAllPoints(f)
+
+	local fs = f:CreateFontString(nil, "OVERLAY")
+	self:SetFont(fs, "display", 9)
+	fs:SetPoint("CENTER", f, "CENTER", 0, 0)
+
+	f.bg, f.label = bg, fs
+
+	function f:SetKind(kind, text)
+		self.label:SetText(string.upper(text or kind or ""))
+		if kind == "tpl" then
+			Theme:Tint(self.bg, "subtle")
+			self.label:SetTextColor(0.93, 0.93, 0.93)
+		else
+			Theme:Tint(self.bg, "goldDeep")
+			self.label:SetTextColor(0.08, 0.07, 0.06)
+		end
+		self:SetWidth(math.max(22, self.label:GetStringWidth() + 10))
+	end
+
+	f:SetKind(kind, text)
+	return f
+end
+
 --[[ Dungeon chip.
 
 	Two stacked lines -- the short code above its full name -- which is how the
