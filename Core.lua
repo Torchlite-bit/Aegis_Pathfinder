@@ -139,6 +139,12 @@ local options = {
     type = "group",
     handler = AegisPathfinder,
     args = {
+        Credits = {
+            name = "Credits",
+            desc = "Everyone whose work is in this addon",
+            type = "execute",
+            func = function() AegisPathfinder:PrintCredits() end,
+        },
         DiagNav = {
             name = "Navigation Diag",
             desc = "Check navigation addon status",

@@ -29,6 +29,7 @@ Locale.lua
 Core.lua
 WidgetWarlock.lua
 Theme.lua
+Credits.lua
 Parser.lua
 QuestShellPlusParser.lua
 Navigation.lua
