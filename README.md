@@ -7,10 +7,9 @@ It keeps your current objective on screen, points a waypoint at it, and
 advances itself as you accept, complete and turn in quests — the in-game
 experience of Zygor or RestedXP, on a client that predates both.
 
-> **Not yet distributable.** The code this addon is built from carries no
-> licence anywhere in its chain, so nobody has yet granted the right to
-> redistribute it. Development is unaffected; publishing a release is blocked.
-> See [LICENSE-STATUS.md](LICENSE-STATUS.md).
+> **In development, not yet released.** brues-code has given permission to
+> build on VanillaGuide+. A few licensing details are still to be settled
+> before anything is published — see [LICENSE-STATUS.md](LICENSE-STATUS.md).
 
 ## Requirements
 

@@ -4,9 +4,17 @@ AEGIS: Pathfinder is a derivative work. This file records what was found when
 its provenance was traced, what is unresolved, and what has to happen before a
 release is published.
 
-**Summary: do not publish a release yet.** The code this addon is built from
-carries no licence at any point in its chain, so nobody has yet granted the
-right to redistribute it — under this name or any other.
+**Status: permission granted by brues-code; not yet published.**
+
+The repository owner reports that brues-code has given permission to build on
+and publish VanillaGuide+. That clears the blocker this file was opened for.
+Development continues; no release is planned yet, so the remaining items below
+stay open rather than urgent.
+
+> **To complete the record:** add a link to where permission was given (issue,
+> comment or message) and, if brues-code named a licence, which one. A durable
+> reference matters more than the fact being true — it is what a future
+> contributor or a package host will ask for.
 
 ## What was traced
 
@@ -32,11 +40,10 @@ egress proxy in the environment this work was done in. **Treat the CurseForge
 detail as unverified.** The GitHub finding — no stated licence anywhere in the
 chain — was verified directly and is the part that matters.
 
-## Why this is a problem
+## Why this mattered
 
-The decision taken for this project was "match upstream's licence". That
-instruction cannot be carried out, because **upstream grants no licence at
-all**.
+The decision originally taken for this project was "match upstream's licence".
+That could not be carried out, because **upstream granted no licence at all**.
 
 Absent an explicit grant, copyright defaults to all rights reserved. The
 default is not permissive:
@@ -53,36 +60,46 @@ default is not permissive:
 
 None of this stops development. It stops *distribution*.
 
-## Decision
+## Resolution
 
-Ask upstream first, before restructuring anything. A drafted issue is ready at
-[docs/upstream-license-request.md](docs/upstream-license-request.md) — it needs
-to be posted by the repository owner, under their own name, on
-<https://github.com/brues-code/VanillaGuide-Plus>.
+brues-code granted permission. The fork stays a fork: the single-addon
+architecture and the AEGIS: Pathfinder naming both stand, and the
+companion-addon fallback described below is no longer needed. It is kept on
+record because it remains the route that needs nobody's permission, should the
+position ever change.
 
-The project keeps its AEGIS: Pathfinder naming. Renaming would not have changed
-the position anyway: what a work is called is a trademark question, while
-redistribution is a copyright one.
+The request that was drafted for this is kept at
+[docs/upstream-license-request.md](docs/upstream-license-request.md) — it is
+now historical, but its second half is still worth acting on: the two
+load-breaking defects it lists are fixed on a branch here and worth offering
+upstream, along with the parser extensions the profession guides needed.
 
-If upstream declines or does not reply, the fallback is the companion-addon
-route below, which needs no permission because it redistributes none of their
-code.
+**Still open, and worth settling before a public release rather than now:**
+
+- Permission covers brues-code's own work. The earlier links in the chain —
+  NostalgiaGeek, isalcedo, Tekkub — have not been asked, and none of them
+  licensed their code either. In practice brues-code's say-so is what most
+  people in this community would act on, and how much original TourGuide code
+  survives in the current tree is an open question, likely "not much". Worth
+  establishing before publishing, not before continuing to build.
+- A `LICENSE` that reflects the grant. The MIT file currently in this
+  repository was written before any of this was traced and should be replaced
+  or confirmed once brues-code's preferred terms are known.
 
 ## What has to happen before a release
 
-1. **Ask upstream to license their work.** Post the drafted issue. Many addon
-   authors simply never got round to a licence and will say yes.
-2. **Trace consent back through the chain** as far as is reachable —
-   NostalgiaGeek, isalcedo, and Tekkub. Tekkub's TourGuide is the oldest link
-   and the least likely to respond; if it cannot be resolved, get advice on how
-   much original TourGuide code actually survives in the current tree, since
-   the answer may be "very little".
-3. **Then choose a licence** consistent with whatever permission is obtained,
-   and replace the MIT `LICENSE` in this repository if MIT is not it.
-4. **Until then**, keep the work on a branch and do not publish a packaged
-   release, a CurseForge listing, or a tagged version. The
-   `.github/workflows/release.yml` packager triggers on `v*` tags — do not push
-   one.
+1. ~~Ask upstream to license their work.~~ **Done** — permission granted.
+2. **Record where permission was given**, so the grant is verifiable by someone
+   who was not in the conversation.
+3. **Settle the rest of the chain** — NostalgiaGeek, isalcedo, Tekkub — or
+   establish how little of their code survives. Not blocking development.
+4. **Choose a `LICENSE`** consistent with the grant, replacing or confirming
+   the MIT file currently here.
+5. **Add `media/fonts/OFL.txt`** (see below). Small, easy to forget, and
+   genuinely required once fonts are redistributed.
+
+Until those are settled, do not push a `v*` tag: `.github/workflows/release.yml`
+packages and publishes a release on one.
 
 ## Guide content
 
@@ -111,11 +128,13 @@ Download `OFL.txt` from <https://openfontlicense.org> and place it in
 `media/fonts/` before distributing a build. This one is trivially fixable and
 should not be forgotten just because the larger question above is open.
 
-## Fallback: ship as a companion addon
+## Fallback, no longer needed: ship as a companion addon
 
-If permission does not come, the work can be published without it — by shipping
-only what is original to this project and skinning VanillaGuide+ at runtime
-rather than modifying it. The user installs VanillaGuide+ themselves.
+Retained for the record. Permission has been granted, so this is not the route
+being taken — but it is the one that needs nobody's permission, because it
+redistributes none of upstream's code: ship only what is original to this
+project and skin VanillaGuide+ at runtime rather than modifying it, with the
+user installing VanillaGuide+ themselves.
 
 What is already original and could ship as-is:
 

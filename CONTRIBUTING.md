@@ -2,10 +2,10 @@
 
 ## Before you start
 
-Read [LICENSE-STATUS.md](LICENSE-STATUS.md). The project's licence is
-unresolved, so contributions cannot currently be redistributed. You are welcome
-to contribute anyway — just know that a release is blocked until that is sorted
-out.
+Read [LICENSE-STATUS.md](LICENSE-STATUS.md). brues-code has given permission to
+build on VanillaGuide+, so development is unblocked. A few licensing details
+are still to be settled before anything is published, which is why there is no
+release yet.
 
 ## Getting credited
 
