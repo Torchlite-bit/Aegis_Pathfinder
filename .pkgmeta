@@ -1,0 +1,10 @@
+package-as: TurtleGuide
+
+ignore:
+    - README.md
+    - RXPConverter.lua
+    - convert_rxp.py
+    - Tools
+    - docs
+    - tasks
+    - .luarc.json

@@ -39,3 +39,9 @@ luac.out
 *.x86_64
 *.hex
 
+
+# Claude Code session data
+/.claude
+
+# Build output
+/.release
