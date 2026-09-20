@@ -155,6 +155,41 @@ check(string.find(card.meta:GetText(), "Alchemy 1-63", 1, true) ~= nil,
 	"a profession step should show its skill range, got '%s'",
 	tostring(card.meta:GetText()))
 
+-- Card layout ----------------------------------------------------------------
+
+-- The card must grow and shrink with the rows it is showing, and a hidden
+-- description must not leave a gap behind it.
+AegisPathfinder.db.profile.server = "octowow"
+AegisPathfinder.actions = { "NOTE" }
+AegisPathfinder.quests = { "Bare step@1@" }
+AegisPathfinder.tags = { "" }
+AegisPathfinder:UpdateStatusCard(1, "NOTE", nil, 1)
+local bareHeight = f:GetHeight()
+local bareProgressY = card.progress.__points[table.getn(card.progress.__points)][5]
+
+AegisPathfinder.tags = { "|QID|41187| |N|A reasonably long note about where to go and what to do there|" }
+AegisPathfinder:UpdateStatusCard(1, "ACCEPT",
+	"A reasonably long note about where to go and what to do there", 1)
+local fullHeight = f:GetHeight()
+check(fullHeight > bareHeight,
+	"the card should grow when it gains a description and meta row (%s vs %s)",
+	tostring(fullHeight), tostring(bareHeight))
+
+local fullProgressY = card.progress.__points[table.getn(card.progress.__points)][5]
+check(fullProgressY < bareProgressY,
+	"the progress bar should sit lower when rows are added (%s vs %s)",
+	tostring(fullProgressY), tostring(bareProgressY))
+
+-- Back to a bare step: the layout must return to where it started rather than
+-- keeping the gap the hidden description used to occupy.
+AegisPathfinder.tags = { "" }
+AegisPathfinder:UpdateStatusCard(1, "NOTE", nil, 1)
+check(f:GetHeight() == bareHeight,
+	"the card should shrink back to its bare height, got %s expected %s",
+	tostring(f:GetHeight()), tostring(bareHeight))
+check(card.progress.__points[table.getn(card.progress.__points)][5] == bareProgressY,
+	"the progress bar should return to its bare position, not sit below a hidden row")
+
 -- Data-source provenance -----------------------------------------------------
 
 -- On the native server the meta row carries the step's own data.

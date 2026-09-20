@@ -142,25 +142,27 @@ Theme:TextColor(branchTag, "gold")
 branchTag:Hide()
 
 -- Step description (the |N| note).
+--
+-- Anchored by TOPLEFT with an explicit width rather than TOPLEFT+RIGHT: a
+-- RIGHT anchor also pins the vertical centre, which leaves the height
+-- ambiguous, and LayoutStatusCard measures this to size the card.
 local desc = f:CreateFontString(nil, "OVERLAY")
 Theme:SetFont(desc, "body", 11)
+desc:SetWidth(CARD_WIDTH - PAD * 2)
 desc:SetPoint("TOPLEFT", f, "TOPLEFT", PAD, -ROW_TOP)
-desc:SetPoint("RIGHT", f, "RIGHT", -PAD, 0)
 desc:SetJustifyH("LEFT")
 Theme:TextColor(desc, "textDim")
 desc:Hide()
 
--- Quest id and coordinates, in the monospace-ish display face.
+-- Quest id and coordinates.
 local meta = f:CreateFontString(nil, "OVERLAY")
 Theme:SetFont(meta, "body", 10)
-meta:SetPoint("TOPLEFT", desc, "BOTTOMLEFT", 0, -4)
 meta:SetJustifyH("LEFT")
 Theme:TextColor(meta, "accent")
 meta:Hide()
 
 -- Guide progress.
 local progress = Theme:ProgressBar(f, 5)
-progress:SetPoint("TOPLEFT", meta, "BOTTOMLEFT", 0, -6)
 progress:SetWidth(CARD_WIDTH - PAD * 2 - 90)
 
 local progressText = f:CreateFontString(nil, "OVERLAY")
@@ -173,22 +175,33 @@ AegisPathfinder.statuscard = {
 	progress = progress, progressText = progressText,
 }
 
---- Size the card to whatever rows are currently visible.
+--- Stack whichever rows are visible, and size the card to fit.
+--
+-- Rows are re-anchored rather than left chained to each other, because a
+-- hidden FontString keeps its last size: anchoring the meta row below a
+-- hidden description would leave a gap that varies with whatever the previous
+-- step's note happened to be.
 function AegisPathfinder:LayoutStatusCard()
 	local card = self.statuscard
-	local h = ROW_TOP
+	local y = ROW_TOP
 
 	if card.desc:IsShown() then
-		h = h + card.desc:GetHeight() + 4
-	end
-	if card.meta:IsShown() then
-		h = h + 14
-	end
-	if card.progress:IsShown() then
-		h = h + 11
+		y = y + card.desc:GetHeight() + 4
 	end
 
-	f:SetHeight(h + PAD)
+	if card.meta:IsShown() then
+		card.meta:ClearAllPoints()
+		card.meta:SetPoint("TOPLEFT", f, "TOPLEFT", PAD, -y)
+		y = y + 14
+	end
+
+	if card.progress:IsShown() then
+		card.progress:ClearAllPoints()
+		card.progress:SetPoint("TOPLEFT", f, "TOPLEFT", PAD, -y)
+		y = y + 11
+	end
+
+	f:SetHeight(y + PAD)
 end
 
 --[[ Navigation callout.
