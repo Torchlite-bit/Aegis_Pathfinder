@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 14-16 Darkshore
-TurtleGuide:RegisterGuide("RXP/14-16 Darkshore", "RXP/16-19 Darkshore", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/14-16 Darkshore", "RXP/16-19 Darkshore", "Alliance", function()
 return [[
 
 N 14-16 Darkshore |N|Converted from RestedXP guide|

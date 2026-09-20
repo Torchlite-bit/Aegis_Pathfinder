@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 27-30 Ashenvale
-TurtleGuide:RegisterGuide("RXP_Hardcore/27-30 Ashenvale", "RXP_Hardcore/30-30 Wetlands/Hillsbrad", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/27-30 Ashenvale", "RXP_Hardcore/30-30 Wetlands/Hillsbrad", "Alliance", function()
 return [[
 
 N 27-30 Ashenvale |N|Converted from RestedXP guide|

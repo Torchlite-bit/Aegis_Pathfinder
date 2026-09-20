@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 1-6 Tauren
-TurtleGuide:RegisterGuide("RXP_Hardcore/1-6 Tauren", "RXP_Hardcore/6-13 Tauren", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/1-6 Tauren", "RXP_Hardcore/6-13 Tauren", "Horde", function()
 return [[
 
 N 1-6 Tauren |N|Converted from RestedXP guide|

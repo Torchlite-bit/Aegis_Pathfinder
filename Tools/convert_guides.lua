@@ -1,7 +1,7 @@
 #!/usr/bin/env lua
 -- ==========================================================
 -- Batch Guide Converter
--- Converts TurtleGuide format files to QuestShell+ format
+-- Converts AegisPathfinder format files to QuestShell+ format
 -- Usage: lua convert_guides.lua <input_dir> <output_dir>
 -- ==========================================================
 
@@ -39,7 +39,7 @@ local function detectFaction(path)
     return nil
 end
 
--- Parse guide metadata from TurtleGuide file
+-- Parse guide metadata from AegisPathfinder file
 local function parseGuideMetadata(content, filepath)
     local metadata = {}
 
@@ -119,7 +119,7 @@ local function main(args)
     if #args < 2 then
         print("Usage: lua convert_guides.lua <input_dir> <output_dir>")
         print("")
-        print("Converts TurtleGuide format .lua files to QuestShell+ format.")
+        print("Converts AegisPathfinder format .lua files to QuestShell+ format.")
         print("")
         print("Example:")
         print("  lua convert_guides.lua ../Guides/Optimized ./QuestShellPlus")
@@ -129,7 +129,7 @@ local function main(args)
     local inputDir = args[1]
     local outputDir = args[2]
 
-    print("TurtleGuide -> QuestShell+ Converter")
+    print("AegisPathfinder -> QuestShell+ Converter")
     print("====================================")
     print("Input:  " .. inputDir)
     print("Output: " .. outputDir)

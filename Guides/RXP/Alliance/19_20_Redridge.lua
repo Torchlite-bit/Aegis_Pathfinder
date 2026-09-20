@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 19-20 Redridge
-TurtleGuide:RegisterGuide("RXP/19-20 Redridge", "RXP/20-21 Darkshore/Ashenvale", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/19-20 Redridge", "RXP/20-21 Darkshore/Ashenvale", "Alliance", function()
 return [[
 
 N 19-20 Redridge |N|Converted from RestedXP guide|

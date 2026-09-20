@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Searing Gorge (47-48)", "Feralas (48-49)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Searing Gorge (47-48)", "Feralas (48-49)", "Alliance",function()
 
 return [[
 

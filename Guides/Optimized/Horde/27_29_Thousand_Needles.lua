@@ -1,8 +1,8 @@
 -- Optimized Guide: Thousand Needles (27-29)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Thousand Needles (27-29)", "Optimized/Hillsbrad Foothills (29-30)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Thousand Needles (27-29)", "Optimized/Hillsbrad Foothills (29-30)", "Horde", function()
 
 return [[
 

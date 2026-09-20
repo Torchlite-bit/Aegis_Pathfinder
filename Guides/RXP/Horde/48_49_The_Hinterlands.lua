@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 48-49 The Hinterlands
-TurtleGuide:RegisterGuide("RXP/48-49 The Hinterlands", "RXP/49-50 Feralas", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/48-49 The Hinterlands", "RXP/49-50 Feralas", "Horde", function()
 return [[
 
 N 48-49 The Hinterlands |N|Converted from RestedXP guide|

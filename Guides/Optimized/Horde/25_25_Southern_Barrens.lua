@@ -1,8 +1,8 @@
 -- Optimized Guide: Southern Barrens (25-25)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/The Barrens (25-25)", "Optimized/Thousand Needles (25-26)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/The Barrens (25-25)", "Optimized/Thousand Needles (25-26)", "Horde", function()
 
 return [[
 

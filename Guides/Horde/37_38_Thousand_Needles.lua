@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Thousand Needles (37-38)", "Dustwallow Marsh (38-38)", "Horde",function()
+AegisPathfinder:RegisterGuide("Thousand Needles (37-38)", "Dustwallow Marsh (38-38)", "Horde",function()
 
 return [[
 

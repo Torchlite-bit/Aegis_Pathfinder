@@ -1,8 +1,8 @@
 -- Optimized Guide: Un'Goro Crater (51-52)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Un'Goro Crater (51-52)", "Optimized/Burning Steppes (52-53)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Un'Goro Crater (51-52)", "Optimized/Burning Steppes (52-53)", "Horde", function()
 
 return [[
 

@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Stranglethorn (32-33)", "Thousand Needles (33-34)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Stranglethorn (32-33)", "Thousand Needles (33-34)", "Alliance",function()
 
 return [[
 

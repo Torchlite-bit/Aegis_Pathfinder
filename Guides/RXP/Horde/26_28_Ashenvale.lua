@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 26-28 Ashenvale
-TurtleGuide:RegisterGuide("RXP/26-28 Ashenvale", "RXP/28-30 Thousand Needles", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/26-28 Ashenvale", "RXP/28-30 Thousand Needles", "Horde", function()
 return [[
 
 N 26-28 Ashenvale |N|Converted from RestedXP guide|

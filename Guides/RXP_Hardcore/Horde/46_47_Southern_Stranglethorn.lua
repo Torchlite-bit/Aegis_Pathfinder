@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 46-47 Southern Stranglethorn
-TurtleGuide:RegisterGuide("RXP_Hardcore/46-47 Southern Stranglethorn", "RXP_Hardcore/47-48 Swamp of Sorrows", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/46-47 Southern Stranglethorn", "RXP_Hardcore/47-48 Swamp of Sorrows", "Horde", function()
 return [[
 
 N 46-47 Southern Stranglethorn |N|Converted from RestedXP guide|

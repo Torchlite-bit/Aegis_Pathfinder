@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Winterspring (54-55)", "Felwood (55-56)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Winterspring (54-55)", "Felwood (55-56)", "Alliance",function()
 
 return [[
 

@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 55-56 Felwood II
-TurtleGuide:RegisterGuide("RXP_Hardcore/55-56 Felwood II", "RXP_Hardcore/56-57 Burning Steppes", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/55-56 Felwood II", "RXP_Hardcore/56-57 Burning Steppes", "Alliance", function()
 return [[
 
 N 55-56 Felwood II |N|Converted from RestedXP guide|

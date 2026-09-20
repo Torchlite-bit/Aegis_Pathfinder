@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 13-13 Loch Modan (Night Elf)
-TurtleGuide:RegisterGuide("RXP_Hardcore/13-13 Loch Modan (Night Elf)", "RXP_Hardcore/13-15 Westfall", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/13-13 Loch Modan (Night Elf)", "RXP_Hardcore/13-15 Westfall", "Alliance", function()
 return [[
 
 N 13-13 Loch Modan (Night Elf) |N|Converted from RestedXP guide|

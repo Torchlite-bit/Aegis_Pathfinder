@@ -1,8 +1,8 @@
 -- Optimized Guide: Desolace (33-35)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Desolace (33-35)", "Optimized/Stranglethorn (35-36)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Desolace (33-35)", "Optimized/Stranglethorn (35-36)", "Alliance", function()
 
 return [[
 

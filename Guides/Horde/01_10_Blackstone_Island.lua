@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Blackstone Island (1-10)", "Durotar (1-12)", "Horde", function()
+AegisPathfinder:RegisterGuide("Blackstone Island (1-10)", "Durotar (1-12)", "Horde", function()
 
 return [[
 

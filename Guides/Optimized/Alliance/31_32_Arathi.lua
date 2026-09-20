@@ -1,8 +1,8 @@
 -- Optimized Guide: Arathi Highlands (31-32)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Arathi (31-32)", "Optimized/Stranglethorn (32-32)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Arathi (31-32)", "Optimized/Stranglethorn (32-32)", "Alliance", function()
 
 return [[
 

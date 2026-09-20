@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 23-25 Hillsbrad
-TurtleGuide:RegisterGuide("RXP_Hardcore/23-25 Hillsbrad", "RXP_Hardcore/25-27 Southern Barrens/Stonetalon", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/23-25 Hillsbrad", "RXP_Hardcore/25-27 Southern Barrens/Stonetalon", "Horde", function()
 return [[
 
 N 23-25 Hillsbrad |N|Converted from RestedXP guide|

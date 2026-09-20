@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 24-26 Southern Barrens/Stonetalon
-TurtleGuide:RegisterGuide("RXP/24-26 Southern Barrens/Stonetalon", "RXP/26-28 Ashenvale", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/24-26 Southern Barrens/Stonetalon", "RXP/26-28 Ashenvale", "Horde", function()
 return [[
 
 N 24-26 Southern Barrens/Stonetalon |N|Converted from RestedXP guide|

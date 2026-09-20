@@ -4,7 +4,7 @@
 package.path = package.path .. ";?.lua"
 local FormatConverter = require("FormatConverter")
 
--- Test TurtleGuide line parsing
+-- Test AegisPathfinder line parsing
 local testLines = {
     'A Cutting Teeth |QID|788| |N|Gornek in The Den (42.08, 68.35)|',
     'T Your Place In The World |QID|4641| |N|Gornek in Valley of Trials (42.08, 68.35)|',
@@ -16,7 +16,7 @@ local testLines = {
     'A Dark Storms |QID|806| |N|Orgnil Soulscar (52.28, 43.22)| |PRE|823|',
 }
 
-print("Testing TurtleGuide -> QuestShell+ conversion:")
+print("Testing AegisPathfinder -> QuestShell+ conversion:")
 print("==============================================")
 
 for _, line in ipairs(testLines) do
@@ -27,7 +27,7 @@ for _, line in ipairs(testLines) do
     end
 end
 
-print("\n\nTesting QuestShell+ -> TurtleGuide conversion:")
+print("\n\nTesting QuestShell+ -> AegisPathfinder conversion:")
 print("==============================================")
 
 local testSteps = {

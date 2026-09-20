@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 15-18 Darkshore
-TurtleGuide:RegisterGuide("RXP_Hardcore/15-18 Darkshore", "RXP_Hardcore/18-19 Loch Modan", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/15-18 Darkshore", "RXP_Hardcore/18-19 Loch Modan", "Alliance", function()
 return [[
 
 N 15-18 Darkshore |N|Converted from RestedXP guide|

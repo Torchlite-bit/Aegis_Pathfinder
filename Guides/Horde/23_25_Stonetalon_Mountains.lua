@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Stonetalon Mountains (23-25)", "The Barrens (25-25)", "Horde",function()
+AegisPathfinder:RegisterGuide("Stonetalon Mountains (23-25)", "The Barrens (25-25)", "Horde",function()
 
 return [[
 

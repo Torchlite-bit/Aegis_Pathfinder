@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 6-11 Elwynn Forest
-TurtleGuide:RegisterGuide("RXP/6-11 Elwynn Forest", "RXP/11-13 Loch Modan", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/6-11 Elwynn Forest", "RXP/11-13 Loch Modan", "Alliance", function()
 return [[
 
 N 6-11 Elwynn Forest |N|Converted from RestedXP guide|

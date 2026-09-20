@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 51-51 Blasted Lands
-TurtleGuide:RegisterGuide("RXP/51-51 Blasted Lands", "RXP/51-52 WPL", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/51-51 Blasted Lands", "RXP/51-52 WPL", "Alliance", function()
 return [[
 
 N 51-51 Blasted Lands |N|Converted from RestedXP guide|

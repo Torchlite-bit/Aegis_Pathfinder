@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 11-13 Loch Modan (Hunter)
-TurtleGuide:RegisterGuide("RXP/11-13 Loch Modan (Hunter)", "RXP/14-16 Darkshore", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/11-13 Loch Modan (Hunter)", "RXP/14-16 Darkshore", "Alliance", function()
 return [[
 
 N 11-13 Loch Modan (Hunter) |N|Converted from RestedXP guide|

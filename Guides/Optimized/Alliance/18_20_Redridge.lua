@@ -1,8 +1,8 @@
 -- Optimized Guide: Redridge Mountains (18-20)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Redridge (18-20)", "Optimized/Darkshore (20-21)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Redridge (18-20)", "Optimized/Darkshore (20-21)", "Alliance", function()
 
 return [[
 

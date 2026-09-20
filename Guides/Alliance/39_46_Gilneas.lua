@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Gilneas (39-46)", "Stranglethorn (39-40)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Gilneas (39-46)", "Stranglethorn (39-40)", "Alliance", function()
 
 return [[
 

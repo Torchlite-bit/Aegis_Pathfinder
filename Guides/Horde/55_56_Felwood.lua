@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Felwood (55-56)", "Western Plaguelands (56-56)", "Horde",function()
+AegisPathfinder:RegisterGuide("Felwood (55-56)", "Western Plaguelands (56-56)", "Horde",function()
 
 return [[
 

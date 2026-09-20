@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Swamp of Sorrows (48-49)", "Dustwallow Marsh (49-49)", "Horde",function()
+AegisPathfinder:RegisterGuide("Swamp of Sorrows (48-49)", "Dustwallow Marsh (49-49)", "Horde",function()
 
 
 return [[

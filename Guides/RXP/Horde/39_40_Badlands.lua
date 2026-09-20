@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 39-40 Badlands
-TurtleGuide:RegisterGuide("RXP/39-40 Badlands", "RXP/RestedXP Horde 40-50\40-41 Stranglethorn Vale", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/39-40 Badlands", "RXP/RestedXP Horde 40-50\40-41 Stranglethorn Vale", "Horde", function()
 return [[
 
 N 39-40 Badlands |N|Converted from RestedXP guide|

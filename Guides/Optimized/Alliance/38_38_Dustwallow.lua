@@ -1,8 +1,8 @@
 -- Optimized Guide: Dustwallow Marsh (38-38)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Dustwallow (38-38)", "Optimized/Stranglethorn (38-40)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Dustwallow (38-38)", "Optimized/Stranglethorn (38-40)", "Alliance", function()
 
 return [[
 

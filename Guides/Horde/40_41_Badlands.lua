@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Badlands (40-41)", "Swamp of Sorrows (41-42)", "Horde",function()
+AegisPathfinder:RegisterGuide("Badlands (40-41)", "Swamp of Sorrows (41-42)", "Horde",function()
 
 
 return [[

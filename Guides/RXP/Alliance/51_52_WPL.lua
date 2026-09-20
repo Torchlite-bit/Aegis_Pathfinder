@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 51-52 WPL
-TurtleGuide:RegisterGuide("RXP/51-52 WPL", "RXP/52-52 Felwood", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/51-52 WPL", "RXP/52-52 Felwood", "Alliance", function()
 return [[
 
 N 51-52 WPL |N|Converted from RestedXP guide|

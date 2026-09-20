@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 38-39 Swamp of Sorrows
-TurtleGuide:RegisterGuide("RXP_Hardcore/38-39 Swamp of Sorrows", "RXP_Hardcore/39-39 Dustwallow Marsh", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/38-39 Swamp of Sorrows", "RXP_Hardcore/39-39 Dustwallow Marsh", "Alliance", function()
 return [[
 
 N 38-39 Swamp of Sorrows |N|Converted from RestedXP guide|

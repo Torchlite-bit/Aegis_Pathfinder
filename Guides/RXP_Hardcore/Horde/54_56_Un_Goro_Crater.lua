@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 54-56 Un'Goro Crater
-TurtleGuide:RegisterGuide("RXP_Hardcore/54-56 Un'Goro Crater", "RXP_Hardcore/56-57 Felwood/Winterspring", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/54-56 Un'Goro Crater", "RXP_Hardcore/56-57 Felwood/Winterspring", "Horde", function()
 return [[
 
 N 54-56 Un'Goro Crater |N|Converted from RestedXP guide|

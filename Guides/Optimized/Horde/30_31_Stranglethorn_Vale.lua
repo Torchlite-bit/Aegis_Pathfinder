@@ -1,8 +1,8 @@
 -- Optimized Guide: Stranglethorn Vale (30-31)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Stranglethorn Vale (30-31)", "Optimized/Thousand Needles (31-32)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Stranglethorn Vale (30-31)", "Optimized/Thousand Needles (31-32)", "Horde", function()
 
 return [[
 

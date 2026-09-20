@@ -1,8 +1,8 @@
 -- Optimized Guide: Darkshore (14-17)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Darkshore (14-17)", "Optimized/Loch Modan (17-18)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Darkshore (14-17)", "Optimized/Loch Modan (17-18)", "Alliance", function()
 
 return [[
 

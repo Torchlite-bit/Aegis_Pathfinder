@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 27-29 Ashenvale
-TurtleGuide:RegisterGuide("RXP_Hardcore/27-29 Ashenvale", "RXP_Hardcore/29-31 Thousand Needles", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/27-29 Ashenvale", "RXP_Hardcore/29-31 Thousand Needles", "Horde", function()
 return [[
 
 N 27-29 Ashenvale |N|Converted from RestedXP guide|

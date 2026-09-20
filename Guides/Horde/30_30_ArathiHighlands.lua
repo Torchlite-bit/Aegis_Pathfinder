@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Arathi Highlands (30-30)", "Stranglethorn (30-31)", "Horde",function()
+AegisPathfinder:RegisterGuide("Arathi Highlands (30-30)", "Stranglethorn (30-31)", "Horde",function()
 
 return [[
 

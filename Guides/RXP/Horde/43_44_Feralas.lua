@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 43-44 Feralas
-TurtleGuide:RegisterGuide("RXP/43-44 Feralas", "RXP/44-45 Southern Stranglethorn", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/43-44 Feralas", "RXP/44-45 Southern Stranglethorn", "Horde", function()
 return [[
 
 N 43-44 Feralas |N|Converted from RestedXP guide|

@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Redridge Mountains (27-28)", "Duskwood (28-29)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Redridge Mountains (27-28)", "Duskwood (28-29)", "Alliance",function()
 
 return [[
 

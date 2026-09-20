@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 40-40 Dustwallow Marsh2
-TurtleGuide:RegisterGuide("RXP/40-40 Dustwallow Marsh2", "RXP/40-41 Desolace", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/40-40 Dustwallow Marsh2", "RXP/40-41 Desolace", "Alliance", function()
 return [[
 
 N 40-40 Dustwallow Marsh2 |N|Converted from RestedXP guide|

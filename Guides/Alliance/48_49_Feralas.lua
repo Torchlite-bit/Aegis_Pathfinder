@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Feralas (48-49)", "Tanaris (49-50)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Feralas (48-49)", "Tanaris (49-50)", "Alliance",function()
 
 
 return [[

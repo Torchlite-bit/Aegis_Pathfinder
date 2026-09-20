@@ -1,8 +1,8 @@
 -- Optimized Guide: Stranglethorn Vale (42-43)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Stranglethorn Vale (42-43)", "Optimized/Desolace (43-43)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Stranglethorn Vale (42-43)", "Optimized/Desolace (43-43)", "Horde", function()
 
 return [[
 

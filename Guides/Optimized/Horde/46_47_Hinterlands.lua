@@ -1,8 +1,8 @@
 -- Optimized Guide: The Hinterlands (46-47)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Hinterlands (46-47)", "Optimized/Stranglethorn Vale (47-47)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Hinterlands (46-47)", "Optimized/Stranglethorn Vale (47-47)", "Horde", function()
 
 return [[
 

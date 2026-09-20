@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Swamp of Sorrows (41-42)", "Stranglethorn (42-43)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Swamp of Sorrows (41-42)", "Stranglethorn (42-43)", "Alliance",function()
 
 return [[
 

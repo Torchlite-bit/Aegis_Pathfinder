@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Stranglethorn (46-47)", "Searing Gorge (47-48)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Stranglethorn (46-47)", "Searing Gorge (47-48)", "Alliance", function()
 return [[
 
 R Booty Bay |QID|348| |N|Travel to Booty Bay (27.78, 77.07)| |Z|Stranglethorn Vale|

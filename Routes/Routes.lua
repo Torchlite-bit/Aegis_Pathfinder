@@ -1,9 +1,9 @@
 -- Routes.lua
--- Race-based leveling routes for TurtleGuide
+-- Race-based leveling routes for AegisPathfinder
 -- Defines the zone progression for each race from 1-60
 -- Uses Optimized guides from VanillaGuide quest order
 
-local TurtleGuide = TurtleGuide
+local AegisPathfinder = AegisPathfinder
 
 -- Shared Alliance progression after level 12 (all races merge into this path)
 local AllianceSharedPath = {
@@ -142,28 +142,28 @@ end
 -- ============================================================================
 
 -- Human route - Elwynn Forest 1-10 → Westfall 10-12 → shared path
-TurtleGuide:RegisterRoute("Human", MergeRoutes({
+AegisPathfinder:RegisterRoute("Human", MergeRoutes({
     { zone = "Elwynn Forest", levels = "1-10",  guide = "Optimized/Elwynn Forest (1-10)" },
     { zone = "Westfall",      levels = "10-12", guide = "Optimized/Westfall (10-12)" },
 }, AllianceSharedPath))
 
 -- Dwarf route - Dun Morogh 1-12 → shared path
-TurtleGuide:RegisterRoute("Dwarf", MergeRoutes({
+AegisPathfinder:RegisterRoute("Dwarf", MergeRoutes({
     { zone = "Dun Morogh", levels = "1-12", guide = "Optimized/Dun Morogh (1-12)" },
 }, AllianceSharedPath))
 
 -- Gnome route - Dun Morogh 1-12 → shared path (same as Dwarf)
-TurtleGuide:RegisterRoute("Gnome", MergeRoutes({
+AegisPathfinder:RegisterRoute("Gnome", MergeRoutes({
     { zone = "Dun Morogh", levels = "1-12", guide = "Optimized/Dun Morogh (1-12)" },
 }, AllianceSharedPath))
 
 -- Night Elf route - Teldrassil 1-12 → shared path
-TurtleGuide:RegisterRoute("NightElf", MergeRoutes({
+AegisPathfinder:RegisterRoute("NightElf", MergeRoutes({
     { zone = "Teldrassil", levels = "1-12", guide = "Optimized/Teldrassil (1-12)" },
 }, AllianceSharedPath))
 
 -- High Elf (Turtle WoW) - Thalassian Highlands 1-10 → shared path
-TurtleGuide:RegisterRoute("HighElf", MergeRoutes({
+AegisPathfinder:RegisterRoute("HighElf", MergeRoutes({
     { zone = "Thalassian Highlands", levels = "1-10", guide = "Thalassian Highlands (1-10)" },
 }, AllianceSharedPath))
 
@@ -172,27 +172,27 @@ TurtleGuide:RegisterRoute("HighElf", MergeRoutes({
 -- ============================================================================
 
 -- Orc route - Durotar 1-12 → shared path
-TurtleGuide:RegisterRoute("Orc", MergeRoutes({
+AegisPathfinder:RegisterRoute("Orc", MergeRoutes({
     { zone = "Durotar", levels = "1-12", guide = "Optimized/Durotar (1-12)" },
 }, HordeSharedPath))
 
 -- Troll route - Durotar 1-12 → shared path (same as Orc)
-TurtleGuide:RegisterRoute("Troll", MergeRoutes({
+AegisPathfinder:RegisterRoute("Troll", MergeRoutes({
     { zone = "Durotar", levels = "1-12", guide = "Optimized/Durotar (1-12)" },
 }, HordeSharedPath))
 
 -- Tauren route - Mulgore 1-12 → shared path
-TurtleGuide:RegisterRoute("Tauren", MergeRoutes({
+AegisPathfinder:RegisterRoute("Tauren", MergeRoutes({
     { zone = "Mulgore", levels = "1-12", guide = "Optimized/Mulgore (1-12)" },
 }, HordeSharedPath))
 
 -- Undead route - Tirisfal Glades 1-12 → shared path
-TurtleGuide:RegisterRoute("Undead", MergeRoutes({
+AegisPathfinder:RegisterRoute("Undead", MergeRoutes({
     { zone = "Tirisfal Glades", levels = "1-12", guide = "Optimized/Tirisfal Glades (1-12)" },
 }, HordeSharedPath))
 
 -- Goblin (Turtle WoW) - Blackstone Island 1-10 → shared path
-TurtleGuide:RegisterRoute("Goblin", MergeRoutes({
+AegisPathfinder:RegisterRoute("Goblin", MergeRoutes({
     { zone = "Blackstone Island", levels = "1-10", guide = "Blackstone Island (1-10)" },
 }, HordeSharedPath))
 
@@ -201,7 +201,7 @@ TurtleGuide:RegisterRoute("Goblin", MergeRoutes({
 -- ============================================================================
 
 -- VanillaGuide Route Pack (default) - uses the existing Optimized routes
-TurtleGuide:RegisterRoutePack("VanillaGuide", {
+AegisPathfinder:RegisterRoutePack("VanillaGuide", {
     displayName = "VanillaGuide",
     description = "Quest-optimized 1-60 leveling",
     routes = {
@@ -393,7 +393,7 @@ local RXPHardcoreHordeSharedPath = {
     { zone = "Winterspring/Silithus",        levels = "59-60", guide = "RXP_Hardcore/59-60 Winterspring/Silithus II" },
 }
 
-TurtleGuide:RegisterRoutePack("RestedXP", {
+AegisPathfinder:RegisterRoutePack("RestedXP", {
     displayName = "RestedXP",
     description = "Speedrun-optimized leveling routes (Original RXP Era)",
     routes = {
@@ -443,7 +443,7 @@ TurtleGuide:RegisterRoutePack("RestedXP", {
 })
 
 -- RestedXP Hardcore Route Pack - Survival routes (Full 1-60)
-TurtleGuide:RegisterRoutePack("RXP Hardcore", {
+AegisPathfinder:RegisterRoutePack("RXP Hardcore", {
     displayName = "RXP Hardcore",
     description = "Hardcore-optimized survival routes (RXP Survival Guide)",
     routes = {
@@ -519,7 +519,7 @@ local KamisayoRoute = {
     { zone = "Winterspring",         levels = "59-60", guide = "RXP/59-60 Winterspring (Speedrun)" },
 }
 
-TurtleGuide:RegisterRoutePack("Kamisayo Speedrun", {
+AegisPathfinder:RegisterRoutePack("Kamisayo Speedrun", {
     displayName = "Kamisayo Speedrun",
     description = "Horde Warrior speedrun 1-60",
     factionRestriction = "Horde",
@@ -539,7 +539,7 @@ TurtleGuide:RegisterRoutePack("Kamisayo Speedrun", {
 -- ============================================================================
 
 -- Print route info for debugging
-function TurtleGuide:PrintCurrentRoute()
+function AegisPathfinder:PrintCurrentRoute()
     local route = self.routes[self.db.char.currentroute]
     if not route then
         self:Print("No route selected")
@@ -553,7 +553,7 @@ function TurtleGuide:PrintCurrentRoute()
 end
 
 -- Print all available routes
-function TurtleGuide:PrintAllRoutes()
+function AegisPathfinder:PrintAllRoutes()
     self:Print("Available routes:")
     for name, route in pairs(self.routes) do
         self:Print(string.format("  %s: %d zones", name, table.getn(route)))

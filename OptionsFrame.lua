@@ -1,14 +1,14 @@
-local TurtleGuide = TurtleGuide
-local L = TurtleGuide.Locale
+local AegisPathfinder = AegisPathfinder
+local L = AegisPathfinder.Locale
 local ww = WidgetWarlock
 
-function TurtleGuide:CreateConfigPanel()
-	local frame = CreateFrame("Frame", "TurtleGuideOptions", UIParent)
-	TurtleGuide.optionsframe = frame
+function AegisPathfinder:CreateConfigPanel()
+	local frame = CreateFrame("Frame", "AegisPathfinderOptions", UIParent)
+	AegisPathfinder.optionsframe = frame
 	frame:SetFrameStrata("DIALOG")
 	frame:SetWidth(310)
 	frame:SetHeight(16 + 28 * 8)
-	frame:SetPoint("TOPRIGHT", TurtleGuide.statusframe, "BOTTOMRIGHT")
+	frame:SetPoint("TOPRIGHT", AegisPathfinder.statusframe, "BOTTOMRIGHT")
 	frame:SetBackdrop(ww.TooltipBorderBG)
 	frame:SetBackdropColor(0.09, 0.09, 0.19, 1)
 	frame:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.5)
@@ -43,8 +43,8 @@ function TurtleGuide:CreateConfigPanel()
 	waypointBtn:SetHeight(22)
 	waypointBtn:SetPoint("TOPLEFT", autobranch, "BOTTOMLEFT", 0, -10)
 	waypointBtn:SetScript("OnClick", function()
-		TurtleGuide:CycleWaypointProvider()
-		waypointBtn:SetText(L["Waypoints"] .. ": " .. TurtleGuide:GetWaypointProviderLabel())
+		AegisPathfinder:CycleWaypointProvider()
+		waypointBtn:SetText(L["Waypoints"] .. ": " .. AegisPathfinder:GetWaypointProviderLabel())
 	end)
 	frame.waypointBtn = waypointBtn
 
@@ -56,7 +56,7 @@ function TurtleGuide:CreateConfigPanel()
 	routeBtn:SetText("Change Route")
 	routeBtn:SetScript("OnClick", function()
 		frame:Hide()
-		TurtleGuide:ShowRouteSelector()
+		AegisPathfinder:ShowRouteSelector()
 	end)
 
 	local dungeonsBtn = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
@@ -65,7 +65,7 @@ function TurtleGuide:CreateConfigPanel()
 	dungeonsBtn:SetPoint("LEFT", routeBtn, "RIGHT", 6, 0)
 	dungeonsBtn:SetText("Dungeons RXP")
 	dungeonsBtn:SetScript("OnClick", function()
-		TurtleGuide:ToggleDungeonPanel()
+		AegisPathfinder:ToggleDungeonPanel()
 	end)
 	frame.dungeonsBtn = dungeonsBtn
 
@@ -76,7 +76,7 @@ function TurtleGuide:CreateConfigPanel()
 	branchBtn:SetText("Branch to Zone")
 	branchBtn:SetScript("OnClick", function()
 		frame:Hide()
-		TurtleGuide:ShowGuideList(true)
+		AegisPathfinder:ShowGuideList(true)
 	end)
 	frame.branchBtn = branchBtn
 
@@ -86,7 +86,7 @@ function TurtleGuide:CreateConfigPanel()
 	returnMainBtn:SetPoint("LEFT", branchBtn, "RIGHT", 6, 0)
 	returnMainBtn:SetText("Return to Main")
 	returnMainBtn:SetScript("OnClick", function()
-		TurtleGuide:ReturnFromBranch()
+		AegisPathfinder:ReturnFromBranch()
 		frame:Hide()
 	end)
 	frame.returnMainBtn = returnMainBtn
@@ -97,7 +97,7 @@ function TurtleGuide:CreateConfigPanel()
 	refreshBtn:SetPoint("TOPLEFT", branchBtn, "BOTTOMLEFT", 0, -6)
 	refreshBtn:SetText("Rescan Progress")
 	refreshBtn:SetScript("OnClick", function()
-		TurtleGuide:QueryServerCompletedQuests(true)
+		AegisPathfinder:QueryServerCompletedQuests(true)
 	end)
 
 	local errorBtn = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
@@ -107,7 +107,7 @@ function TurtleGuide:CreateConfigPanel()
 	errorBtn:SetText("Error Log")
 	errorBtn:SetScript("OnClick", function()
 		frame:Hide()
-		TurtleGuide:ShowErrorLog()
+		AegisPathfinder:ShowErrorLog()
 	end)
 
 	local filtersBtn = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
@@ -116,7 +116,7 @@ function TurtleGuide:CreateConfigPanel()
 	filtersBtn:SetPoint("TOPLEFT", refreshBtn, "BOTTOMLEFT", 0, -6)
 	filtersBtn:SetText("Filters (Solo/Group/AH) RXP")
 	filtersBtn:SetScript("OnClick", function()
-		TurtleGuide:ToggleFiltersPanel()
+		AegisPathfinder:ToggleFiltersPanel()
 	end)
 	frame.filtersBtn = filtersBtn
 
@@ -158,18 +158,18 @@ function TurtleGuide:CreateConfigPanel()
 
 	frame:SetScript("OnShow", OnShow)
 	frame:SetScript("OnHide", function()
-		if TurtleGuide.dungeonframe then
-			TurtleGuide.dungeonframe:Hide()
+		if AegisPathfinder.dungeonframe then
+			AegisPathfinder.dungeonframe:Hide()
 		end
-		if TurtleGuide.filtersframe then
-			TurtleGuide.filtersframe:Hide()
+		if AegisPathfinder.filtersframe then
+			AegisPathfinder.filtersframe:Hide()
 		end
 	end)
 	ww.SetFadeTime(frame, 0.5)
 	OnShow(frame)
 end
 
-function TurtleGuide:ToggleDungeonPanel()
+function AegisPathfinder:ToggleDungeonPanel()
 	if not self.dungeonframe then
 		self:CreateDungeonPanel()
 	end
@@ -181,7 +181,7 @@ function TurtleGuide:ToggleDungeonPanel()
 	end
 end
 
-function TurtleGuide:PositionDungeonPanel()
+function AegisPathfinder:PositionDungeonPanel()
 	if not self.dungeonframe or not self.optionsframe then return end
 	local quad, vhalf, hhalf = self.GetQuadrant(self.statusframe)
 	self.dungeonframe:ClearAllPoints()
@@ -192,8 +192,8 @@ function TurtleGuide:PositionDungeonPanel()
 	end
 end
 
-function TurtleGuide:CreateDungeonPanel()
-	local frame = CreateFrame("Frame", "TurtleGuideDungeons", UIParent)
+function AegisPathfinder:CreateDungeonPanel()
+	local frame = CreateFrame("Frame", "AegisPathfinderDungeons", UIParent)
 	self.dungeonframe = frame
 	frame:SetFrameStrata("DIALOG")
 	frame:SetWidth(180)
@@ -244,8 +244,8 @@ function TurtleGuide:CreateDungeonPanel()
 
 		local code = d.code
 		cb:SetScript("OnClick", function()
-			TurtleGuide.db.char.Dungeons[code] = not not cb:GetChecked()
-			TurtleGuide:LoadGuide(TurtleGuide.db.char.currentguide)
+			AegisPathfinder.db.char.Dungeons[code] = not not cb:GetChecked()
+			AegisPathfinder:LoadGuide(AegisPathfinder.db.char.currentguide)
 		end)
 
 		table.insert(frame.checkboxes, cb)
@@ -254,9 +254,9 @@ function TurtleGuide:CreateDungeonPanel()
 
 	local function OnShow(f)
 		f = f or this
-		TurtleGuide:PositionDungeonPanel()
+		AegisPathfinder:PositionDungeonPanel()
 		for _, cb in ipairs(f.checkboxes) do
-			cb:SetChecked(TurtleGuide.db.char.Dungeons[cb.dungeonCode])
+			cb:SetChecked(AegisPathfinder.db.char.Dungeons[cb.dungeonCode])
 		end
 		f:SetAlpha(0)
 		f:SetScript("OnUpdate", ww.FadeIn)
@@ -265,10 +265,10 @@ function TurtleGuide:CreateDungeonPanel()
 	frame:SetScript("OnShow", OnShow)
 	ww.SetFadeTime(frame, 0.5)
 
-	table.insert(UISpecialFrames, "TurtleGuideDungeons")
+	table.insert(UISpecialFrames, "AegisPathfinderDungeons")
 end
 
-function TurtleGuide:ToggleFiltersPanel()
+function AegisPathfinder:ToggleFiltersPanel()
 	if not self.filtersframe then
 		self:CreateFiltersPanel()
 	end
@@ -280,7 +280,7 @@ function TurtleGuide:ToggleFiltersPanel()
 	end
 end
 
-function TurtleGuide:PositionFiltersPanel()
+function AegisPathfinder:PositionFiltersPanel()
 	if not self.filtersframe or not self.optionsframe then return end
 	local quad, vhalf, hhalf = self.GetQuadrant(self.statusframe)
 	self.filtersframe:ClearAllPoints()
@@ -291,8 +291,8 @@ function TurtleGuide:PositionFiltersPanel()
 	end
 end
 
-function TurtleGuide:CreateFiltersPanel()
-	local frame = CreateFrame("Frame", "TurtleGuideFilters", UIParent)
+function AegisPathfinder:CreateFiltersPanel()
+	local frame = CreateFrame("Frame", "AegisPathfinderFilters", UIParent)
 	self.filtersframe = frame
 	frame:SetFrameStrata("DIALOG")
 	frame:SetWidth(180)
@@ -317,8 +317,8 @@ function TurtleGuide:CreateFiltersPanel()
 	frame.ahCb = ahCb
 
 	ahCb:SetScript("OnClick", function()
-		TurtleGuide.db.char.UseAH = not not ahCb:GetChecked()
-		TurtleGuide:LoadGuide(TurtleGuide.db.char.currentguide)
+		AegisPathfinder.db.char.UseAH = not not ahCb:GetChecked()
+		AegisPathfinder:LoadGuide(AegisPathfinder.db.char.currentguide)
 	end)
 
 	-- Play Style Header
@@ -340,22 +340,22 @@ function TurtleGuide:CreateFiltersPanel()
 	soloCb:SetScript("OnClick", function()
 		soloCb:SetChecked(true)
 		groupCb:SetChecked(false)
-		TurtleGuide.db.char.PlayStyle = "SOLO"
-		TurtleGuide:LoadGuide(TurtleGuide.db.char.currentguide)
+		AegisPathfinder.db.char.PlayStyle = "SOLO"
+		AegisPathfinder:LoadGuide(AegisPathfinder.db.char.currentguide)
 	end)
 
 	groupCb:SetScript("OnClick", function()
 		groupCb:SetChecked(true)
 		soloCb:SetChecked(false)
-		TurtleGuide.db.char.PlayStyle = "GROUP"
-		TurtleGuide:LoadGuide(TurtleGuide.db.char.currentguide)
+		AegisPathfinder.db.char.PlayStyle = "GROUP"
+		AegisPathfinder:LoadGuide(AegisPathfinder.db.char.currentguide)
 	end)
 
 	local function OnShow(f)
 		f = f or this
-		TurtleGuide:PositionFiltersPanel()
-		f.ahCb:SetChecked(TurtleGuide.db.char.UseAH)
-		local playstyle = TurtleGuide.db.char.PlayStyle or "SOLO"
+		AegisPathfinder:PositionFiltersPanel()
+		f.ahCb:SetChecked(AegisPathfinder.db.char.UseAH)
+		local playstyle = AegisPathfinder.db.char.PlayStyle or "SOLO"
 		f.soloCb:SetChecked(playstyle == "SOLO")
 		f.groupCb:SetChecked(playstyle == "GROUP")
 		f:SetAlpha(0)
@@ -365,7 +365,7 @@ function TurtleGuide:CreateFiltersPanel()
 	frame:SetScript("OnShow", OnShow)
 	ww.SetFadeTime(frame, 0.5)
 
-	table.insert(UISpecialFrames, "TurtleGuideFilters")
+	table.insert(UISpecialFrames, "AegisPathfinderFilters")
 end
 
-table.insert(UISpecialFrames, "TurtleGuideOptions")
+table.insert(UISpecialFrames, "AegisPathfinderOptions")

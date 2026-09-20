@@ -1,8 +1,8 @@
 -- Optimized Guide: Swamp of Sorrows (41-41)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Swamp of Sorrows (41-41)", "Optimized/Desolace (41-42)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Swamp of Sorrows (41-41)", "Optimized/Desolace (41-42)", "Alliance", function()
 
 return [[
 

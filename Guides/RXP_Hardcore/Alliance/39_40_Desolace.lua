@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 39-40 Desolace
-TurtleGuide:RegisterGuide("RXP_Hardcore/39-40 Desolace", "RXP_Hardcore/40-41 Alterac/Arathi", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/39-40 Desolace", "RXP_Hardcore/40-41 Alterac/Arathi", "Alliance", function()
 return [[
 
 N 39-40 Desolace |N|Converted from RestedXP guide|

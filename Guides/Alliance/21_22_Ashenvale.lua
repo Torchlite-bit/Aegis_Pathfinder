@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Ashenvale (21-22)", "Stonetalon Mountains (22-23)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Ashenvale (21-22)", "Stonetalon Mountains (22-23)", "Alliance",function()
 
 
 return [[

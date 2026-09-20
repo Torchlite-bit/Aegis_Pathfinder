@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 36-37 Desolace
-TurtleGuide:RegisterGuide("RXP_Hardcore/36-37 Desolace", "RXP_Hardcore/37-38 Stranglethorn Vale II", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/36-37 Desolace", "RXP_Hardcore/37-38 Stranglethorn Vale II", "Alliance", function()
 return [[
 
 N 36-37 Desolace |N|Converted from RestedXP guide|

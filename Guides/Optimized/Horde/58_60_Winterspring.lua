@@ -1,8 +1,8 @@
 -- Optimized Guide: Winterspring (58-60)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Winterspring (58-60)", nil, "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Winterspring (58-60)", nil, "Horde", function()
 
 return [[
 

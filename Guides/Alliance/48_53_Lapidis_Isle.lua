@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Lapidis Isle (48-53)", "Felwood (53-54)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Lapidis Isle (48-53)", "Felwood (53-54)", "Alliance", function()
 
 return [[
 

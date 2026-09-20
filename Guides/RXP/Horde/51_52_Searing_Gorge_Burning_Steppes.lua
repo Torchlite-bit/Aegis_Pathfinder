@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 51-52 Searing Gorge/Burning Steppes
-TurtleGuide:RegisterGuide("RXP/51-52 Searing Gorge/Burning Steppes", "RXP/52-53 Azshara", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/51-52 Searing Gorge/Burning Steppes", "RXP/52-53 Azshara", "Horde", function()
 return [[
 
 N 51-52 Searing Gorge/Burning Steppes |N|Converted from RestedXP guide|

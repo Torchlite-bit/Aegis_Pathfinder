@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Grim Reaches (33-38)", "Dustwallow Marsh (38-39)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Grim Reaches (33-38)", "Dustwallow Marsh (38-39)", "Alliance", function()
 
 return [[
 

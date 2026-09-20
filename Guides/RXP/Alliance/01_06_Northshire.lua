@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 1-6 Northshire
-TurtleGuide:RegisterGuide("RXP/1-6 Northshire", "RXP/6-11 Elwynn Forest", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/1-6 Northshire", "RXP/6-11 Elwynn Forest", "Alliance", function()
 return [[
 
 N 1-6 Northshire |N|Converted from RestedXP guide|

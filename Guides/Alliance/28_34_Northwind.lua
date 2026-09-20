@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Northwind (28-34)", "Duskwood (28-29)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Northwind (28-34)", "Duskwood (28-29)", "Alliance", function()
 
 return [[
 

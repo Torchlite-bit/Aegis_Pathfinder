@@ -1,8 +1,8 @@
 -- Optimized Guide: Desolace (43-43)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Desolace (43-43)", "Optimized/Dustwallow Marsh (43-44)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Desolace (43-43)", "Optimized/Dustwallow Marsh (43-44)", "Horde", function()
 
 return [[
 

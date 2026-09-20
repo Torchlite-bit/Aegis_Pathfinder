@@ -1,10 +1,10 @@
 -- RXPConverter.lua
--- Converts RestedXP guide format to TurtleGuide format
+-- Converts RestedXP guide format to AegisPathfinder format
 -- Can be used standalone or called from within the addon
 
 local RXPConverter = {}
 
--- TurtleGuide action mappings
+-- AegisPathfinder action mappings
 local actionMap = {
 	accept = "A",
 	turnin = "T",
@@ -121,7 +121,8 @@ local function parseStep(stepLines, currentZone, currentClass, currentRace)
 		-- Clean whitespace
 		line = string.gsub(line, "^%s+", "")
 		line = string.gsub(line, "%s+$", "")
-		if string.len(line) == 0 then continue end
+		-- Lua has no `continue`; skip blank lines by scoping the rest of the body.
+		if string.len(line) > 0 then
 
 		-- Check for RXP action markers in colors
 		if string.find(line, "|cRXP_BUY_") then
@@ -272,6 +273,7 @@ local function parseStep(stepLines, currentZone, currentClass, currentRace)
 		elseif string.find(line, "^#sticky") then
 			result.sticky = true
 		end
+		end
 	end
 
 	-- Use detected action if no official command found
@@ -319,8 +321,8 @@ local function parseStep(stepLines, currentZone, currentClass, currentRace)
 	return result
 end
 
--- Convert a single step to TurtleGuide format
-local function stepToTurtleGuide(step)
+-- Convert a single step to AegisPathfinder format
+local function stepToAegisPathfinder(step)
 	if not step.action or not step.quest then
 		return nil
 	end
@@ -431,7 +433,7 @@ function RXPConverter.Convert(rxpGuide)
 			if table.getn(currentStep) > 0 then
 				local parsed = parseStep(currentStep, currentZone, currentClass, currentRace)
 				if parsed.zone then currentZone = parsed.zone end
-				local tgLine = stepToTurtleGuide(parsed)
+				local tgLine = stepToAegisPathfinder(parsed)
 				if tgLine then
 					table.insert(steps, tgLine)
 				end
@@ -454,18 +456,18 @@ function RXPConverter.Convert(rxpGuide)
 	-- Process last step
 	if table.getn(currentStep) > 0 then
 		local parsed = parseStep(currentStep, currentZone, currentClass, currentRace)
-		local tgLine = stepToTurtleGuide(parsed)
+		local tgLine = stepToAegisPathfinder(parsed)
 		if tgLine then
 			table.insert(steps, tgLine)
 		end
 	end
 
-	-- Build TurtleGuide format output
+	-- Build AegisPathfinder format output
 	local output = {}
 	table.insert(output, "-- Converted from RestedXP format")
 	table.insert(output, "-- Original guide: " .. guideName)
 	table.insert(output, "")
-	table.insert(output, string.format('TurtleGuide:RegisterGuide("RXP/%s", "%s", "%s", function()',
+	table.insert(output, string.format('AegisPathfinder:RegisterGuide("RXP/%s", "%s", "%s", function()',
 		guideName, nextGuide or "", faction))
 	table.insert(output, "")
 	table.insert(output, "return [[")
@@ -523,8 +525,8 @@ function RXPConverter.ParseGuideHeader(rxpGuide)
 end
 
 -- Export for use in addon
-if TurtleGuide then
-	TurtleGuide.RXPConverter = RXPConverter
+if AegisPathfinder then
+	AegisPathfinder.RXPConverter = RXPConverter
 end
 
 return RXPConverter

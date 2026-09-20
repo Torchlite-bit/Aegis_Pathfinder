@@ -1,8 +1,8 @@
 -- Optimized Guide: Barrens (12-15)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/The Barrens (12-15)", "Optimized/Stonetalon (15-16)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/The Barrens (12-15)", "Optimized/Stonetalon (15-16)", "Horde", function()
 
 return [[
 

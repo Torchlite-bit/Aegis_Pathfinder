@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 34-35 Stranglethorn Vale I
-TurtleGuide:RegisterGuide("RXP/34-35 Stranglethorn Vale I", "RXP/35-37 Desolace", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/34-35 Stranglethorn Vale I", "RXP/35-37 Desolace", "Alliance", function()
 return [[
 
 N 34-35 Stranglethorn Vale I |N|Converted from RestedXP guide|

@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 57-58 Western/Eastern Plaguelands
-TurtleGuide:RegisterGuide("RXP_Hardcore/57-58 Western/Eastern Plaguelands", "RXP_Hardcore/58-59 Felwood/Winterspring", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/57-58 Western/Eastern Plaguelands", "RXP_Hardcore/58-59 Felwood/Winterspring", "Alliance", function()
 return [[
 
 N 57-58 Western/Eastern Plaguelands |N|Converted from RestedXP guide|

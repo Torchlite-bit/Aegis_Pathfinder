@@ -1,8 +1,8 @@
 -- Optimized Guide: Uldaman (45-46)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Uldaman (45-46)", "Optimized/Hinterlands (46-47)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Uldaman (45-46)", "Optimized/Hinterlands (46-47)", "Alliance", function()
 
 return [[
 

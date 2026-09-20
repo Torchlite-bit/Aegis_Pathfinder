@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("The Hinterlands (47-47)", "Stranglethorn (47-47)", "Horde",function()
+AegisPathfinder:RegisterGuide("The Hinterlands (47-47)", "Stranglethorn (47-47)", "Horde",function()
 
 
 return [[

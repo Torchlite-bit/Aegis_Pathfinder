@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 27-29 Wetlands/Hillsbrad
-TurtleGuide:RegisterGuide("RXP/27-29 Wetlands/Hillsbrad", "RXP/29-30 Ashenvale", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/27-29 Wetlands/Hillsbrad", "RXP/29-30 Ashenvale", "Alliance", function()
 return [[
 
 N 27-29 Wetlands/Hillsbrad |N|Converted from RestedXP guide|

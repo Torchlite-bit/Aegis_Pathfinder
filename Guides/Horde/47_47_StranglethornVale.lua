@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Stranglethorn (47-47)", "Searing Gorge (47-48)", "Horde",function()
+AegisPathfinder:RegisterGuide("Stranglethorn (47-47)", "Searing Gorge (47-48)", "Horde",function()
 
 
 return [[

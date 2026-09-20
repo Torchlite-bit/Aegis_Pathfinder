@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 33-34 Thousand Needles
-TurtleGuide:RegisterGuide("RXP/33-34 Thousand Needles", "RXP/34-35 Stranglethorn Vale I", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/33-34 Thousand Needles", "RXP/34-35 Stranglethorn Vale I", "Alliance", function()
 return [[
 
 N 33-34 Thousand Needles |N|Converted from RestedXP guide|

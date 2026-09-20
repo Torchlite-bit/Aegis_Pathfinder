@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Redridge Mountains (18-20)", "Darkshore (20-21)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Redridge Mountains (18-20)", "Darkshore (20-21)", "Alliance",function()
 
 return [[
 

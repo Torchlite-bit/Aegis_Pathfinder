@@ -1,8 +1,8 @@
 -- Optimized Guide: Arathi Highlands (36-37)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Arathi Highlands (36-37)", "Optimized/Alterac Mountains (37-37)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Arathi Highlands (36-37)", "Optimized/Alterac Mountains (37-37)", "Horde", function()
 
 return [[
 

@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 50-51 Tanaris/Un'goro
-TurtleGuide:RegisterGuide("RXP_Hardcore/50-51 Tanaris/Un'goro", "RXP_Hardcore/51-52 Blasted Lands", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/50-51 Tanaris/Un'goro", "RXP_Hardcore/51-52 Blasted Lands", "Alliance", function()
 return [[
 
 N 50-51 Tanaris/Un'goro |N|Converted from RestedXP guide|

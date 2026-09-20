@@ -1,8 +1,8 @@
 -- Optimized Guide: Wetlands (25-27)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Wetlands (25-27)", "Optimized/Redridge (27-28)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Wetlands (25-27)", "Optimized/Redridge (27-28)", "Alliance", function()
 
 return [[
 

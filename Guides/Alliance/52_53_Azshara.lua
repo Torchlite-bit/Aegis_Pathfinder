@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Azshara (52-53)", "Felwood (53-54)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Azshara (52-53)", "Felwood (53-54)", "Alliance",function()
 
 return [[
 

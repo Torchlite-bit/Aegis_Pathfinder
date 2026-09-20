@@ -1,8 +1,8 @@
 -- Optimized Guide: Ashenvale (21-22)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Ashenvale (21-22)", "Optimized/Stonetalon (22-23)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Ashenvale (21-22)", "Optimized/Stonetalon (22-23)", "Alliance", function()
 
 return [[
 

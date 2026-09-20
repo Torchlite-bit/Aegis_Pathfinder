@@ -1,8 +1,8 @@
 -- Optimized Guide: The Hinterlands (50-51)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Hinterlands (50-51)", "Optimized/Blasted Lands (51-51)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Hinterlands (50-51)", "Optimized/Blasted Lands (51-51)", "Horde", function()
 
 return [[
 

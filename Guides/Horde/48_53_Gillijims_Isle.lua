@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Gillijim's Isle (48-53)", "Burning Steppes (53-54)", "Horde",function()
+AegisPathfinder:RegisterGuide("Gillijim's Isle (48-53)", "Burning Steppes (53-54)", "Horde",function()
 
 return [[
 

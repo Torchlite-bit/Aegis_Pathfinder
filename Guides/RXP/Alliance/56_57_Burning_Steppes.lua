@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 56-57 Burning Steppes
-TurtleGuide:RegisterGuide("RXP/56-57 Burning Steppes", "RXP/57-59 Western/Eastern Plaguelands", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/56-57 Burning Steppes", "RXP/57-59 Western/Eastern Plaguelands", "Alliance", function()
 return [[
 
 N 56-57 Burning Steppes |N|Converted from RestedXP guide|

@@ -1,8 +1,8 @@
 -- Optimized Guide: Silithus (56-57)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Silithus (56-57)", "Optimized/Western Plaguelands (57-58)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Silithus (56-57)", "Optimized/Western Plaguelands (57-58)", "Alliance", function()
 
 return [[
 

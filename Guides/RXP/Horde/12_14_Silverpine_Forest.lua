@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 12-14 Silverpine Forest
-TurtleGuide:RegisterGuide("RXP/12-14 Silverpine Forest", "RXP/12-17 The Barrens", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/12-14 Silverpine Forest", "RXP/12-17 The Barrens", "Horde", function()
 return [[
 
 N 12-14 Silverpine Forest |N|Converted from RestedXP guide|

@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 20-21 Darkshore/Ashenvale
-TurtleGuide:RegisterGuide("RXP/20-21 Darkshore/Ashenvale", "RXP/RestedXP Alliance 20-30\21-23 Stonetalon/Ashenvale", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/20-21 Darkshore/Ashenvale", "RXP/RestedXP Alliance 20-30\21-23 Stonetalon/Ashenvale", "Alliance", function()
 return [[
 
 N 20-21 Darkshore/Ashenvale |N|Converted from RestedXP guide|

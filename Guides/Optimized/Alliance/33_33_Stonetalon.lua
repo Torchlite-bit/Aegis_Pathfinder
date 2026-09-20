@@ -1,8 +1,8 @@
 -- Optimized Guide: Stonetalon Mountains (33-33)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Stonetalon (33-33)", "Optimized/Desolace (33-35)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Stonetalon (33-33)", "Optimized/Desolace (33-35)", "Alliance", function()
 
 return [[
 

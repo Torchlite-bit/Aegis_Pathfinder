@@ -1,8 +1,8 @@
 -- Optimized Guide: The Hinterlands (48-48)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Hinterlands (48-48)", "Optimized/Stranglethorn (48-49)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Hinterlands (48-48)", "Optimized/Stranglethorn (48-49)", "Alliance", function()
 
 return [[
 

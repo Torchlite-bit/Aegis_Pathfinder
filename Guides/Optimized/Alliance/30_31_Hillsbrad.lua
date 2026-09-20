@@ -1,8 +1,8 @@
 -- Optimized Guide: Hillsbrad Foothills (30-31)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Hillsbrad (30-31)", "Optimized/Alterac (31-31)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Hillsbrad (30-31)", "Optimized/Alterac (31-31)", "Alliance", function()
 
 return [[
 

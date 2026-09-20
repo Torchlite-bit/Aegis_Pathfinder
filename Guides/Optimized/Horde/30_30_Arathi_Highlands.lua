@@ -1,8 +1,8 @@
 -- Optimized Guide: Arathi Highlands (30-30)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Arathi Highlands (30-30)", "Optimized/Stranglethorn Vale (30-31)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Arathi Highlands (30-30)", "Optimized/Stranglethorn Vale (30-31)", "Horde", function()
 
 return [[
 

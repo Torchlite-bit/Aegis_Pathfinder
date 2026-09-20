@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 41-41 Badlands
-TurtleGuide:RegisterGuide("RXP/41-41 Badlands", "RXP/41-43 STV/Swamp of Sorrows", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/41-41 Badlands", "RXP/41-43 STV/Swamp of Sorrows", "Alliance", function()
 return [[
 
 N 41-41 Badlands |N|Converted from RestedXP guide|

@@ -1,8 +1,8 @@
 -- Optimized Guide: Feralas (47-47)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Feralas (47-47)", "Optimized/Tanaris (47-48)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Feralas (47-47)", "Optimized/Tanaris (47-48)", "Alliance", function()
 
 return [[
 

@@ -1,8 +1,8 @@
 -- Optimized Guide: Alterac Mountains (31-31)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Alterac (31-31)", "Optimized/Arathi (31-32)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Alterac (31-31)", "Optimized/Arathi (31-32)", "Alliance", function()
 
 return [[
 

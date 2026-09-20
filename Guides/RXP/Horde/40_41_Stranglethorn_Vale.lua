@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 40-41 Stranglethorn Vale
-TurtleGuide:RegisterGuide("RXP/40-41 Stranglethorn Vale", "RXP/41-400_41-41 Swamp of Sorrows", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/40-41 Stranglethorn Vale", "RXP/41-400_41-41 Swamp of Sorrows", "Horde", function()
 return [[
 
 N 40-41 Stranglethorn Vale |N|Converted from RestedXP guide|

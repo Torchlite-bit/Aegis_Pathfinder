@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 41-43 STV/Swamp of Sorrows
-TurtleGuide:RegisterGuide("RXP/41-43 STV/Swamp of Sorrows", "RXP/43-44 Tanaris/Dustwallow", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/41-43 STV/Swamp of Sorrows", "RXP/43-44 Tanaris/Dustwallow", "Alliance", function()
 return [[
 
 N 41-43 STV/Swamp of Sorrows |N|Converted from RestedXP guide|

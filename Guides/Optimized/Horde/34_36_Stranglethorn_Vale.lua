@@ -1,8 +1,8 @@
 -- Optimized Guide: Stranglethorn Vale (34-36)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Stranglethorn Vale (34-36)", "Optimized/Arathi Highlands (36-37)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Stranglethorn Vale (34-36)", "Optimized/Arathi Highlands (36-37)", "Horde", function()
 
 return [[
 

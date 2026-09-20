@@ -1,8 +1,8 @@
 -- Optimized Guide: Western Plaguelands (57-58)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Western Plaguelands (57-58)", "Optimized/Eastern Plaguelands (58-59)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Western Plaguelands (57-58)", "Optimized/Eastern Plaguelands (58-59)", "Alliance", function()
 
 return [[
 

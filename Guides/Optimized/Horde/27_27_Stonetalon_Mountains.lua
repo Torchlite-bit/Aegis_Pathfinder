@@ -1,8 +1,8 @@
 -- Optimized Guide: Stonetalon Mountains (27-27)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Stonetalon (27-27)", "Optimized/Thousand Needles (27-29)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Stonetalon (27-27)", "Optimized/Thousand Needles (27-29)", "Horde", function()
 
 return [[
 

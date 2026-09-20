@@ -1,4 +1,4 @@
-local TurtleGuide = TurtleGuide
+local AegisPathfinder = AegisPathfinder
 local ww = WidgetWarlock
 
 local title
@@ -17,8 +17,8 @@ local rxpCheck
 local zoneCheck
 
 local function SortGuidesByLevel(a, b)
-    local aMin, aMax = TurtleGuide:ParseGuideLevelRange(a)
-    local bMin, bMax = TurtleGuide:ParseGuideLevelRange(b)
+    local aMin, aMax = AegisPathfinder:ParseGuideLevelRange(a)
+    local bMin, bMax = AegisPathfinder:ParseGuideLevelRange(b)
 
     if not aMin and not bMin then
         return a < b
@@ -55,11 +55,11 @@ local function ShowTooltip()
     table.insert(lines, "Left-click: Load this guide")
     table.insert(lines, "Right-click: Branch to this guide")
 
-    if f.guide and TurtleGuide.db.char.completion[f.guide] == 1 then
+    if f.guide and AegisPathfinder.db.char.completion[f.guide] == 1 then
         table.insert(lines, "Shift-click: Reset progress")
     end
 
-    if f.guide and TurtleGuide.db.char.isbranching and TurtleGuide.db.char.branchsavedguide == f.guide then
+    if f.guide and AegisPathfinder.db.char.isbranching and AegisPathfinder.db.char.branchsavedguide == f.guide then
         table.insert(lines, "|cff00ff00(Your saved main route)|r")
     end
 
@@ -70,15 +70,15 @@ local function OnClick()
     local f = this
     local btn = arg1
     if IsShiftKeyDown() then
-        TurtleGuide.db.char.completion[f.guide] = nil
-        TurtleGuide.db.char.turnins[f.guide] = {}
-        TurtleGuide:UpdateGuideListPanel()
+        AegisPathfinder.db.char.completion[f.guide] = nil
+        AegisPathfinder.db.char.turnins[f.guide] = {}
+        AegisPathfinder:UpdateGuideListPanel()
         GameTooltip:Hide()
     elseif btn == "RightButton" then
         local text = f.guide
         if text then
-            TurtleGuide:BranchToGuide(text)
-            TurtleGuide:UpdateGuideListPanel()
+            AegisPathfinder:BranchToGuide(text)
+            AegisPathfinder:UpdateGuideListPanel()
         end
     else
         local text = f.guide
@@ -87,29 +87,29 @@ local function OnClick()
         else
             local isRXP = string.find(text, "^RXP/")
             local isRXPHC = string.find(text, "^RXP_Hardcore/")
-            local currentPack = TurtleGuide.db.char.routepack
+            local currentPack = AegisPathfinder.db.char.routepack
 
             -- If manually picking an RXP guide, ensure an RXP-based route pack is active
             -- so that auto-navigation continues with compatible guides
             if isRXPHC and currentPack ~= "RXP Hardcore" then
-                TurtleGuide:SelectRoutePack("RXP Hardcore")
+                AegisPathfinder:SelectRoutePack("RXP Hardcore")
             elseif isRXP and currentPack ~= "RestedXP" and currentPack ~= "Kamisayo Speedrun" then
-                TurtleGuide:SelectRoutePack("RestedXP")
+                AegisPathfinder:SelectRoutePack("RestedXP")
             end
 
-            TurtleGuide:LoadGuide(text)
-            TurtleGuide:UpdateStatusFrame()
-            TurtleGuide:UpdateGuideListPanel()
+            AegisPathfinder:LoadGuide(text)
+            AegisPathfinder:UpdateStatusFrame()
+            AegisPathfinder:UpdateGuideListPanel()
         end
     end
 end
 
-local frame = CreateFrame("Frame", "TurtleGuideGuideList", TurtleGuide.statusframe)
-TurtleGuide.guidelistframe = frame
+local frame = CreateFrame("Frame", "AegisPathfinderGuideList", AegisPathfinder.statusframe)
+AegisPathfinder.guidelistframe = frame
 frame:SetFrameStrata("DIALOG")
 frame:SetWidth(660)
 frame:SetHeight(320 + 28)
-frame:SetPoint("TOPRIGHT", TurtleGuide.statusframe, "BOTTOMRIGHT")
+frame:SetPoint("TOPRIGHT", AegisPathfinder.statusframe, "BOTTOMRIGHT")
 frame:SetBackdrop(ww.TooltipBorderBG)
 frame:SetBackdropColor(0.09, 0.09, 0.19, 1)
 frame:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.5)
@@ -133,7 +133,7 @@ filterCheck:SetScript("OnClick", function()
     levelFilterOn = not levelFilterOn
     filterCheck:SetChecked(levelFilterOn)
     offset = 0
-    TurtleGuide:UpdateGuideListPanel()
+    AegisPathfinder:UpdateGuideListPanel()
 end)
 
 -- TurtleWoW checkbox
@@ -141,11 +141,11 @@ turtleCheck = ww.SummonCheckBox(18, frame, "TOPLEFT", 145, -6)
 local turtleLabel = ww.SummonFontString(turtleCheck, "OVERLAY", "GameFontNormalSmall", "TurtleWoW", "LEFT",
     turtleCheck, "RIGHT", 2, 0)
 turtleCheck:SetScript("OnClick", function()
-    if TurtleGuide.db.char.filterTurtle == nil then TurtleGuide.db.char.filterTurtle = true end
-    TurtleGuide.db.char.filterTurtle = not TurtleGuide.db.char.filterTurtle
-    turtleCheck:SetChecked(TurtleGuide.db.char.filterTurtle)
+    if AegisPathfinder.db.char.filterTurtle == nil then AegisPathfinder.db.char.filterTurtle = true end
+    AegisPathfinder.db.char.filterTurtle = not AegisPathfinder.db.char.filterTurtle
+    turtleCheck:SetChecked(AegisPathfinder.db.char.filterTurtle)
     offset = 0
-    TurtleGuide:UpdateGuideListPanel()
+    AegisPathfinder:UpdateGuideListPanel()
 end)
 
 -- Optimized checkbox
@@ -153,11 +153,11 @@ optimizedCheck = ww.SummonCheckBox(18, frame, "TOPLEFT", 240, -6)
 local optimizedLabel = ww.SummonFontString(optimizedCheck, "OVERLAY", "GameFontNormalSmall", "Optimized", "LEFT",
     optimizedCheck, "RIGHT", 2, 0)
 optimizedCheck:SetScript("OnClick", function()
-    if TurtleGuide.db.char.filterOptimized == nil then TurtleGuide.db.char.filterOptimized = true end
-    TurtleGuide.db.char.filterOptimized = not TurtleGuide.db.char.filterOptimized
-    optimizedCheck:SetChecked(TurtleGuide.db.char.filterOptimized)
+    if AegisPathfinder.db.char.filterOptimized == nil then AegisPathfinder.db.char.filterOptimized = true end
+    AegisPathfinder.db.char.filterOptimized = not AegisPathfinder.db.char.filterOptimized
+    optimizedCheck:SetChecked(AegisPathfinder.db.char.filterOptimized)
     offset = 0
-    TurtleGuide:UpdateGuideListPanel()
+    AegisPathfinder:UpdateGuideListPanel()
 end)
 
 -- RXP checkbox
@@ -165,11 +165,11 @@ rxpCheck = ww.SummonCheckBox(18, frame, "TOPLEFT", 335, -6)
 local rxpLabel = ww.SummonFontString(rxpCheck, "OVERLAY", "GameFontNormalSmall", "RXP", "LEFT",
     rxpCheck, "RIGHT", 2, 0)
 rxpCheck:SetScript("OnClick", function()
-    if TurtleGuide.db.char.filterRXP == nil then TurtleGuide.db.char.filterRXP = true end
-    TurtleGuide.db.char.filterRXP = not TurtleGuide.db.char.filterRXP
-    rxpCheck:SetChecked(TurtleGuide.db.char.filterRXP)
+    if AegisPathfinder.db.char.filterRXP == nil then AegisPathfinder.db.char.filterRXP = true end
+    AegisPathfinder.db.char.filterRXP = not AegisPathfinder.db.char.filterRXP
+    rxpCheck:SetChecked(AegisPathfinder.db.char.filterRXP)
     offset = 0
-    TurtleGuide:UpdateGuideListPanel()
+    AegisPathfinder:UpdateGuideListPanel()
 end)
 
 -- RXP Hardcore checkbox
@@ -177,11 +177,11 @@ rxphcCheck = ww.SummonCheckBox(18, frame, "TOPLEFT", 410, -6)
 local rxphcLabel = ww.SummonFontString(rxphcCheck, "OVERLAY", "GameFontNormalSmall", "RXP Hardcore", "LEFT",
     rxphcCheck, "RIGHT", 2, 0)
 rxphcCheck:SetScript("OnClick", function()
-    if TurtleGuide.db.char.filterRXPHC == nil then TurtleGuide.db.char.filterRXPHC = true end
-    TurtleGuide.db.char.filterRXPHC = not TurtleGuide.db.char.filterRXPHC
-    rxphcCheck:SetChecked(TurtleGuide.db.char.filterRXPHC)
+    if AegisPathfinder.db.char.filterRXPHC == nil then AegisPathfinder.db.char.filterRXPHC = true end
+    AegisPathfinder.db.char.filterRXPHC = not AegisPathfinder.db.char.filterRXPHC
+    rxphcCheck:SetChecked(AegisPathfinder.db.char.filterRXPHC)
     offset = 0
-    TurtleGuide:UpdateGuideListPanel()
+    AegisPathfinder:UpdateGuideListPanel()
 end)
 
 -- Zone checkbox
@@ -189,11 +189,11 @@ zoneCheck = ww.SummonCheckBox(18, frame, "TOPLEFT", 510, -6)
 local zoneLabel = ww.SummonFontString(zoneCheck, "OVERLAY", "GameFontNormalSmall", "Zone", "LEFT",
     zoneCheck, "RIGHT", 2, 0)
 zoneCheck:SetScript("OnClick", function()
-    if TurtleGuide.db.char.filterZone == nil then TurtleGuide.db.char.filterZone = true end
-    TurtleGuide.db.char.filterZone = not TurtleGuide.db.char.filterZone
-    zoneCheck:SetChecked(TurtleGuide.db.char.filterZone)
+    if AegisPathfinder.db.char.filterZone == nil then AegisPathfinder.db.char.filterZone = true end
+    AegisPathfinder.db.char.filterZone = not AegisPathfinder.db.char.filterZone
+    zoneCheck:SetChecked(AegisPathfinder.db.char.filterZone)
     offset = 0
-    TurtleGuide:UpdateGuideListPanel()
+    AegisPathfinder:UpdateGuideListPanel()
 end)
 
 -- Return to Main button
@@ -203,8 +203,8 @@ returnBtn:SetHeight(20)
 returnBtn:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -32, -6)
 returnBtn:SetText("Return to Main")
 returnBtn:SetScript("OnClick", function()
-    TurtleGuide:ReturnFromBranch()
-    TurtleGuide:UpdateGuideListPanel()
+    AegisPathfinder:ReturnFromBranch()
+    AegisPathfinder:UpdateGuideListPanel()
 end)
 frame.returnBtn = returnBtn
 
@@ -253,7 +253,7 @@ for i = 1, TOTALROWS do
 end
 
 -- Slider for scrolling
-local slider = CreateFrame("Slider", "TurtleGuideGuideListSlider", frame, "UIPanelScrollBarTemplate")
+local slider = CreateFrame("Slider", "AegisPathfinderGuideListSlider", frame, "UIPanelScrollBarTemplate")
 slider:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -8, -45)
 slider:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -8, 25)
 slider:SetMinMaxValues(0, 100)
@@ -263,20 +263,20 @@ frame.slider = slider
 
 slider:SetScript("OnValueChanged", function()
     local val = arg1
-    if not slider.updating and TurtleGuide.UpdateGuideListPanel then
+    if not slider.updating and AegisPathfinder.UpdateGuideListPanel then
         offset = math.floor(val)
-        TurtleGuide:UpdateGuideListPanel()
+        AegisPathfinder:UpdateGuideListPanel()
     end
 end)
 slider:SetValue(0)
 
 frame:SetScript("OnShow", function()
     offset = 0
-    local quad, vhalf, hhalf = TurtleGuide.GetQuadrant(TurtleGuide.statusframe)
+    local quad, vhalf, hhalf = AegisPathfinder.GetQuadrant(AegisPathfinder.statusframe)
     local anchpoint = (vhalf == "TOP" and "BOTTOM" or "TOP") .. hhalf
     this:ClearAllPoints()
-    this:SetPoint(quad, TurtleGuide.statusframe, anchpoint)
-    TurtleGuide:UpdateGuideListPanel()
+    this:SetPoint(quad, AegisPathfinder.statusframe, anchpoint)
+    AegisPathfinder:UpdateGuideListPanel()
     this:SetAlpha(0)
     this:SetScript("OnUpdate", ww.FadeIn)
 end)
@@ -294,23 +294,23 @@ frame:SetScript("OnMouseWheel", function()
         slider.updating = true
         slider:SetValue(offset)
         slider.updating = false
-        TurtleGuide:UpdateGuideListPanel()
+        AegisPathfinder:UpdateGuideListPanel()
     end
 end)
 
 ww.SetFadeTime(frame, 0.7)
 
-table.insert(UISpecialFrames, "TurtleGuideGuideList")
+table.insert(UISpecialFrames, "AegisPathfinderGuideList")
 
 -- Public API: open guide list with optional level filter preset
-function TurtleGuide:ShowGuideList(withLevelFilter)
+function AegisPathfinder:ShowGuideList(withLevelFilter)
     if withLevelFilter then
         levelFilterOn = true
     end
     self.guidelistframe:Show()
 end
 
-function TurtleGuide:UpdateGuideListPanel()
+function AegisPathfinder:UpdateGuideListPanel()
     if not frame or not frame:IsVisible() then return end
 
     -- Update title to show branch status

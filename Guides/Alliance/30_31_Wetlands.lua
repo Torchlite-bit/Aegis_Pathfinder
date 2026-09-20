@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Wetlands (30-31)", "Hillsbrad Foothills (31-32)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Wetlands (30-31)", "Hillsbrad Foothills (31-32)", "Alliance",function()
 
 return [[
 

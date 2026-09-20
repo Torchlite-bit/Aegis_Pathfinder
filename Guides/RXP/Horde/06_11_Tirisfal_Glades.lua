@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 6-11 Tirisfal Glades
-TurtleGuide:RegisterGuide("RXP/6-11 Tirisfal Glades", "RXP/12-14 Silverpine Forest", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/6-11 Tirisfal Glades", "RXP/12-14 Silverpine Forest", "Horde", function()
 return [[
 
 N 6-11 Tirisfal Glades |N|Converted from RestedXP guide|

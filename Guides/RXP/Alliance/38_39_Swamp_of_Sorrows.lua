@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 38-39 Swamp of Sorrows
-TurtleGuide:RegisterGuide("RXP/38-39 Swamp of Sorrows", "RXP/39-40 Alterac/Arathi", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/38-39 Swamp of Sorrows", "RXP/39-40 Alterac/Arathi", "Alliance", function()
 return [[
 
 N 38-39 Swamp of Sorrows |N|Converted from RestedXP guide|

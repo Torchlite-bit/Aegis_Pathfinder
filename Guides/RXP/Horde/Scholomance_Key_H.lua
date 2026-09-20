@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: Scholomance Key (H)
-TurtleGuide:RegisterGuide("RXP/Scholomance Key (H)", "", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/Scholomance Key (H)", "", "Horde", function()
 return [[
 
 N Scholomance Key (H) |N|Converted from RestedXP guide|

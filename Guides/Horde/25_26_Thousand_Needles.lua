@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Thousand Needles (25-26)", "Ashenvale (26-27)", "Horde",function()
+AegisPathfinder:RegisterGuide("Thousand Needles (25-26)", "Ashenvale (26-27)", "Horde",function()
 
 return [[
 

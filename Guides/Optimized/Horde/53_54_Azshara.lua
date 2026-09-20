@@ -1,8 +1,8 @@
 -- Optimized Guide: Azshara (53-54)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Azshara (53-54)", "Optimized/Felwood (54-54)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Azshara (53-54)", "Optimized/Felwood (54-54)", "Horde", function()
 
 return [[
 

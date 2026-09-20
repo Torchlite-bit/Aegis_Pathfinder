@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 43-44 Swamp of Sorrows II
-TurtleGuide:RegisterGuide("RXP_Hardcore/43-44 Swamp of Sorrows II", "RXP_Hardcore/44-45 Tanaris", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/43-44 Swamp of Sorrows II", "RXP_Hardcore/44-45 Tanaris", "Alliance", function()
 return [[
 
 N 43-44 Swamp of Sorrows II |N|Converted from RestedXP guide|

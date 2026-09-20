@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Stonetalon Mountains (22-23)", "Darkshore (23-24)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Stonetalon Mountains (22-23)", "Darkshore (23-24)", "Alliance",function()
 
 return [[
 

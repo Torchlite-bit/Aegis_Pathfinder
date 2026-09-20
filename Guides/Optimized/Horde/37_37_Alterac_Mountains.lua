@@ -1,8 +1,8 @@
 -- Optimized Guide: Alterac Mountains (37-37)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Alterac Mountains (37-37)", "Optimized/Thousand Needles (37-38)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Alterac Mountains (37-37)", "Optimized/Thousand Needles (37-38)", "Horde", function()
 
 return [[
 

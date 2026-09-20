@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Dustwallow Marsh (38-39)", "Stranglethorn (39-40)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Dustwallow Marsh (38-39)", "Stranglethorn (39-40)", "Alliance",function()
 
 return [[
 

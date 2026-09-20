@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Felwood (55-56)", "Burning Steppes (55-56)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Felwood (55-56)", "Burning Steppes (55-56)", "Alliance",function()
 
 return [[
 

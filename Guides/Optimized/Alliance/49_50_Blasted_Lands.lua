@@ -1,8 +1,8 @@
 -- Optimized Guide: Blasted Lands (49-50)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Blasted Lands (49-50)", nil, "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Blasted Lands (49-50)", nil, "Alliance", function()
 
 return [[
 

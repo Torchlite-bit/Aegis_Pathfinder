@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Westfall (12-17)", "Loch Modan (17-18)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Westfall (12-17)", "Loch Modan (17-18)", "Alliance",function()
 
 return [[
 

@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Hyjal (58-60)", "Hyjal (58-60)", "Both", function()
+AegisPathfinder:RegisterGuide("Hyjal (58-60)", "Hyjal (58-60)", "Both", function()
 
 return [[
 

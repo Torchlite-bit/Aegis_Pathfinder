@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Scarlet Enclave (55-60)", "Hyjal (58-60)", "Both", function()
+AegisPathfinder:RegisterGuide("Scarlet Enclave (55-60)", "Hyjal (58-60)", "Both", function()
 
 return [[
 

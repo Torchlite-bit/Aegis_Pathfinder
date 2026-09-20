@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Stonetalon Mountains (27-27)", "Thousand Needles (27-29)", "Horde",function()
+AegisPathfinder:RegisterGuide("Stonetalon Mountains (27-27)", "Thousand Needles (27-29)", "Horde",function()
 
 return [[
 

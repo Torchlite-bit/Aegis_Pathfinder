@@ -1,8 +1,8 @@
 -- Optimized Guide: Thousand Needles (25-26)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Thousand Needles (25-26)", "Optimized/Ashenvale (26-27)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Thousand Needles (25-26)", "Optimized/Ashenvale (26-27)", "Horde", function()
 
 return [[
 

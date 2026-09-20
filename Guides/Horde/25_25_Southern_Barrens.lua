@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("The Barrens (25-25)", "Thousand Needles (25-26)", "Horde",function()
+AegisPathfinder:RegisterGuide("The Barrens (25-25)", "Thousand Needles (25-26)", "Horde",function()
 
 return [[
 

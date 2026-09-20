@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 39-40 Alterac/Arathi
-TurtleGuide:RegisterGuide("RXP/39-40 Alterac/Arathi", "RXP/RestedXP Alliance 40-50\40-40 Dustwallow Marsh", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/39-40 Alterac/Arathi", "RXP/RestedXP Alliance 40-50\40-40 Dustwallow Marsh", "Alliance", function()
 return [[
 
 N 39-40 Alterac/Arathi |N|Converted from RestedXP guide|

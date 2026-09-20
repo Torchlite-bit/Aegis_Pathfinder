@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 10-12 Tirisfal
-TurtleGuide:RegisterGuide("RXP/10-12 Tirisfal", "RXP/12-14 Silverpine Forest", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/10-12 Tirisfal", "RXP/12-14 Silverpine Forest", "Horde", function()
 return [[
 
 N 10-12 Tirisfal |N|Converted from RestedXP guide|

@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 23-24 Wetlands
-TurtleGuide:RegisterGuide("RXP_Hardcore/23-24 Wetlands", "RXP_Hardcore/24-27 Duskwood/Redridge", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/23-24 Wetlands", "RXP_Hardcore/24-27 Duskwood/Redridge", "Alliance", function()
 return [[
 
 N 23-24 Wetlands |N|Converted from RestedXP guide|

@@ -19,7 +19,7 @@ local actiontypes = {
 }
 
 
-function TurtleGuide:GetObjectiveTag(tag, i)
+function AegisPathfinder:GetObjectiveTag(tag, i)
 	i = i or self.current
 	if not self.tags then return end
 	local tags = self.tags[i]
@@ -44,11 +44,11 @@ function TurtleGuide:GetObjectiveTag(tag, i)
 end
 
 local function DumpQuestDebug(accepts, turnins, completes)
-	for quest in pairs(accepts) do if not turnins[quest] then TurtleGuide:Debug(string.format(
+	for quest in pairs(accepts) do if not turnins[quest] then AegisPathfinder:Debug(string.format(
 			"Quest has no 'turnin' objective: %s", quest)) end end
-	for quest in pairs(turnins) do if not accepts[quest] then TurtleGuide:Debug(string.format(
+	for quest in pairs(turnins) do if not accepts[quest] then AegisPathfinder:Debug(string.format(
 			"Quest has no 'accept' objective: %s", quest)) end end
-	for quest in pairs(completes) do if not accepts[quest] and not turnins[quest] then TurtleGuide:Debug(string.format(
+	for quest in pairs(completes) do if not accepts[quest] and not turnins[quest] then AegisPathfinder:Debug(string.format(
 			"Quest has no 'accept' and 'turnin' objectives: %s", quest)) end end
 end
 
@@ -58,7 +58,7 @@ local function DebugQuestObjective(text, action, quest, accepts, turnins, comple
 	local haserrors
 
 	if (action == "A" and accepts[quest] or action == "T" and turnins[quest] or action == "C" and completes[quest]) and not string.find(text, "|NODEBUG|") then
-		TurtleGuide:Debug(string.format("%s %s -- Duplicate objective", action, quest))
+		AegisPathfinder:Debug(string.format("%s %s -- Duplicate objective", action, quest))
 		haserrors = true
 	end
 
@@ -76,7 +76,7 @@ local function DebugQuestObjective(text, action, quest, accepts, turnins, comple
 		-- Catch bad Title Case
 		for _, word in pairs(titlematches) do
 			if string.find(quest, "[^:]%s" .. word .. "%s") or string.find(quest, "[^:]%s" .. word .. "$") or string.find(quest, "[^:]%s" .. word .. "@") then
-				TurtleGuide:Debug(string.format("%s %s -- Contains bad title case", action, quest))
+				AegisPathfinder:Debug(string.format("%s %s -- Contains bad title case", action, quest))
 				haserrors = true
 			end
 		end
@@ -84,7 +84,7 @@ local function DebugQuestObjective(text, action, quest, accepts, turnins, comple
 
 	local _, _, comment = string.find(text, "(|[NLUC]V?|[^|]+)$") or string.find(text, "(|[NLUC]V?|[^|]+) |[NLUC]V?|")
 	if comment then
-		TurtleGuide:Debug("Unclosed comment: " .. comment)
+		AegisPathfinder:Debug("Unclosed comment: " .. comment)
 		haserrors = true
 	end
 
@@ -98,14 +98,14 @@ local function StepParse(guide)
 	local uniqueid = 1
 	local actions, quests, tags = {}, {}, {}
 	local i, haserrors = 1, false
-	local guidet = TurtleGuide.split("\r\n", guide)
+	local guidet = AegisPathfinder.split("\r\n", guide)
 
 	local seenObjectives = {}
 	local lastHearthLocation = nil
 
 	local function matchFilter(filter, myValue)
 		if not filter then return true end
-		local components = TurtleGuide.split("/", filter)
+		local components = AegisPathfinder.split("/", filter)
 		local hasMatches = false
 		local hasNegations = false
 
@@ -124,7 +124,7 @@ local function StepParse(guide)
 
 	local function matchDungeonFilter(dungeon)
 		if not dungeon then return true end
-		local components = TurtleGuide.split("/", dungeon)
+		local components = AegisPathfinder.split("/", dungeon)
 		local hasMatches = false
 		local hasNegations = false
 
@@ -133,8 +133,8 @@ local function StepParse(guide)
 			local code = isNegation and string.sub(sp, 2) or sp
 			code = string.upper(code)
 
-			local isSelected = TurtleGuide.db and TurtleGuide.db.char and TurtleGuide.db.char.Dungeons and
-			TurtleGuide.db.char.Dungeons[code]
+			local isSelected = AegisPathfinder.db and AegisPathfinder.db.char and AegisPathfinder.db.char.Dungeons and
+			AegisPathfinder.db.char.Dungeons[code]
 
 			if isNegation then
 				hasNegations = true
@@ -150,13 +150,13 @@ local function StepParse(guide)
 
 	local function matchPlayStyleFilter(playstyle)
 		if not playstyle then return true end
-		local setting = TurtleGuide.db and TurtleGuide.db.char and TurtleGuide.db.char.PlayStyle or "SOLO"
+		local setting = AegisPathfinder.db and AegisPathfinder.db.char and AegisPathfinder.db.char.PlayStyle or "SOLO"
 		return string.upper(playstyle) == string.upper(setting)
 	end
 
 	local function matchAHFilter(ah)
 		if not ah then return true end
-		return TurtleGuide.db and TurtleGuide.db.char and not not TurtleGuide.db.char.UseAH
+		return AegisPathfinder.db and AegisPathfinder.db.char and not not AegisPathfinder.db.char.UseAH
 	end
 
 	for _, text in pairs(guidet) do
@@ -170,7 +170,7 @@ local function StepParse(guide)
 			and matchAHFilter(hasAH) then
 			local _, _, action, quest, tag = string.find(text, "^(%a) ([^|]*)(.*)")
 			if action and actiontypes[action] then
-				quest = TurtleGuide.trim(quest)
+				quest = AegisPathfinder.trim(quest)
 				
 				-- Deduplicate duplicate ACCEPT (A), TURNIN (T), and SETHEARTH (h) objectives
 				local cleanQuest = quest
@@ -207,7 +207,7 @@ local function StepParse(guide)
 		end
 	end
 	DumpQuestDebug(accepts, turnins, completes)
-	if haserrors and TurtleGuide:IsDebugging() then TurtleGuide:Print("This guide contains errors") end
+	if haserrors and AegisPathfinder:IsDebugging() then AegisPathfinder:Print("This guide contains errors") end
 
 	return actions, quests, tags
 end
@@ -220,7 +220,7 @@ end
 -- warmtoken so a queue from a previous guide stops draining.
 local WARM_BATCH = 5      -- requests per tick
 local WARM_INTERVAL = 0.1 -- seconds between ticks
-function TurtleGuide:WarmCaches(queue)
+function AegisPathfinder:WarmCaches(queue)
 	self.warmtoken = (self.warmtoken or 0) + 1
 	local token = self.warmtoken
 	local n = table.getn(queue)
@@ -245,7 +245,7 @@ function TurtleGuide:WarmCaches(queue)
 	drain()
 end
 
-function TurtleGuide:LoadGuide(name, complete)
+function AegisPathfinder:LoadGuide(name, complete)
 	if not name then return end
 	if complete then
 		self.db.char.completion[self.db.char.currentguide] = 1
@@ -265,7 +265,7 @@ function TurtleGuide:LoadGuide(name, complete)
 		-- QuestShell+ format (Lua table with steps array)
 		self.actions, self.quests, self.tags = self:ParseQuestShellPlus(guideContent)
 	else
-		-- Traditional TurtleGuide format (string)
+		-- Traditional AegisPathfinder format (string)
 		self.actions, self.quests, self.tags = StepParse(guideContent)
 	end
 
@@ -325,7 +325,7 @@ end
 
 -- Get quest prerequisites from pfQuest database (if available)
 -- Returns table of prerequisite QIDs, or nil if not found
-function TurtleGuide:GetQuestPrerequisites(qid)
+function AegisPathfinder:GetQuestPrerequisites(qid)
 	if not qid then return nil end
 	qid = tonumber(qid)
 	if not qid then return nil end
@@ -343,7 +343,7 @@ function TurtleGuide:GetQuestPrerequisites(qid)
 end
 
 -- Check if a quest is possible for the player's race and class
-function TurtleGuide:IsQuestPossible(qid, visited)
+function AegisPathfinder:IsQuestPossible(qid, visited)
 	if not qid then return true end
 	qid = tonumber(qid)
 	if not qid then return true end
@@ -440,7 +440,7 @@ end
 
 -- Recursively mark all prerequisites of a quest as completed
 -- Returns count of newly marked quests
-function TurtleGuide:MarkPrerequisitesCompleted(qid, visited)
+function AegisPathfinder:MarkPrerequisitesCompleted(qid, visited)
 	if not qid then return 0 end
 	visited = visited or {}
 
@@ -467,7 +467,7 @@ end
 
 -- Check if a quest's prerequisites are met
 -- Returns: met (bool), unmetQids (table of unmet prerequisite QIDs)
-function TurtleGuide:ArePrerequisitesMet(qid)
+function AegisPathfinder:ArePrerequisitesMet(qid)
 	if not qid then return true, {} end
 	qid = tonumber(qid)
 	if not qid then return true, {} end
@@ -493,14 +493,14 @@ function TurtleGuide:ArePrerequisitesMet(qid)
 end
 
 -- Check if a quest (by QID) is in the player's quest log
-function TurtleGuide:IsQuestInLogByQid(qid)
+function AegisPathfinder:IsQuestInLogByQid(qid)
 	qid = tonumber(qid)
 	if not qid then return false end
 	return C_QuestLog.IsOnQuest(qid)
 end
 
 -- Get quest name by QID
-function TurtleGuide:GetQuestNameByQid(qid)
+function AegisPathfinder:GetQuestNameByQid(qid)
 	qid = tonumber(qid)
 	if not qid then return nil end
 
@@ -526,7 +526,7 @@ end
 
 -- Find the guide step index for a given QID
 -- Returns step index or nil if not found
-function TurtleGuide:FindGuideStepByQid(qid)
+function AegisPathfinder:FindGuideStepByQid(qid)
 	if not qid or not self.quests or not self.actions then return nil end
 	qid = tostring(qid)
 
@@ -541,7 +541,7 @@ end
 
 -- Get unmet prerequisites for current objective, with guide step info
 -- Returns table: { {qid=123, name="Quest Name", guideStep=5}, ... }
-function TurtleGuide:GetUnmetPrerequisites(stepIndex)
+function AegisPathfinder:GetUnmetPrerequisites(stepIndex)
 	stepIndex = stepIndex or self.current
 	if not stepIndex then return {} end
 
@@ -564,7 +564,7 @@ function TurtleGuide:GetUnmetPrerequisites(stepIndex)
 end
 
 -- Smart guide switching: scan quest log and skip completed content
-function TurtleGuide:SmartSkipToStep()
+function AegisPathfinder:SmartSkipToStep()
 	if not self.actions or not self.quests then return end
 
 	-- Name-keyed maps serve steps without a |QID| tag; QID-keyed maps are
@@ -595,7 +595,7 @@ function TurtleGuide:SmartSkipToStep()
 	-- Clear any stale/corrupted completed flags for this quest and all its candidates in the guide.
 	for i, quest in ipairs(self.quests) do
 		local cleanQuest = string.gsub(quest, "@.*@", "")
-		cleanQuest = string.gsub(cleanQuest, TurtleGuide.Locale.PART_GSUB, "")
+		cleanQuest = string.gsub(cleanQuest, AegisPathfinder.Locale.PART_GSUB, "")
 		local qidNum = tonumber((self:GetObjectiveTag("QID", i)))
 		local inLog
 		if qidNum then
@@ -621,7 +621,7 @@ function TurtleGuide:SmartSkipToStep()
 			local qid = self:GetObjectiveTag("QID", i)
 			if qid and (action == "ACCEPT" or action == "COMPLETE" or action == "TURNIN") then
 				local cleanQuest = string.gsub(quest, "@.*@", "")
-				cleanQuest = string.gsub(cleanQuest, TurtleGuide.Locale.PART_GSUB, "")
+				cleanQuest = string.gsub(cleanQuest, AegisPathfinder.Locale.PART_GSUB, "")
 				local qidInLog = inProgressQuestIDs[tonumber(qid)] or completedQuestIDs[tonumber(qid)]
 				-- If quest is in log, mark its prerequisites as completed
 				if qidInLog then
@@ -638,7 +638,7 @@ function TurtleGuide:SmartSkipToStep()
 									pfDB.quests.loc[preQid]["T"] or nil
 									if preQuestName then
 										local cleanPreQuest = string.gsub(preQuestName, "%[[0-9%+%-]+]%s", "")
-										cleanPreQuest = string.gsub(cleanPreQuest, TurtleGuide.Locale.PART_GSUB, "")
+										cleanPreQuest = string.gsub(cleanPreQuest, AegisPathfinder.Locale.PART_GSUB, "")
 										if cleanPreQuest == cleanQuest then
 											canInfer = false
 											break
@@ -677,7 +677,7 @@ function TurtleGuide:SmartSkipToStep()
 		local qid = self:GetObjectiveTag("QID", i)
 		if not qid then
 			local cleanQuest = string.gsub(quest, "@.*@", "")
-			cleanQuest = string.gsub(cleanQuest, TurtleGuide.Locale.PART_GSUB, "")
+			cleanQuest = string.gsub(cleanQuest, AegisPathfinder.Locale.PART_GSUB, "")
 			if self.db.char.completedquests[cleanQuest] then
 				if action == "TURNIN" or action == "ACCEPT" or action == "COMPLETE" or action == "RUN" then
 					self.turnedin[quest] = true
@@ -691,7 +691,7 @@ function TurtleGuide:SmartSkipToStep()
 	for i, quest in ipairs(self.quests) do
 		local action = self.actions[i]
 		local cleanQuest = string.gsub(quest, "@.*@", "")
-		cleanQuest = string.gsub(cleanQuest, TurtleGuide.Locale.PART_GSUB, "")
+		cleanQuest = string.gsub(cleanQuest, AegisPathfinder.Locale.PART_GSUB, "")
 		local qidNum = tonumber((self:GetObjectiveTag("QID", i)))
 		local isCompleted = (qidNum and self.db.char.completedquestsbyid[qidNum]) or
 		(not qidNum and self.db.char.completedquests[cleanQuest])
@@ -752,24 +752,24 @@ function TurtleGuide:SmartSkipToStep()
 	end
 
 	if furthestStep > 1 then
-		self:Debug(string.format(TurtleGuide.Locale["Skipping to step %d (completed content detected)"], furthestStep))
+		self:Debug(string.format(AegisPathfinder.Locale["Skipping to step %d (completed content detected)"], furthestStep))
 	end
 
 	-- Set initial current position
 	self.current = furthestStep
 end
 
-function TurtleGuide:DebugGuideSequence(dumpquests)
+function AegisPathfinder:DebugGuideSequence(dumpquests)
 	local accepts, turnins, completes = {}, {}, {}
 	local function DebugParse(guide)
 		local uniqueid, haserrors = 1
-		local guidet = TurtleGuide.split("\n", guide)
+		local guidet = AegisPathfinder.split("\n", guide)
 		for _, text in pairs(guidet) do
 			if text ~= "" then
 				local _, _, action, quest, tag = string.find(text, "^(%a) ([^|]*)(.*)")
-				if action and not actiontypes[action] then TurtleGuide:Debug("Unknown action: " .. text) end
+				if action and not actiontypes[action] then AegisPathfinder:Debug("Unknown action: " .. text) end
 				if quest then
-					quest = TurtleGuide.trim(quest)
+					quest = AegisPathfinder.trim(quest)
 					quest = quest .. "@" .. uniqueid .. "@"
 					uniqueid = uniqueid + 1
 					haserrors = DebugQuestObjective(text, action, quest, accepts, turnins, completes) or haserrors

@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 17-22 Stonetalon/Barrens/Ashenvale
-TurtleGuide:RegisterGuide("RXP/17-22 Stonetalon/Barrens/Ashenvale", "RXP/RestedXP Horde 22-30\22-24 Hillsbrad", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/17-22 Stonetalon/Barrens/Ashenvale", "RXP/RestedXP Horde 22-30\22-24 Hillsbrad", "Horde", function()
 return [[
 
 N 17-22 Stonetalon/Barrens/Ashenvale |N|Converted from RestedXP guide|

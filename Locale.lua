@@ -14,7 +14,8 @@ local engrish = {
 	-- Mapping.lua
 	COORD_MATCH = "%(([%d.]+),%s?([%d.]+)%)",
 
-	-- TurtleGuide specific
+	-- AegisPathfinder specific
+	["Imported your saved progress from TurtleGuide."] = "Imported your saved progress from TurtleGuide.",
 	["Select Your Race"] = "Select Your Race",
 	["Choose a leveling route based on your race:"] = "Choose a leveling route based on your race:",
 	["Route Selected"] = "Route Selected",
@@ -142,5 +143,5 @@ if loc == "ruRU" then localized = {
 
 -- Metatable majicks... makes localized table fallback to engrish, or fallback to the index requested.
 -- This ensures we ALWAYS get a value back, even if it's the index we requested originally
-TURTLEGUIDE_LOCALE = localized and setmetatable(localized, {__index = function(t,i) return engrish[i] or i end})
+AEGISPATHFINDER_LOCALE = localized and setmetatable(localized, {__index = function(t,i) return engrish[i] or i end})
 	or setmetatable(engrish, {__index = function(t,i) return i end})

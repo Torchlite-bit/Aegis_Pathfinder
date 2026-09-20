@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Dun Morogh (1-12)", "Darkshore (12-17)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Dun Morogh (1-12)", "Darkshore (12-17)", "Alliance",function()
 
 return [[
 

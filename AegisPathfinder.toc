@@ -1,12 +1,12 @@
 ## Interface: 11200
 
-## Title: VanillaGuide+
-## Notes: Hybrid leveling guide with race-based routing and TomTom/pfQuest navigation
-## Author: VanillaGuide+ Contributors
+## Title: AEGIS: Pathfinder
+## Notes: Classic+ leveling guide for the Turtle WoW-lineage 1.12 client family.|nPart of the AEGIS addon suite.
+## Author: AEGIS: Pathfinder Contributors (see CONTRIBUTORS.md)
 ## Version: @project-version@
 ## X-Category: Quest
 
-## SavedVariables: TurtleGuideDB
+## SavedVariables: AegisPathfinderDB, TurtleGuideDB
 
 ## OptionalDeps: TomTom, pfQuest, MetaMap, MetaMapBWP
 

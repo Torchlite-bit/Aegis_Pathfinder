@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 37-38 Dustwallow Marsh
-TurtleGuide:RegisterGuide("RXP/37-38 Dustwallow Marsh", "RXP/RestedXP Horde 30-40\38-39 Alterac/Arathi", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/37-38 Dustwallow Marsh", "RXP/RestedXP Horde 30-40\38-39 Alterac/Arathi", "Horde", function()
 return [[
 
 N 37-38 Dustwallow Marsh |N|Converted from RestedXP guide|

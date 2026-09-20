@@ -1,8 +1,8 @@
 -- Optimized Guide: Winterspring (54-55)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Winterspring (54-55)", "Optimized/Burning Steppes (55-56)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Winterspring (54-55)", "Optimized/Burning Steppes (55-56)", "Alliance", function()
 
 return [[
 

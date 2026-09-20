@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 1-6 Coldridge Valley
-TurtleGuide:RegisterGuide("RXP/1-6 Coldridge Valley", "RXP/6-11 Dun Morogh (Hunter)", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/1-6 Coldridge Valley", "RXP/6-11 Dun Morogh (Hunter)", "Alliance", function()
 return [[
 
 N 1-6 Coldridge Valley |N|Converted from RestedXP guide|

@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 59-59 Winterspring/Silithus I
-TurtleGuide:RegisterGuide("RXP_Hardcore/59-59 Winterspring/Silithus I", "RXP_Hardcore/59-60 Winterspring/Silithus II", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/59-59 Winterspring/Silithus I", "RXP_Hardcore/59-60 Winterspring/Silithus II", "Horde", function()
 return [[
 
 N 59-59 Winterspring/Silithus I |N|Converted from RestedXP guide|

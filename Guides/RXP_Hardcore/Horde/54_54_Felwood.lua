@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 54-54 Felwood
-TurtleGuide:RegisterGuide("RXP_Hardcore/54-54 Felwood", "RXP_Hardcore/54-56 Un'Goro Crater", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/54-54 Felwood", "RXP_Hardcore/54-56 Un'Goro Crater", "Horde", function()
 return [[
 
 N 54-54 Felwood |N|Converted from RestedXP guide|

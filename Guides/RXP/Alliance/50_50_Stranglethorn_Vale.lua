@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 50-50 Stranglethorn Vale
-TurtleGuide:RegisterGuide("RXP/50-50 Stranglethorn Vale", "RXP/50-51 Searing Gorge", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/50-50 Stranglethorn Vale", "RXP/50-51 Searing Gorge", "Alliance", function()
 return [[
 
 N 50-50 Stranglethorn Vale |N|Converted from RestedXP guide|

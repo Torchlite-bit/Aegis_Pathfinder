@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 30-32 Duskwood
-TurtleGuide:RegisterGuide("RXP_Hardcore/30-32 Duskwood", "RXP_Hardcore/32-33 Hillsbrad/Arathi I", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/30-32 Duskwood", "RXP_Hardcore/32-33 Hillsbrad/Arathi I", "Alliance", function()
 return [[
 
 N 30-32 Duskwood |N|Converted from RestedXP guide|

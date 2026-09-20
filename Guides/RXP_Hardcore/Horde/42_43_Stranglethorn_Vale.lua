@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 42-43 Stranglethorn Vale
-TurtleGuide:RegisterGuide("RXP_Hardcore/42-43 Stranglethorn Vale", "RXP_Hardcore/43-43 Desolace II", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/42-43 Stranglethorn Vale", "RXP_Hardcore/43-43 Desolace II", "Horde", function()
 return [[
 
 N 42-43 Stranglethorn Vale |N|Converted from RestedXP guide|

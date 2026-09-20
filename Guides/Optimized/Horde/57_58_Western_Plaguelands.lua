@@ -1,8 +1,8 @@
 -- Optimized Guide: Western Plaguelands (57-58)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Western Plaguelands (57-58)", "Optimized/Winterspring (58-60)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Western Plaguelands (57-58)", "Optimized/Winterspring (58-60)", "Horde", function()
 
 return [[
 

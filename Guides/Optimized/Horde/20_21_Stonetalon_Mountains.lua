@@ -1,8 +1,8 @@
 -- Optimized Guide: Stonetalon Mountains (20-21)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Stonetalon (20-21)", "Optimized/Ashenvale (21-21)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Stonetalon (20-21)", "Optimized/Ashenvale (21-21)", "Horde", function()
 
 return [[
 

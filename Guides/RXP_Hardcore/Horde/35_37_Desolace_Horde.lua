@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 35-37 Desolace Horde
-TurtleGuide:RegisterGuide("RXP_Hardcore/35-37 Desolace Horde", "RXP_Hardcore/37-38 Northern Stranglethorn", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/35-37 Desolace Horde", "RXP_Hardcore/37-38 Northern Stranglethorn", "Horde", function()
 return [[
 
 N 35-37 Desolace Horde |N|Converted from RestedXP guide|

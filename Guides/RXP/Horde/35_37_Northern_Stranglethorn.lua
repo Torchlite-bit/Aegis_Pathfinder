@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 35-37 Northern Stranglethorn
-TurtleGuide:RegisterGuide("RXP/35-37 Northern Stranglethorn", "RXP/37-38 Dustwallow Marsh", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/35-37 Northern Stranglethorn", "RXP/37-38 Dustwallow Marsh", "Horde", function()
 return [[
 
 N 35-37 Northern Stranglethorn |N|Converted from RestedXP guide|

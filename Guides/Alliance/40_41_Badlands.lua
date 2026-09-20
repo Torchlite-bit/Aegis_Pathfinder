@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Badlands (40-41)", "Swamp of Sorrows (41-42)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Badlands (40-41)", "Swamp of Sorrows (41-42)", "Alliance", function()
 return [[
 
 A The Tome of Nobility |QID|4486| |N|Brandur Ironhammer in Hall of Mysteries (23.32, 6.33)|  |C|Paladin| |R|Dwarf|

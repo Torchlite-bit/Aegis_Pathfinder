@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Elwynn Forest (1-12)", "Westfall (12-17)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Elwynn Forest (1-12)", "Westfall (12-17)", "Alliance",function()
 
 return [[
 

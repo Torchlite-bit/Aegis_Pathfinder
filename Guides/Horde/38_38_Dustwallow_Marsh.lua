@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Dustwallow Marsh (38-38)", "Stranglethorn (38-40)", "Horde",function()
+AegisPathfinder:RegisterGuide("Dustwallow Marsh (38-38)", "Stranglethorn (38-40)", "Horde",function()
 
 return [[
 

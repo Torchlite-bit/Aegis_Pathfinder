@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 12-14 Loch Modan (Dwarf/Gnome)
-TurtleGuide:RegisterGuide("RXP/12-14 Loch Modan (Dwarf/Gnome)", "RXP/13-15 Westfall", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/12-14 Loch Modan (Dwarf/Gnome)", "RXP/13-15 Westfall", "Alliance", function()
 return [[
 
 N 12-14 Loch Modan (Dwarf/Gnome) |N|Converted from RestedXP guide|

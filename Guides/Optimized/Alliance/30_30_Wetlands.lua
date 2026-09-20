@@ -1,8 +1,8 @@
 -- Optimized Guide: Wetlands (30-30)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Wetlands (30-30)", nil, "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Wetlands (30-30)", nil, "Alliance", function()
 
 return [[
 

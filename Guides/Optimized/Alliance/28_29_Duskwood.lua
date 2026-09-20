@@ -1,8 +1,8 @@
 -- Optimized Guide: Duskwood (28-29)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Duskwood (28-29)", "Optimized/Ashenvale (29-30)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Duskwood (28-29)", "Optimized/Ashenvale (29-30)", "Alliance", function()
 
 return [[
 

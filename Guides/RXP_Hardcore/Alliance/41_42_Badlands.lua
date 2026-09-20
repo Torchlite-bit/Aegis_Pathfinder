@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 41-42 Badlands
-TurtleGuide:RegisterGuide("RXP_Hardcore/41-42 Badlands", "RXP_Hardcore/42-43 Stranglethorn Vale III", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/41-42 Badlands", "RXP_Hardcore/42-43 Stranglethorn Vale III", "Alliance", function()
 return [[
 
 N 41-42 Badlands |N|Converted from RestedXP guide|

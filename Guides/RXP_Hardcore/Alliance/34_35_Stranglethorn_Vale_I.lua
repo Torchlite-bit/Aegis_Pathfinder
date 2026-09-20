@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 34-35 Stranglethorn Vale I
-TurtleGuide:RegisterGuide("RXP_Hardcore/34-35 Stranglethorn Vale I", "RXP_Hardcore/35-36 Hillsbrad/Arathi II", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/34-35 Stranglethorn Vale I", "RXP_Hardcore/35-36 Hillsbrad/Arathi II", "Alliance", function()
 return [[
 
 N 34-35 Stranglethorn Vale I |N|Converted from RestedXP guide|

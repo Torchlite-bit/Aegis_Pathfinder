@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Alterac Mountains (36-37)", "Arathi Highlands (37-38)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Alterac Mountains (36-37)", "Arathi Highlands (37-38)", "Alliance",function()
 
 return [[
 

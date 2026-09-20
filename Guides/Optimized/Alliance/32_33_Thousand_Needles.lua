@@ -1,8 +1,8 @@
 -- Optimized Guide: Thousand Needles (32-33)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Thousand Needles (32-33)", "Optimized/Stonetalon (33-33)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Thousand Needles (32-33)", "Optimized/Stonetalon (33-33)", "Alliance", function()
 
 return [[
 

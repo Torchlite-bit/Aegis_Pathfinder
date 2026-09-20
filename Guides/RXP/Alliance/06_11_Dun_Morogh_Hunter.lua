@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 6-11 Dun Morogh (Hunter)
-TurtleGuide:RegisterGuide("RXP/6-11 Dun Morogh (Hunter)", "RXP/11-13 Loch Modan (Hunter)", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/6-11 Dun Morogh (Hunter)", "RXP/11-13 Loch Modan (Hunter)", "Alliance", function()
 return [[
 
 N 6-11 Dun Morogh (Hunter) |N|Converted from RestedXP guide|

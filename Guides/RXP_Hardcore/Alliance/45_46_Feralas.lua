@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 45-46 Feralas
-TurtleGuide:RegisterGuide("RXP_Hardcore/45-46 Feralas", "RXP_Hardcore/46-47 Hinterlands/Badlands", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/45-46 Feralas", "RXP_Hardcore/46-47 Hinterlands/Badlands", "Alliance", function()
 return [[
 
 N 45-46 Feralas |N|Converted from RestedXP guide|

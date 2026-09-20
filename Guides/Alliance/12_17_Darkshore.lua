@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Darkshore (12-17)", "Loch Modan (17-18)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Darkshore (12-17)", "Loch Modan (17-18)", "Alliance",function()
 
 return [[
 

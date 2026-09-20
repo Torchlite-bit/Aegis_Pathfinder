@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 33-34 Shimmering Flats
-TurtleGuide:RegisterGuide("RXP/33-34 Shimmering Flats", "RXP/RestedXP Horde 30-40\34-35 Desolace", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/33-34 Shimmering Flats", "RXP/RestedXP Horde 30-40\34-35 Desolace", "Horde", function()
 return [[
 
 N 33-34 Shimmering Flats |N|Converted from RestedXP guide|

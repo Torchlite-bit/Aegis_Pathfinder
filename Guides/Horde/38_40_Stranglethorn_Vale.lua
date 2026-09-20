@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Stranglethorn (38-40)", "Badlands (40-41)", "Horde",function()
+AegisPathfinder:RegisterGuide("Stranglethorn (38-40)", "Badlands (40-41)", "Horde",function()
 
 return [[
 

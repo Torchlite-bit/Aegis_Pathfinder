@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Loch Modan (17-18)", "Redridge Mountains (18-20)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Loch Modan (17-18)", "Redridge Mountains (18-20)", "Alliance",function()
 
 
 return [[

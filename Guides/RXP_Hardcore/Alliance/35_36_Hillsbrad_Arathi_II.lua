@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 35-36 Hillsbrad/Arathi II
-TurtleGuide:RegisterGuide("RXP_Hardcore/35-36 Hillsbrad/Arathi II", "RXP_Hardcore/36-37 Desolace", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/35-36 Hillsbrad/Arathi II", "RXP_Hardcore/36-37 Desolace", "Alliance", function()
 return [[
 
 N 35-36 Hillsbrad/Arathi II |N|Converted from RestedXP guide|

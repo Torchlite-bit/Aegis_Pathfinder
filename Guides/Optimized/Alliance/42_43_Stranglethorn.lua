@@ -1,8 +1,8 @@
 -- Optimized Guide: Stranglethorn Vale (42-43)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Stranglethorn (42-43)", "Optimized/Tanaris (43-43)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Stranglethorn (42-43)", "Optimized/Tanaris (43-43)", "Alliance", function()
 
 return [[
 

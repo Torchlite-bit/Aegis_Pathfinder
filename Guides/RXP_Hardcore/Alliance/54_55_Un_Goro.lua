@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 54-55 Un'Goro
-TurtleGuide:RegisterGuide("RXP_Hardcore/54-55 Un'Goro", "RXP_Hardcore/55-56 Felwood II", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/54-55 Un'Goro", "RXP_Hardcore/55-56 Felwood II", "Alliance", function()
 return [[
 
 N 54-55 Un'Goro |N|Converted from RestedXP guide|

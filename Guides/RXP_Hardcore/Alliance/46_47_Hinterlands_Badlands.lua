@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 46-47 Hinterlands/Badlands
-TurtleGuide:RegisterGuide("RXP_Hardcore/46-47 Hinterlands/Badlands", "RXP_Hardcore/47-48 Tanaris", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/46-47 Hinterlands/Badlands", "RXP_Hardcore/47-48 Tanaris", "Alliance", function()
 return [[
 
 N 46-47 Hinterlands/Badlands |N|Converted from RestedXP guide|

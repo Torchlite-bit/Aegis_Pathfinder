@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 40-41 Desolace
-TurtleGuide:RegisterGuide("RXP/40-41 Desolace", "RXP/41-41 Badlands", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/40-41 Desolace", "RXP/41-41 Badlands", "Alliance", function()
 return [[
 
 N 40-41 Desolace |N|Converted from RestedXP guide|

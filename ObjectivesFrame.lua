@@ -1,6 +1,6 @@
 
-local TurtleGuide = TurtleGuide
-local L = TurtleGuide.Locale
+local AegisPathfinder = AegisPathfinder
+local L = AegisPathfinder.Locale
 local ww = WidgetWarlock
 
 
@@ -20,18 +20,18 @@ local rows = {}
 local scrollbar, upbutt, downbutt, title, completed
 
 
-local frame = CreateFrame("Frame", "TurtleGuideObjectives", UIParent)
-TurtleGuide.objectiveframe = frame
+local frame = CreateFrame("Frame", "AegisPathfinderObjectives", UIParent)
+AegisPathfinder.objectiveframe = frame
 frame:SetFrameStrata("DIALOG")
 frame:SetWidth(DEFAULT_WIDTH)
 frame:SetHeight(DEFAULT_HEIGHT)
-frame:SetPoint("TOPRIGHT", TurtleGuide.statusframe, "BOTTOMRIGHT")
+frame:SetPoint("TOPRIGHT", AegisPathfinder.statusframe, "BOTTOMRIGHT")
 frame:SetBackdrop(ww.TooltipBorderBG)
 frame:SetBackdropColor(0.09, 0.09, 0.19, 1)
 frame:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.5)
 frame:Hide()
-frame:SetScript("OnShow", function() TurtleGuide:UpdateObjectivePanel() end)
-table.insert(UISpecialFrames, "TurtleGuideObjectives")
+frame:SetScript("OnShow", function() AegisPathfinder:UpdateObjectivePanel() end)
+table.insert(UISpecialFrames, "AegisPathfinderObjectives")
 
 -- Make frame resizable
 frame:SetResizable(true)
@@ -79,25 +79,25 @@ grip:SetScript("OnMouseUp", function()
 		dot:SetTexture(0.5, 0.5, 0.5, 0.7)
 	end
 	frame:StopMovingOrSizing()
-	TurtleGuide:OnObjectiveFrameResized()
+	AegisPathfinder:OnObjectiveFrameResized()
 end)
 
 frame:SetScript("OnSizeChanged", function()
 	if rows and rows[1] then
-		TurtleGuide:OnObjectiveFrameResized()
+		AegisPathfinder:OnObjectiveFrameResized()
 	end
 end)
 
 
 local function ResetScrollbar()
 	local f = this
-	local newval = math.max(0, (TurtleGuide.current or 0) - NUMROWS / 2 - 1)
-	local steps = TurtleGuide.actions and table.getn(TurtleGuide.actions) or 0
+	local newval = math.max(0, (AegisPathfinder.current or 0) - NUMROWS / 2 - 1)
+	local steps = AegisPathfinder.actions and table.getn(AegisPathfinder.actions) or 0
 
 	scrollbar:SetMinMaxValues(0, math.max(steps - NUMROWS, 1))
 	scrollbar:SetValue(newval)
 
-	TurtleGuide:UpdateOHPanel()
+	AegisPathfinder:UpdateOHPanel()
 end
 
 local function OnShow(f)
@@ -106,8 +106,8 @@ local function OnShow(f)
 	f:SetAlpha(0)
 	f:SetScript("OnUpdate", ww.FadeIn)
 
-	if TurtleGuide.optionsframe:IsVisible() then HideUIPanel(TurtleGuide.optionsframe) end
-	if TurtleGuide.guidelistframe:IsVisible() then HideUIPanel(TurtleGuide.guidelistframe) end
+	if AegisPathfinder.optionsframe:IsVisible() then HideUIPanel(AegisPathfinder.optionsframe) end
+	if AegisPathfinder.guidelistframe:IsVisible() then HideUIPanel(AegisPathfinder.guidelistframe) end
 end
 
 
@@ -127,7 +127,7 @@ end
 
 local function CreateButton(parent, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20)
 	local b = CreateFrame("Button", nil, parent)
-	if TurtleGuide.select("#", a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20) > 0 then b:SetPoint(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20) end
+	if AegisPathfinder.select("#", a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20) > 0 then b:SetPoint(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20) end
 	b:SetWidth(80)
 	b:SetHeight(22)
 
@@ -151,29 +151,29 @@ local function CreateButton(parent, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11
 end
 
 
-function TurtleGuide:UpdateObjectivePanel()
+function AegisPathfinder:UpdateObjectivePanel()
 	frame:SetScript("OnShow", nil)
 	local guidebutton = CreateButton(frame, "BOTTOMRIGHT", -24, 6)
 	guidebutton:SetText("Guides")
-	guidebutton:SetScript("OnClick", function() frame:Hide(); TurtleGuide.guidelistframe:Show() end)
+	guidebutton:SetScript("OnClick", function() frame:Hide(); AegisPathfinder.guidelistframe:Show() end)
 
 	local configbutton = CreateButton(frame, "RIGHT", guidebutton, "LEFT")
 	configbutton:SetText(L["Config"])
-	configbutton:SetScript("OnClick", function() frame:Hide(); TurtleGuide.optionsframe:Show() end)
+	configbutton:SetScript("OnClick", function() frame:Hide(); AegisPathfinder.optionsframe:Show() end)
 
 	local routebutton = CreateButton(frame, "RIGHT", configbutton, "LEFT")
 	routebutton:SetText("Route")
-	routebutton:SetScript("OnClick", function() frame:Hide(); TurtleGuide:ShowRouteSelector() end)
+	routebutton:SetScript("OnClick", function() frame:Hide(); AegisPathfinder:ShowRouteSelector() end)
 
 	-- Return to Main button (only visible when branching)
 	local returnbutton = CreateButton(frame, "RIGHT", routebutton, "LEFT")
 	returnbutton:SetWidth(100)
 	returnbutton:SetText("Return Main")
-	returnbutton:SetScript("OnClick", function() TurtleGuide:ReturnFromBranch() end)
+	returnbutton:SetScript("OnClick", function() AegisPathfinder:ReturnFromBranch() end)
 	returnbutton:SetScript("OnEnter", function()
 		GameTooltip:SetOwner(this, "ANCHOR_TOP")
-		if TurtleGuide.db.char.branchsavedguide then
-			GameTooltip:SetText("Return to: " .. TurtleGuide.db.char.branchsavedguide)
+		if AegisPathfinder.db.char.branchsavedguide then
+			GameTooltip:SetText("Return to: " .. AegisPathfinder.db.char.branchsavedguide)
 		else
 			GameTooltip:SetText("Return to main route")
 		end
@@ -181,7 +181,7 @@ function TurtleGuide:UpdateObjectivePanel()
 	returnbutton:SetScript("OnLeave", function() GameTooltip:Hide() end)
 	frame.returnbutton = returnbutton
 
-	if TurtleGuide.db.char.debug then
+	if AegisPathfinder.db.char.debug then
 		local b = CreateButton(frame, "RIGHT", returnbutton, "LEFT")
 		b:SetText("Debug All")
 		b:SetScript("OnClick", function() frame:Hide(); self:DebugGuideSequence(true) end)
@@ -207,7 +207,7 @@ function TurtleGuide:UpdateObjectivePanel()
 	-- Navigation buttons in header
 	local prevHeaderBtn = CreateButton(currentHeader, "RIGHT", currentHeader, "RIGHT", -90, 0)
 	prevHeaderBtn:SetWidth(32) prevHeaderBtn:SetText("<")
-	prevHeaderBtn:SetScript("OnClick", function() TurtleGuide:GoToPreviousObjective() end)
+	prevHeaderBtn:SetScript("OnClick", function() AegisPathfinder:GoToPreviousObjective() end)
 	prevHeaderBtn:SetScript("OnEnter", function()
 		GameTooltip:SetOwner(this, "ANCHOR_TOP")
 		GameTooltip:SetText("Previous objective")
@@ -216,7 +216,7 @@ function TurtleGuide:UpdateObjectivePanel()
 
 	local nextHeaderBtn = CreateButton(currentHeader, "LEFT", prevHeaderBtn, "RIGHT", 2, 0)
 	nextHeaderBtn:SetWidth(32) nextHeaderBtn:SetText(">")
-	nextHeaderBtn:SetScript("OnClick", function() TurtleGuide:SkipToNextObjective() end)
+	nextHeaderBtn:SetScript("OnClick", function() AegisPathfinder:SkipToNextObjective() end)
 	nextHeaderBtn:SetScript("OnEnter", function()
 		GameTooltip:SetOwner(this, "ANCHOR_TOP")
 		GameTooltip:SetText("Skip to next objective")
@@ -225,7 +225,7 @@ function TurtleGuide:UpdateObjectivePanel()
 
 	local skipHeaderBtn = CreateButton(currentHeader, "LEFT", nextHeaderBtn, "RIGHT", 2, 0)
 	skipHeaderBtn:SetWidth(32) skipHeaderBtn:SetText(">>")
-	skipHeaderBtn:SetScript("OnClick", function() TurtleGuide:SetTurnedIn(); TurtleGuide:UpdateStatusFrame() end)
+	skipHeaderBtn:SetScript("OnClick", function() AegisPathfinder:SetTurnedIn(); AegisPathfinder:UpdateStatusFrame() end)
 	skipHeaderBtn:SetScript("OnEnter", function()
 		GameTooltip:SetOwner(this, "ANCHOR_TOP")
 		GameTooltip:SetText("Mark complete and advance")
@@ -287,11 +287,11 @@ function TurtleGuide:UpdateObjectivePanel()
 		end)
 
 		row:SetScript("OnClick", function()
-			TurtleGuide:GoToObjective(row.i)
+			AegisPathfinder:GoToObjective(row.i)
 		end)
 
 		detailhover:SetScript("OnClick", function()
-			TurtleGuide:GoToObjective(row.i)
+			AegisPathfinder:GoToObjective(row.i)
 		end)
 
 		row.text = text
@@ -324,7 +324,7 @@ function TurtleGuide:UpdateObjectivePanel()
 end
 
 
-function TurtleGuide:OnObjectiveFrameResized()
+function AegisPathfinder:OnObjectiveFrameResized()
 	local w = frame:GetWidth()
 	local h = frame:GetHeight()
 
@@ -358,7 +358,7 @@ end
 
 local accepted = {}
 local acceptedDirty = true
-function TurtleGuide:UpdateOHPanel(value)
+function AegisPathfinder:UpdateOHPanel(value)
 	if not frame or not frame:IsVisible() then return end
 	-- The panel can be opened before any guide is parsed; everything below reads
 	-- the step list and the current step directly.
@@ -465,7 +465,7 @@ function TurtleGuide:UpdateOHPanel(value)
 			row.detail:SetText(progressText ~= "" and progressText or self:GetObjectiveTag("N", idx))
 			row.check:SetChecked(checked)
 
-			if (TurtleGuide.current > idx) and optional and not checked then
+			if (AegisPathfinder.current > idx) and optional and not checked then
 				row.text:SetTextColor(0.5, 0.5, 0.5)
 				row.check:Disable()
 			elseif not isActive and not checked then

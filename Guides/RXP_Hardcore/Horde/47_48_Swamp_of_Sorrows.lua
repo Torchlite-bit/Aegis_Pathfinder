@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 47-48 Swamp of Sorrows
-TurtleGuide:RegisterGuide("RXP_Hardcore/47-48 Swamp of Sorrows", "RXP_Hardcore/47-49 Tanaris", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/47-48 Swamp of Sorrows", "RXP_Hardcore/47-49 Tanaris", "Horde", function()
 return [[
 
 N 47-48 Swamp of Sorrows |N|Converted from RestedXP guide|

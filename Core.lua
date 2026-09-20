@@ -1,33 +1,39 @@
-local L = TURTLEGUIDE_LOCALE
-TURTLEGUIDE_LOCALE = nil
+local L = AEGISPATHFINDER_LOCALE
+AEGISPATHFINDER_LOCALE = nil
 
-TurtleGuide = AceLibrary("AceAddon-2.0"):new("AceConsole-2.0", "AceDB-2.0", "AceDebug-2.0", "AceEvent-2.0", "AceHook-2.1",
+AegisPathfinder = AceLibrary("AceAddon-2.0"):new("AceConsole-2.0", "AceDB-2.0", "AceDebug-2.0", "AceEvent-2.0", "AceHook-2.1",
     "FuBarPlugin-2.0")
+
+-- Compatibility alias for the pre-rebrand addon name. Guide files -- including
+-- any authored outside this repository -- call TurtleGuide:RegisterGuide(), so
+-- the old global has to keep resolving to the addon object.
+TurtleGuide = AegisPathfinder
+
 local T = AceLibrary("Tablet-2.0")
 
-TurtleGuide.guides = {}
-TurtleGuide.guidelist = {}
-TurtleGuide.nextzones = {}
-TurtleGuide.Locale = L
-TurtleGuide.myfaction = UnitFactionGroup("player")
+AegisPathfinder.guides = {}
+AegisPathfinder.guidelist = {}
+AegisPathfinder.nextzones = {}
+AegisPathfinder.Locale = L
+AegisPathfinder.myfaction = UnitFactionGroup("player")
 
 -- Race-based route definitions
-TurtleGuide.routes = {}
-TurtleGuide.manuallyUnchecked = {}
+AegisPathfinder.routes = {}
+AegisPathfinder.manuallyUnchecked = {}
 
 -- Route pack registry (named collections of per-race routes)
-TurtleGuide.routepacks = {}
+AegisPathfinder.routepacks = {}
 
 -- Turtle WoW custom race support
 -- Keyed by the locale-independent ChrRaces.dbc token from UnitRaceBase
 -- (ClassicAPI); Turtle's custom races arrive as their DBC filenames, so
 -- High Elf is BloodElf (raceID 10)
-TurtleGuide.turtleRaces = {}
+AegisPathfinder.turtleRaces = {}
 do
     local i = 1
     local raceInfo = C_CreatureInfo.GetRaceInfo(i)
     while raceInfo ~= nil do
-        TurtleGuide.turtleRaces[raceInfo.clientFileString] = {
+        AegisPathfinder.turtleRaces[raceInfo.clientFileString] = {
             route = string.gsub(raceInfo.raceName, "%s+", ""),
             faction = C_CreatureInfo.GetFactionInfo(i).groupTag,
         }
@@ -37,7 +43,7 @@ do
 end
 
 -- Get the normalized route name for a race token (defaults to the player)
-function TurtleGuide:GetRouteForRace(race)
+function AegisPathfinder:GetRouteForRace(race)
     race = race or (UnitRaceBase("player"))
     local raceInfo = self.turtleRaces[race]
     if raceInfo then
@@ -48,7 +54,7 @@ function TurtleGuide:GetRouteForRace(race)
     return race and (string.gsub(race, "%s", "")) or nil
 end
 
-TurtleGuide.icons = setmetatable({
+AegisPathfinder.icons = setmetatable({
     ACCEPT = "Interface\\GossipFrame\\AvailableQuestIcon",
     COMPLETE = "Interface\\Icons\\Ability_DualWield",
     TURNIN = "Interface\\GossipFrame\\ActiveQuestIcon",
@@ -56,7 +62,7 @@ TurtleGuide.icons = setmetatable({
     RUN = "Interface\\Icons\\Ability_Tracking",
     MAP = "Interface\\Icons\\Ability_Spy",
     FLY = "Interface\\Icons\\Ability_Rogue_Sprint",
-    SETHEARTH = "Interface\\AddOns\\TurtleGuide\\media\\resting.tga",
+    SETHEARTH = "Interface\\AddOns\\AegisPathfinder\\media\\resting.tga",
     HEARTH = "Interface\\Icons\\INV_Misc_Rune_01",
     NOTE = "Interface\\Icons\\INV_Misc_Note_01",
     GRIND = "Interface\\Icons\\INV_Stone_GrindingStone_05",
@@ -65,7 +71,7 @@ TurtleGuide.icons = setmetatable({
     BOAT = "Interface\\Icons\\Ability_Druid_AquaticForm",
     GETFLIGHTPOINT = "Interface\\Icons\\Ability_Hunter_EagleEye",
     PET = "Interface\\Icons\\Ability_Hunter_BeastCall02",
-    DIE = "Interface\\AddOns\\TurtleGuide\\media\\dead.tga",
+    DIE = "Interface\\AddOns\\AegisPathfinder\\media\\dead.tga",
     TRAIN = "Interface\\GossipFrame\\TrainerGossipIcon",
 }, { __index = function() return "Interface\\Icons\\INV_Misc_QuestionMark" end })
 
@@ -130,24 +136,24 @@ local defaults = {
 
 local options = {
     type = "group",
-    handler = TurtleGuide,
+    handler = AegisPathfinder,
     args = {
         DiagNav = {
             name = "Navigation Diag",
             desc = "Check navigation addon status",
             type = "execute",
             func = function()
-                TurtleGuide:Print("--- Navigation Status ---")
-                TurtleGuide:Print("Setting: " .. (TurtleGuide.db.char.waypointprovider or "auto"))
-                TurtleGuide:Print("Active: " .. TurtleGuide:GetWaypointProviderLabel())
+                AegisPathfinder:Print("--- Navigation Status ---")
+                AegisPathfinder:Print("Setting: " .. (AegisPathfinder.db.char.waypointprovider or "auto"))
+                AegisPathfinder:Print("Active: " .. AegisPathfinder:GetWaypointProviderLabel())
 
-                local available = TurtleGuide:GetWaypointProviders()
+                local available = AegisPathfinder:GetWaypointProviders()
                 if table.getn(available) == 0 then
-                    TurtleGuide:Print("No waypoint addon found - install TomTom or pfQuest")
+                    AegisPathfinder:Print("No waypoint addon found - install TomTom or pfQuest")
                     return
                 end
                 for _, provider in ipairs(available) do
-                    TurtleGuide:Print("  " .. provider.label .. " (" .. provider.name .. ")")
+                    AegisPathfinder:Print("  " .. provider.label .. " (" .. provider.name .. ")")
                 end
             end,
         },
@@ -156,8 +162,8 @@ local options = {
             desc = "Cycle the addon used for waypoints",
             type = "execute",
             func = function()
-                TurtleGuide:CycleWaypointProvider()
-                TurtleGuide:Print("Waypoints: " .. TurtleGuide:GetWaypointProviderLabel())
+                AegisPathfinder:CycleWaypointProvider()
+                AegisPathfinder:Print("Waypoints: " .. AegisPathfinder:GetWaypointProviderLabel())
             end,
         },
         TestWaypoint = {
@@ -165,8 +171,8 @@ local options = {
             desc = "Create a test waypoint at the centre of the current zone",
             type = "execute",
             func = function()
-                if not TurtleGuide:GetWaypointProvider() then
-                    TurtleGuide:Print("No waypoint addon found")
+                if not AegisPathfinder:GetWaypointProvider() then
+                    AegisPathfinder:Print("No waypoint addon found")
                     return
                 end
 
@@ -174,27 +180,27 @@ local options = {
                 SetMapToCurrentZone()
                 local c = GetCurrentMapContinent()
                 local z = GetCurrentMapZone()
-                TurtleGuide:Print(string.format("Zone data: c=%s z=%s", tostring(c), tostring(z)))
+                AegisPathfinder:Print(string.format("Zone data: c=%s z=%s", tostring(c), tostring(z)))
 
                 if not c or c == 0 or not z or z == 0 then
-                    TurtleGuide:Print("Could not get zone data")
+                    AegisPathfinder:Print("Could not get zone data")
                     return
                 end
 
-                local zone = TurtleGuide.select(z, GetMapZones(c))
-                TurtleGuide:SetWaypoint(50, 50, zone, "Test Waypoint")
-                TurtleGuide:Print("Waypoint sent to " .. TurtleGuide:GetWaypointProviderLabel())
+                local zone = AegisPathfinder.select(z, GetMapZones(c))
+                AegisPathfinder:SetWaypoint(50, 50, zone, "Test Waypoint")
+                AegisPathfinder:Print("Waypoint sent to " .. AegisPathfinder:GetWaypointProviderLabel())
             end,
         },
         TrackQuests = {
             name = "Auto Track",
             desc = L["Automatically track quests"],
             type = "toggle",
-            get = function() return TurtleGuide.db.char.trackquests end,
+            get = function() return AegisPathfinder.db.char.trackquests end,
             set = function(newValue)
-                TurtleGuide.db.char.trackquests = newValue
-                if TurtleGuide.optionsframe then
-                    TurtleGuide.optionsframe.qtrack:SetChecked(TurtleGuide.db.char.trackquests)
+                AegisPathfinder.db.char.trackquests = newValue
+                if AegisPathfinder.optionsframe then
+                    AegisPathfinder.optionsframe.qtrack:SetChecked(AegisPathfinder.db.char.trackquests)
                 end
             end,
             order = 1,
@@ -203,11 +209,11 @@ local options = {
             name = "Auto Skip Followups",
             desc = L["Automatically skip suggested follow-ups"],
             type = "toggle",
-            get = function() return TurtleGuide.db.char.skipfollowups end,
+            get = function() return AegisPathfinder.db.char.skipfollowups end,
             set = function(newValue)
-                TurtleGuide.db.char.skipfollowups = newValue
-                if TurtleGuide.optionsframe then
-                    TurtleGuide.optionsframe.qskipfollowups:SetChecked(TurtleGuide.db.char.skipfollowups)
+                AegisPathfinder.db.char.skipfollowups = newValue
+                if AegisPathfinder.optionsframe then
+                    AegisPathfinder.optionsframe.qskipfollowups:SetChecked(AegisPathfinder.db.char.skipfollowups)
                 end
             end,
             order = 2,
@@ -216,9 +222,9 @@ local options = {
             name = "Auto Accept/Turnin",
             desc = L["Automatically accept and turn in guide quests (hold SHIFT to suspend)"],
             type = "toggle",
-            get = function() return TurtleGuide.db.char.autoquest end,
+            get = function() return AegisPathfinder.db.char.autoquest end,
             set = function(newValue)
-                TurtleGuide.db.char.autoquest = newValue
+                AegisPathfinder.db.char.autoquest = newValue
             end,
             order = 2.5,
         },
@@ -226,7 +232,7 @@ local options = {
             name = "Toggle Status",
             desc = "Show/Hide Status Frame",
             type = "toggle",
-            get = function() return TurtleGuide.statusframe:IsVisible() end,
+            get = function() return AegisPathfinder.statusframe:IsVisible() end,
             set = "OnClick",
             order = 3,
         },
@@ -234,28 +240,28 @@ local options = {
             name = "Select Route",
             desc = "Choose a different leveling route",
             type = "execute",
-            func = function() TurtleGuide:ShowRouteSelector() end,
+            func = function() AegisPathfinder:ShowRouteSelector() end,
             order = 4,
         },
         ShowErrorLog = {
             name = "Error Log",
             desc = "Show captured Lua errors",
             type = "execute",
-            func = function() TurtleGuide:ShowErrorLog() end,
+            func = function() AegisPathfinder:ShowErrorLog() end,
             order = 5,
         },
         NextStep = {
             name = "Next",
             desc = "Skip to next objective",
             type = "execute",
-            func = function() TurtleGuide:SkipToNextObjective() end,
+            func = function() AegisPathfinder:SkipToNextObjective() end,
             order = 10,
         },
         PrevStep = {
             name = "Previous",
             desc = "Go back to previous objective",
             type = "execute",
-            func = function() TurtleGuide:GoToPreviousObjective() end,
+            func = function() AegisPathfinder:GoToPreviousObjective() end,
             order = 11,
         },
         GoToStep = {
@@ -264,36 +270,36 @@ local options = {
             type = "text",
             usage = "<number>",
             get = false,
-            set = function(v) TurtleGuide:GoToObjective(v) end,
+            set = function(v) AegisPathfinder:GoToObjective(v) end,
             order = 12,
         },
         Refresh = {
             name = "Refresh",
             desc = "Rescan quest log and update guide progress",
             type = "execute",
-            func = function() TurtleGuide:QueryServerCompletedQuests() end,
+            func = function() AegisPathfinder:QueryServerCompletedQuests() end,
             order = 13,
         },
         Branch = {
             name = "Branch",
             desc = "Branch to a different zone guide (saves current progress)",
             type = "execute",
-            func = function() TurtleGuide:ShowGuideList(true) end,
+            func = function() AegisPathfinder:ShowGuideList(true) end,
             order = 14,
         },
         ReturnMain = {
             name = "Return to Main",
             desc = "Return to main route from branch",
             type = "execute",
-            func = function() TurtleGuide:ReturnFromBranch() end,
+            func = function() AegisPathfinder:ReturnFromBranch() end,
             order = 15,
         },
         AutoBranch = {
             name = "Auto Branch",
             desc = "Automatically branch to Turtle WoW zones when available",
             type = "toggle",
-            get = function() return TurtleGuide.db.char.autobranch end,
-            set = function(v) TurtleGuide.db.char.autobranch = v end,
+            get = function() return AegisPathfinder.db.char.autobranch end,
+            set = function(v) AegisPathfinder.db.char.autobranch = v end,
             order = 16,
         },
         DebugRoute = {
@@ -301,33 +307,33 @@ local options = {
             desc = "Show debug info about route and guide selection",
             type = "execute",
             func = function()
-                local routeName = TurtleGuide:GetRouteForRace()
-                local route = TurtleGuide.routes[routeName]
+                local routeName = AegisPathfinder:GetRouteForRace()
+                local route = AegisPathfinder.routes[routeName]
                 local level = UnitLevel("player")
 
-                TurtleGuide:Print("--- Route Debug ---")
-                TurtleGuide:Print("Race token: " .. tostring((UnitRaceBase("player"))))
-                TurtleGuide:Print("Route name: " .. tostring(routeName))
-                TurtleGuide:Print("Route exists: " .. tostring(route ~= nil))
-                TurtleGuide:Print("Player level: " .. tostring(level))
-                TurtleGuide:Print("Current guide: " .. tostring(TurtleGuide.db.char.currentguide))
+                AegisPathfinder:Print("--- Route Debug ---")
+                AegisPathfinder:Print("Race token: " .. tostring((UnitRaceBase("player"))))
+                AegisPathfinder:Print("Route name: " .. tostring(routeName))
+                AegisPathfinder:Print("Route exists: " .. tostring(route ~= nil))
+                AegisPathfinder:Print("Player level: " .. tostring(level))
+                AegisPathfinder:Print("Current guide: " .. tostring(AegisPathfinder.db.char.currentguide))
 
                 -- Check if specific guides exist
-                TurtleGuide:Print("--- Guide Existence ---")
-                TurtleGuide:Print("'Thalassian Highlands (1-10)': " ..
-                    tostring(TurtleGuide.guides["Thalassian Highlands (1-10)"] ~= nil))
-                TurtleGuide:Print("'Teldrassil (1-12)': " .. tostring(TurtleGuide.guides["Teldrassil (1-12)"] ~= nil))
+                AegisPathfinder:Print("--- Guide Existence ---")
+                AegisPathfinder:Print("'Thalassian Highlands (1-10)': " ..
+                    tostring(AegisPathfinder.guides["Thalassian Highlands (1-10)"] ~= nil))
+                AegisPathfinder:Print("'Teldrassil (1-12)': " .. tostring(AegisPathfinder.guides["Teldrassil (1-12)"] ~= nil))
 
                 -- Show first few guides in guidelist
-                TurtleGuide:Print("--- First 5 guides in guidelist ---")
-                for i = 1, math.min(5, table.getn(TurtleGuide.guidelist)) do
-                    TurtleGuide:Print(i .. ": " .. tostring(TurtleGuide.guidelist[i]))
+                AegisPathfinder:Print("--- First 5 guides in guidelist ---")
+                for i = 1, math.min(5, table.getn(AegisPathfinder.guidelist)) do
+                    AegisPathfinder:Print(i .. ": " .. tostring(AegisPathfinder.guidelist[i]))
                 end
 
                 -- Show what GetNextRouteGuideForLevel would return
                 if route then
-                    local nextGuide = TurtleGuide:GetNextRouteGuideForLevel(route, level)
-                    TurtleGuide:Print("GetNextRouteGuideForLevel returns: " .. tostring(nextGuide))
+                    local nextGuide = AegisPathfinder:GetNextRouteGuideForLevel(route, level)
+                    AegisPathfinder:Print("GetNextRouteGuideForLevel returns: " .. tostring(nextGuide))
                 end
             end,
             order = 17,
@@ -337,33 +343,33 @@ local options = {
             desc = "Debug training detection",
             type = "execute",
             func = function()
-                TurtleGuide:Print("--- Skill Lines ---")
+                AegisPathfinder:Print("--- Skill Lines ---")
                 local numSkills = GetNumSkillLines()
-                TurtleGuide:Print("GetNumSkillLines: " .. tostring(numSkills))
+                AegisPathfinder:Print("GetNumSkillLines: " .. tostring(numSkills))
                 for i = 1, numSkills do
                     local name, isHeader, isExpanded, rank, maxRank = GetSkillLineInfo(i)
-                    TurtleGuide:Print(string.format("%d: %s (Header=%s, Rank=%s)", i, tostring(name), tostring(isHeader),
+                    AegisPathfinder:Print(string.format("%d: %s (Header=%s, Rank=%s)", i, tostring(name), tostring(isHeader),
                         tostring(rank)))
                 end
 
-                TurtleGuide:Print("--- Spellbook ---")
+                AegisPathfinder:Print("--- Spellbook ---")
                 local i = 1
                 while true do
                     local name, rank = GetSpellName(i, "spell")
                     if not name then break end
                     if string.find(string.lower(name), "blacksmith") or string.find(string.lower(name), "mining") then
-                        TurtleGuide:Print(string.format("Spell %d: %s (%s)", i, tostring(name), tostring(rank)))
+                        AegisPathfinder:Print(string.format("Spell %d: %s (%s)", i, tostring(name), tostring(rank)))
                     end
                     i = i + 1
                 end
 
-                TurtleGuide:Print("--- Training Check ---")
-                TurtleGuide:Print("IsProfessionLearned('Blacksmithing'): " ..
-                    tostring(TurtleGuide:IsProfessionLearned("Blacksmithing")))
-                TurtleGuide:Print("IsSpellLearned('Blacksmithing'): " ..
-                    tostring(TurtleGuide:IsSpellLearned("Blacksmithing")))
-                TurtleGuide:Print("IsTrainingCompleted('Train [Blacksmithing]'): " ..
-                    tostring(TurtleGuide:IsTrainingCompleted("Train [Blacksmithing]")))
+                AegisPathfinder:Print("--- Training Check ---")
+                AegisPathfinder:Print("IsProfessionLearned('Blacksmithing'): " ..
+                    tostring(AegisPathfinder:IsProfessionLearned("Blacksmithing")))
+                AegisPathfinder:Print("IsSpellLearned('Blacksmithing'): " ..
+                    tostring(AegisPathfinder:IsSpellLearned("Blacksmithing")))
+                AegisPathfinder:Print("IsTrainingCompleted('Train [Blacksmithing]'): " ..
+                    tostring(AegisPathfinder:IsTrainingCompleted("Train [Blacksmithing]")))
             end,
             order = 17,
         },
@@ -372,11 +378,11 @@ local options = {
             desc = "List all loaded guides",
             type = "execute",
             func = function()
-                TurtleGuide:Print("--- All Loaded Guides ---")
-                for i, name in ipairs(TurtleGuide.guidelist) do
-                    TurtleGuide:Print(i .. ": " .. name)
+                AegisPathfinder:Print("--- All Loaded Guides ---")
+                for i, name in ipairs(AegisPathfinder.guidelist) do
+                    AegisPathfinder:Print(i .. ": " .. name)
                 end
-                TurtleGuide:Print("Total: " .. table.getn(TurtleGuide.guidelist) .. " guides")
+                AegisPathfinder:Print("Total: " .. table.getn(AegisPathfinder.guidelist) .. " guides")
             end,
             order = 18,
         },
@@ -384,7 +390,7 @@ local options = {
             name = "Starting Zone",
             desc = "Choose a different starting zone (branch-and-rejoin)",
             type = "execute",
-            func = function() TurtleGuide:ShowStartingZoneSelector() end,
+            func = function() AegisPathfinder:ShowStartingZoneSelector() end,
             order = 19,
         },
         ResetStartingZone = {
@@ -392,10 +398,10 @@ local options = {
             desc = "Reset starting zone selection and start fresh",
             type = "execute",
             func = function()
-                TurtleGuide.db.char.startingzoneselected = false
-                TurtleGuide.db.char.selectedstartingzone = nil
-                TurtleGuide.db.char.startingzonecomplete = false
-                TurtleGuide:ShowStartingZoneSelector()
+                AegisPathfinder.db.char.startingzoneselected = false
+                AegisPathfinder.db.char.selectedstartingzone = nil
+                AegisPathfinder.db.char.startingzonecomplete = false
+                AegisPathfinder:ShowStartingZoneSelector()
             end,
             order = 20,
         },
@@ -404,14 +410,14 @@ local options = {
             desc = "List available route packs",
             type = "execute",
             func = function()
-                local packs = TurtleGuide:GetAvailableRoutePacks()
-                local current = TurtleGuide.db.char.routepack
-                TurtleGuide:Print("--- Available Route Packs ---")
+                local packs = AegisPathfinder:GetAvailableRoutePacks()
+                local current = AegisPathfinder.db.char.routepack
+                AegisPathfinder:Print("--- Available Route Packs ---")
                 for _, pack in ipairs(packs) do
                     local marker = (current == pack.name) and " |cff00ff00(active)|r" or ""
-                    TurtleGuide:Print("  " .. pack.displayName .. marker .. " - " .. pack.description)
+                    AegisPathfinder:Print("  " .. pack.displayName .. marker .. " - " .. pack.description)
                 end
-                TurtleGuide:Print("Use |cff00ccff/vg SetRoutePack <name>|r to switch.")
+                AegisPathfinder:Print("Use |cff00ccff/vg SetRoutePack <name>|r to switch.")
             end,
             order = 21,
         },
@@ -422,7 +428,7 @@ local options = {
             usage = "<pack name>",
             get = false,
             set = function(v)
-                TurtleGuide:SelectRoutePack(v)
+                AegisPathfinder:SelectRoutePack(v)
             end,
             order = 22,
         },
@@ -432,17 +438,31 @@ local options = {
 ---------
 -- FuBar
 ---------
-TurtleGuide.hasIcon = [[Interface\QuestFrame\UI-QuestLog-BookIcon]]
-TurtleGuide.title = "VanillaGuide+"
-TurtleGuide.defaultMinimapPosition = 215
-TurtleGuide.defaultPosition = "CENTER"
-TurtleGuide.cannotDetachTooltip = true
-TurtleGuide.tooltipHiddenWhenEmpty = false
-TurtleGuide.hideWithoutStandby = true
-TurtleGuide.independentProfile = true
+AegisPathfinder.hasIcon = [[Interface\QuestFrame\UI-QuestLog-BookIcon]]
+AegisPathfinder.title = "VanillaGuide+"
+AegisPathfinder.defaultMinimapPosition = 215
+AegisPathfinder.defaultPosition = "CENTER"
+AegisPathfinder.cannotDetachTooltip = true
+AegisPathfinder.tooltipHiddenWhenEmpty = false
+AegisPathfinder.hideWithoutStandby = true
+AegisPathfinder.independentProfile = true
 
-function TurtleGuide:OnInitialize()
-    self:RegisterDB("TurtleGuideDB")
+-- Adopt saved data written under the pre-rebrand SavedVariable name. Both
+-- globals are declared in the .toc so the old table is still loaded and can be
+-- handed over; this runs before RegisterDB so AceDB sees the migrated table.
+-- Only fires when there is nothing to lose: an existing, non-empty
+-- AegisPathfinderDB always wins.
+local function MigrateLegacySavedVariables()
+    if type(TurtleGuideDB) ~= "table" then return false end
+    if type(AegisPathfinderDB) == "table" and next(AegisPathfinderDB) then return false end
+    AegisPathfinderDB = TurtleGuideDB
+    return true
+end
+
+function AegisPathfinder:OnInitialize()
+    local migratedLegacyDB = MigrateLegacySavedVariables()
+
+    self:RegisterDB("AegisPathfinderDB")
     self:RegisterDefaults("char", defaults)
 
     self.db.char.Dungeons = self.db.char.Dungeons or {}
@@ -457,7 +477,7 @@ function TurtleGuide:OnInitialize()
     if self.db.char.UseAH == nil then
         self.db.char.UseAH = defaults.UseAH
     end
-    self:RegisterChatCommand({ "/vg", "/turtleguide" }, options)
+    self:RegisterChatCommand({ "/aegis", "/pathfinder", "/vg" }, options)
     self.OnMenuRequest = options
     self:SetupErrorCapture()
     if not FuBar then
@@ -470,9 +490,13 @@ function TurtleGuide:OnInitialize()
     end
     self:PositionStatusFrame()
     self:CreateConfigPanel()
+
+    if migratedLegacyDB then
+        self:Print(L["Imported your saved progress from TurtleGuide."])
+    end
 end
 
-function TurtleGuide:OnEnable()
+function AegisPathfinder:OnEnable()
     -- Hard requirement: ClassicAPI DLL v1.5.9+ (version encodes X*10000 + Y*100 + Z;
     -- untagged dev builds report 99999999). Quest tracking is built on its
     -- C_QuestLog functions and QUEST_ACCEPTED / QUEST_TURNED_IN events.
@@ -496,7 +520,7 @@ function TurtleGuide:OnEnable()
     end
 end
 
-function TurtleGuide:InitializeRoute()
+function AegisPathfinder:InitializeRoute()
     self:SyncWithPfQuestHistory()
     -- Migration: set default route pack for existing characters
     if not self.db.char.routepack and self.db.char.routeselected then
@@ -568,32 +592,32 @@ function TurtleGuide:InitializeRoute()
     self.enableDone = true
 end
 
-function TurtleGuide:OnDisable()
+function AegisPathfinder:OnDisable()
     self:UnregisterAllEvents()
 end
 
 -- Handle level up events for starting zone transition
-function TurtleGuide:PLAYER_LEVEL_UP()
+function AegisPathfinder:PLAYER_LEVEL_UP()
     -- Check if we should transition from starting zone to shared path
     if self.db.char.startingzoneselected and not self.db.char.startingzonecomplete then
         self:CheckStartingZoneCompletion()
     end
 end
 
-function TurtleGuide:OnTooltipUpdate()
+function AegisPathfinder:OnTooltipUpdate()
     local hint = "\nClick to show/hide the Status\nRight-click for Options"
     T:SetHint(hint)
 end
 
-function TurtleGuide:OnTextUpdate()
+function AegisPathfinder:OnTextUpdate()
     self:SetText("VanillaGuide+")
 end
 
-function TurtleGuide:OnClick()
-    if TurtleGuide.statusframe:IsVisible() then
-        HideUIPanel(TurtleGuide.statusframe)
+function AegisPathfinder:OnClick()
+    if AegisPathfinder.statusframe:IsVisible() then
+        HideUIPanel(AegisPathfinder.statusframe)
     else
-        ShowUIPanel(TurtleGuide.statusframe)
+        ShowUIPanel(AegisPathfinder.statusframe)
     end
 end
 
@@ -601,14 +625,14 @@ local REGISTER_BATCH = 25       -- guides registered per resume
 local REGISTER_INTERVAL = 0.02  -- seconds between resumes
 local INIT_SETTLE_DELAY = 0.5   -- seconds after registration before the guide loads
 
-function TurtleGuide:GetPlayerFaction()
+function AegisPathfinder:GetPlayerFaction()
     local faction = UnitFactionGroup("player")
     if faction and faction ~= "" then return faction end
     local info = C_CreatureInfo.GetFactionInfo(select(2, UnitRaceBase("player")))
     return info and info.groupTag
 end
 
-function TurtleGuide:PLAYER_ENTERING_WORLD()
+function AegisPathfinder:PLAYER_ENTERING_WORLD()
     self:UnregisterEvent("PLAYER_ENTERING_WORLD")
     self:PatchAstrolabe()
     self.myfaction = self:GetPlayerFaction()
@@ -656,7 +680,7 @@ function TurtleGuide:PLAYER_ENTERING_WORLD()
     pump()
 end
 
-function TurtleGuide:RegisterGuide(name, nextzone, faction, sequencefunc)
+function AegisPathfinder:RegisterGuide(name, nextzone, faction, sequencefunc)
     if self.myfaction == nil then
         self.deferguides = self.deferguides or {}
         table.insert(self.deferguides, { name, nextzone, faction, sequencefunc })
@@ -674,12 +698,12 @@ function TurtleGuide:RegisterGuide(name, nextzone, faction, sequencefunc)
 end
 
 -- Register a race-based route
-function TurtleGuide:RegisterRoute(race, route)
+function AegisPathfinder:RegisterRoute(race, route)
     self.routes[race] = route
 end
 
 -- Register a named route pack (collection of per-race routes)
-function TurtleGuide:RegisterRoutePack(packName, packInfo)
+function AegisPathfinder:RegisterRoutePack(packName, packInfo)
     self.routepacks[packName] = {
         name = packName,
         displayName = packInfo.displayName or packName,
@@ -693,12 +717,12 @@ end
 -- Check if a guide belongs to a route pack (should be hidden from guide list)
 -- Note: we allow RXP guides to be shown as requested by the user
 -- Now we also allow Optimized guides to be shown as requested by the user
-function TurtleGuide:IsRoutePackGuide(guideName)
+function AegisPathfinder:IsRoutePackGuide(guideName)
     return false
 end
 
 -- Get the currently active route pack (or nil)
-function TurtleGuide:GetCurrentRoutePack()
+function AegisPathfinder:GetCurrentRoutePack()
     local packName = self.db.char.routepack
     if packName and self.routepacks[packName] then
         return self.routepacks[packName]
@@ -707,7 +731,7 @@ function TurtleGuide:GetCurrentRoutePack()
 end
 
 -- Get route packs available for the player's faction and class
-function TurtleGuide:GetAvailableRoutePacks()
+function AegisPathfinder:GetAvailableRoutePacks()
     local faction = self.myfaction
     local _, playerClass = UnitClass("player")
     local available = {}
@@ -726,7 +750,7 @@ function TurtleGuide:GetAvailableRoutePacks()
 end
 
 -- Switch to a route pack, replacing self.routes with the pack's routes
-function TurtleGuide:SelectRoutePack(packName)
+function AegisPathfinder:SelectRoutePack(packName)
     local pack = self.routepacks[packName]
     if not pack then
         self:Print("|cffff0000Unknown route pack: " .. tostring(packName) .. "|r")
@@ -794,7 +818,7 @@ function TurtleGuide:SelectRoutePack(packName)
     return true
 end
 
-function TurtleGuide:LoadNextGuide()
+function AegisPathfinder:LoadNextGuide()
     local nextname = self.nextzones[self.db.char.currentguide]
     -- End of the route: no next zone, or it points at an unregistered guide
     -- ("No Guide"). Stop instead of letting LoadGuide fall back to guidelist[1],
@@ -818,7 +842,7 @@ function TurtleGuide:LoadNextGuide()
     return true
 end
 
-function TurtleGuide:IsProfessionLearned(skillName)
+function AegisPathfinder:IsProfessionLearned(skillName)
     if not skillName then return false end
     for i = 1, GetNumSkillLines() do
         local name, isHeader = GetSkillLineInfo(i)
@@ -829,7 +853,7 @@ function TurtleGuide:IsProfessionLearned(skillName)
     return false
 end
 
-function TurtleGuide:IsSpellLearned(spellName)
+function AegisPathfinder:IsSpellLearned(spellName)
     if not spellName then return false end
     local i = 1
     while true do
@@ -854,7 +878,7 @@ function TurtleGuide:IsSpellLearned(spellName)
     return false
 end
 
-function TurtleGuide:IsTrainingCompleted(stepName)
+function AegisPathfinder:IsTrainingCompleted(stepName)
     if not stepName then return false end
 
     local _, _, name = string.find(stepName, "%[([^%]]+)%]")
@@ -869,7 +893,7 @@ function TurtleGuide:IsTrainingCompleted(stepName)
         name = string.gsub(name, "%s*%(Rank%s*%d+%)", "")
         name = string.gsub(name, "%s*%(.*%)", "")
         name = string.gsub(name, "%s*Part%s*%d+", "")
-        name = TurtleGuide.trim(name)
+        name = AegisPathfinder.trim(name)
 
         if string.len(name) > 0 then
             if self:IsProfessionLearned(name) then
@@ -885,7 +909,7 @@ function TurtleGuide:IsTrainingCompleted(stepName)
     return false
 end
 
-function TurtleGuide:GetQuestLogIndexByName(name)
+function AegisPathfinder:GetQuestLogIndexByName(name)
     name = name or self.quests[self.current]
     if name then
         name = string.gsub(name, "@.*@", "")
@@ -898,7 +922,7 @@ function TurtleGuide:GetQuestLogIndexByName(name)
     end
 end
 
-function TurtleGuide:GetQuestLogIndexByQid(qid)
+function AegisPathfinder:GetQuestLogIndexByQid(qid)
     qid = tonumber(qid)
     if not qid then return end
     for i = 1, GetNumQuestLogEntries() do
@@ -906,7 +930,7 @@ function TurtleGuide:GetQuestLogIndexByQid(qid)
     end
 end
 
-function TurtleGuide:GetQuestDetails(name, oidx, qid)
+function AegisPathfinder:GetQuestDetails(name, oidx, qid)
     local i
     if qid then
         -- QID is authoritative: no name fallback, so a same-named quest from a
@@ -946,7 +970,7 @@ function TurtleGuide:GetQuestDetails(name, oidx, qid)
     return i, complete
 end
 
-function TurtleGuide:FindBagSlot(itemid)
+function AegisPathfinder:FindBagSlot(itemid)
     itemid = tonumber(itemid)
     if not itemid then return false end
     for bag = 0, 4 do
@@ -957,7 +981,7 @@ function TurtleGuide:FindBagSlot(itemid)
     return false
 end
 
-function TurtleGuide:GetItemNameByItemId(itemId)
+function AegisPathfinder:GetItemNameByItemId(itemId)
     if not itemId then return nil end
     itemId = tonumber(itemId)
     if not itemId then return nil end
@@ -977,7 +1001,7 @@ end
 -- COMPLETE steps derived from the quest's static objective data
 -- (C_QuestLog.GetQuestDetails requirements; cache-warmed at guide load).
 -- Returns itemID (number), quantity.
-function TurtleGuide:GetLootRequirement(i)
+function AegisPathfinder:GetLootRequirement(i)
     i = i or self.current
     local lootitem, lootqty = self:GetObjectiveTag("L", i)
     if lootitem then return tonumber(lootitem), lootqty end
@@ -1019,7 +1043,7 @@ function TurtleGuide:GetLootRequirement(i)
     cache[i] = false
 end
 
-function TurtleGuide:GetObjectiveInfo(i)
+function AegisPathfinder:GetObjectiveInfo(i)
     local i = i or self.current
     -- self.actions only exists once LoadGuide has parsed a guide; event handlers
     -- reach this before that (login, "No Guide", or a targeting event fired by
@@ -1056,7 +1080,7 @@ function TurtleGuide:GetObjectiveInfo(i)
     return action, name, self.quests[i] -- Action, display name, full name
 end
 
-function TurtleGuide:GetObjectiveStatus(i)
+function AegisPathfinder:GetObjectiveStatus(i)
     local i = i or self.current
     if not self.actions or not self.actions[i] then return end
 
@@ -1090,7 +1114,7 @@ function TurtleGuide:GetObjectiveStatus(i)
         local action = self.actions[i]
         if action == "TURNIN" and not logi then
             local cleanQuest = string.gsub(self.quests[i], "@.*@", "")
-            cleanQuest = string.gsub(cleanQuest, TurtleGuide.Locale.PART_GSUB, "")
+            cleanQuest = string.gsub(cleanQuest, AegisPathfinder.Locale.PART_GSUB, "")
             local isCompleted = (qidNum and self:IsQuestCompletedOnServer(qidNum)) or (self.db.char.completedquests and self.db.char.completedquests[cleanQuest])
             if not isCompleted then
                 turnedin = true
@@ -1102,7 +1126,7 @@ function TurtleGuide:GetObjectiveStatus(i)
     return turnedin, logi, complete, skippednotinlog
 end
 
-function TurtleGuide:SetTurnedIn(i, value, noupdate)
+function AegisPathfinder:SetTurnedIn(i, value, noupdate)
     if not i then
         i = self.current
         value = true
@@ -1137,7 +1161,7 @@ function TurtleGuide:SetTurnedIn(i, value, noupdate)
     if not value then
         local qid = self:GetObjectiveTag("QID", i)
         local cleanQuest = string.gsub(quest, "@.*@", "")
-        cleanQuest = string.gsub(cleanQuest, TurtleGuide.Locale.PART_GSUB, "")
+        cleanQuest = string.gsub(cleanQuest, AegisPathfinder.Locale.PART_GSUB, "")
         if qid then
             self.db.char.completedquestsbyid[tonumber(qid)] = nil
         end
@@ -1155,7 +1179,7 @@ function TurtleGuide:SetTurnedIn(i, value, noupdate)
     end
 end
 
-function TurtleGuide:CompleteQuest(name, noupdate)
+function AegisPathfinder:CompleteQuest(name, noupdate)
     if not self.current then
         self:Debug(string.format("Cannot complete %q, no guide loaded", name))
         return
@@ -1171,7 +1195,7 @@ function TurtleGuide:CompleteQuest(name, noupdate)
             -- Save to completion DB permanently
             local qid = self:GetObjectiveTag("QID", i)
             local cleanQuest = string.gsub(quest, "@.*@", "")
-            cleanQuest = string.gsub(cleanQuest, TurtleGuide.Locale.PART_GSUB, "")
+            cleanQuest = string.gsub(cleanQuest, AegisPathfinder.Locale.PART_GSUB, "")
             if qid then
                 self.db.char.completedquestsbyid[tonumber(qid)] = true
             end
@@ -1183,7 +1207,7 @@ function TurtleGuide:CompleteQuest(name, noupdate)
     self:Debug(string.format("Quest %q not found!", name))
 end
 
-function TurtleGuide:CompleteQuestByQid(questID, noupdate)
+function AegisPathfinder:CompleteQuestByQid(questID, noupdate)
     if not self.current then
         self:Debug(string.format("Cannot complete QID %d, no guide loaded", questID))
         return false
@@ -1217,7 +1241,7 @@ end
 --  Server Quest Query API     --
 ---------------------------------
 
-function TurtleGuide:QueryServerCompletedQuests(force)
+function AegisPathfinder:QueryServerCompletedQuests(force)
     self:SyncWithPfQuestHistory(force)
     -- Count locally tracked completed quests
     local localCountByName = 0
@@ -1262,7 +1286,7 @@ function TurtleGuide:QueryServerCompletedQuests(force)
     return true
 end
 
-function TurtleGuide:IsQuestCompletedOnServer(qid)
+function AegisPathfinder:IsQuestCompletedOnServer(qid)
     if not qid then return false end
     return self.db.char.completedquestsbyid[tonumber(qid)] == true
 end
@@ -1272,14 +1296,14 @@ end
 ---------------------------------
 
 -- Track the quest for the current objective
-function TurtleGuide:TrackCurrentQuest()
+function AegisPathfinder:TrackCurrentQuest()
     if not self.db.char.trackquests then return end
     if not self.current or not self.actions then return end
 
     local action, quest = self:GetObjectiveInfo(self.current)
     if not action or not quest then return end
 
-    -- Untrack previously tracked quest from TurtleGuide
+    -- Untrack previously tracked quest from AegisPathfinder
     if self.trackedQuestName and self.trackedQuestName ~= quest then
         local oldIndex = self:GetQuestLogIndexByName(self.trackedQuestName)
         if oldIndex and oldIndex > 0 and IsQuestWatched(oldIndex) then
@@ -1308,7 +1332,7 @@ end
 --   Manual Navigation         --
 ---------------------------------
 
-function TurtleGuide:SkipToNextObjective()
+function AegisPathfinder:SkipToNextObjective()
     if not self.current then return end
     if self.current >= table.getn(self.actions) then
         if not self:LoadNextGuide() then
@@ -1347,7 +1371,7 @@ function TurtleGuide:SkipToNextObjective()
     self:UpdateOHPanel()
 end
 
-function TurtleGuide:GoToPreviousObjective()
+function AegisPathfinder:GoToPreviousObjective()
     if not self.current or self.current <= 1 then
         self:Print("Already at the first objective.")
         return
@@ -1369,7 +1393,7 @@ function TurtleGuide:GoToPreviousObjective()
     self.recheckCompletion = true
 end
 
-function TurtleGuide:GoToObjective(stepNum)
+function AegisPathfinder:GoToObjective(stepNum)
     stepNum = tonumber(stepNum)
     if not stepNum or stepNum < 1 or stepNum > table.getn(self.actions) then
         self:Print("Invalid step number.")
@@ -1404,7 +1428,7 @@ end
 ---------------------------------
 
 -- Branch to a different guide while saving current position
-function TurtleGuide:BranchToGuide(guideName)
+function AegisPathfinder:BranchToGuide(guideName)
     if not guideName or not self.guides[guideName] then
         self:Print("Invalid guide: " .. tostring(guideName))
         return
@@ -1433,7 +1457,7 @@ function TurtleGuide:BranchToGuide(guideName)
 end
 
 -- Return from branch to saved main route
-function TurtleGuide:ReturnFromBranch()
+function AegisPathfinder:ReturnFromBranch()
     if not self.db.char.isbranching then
         self:Print("Not currently on a branch.")
         return
@@ -1469,7 +1493,7 @@ function TurtleGuide:ReturnFromBranch()
 end
 
 -- Get the optimized guide for a given level based on the player's race route
-function TurtleGuide:GetOptimizedGuideForLevel(level)
+function AegisPathfinder:GetOptimizedGuideForLevel(level)
     local routeName = self:GetRouteForRace()
     local route = self.routes and self.routes[routeName]
     if not route then return nil end
@@ -1498,7 +1522,7 @@ function TurtleGuide:GetOptimizedGuideForLevel(level)
 end
 
 -- Check if current guide is complete and handle branch return
-function TurtleGuide:CheckBranchCompletion()
+function AegisPathfinder:CheckBranchCompletion()
     if not self.db.char.isbranching then return false end
 
     -- Check if current branch guide is 100% complete
@@ -1538,7 +1562,7 @@ local TURTLE_ZONES = {
 }
 
 -- Categorize a guide by its name
-function TurtleGuide:GetGuideCategory(guideName)
+function AegisPathfinder:GetGuideCategory(guideName)
     if string.find(guideName, "^Optimized/") then
         return "optimized"
     end
@@ -1558,7 +1582,7 @@ function TurtleGuide:GetGuideCategory(guideName)
 end
 
 -- Parse level range from guide name (e.g., "(1-12)" or "(12-20)" or "1-6 Name")
-function TurtleGuide:ParseGuideLevelRange(guideName)
+function AegisPathfinder:ParseGuideLevelRange(guideName)
     -- Try (1-12) format first
     local _, _, minText, maxText = string.find(guideName, "%((%d+)%-(%d+)%)")
     if not minText then
@@ -1577,15 +1601,15 @@ end
 ---------------------------------
 
 -- Show route selection UI
-function TurtleGuide:ShowRouteSelector()
+function AegisPathfinder:ShowRouteSelector()
     if not self.routeSelectorFrame then
         self:CreateRouteSelectorFrame()
     end
     self.routeSelectorFrame:Show()
 end
 
-function TurtleGuide:CreateRouteSelectorFrame()
-    local f = CreateFrame("Frame", "TurtleGuideRouteSelectorFrame", UIParent)
+function AegisPathfinder:CreateRouteSelectorFrame()
+    local f = CreateFrame("Frame", "AegisPathfinderRouteSelectorFrame", UIParent)
     f:SetWidth(300)
     f:SetHeight(550)
     f:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
@@ -1639,8 +1663,8 @@ function TurtleGuide:CreateRouteSelectorFrame()
         btn.packDescription = pack.description
         btn:SetText(pack.displayName)
         btn:SetScript("OnClick", function()
-            TurtleGuide:SelectRoutePack(this.packName)
-            TurtleGuide:UpdateRouteSelectorPackHighlight()
+            AegisPathfinder:SelectRoutePack(this.packName)
+            AegisPathfinder:UpdateRouteSelectorPackHighlight()
         end)
         btn:SetScript("OnEnter", function()
             GameTooltip:SetOwner(this, "ANCHOR_RIGHT")
@@ -1716,7 +1740,7 @@ function TurtleGuide:CreateRouteSelectorFrame()
         end
         btn:SetText(displayName)
         btn:SetScript("OnClick", function()
-            TurtleGuide:SelectRoute(routeName)
+            AegisPathfinder:SelectRoute(routeName)
             f:Hide()
         end)
         lastButton = btn
@@ -1730,13 +1754,13 @@ function TurtleGuide:CreateRouteSelectorFrame()
 
     -- Update pack highlight on show
     f:SetScript("OnShow", function()
-        TurtleGuide:UpdateRouteSelectorPackHighlight()
+        AegisPathfinder:UpdateRouteSelectorPackHighlight()
     end)
 
     f:Hide()
 end
 
-function TurtleGuide:UpdateRouteSelectorPackHighlight()
+function AegisPathfinder:UpdateRouteSelectorPackHighlight()
     local f = self.routeSelectorFrame
     if not f then return end
 
@@ -1752,7 +1776,7 @@ function TurtleGuide:UpdateRouteSelectorPackHighlight()
     end
 end
 
-function TurtleGuide:SelectRoute(race)
+function AegisPathfinder:SelectRoute(race)
     self:ApplyRouteSelection(race)
     local message = L["You have been assigned the %s leveling route."]
     if not message then
@@ -1768,7 +1792,7 @@ end
 -- 1. First preference: guide where player is within the actual level range
 -- 2. Second preference: guide where player is slightly over (within +2 buffer)
 -- 3. Fallback: first future guide if player is somehow ahead of all guides
-function TurtleGuide:GetNextRouteGuideForLevel(route, playerLevel)
+function AegisPathfinder:GetNextRouteGuideForLevel(route, playerLevel)
     if not route then return nil end
 
     local level = playerLevel or UnitLevel("player")
@@ -1817,7 +1841,7 @@ function TurtleGuide:GetNextRouteGuideForLevel(route, playerLevel)
     return bestGuide or fallbackGuide or futureGuide
 end
 
-function TurtleGuide:ApplyRouteSelection(race)
+function AegisPathfinder:ApplyRouteSelection(race)
     self.db.char.currentroute = race
     self.db.char.routeselected = true
 
@@ -1839,7 +1863,7 @@ end
 
 -- Define starting zones for each faction
 -- These are the "branch" points - race-specific 1-12 zones
-TurtleGuide.startingZones = {
+AegisPathfinder.startingZones = {
     Alliance = {
         { race = "Human",    zone = "Elwynn Forest",        guide = "Elwynn Forest (1-12)",        levels = "1-12", rejoinLevel = 12 },
         { race = "Dwarf",    zone = "Dun Morogh",           guide = "Dun Morogh (1-12)",           levels = "1-12", rejoinLevel = 12 },
@@ -1874,7 +1898,7 @@ TurtleGuide.startingZones = {
 }
 
 -- Get available starting zones for the player's faction
-function TurtleGuide:GetAvailableStartingZones()
+function AegisPathfinder:GetAvailableStartingZones()
     local faction = self.myfaction
     local zones = self.startingZones[faction] or {}
     local available = {}
@@ -1898,7 +1922,7 @@ function TurtleGuide:GetAvailableStartingZones()
 end
 
 -- Get the player's native starting zone based on their race
-function TurtleGuide:GetNativeStartingZone()
+function AegisPathfinder:GetNativeStartingZone()
     local routeName = self:GetRouteForRace()
     local faction = self.myfaction
     local zones = self.startingZones[faction] or {}
@@ -1914,7 +1938,7 @@ function TurtleGuide:GetNativeStartingZone()
 end
 
 -- Check if the current guide is a starting zone guide
-function TurtleGuide:IsInStartingZone()
+function AegisPathfinder:IsInStartingZone()
     local currentGuide = self.db.char.currentguide
     if not currentGuide then return false end
 
@@ -1932,7 +1956,7 @@ end
 
 -- Get the rejoin point (shared route) based on current starting zone
 -- The rejoin point is where all starting zone paths converge
-function TurtleGuide:GetRejoinGuide()
+function AegisPathfinder:GetRejoinGuide()
     local faction = self.myfaction
     local playerLevel = UnitLevel("player")
 
@@ -1973,7 +1997,7 @@ function TurtleGuide:GetRejoinGuide()
 end
 
 -- Handle starting zone completion and transition to shared path
-function TurtleGuide:CheckStartingZoneCompletion()
+function AegisPathfinder:CheckStartingZoneCompletion()
     local inStartingZone, zoneInfo = self:IsInStartingZone()
     if not inStartingZone then return false end
 
@@ -2005,7 +2029,7 @@ function TurtleGuide:CheckStartingZoneCompletion()
 end
 
 -- Transition from starting zone to shared leveling path
-function TurtleGuide:TransitionFromStartingZone()
+function AegisPathfinder:TransitionFromStartingZone()
     local L = self.Locale
 
     -- Mark starting zone as complete
@@ -2029,7 +2053,7 @@ function TurtleGuide:TransitionFromStartingZone()
 end
 
 -- Show the Starting Zone Selector UI
-function TurtleGuide:ShowStartingZoneSelector()
+function AegisPathfinder:ShowStartingZoneSelector()
     if not self.startingZoneSelectorFrame then
         self:CreateStartingZoneSelectorFrame()
     end
@@ -2037,9 +2061,9 @@ function TurtleGuide:ShowStartingZoneSelector()
     self.startingZoneSelectorFrame:Show()
 end
 
-function TurtleGuide:CreateStartingZoneSelectorFrame()
+function AegisPathfinder:CreateStartingZoneSelectorFrame()
     local L = self.Locale
-    local f = CreateFrame("Frame", "TurtleGuideStartingZoneSelectorFrame", UIParent)
+    local f = CreateFrame("Frame", "AegisPathfinderStartingZoneSelectorFrame", UIParent)
     f:SetWidth(380)
     f:SetHeight(320)
     f:SetPoint("CENTER", UIParent, "CENTER", 0, 50)
@@ -2096,7 +2120,7 @@ function TurtleGuide:CreateStartingZoneSelectorFrame()
 
         btn:SetScript("OnClick", function()
             if this.zoneInfo then
-                TurtleGuide:SelectStartingZone(this.zoneInfo)
+                AegisPathfinder:SelectStartingZone(this.zoneInfo)
                 f:Hide()
             end
         end)
@@ -2117,11 +2141,11 @@ function TurtleGuide:CreateStartingZoneSelectorFrame()
     closeBtn:SetPoint("TOPRIGHT", f, "TOPRIGHT", -5, -5)
 
     self.startingZoneSelectorFrame = f
-    table.insert(UISpecialFrames, "TurtleGuideStartingZoneSelectorFrame")
+    table.insert(UISpecialFrames, "AegisPathfinderStartingZoneSelectorFrame")
     f:Hide()
 end
 
-function TurtleGuide:UpdateStartingZoneSelectorPanel()
+function AegisPathfinder:UpdateStartingZoneSelectorPanel()
     local f = self.startingZoneSelectorFrame
     if not f or not f:IsVisible() then return end
 
@@ -2172,7 +2196,7 @@ function TurtleGuide:UpdateStartingZoneSelectorPanel()
 end
 
 -- Select a starting zone and begin leveling there
-function TurtleGuide:SelectStartingZone(zoneInfo)
+function AegisPathfinder:SelectStartingZone(zoneInfo)
     local L = self.Locale
 
     -- Save the selection
@@ -2230,7 +2254,7 @@ function TurtleGuide:SelectStartingZone(zoneInfo)
 end
 
 -- Modified InitializeRoute to show starting zone selector for new characters
-function TurtleGuide:InitializeRouteWithStartingZone()
+function AegisPathfinder:InitializeRouteWithStartingZone()
     local playerLevel = UnitLevel("player")
 
     -- If player is level 1-10 and hasn't selected a starting zone, show selector
@@ -2258,7 +2282,7 @@ function TurtleGuide:InitializeRouteWithStartingZone()
     return false
 end
 
-function TurtleGuide:SetupErrorCapture()
+function AegisPathfinder:SetupErrorCapture()
     if self.errorCaptured then return end
     self.errorCaptured = true
     self.errorLog = self.errorLog or {}
@@ -2278,15 +2302,15 @@ function TurtleGuide:SetupErrorCapture()
     end)
 end
 
-function TurtleGuide:ShowErrorLog()
+function AegisPathfinder:ShowErrorLog()
     if not self.errorLogFrame then
         self:CreateErrorLogFrame()
     end
     self.errorLogFrame:Show()
 end
 
-function TurtleGuide:CreateErrorLogFrame()
-    local f = CreateFrame("Frame", "TurtleGuideErrorLogFrame", UIParent)
+function AegisPathfinder:CreateErrorLogFrame()
+    local f = CreateFrame("Frame", "AegisPathfinderErrorLogFrame", UIParent)
     f:SetWidth(520)
     f:SetHeight(360)
     f:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
@@ -2317,11 +2341,11 @@ function TurtleGuide:CreateErrorLogFrame()
     desc:SetWidth(480)
     desc:SetText("Most recent errors are at the top. Use Ctrl+C to copy.")
 
-    local scrollFrame = CreateFrame("ScrollFrame", "TurtleGuideErrorLogScrollFrame", f, "UIPanelScrollFrameTemplate")
+    local scrollFrame = CreateFrame("ScrollFrame", "AegisPathfinderErrorLogScrollFrame", f, "UIPanelScrollFrameTemplate")
     scrollFrame:SetPoint("TOPLEFT", f, "TOPLEFT", 16, -60)
     scrollFrame:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", -32, 16)
 
-    local editBox = CreateFrame("EditBox", "TurtleGuideErrorLogEditBox", scrollFrame)
+    local editBox = CreateFrame("EditBox", "AegisPathfinderErrorLogEditBox", scrollFrame)
     editBox:SetMultiLine(true)
     editBox:SetFontObject("ChatFontNormal")
     editBox:SetWidth(470)
@@ -2338,7 +2362,7 @@ function TurtleGuide:CreateErrorLogFrame()
     closeBtn:SetPoint("TOPRIGHT", f, "TOPRIGHT", -5, -5)
 
     f:SetScript("OnShow", function()
-        local entries = TurtleGuide.errorLog or {}
+        local entries = AegisPathfinder.errorLog or {}
         if table.getn(entries) == 0 then
             f.editBox:SetText("No errors captured yet.")
         else
@@ -2357,7 +2381,7 @@ end
 --      Utility Functions      --
 ---------------------------------
 
-function TurtleGuide.select(index, ...)
+function AegisPathfinder.select(index, ...)
     assert(tonumber(index) or index == "#", "Invalid argument #1 to select(). Usage: select(\"#\"|int,...)")
     if index == "#" then
         return tonumber(arg.n) or 0
@@ -2368,7 +2392,7 @@ function TurtleGuide.select(index, ...)
     return unpack(arg)
 end
 
-function TurtleGuide.join(delimiter, list)
+function AegisPathfinder.join(delimiter, list)
     assert(type(delimiter) == "string" and type(list) == "table",
         "Invalid arguments to join(). Usage: string.join(delimiter, list)")
     local len = getn(list)
@@ -2382,11 +2406,11 @@ function TurtleGuide.join(delimiter, list)
     return s
 end
 
-function TurtleGuide.trim(s)
+function AegisPathfinder.trim(s)
     return (string.gsub(s, "^%s*(.-)%s*$", "%1"))
 end
 
-function TurtleGuide.split(...)
+function AegisPathfinder.split(...)
     assert(arg.n > 0 and type(arg[1]) == "string",
         "Invalid arguments to split(). Usage: string.split([separator], subject)")
     local sep, s = arg[1], arg[2]
@@ -2399,26 +2423,26 @@ function TurtleGuide.split(...)
     return fields
 end
 
-function TurtleGuide.modf(f)
+function AegisPathfinder.modf(f)
     if f > 0 then
         return math.floor(f), math.mod(f, 1)
     end
     return math.ceil(f), math.mod(f, 1)
 end
 
-function TurtleGuide.ColorGradient(perc)
+function AegisPathfinder.ColorGradient(perc)
     if perc >= 1 then
         return 0, 1, 0
     elseif perc <= 0 then
         return 1, 0, 0
     end
 
-    local segment, relperc = TurtleGuide.modf(perc * 2)
-    local r1, g1, b1, r2, g2, b2 = TurtleGuide.select((segment * 3) + 1, 1, 0, 0, 1, 0.82, 0, 0, 1, 0)
+    local segment, relperc = AegisPathfinder.modf(perc * 2)
+    local r1, g1, b1, r2, g2, b2 = AegisPathfinder.select((segment * 3) + 1, 1, 0, 0, 1, 0.82, 0, 0, 1, 0)
     return r1 + (r2 - r1) * relperc, g1 + (g2 - g1) * relperc, b1 + (b2 - b1) * relperc
 end
 
-function TurtleGuide.GetQuadrant(frame)
+function AegisPathfinder.GetQuadrant(frame)
     local x, y = frame:GetCenter()
     if not x or not y then return "BOTTOMLEFT", "BOTTOM", "LEFT" end
     local hhalf = (x > UIParent:GetWidth() / 2) and "RIGHT" or "LEFT"
@@ -2426,7 +2450,7 @@ function TurtleGuide.GetQuadrant(frame)
     return vhalf .. hhalf, vhalf, hhalf
 end
 
-function TurtleGuide.GetUIParentAnchor(frame)
+function AegisPathfinder.GetUIParentAnchor(frame)
     local w, h, x, y = UIParent:GetWidth(), UIParent:GetHeight(), frame:GetCenter()
     local hhalf, vhalf = (x > w / 2) and "RIGHT" or "LEFT", (y > h / 2) and "TOP" or "BOTTOM"
     local dx = hhalf == "RIGHT" and math.floor(frame:GetRight() + 0.5) - w or math.floor(frame:GetLeft() + 0.5)
@@ -2434,7 +2458,7 @@ function TurtleGuide.GetUIParentAnchor(frame)
     return vhalf .. hhalf, dx, dy
 end
 
-function TurtleGuide:SyncWithPfQuestHistory(force)
+function AegisPathfinder:SyncWithPfQuestHistory(force)
     if not pfQuest_history then return end
 
     if force then
@@ -2472,7 +2496,7 @@ function TurtleGuide:SyncWithPfQuestHistory(force)
                 local questName = pfDB.quests.loc[qidNum]["T"]
                 if questName then
                     local cleanQuest = string.gsub(questName, "%[[0-9%+%-]+]%s", "")
-                    cleanQuest = string.gsub(cleanQuest, TurtleGuide.Locale.PART_GSUB, "")
+                    cleanQuest = string.gsub(cleanQuest, AegisPathfinder.Locale.PART_GSUB, "")
                     self.db.char.completedquests[cleanQuest] = true
                 end
             end
@@ -2484,7 +2508,7 @@ function TurtleGuide:SyncWithPfQuestHistory(force)
     end
 end
 
-function TurtleGuide:DumpLoc()
+function AegisPathfinder:DumpLoc()
     if IsShiftKeyDown() then
         if not self.db.global.savedpoints then
             self:Print("No saved points")

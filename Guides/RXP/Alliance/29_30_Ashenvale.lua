@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 29-30 Ashenvale
-TurtleGuide:RegisterGuide("RXP/29-30 Ashenvale", "RXP/RestedXP Alliance 30-40\29-32 Duskwood", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/29-30 Ashenvale", "RXP/RestedXP Alliance 30-40\29-32 Duskwood", "Alliance", function()
 return [[
 
 N 29-30 Ashenvale |N|Converted from RestedXP guide|

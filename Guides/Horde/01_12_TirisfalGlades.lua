@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Tirisfal (1-12)", "Silverpine Forest (12-20)", "Horde",function()
+AegisPathfinder:RegisterGuide("Tirisfal (1-12)", "Silverpine Forest (12-20)", "Horde",function()
 
 return [[
 

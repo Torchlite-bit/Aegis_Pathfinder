@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 53-53 Azshara
-TurtleGuide:RegisterGuide("RXP/53-53 Azshara", "RXP/53-54 UnGoro Crater", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/53-53 Azshara", "RXP/53-54 UnGoro Crater", "Alliance", function()
 return [[
 
 N 53-53 Azshara |N|Converted from RestedXP guide|

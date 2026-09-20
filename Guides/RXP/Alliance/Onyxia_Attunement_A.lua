@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: Onyxia Attunement (A)
-TurtleGuide:RegisterGuide("RXP/Onyxia Attunement (A)", "", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/Onyxia Attunement (A)", "", "Alliance", function()
 return [[
 
 N Onyxia Attunement (A) |N|Converted from RestedXP guide|

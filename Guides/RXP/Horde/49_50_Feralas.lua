@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 49-50 Feralas
-TurtleGuide:RegisterGuide("RXP/49-50 Feralas", "RXP/RestedXP Horde 50-60\50-51 Stranglethorn/Blasted Lands", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/49-50 Feralas", "RXP/RestedXP Horde 50-60\50-51 Stranglethorn/Blasted Lands", "Horde", function()
 return [[
 
 N 49-50 Feralas |N|Converted from RestedXP guide|

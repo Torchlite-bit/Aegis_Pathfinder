@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("The Hinterlands (50-51)", "Blasted Lands (51-51)", "Horde",function()
+AegisPathfinder:RegisterGuide("The Hinterlands (50-51)", "Blasted Lands (51-51)", "Horde",function()
 
 
 return [[

@@ -1,13 +1,13 @@
 -- QuestTracker.lua
--- Quest log scanning and completion detection for TurtleGuide
+-- Quest log scanning and completion detection for AegisPathfinder
 
-local TurtleGuide = TurtleGuide
-local L = TurtleGuide.Locale
+local AegisPathfinder = AegisPathfinder
+local L = AegisPathfinder.Locale
 
 
 -- QUEST_ACCEPTED and QUEST_TURNED_IN are synthesized by ClassicAPI (a hard
 -- requirement, enforced in Core.lua OnEnable)
-TurtleGuide.TrackEvents = {
+AegisPathfinder.TrackEvents = {
 	"UI_INFO_MESSAGE", "CHAT_MSG_LOOT", "CHAT_MSG_SYSTEM",
 	"QUEST_WATCH_UPDATE", "QUEST_LOG_UPDATE", "UNIT_QUEST_LOG_CHANGED",
 	"ZONE_CHANGED", "ZONE_CHANGED_INDOORS", "MINIMAP_ZONE_CHANGED",
@@ -21,7 +21,7 @@ TurtleGuide.TrackEvents = {
 
 -- AceEvent-2.0 passes event args directly (no event name); the event itself
 -- is available as self.currentEvent when needed
-function TurtleGuide:ADDON_LOADED(addon)
+function AegisPathfinder:ADDON_LOADED(addon)
 	if addon ~= "Blizzard_TrainerUI" then return end
 
 	self:UnregisterEvent("ADDON_LOADED")
@@ -32,21 +32,21 @@ function TurtleGuide:ADDON_LOADED(addon)
 	end)
 end
 
-function TurtleGuide:SKILL_LINES_CHANGED()
+function AegisPathfinder:SKILL_LINES_CHANGED()
 	self:ScheduleStatusUpdate()
 end
 
-function TurtleGuide:SPELLS_CHANGED()
+function AegisPathfinder:SPELLS_CHANGED()
 	self:ScheduleStatusUpdate()
 end
 
-function TurtleGuide:PLAYER_LEVEL_UP(newlevel)
+function AegisPathfinder:PLAYER_LEVEL_UP(newlevel)
 	local level = tonumber((self:GetObjectiveTag("LV")))
 	self:Debug("PLAYER_LEVEL_UP", newlevel, level)
 	if level and newlevel >= level then self:SetTurnedIn() end
 end
 
-function TurtleGuide:ZONE_CHANGED(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19,
+function AegisPathfinder:ZONE_CHANGED(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19,
 								  a20)
 	local zonetext, subzonetext, subzonetag, action, quest = GetZoneText(), GetSubZoneText(), self:GetObjectiveTag("SZ"),
 		self:GetObjectiveInfo()
@@ -56,14 +56,14 @@ function TurtleGuide:ZONE_CHANGED(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, 
 	end
 end
 
-TurtleGuide.ZONE_CHANGED_INDOORS = TurtleGuide.ZONE_CHANGED
-TurtleGuide.MINIMAP_ZONE_CHANGED = TurtleGuide.ZONE_CHANGED
-TurtleGuide.ZONE_CHANGED_NEW_AREA = TurtleGuide.ZONE_CHANGED
+AegisPathfinder.ZONE_CHANGED_INDOORS = AegisPathfinder.ZONE_CHANGED
+AegisPathfinder.MINIMAP_ZONE_CHANGED = AegisPathfinder.ZONE_CHANGED
+AegisPathfinder.ZONE_CHANGED_NEW_AREA = AegisPathfinder.ZONE_CHANGED
 
 
 -- Fires on the bind-point update packet (ClassicAPI); no payload, re-read
 -- GetBindLocation() for the new home
-function TurtleGuide:HEARTHSTONE_BOUND()
+function AegisPathfinder:HEARTHSTONE_BOUND()
 	local loc = GetBindLocation()
 	local action, quest = self:GetObjectiveInfo()
 	self:Debug(string.format("Detected setting hearth to %q", loc))
@@ -71,7 +71,7 @@ function TurtleGuide:HEARTHSTONE_BOUND()
 	if action == "SETHEARTH" and loc == quest then self:SetTurnedIn() end
 end
 
-function TurtleGuide:CHAT_MSG_SYSTEM(msg)
+function AegisPathfinder:CHAT_MSG_SYSTEM(msg)
 	local action, quest = self:GetObjectiveInfo()
 
 	if action == "PET" then
@@ -85,11 +85,11 @@ function TurtleGuide:CHAT_MSG_SYSTEM(msg)
 	end
 end
 
-function TurtleGuide:QUEST_WATCH_UPDATE(event)
+function AegisPathfinder:QUEST_WATCH_UPDATE(event)
 	if self:GetObjectiveInfo() == "COMPLETE" then self:ScheduleStatusUpdate() end
 end
 
-function TurtleGuide:QUEST_LOG_UPDATE(event)
+function AegisPathfinder:QUEST_LOG_UPDATE(event)
 	local action = self:GetObjectiveInfo()
 	local _, logi, complete = self:GetObjectiveStatus()
 
@@ -112,12 +112,12 @@ function TurtleGuide:QUEST_LOG_UPDATE(event)
 		local skipNext = self:GetObjectiveTag("S")
 		if self.db.char.skipfollowups and skipNext and QuestFrame:IsVisible() then
 			CloseQuest()
-			TurtleGuide:Print(L["Automatically skipping the follow-up"])
+			AegisPathfinder:Print(L["Automatically skipping the follow-up"])
 		end
 	end
 end
 
-function TurtleGuide:UNIT_QUEST_LOG_CHANGED(unit)
+function AegisPathfinder:UNIT_QUEST_LOG_CHANGED(unit)
 	if unit ~= "player" then return end
 	local action = self:GetObjectiveInfo()
 	if action == "COMPLETE" then
@@ -127,7 +127,7 @@ end
 
 -- Legacy BUY steps without an |L| tag can only be matched by looted item
 -- name; |L|-tagged collect steps are counted in BAG_UPDATE_DELAYED instead
-function TurtleGuide:CHAT_MSG_LOOT(msg)
+function AegisPathfinder:CHAT_MSG_LOOT(msg)
 	local action, quest = self:GetObjectiveInfo()
 	if action ~= "BUY" or self:GetObjectiveTag("L") then return end
 
@@ -141,7 +141,7 @@ end
 -- Fires once per bag-content batch (ClassicAPI): loot, mail, trade, vendor,
 -- AH. Count |L|-tagged collect steps by itemID instead of parsing loot
 -- messages; this also catches items that never produce a loot message.
-function TurtleGuide:BAG_UPDATE_DELAYED()
+function AegisPathfinder:BAG_UPDATE_DELAYED()
 	local action = self:GetObjectiveInfo()
 	if action ~= "BUY" and action ~= "KILL" and action ~= "NOTE" and action ~= "COMPLETE" then return end
 
@@ -154,14 +154,14 @@ function TurtleGuide:BAG_UPDATE_DELAYED()
 	end
 end
 
-function TurtleGuide:PLAYER_DEAD()
+function AegisPathfinder:PLAYER_DEAD()
 	if self:GetObjectiveInfo() == "DIE" then
 		self:Debug("Player has died")
 		self:SetTurnedIn()
 	end
 end
 
-function TurtleGuide:UI_INFO_MESSAGE(msg)
+function AegisPathfinder:UI_INFO_MESSAGE(msg)
 	if msg == ERR_NEWTAXIPATH and self:GetObjectiveInfo() == "GETFLIGHTPOINT" then
 		self:Debug("Discovered flight point")
 		self:SetTurnedIn()
@@ -174,22 +174,22 @@ flightEventFrame:RegisterEvent("TAXIMAP_OPENED")
 flightEventFrame:RegisterEvent("GOSSIP_SHOW")
 flightEventFrame:RegisterEvent("PLAYER_TARGET_CHANGED")
 flightEventFrame:SetScript("OnEvent", function()
-	if TurtleGuide:GetObjectiveInfo() ~= "GETFLIGHTPOINT" then return end
+	if AegisPathfinder:GetObjectiveInfo() ~= "GETFLIGHTPOINT" then return end
 
 	if event == "TAXIMAP_OPENED" or event == "GOSSIP_SHOW" then
-		TurtleGuide:Debug(event .. " - completing GETFLIGHTPOINT")
-		TurtleGuide:SetTurnedIn()
+		AegisPathfinder:Debug(event .. " - completing GETFLIGHTPOINT")
+		AegisPathfinder:SetTurnedIn()
 	elseif event == "PLAYER_TARGET_CHANGED" then
 		-- Check if targeting a friendly NPC (likely the flight master)
 		if UnitExists("target") and not UnitIsPlayer("target") and not UnitCanAttack("player", "target") then
-			TurtleGuide:Debug("Targeted friendly NPC - completing GETFLIGHTPOINT")
-			TurtleGuide:SetTurnedIn()
+			AegisPathfinder:Debug("Targeted friendly NPC - completing GETFLIGHTPOINT")
+			AegisPathfinder:SetTurnedIn()
 		end
 	end
 end)
 
 
-function TurtleGuide:CRAFT_SHOW()
+function AegisPathfinder:CRAFT_SHOW()
 	if not GetCraftName() == "Beast Training" then return end
 	for i = 1, GetNumCrafts() do
 		local name, rank = GetCraftInfo(i)
@@ -204,12 +204,12 @@ end
 -- first step at or after current that is not already turned in, so automation
 -- never keys off a stale step.
 local function PendingStep()
-	local i = TurtleGuide.current
-	if not i or not TurtleGuide.actions then return end
-	while TurtleGuide.actions[i] and TurtleGuide:GetObjectiveStatus(i) do
+	local i = AegisPathfinder.current
+	if not i or not AegisPathfinder.actions then return end
+	while AegisPathfinder.actions[i] and AegisPathfinder:GetObjectiveStatus(i) do
 		i = i + 1
 	end
-	if TurtleGuide.actions[i] then return i end
+	if AegisPathfinder.actions[i] then return i end
 end
 
 -- Returns the clean quest name and step index when the pending step matches
@@ -217,14 +217,14 @@ end
 local function CurrentStepName(action)
 	local i = PendingStep()
 	if not i then return end
-	local a, quest = TurtleGuide:GetObjectiveInfo(i)
+	local a, quest = AegisPathfinder:GetObjectiveInfo(i)
 	if a ~= action or not quest then return end
 	return (string.gsub(quest, L.PART_GSUB, "")), i
 end
 
 -- Quest accept detection. QUEST_ACCEPTED carries the questID, so ACCEPT steps
 -- match by |QID| tag instead of parsing the "Quest accepted:" system message.
-function TurtleGuide:QUEST_ACCEPTED(questLogIndex, questID)
+function AegisPathfinder:QUEST_ACCEPTED(questLogIndex, questID)
 	questID = tonumber(questID)
 	self:Debug("QUEST_ACCEPTED", questLogIndex, questID)
 	if not questID then return end
@@ -252,7 +252,7 @@ end
 -- Quest turnin tracking. QUEST_TURNED_IN fires on server confirmation and
 -- carries the questID, so it also catches turnins for quests outside the
 -- loaded guide.
-function TurtleGuide:QUEST_TURNED_IN(questID, xpReward, moneyReward)
+function AegisPathfinder:QUEST_TURNED_IN(questID, xpReward, moneyReward)
 	questID = tonumber(questID)
 	self:Debug("QUEST_TURNED_IN", questID, xpReward, moneyReward)
 	if not questID then return end
@@ -281,7 +281,7 @@ end
 -- and the removal is the moment the delayed update can advance. A removal
 -- with no turn-in confirmation is an abandon: rescan so the guide routes
 -- back to the abandoned quest's accept step.
-function TurtleGuide:QUEST_REMOVED(questID)
+function AegisPathfinder:QUEST_REMOVED(questID)
 	questID = tonumber(questID)
 	self:Debug("QUEST_REMOVED", questID)
 	if not questID then return end
@@ -307,7 +307,7 @@ end
 
 -- Hold SHIFT while talking to an NPC to suspend automation
 local function AutomationSuspended()
-	return not TurtleGuide.db.char.autoquest or IsShiftKeyDown()
+	return not AegisPathfinder.db.char.autoquest or IsShiftKeyDown()
 end
 
 -- Quest frame titles may carry a [level] prefix depending on server settings
@@ -317,7 +317,7 @@ end
 
 -- Auto-select the pending step's quest from the gossip list, matched by QID
 -- (by title for untagged steps)
-function TurtleGuide:GOSSIP_SHOW()
+function AegisPathfinder:GOSSIP_SHOW()
 	if AutomationSuspended() then return end
 
 	local name, i = CurrentStepName("ACCEPT")
@@ -346,7 +346,7 @@ end
 
 -- Greeting panel (quest NPCs without gossip text). The greeting API is
 -- index-based and carries no questIDs, so titles are the only match key.
-function TurtleGuide:QUEST_GREETING()
+function AegisPathfinder:QUEST_GREETING()
 	if AutomationSuspended() then return end
 
 	local name = CurrentStepName("ACCEPT")
@@ -371,7 +371,7 @@ function TurtleGuide:QUEST_GREETING()
 	end
 end
 
-function TurtleGuide:QUEST_DETAIL()
+function AegisPathfinder:QUEST_DETAIL()
 	if not AutomationSuspended() then
 		local name = CurrentStepName("ACCEPT")
 		if name and QuestFrameTitle() == name then
@@ -382,7 +382,7 @@ function TurtleGuide:QUEST_DETAIL()
 	self:UpdateStatusFrame()
 end
 
-function TurtleGuide:QUEST_PROGRESS()
+function AegisPathfinder:QUEST_PROGRESS()
 	if AutomationSuspended() then return end
 	local name = CurrentStepName("TURNIN")
 	if name and QuestFrameTitle() == name and IsQuestCompletable() then
@@ -392,7 +392,7 @@ function TurtleGuide:QUEST_PROGRESS()
 end
 
 -- Claim the reward only when there is no choice to make
-function TurtleGuide:QUEST_COMPLETE()
+function AegisPathfinder:QUEST_COMPLETE()
 	if not AutomationSuspended() then
 		local name = CurrentStepName("TURNIN")
 		if name and QuestFrameTitle() == name and GetNumQuestChoices() <= 1 then
@@ -409,7 +409,7 @@ end
 -- from UpdateStatusFrame after the step advances to feed the still-open
 -- window back through the handlers above.
 local redriving
-function TurtleGuide:RedriveQuestAutomation()
+function AegisPathfinder:RedriveQuestAutomation()
 	if redriving or AutomationSuspended() then return end
 	redriving = true
 	if GossipFrame and GossipFrame:IsVisible() then
@@ -432,16 +432,16 @@ end
 -- Hook UseContainerItem to detect USE objective completion
 local origUseContainerItem = UseContainerItem
 UseContainerItem = function(bag, slot, ...)
-	local action = TurtleGuide:GetObjectiveInfo()
-	local useitem = TurtleGuide:GetObjectiveTag("U")
+	local action = AegisPathfinder:GetObjectiveInfo()
+	local useitem = AegisPathfinder:GetObjectiveTag("U")
 
 	if action == "USE" and useitem and C_Container.GetContainerItemID(bag, slot) == tonumber(useitem) then
-		TurtleGuide:Debug("Detected USE item from bag: " .. useitem)
+		AegisPathfinder:Debug("Detected USE item from bag: " .. useitem)
 		-- Delay slightly to allow the item use to complete
 		C_Timer.After(0.3, function()
-			if TurtleGuide:GetObjectiveInfo() == "USE" then
-				TurtleGuide:Debug("Completing USE objective after item use")
-				TurtleGuide:SetTurnedIn()
+			if AegisPathfinder:GetObjectiveInfo() == "USE" then
+				AegisPathfinder:Debug("Completing USE objective after item use")
+				AegisPathfinder:SetTurnedIn()
 			end
 		end)
 	end
@@ -466,18 +466,18 @@ end
 
 -- Check if current objective completion conditions are already met
 local function RecheckCurrentObjective()
-	if not TurtleGuide.current or not TurtleGuide.actions then return end
+	if not AegisPathfinder.current or not AegisPathfinder.actions then return end
 
-	local action = TurtleGuide:GetObjectiveInfo()
+	local action = AegisPathfinder:GetObjectiveInfo()
 	if not action then return end
 
-	TurtleGuide:Debug("Rechecking completion for: " .. action)
+	AegisPathfinder:Debug("Rechecking completion for: " .. action)
 
 	-- GETFLIGHTPOINT: Check if targeting friendly NPC
 	if action == "GETFLIGHTPOINT" then
 		if UnitExists("target") and not UnitIsPlayer("target") and not UnitCanAttack("player", "target") then
-			TurtleGuide:Debug("Recheck: Already targeting friendly NPC - completing GETFLIGHTPOINT")
-			TurtleGuide:SetTurnedIn()
+			AegisPathfinder:Debug("Recheck: Already targeting friendly NPC - completing GETFLIGHTPOINT")
+			AegisPathfinder:SetTurnedIn()
 			return
 		end
 	end
@@ -488,27 +488,27 @@ end
 C_Timer.NewTicker(ARRIVAL_CHECK_INTERVAL, function()
 	-- Flush an expired delayed update even when no quest events arrive;
 	-- UpdateStatusFrame clears updatedelay once its gate passes
-	if TurtleGuide.updatedelay and GetTime() - (TurtleGuide.updatedelaytime or 0) >= 3 then
-		TurtleGuide:ScheduleStatusUpdate()
+	if AegisPathfinder.updatedelay and GetTime() - (AegisPathfinder.updatedelaytime or 0) >= 3 then
+		AegisPathfinder:ScheduleStatusUpdate()
 	end
 
 	-- Check if we need to re-evaluate after rewind
-	if TurtleGuide.recheckCompletion then
-		TurtleGuide.recheckCompletion = nil
+	if AegisPathfinder.recheckCompletion then
+		AegisPathfinder.recheckCompletion = nil
 		RecheckCurrentObjective()
 	end
 
 	-- Only check if guide is loaded
-	if not TurtleGuide.current or not TurtleGuide.actions then return end
+	if not AegisPathfinder.current or not AegisPathfinder.actions then return end
 
-	local action, quest = TurtleGuide:GetObjectiveInfo()
+	local action, quest = AegisPathfinder:GetObjectiveInfo()
 	if not action then return end
 
 	-- Only check for travel/arrival objectives
 	if action ~= "RUN" and action ~= "FLY" and action ~= "HEARTH" and action ~= "BOAT" and action ~= "GETFLIGHTPOINT" then return end
 
 	-- Get target coordinates from note
-	local note = TurtleGuide:GetObjectiveTag("N")
+	local note = AegisPathfinder:GetObjectiveTag("N")
 	if not note then return end
 
 	local targetX, targetY
@@ -520,7 +520,7 @@ C_Timer.NewTicker(ARRIVAL_CHECK_INTERVAL, function()
 	if not targetX or not targetY then return end
 
 	-- Get target zone
-	local targetZone = TurtleGuide:GetObjectiveTag("Z") or TurtleGuide.zonename
+	local targetZone = AegisPathfinder:GetObjectiveTag("Z") or AegisPathfinder.zonename
 
 	-- Get player position safely without interrupting the map view if open
 	local playerC, playerZ, playerX, playerY
@@ -562,8 +562,8 @@ C_Timer.NewTicker(ARRIVAL_CHECK_INTERVAL, function()
 	local distance = math.sqrt(dx * dx + dy * dy)
 
 	if distance <= ARRIVAL_DISTANCE then
-		TurtleGuide:Debug(string.format("Arrived at destination: %.3f from target (threshold %.3f)", distance,
+		AegisPathfinder:Debug(string.format("Arrived at destination: %.3f from target (threshold %.3f)", distance,
 			ARRIVAL_DISTANCE))
-		TurtleGuide:SetTurnedIn()
+		AegisPathfinder:SetTurnedIn()
 	end
 end)

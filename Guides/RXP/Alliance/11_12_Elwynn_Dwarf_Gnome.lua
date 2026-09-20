@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 11-12 Elwynn (Dwarf/Gnome)
-TurtleGuide:RegisterGuide("RXP/11-12 Elwynn (Dwarf/Gnome)", "RXP/12-14 Loch Modan (Dwarf/Gnome)", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/11-12 Elwynn (Dwarf/Gnome)", "RXP/12-14 Loch Modan (Dwarf/Gnome)", "Alliance", function()
 return [[
 
 N 11-12 Elwynn (Dwarf/Gnome) |N|Converted from RestedXP guide|

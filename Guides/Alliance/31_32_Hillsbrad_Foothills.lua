@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Hillsbrad Foothills (31-32)", "Stranglethorn (32-33)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Hillsbrad Foothills (31-32)", "Stranglethorn (32-33)", "Alliance",function()
 
 return [[
 

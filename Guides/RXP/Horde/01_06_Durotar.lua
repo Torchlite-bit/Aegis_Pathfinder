@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 1-6 Durotar
-TurtleGuide:RegisterGuide("RXP/1-6 Durotar", "RXP/6-10 Durotar", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/1-6 Durotar", "RXP/6-10 Durotar", "Horde", function()
 return [[
 
 N 1-6 Durotar |N|Converted from RestedXP guide|

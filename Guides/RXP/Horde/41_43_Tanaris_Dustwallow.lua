@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 41-43 Tanaris/Dustwallow
-TurtleGuide:RegisterGuide("RXP/41-43 Tanaris/Dustwallow", "RXP/43-44 Feralas", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/41-43 Tanaris/Dustwallow", "RXP/43-44 Feralas", "Horde", function()
 return [[
 
 N 41-43 Tanaris/Dustwallow |N|Converted from RestedXP guide|

@@ -1,8 +1,8 @@
 -- Optimized Guide: Thousand Needles (37-38)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Thousand Needles (37-38)", "Optimized/Dustwallow Marsh (38-38)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Thousand Needles (37-38)", "Optimized/Dustwallow Marsh (38-38)", "Horde", function()
 
 return [[
 

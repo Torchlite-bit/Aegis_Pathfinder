@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Silverpine Forest (12-20)", "Stonetalon Mountains (20-22)", "Horde",function()
+AegisPathfinder:RegisterGuide("Silverpine Forest (12-20)", "Stonetalon Mountains (20-22)", "Horde",function()
 
 return [[
 

@@ -1,8 +1,8 @@
 -- Optimized Guide: Felwood (55-55)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Felwood (55-55)", "Optimized/Silithus (55-55)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Felwood (55-55)", "Optimized/Silithus (55-55)", "Horde", function()
 
 return [[
 

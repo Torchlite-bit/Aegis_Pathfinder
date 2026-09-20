@@ -1,8 +1,8 @@
 -- Optimized Guide: Blasted Lands (51-51)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Blasted Lands (51-51)", "Optimized/Un'Goro Crater (51-52)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Blasted Lands (51-51)", "Optimized/Un'Goro Crater (51-52)", "Horde", function()
 
 return [[
 

@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 55-56 Winterspring
-TurtleGuide:RegisterGuide("RXP/55-56 Winterspring", "RXP/56-57 Burning Steppes", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/55-56 Winterspring", "RXP/56-57 Burning Steppes", "Alliance", function()
 return [[
 
 N 55-56 Winterspring |N|Converted from RestedXP guide|

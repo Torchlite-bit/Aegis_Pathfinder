@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 52-53 Azshara
-TurtleGuide:RegisterGuide("RXP/52-53 Azshara", "RXP/53-54 Felwood", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/52-53 Azshara", "RXP/53-54 Felwood", "Horde", function()
 return [[
 
 N 52-53 Azshara |N|Converted from RestedXP guide|

@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Silithus (58-59)", "Winterspring (59-60)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Silithus (58-59)", "Winterspring (59-60)", "Alliance",function()
 
 
 return [[

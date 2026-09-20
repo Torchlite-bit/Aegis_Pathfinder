@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 1-6 Orc/Troll
-TurtleGuide:RegisterGuide("RXP_Hardcore/1-6 Orc/Troll", "RXP_Hardcore/6-13 Orc/Troll", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/1-6 Orc/Troll", "RXP_Hardcore/6-13 Orc/Troll", "Horde", function()
 return [[
 
 N 1-6 Orc/Troll |N|Converted from RestedXP guide|

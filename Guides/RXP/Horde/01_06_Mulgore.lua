@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 1-6 Mulgore
-TurtleGuide:RegisterGuide("RXP/1-6 Mulgore", "RXP/6-12 Mulgore", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/1-6 Mulgore", "RXP/6-12 Mulgore", "Horde", function()
 return [[
 
 N 1-6 Mulgore |N|Converted from RestedXP guide|

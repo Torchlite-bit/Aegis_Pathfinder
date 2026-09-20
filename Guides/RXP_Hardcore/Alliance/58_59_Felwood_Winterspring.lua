@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 58-59 Felwood/Winterspring
-TurtleGuide:RegisterGuide("RXP_Hardcore/58-59 Felwood/Winterspring", "RXP_Hardcore/59-60 Winterspring/Silithus part 1", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/58-59 Felwood/Winterspring", "RXP_Hardcore/59-60 Winterspring/Silithus part 1", "Alliance", function()
 return [[
 
 N 58-59 Felwood/Winterspring |N|Converted from RestedXP guide|

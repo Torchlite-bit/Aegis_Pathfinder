@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 55-56 Felwood/Winterspring
-TurtleGuide:RegisterGuide("RXP/55-56 Felwood/Winterspring", "RXP/56-58 Western PL/Eastern PL", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/55-56 Felwood/Winterspring", "RXP/56-58 Western PL/Eastern PL", "Horde", function()
 return [[
 
 N 55-56 Felwood/Winterspring |N|Converted from RestedXP guide|

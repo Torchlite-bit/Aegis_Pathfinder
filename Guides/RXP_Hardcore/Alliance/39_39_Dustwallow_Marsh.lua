@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 39-39 Dustwallow Marsh
-TurtleGuide:RegisterGuide("RXP_Hardcore/39-39 Dustwallow Marsh", "RXP_Hardcore/39-40 Desolace", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/39-39 Dustwallow Marsh", "RXP_Hardcore/39-40 Desolace", "Alliance", function()
 return [[
 
 N 39-39 Dustwallow Marsh |N|Converted from RestedXP guide|

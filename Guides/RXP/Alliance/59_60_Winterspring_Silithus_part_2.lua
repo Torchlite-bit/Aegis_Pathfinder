@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 59-60 Winterspring/Silithus part 2
-TurtleGuide:RegisterGuide("RXP/59-60 Winterspring/Silithus part 2", "", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/59-60 Winterspring/Silithus part 2", "", "Alliance", function()
 return [[
 
 N 59-60 Winterspring/Silithus part 2 |N|Converted from RestedXP guide|

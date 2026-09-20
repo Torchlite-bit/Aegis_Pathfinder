@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 41-41 Desolace II
-TurtleGuide:RegisterGuide("RXP/41-41 Desolace II", "RXP/41-43 Tanaris/Dustwallow", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/41-41 Desolace II", "RXP/41-43 Tanaris/Dustwallow", "Horde", function()
 return [[
 
 N 41-41 Desolace II |N|Converted from RestedXP guide|

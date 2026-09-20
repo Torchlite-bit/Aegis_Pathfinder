@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Un'goro (51-52)", "Azshara (52-53)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Un'goro (51-52)", "Azshara (52-53)", "Alliance",function()
 
 return [[
 N Mithril Casing |QID|4243| |N|You be asked to craft or purchase Mithril Casing from the Auction House in a later step of this guide|

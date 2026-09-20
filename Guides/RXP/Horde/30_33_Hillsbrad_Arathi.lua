@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 30-33 Hillsbrad/Arathi
-TurtleGuide:RegisterGuide("RXP/30-33 Hillsbrad/Arathi", "RXP/33-34 Shimmering Flats", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/30-33 Hillsbrad/Arathi", "RXP/33-34 Shimmering Flats", "Horde", function()
 return [[
 
 N 30-33 Hillsbrad/Arathi |N|Converted from RestedXP guide|

@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 42-43 Stranglethorn Vale III
-TurtleGuide:RegisterGuide("RXP_Hardcore/42-43 Stranglethorn Vale III", "RXP_Hardcore/43-44 Swamp of Sorrows II", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/42-43 Stranglethorn Vale III", "RXP_Hardcore/43-44 Swamp of Sorrows II", "Alliance", function()
 return [[
 
 N 42-43 Stranglethorn Vale III |N|Converted from RestedXP guide|

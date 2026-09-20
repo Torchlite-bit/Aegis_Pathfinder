@@ -1,8 +1,8 @@
 -- Optimized Guide: Feralas (43-45)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Feralas (43-45)", "Optimized/Uldaman (45-46)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Feralas (43-45)", "Optimized/Uldaman (45-46)", "Alliance", function()
 
 return [[
 

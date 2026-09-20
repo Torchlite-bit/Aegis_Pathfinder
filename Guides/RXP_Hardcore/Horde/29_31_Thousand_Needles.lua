@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 29-31 Thousand Needles
-TurtleGuide:RegisterGuide("RXP_Hardcore/29-31 Thousand Needles", "RXP_Hardcore/31-34 Hillsbrad/Arathi", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/29-31 Thousand Needles", "RXP_Hardcore/31-34 Hillsbrad/Arathi", "Horde", function()
 return [[
 
 N 29-31 Thousand Needles |N|Converted from RestedXP guide|

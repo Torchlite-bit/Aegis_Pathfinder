@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 52-53 Feralas
-TurtleGuide:RegisterGuide("RXP/52-53 Feralas", "RXP/53-53 Azshara", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/52-53 Feralas", "RXP/53-53 Azshara", "Alliance", function()
 return [[
 
 N 52-53 Feralas |N|Converted from RestedXP guide|

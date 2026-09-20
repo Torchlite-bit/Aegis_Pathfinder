@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Arathi Highlands (37-38)", "Thousand Needles (37-38)", "Horde",function()
+AegisPathfinder:RegisterGuide("Arathi Highlands (37-38)", "Thousand Needles (37-38)", "Horde",function()
 
 return [[
 

@@ -1,12 +1,12 @@
 -- Navigation.lua
--- Waypoint routing for TurtleGuide.
+-- Waypoint routing for AegisPathfinder.
 --
 -- Guides describe locations as a zone name plus map coordinates in 0-100 space.
 -- Each supported waypoint addon is wrapped in a provider that translates those
 -- into its own format, so nothing outside this file talks to TomTom (or any
 -- other waypoint addon) directly.
 
-local L = TurtleGuide.Locale
+local L = AegisPathfinder.Locale
 
 local function HasMetaMap()
 	return IsAddOnLoaded("MetaMap") and MetaMap_NameToZoneID and MetaMap_GetCurrentMapInfo
@@ -73,14 +73,14 @@ providers.tomtom = {
 			opts.callbacks = {
 				distance = {
 					[15] = function(event, uid, dist, lastdist)
-						TurtleGuide:Debug("TomTom arrival callback triggered")
+						AegisPathfinder:Debug("TomTom arrival callback triggered")
 						wp.onArrival()
 					end
 				}
 			}
 		end
 
-		TurtleGuide:Debug(string.format("TomTom waypoint: c=%d z=%d x=%.2f y=%.2f title=%s",
+		AegisPathfinder:Debug(string.format("TomTom waypoint: c=%d z=%d x=%.2f y=%.2f title=%s",
 			wp.continent, wp.zoneindex, wp.x / 100, wp.y / 100, wp.title))
 
 		local uid = TomTom:AddMFWaypoint(wp.continent, wp.zoneindex, wp.x / 100, wp.y / 100, opts)
@@ -109,7 +109,7 @@ providers.tomtom = {
 -- from it is a known value (map.lua `layers`: img\fav is 6). pfQuest.route
 -- identifies its arrow target by title + texture + layer + cluster, so the layer
 -- passed to SetTarget has to match the one pfMap:UpdateNode() computes.
-local PFQUEST_ADDON = "TURTLEGUIDE"
+local PFQUEST_ADDON = "AEGISPATHFINDER"
 local PFQUEST_LAYER = 6
 local pfquesttitle
 
@@ -128,12 +128,12 @@ providers.pfquest = {
 		-- pfQuest keys nodes by area id, not by the world map's zone index
 		local map = pfMap:GetMapIDByName(wp.zone)
 		if not map then
-			TurtleGuide:Debug("pfQuest has no map id for zone " .. (wp.zone or "nil"))
+			AegisPathfinder:Debug("pfQuest has no map id for zone " .. (wp.zone or "nil"))
 			return
 		end
 
 		local texture = PfQuestTexture()
-		TurtleGuide:Debug(string.format("pfQuest node: map=%d x=%.2f y=%.2f title=%s",
+		AegisPathfinder:Debug(string.format("pfQuest node: map=%d x=%.2f y=%.2f title=%s",
 			map, wp.x, wp.y, wp.title))
 
 		pfMap:AddNode({
@@ -253,7 +253,7 @@ providers.metamap = {
 -- The provider that should receive waypoints, or nil when no supported waypoint
 -- addon is loaded. A configured provider that is not currently usable falls back
 -- to the "auto" order rather than silently dropping waypoints.
-function TurtleGuide:GetWaypointProvider()
+function AegisPathfinder:GetWaypointProvider()
 	local choice = self.db.char.waypointprovider
 	if choice and choice ~= "auto" and providers[choice] and providers[choice].IsAvailable() then
 		return providers[choice]
@@ -265,7 +265,7 @@ function TurtleGuide:GetWaypointProvider()
 end
 
 -- Ordered { name, label } list of the providers that are usable right now.
-function TurtleGuide:GetWaypointProviders()
+function AegisPathfinder:GetWaypointProviders()
 	local list = {}
 	for _, name in ipairs(providerorder) do
 		if providers[name].IsAvailable() then
@@ -275,7 +275,7 @@ function TurtleGuide:GetWaypointProviders()
 	return list
 end
 
-function TurtleGuide:GetWaypointProviderLabel()
+function AegisPathfinder:GetWaypointProviderLabel()
 	local choice = self.db.char.waypointprovider or "auto"
 	if choice ~= "auto" and providers[choice] then
 		return providers[choice].label
@@ -287,7 +287,7 @@ end
 
 -- Step to the next selectable provider ("auto", then every usable provider) and
 -- re-point the current waypoint at it.
-function TurtleGuide:CycleWaypointProvider()
+function AegisPathfinder:CycleWaypointProvider()
 	local choices = { "auto" }
 	for _, provider in ipairs(self:GetWaypointProviders()) do
 		table.insert(choices, provider.name)
@@ -335,11 +335,11 @@ end
 -- Hand one waypoint to the active provider
 local function MapPoint(zone, x, y, desc, onArrival)
 	desc = desc or "Waypoint"
-	TurtleGuide:Debug(string.format("Mapping %q - %s (%.2f, %.2f)", desc, zone or "nil", x or 0, y or 0))
+	AegisPathfinder:Debug(string.format("Mapping %q - %s (%.2f, %.2f)", desc, zone or "nil", x or 0, y or 0))
 	local zi, zc = zone and zonei[zone], zone and zonec[zone]
 	if not zi or zi == 0 then
-		if zone then TurtleGuide:Print(string.format(L["Cannot find zone %q, using current zone."], zone))
-		else TurtleGuide:Print(L["No zone provided, using current zone."]) end
+		if zone then AegisPathfinder:Print(string.format(L["Cannot find zone %q, using current zone."], zone))
+		else AegisPathfinder:Print(L["No zone provided, using current zone."]) end
 
 		zc, zi = GetPlayerZoneData()
 		zone = zonenames[zc] and zonenames[zc][zi]
@@ -347,11 +347,11 @@ local function MapPoint(zone, x, y, desc, onArrival)
 
 	-- Skip if still no valid zone
 	if not zc or zc == 0 or not zi or zi == 0 then
-		TurtleGuide:Debug("Could not determine zone for waypoint")
+		AegisPathfinder:Debug("Could not determine zone for waypoint")
 		return
 	end
 
-	local provider = TurtleGuide:GetWaypointProvider()
+	local provider = AegisPathfinder:GetWaypointProvider()
 	if not provider then return end
 
 	local created = provider.Add({
@@ -365,18 +365,18 @@ local function MapPoint(zone, x, y, desc, onArrival)
 		onArrival = onArrival,
 	})
 
-	if created then TurtleGuide.lastwaypoint = true end
+	if created then AegisPathfinder.lastwaypoint = true end
 end
 
 -- Set waypoint from coordinates
-function TurtleGuide:SetWaypoint(x, y, zone, description)
+function AegisPathfinder:SetWaypoint(x, y, zone, description)
 	self:ClearWaypoint()
-	MapPoint(zone, x, y, description or "TurtleGuide Waypoint")
+	MapPoint(zone, x, y, description or "AegisPathfinder Waypoint")
 end
 
--- Clear all TurtleGuide waypoints. Every provider is cleared, not just the
+-- Clear all AegisPathfinder waypoints. Every provider is cleared, not just the
 -- active one, so switching providers does not leave stale waypoints behind.
-function TurtleGuide:ClearWaypoint()
+function AegisPathfinder:ClearWaypoint()
 	for _, name in ipairs(providerorder) do
 		if providers[name].IsAvailable() then providers[name].Clear() end
 	end
@@ -384,7 +384,7 @@ function TurtleGuide:ClearWaypoint()
 end
 
 -- Force waypoint update - directly creates waypoint for current objective
-function TurtleGuide:ForceWaypointUpdate()
+function AegisPathfinder:ForceWaypointUpdate()
 	if not self.current then return end
 
 	local action, quest = self:GetObjectiveInfo(self.current)
@@ -405,7 +405,7 @@ function TurtleGuide:ForceWaypointUpdate()
 end
 
 -- Map NPC location using pfQuest database
-function TurtleGuide:MapPfQuestNPC(qid, action)
+function AegisPathfinder:MapPfQuestNPC(qid, action)
 	if not self.db.char.mapquestgivers then return end
 	if not qid then return false end
 	if not pfDB then return false end
@@ -473,7 +473,7 @@ function TurtleGuide:MapPfQuestNPC(qid, action)
 end
 
 -- Parse coordinates from note text and create waypoints
-function TurtleGuide:ParseAndMapCoords(qid, action, note, desc, zone)
+function AegisPathfinder:ParseAndMapCoords(qid, action, note, desc, zone)
 	-- Clear existing waypoints first
 	self:ClearWaypoint()
 
@@ -485,8 +485,8 @@ function TurtleGuide:ParseAndMapCoords(qid, action, note, desc, zone)
 	local onArrival = nil
 	if isTravelObjective then
 		onArrival = function()
-			TurtleGuide:Debug("Travel objective arrival - marking complete")
-			TurtleGuide:SetTurnedIn()
+			AegisPathfinder:Debug("Travel objective arrival - marking complete")
+			AegisPathfinder:SetTurnedIn()
 		end
 	end
 
@@ -510,7 +510,7 @@ function TurtleGuide:ParseAndMapCoords(qid, action, note, desc, zone)
 end
 
 -- Auto-update waypoint when step changes
-function TurtleGuide:UpdateWaypoint()
+function AegisPathfinder:UpdateWaypoint()
 	if not self:GetWaypointProvider() then return end
 
 	local action, quest, fullquest = self:GetObjectiveInfo()
@@ -524,7 +524,7 @@ function TurtleGuide:UpdateWaypoint()
 end
 
 -- Patch Astrolabe/TomTom spelling mismatches and Lua errors at runtime
-function TurtleGuide:PatchAstrolabe()
+function AegisPathfinder:PatchAstrolabe()
 	if self.astrolabePatched then return end
 	self.astrolabePatched = true
 

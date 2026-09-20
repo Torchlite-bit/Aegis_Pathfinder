@@ -1,8 +1,8 @@
 -- Optimized Guide: Dustwallow Marsh (43-44)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Dustwallow Marsh (43-44)", "Optimized/Tanaris (44-45)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Dustwallow Marsh (43-44)", "Optimized/Tanaris (44-45)", "Horde", function()
 
 return [[
 

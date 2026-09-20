@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 48-49 STV/Hinterlands II
-TurtleGuide:RegisterGuide("RXP_Hardcore/48-49 STV/Hinterlands II", "RXP_Hardcore/49-50 Searing Gorge", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/48-49 STV/Hinterlands II", "RXP_Hardcore/49-50 Searing Gorge", "Alliance", function()
 return [[
 
 N 48-49 STV/Hinterlands II |N|Converted from RestedXP guide|

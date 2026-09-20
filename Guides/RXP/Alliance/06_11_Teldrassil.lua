@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 6-11 Teldrassil
-TurtleGuide:RegisterGuide("RXP/6-11 Teldrassil", "RXP/14-16 Darkshore", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/6-11 Teldrassil", "RXP/14-16 Darkshore", "Alliance", function()
 return [[
 
 N 6-11 Teldrassil |N|Converted from RestedXP guide|

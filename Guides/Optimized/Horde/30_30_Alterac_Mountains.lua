@@ -1,8 +1,8 @@
 -- Optimized Guide: Alterac Mountains (30-30)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Alterac Mountains (30-30)", "Optimized/Arathi Highlands (30-30)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Alterac Mountains (30-30)", "Optimized/Arathi Highlands (30-30)", "Horde", function()
 
 return [[
 

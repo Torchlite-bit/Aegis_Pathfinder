@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 49-50 Tanaris/Un'Goro
-TurtleGuide:RegisterGuide("RXP/49-50 Tanaris/Un'Goro", "RXP/RestedXP Alliance 50-60\50-50 Stranglethorn Vale", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/49-50 Tanaris/Un'Goro", "RXP/RestedXP Alliance 50-60\50-50 Stranglethorn Vale", "Alliance", function()
 return [[
 
 N 49-50 Tanaris/Un'Goro |N|Converted from RestedXP guide|

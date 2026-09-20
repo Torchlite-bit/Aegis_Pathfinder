@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 13-15 Westfall
-TurtleGuide:RegisterGuide("RXP/13-15 Westfall", "RXP/14-16 Darkshore", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/13-15 Westfall", "RXP/14-16 Darkshore", "Alliance", function()
 return [[
 
 N 13-15 Westfall |N|Converted from RestedXP guide|

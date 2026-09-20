@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 56-58 Western PL/Eastern PL
-TurtleGuide:RegisterGuide("RXP/56-58 Western PL/Eastern PL", "RXP/58-59 Winterspring/Silithus I", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/56-58 Western PL/Eastern PL", "RXP/58-59 Winterspring/Silithus I", "Horde", function()
 return [[
 
 N 56-58 Western PL/Eastern PL |N|Converted from RestedXP guide|

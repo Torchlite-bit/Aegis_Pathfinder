@@ -1,4 +1,4 @@
-package-as: TurtleGuide
+package-as: AegisPathfinder
 
 ignore:
     - README.md
@@ -8,3 +8,7 @@ ignore:
     - docs
     - tasks
     - .luarc.json
+    - CONTRIBUTORS.md
+    - CONTRIBUTING.md
+    - NOTICE.md
+    - LICENSE-STATUS.md

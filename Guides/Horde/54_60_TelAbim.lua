@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Tel'Abim (54-60)", "Winterspring (54-55)", "Both", function()
+AegisPathfinder:RegisterGuide("Tel'Abim (54-60)", "Winterspring (54-55)", "Both", function()
 
 return [[
 

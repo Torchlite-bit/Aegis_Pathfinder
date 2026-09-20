@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Azshara (46-47)", "The Hinterlands (47-47)", "Horde",function()
+AegisPathfinder:RegisterGuide("Azshara (46-47)", "The Hinterlands (47-47)", "Horde",function()
 
 
 return [[

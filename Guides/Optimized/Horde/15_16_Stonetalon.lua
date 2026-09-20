@@ -1,8 +1,8 @@
 -- Optimized Guide: Stonetalon Mountains (15-16)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Stonetalon (15-16)", "Optimized/The Barrens (16-18)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Stonetalon (15-16)", "Optimized/The Barrens (16-18)", "Horde", function()
 
 return [[
 

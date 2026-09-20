@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 40-41 Alterac/Arathi
-TurtleGuide:RegisterGuide("RXP_Hardcore/40-41 Alterac/Arathi", "RXP_Hardcore/41-42 Badlands", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/40-41 Alterac/Arathi", "RXP_Hardcore/41-42 Badlands", "Alliance", function()
 return [[
 
 N 40-41 Alterac/Arathi |N|Converted from RestedXP guide|

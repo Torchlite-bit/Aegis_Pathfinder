@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 21-23 Stonetalon/Ashenvale
-TurtleGuide:RegisterGuide("RXP/21-23 Stonetalon/Ashenvale", "RXP/23-24 Wetlands", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/21-23 Stonetalon/Ashenvale", "RXP/23-24 Wetlands", "Alliance", function()
 return [[
 
 N 21-23 Stonetalon/Ashenvale |N|Converted from RestedXP guide|

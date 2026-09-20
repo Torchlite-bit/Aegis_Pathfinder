@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Balor (29-34)", "Desolace (32-34)", "Horde", function()
+AegisPathfinder:RegisterGuide("Balor (29-34)", "Desolace (32-34)", "Horde", function()
 
 return [[
 

@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Thousand Needles (27-29)", "Hillsbrad Foothills (29-30)", "Horde",function()
+AegisPathfinder:RegisterGuide("Thousand Needles (27-29)", "Hillsbrad Foothills (29-30)", "Horde",function()
 
 return [[
 

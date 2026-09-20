@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Western Plaguelands (56-57)", "Eastern Plaguelands (57-58)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Western Plaguelands (56-57)", "Eastern Plaguelands (57-58)", "Alliance",function()
 
 return [[
 

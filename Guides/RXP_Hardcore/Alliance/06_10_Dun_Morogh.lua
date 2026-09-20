@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 6-10 Dun Morogh
-TurtleGuide:RegisterGuide("RXP_Hardcore/6-10 Dun Morogh", "RXP_Hardcore/10-11 Elwynn (Dwarf/Gnome)", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/6-10 Dun Morogh", "RXP_Hardcore/10-11 Elwynn (Dwarf/Gnome)", "Alliance", function()
 return [[
 
 N 6-10 Dun Morogh |N|Converted from RestedXP guide|

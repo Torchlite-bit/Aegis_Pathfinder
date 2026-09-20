@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 15-19 The Barrens
-TurtleGuide:RegisterGuide("RXP_Hardcore/15-19 The Barrens", "RXP_Hardcore/19-23 Stonetalon/Barrens/Ashenvale", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/15-19 The Barrens", "RXP_Hardcore/19-23 Stonetalon/Barrens/Ashenvale", "Horde", function()
 return [[
 
 N 15-19 The Barrens |N|Converted from RestedXP guide|

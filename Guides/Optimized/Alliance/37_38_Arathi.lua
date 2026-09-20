@@ -1,8 +1,8 @@
 -- Optimized Guide: Arathi Highlands (37-38)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Arathi (37-38)", "Optimized/Dustwallow (38-38)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Arathi (37-38)", "Optimized/Dustwallow (38-38)", "Alliance", function()
 
 return [[
 

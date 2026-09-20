@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 32-33 Hillsbrad/Arathi
-TurtleGuide:RegisterGuide("RXP/32-33 Hillsbrad/Arathi", "RXP/33-34 Thousand Needles", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/32-33 Hillsbrad/Arathi", "RXP/33-34 Thousand Needles", "Alliance", function()
 return [[
 
 N 32-33 Hillsbrad/Arathi |N|Converted from RestedXP guide|

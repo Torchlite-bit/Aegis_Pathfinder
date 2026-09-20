@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 47-48 Tanaris
-TurtleGuide:RegisterGuide("RXP_Hardcore/47-48 Tanaris", "RXP_Hardcore/48-49 STV/Hinterlands II", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/47-48 Tanaris", "RXP_Hardcore/48-49 STV/Hinterlands II", "Alliance", function()
 return [[
 
 N 47-48 Tanaris |N|Converted from RestedXP guide|

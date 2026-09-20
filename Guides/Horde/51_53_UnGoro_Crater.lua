@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Un'goro (51-53)", "Burning Steppes (53-54)", "Horde",function()
+AegisPathfinder:RegisterGuide("Un'goro (51-53)", "Burning Steppes (53-54)", "Horde",function()
 
 return [[
 

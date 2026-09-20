@@ -1,8 +1,8 @@
 -- Optimized Guide: Hillsbrad Foothills (29-30)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Hillsbrad Foothills (29-30)", nil, "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Hillsbrad Foothills (29-30)", nil, "Horde", function()
 
 return [[
 

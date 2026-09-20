@@ -1,8 +1,8 @@
 -- Optimized Guide: Darkshore (20-21)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Darkshore (20-21)", "Optimized/Ashenvale (21-22)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Darkshore (20-21)", "Optimized/Ashenvale (21-22)", "Alliance", function()
 
 return [[
 

@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Stranglethorn (36-37)", "Alterac Mountains (36-37)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Stranglethorn (36-37)", "Alterac Mountains (36-37)", "Alliance",function()
 
 return [[
 

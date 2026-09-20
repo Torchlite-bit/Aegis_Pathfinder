@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 1-6 Undead
-TurtleGuide:RegisterGuide("RXP_Hardcore/1-6 Undead", "RXP_Hardcore/6-13 Undead", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/1-6 Undead", "RXP_Hardcore/6-13 Undead", "Horde", function()
 return [[
 
 N 1-6 Undead |N|Converted from RestedXP guide|

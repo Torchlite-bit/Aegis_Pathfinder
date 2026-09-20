@@ -1,8 +1,8 @@
 -- Optimized Guide: Searing Gorge (47-48)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Searing Gorge (47-48)", "Optimized/Swamp of Sorrows (48-48)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Searing Gorge (47-48)", "Optimized/Swamp of Sorrows (48-48)", "Horde", function()
 
 return [[
 

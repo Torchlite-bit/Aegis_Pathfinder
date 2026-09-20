@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 30-30 Wetlands/Hillsbrad
-TurtleGuide:RegisterGuide("RXP_Hardcore/30-30 Wetlands/Hillsbrad", "RXP_Hardcore/30-32 Duskwood", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/30-30 Wetlands/Hillsbrad", "RXP_Hardcore/30-32 Duskwood", "Alliance", function()
 return [[
 
 N 30-30 Wetlands/Hillsbrad |N|Converted from RestedXP guide|

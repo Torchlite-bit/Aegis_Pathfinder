@@ -1,9 +1,9 @@
 -- Optimized Guide: Darkshore (12-14)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 -- All Alliance races converge here after their starting zones
 
-TurtleGuide:RegisterGuide("Optimized/Darkshore (12-14)", "Optimized/Darkshore (14-17)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Darkshore (12-14)", "Optimized/Darkshore (14-17)", "Alliance", function()
 
 return [[
 

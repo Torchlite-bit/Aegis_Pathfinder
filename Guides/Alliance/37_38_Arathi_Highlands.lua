@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Arathi Highlands (37-38)", "Dustwallow Marsh (38-39)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Arathi Highlands (37-38)", "Dustwallow Marsh (38-39)", "Alliance",function()
 
 return [[
 

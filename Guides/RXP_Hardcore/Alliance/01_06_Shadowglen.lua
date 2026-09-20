@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 1-6 Shadowglen
-TurtleGuide:RegisterGuide("RXP_Hardcore/1-6 Shadowglen", "RXP_Hardcore/6-11 Teldrassil", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/1-6 Shadowglen", "RXP_Hardcore/6-11 Teldrassil", "Alliance", function()
 return [[
 
 N 1-6 Shadowglen |N|Converted from RestedXP guide|

@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 51-52 Stranglethorn/Blasted Lands
-TurtleGuide:RegisterGuide("RXP_Hardcore/51-52 Stranglethorn/Blasted Lands", "RXP_Hardcore/52-53 Searing Gorge/Burning Steppes", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/51-52 Stranglethorn/Blasted Lands", "RXP_Hardcore/52-53 Searing Gorge/Burning Steppes", "Horde", function()
 return [[
 
 N 51-52 Stranglethorn/Blasted Lands |N|Converted from RestedXP guide|

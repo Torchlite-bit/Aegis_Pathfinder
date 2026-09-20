@@ -1,8 +1,8 @@
 -- Optimized Guide: Dun Morogh (1-12)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Dun Morogh (1-12)", "Optimized/Darkshore (12-14)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Dun Morogh (1-12)", "Optimized/Darkshore (12-14)", "Alliance", function()
 
 return [[
 

@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 38-39 Alterac/Arathi
-TurtleGuide:RegisterGuide("RXP/38-39 Alterac/Arathi", "RXP/39-40 Badlands", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/38-39 Alterac/Arathi", "RXP/39-40 Badlands", "Horde", function()
 return [[
 
 N 38-39 Alterac/Arathi |N|Converted from RestedXP guide|

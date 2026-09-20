@@ -1,8 +1,8 @@
 -- Optimized Guide: Swamp of Sorrows (41-42)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Swamp of Sorrows (41-42)", "Optimized/Stranglethorn Vale (42-43)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Swamp of Sorrows (41-42)", "Optimized/Stranglethorn Vale (42-43)", "Horde", function()
 
 return [[
 

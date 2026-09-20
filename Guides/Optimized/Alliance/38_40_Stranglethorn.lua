@@ -1,8 +1,8 @@
 -- Optimized Guide: Stranglethorn Vale (38-40)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Stranglethorn (38-40)", nil, "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Stranglethorn (38-40)", nil, "Alliance", function()
 
 return [[
 
@@ -89,7 +89,7 @@ N Level 40 |N|Congratulations! You should be around level 40 now|
 
 N Class Quest |N|Paladins should get Summon Warhorse at level 40. Warriors should check for Berserker Stance quest|
 
-N Continue Leveling |N|Continue with Badlands (40-41) or Stranglethorn Vale (39-40) guides from the main TurtleGuide list|
+N Continue Leveling |N|Continue with Badlands (40-41) or Stranglethorn Vale (39-40) guides from the main AegisPathfinder list|
 
 ]]
 end)

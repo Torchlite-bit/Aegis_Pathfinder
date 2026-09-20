@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Burning Steppes (55-56)", "Western Plaguelands (56-57)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Burning Steppes (55-56)", "Western Plaguelands (56-57)", "Alliance",function()
 
 return [[
 

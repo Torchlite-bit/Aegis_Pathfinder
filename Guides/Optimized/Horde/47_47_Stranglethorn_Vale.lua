@@ -1,8 +1,8 @@
 -- Optimized Guide: Stranglethorn Vale (47-47)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Stranglethorn Vale (47-47)", "Optimized/Searing Gorge (47-48)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Stranglethorn Vale (47-47)", "Optimized/Searing Gorge (47-48)", "Horde", function()
 
 return [[
 

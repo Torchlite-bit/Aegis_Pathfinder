@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 51-52 Blasted Lands
-TurtleGuide:RegisterGuide("RXP_Hardcore/51-52 Blasted Lands", "RXP_Hardcore/52-52 Searing Gorge/WPL", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/51-52 Blasted Lands", "RXP_Hardcore/52-52 Searing Gorge/WPL", "Alliance", function()
 return [[
 
 N 51-52 Blasted Lands |N|Converted from RestedXP guide|

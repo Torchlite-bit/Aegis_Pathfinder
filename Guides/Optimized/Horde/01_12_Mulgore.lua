@@ -1,8 +1,8 @@
 -- Optimized Guide: Mulgore (1-12)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Mulgore (1-12)", "Optimized/The Barrens (12-20)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Mulgore (1-12)", "Optimized/The Barrens (12-20)", "Horde", function()
 
 return [[
 

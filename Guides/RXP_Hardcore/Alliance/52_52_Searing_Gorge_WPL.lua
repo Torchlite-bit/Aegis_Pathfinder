@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 52-52 Searing Gorge/WPL
-TurtleGuide:RegisterGuide("RXP_Hardcore/52-52 Searing Gorge/WPL", "RXP_Hardcore/52-53 Felwood", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/52-52 Searing Gorge/WPL", "RXP_Hardcore/52-53 Felwood", "Alliance", function()
 return [[
 
 N 52-52 Searing Gorge/WPL |N|Converted from RestedXP guide|

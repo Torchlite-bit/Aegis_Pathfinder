@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 41-400_41-41 Swamp of Sorrows
-TurtleGuide:RegisterGuide("RXP/41-400_41-41 Swamp of Sorrows", "RXP/RestedXP Horde 40-50\41-41 Desolace II", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/41-400_41-41 Swamp of Sorrows", "RXP/RestedXP Horde 40-50\41-41 Desolace II", "Horde", function()
 return [[
 
 N 41-400_41-41 Swamp of Sorrows |N|Converted from RestedXP guide|

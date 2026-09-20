@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 11-13 Loch Modan
-TurtleGuide:RegisterGuide("RXP/11-13 Loch Modan", "RXP/13-15 Westfall", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/11-13 Loch Modan", "RXP/13-15 Westfall", "Alliance", function()
 return [[
 
 N 11-13 Loch Modan |N|Converted from RestedXP guide|

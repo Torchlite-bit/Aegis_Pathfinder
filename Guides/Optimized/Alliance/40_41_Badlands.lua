@@ -1,8 +1,8 @@
 -- Optimized Guide: Badlands (40-41)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Badlands (40-41)", "Optimized/Swamp of Sorrows (41-41)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Badlands (40-41)", "Optimized/Swamp of Sorrows (41-41)", "Alliance", function()
 
 return [[
 

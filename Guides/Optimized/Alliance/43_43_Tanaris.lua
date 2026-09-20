@@ -1,8 +1,8 @@
 -- Optimized Guide: Tanaris (43-43)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Tanaris (43-43)", "Optimized/Feralas (43-45)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Tanaris (43-43)", "Optimized/Feralas (43-45)", "Alliance", function()
 
 return [[
 

@@ -1,8 +1,8 @@
 -- Optimized Guide: Searing Gorge (50-51)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Searing Gorge (50-51)", "Optimized/Un'Goro (51-52)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Searing Gorge (50-51)", "Optimized/Un'Goro (51-52)", "Alliance", function()
 
 return [[
 

@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 52-52 Felwood
-TurtleGuide:RegisterGuide("RXP/52-52 Felwood", "RXP/52-53 Feralas", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/52-52 Felwood", "RXP/52-53 Feralas", "Alliance", function()
 return [[
 
 N 52-52 Felwood |N|Converted from RestedXP guide|

@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 50-51 Searing Gorge
-TurtleGuide:RegisterGuide("RXP/50-51 Searing Gorge", "RXP/51-51 Blasted Lands", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/50-51 Searing Gorge", "RXP/51-51 Blasted Lands", "Alliance", function()
 return [[
 
 N 50-51 Searing Gorge |N|Converted from RestedXP guide|

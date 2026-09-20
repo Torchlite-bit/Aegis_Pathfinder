@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 6-13 Undead
-TurtleGuide:RegisterGuide("RXP_Hardcore/6-13 Undead", "RXP_Hardcore/13-15 Silverpine Forest", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/6-13 Undead", "RXP_Hardcore/13-15 Silverpine Forest", "Horde", function()
 return [[
 
 N 6-13 Undead |N|Converted from RestedXP guide|

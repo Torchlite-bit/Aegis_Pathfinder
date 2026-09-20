@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Thalassian Highlands (1-10)", "Darkshore (12-17)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Thalassian Highlands (1-10)", "Darkshore (12-17)", "Alliance",function()
 
 return [[
 

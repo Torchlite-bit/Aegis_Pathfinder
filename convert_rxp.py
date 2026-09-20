@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-RestedXP to TurtleGuide Converter
+RestedXP to AegisPathfinder Converter
 
-Converts RestedXP guide format to TurtleGuide format.
+Converts RestedXP guide format to AegisPathfinder format.
 Usage: python3 convert_rxp.py input.lua [output_dir]
 """
 
@@ -242,7 +242,7 @@ def parse_step(step_lines, current_zone, current_class, current_race):
 
 
 def step_to_turtleguide(step):
-    """Convert a parsed step to TurtleGuide format"""
+    """Convert a parsed step to AegisPathfinder format"""
     if not step['action'] or not step['quest']:
         # If we have notes but no action, make it a NOTE
         if step.get('note') and len(step['note']) > 0:
@@ -282,7 +282,7 @@ def step_to_turtleguide(step):
 
 
 def convert_rxp_guide(content):
-    """Convert RXP guide content to TurtleGuide format"""
+    """Convert RXP guide content to AegisPathfinder format"""
     lines = content.split('\n')
 
     # Parse metadata
@@ -373,7 +373,7 @@ def convert_rxp_guide(content):
     if levels:
         level_range = f" ({levels[0]}-{levels[1]})"
 
-    output.append(f'TurtleGuide:RegisterGuide("RXP/{guide_name}", "{next_guide or ""}", "{faction}", function()')
+    output.append(f'AegisPathfinder:RegisterGuide("RXP/{guide_name}", "{next_guide or ""}", "{faction}", function()')
     output.append("")
     output.append("return [[")
     output.append("")

@@ -1,8 +1,8 @@
 -- Optimized Guide: Stranglethorn Vale (48-49)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Stranglethorn (48-49)", "Optimized/Blasted Lands (49-50)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Stranglethorn (48-49)", "Optimized/Blasted Lands (49-50)", "Alliance", function()
 
 return [[
 

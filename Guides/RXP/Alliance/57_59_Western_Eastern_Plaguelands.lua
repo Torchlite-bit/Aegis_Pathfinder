@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 57-59 Western/Eastern Plaguelands
-TurtleGuide:RegisterGuide("RXP/57-59 Western/Eastern Plaguelands", "RXP/59-59 Winterspring/Silithus part 1", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/57-59 Western/Eastern Plaguelands", "RXP/59-59 Winterspring/Silithus part 1", "Alliance", function()
 return [[
 
 N 57-59 Western/Eastern Plaguelands |N|Converted from RestedXP guide|

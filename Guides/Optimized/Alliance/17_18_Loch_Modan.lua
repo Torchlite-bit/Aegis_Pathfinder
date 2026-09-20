@@ -1,8 +1,8 @@
 -- Optimized Guide: Loch Modan (17-18)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Loch Modan (17-18)", "Optimized/Redridge (18-20)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Loch Modan (17-18)", "Optimized/Redridge (18-20)", "Alliance", function()
 
 return [[
 

@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Feralas (44-46)", "Azshara (46-46)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Feralas (44-46)", "Azshara (46-46)", "Alliance",function()
 
 return [[
 

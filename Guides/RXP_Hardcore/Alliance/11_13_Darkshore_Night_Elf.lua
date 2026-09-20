@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 11-13 Darkshore (Night Elf)
-TurtleGuide:RegisterGuide("RXP_Hardcore/11-13 Darkshore (Night Elf)", "RXP_Hardcore/13-13 Loch Modan (Night Elf)", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/11-13 Darkshore (Night Elf)", "RXP_Hardcore/13-13 Loch Modan (Night Elf)", "Alliance", function()
 return [[
 
 N 11-13 Darkshore (Night Elf) |N|Converted from RestedXP guide|

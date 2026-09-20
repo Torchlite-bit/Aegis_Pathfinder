@@ -17,11 +17,11 @@ local professions = {
 	["fishing"] = true,
 }
 
-local TurtleGuide = TurtleGuide
+local AegisPathfinder = AegisPathfinder
 local ww = WidgetWarlock
 
 local f = CreateFrame("Button", nil, UIParent)
-TurtleGuide.statusframe = f
+AegisPathfinder.statusframe = f
 f:SetPoint("BOTTOMRIGHT", QuestWatchFrame, "TOPRIGHT", -60, -15)
 f:SetHeight(24)
 f:SetFrameStrata("LOW")
@@ -41,7 +41,7 @@ prevBtn:SetPoint("LEFT", check, "RIGHT", 2, 0)
 prevBtn:SetNormalTexture("Interface\\Buttons\\UI-SpellbookIcon-PrevPage-Up")
 prevBtn:SetPushedTexture("Interface\\Buttons\\UI-SpellbookIcon-PrevPage-Down")
 prevBtn:SetHighlightTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Highlight")
-prevBtn:SetScript("OnClick", function() TurtleGuide:GoToPreviousObjective() end)
+prevBtn:SetScript("OnClick", function() AegisPathfinder:GoToPreviousObjective() end)
 prevBtn:SetScript("OnEnter", function()
 	GameTooltip:SetOwner(this, "ANCHOR_TOP")
 	GameTooltip:SetText("Previous objective")
@@ -60,7 +60,7 @@ nextBtn:SetPoint("RIGHT", f, "RIGHT", -GAP, 0)
 nextBtn:SetNormalTexture("Interface\\Buttons\\UI-SpellbookIcon-NextPage-Up")
 nextBtn:SetPushedTexture("Interface\\Buttons\\UI-SpellbookIcon-NextPage-Down")
 nextBtn:SetHighlightTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Highlight")
-nextBtn:SetScript("OnClick", function() TurtleGuide:SkipToNextObjective() end)
+nextBtn:SetScript("OnClick", function() AegisPathfinder:SkipToNextObjective() end)
 nextBtn:SetScript("OnEnter", function()
 	GameTooltip:SetOwner(this, "ANCHOR_TOP")
 	GameTooltip:SetText("Skip to next objective")
@@ -87,17 +87,17 @@ returnText:SetFontObject(GameFontNormalSmall)
 returnText:SetPoint("CENTER", 0, 0)
 returnText:SetText("|cff00ff00<< Main|r")
 returnText:SetTextColor(0, 1, 0)
-returnBtn:SetScript("OnClick", function() TurtleGuide:ReturnFromBranch() end)
+returnBtn:SetScript("OnClick", function() AegisPathfinder:ReturnFromBranch() end)
 returnBtn:SetScript("OnEnter", function()
 	GameTooltip:SetOwner(this, "ANCHOR_TOP")
-	local savedGuide = TurtleGuide.db.char.branchsavedguide or "Unknown"
+	local savedGuide = AegisPathfinder.db.char.branchsavedguide or "Unknown"
 	GameTooltip:SetText("Return to main route:\n" .. savedGuide, nil, nil, nil, nil, true)
 end)
 returnBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
 returnBtn:Hide()
-TurtleGuide.branchReturnBtn = returnBtn
+AegisPathfinder.branchReturnBtn = returnBtn
 
-local item = CreateFrame("Button", "TurtleGuideItemButton", UIParent, "ItemButtonTemplate")
+local item = CreateFrame("Button", "AegisPathfinderItemButton", UIParent, "ItemButtonTemplate")
 item:SetFrameStrata("LOW")
 item:SetHeight(36)
 item:SetWidth(36)
@@ -106,7 +106,7 @@ item:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 item:SetScript("OnEnter", function()
 	if not item.uitem then return end
 	GameTooltip:SetOwner(item, "ANCHOR_LEFT")
-	local bag, slot = TurtleGuide:FindBagSlot(item.uitem)
+	local bag, slot = AegisPathfinder:FindBagSlot(item.uitem)
 	if bag then
 		GameTooltip:SetBagItem(bag, slot)
 	else
@@ -146,13 +146,13 @@ f2:SetScript("OnUpdate", function()
 	end
 end)
 
-function TurtleGuide:HideStatusFrameChildren()
-	if TurtleGuide.objectiveframe:IsVisible() then HideUIPanel(TurtleGuide.objectiveframe) end
-	if TurtleGuide.optionsframe:IsVisible() then HideUIPanel(TurtleGuide.optionsframe) end
-	if TurtleGuide.guidelistframe:IsVisible() then HideUIPanel(TurtleGuide.guidelistframe) end
+function AegisPathfinder:HideStatusFrameChildren()
+	if AegisPathfinder.objectiveframe:IsVisible() then HideUIPanel(AegisPathfinder.objectiveframe) end
+	if AegisPathfinder.optionsframe:IsVisible() then HideUIPanel(AegisPathfinder.optionsframe) end
+	if AegisPathfinder.guidelistframe:IsVisible() then HideUIPanel(AegisPathfinder.guidelistframe) end
 end
 
-function TurtleGuide:PositionStatusFrame()
+function AegisPathfinder:PositionStatusFrame()
 	if self.db.profile.statusframepoint then
 		f:ClearAllPoints()
 		f:SetPoint(self.db.profile.statusframepoint, self.db.profile.statusframex, self.db.profile.statusframey)
@@ -164,7 +164,7 @@ function TurtleGuide:PositionStatusFrame()
 	end
 end
 
-function TurtleGuide:SetStatusText(i)
+function AegisPathfinder:SetStatusText(i)
 	self.current = i
 	local action, quest = self:GetObjectiveInfo(i)
 	local note = self:GetObjectiveTag("N")
@@ -235,7 +235,7 @@ end
 -- in a single frame while game state syncs on login. Running the scan per
 -- event spikes CPU and floods vanilla's fixed Lua string pool -> lmemPool
 -- crash. Collapse a burst into a single deferred scan.
-function TurtleGuide:ScheduleStatusUpdate()
+function AegisPathfinder:ScheduleStatusUpdate()
 	if self.statusupdatescheduled then return end
 	self.statusupdatescheduled = true
 	C_Timer.After(0.1, function()
@@ -245,7 +245,7 @@ function TurtleGuide:ScheduleStatusUpdate()
 end
 
 local lastmapped, lastmappedaction, lastmappedquest, tex, uitem
-function TurtleGuide:UpdateStatusFrame()
+function AegisPathfinder:UpdateStatusFrame()
 	self:Debug("UpdateStatusFrame", self.current)
 	local oldcurrent = self.current
 
@@ -323,7 +323,7 @@ function TurtleGuide:UpdateStatusFrame()
 
 			if action == "ACCEPT" or action == "COMPLETE" or action == "TURNIN" or action == "RUN" then
 				local qid = self:GetObjectiveTag("QID", i)
-				local cleanQuest = string.gsub(name, TurtleGuide.Locale.PART_GSUB, "")
+				local cleanQuest = string.gsub(name, AegisPathfinder.Locale.PART_GSUB, "")
 				if (qid and self:IsQuestCompletedOnServer(qid)) or (not qid and self.db.char.completedquests[cleanQuest]) then
 					return self:SetTurnedIn(i, true)
 				end
@@ -442,7 +442,7 @@ function TurtleGuide:UpdateStatusFrame()
 	end
 end
 
-function TurtleGuide:PLAYER_REGEN_ENABLED()
+function AegisPathfinder:PLAYER_REGEN_ENABLED()
 	if tex then
 		SetItemButtonTexture(item, tex)
 		item:Show()
@@ -457,19 +457,19 @@ end
 
 f:SetScript("OnClick", function()
 	local self, btn = this, arg1
-	if TurtleGuide.db.char.currentguide == "No Guide" then
-		TurtleGuide.guidelistframe:Show()
+	if AegisPathfinder.db.char.currentguide == "No Guide" then
+		AegisPathfinder.guidelistframe:Show()
 	else
 		if btn == "LeftButton" then
 			-- Left-click: Show/hide objectives panel
-			if TurtleGuide.objectiveframe:IsVisible() then
-				HideUIPanel(TurtleGuide.objectiveframe)
+			if AegisPathfinder.objectiveframe:IsVisible() then
+				HideUIPanel(AegisPathfinder.objectiveframe)
 			else
-				local quad, vhalf, hhalf = TurtleGuide.GetQuadrant(self)
+				local quad, vhalf, hhalf = AegisPathfinder.GetQuadrant(self)
 				local anchpoint = (vhalf == "TOP" and "BOTTOM" or "TOP") .. hhalf
-				TurtleGuide.objectiveframe:ClearAllPoints()
-				TurtleGuide.objectiveframe:SetPoint(quad, self, anchpoint)
-				ShowUIPanel(TurtleGuide.objectiveframe)
+				AegisPathfinder.objectiveframe:ClearAllPoints()
+				AegisPathfinder.objectiveframe:SetPoint(quad, self, anchpoint)
+				ShowUIPanel(AegisPathfinder.objectiveframe)
 			end
 		else
 			-- Right-click: Show/hide quest log
@@ -477,7 +477,7 @@ f:SetScript("OnClick", function()
 				HideUIPanel(QuestLogFrame)
 				HideUIPanel(EQL3_QuestLogFrame)
 			else
-				local i = TurtleGuide:GetQuestLogIndexByName()
+				local i = AegisPathfinder:GetQuestLogIndexByName()
 				if i then SelectQuestLogEntry(i) end
 				ShowUIPanel(QuestLogFrame)
 			end
@@ -486,30 +486,30 @@ f:SetScript("OnClick", function()
 end)
 
 
-check:SetScript("OnClick", function(self, btn) TurtleGuide:SetTurnedIn() end)
+check:SetScript("OnClick", function(self, btn) AegisPathfinder:SetTurnedIn() end)
 
 
 item:SetScript("OnClick", function()
-	if TurtleGuide:GetObjectiveInfo() == "USE" then TurtleGuide:SetTurnedIn() end
+	if AegisPathfinder:GetObjectiveInfo() == "USE" then AegisPathfinder:SetTurnedIn() end
 	if item.uitem then
-		local bag, slot = TurtleGuide:FindBagSlot(item.uitem)
-		if bag and slot then UseContainerItem(bag, slot) else TurtleGuide:Print("Item not found") end
+		local bag, slot = AegisPathfinder:FindBagSlot(item.uitem)
+		if bag and slot then UseContainerItem(bag, slot) else AegisPathfinder:Print("Item not found") end
 	end
 end)
 
 
 local function ShowTooltip()
 	local self = this
-	local tip = TurtleGuide:GetObjectiveTag("N")
-	local quad, vhalf, hhalf = TurtleGuide.GetQuadrant(self)
+	local tip = AegisPathfinder:GetObjectiveTag("N")
+	local quad, vhalf, hhalf = AegisPathfinder.GetQuadrant(self)
 	local anchpoint = "ANCHOR_TOP" .. hhalf
-	TurtleGuide:Debug("Setting tooltip anchor", anchpoint)
+	AegisPathfinder:Debug("Setting tooltip anchor", anchpoint)
 	GameTooltip:SetOwner(self, anchpoint)
 
 	-- Show branch status if branching
-	if TurtleGuide.db.char.isbranching then
+	if AegisPathfinder.db.char.isbranching then
 		GameTooltip:AddLine("|cff00ff00Currently branching|r", 1, 1, 1)
-		GameTooltip:AddLine("Main route: " .. (TurtleGuide.db.char.branchsavedguide or "Unknown"), 0.7, 0.7, 0.7)
+		GameTooltip:AddLine("Main route: " .. (AegisPathfinder.db.char.branchsavedguide or "Unknown"), 0.7, 0.7, 0.7)
 		GameTooltip:AddLine(" ", 1, 1, 1)
 	end
 
@@ -534,7 +534,7 @@ f:SetMovable(true)
 f:SetClampedToScreen(true)
 f:SetScript("OnDragStart", function()
 	local frame = this
-	TurtleGuide:HideStatusFrameChildren()
+	AegisPathfinder:HideStatusFrameChildren()
 	GameTooltip:Hide()
 	frame:StartMoving()
 end)
@@ -542,11 +542,11 @@ f:SetScript("OnDragStop", function()
 	local frame = this
 	frame:StopMovingOrSizing()
 	local _
-	TurtleGuide.db.profile.statusframepoint, _, _, TurtleGuide.db.profile.statusframex, TurtleGuide.db.profile.statusframey =
+	AegisPathfinder.db.profile.statusframepoint, _, _, AegisPathfinder.db.profile.statusframex, AegisPathfinder.db.profile.statusframey =
 	frame:GetPoint()
 	frame:ClearAllPoints()
-	frame:SetPoint(TurtleGuide.db.profile.statusframepoint, TurtleGuide.db.profile.statusframex,
-		TurtleGuide.db.profile.statusframey)
+	frame:SetPoint(AegisPathfinder.db.profile.statusframepoint, AegisPathfinder.db.profile.statusframex,
+		AegisPathfinder.db.profile.statusframey)
 	ShowTooltip(frame)
 end)
 
@@ -562,10 +562,10 @@ item:SetScript("OnDragStop", function()
 	local frame = this
 	frame:StopMovingOrSizing()
 	local _
-	TurtleGuide.db.profile.itemframepoint, _, _, TurtleGuide.db.profile.itemframex, TurtleGuide.db.profile.itemframey =
+	AegisPathfinder.db.profile.itemframepoint, _, _, AegisPathfinder.db.profile.itemframex, AegisPathfinder.db.profile.itemframey =
 	frame:GetPoint()
 end)
 
 f:SetScript("OnHide", function()
-	TurtleGuide:HideStatusFrameChildren()
+	AegisPathfinder:HideStatusFrameChildren()
 end)

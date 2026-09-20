@@ -1,8 +1,8 @@
 -- Optimized Guide: Elwynn Forest (1-10)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Elwynn Forest (1-10)", "Optimized/Westfall (10-12)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Elwynn Forest (1-10)", "Optimized/Westfall (10-12)", "Alliance", function()
 
 return [[
 

@@ -1,8 +1,8 @@
 -- Optimized Guide: Thousand Needles (31-32)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Thousand Needles (31-32)", "Optimized/Desolace (32-34)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Thousand Needles (31-32)", "Optimized/Desolace (32-34)", "Horde", function()
 
 return [[
 

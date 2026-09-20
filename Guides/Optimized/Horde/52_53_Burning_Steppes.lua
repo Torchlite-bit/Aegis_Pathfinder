@@ -1,8 +1,8 @@
 -- Optimized Guide: Burning Steppes (52-53)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Burning Steppes (52-53)", "Optimized/Azshara (53-54)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Burning Steppes (52-53)", "Optimized/Azshara (53-54)", "Horde", function()
 
 return [[
 

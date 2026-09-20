@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 49-50 Searing Gorge
-TurtleGuide:RegisterGuide("RXP_Hardcore/49-50 Searing Gorge", "RXP_Hardcore/50-51 Tanaris/Un'goro", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/49-50 Searing Gorge", "RXP_Hardcore/50-51 Tanaris/Un'goro", "Alliance", function()
 return [[
 
 N 49-50 Searing Gorge |N|Converted from RestedXP guide|

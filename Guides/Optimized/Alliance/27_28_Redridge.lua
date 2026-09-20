@@ -1,8 +1,8 @@
 -- Optimized Guide: Redridge Mountains (27-28)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Redridge (27-28)", "Optimized/Duskwood (28-29)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Redridge (27-28)", "Optimized/Duskwood (28-29)", "Alliance", function()
 
 return [[
 

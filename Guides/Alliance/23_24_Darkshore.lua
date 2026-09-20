@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Darkshore (23-24)", "Ashenvale (24-24)", "Alliance",function()
+AegisPathfinder:RegisterGuide("Darkshore (23-24)", "Ashenvale (24-24)", "Alliance",function()
 
 return [[
 

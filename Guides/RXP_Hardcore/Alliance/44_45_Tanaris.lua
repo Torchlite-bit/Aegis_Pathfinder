@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 44-45 Tanaris
-TurtleGuide:RegisterGuide("RXP_Hardcore/44-45 Tanaris", "RXP_Hardcore/45-46 Feralas", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/44-45 Tanaris", "RXP_Hardcore/45-46 Feralas", "Alliance", function()
 return [[
 
 N 44-45 Tanaris |N|Converted from RestedXP guide|

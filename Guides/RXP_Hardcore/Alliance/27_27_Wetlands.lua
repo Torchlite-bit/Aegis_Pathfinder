@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 27-27 Wetlands
-TurtleGuide:RegisterGuide("RXP_Hardcore/27-27 Wetlands", "RXP_Hardcore/27-30 Ashenvale", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/27-27 Wetlands", "RXP_Hardcore/27-30 Ashenvale", "Alliance", function()
 return [[
 
 N 27-27 Wetlands |N|Converted from RestedXP guide|

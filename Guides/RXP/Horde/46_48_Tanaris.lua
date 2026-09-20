@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 46-48 Tanaris
-TurtleGuide:RegisterGuide("RXP/46-48 Tanaris", "RXP/48-49 The Hinterlands", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/46-48 Tanaris", "RXP/48-49 The Hinterlands", "Horde", function()
 return [[
 
 N 46-48 Tanaris |N|Converted from RestedXP guide|

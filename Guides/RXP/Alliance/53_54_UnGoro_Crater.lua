@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 53-54 UnGoro Crater
-TurtleGuide:RegisterGuide("RXP/53-54 UnGoro Crater", "RXP/54-55 Felwood/Winterspring", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/53-54 UnGoro Crater", "RXP/54-55 Felwood/Winterspring", "Alliance", function()
 return [[
 
 N 53-54 UnGoro Crater |N|Converted from RestedXP guide|

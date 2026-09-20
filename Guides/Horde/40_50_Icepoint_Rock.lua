@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Icepoint Rock (40-50)", "Badlands (40-41)", "Horde", function()
+AegisPathfinder:RegisterGuide("Icepoint Rock (40-50)", "Badlands (40-41)", "Horde", function()
 
 return [[
 

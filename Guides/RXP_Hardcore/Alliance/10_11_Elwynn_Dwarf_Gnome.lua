@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 10-11 Elwynn (Dwarf/Gnome)
-TurtleGuide:RegisterGuide("RXP_Hardcore/10-11 Elwynn (Dwarf/Gnome)", "RXP_Hardcore/11-13 Loch Modan (Dwarf/Gnome)", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/10-11 Elwynn (Dwarf/Gnome)", "RXP_Hardcore/11-13 Loch Modan (Dwarf/Gnome)", "Alliance", function()
 return [[
 
 N 10-11 Elwynn (Dwarf/Gnome) |N|Converted from RestedXP guide|

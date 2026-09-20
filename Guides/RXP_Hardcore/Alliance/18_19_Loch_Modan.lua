@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 18-19 Loch Modan
-TurtleGuide:RegisterGuide("RXP_Hardcore/18-19 Loch Modan", "RXP_Hardcore/19-20 Redridge", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP_Hardcore/18-19 Loch Modan", "RXP_Hardcore/19-20 Redridge", "Alliance", function()
 return [[
 
 N 18-19 Loch Modan |N|Converted from RestedXP guide|

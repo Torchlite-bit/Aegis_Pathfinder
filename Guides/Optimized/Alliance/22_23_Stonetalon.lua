@@ -1,8 +1,8 @@
 -- Optimized Guide: Stonetalon Mountains (22-23)
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
--- QIDs and coordinates from TurtleGuide database
+-- QIDs and coordinates from AegisPathfinder database
 
-TurtleGuide:RegisterGuide("Optimized/Stonetalon (22-23)", "Optimized/Darkshore (23-24)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Stonetalon (22-23)", "Optimized/Darkshore (23-24)", "Alliance", function()
 
 return [[
 

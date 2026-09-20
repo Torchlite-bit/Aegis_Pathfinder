@@ -1,6 +1,6 @@
 -- ==========================================================
--- QuestShell+ Parser for TurtleGuide
--- Allows TurtleGuide to load guides in QuestShell+ format
+-- QuestShell+ Parser for AegisPathfinder
+-- Allows AegisPathfinder to load guides in QuestShell+ format
 -- ==========================================================
 
 -- Type mappings (QuestShell+ uses uppercase type names)
@@ -27,7 +27,7 @@ local TYPE_TO_ACTION = {
     TRAVEL = "RUN",  -- QuestShell compatibility
 }
 
--- Convert QuestShell+ step table to TurtleGuide tag string
+-- Convert QuestShell+ step table to AegisPathfinder tag string
 local function stepToTagString(step)
     local tags = {}
 
@@ -143,9 +143,9 @@ local function isStepEligible(step)
     return true
 end
 
--- Parse QuestShell+ guide table into TurtleGuide internal format
+-- Parse QuestShell+ guide table into AegisPathfinder internal format
 -- Returns: actions, quests, tags (same format as string parser)
-function TurtleGuide:ParseQuestShellPlus(guideTable)
+function AegisPathfinder:ParseQuestShellPlus(guideTable)
     if not guideTable or not guideTable.steps then
         return {}, {}, {}
     end
@@ -161,7 +161,7 @@ function TurtleGuide:ParseQuestShellPlus(guideTable)
 
             if action then
                 local quest = step.title or step.note or "Step"
-                quest = TurtleGuide.trim(quest)
+                quest = AegisPathfinder.trim(quest)
 
                 quest = quest .. "@" .. uniqueid .. "@"
                 uniqueid = uniqueid + 1
@@ -178,7 +178,7 @@ function TurtleGuide:ParseQuestShellPlus(guideTable)
 end
 
 -- Check if a guide is in QuestShell+ format (table with steps array)
-function TurtleGuide:IsQuestShellPlusFormat(guide)
+function AegisPathfinder:IsQuestShellPlusFormat(guide)
     if type(guide) == "table" and guide.steps and type(guide.steps) == "table" then
         return true
     end
@@ -187,7 +187,7 @@ end
 
 -- Register a QuestShell+ format guide
 -- This allows mixing both formats in the same addon
-function TurtleGuide:RegisterQuestShellPlusGuide(key, guideTable)
+function AegisPathfinder:RegisterQuestShellPlusGuide(key, guideTable)
     if not self.qsplusguides then
         self.qsplusguides = {}
     end
@@ -225,4 +225,4 @@ function TurtleGuide:RegisterQuestShellPlusGuide(key, guideTable)
     self:RegisterGuide(key, guideTable.next, guideTable.faction or "Alliance", guideLoader)
 end
 
-TurtleGuide:Debug("QuestShell+ Parser loaded")
+AegisPathfinder:Debug("QuestShell+ Parser loaded")

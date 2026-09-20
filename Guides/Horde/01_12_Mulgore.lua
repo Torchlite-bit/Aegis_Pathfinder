@@ -1,4 +1,4 @@
-TurtleGuide:RegisterGuide("Mulgore (1-12)", "The Barrens (12-20)", "Horde",function()
+AegisPathfinder:RegisterGuide("Mulgore (1-12)", "The Barrens (12-20)", "Horde",function()
 
 return [[
 
