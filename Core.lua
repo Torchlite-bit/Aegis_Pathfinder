@@ -1,0 +1,2551 @@
+local L = AEGISPATHFINDER_LOCALE
+AEGISPATHFINDER_LOCALE = nil
+
+AegisPathfinder = AceLibrary("AceAddon-2.0"):new("AceConsole-2.0", "AceDB-2.0", "AceDebug-2.0", "AceEvent-2.0", "AceHook-2.1",
+    "FuBarPlugin-2.0")
+
+-- Compatibility alias for the pre-rebrand addon name. Guide files -- including
+-- any authored outside this repository -- call TurtleGuide:RegisterGuide(), so
+-- the old global has to keep resolving to the addon object.
+TurtleGuide = AegisPathfinder
+
+local T = AceLibrary("Tablet-2.0")
+
+AegisPathfinder.guides = {}
+AegisPathfinder.guidelist = {}
+AegisPathfinder.nextzones = {}
+AegisPathfinder.Locale = L
+AegisPathfinder.myfaction = UnitFactionGroup("player")
+
+-- Race-based route definitions
+AegisPathfinder.routes = {}
+AegisPathfinder.manuallyUnchecked = {}
+
+-- Route pack registry (named collections of per-race routes)
+AegisPathfinder.routepacks = {}
+
+-- Turtle WoW custom race support
+-- Keyed by the locale-independent ChrRaces.dbc token from UnitRaceBase
+-- (ClassicAPI); Turtle's custom races arrive as their DBC filenames, so
+-- High Elf is BloodElf (raceID 10)
+AegisPathfinder.turtleRaces = {}
+do
+    local i = 1
+    local raceInfo = C_CreatureInfo.GetRaceInfo(i)
+    while raceInfo ~= nil do
+        AegisPathfinder.turtleRaces[raceInfo.clientFileString] = {
+            route = string.gsub(raceInfo.raceName, "%s+", ""),
+            faction = C_CreatureInfo.GetFactionInfo(i).groupTag,
+        }
+        i = i + 1
+        raceInfo = C_CreatureInfo.GetRaceInfo(i)
+    end
+end
+
+-- Get the normalized route name for a race token (defaults to the player)
+function AegisPathfinder:GetRouteForRace(race)
+    race = race or (UnitRaceBase("player"))
+    local raceInfo = self.turtleRaces[race]
+    if raceInfo then
+        return raceInfo.route
+    end
+    -- Legacy inputs ("Night Elf", "HighElf", "Undead") match a route name
+    -- once the spaces are gone
+    return race and (string.gsub(race, "%s", "")) or nil
+end
+
+AegisPathfinder.icons = setmetatable({
+    ACCEPT = "Interface\\GossipFrame\\AvailableQuestIcon",
+    COMPLETE = "Interface\\Icons\\Ability_DualWield",
+    TURNIN = "Interface\\GossipFrame\\ActiveQuestIcon",
+    KILL = "Interface\\Icons\\Ability_Creature_Cursed_02",
+    RUN = "Interface\\Icons\\Ability_Tracking",
+    MAP = "Interface\\Icons\\Ability_Spy",
+    FLY = "Interface\\Icons\\Ability_Rogue_Sprint",
+    SETHEARTH = "Interface\\AddOns\\AegisPathfinder\\media\\resting.tga",
+    HEARTH = "Interface\\Icons\\INV_Misc_Rune_01",
+    NOTE = "Interface\\Icons\\INV_Misc_Note_01",
+    GRIND = "Interface\\Icons\\INV_Stone_GrindingStone_05",
+    USE = "Interface\\Icons\\INV_Misc_Bag_08",
+    BUY = "Interface\\Icons\\INV_Misc_Coin_01",
+    BOAT = "Interface\\Icons\\Ability_Druid_AquaticForm",
+    GETFLIGHTPOINT = "Interface\\Icons\\Ability_Hunter_EagleEye",
+    PET = "Interface\\Icons\\Ability_Hunter_BeastCall02",
+    DIE = "Interface\\AddOns\\AegisPathfinder\\media\\dead.tga",
+    TRAIN = "Interface\\GossipFrame\\TrainerGossipIcon",
+}, { __index = function() return "Interface\\Icons\\INV_Misc_QuestionMark" end })
+
+local defaults = {
+    debug = false,
+    hearth = UNKNOWN,
+    turnins = {},
+    cachedturnins = {},
+    trackquests = true,
+    completion = {},
+    currentguide = "No Guide",
+    currentroute = nil,
+    routeselected = false,
+    mapquestgivers = true,
+    mapnotecoords = true,
+    waypointprovider = "auto", -- see Navigation.lua providerorder
+    server = nil,             -- see Servers.lua; nil means the default dataset
+    showstatusframe = true,
+    shownavcallout = true, -- the concept's arrow/distance callout
+    showuseitem = true,
+    showuseitemcomplete = true,
+    skipfollowups = true,
+    autoquest = true,
+    petskills = {},
+    completedquests = {},
+    completedquestsbyid = {}, -- {[questId] = true} from server
+    lastserverquery = 0,      -- timestamp for throttling
+    -- Branching state
+    isbranching = false,
+    branchsavedguide = nil,
+    branchsavedstep = nil,
+    autobranch = false,           -- auto-branch to Turtle WoW zones
+    routepack = nil,              -- Active route pack name (e.g., "VanillaGuide", "RestedXP")
+    PlayStyle = "SOLO",           -- Default playstyle ("SOLO" or "GROUP")
+    UseAH = false,                -- Default Auction House setting (true/false)
+    -- Starting zone selection (branch-and-rejoin)
+    startingzoneselected = false, -- has player picked a starting zone?
+    selectedstartingzone = nil,   -- which starting zone was selected (e.g., "Human", "Dwarf")
+    startingzonecomplete = false, -- has player finished their starting zone?
+    rejoinlevel = 12,             -- level at which all paths rejoin (default 12)
+    filterTurtle = true,
+    filterOptimized = true,
+    filterRXP = true,
+    filterZone = true,
+    filterRXPHC = true,
+    Dungeons = {
+        ["RFC"] = true,
+        ["WC"] = true,
+        ["DM"] = true,
+        ["SFK"] = true,
+        ["BFD"] = true,
+        ["STOCKADES"] = true,
+        ["GNOMER"] = true,
+        ["RFK"] = true,
+        ["SM"] = true,
+        ["RFD"] = true,
+        ["ULDA"] = true,
+        ["ZF"] = true,
+        ["MARA"] = true,
+        ["ST"] = true,
+        ["BRD"] = true,
+    },
+}
+
+local options = {
+    type = "group",
+    handler = AegisPathfinder,
+    args = {
+        Credits = {
+            name = "Credits",
+            desc = "Everyone whose work is in this addon",
+            type = "execute",
+            func = function() AegisPathfinder:PrintCredits() end,
+        },
+        Materials = {
+            name = "Materials",
+            desc = "Reagents the rest of the current guide still needs",
+            type = "execute",
+            func = function() AegisPathfinder:ToggleMaterialsPanel() end,
+        },
+        Server = {
+            name = "Server",
+            desc = "Which server you play on, and whether guide data is verified there",
+            type = "execute",
+            func = function() AegisPathfinder:CycleServer() end,
+        },
+        ServerStatus = {
+            name = "Server Status",
+            desc = "Show guide data provenance for each server",
+            type = "execute",
+            func = function() AegisPathfinder:PrintServerStatus() end,
+        },
+        DiagNav = {
+            name = "Navigation Diag",
+            desc = "Check navigation addon status",
+            type = "execute",
+            func = function()
+                AegisPathfinder:Print("--- Navigation Status ---")
+                AegisPathfinder:Print("Setting: " .. (AegisPathfinder.db.char.waypointprovider or "auto"))
+                AegisPathfinder:Print("Active: " .. AegisPathfinder:GetWaypointProviderLabel())
+
+                local available = AegisPathfinder:GetWaypointProviders()
+                if table.getn(available) == 0 then
+                    AegisPathfinder:Print("No waypoint addon found - install TomTom or pfQuest")
+                    return
+                end
+                for _, provider in ipairs(available) do
+                    AegisPathfinder:Print("  " .. provider.label .. " (" .. provider.name .. ")")
+                end
+            end,
+        },
+        WaypointProvider = {
+            name = "Waypoint Provider",
+            desc = "Cycle the addon used for waypoints",
+            type = "execute",
+            func = function()
+                AegisPathfinder:CycleWaypointProvider()
+                AegisPathfinder:Print("Waypoints: " .. AegisPathfinder:GetWaypointProviderLabel())
+            end,
+        },
+        TestWaypoint = {
+            name = "Test Waypoint",
+            desc = "Create a test waypoint at the centre of the current zone",
+            type = "execute",
+            func = function()
+                if not AegisPathfinder:GetWaypointProvider() then
+                    AegisPathfinder:Print("No waypoint addon found")
+                    return
+                end
+
+                -- Use SetMapToCurrentZone to get valid data (same as the fix)
+                SetMapToCurrentZone()
+                local c = GetCurrentMapContinent()
+                local z = GetCurrentMapZone()
+                AegisPathfinder:Print(string.format("Zone data: c=%s z=%s", tostring(c), tostring(z)))
+
+                if not c or c == 0 or not z or z == 0 then
+                    AegisPathfinder:Print("Could not get zone data")
+                    return
+                end
+
+                local zone = AegisPathfinder.select(z, GetMapZones(c))
+                AegisPathfinder:SetWaypoint(50, 50, zone, "Test Waypoint")
+                AegisPathfinder:Print("Waypoint sent to " .. AegisPathfinder:GetWaypointProviderLabel())
+            end,
+        },
+        TrackQuests = {
+            name = "Auto Track",
+            desc = L["Automatically track quests"],
+            type = "toggle",
+            get = function() return AegisPathfinder.db.char.trackquests end,
+            set = function(newValue)
+                AegisPathfinder.db.char.trackquests = newValue
+                if AegisPathfinder.optionsframe then
+                    AegisPathfinder.optionsframe.qtrack:SetChecked(AegisPathfinder.db.char.trackquests)
+                end
+            end,
+            order = 1,
+        },
+        SkipFollowUps = {
+            name = "Auto Skip Followups",
+            desc = L["Automatically skip suggested follow-ups"],
+            type = "toggle",
+            get = function() return AegisPathfinder.db.char.skipfollowups end,
+            set = function(newValue)
+                AegisPathfinder.db.char.skipfollowups = newValue
+                if AegisPathfinder.optionsframe then
+                    AegisPathfinder.optionsframe.qskipfollowups:SetChecked(AegisPathfinder.db.char.skipfollowups)
+                end
+            end,
+            order = 2,
+        },
+        AutoQuest = {
+            name = "Auto Accept/Turnin",
+            desc = L["Automatically accept and turn in guide quests (hold SHIFT to suspend)"],
+            type = "toggle",
+            get = function() return AegisPathfinder.db.char.autoquest end,
+            set = function(newValue)
+                AegisPathfinder.db.char.autoquest = newValue
+            end,
+            order = 2.5,
+        },
+        StatusFrame = {
+            name = "Toggle Status",
+            desc = "Show/Hide Status Frame",
+            type = "toggle",
+            get = function() return AegisPathfinder.statusframe:IsVisible() end,
+            set = "OnClick",
+            order = 3,
+        },
+        SelectRoute = {
+            name = "Select Route",
+            desc = "Choose a different leveling route",
+            type = "execute",
+            func = function() AegisPathfinder:ShowRouteSelector() end,
+            order = 4,
+        },
+        ShowErrorLog = {
+            name = "Error Log",
+            desc = "Show captured Lua errors",
+            type = "execute",
+            func = function() AegisPathfinder:ShowErrorLog() end,
+            order = 5,
+        },
+        NextStep = {
+            name = "Next",
+            desc = "Skip to next objective",
+            type = "execute",
+            func = function() AegisPathfinder:SkipToNextObjective() end,
+            order = 10,
+        },
+        PrevStep = {
+            name = "Previous",
+            desc = "Go back to previous objective",
+            type = "execute",
+            func = function() AegisPathfinder:GoToPreviousObjective() end,
+            order = 11,
+        },
+        GoToStep = {
+            name = "Go To",
+            desc = "Jump to step number",
+            type = "text",
+            usage = "<number>",
+            get = false,
+            set = function(v) AegisPathfinder:GoToObjective(v) end,
+            order = 12,
+        },
+        Refresh = {
+            name = "Refresh",
+            desc = "Rescan quest log and update guide progress",
+            type = "execute",
+            func = function() AegisPathfinder:QueryServerCompletedQuests() end,
+            order = 13,
+        },
+        Branch = {
+            name = "Branch",
+            desc = "Branch to a different zone guide (saves current progress)",
+            type = "execute",
+            func = function() AegisPathfinder:ShowGuideList(true) end,
+            order = 14,
+        },
+        ReturnMain = {
+            name = "Return to Main",
+            desc = "Return to main route from branch",
+            type = "execute",
+            func = function() AegisPathfinder:ReturnFromBranch() end,
+            order = 15,
+        },
+        AutoBranch = {
+            name = "Auto Branch",
+            desc = "Automatically branch to Turtle-lineage custom zones when available",
+            type = "toggle",
+            get = function() return AegisPathfinder.db.char.autobranch end,
+            set = function(v) AegisPathfinder.db.char.autobranch = v end,
+            order = 16,
+        },
+        DebugRoute = {
+            name = "Debug Route",
+            desc = "Show debug info about route and guide selection",
+            type = "execute",
+            func = function()
+                local routeName = AegisPathfinder:GetRouteForRace()
+                local route = AegisPathfinder.routes[routeName]
+                local level = UnitLevel("player")
+
+                AegisPathfinder:Print("--- Route Debug ---")
+                AegisPathfinder:Print("Race token: " .. tostring((UnitRaceBase("player"))))
+                AegisPathfinder:Print("Route name: " .. tostring(routeName))
+                AegisPathfinder:Print("Route exists: " .. tostring(route ~= nil))
+                AegisPathfinder:Print("Player level: " .. tostring(level))
+                AegisPathfinder:Print("Current guide: " .. tostring(AegisPathfinder.db.char.currentguide))
+
+                -- Check if specific guides exist
+                AegisPathfinder:Print("--- Guide Existence ---")
+                AegisPathfinder:Print("'Thalassian Highlands (1-10)': " ..
+                    tostring(AegisPathfinder.guides["Thalassian Highlands (1-10)"] ~= nil))
+                AegisPathfinder:Print("'Teldrassil (1-12)': " .. tostring(AegisPathfinder.guides["Teldrassil (1-12)"] ~= nil))
+
+                -- Show first few guides in guidelist
+                AegisPathfinder:Print("--- First 5 guides in guidelist ---")
+                for i = 1, math.min(5, table.getn(AegisPathfinder.guidelist)) do
+                    AegisPathfinder:Print(i .. ": " .. tostring(AegisPathfinder.guidelist[i]))
+                end
+
+                -- Show what GetNextRouteGuideForLevel would return
+                if route then
+                    local nextGuide = AegisPathfinder:GetNextRouteGuideForLevel(route, level)
+                    AegisPathfinder:Print("GetNextRouteGuideForLevel returns: " .. tostring(nextGuide))
+                end
+            end,
+            order = 17,
+        },
+        DebugTrain = {
+            name = "Debug Train",
+            desc = "Debug training detection",
+            type = "execute",
+            func = function()
+                AegisPathfinder:Print("--- Skill Lines ---")
+                local numSkills = GetNumSkillLines()
+                AegisPathfinder:Print("GetNumSkillLines: " .. tostring(numSkills))
+                for i = 1, numSkills do
+                    local name, isHeader, isExpanded, rank, maxRank = GetSkillLineInfo(i)
+                    AegisPathfinder:Print(string.format("%d: %s (Header=%s, Rank=%s)", i, tostring(name), tostring(isHeader),
+                        tostring(rank)))
+                end
+
+                AegisPathfinder:Print("--- Spellbook ---")
+                local i = 1
+                while true do
+                    local name, rank = GetSpellName(i, "spell")
+                    if not name then break end
+                    if string.find(string.lower(name), "blacksmith") or string.find(string.lower(name), "mining") then
+                        AegisPathfinder:Print(string.format("Spell %d: %s (%s)", i, tostring(name), tostring(rank)))
+                    end
+                    i = i + 1
+                end
+
+                AegisPathfinder:Print("--- Training Check ---")
+                AegisPathfinder:Print("IsProfessionLearned('Blacksmithing'): " ..
+                    tostring(AegisPathfinder:IsProfessionLearned("Blacksmithing")))
+                AegisPathfinder:Print("IsSpellLearned('Blacksmithing'): " ..
+                    tostring(AegisPathfinder:IsSpellLearned("Blacksmithing")))
+                AegisPathfinder:Print("IsTrainingCompleted('Train [Blacksmithing]'): " ..
+                    tostring(AegisPathfinder:IsTrainingCompleted("Train [Blacksmithing]")))
+            end,
+            order = 17,
+        },
+        ListGuides = {
+            name = "List Guides",
+            desc = "List all loaded guides",
+            type = "execute",
+            func = function()
+                AegisPathfinder:Print("--- All Loaded Guides ---")
+                for i, name in ipairs(AegisPathfinder.guidelist) do
+                    AegisPathfinder:Print(i .. ": " .. name)
+                end
+                AegisPathfinder:Print("Total: " .. table.getn(AegisPathfinder.guidelist) .. " guides")
+            end,
+            order = 18,
+        },
+        StartingZone = {
+            name = "Starting Zone",
+            desc = "Choose a different starting zone (branch-and-rejoin)",
+            type = "execute",
+            func = function() AegisPathfinder:ShowStartingZoneSelector() end,
+            order = 19,
+        },
+        ResetStartingZone = {
+            name = "Reset Starting Zone",
+            desc = "Reset starting zone selection and start fresh",
+            type = "execute",
+            func = function()
+                AegisPathfinder.db.char.startingzoneselected = false
+                AegisPathfinder.db.char.selectedstartingzone = nil
+                AegisPathfinder.db.char.startingzonecomplete = false
+                AegisPathfinder:ShowStartingZoneSelector()
+            end,
+            order = 20,
+        },
+        RoutePack = {
+            name = "Route Packs",
+            desc = "List available route packs",
+            type = "execute",
+            func = function()
+                local packs = AegisPathfinder:GetAvailableRoutePacks()
+                local current = AegisPathfinder.db.char.routepack
+                AegisPathfinder:Print("--- Available Route Packs ---")
+                for _, pack in ipairs(packs) do
+                    local marker = (current == pack.name) and " |cff00ff00(active)|r" or ""
+                    AegisPathfinder:Print("  " .. pack.displayName .. marker .. " - " .. pack.description)
+                end
+                AegisPathfinder:Print("Use |cff00ccff/vg SetRoutePack <name>|r to switch.")
+            end,
+            order = 21,
+        },
+        SetRoutePack = {
+            name = "Set Route Pack",
+            desc = "Switch to a route pack (e.g., /vg SetRoutePack RestedXP)",
+            type = "text",
+            usage = "<pack name>",
+            get = false,
+            set = function(v)
+                AegisPathfinder:SelectRoutePack(v)
+            end,
+            order = 22,
+        },
+    },
+}
+
+---------
+-- FuBar
+---------
+AegisPathfinder.hasIcon = [[Interface\QuestFrame\UI-QuestLog-BookIcon]]
+AegisPathfinder.title = "AEGIS: Pathfinder"
+AegisPathfinder.defaultMinimapPosition = 215
+AegisPathfinder.defaultPosition = "CENTER"
+AegisPathfinder.cannotDetachTooltip = true
+AegisPathfinder.tooltipHiddenWhenEmpty = false
+AegisPathfinder.hideWithoutStandby = true
+AegisPathfinder.independentProfile = true
+
+-- Adopt saved data written under the pre-rebrand SavedVariable name. Both
+-- globals are declared in the .toc so the old table is still loaded and can be
+-- handed over; this runs before RegisterDB so AceDB sees the migrated table.
+-- Only fires when there is nothing to lose: an existing, non-empty
+-- AegisPathfinderDB always wins.
+local function MigrateLegacySavedVariables()
+    if type(TurtleGuideDB) ~= "table" then return false end
+    if type(AegisPathfinderDB) == "table" and next(AegisPathfinderDB) then return false end
+    AegisPathfinderDB = TurtleGuideDB
+    return true
+end
+
+function AegisPathfinder:OnInitialize()
+    local migratedLegacyDB = MigrateLegacySavedVariables()
+
+    self:RegisterDB("AegisPathfinderDB")
+    self:RegisterDefaults("char", defaults)
+
+    self.db.char.Dungeons = self.db.char.Dungeons or {}
+    for k, v in pairs(defaults.Dungeons) do
+        if self.db.char.Dungeons[k] == nil then
+            self.db.char.Dungeons[k] = v
+        end
+    end
+    if self.db.char.PlayStyle == nil then
+        self.db.char.PlayStyle = defaults.PlayStyle
+    end
+    if self.db.char.UseAH == nil then
+        self.db.char.UseAH = defaults.UseAH
+    end
+    self:RegisterChatCommand({ "/aegis", "/pathfinder", "/vg" }, options)
+    self.OnMenuRequest = options
+    self:SetupErrorCapture()
+    if not FuBar then
+        self.OnMenuRequest.args.hide.guiName = L["Hide minimap icon"]
+        self.OnMenuRequest.args.hide.desc = L["Hide minimap icon"]
+    end
+    self.cachedturnins = self.db.char.cachedturnins
+    if self.myfaction == nil then
+        self:RegisterEvent("PLAYER_ENTERING_WORLD")
+    end
+    self:PositionStatusFrame()
+    self:CreateConfigPanel()
+
+    if migratedLegacyDB then
+        self:Print(L["Imported your saved progress from TurtleGuide."])
+    end
+end
+
+function AegisPathfinder:OnEnable()
+    -- Hard requirement: ClassicAPI DLL v1.5.9+ (version encodes X*10000 + Y*100 + Z;
+    -- untagged dev builds report 99999999). Quest tracking is built on its
+    -- C_QuestLog functions and QUEST_ACCEPTED / QUEST_TURNED_IN events.
+    if not CLASSIC_API_VERSION or CLASSIC_API_VERSION < 10509 then
+        self:Print("|cffff3333AEGIS: Pathfinder requires ClassicAPI v1.5.9 or newer (https://github.com/brues-code/ClassicAPI). The addon will not load.|r")
+        return
+    end
+
+    self:PatchAstrolabe()
+    self:RegisterProfessionEvents()
+
+    if self.db.char.debug then
+        self:SetDebugging(true)
+    else
+        self:SetDebugging(false)
+    end
+
+    if self.myfaction == nil then
+        self:RegisterEvent("PLAYER_ENTERING_WORLD")
+    else
+        self:InitializeRoute()
+    end
+end
+
+function AegisPathfinder:InitializeRoute()
+    self:SyncWithPfQuestHistory()
+    -- Migration: set default route pack for existing characters
+    if not self.db.char.routepack and self.db.char.routeselected then
+        self.db.char.routepack = "VanillaGuide"
+    end
+
+    -- Load active route pack's routes into self.routes
+    local activePack = self:GetCurrentRoutePack()
+    if activePack then
+        for race, route in pairs(activePack.routes) do
+            self.routes[race] = route
+        end
+    end
+
+    -- If no route selected yet, use the new starting zone selection system
+    if not self.db.char.routeselected then
+        -- Try the new branch-and-rejoin starting zone system first
+        if self:InitializeRouteWithStartingZone() then
+            -- Starting zone was handled, continue with initialization
+        else
+            -- Fallback: Auto-detect race and suggest route
+            local race = UnitRace("player") -- localized, for the message
+            local routeName = self:GetRouteForRace()
+            if routeName and self.routes[routeName] then
+                self:ApplyRouteSelection(routeName)
+                local message = L["You have been assigned the %s leveling route."]
+                if not message then
+                    message = "You have been assigned the %s leveling route."
+                end
+                self:Print(string.format(message, tostring(race)))
+            else
+                -- Fallback to default start guides (including Turtle WoW races)
+                local startguides = {
+                    Orc = "Durotar (1-12)",
+                    Troll = "Durotar (1-12)",
+                    Tauren = "Mulgore (1-12)",
+                    Undead = "Tirisfal (1-12)",
+                    Dwarf = "Dun Morogh (1-12)",
+                    Gnome = "Dun Morogh (1-12)",
+                    Human = "Elwynn Forest (1-12)",
+                    NightElf = "Teldrassil (1-12)",
+                    -- Turtle WoW custom races
+                    HighElf = "Thalassian Highlands (1-10)", -- High Elf starting zone
+                    Goblin = "Blackstone Island (1-10)",     -- Goblin starting zone
+                }
+                -- Use normalized route name for lookup
+                self.db.char.currentguide = startguides[routeName] or startguides[race] or self.guidelist[1]
+                self.db.char.routeselected = true
+            end
+        end
+    else
+        -- Route already selected - check if we need to transition from starting zone
+        if self.db.char.startingzoneselected and not self.db.char.startingzonecomplete then
+            self:CheckStartingZoneCompletion()
+        end
+    end
+
+    self.db.char.currentguide = self.db.char.currentguide or self.guidelist[1]
+    self:LoadGuide(self.db.char.currentguide)
+    self.initializeDone = true
+    for _, event in pairs(self.TrackEvents) do self:RegisterEvent(event) end
+    -- Register for level up to check starting zone completion
+    self:RegisterEvent("PLAYER_LEVEL_UP")
+    self.TrackEvents = nil
+    self:QueryServerCompletedQuests()
+    self:UpdateStatusFrame()
+    -- Force waypoint creation on initial load
+    self:ForceWaypointUpdate()
+    self.enableDone = true
+end
+
+function AegisPathfinder:OnDisable()
+    self:UnregisterAllEvents()
+end
+
+-- Handle level up events for starting zone transition
+function AegisPathfinder:PLAYER_LEVEL_UP()
+    -- Check if we should transition from starting zone to shared path
+    if self.db.char.startingzoneselected and not self.db.char.startingzonecomplete then
+        self:CheckStartingZoneCompletion()
+    end
+end
+
+function AegisPathfinder:OnTooltipUpdate()
+    local hint = "\nClick to show/hide the Status\nRight-click for Options"
+    T:SetHint(hint)
+end
+
+function AegisPathfinder:OnTextUpdate()
+    self:SetText("VanillaGuide+")
+end
+
+function AegisPathfinder:OnClick()
+    if AegisPathfinder.statusframe:IsVisible() then
+        HideUIPanel(AegisPathfinder.statusframe)
+    else
+        ShowUIPanel(AegisPathfinder.statusframe)
+    end
+end
+
+local REGISTER_BATCH = 25       -- guides registered per resume
+local REGISTER_INTERVAL = 0.02  -- seconds between resumes
+local INIT_SETTLE_DELAY = 0.5   -- seconds after registration before the guide loads
+
+function AegisPathfinder:GetPlayerFaction()
+    local faction = UnitFactionGroup("player")
+    if faction and faction ~= "" then return faction end
+    local info = C_CreatureInfo.GetFactionInfo(select(2, UnitRaceBase("player")))
+    return info and info.groupTag
+end
+
+function AegisPathfinder:PLAYER_ENTERING_WORLD()
+    self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+    self:PatchAstrolabe()
+    self.myfaction = self:GetPlayerFaction()
+
+    local deferred = self.deferguides
+    self.deferguides = {}
+
+    local co = coroutine.create(function()
+        local n = 0
+        for _, t in ipairs(deferred) do
+            self:RegisterGuide(t[1], t[2], t[3], t[4])
+            n = n + 1
+            if n >= REGISTER_BATCH then
+                n = 0
+                coroutine.yield()
+            end
+        end
+    end)
+
+    local function finishLogin()
+        -- deferred Initialize (VARIABLES_LOADED); InitializeRoute also enables
+        if not self.initializeDone then
+            self:InitializeRoute()
+        elseif not self.enableDone then
+            -- deferred Enable (PLAYER_LOGIN)
+            for _, event in pairs(self.TrackEvents) do self:RegisterEvent(event) end
+            self.TrackEvents = nil
+            self:UpdateStatusFrame()
+        end
+        self.initializeDone = true
+    end
+
+    local function pump()
+        local ok, err = coroutine.resume(co)
+        if not ok then
+            self:Print("|cffff3333AEGIS: Pathfinder load error: " .. tostring(err) .. "|r")
+            return
+        end
+        if coroutine.status(co) == "dead" then
+            C_Timer.After(INIT_SETTLE_DELAY, finishLogin)
+        else
+            C_Timer.After(REGISTER_INTERVAL, pump)
+        end
+    end
+    pump()
+end
+
+function AegisPathfinder:RegisterGuide(name, nextzone, faction, sequencefunc)
+    if self.myfaction == nil then
+        self.deferguides = self.deferguides or {}
+        table.insert(self.deferguides, { name, nextzone, faction, sequencefunc })
+    else
+        if faction ~= "Both" and faction ~= self.myfaction then return end
+
+        local isNew = (self.guides[name] == nil)
+        self.guides[name] = sequencefunc
+        self.nextzones[name] = nextzone
+
+        if isNew then
+            table.insert(self.guidelist, name)
+        end
+    end
+end
+
+-- Register a race-based route
+function AegisPathfinder:RegisterRoute(race, route)
+    self.routes[race] = route
+end
+
+-- Register a named route pack (collection of per-race routes)
+function AegisPathfinder:RegisterRoutePack(packName, packInfo)
+    self.routepacks[packName] = {
+        name = packName,
+        displayName = packInfo.displayName or packName,
+        description = packInfo.description or "",
+        routes = packInfo.routes or {},
+        factionRestriction = packInfo.factionRestriction,
+        classRestriction = packInfo.classRestriction,
+    }
+end
+
+-- Check if a guide belongs to a route pack (should be hidden from guide list)
+-- Note: we allow RXP guides to be shown as requested by the user
+-- Now we also allow Optimized guides to be shown as requested by the user
+function AegisPathfinder:IsRoutePackGuide(guideName)
+    return false
+end
+
+-- Get the currently active route pack (or nil)
+function AegisPathfinder:GetCurrentRoutePack()
+    local packName = self.db.char.routepack
+    if packName and self.routepacks[packName] then
+        return self.routepacks[packName]
+    end
+    return nil
+end
+
+-- Get route packs available for the player's faction and class
+function AegisPathfinder:GetAvailableRoutePacks()
+    local faction = self.myfaction
+    local _, playerClass = UnitClass("player")
+    local available = {}
+
+    for name, pack in pairs(self.routepacks) do
+        local factionOk = not pack.factionRestriction or pack.factionRestriction == faction
+        local classOk = not pack.classRestriction or pack.classRestriction == playerClass
+        if factionOk and classOk then
+            table.insert(available, pack)
+        end
+    end
+
+    -- Sort by name for consistent display
+    table.sort(available, function(a, b) return a.name < b.name end)
+    return available
+end
+
+-- Switch to a route pack, replacing self.routes with the pack's routes
+function AegisPathfinder:SelectRoutePack(packName)
+    local pack = self.routepacks[packName]
+    if not pack then
+        self:Print("|cffff0000Unknown route pack: " .. tostring(packName) .. "|r")
+        return false
+    end
+
+    -- Check faction/class restrictions
+    local faction = self.myfaction
+    local _, playerClass = UnitClass("player")
+    if pack.factionRestriction and pack.factionRestriction ~= faction then
+        self:Print("|cffff0000Route pack '" .. packName .. "' is for " .. pack.factionRestriction .. " only.|r")
+        return false
+    end
+    if pack.classRestriction and pack.classRestriction ~= playerClass then
+        self:Print("|cffff0000Route pack '" .. packName .. "' requires " .. pack.classRestriction .. " class.|r")
+        return false
+    end
+
+    -- Save selection
+    self.db.char.routepack = packName
+
+    -- Auto-toggle checkboxes if RXP guide route is selected
+    if packName == "RestedXP" or packName == "Kamisayo Speedrun" then
+        self.db.char.filterRXP = true
+        self.db.char.filterOptimized = false
+        self.db.char.filterZone = false
+        self.db.char.filterRXPHC = false
+        self.db.char.PlayStyle = "GROUP"
+        self.db.char.UseAH = true
+        if self.guidelistframe and self.guidelistframe:IsVisible() then
+            self:UpdateGuideListPanel()
+        end
+    elseif packName == "RXP Hardcore" then
+        self.db.char.filterRXP = false
+        self.db.char.filterOptimized = false
+        self.db.char.filterZone = false
+        self.db.char.filterRXPHC = true
+        self.db.char.PlayStyle = "SOLO"
+        self.db.char.UseAH = false
+        if self.guidelistframe and self.guidelistframe:IsVisible() then
+            self:UpdateGuideListPanel()
+        end
+    elseif packName == "VanillaGuide" then
+        self.db.char.filterRXP = false
+        self.db.char.filterOptimized = true
+        self.db.char.filterZone = true
+        self.db.char.filterRXPHC = false
+        self.db.char.PlayStyle = "SOLO"
+        self.db.char.UseAH = false
+        if self.guidelistframe and self.guidelistframe:IsVisible() then
+            self:UpdateGuideListPanel()
+        end
+    end
+
+    -- Copy pack routes into self.routes (replacing existing)
+    for race, route in pairs(pack.routes) do
+        self.routes[race] = route
+    end
+
+    -- Apply route for current race
+    local routeName = self:GetRouteForRace()
+    self:ApplyRouteSelection(routeName)
+
+    self:Print("|cff00ff00Route pack switched to: " .. pack.displayName .. "|r")
+    return true
+end
+
+function AegisPathfinder:LoadNextGuide()
+    local nextname = self.nextzones[self.db.char.currentguide]
+    -- End of the route: no next zone, or it points at an unregistered guide
+    -- ("No Guide"). Stop instead of letting LoadGuide fall back to guidelist[1],
+    -- which would wrap the auto-advance chain around to the start.
+    if not nextname or not self.guides[nextname] then return false end
+
+    -- Terminate a runaway chain. UpdateStatusFrame auto-advances (LoadNextGuide
+    -- -> re-scan -> LoadNextGuide) whenever a guide has no incomplete step. On a
+    -- server whose quests don't match the guide, every step auto-skips, so this
+    -- would cascade through the whole route (re-parsing each guide) and exhaust
+    -- the client's fixed Lua pool. Cap consecutive auto-advances; the counter is
+    -- reset by UpdateStatusFrame once the chain lands on a guide with real work.
+    self.autoadvancecount = (self.autoadvancecount or 0) + 1
+    if self.autoadvancecount > 20 then
+        self:Print("|cffff9900Stopped auto-advancing after 20 completed guides - is this guide meant for a different server?|r")
+        return false
+    end
+
+    self:LoadGuide(nextname, true)
+    self:UpdateGuideListPanel()
+    return true
+end
+
+function AegisPathfinder:IsProfessionLearned(skillName)
+    if not skillName then return false end
+    for i = 1, GetNumSkillLines() do
+        local name, isHeader = GetSkillLineInfo(i)
+        if not isHeader and name and string.lower(name) == string.lower(skillName) then
+            return true
+        end
+    end
+    return false
+end
+
+function AegisPathfinder:IsSpellLearned(spellName)
+    if not spellName then return false end
+    local i = 1
+    while true do
+        local name, rank = GetSpellName(i, "spell")
+        if not name then break end
+        if string.lower(name) == string.lower(spellName) then
+            return true
+        end
+        i = i + 1
+    end
+
+    local i = 1
+    while true do
+        local name, rank = GetSpellName(i, "pet")
+        if not name then break end
+        if string.lower(name) == string.lower(spellName) then
+            return true
+        end
+        i = i + 1
+    end
+
+    return false
+end
+
+function AegisPathfinder:IsTrainingCompleted(stepName)
+    if not stepName then return false end
+
+    local _, _, name = string.find(stepName, "%[([^%]]+)%]")
+    if not name then
+        name = stepName
+    end
+
+    if name then
+        name = string.gsub(name, "@.*@", "")
+        name = string.gsub(name, "^Train%s+", "")
+        name = string.gsub(name, "^Training%s+", "")
+        name = string.gsub(name, "%s*%(Rank%s*%d+%)", "")
+        name = string.gsub(name, "%s*%(.*%)", "")
+        name = string.gsub(name, "%s*Part%s*%d+", "")
+        name = AegisPathfinder.trim(name)
+
+        if string.len(name) > 0 then
+            if self:IsProfessionLearned(name) then
+                return true
+            end
+
+            if self:IsSpellLearned(name) then
+                return true
+            end
+        end
+    end
+
+    return false
+end
+
+function AegisPathfinder:GetQuestLogIndexByName(name)
+    name = name or self.quests[self.current]
+    if name then
+        name = string.gsub(name, "@.*@", "")
+        name = string.gsub(name, L.PART_GSUB, "")
+    end
+    for i = 1, GetNumQuestLogEntries() do
+        local title, _, _, isHeader = GetQuestLogTitle(i)
+        title = string.gsub(title, "%[[0-9%+%-]+]%s", "")
+        if not isHeader and string.lower(title) == string.lower(name) then return i end
+    end
+end
+
+function AegisPathfinder:GetQuestLogIndexByQid(qid)
+    qid = tonumber(qid)
+    if not qid then return end
+    for i = 1, GetNumQuestLogEntries() do
+        if C_QuestLog.GetQuestIDForLogIndex(i) == qid then return i end
+    end
+end
+
+function AegisPathfinder:GetQuestDetails(name, oidx, qid)
+    local i
+    if qid then
+        -- QID is authoritative: no name fallback, so a same-named quest from a
+        -- different chain part can never satisfy this step
+        i = self:GetQuestLogIndexByQid(qid)
+    elseif name then
+        i = self:GetQuestLogIndexByName(name)
+    end
+    if not i or i < 1 then return end
+    local _, _, _, _, _, isComplete = GetQuestLogTitle(i)
+    local complete = i and isComplete and isComplete == 1
+
+    if oidx and not complete then
+        -- Check only the specific objective index
+        local numObjectives = GetNumQuestLeaderBoards(i)
+        if numObjectives and oidx <= numObjectives then
+            local text, objType, finished = GetQuestLogLeaderBoard(oidx, i)
+            complete = not not finished
+        else
+            complete = false
+        end
+    elseif not complete and i then
+        -- Fallback: check if all quest objectives are done via leaderboard
+        local numObjectives = GetNumQuestLeaderBoards(i)
+        if numObjectives and numObjectives > 0 then
+            complete = true
+            for j = 1, numObjectives do
+                local text, objType, finished = GetQuestLogLeaderBoard(j, i)
+                if not finished then
+                    complete = false
+                    break
+                end
+            end
+        end
+    end
+
+    return i, complete
+end
+
+function AegisPathfinder:FindBagSlot(itemid)
+    itemid = tonumber(itemid)
+    if not itemid then return false end
+    for bag = 0, 4 do
+        for slot = 1, GetContainerNumSlots(bag) do
+            if C_Container.GetContainerItemID(bag, slot) == itemid then return bag, slot end
+        end
+    end
+    return false
+end
+
+function AegisPathfinder:GetItemNameByItemId(itemId)
+    if not itemId then return nil end
+    itemId = tonumber(itemId)
+    if not itemId then return nil end
+
+    -- Try pfQuest localized database
+    if pfDB and pfDB["items"] and pfDB["items"]["loc"] then
+        local name = pfDB["items"]["loc"][itemId] or pfDB["items"]["loc"][tostring(itemId)]
+        if name then return name end
+    end
+
+    -- Fall back to the client item cache; a miss fires the server query so a
+    -- later call succeeds
+    return C_Item.GetItemNameByID(itemId)
+end
+
+-- Effective item requirement for a step: the authored |L| tag, or for
+-- COMPLETE steps derived from the quest's static objective data
+-- (C_QuestLog.GetQuestDetails requirements; cache-warmed at guide load).
+-- Returns itemID (number), quantity.
+function AegisPathfinder:GetLootRequirement(i)
+    i = i or self.current
+    local lootitem, lootqty = self:GetObjectiveTag("L", i)
+    if lootitem then return tonumber(lootitem), lootqty end
+
+    if not self.actions or self.actions[i] ~= "COMPLETE" then return end
+    local qid = tonumber((self:GetObjectiveTag("QID", i)))
+    if not qid then return end
+
+    -- GetQuestDetails materializes ~20 table fields plus strings per call, and
+    -- the status-frame refresh hits this step twice (via GetObjectiveInfo and
+    -- directly). Serve resolved lookups from the per-load cache; false marks a
+    -- step with no item requirement so we don't re-materialize on every refresh.
+    local cache = self.lootreqcache
+    if cache then
+        local c = cache[i]
+        if c == false then return end
+        if c then return c.id, c.count end
+    end
+
+    local d = C_QuestLog.GetQuestDetails(qid)
+    -- Data not warm yet: don't cache, so a later call retries once it loads
+    if not d or not d.requirements then return end
+
+    -- |OIDX| names the objective; without it, only a single-objective
+    -- collect quest is unambiguous
+    local oidx = tonumber((self:GetObjectiveTag("OIDX", i)))
+    local req
+    if oidx then
+        req = d.requirements[oidx]
+    elseif table.getn(d.requirements) == 1 then
+        req = d.requirements[1]
+    end
+    cache = cache or {}
+    self.lootreqcache = cache
+    if req and req.kind == "item" then
+        cache[i] = { id = req.id, count = req.count }
+        return req.id, req.count
+    end
+    cache[i] = false
+end
+
+function AegisPathfinder:GetObjectiveInfo(i)
+    local i = i or self.current
+    -- self.actions only exists once LoadGuide has parsed a guide; event handlers
+    -- reach this before that (login, "No Guide", or a targeting event fired by
+    -- another addon), so the table itself has to be checked, not just the step.
+    if not self.actions or not self.actions[i] then return end
+
+    local action = self.actions[i]
+    local name = string.gsub(self.quests[i], "@.*@", "")
+
+    -- Dynamically enrich name for BUY or COMPLETE/collect steps with item names
+    if (action == "BUY" or action == "COMPLETE") then
+        local lootitem, lootqty = self:GetLootRequirement(i)
+        if lootitem then
+            local itemName = self:GetItemNameByItemId(lootitem)
+            if itemName then
+                local lowerName = string.lower(name)
+                local lowerItem = string.lower(itemName)
+                if not string.find(lowerName, lowerItem, 1, true) then
+                    -- If the quest name is generic, replace it completely. Otherwise append it.
+                    if name == "Collect item" or name == "Auctioneer Stockton" or name == "Auctioneer Stockton in the Trade Quarter" or string.find(lowerName, "^vendor") or string.find(lowerName, "^talk to") then
+                        if action == "BUY" then
+                            name = "Buy: " .. itemName .. " (x" .. lootqty .. ")"
+                        else
+                            name = "Collect: " .. itemName .. " (x" .. lootqty .. ")"
+                        end
+                    else
+                        name = name .. " (" .. itemName .. " x" .. lootqty .. ")"
+                    end
+                end
+            end
+        end
+    end
+
+    return action, name, self.quests[i] -- Action, display name, full name
+end
+
+function AegisPathfinder:GetObjectiveStatus(i)
+    local i = i or self.current
+    if not self.actions or not self.actions[i] then return end
+
+    local turnedin = self.turnedin[self.quests[i]]
+    local oidx_str = self:GetObjectiveTag("OIDX", i)
+    local oidx = oidx_str and tonumber(oidx_str) or nil
+
+    local qid = self:GetObjectiveTag("QID", i)
+    local qidNum = qid and tonumber(qid) or nil
+    local logi, complete = self:GetQuestDetails(self.quests[i], oidx, qidNum)
+
+    -- Auto-complete if the quest is impossible for this player (due to race/class/prereq restrictions)
+    if qidNum and not self:IsQuestPossible(qidNum) then
+        turnedin = true
+    end
+
+    -- Server-side completion check for TURNIN and RUN actions with QID
+    if not turnedin then
+        local action = self.actions[i]
+        if qidNum and self:IsQuestCompletedOnServer(qidNum) then
+            turnedin = true
+        end
+    end
+
+    -- Skip TURNIN step if the quest is not accepted (not in log) and not
+    -- completed. Flagged in the fourth return so UpdateStatusFrame can warn
+    -- when it passes over such a step: this silent skip is how a missed
+    -- accept cascades into the guide jumping ahead.
+    local skippednotinlog
+    if not turnedin and not (self.manuallyUnchecked and self.manuallyUnchecked[self.quests[i]]) then
+        local action = self.actions[i]
+        if action == "TURNIN" and not logi then
+            local cleanQuest = string.gsub(self.quests[i], "@.*@", "")
+            cleanQuest = string.gsub(cleanQuest, AegisPathfinder.Locale.PART_GSUB, "")
+            local isCompleted = (qidNum and self:IsQuestCompletedOnServer(qidNum)) or (self.db.char.completedquests and self.db.char.completedquests[cleanQuest])
+            if not isCompleted then
+                turnedin = true
+                skippednotinlog = true
+            end
+        end
+    end
+
+    return turnedin, logi, complete, skippednotinlog
+end
+
+function AegisPathfinder:SetTurnedIn(i, value, noupdate)
+    if not i then
+        i = self.current
+        value = true
+    end
+
+    local qid = self:GetObjectiveTag("QID", i)
+    if qid and not value then
+        local qidNum = tonumber(qid)
+        if pfQuest_history and (pfQuest_history[qidNum] or pfQuest_history[tostring(qidNum)]) then
+            self:UpdateStatusFrame()
+            return
+        end
+    end
+
+    if value then
+        value = true
+        if self.manuallyUnchecked then
+            self.manuallyUnchecked[self.quests[i]] = nil
+        end
+    else
+        value = nil
+        if self.manuallyUnchecked then
+            self.manuallyUnchecked[self.quests[i]] = true
+        end
+    end
+
+    local quest = self.quests[i]
+    self.turnedin[quest] = value
+    self:Debug(string.format("Set turned in %q = %s", quest, tostring(value)))
+
+    -- Mirror manual UNCHECK to clear completion state
+    if not value then
+        local qid = self:GetObjectiveTag("QID", i)
+        local cleanQuest = string.gsub(quest, "@.*@", "")
+        cleanQuest = string.gsub(cleanQuest, AegisPathfinder.Locale.PART_GSUB, "")
+        if qid then
+            self.db.char.completedquestsbyid[tonumber(qid)] = nil
+        end
+        self.db.char.completedquests[cleanQuest] = nil
+    end
+
+    if not noupdate then
+        self:UpdateStatusFrame()
+    elseif value then
+        -- Arm the delayed update only for turn-ins: the gate waits for the
+        -- quest to leave the log. An uncheck's quest legitimately stays in
+        -- the log and would wedge the gate shut permanently.
+        self.updatedelay = i
+        self.updatedelaytime = GetTime()
+    end
+end
+
+function AegisPathfinder:CompleteQuest(name, noupdate)
+    if not self.current then
+        self:Debug(string.format("Cannot complete %q, no guide loaded", name))
+        return
+    end
+
+    local action, quest
+    for i in ipairs(self.actions) do
+        action, quest = self:GetObjectiveInfo(i)
+        self:Debug(string.format("Action %q Quest %q", action, quest))
+        if action == "TURNIN" and not self:GetObjectiveStatus(i) and name == string.gsub(quest, L.PART_GSUB, "") then
+            self:Debug(string.format("Saving quest turnin %q", quest))
+
+            -- Save to completion DB permanently
+            local qid = self:GetObjectiveTag("QID", i)
+            local cleanQuest = string.gsub(quest, "@.*@", "")
+            cleanQuest = string.gsub(cleanQuest, AegisPathfinder.Locale.PART_GSUB, "")
+            if qid then
+                self.db.char.completedquestsbyid[tonumber(qid)] = true
+            end
+            self.db.char.completedquests[cleanQuest] = true
+
+            return self:SetTurnedIn(i, true, noupdate)
+        end
+    end
+    self:Debug(string.format("Quest %q not found!", name))
+end
+
+function AegisPathfinder:CompleteQuestByQid(questID, noupdate)
+    if not self.current then
+        self:Debug(string.format("Cannot complete QID %d, no guide loaded", questID))
+        return false
+    end
+
+    -- Guard on the raw turnedin table, not GetObjectiveStatus: the handler
+    -- records the QID in completedquestsbyid before calling here, which makes
+    -- GetObjectiveStatus already report the step as turned in and would hide
+    -- it from this search
+    for i in ipairs(self.actions) do
+        if self.actions[i] == "TURNIN" and not self.turnedin[self.quests[i]] then
+            local qid = tonumber((self:GetObjectiveTag("QID", i)))
+            if qid == questID then
+                local cleanQuest = string.gsub(self.quests[i], "@.*@", "")
+                cleanQuest = string.gsub(cleanQuest, L.PART_GSUB, "")
+                self:Debug(string.format("Saving quest turnin QID %d %q", questID, cleanQuest))
+
+                self.db.char.completedquestsbyid[questID] = true
+                self.db.char.completedquests[cleanQuest] = true
+
+                self:SetTurnedIn(i, true, noupdate)
+                return true
+            end
+        end
+    end
+    self:Debug(string.format("QID %d not found in guide", questID))
+    return false
+end
+
+---------------------------------
+--  Server Quest Query API     --
+---------------------------------
+
+function AegisPathfinder:QueryServerCompletedQuests(force)
+    self:SyncWithPfQuestHistory(force)
+    -- Count locally tracked completed quests
+    local localCountByName = 0
+    local localCountByQid = 0
+    if self.db.char.completedquests then
+        for _ in pairs(self.db.char.completedquests) do
+            localCountByName = localCountByName + 1
+        end
+    end
+    if self.db.char.completedquestsbyid then
+        for _ in pairs(self.db.char.completedquestsbyid) do
+            localCountByQid = localCountByQid + 1
+        end
+    end
+
+    -- Check pfQuest availability
+    local hasPfQuest = pfDB and pfDB["quests"] and pfDB["quests"]["data"]
+    if hasPfQuest then
+        self:Print("|cff00ff00pfQuest database detected - using prerequisite chain inference|r")
+    else
+        self:Print("|cffff9900pfQuest not found - prerequisite inference unavailable|r")
+    end
+
+    self:Print(string.format("|cff88aaff%d quests tracked by name, %d by QID|r", localCountByName, localCountByQid))
+
+    -- Re-run SmartSkipToStep to re-evaluate guide progress
+    if self.actions and self.quests then
+        local oldCurrent = self.current or 1
+        self:SmartSkipToStep()
+        local newCurrent = self.current or 1
+
+        if newCurrent > oldCurrent then
+            self:Print(string.format("|cff00ff00Skipped to step %d (was %d)|r", newCurrent, oldCurrent))
+        else
+            self:Print("|cff88ff88Guide progress is up to date|r")
+        end
+    else
+        self:Print("|cffff9900No guide loaded|r")
+    end
+
+    self:UpdateStatusFrame()
+    return true
+end
+
+function AegisPathfinder:IsQuestCompletedOnServer(qid)
+    if not qid then return false end
+    return self.db.char.completedquestsbyid[tonumber(qid)] == true
+end
+
+---------------------------------
+--   Quest Tracking            --
+---------------------------------
+
+-- Track the quest for the current objective
+function AegisPathfinder:TrackCurrentQuest()
+    if not self.db.char.trackquests then return end
+    if not self.current or not self.actions then return end
+
+    local action, quest = self:GetObjectiveInfo(self.current)
+    if not action or not quest then return end
+
+    -- Untrack previously tracked quest from AegisPathfinder
+    if self.trackedQuestName and self.trackedQuestName ~= quest then
+        local oldIndex = self:GetQuestLogIndexByName(self.trackedQuestName)
+        if oldIndex and oldIndex > 0 and IsQuestWatched(oldIndex) then
+            RemoveQuestWatch(oldIndex)
+        end
+        self.trackedQuestName = nil
+    end
+
+    -- Only auto-track for COMPLETE actions (quest objectives)
+    if action == "COMPLETE" then
+        -- QID lookup first: the display name may be enriched with item names
+        -- and would not match the quest log title
+        local qid = tonumber((self:GetObjectiveTag("QID", self.current)))
+        local questLogIndex = qid and self:GetQuestLogIndexByQid(qid) or self:GetQuestLogIndexByName(quest)
+        if questLogIndex and questLogIndex > 0 then
+            if not IsQuestWatched(questLogIndex) then
+                AddQuestWatch(questLogIndex)
+                self:Debug("Tracking quest: " .. quest .. " (index " .. questLogIndex .. ")")
+            end
+            self.trackedQuestName = quest
+        end
+    end
+end
+
+---------------------------------
+--   Manual Navigation         --
+---------------------------------
+
+function AegisPathfinder:SkipToNextObjective()
+    if not self.current then return end
+    if self.current >= table.getn(self.actions) then
+        if not self:LoadNextGuide() then
+            self:Print("Already at the last objective.")
+        end
+        return
+    end
+
+    -- Find next incomplete objective (after current)
+    local nextStep = nil
+    for i = self.current + 1, table.getn(self.actions) do
+        local turnedin = self:GetObjectiveStatus(i)
+        if not turnedin then
+            nextStep = i
+            break
+        end
+    end
+
+    -- Mark current and all skipped objectives as done
+    local endMark = nextStep and (nextStep - 1) or table.getn(self.actions)
+    for i = self.current, endMark do
+        self.turnedin[self.quests[i]] = true
+    end
+
+    if not nextStep then
+        -- All remaining objectives are done, try next guide
+        if not self:LoadNextGuide() then
+            self:Print("All objectives complete.")
+        end
+        return
+    end
+
+    self.current = nextStep
+    self:ForceWaypointUpdate()
+    self:SetStatusText(self.current)
+    self:UpdateOHPanel()
+end
+
+function AegisPathfinder:GoToPreviousObjective()
+    if not self.current or self.current <= 1 then
+        self:Print("Already at the first objective.")
+        return
+    end
+
+    -- Unmark current objective so we can come back to it
+    self:SetTurnedIn(self.current, false, true)
+
+    -- Find previous objective (go back one step, unmark it)
+    local prevStep = self.current - 1
+    self:SetTurnedIn(prevStep, false, true)
+
+    self.current = prevStep
+    self:ForceWaypointUpdate()
+    self:SetStatusText(self.current)
+    self:UpdateOHPanel()
+
+    -- Flag to re-check completion conditions after rewind
+    self.recheckCompletion = true
+end
+
+function AegisPathfinder:GoToObjective(stepNum)
+    stepNum = tonumber(stepNum)
+    if not stepNum or stepNum < 1 or stepNum > table.getn(self.actions) then
+        self:Print("Invalid step number.")
+        return
+    end
+
+    -- Mark all objectives before stepNum as done (so progress persists)
+    for i = 1, stepNum - 1 do
+        if not self.turnedin[self.quests[i]] then
+            self.turnedin[self.quests[i]] = true
+        end
+    end
+
+    -- Unmark the target step and all after it
+    for i = stepNum, table.getn(self.actions) do
+        if self.turnedin[self.quests[i]] then
+            self.turnedin[self.quests[i]] = nil
+        end
+    end
+
+    self.current = stepNum
+    self:ForceWaypointUpdate()
+    self:SetStatusText(self.current)
+    self:UpdateOHPanel()
+
+    -- Flag to re-check completion conditions after jump
+    self.recheckCompletion = true
+end
+
+---------------------------------
+--      Branching Functions    --
+---------------------------------
+
+-- Branch to a different guide while saving current position
+function AegisPathfinder:BranchToGuide(guideName)
+    if not guideName or not self.guides[guideName] then
+        self:Print("Invalid guide: " .. tostring(guideName))
+        return
+    end
+
+    -- Don't branch if already on this guide
+    if self.db.char.currentguide == guideName then
+        self:Print("Already on this guide.")
+        return
+    end
+
+    -- Save current state if not already branching
+    if not self.db.char.isbranching then
+        self.db.char.branchsavedguide = self.db.char.currentguide
+        self.db.char.branchsavedstep = self.current
+        self.db.char.isbranching = true
+        self:Print(string.format("Branching to %s (main route saved: %s)", guideName, self.db.char.branchsavedguide))
+    else
+        self:Print(string.format("Switching branch to %s", guideName))
+    end
+
+    -- Load the branch guide
+    self:LoadGuide(guideName)
+    self:UpdateStatusFrame()
+    self:UpdateGuideListPanel()
+end
+
+-- Return from branch to saved main route
+function AegisPathfinder:ReturnFromBranch()
+    if not self.db.char.isbranching then
+        self:Print("Not currently on a branch.")
+        return
+    end
+
+    local savedGuide = self.db.char.branchsavedguide
+    local savedStep = self.db.char.branchsavedstep
+    local playerLevel = UnitLevel("player")
+
+    -- Clear branch state
+    self.db.char.isbranching = false
+    self.db.char.branchsavedguide = nil
+    self.db.char.branchsavedstep = nil
+
+    -- Find level-appropriate guide for current level
+    local optimalGuide = self:GetOptimizedGuideForLevel(playerLevel)
+
+    if optimalGuide and optimalGuide ~= savedGuide and self.guides[optimalGuide] then
+        -- Player has leveled past their saved guide, load level-appropriate one
+        self:Print("Returning to optimized path: " .. optimalGuide)
+        self:LoadGuide(optimalGuide)
+    elseif savedGuide and self.guides[savedGuide] then
+        -- Return to saved guide
+        self:Print("Returning to: " .. savedGuide)
+        self:LoadGuide(savedGuide)
+        -- SmartSkipToStep will handle positioning
+    else
+        self:Print("No saved guide to return to.")
+    end
+
+    self:UpdateStatusFrame()
+    self:UpdateGuideListPanel()
+end
+
+-- Get the optimized guide for a given level based on the player's race route
+function AegisPathfinder:GetOptimizedGuideForLevel(level)
+    local routeName = self:GetRouteForRace()
+    local route = self.routes and self.routes[routeName]
+    if not route then return nil end
+
+    -- Find the guide entry where level falls within range
+    for _, entry in ipairs(route) do
+        -- Parse level range like "12-20" or "1-12"
+        local _, _, minText, maxText = string.find(entry.levels or "", "(%d+)%-(%d+)")
+        local minLevel = tonumber(minText)
+        local maxLevel = tonumber(maxText)
+        if minLevel and maxLevel and level >= minLevel and level <= maxLevel then
+            -- Only return if the guide exists
+            if self.guides[entry.guide] then
+                return entry.guide
+            end
+        end
+    end
+
+    -- If above all ranges, return the last guide that exists
+    for i = table.getn(route), 1, -1 do
+        if self.guides[route[i].guide] then
+            return route[i].guide
+        end
+    end
+    return nil
+end
+
+-- Check if current guide is complete and handle branch return
+function AegisPathfinder:CheckBranchCompletion()
+    if not self.db.char.isbranching then return false end
+
+    -- Check if current branch guide is 100% complete
+    local totalSteps = self.actions and table.getn(self.actions) or 0
+    if totalSteps == 0 then return false end
+
+    local completedSteps = 0
+    for i, quest in ipairs(self.quests) do
+        if self.turnedin[quest] then
+            completedSteps = completedSteps + 1
+        end
+    end
+
+    local completion = completedSteps / totalSteps
+    if completion >= 1 then
+        self:Print("Branch guide complete! Returning to main route.")
+        self:ReturnFromBranch()
+        return true
+    end
+
+    return false
+end
+
+-- Turtle WoW custom zones for categorization
+local TURTLE_ZONES = {
+    ["Gilneas"] = true,
+    ["Balor"] = true,
+    ["Northwind"] = true,
+    ["Grim Reaches"] = true,
+    ["Icepoint Rock"] = true,
+    ["Lapidis Isle"] = true,
+    ["Tel'Abim"] = true,
+    ["Gillijim's Isle"] = true,
+    ["Gillijims Isle"] = true,
+    ["Thalassian Highlands"] = true,
+    ["Blackstone Island"] = true,
+}
+
+-- Categorize a guide by its name
+--- True when a guide is a labelled placeholder rather than authored content.
+-- Shown as a TPL badge so an unauthored guide is never mistaken for a real one
+-- in a list where the two look identical.
+function AegisPathfinder:IsTemplateGuide(guideName)
+    local qsp = self.qsplusguides and self.qsplusguides[guideName]
+
+    return (qsp and qsp.template) and true or false
+end
+
+function AegisPathfinder:GetGuideCategory(guideName)
+    -- Profession guides declare their category on the guide table rather than
+    -- encoding it in the name, so ask the table first. Matching on the name
+    -- would put "Alchemy (1-300)" in with the zone guides.
+    local qsp = self.qsplusguides and self.qsplusguides[guideName]
+    if qsp and qsp.category == "Profession" then
+        return "profession"
+    end
+
+    if string.find(guideName, "^Optimized/") then
+        return "optimized"
+    end
+    if string.find(guideName, "^RXP/") then
+        return "rxp"
+    end
+    if string.find(guideName, "^RXP_Hardcore/") then
+        return "rxp_hc"
+    end
+    -- Check if any turtle zone name appears in guide name
+    for zone in pairs(TURTLE_ZONES) do
+        if string.find(guideName, zone) then
+            return "turtle"
+        end
+    end
+    return "zone"
+end
+
+-- Parse level range from guide name (e.g., "(1-12)" or "(12-20)" or "1-6 Name")
+function AegisPathfinder:ParseGuideLevelRange(guideName)
+    -- Try (1-12) format first
+    local _, _, minText, maxText = string.find(guideName, "%((%d+)%-(%d+)%)")
+    if not minText then
+        -- Try 1-12 format (common in RXP guides)
+        _, _, minText, maxText = string.find(guideName, "(%d+)%-(%d+)")
+    end
+
+    if minText and maxText then
+        return tonumber(minText), tonumber(maxText)
+    end
+    return nil, nil
+end
+
+---------------------------------
+--      Route Functions        --
+---------------------------------
+
+-- Show route selection UI
+function AegisPathfinder:ShowRouteSelector()
+    if not self.routeSelectorFrame then
+        self:CreateRouteSelectorFrame()
+    end
+    self.routeSelectorFrame:Show()
+end
+
+function AegisPathfinder:CreateRouteSelectorFrame()
+    local f = CreateFrame("Frame", "AegisPathfinderRouteSelectorFrame", UIParent)
+    f:SetWidth(300)
+    f:SetHeight(550)
+    f:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+    self.Theme:Panel(f, "panel")
+    f:SetMovable(true)
+    f:EnableMouse(true)
+    f:RegisterForDrag("LeftButton")
+    f:SetScript("OnDragStart", function() this:StartMoving() end)
+    f:SetScript("OnDragStop", function() this:StopMovingOrSizing() end)
+    f:SetFrameStrata("DIALOG")
+
+    local title = f:CreateFontString(nil, "ARTWORK")
+    AegisPathfinder.Theme:SetFont(title, "display", 15)
+    title:SetPoint("TOP", f, "TOP", 0, -20)
+    title:SetText(L["Select Your Race"])
+
+    -- Route Pack section
+    local packHeader = f:CreateFontString(nil, "ARTWORK")
+    AegisPathfinder.Theme:SetFont(packHeader, "body", 12)
+    packHeader:SetPoint("TOP", title, "BOTTOM", 0, -12)
+    packHeader:SetText("|cffffd100Route Pack:|r")
+
+    -- Current pack display
+    local packStatus = f:CreateFontString(nil, "ARTWORK")
+    AegisPathfinder.Theme:SetFont(packStatus, "body", 11)
+    packStatus:SetPoint("TOP", packHeader, "BOTTOM", 0, -4)
+    packStatus:SetWidth(260)
+    f.packStatus = packStatus
+
+    -- Pack buttons container
+    f.packButtons = {}
+    local lastPackBtn
+    local availablePacks = self:GetAvailableRoutePacks()
+    for i, pack in ipairs(availablePacks) do
+        local btn = CreateFrame("Button", nil, f, "UIPanelButtonTemplate")
+        btn:SetWidth(200)
+        btn:SetHeight(24)
+        if lastPackBtn then
+            btn:SetPoint("TOP", lastPackBtn, "BOTTOM", 0, -4)
+        else
+            btn:SetPoint("TOP", packStatus, "BOTTOM", 0, -6)
+        end
+        btn.packName = pack.name
+        btn.packDescription = pack.description
+        btn:SetText(pack.displayName)
+        btn:SetScript("OnClick", function()
+            AegisPathfinder:SelectRoutePack(this.packName)
+            AegisPathfinder:UpdateRouteSelectorPackHighlight()
+        end)
+        btn:SetScript("OnEnter", function()
+            GameTooltip:SetOwner(this, "ANCHOR_RIGHT")
+            GameTooltip:SetText(this.packDescription, nil, nil, nil, nil, true)
+        end)
+        btn:SetScript("OnLeave", function()
+            GameTooltip:Hide()
+        end)
+        f.packButtons[i] = btn
+        lastPackBtn = btn
+    end
+
+    -- Separator
+    local sep = f:CreateFontString(nil, "ARTWORK")
+    AegisPathfinder.Theme:SetFont(sep, "body", 12)
+    if lastPackBtn then
+        sep:SetPoint("TOP", lastPackBtn, "BOTTOM", 0, -10)
+    else
+        sep:SetPoint("TOP", packStatus, "BOTTOM", 0, -10)
+    end
+    sep:SetText("|cffffd100Race Override:|r")
+
+    local desc = f:CreateFontString(nil, "ARTWORK")
+    AegisPathfinder.Theme:SetFont(desc, "body", 12)
+    desc:SetPoint("TOP", sep, "BOTTOM", 0, -4)
+    desc:SetWidth(260)
+    desc:SetText(L["Choose a leveling route based on your race:"])
+
+    -- Create race buttons (including Turtle WoW custom races)
+    -- Add "My Race" at top to use actual detected race
+    local detectedRace = UnitRace("player") -- localized, for the label
+    local detectedRoute = self:GetRouteForRace()
+
+    local races = {}
+    -- Add detected race first with special label
+    table.insert(races, { name = "My Race: " .. tostring(detectedRace), route = detectedRoute, highlight = true })
+
+    if self.myfaction == "Alliance" then
+        local allianceRaces = {
+            { name = "Human",     route = "Human" },
+            { name = "Dwarf",     route = "Dwarf" },
+            { name = "Night Elf", route = "NightElf" },
+            { name = "Gnome",     route = "Gnome" },
+            { name = "High Elf",  route = "HighElf" }, -- Turtle WoW
+        }
+        for _, r in ipairs(allianceRaces) do
+            table.insert(races, r)
+        end
+    else
+        local hordeRaces = {
+            { name = "Orc",    route = "Orc" },
+            { name = "Troll",  route = "Troll" },
+            { name = "Tauren", route = "Tauren" },
+            { name = "Undead", route = "Undead" },
+            { name = "Goblin", route = "Goblin" }, -- Turtle WoW
+        }
+        for _, r in ipairs(hordeRaces) do
+            table.insert(races, r)
+        end
+    end
+
+    local lastButton
+    for i, raceInfo in ipairs(races) do
+        local displayName = raceInfo.name
+        local routeName = raceInfo.route
+        local btn = CreateFrame("Button", nil, f, "UIPanelButtonTemplate")
+        btn:SetWidth(200)
+        btn:SetHeight(30)
+        if lastButton then
+            btn:SetPoint("TOP", lastButton, "BOTTOM", 0, -10)
+        else
+            btn:SetPoint("TOP", desc, "BOTTOM", 0, -10)
+        end
+        btn:SetText(displayName)
+        btn:SetScript("OnClick", function()
+            AegisPathfinder:SelectRoute(routeName)
+            f:Hide()
+        end)
+        lastButton = btn
+    end
+
+    -- Close button
+    local closeBtn = CreateFrame("Button", nil, f, "UIPanelCloseButton")
+    closeBtn:SetPoint("TOPRIGHT", f, "TOPRIGHT", -5, -5)
+
+    self.routeSelectorFrame = f
+
+    -- Update pack highlight on show
+    f:SetScript("OnShow", function()
+        AegisPathfinder:UpdateRouteSelectorPackHighlight()
+    end)
+
+    f:Hide()
+end
+
+function AegisPathfinder:UpdateRouteSelectorPackHighlight()
+    local f = self.routeSelectorFrame
+    if not f then return end
+
+    local current = self.db.char.routepack or "VanillaGuide"
+    f.packStatus:SetText("Active: |cff00ff00" .. current .. "|r")
+
+    for _, btn in ipairs(f.packButtons) do
+        if btn.packName == current then
+            btn:SetText("|cff00ff00" .. btn.packName .. "|r")
+        else
+            btn:SetText(btn.packName)
+        end
+    end
+end
+
+function AegisPathfinder:SelectRoute(race)
+    self:ApplyRouteSelection(race)
+    local message = L["You have been assigned the %s leveling route."]
+    if not message then
+        message = "You have been assigned the %s leveling route."
+    end
+    self:Print(string.format(message, tostring(race)))
+    self:UpdateStatusFrame()
+end
+
+-- Get the next guide in the current route based on player level
+-- Only returns guides that actually exist in self.guides
+-- Finds the best guide for the player's level:
+-- 1. First preference: guide where player is within the actual level range
+-- 2. Second preference: guide where player is slightly over (within +2 buffer)
+-- 3. Fallback: first future guide if player is somehow ahead of all guides
+function AegisPathfinder:GetNextRouteGuideForLevel(route, playerLevel)
+    if not route then return nil end
+
+    local level = playerLevel or UnitLevel("player")
+    local bestGuide
+    local bestMinLevel = -1
+    local fallbackGuide -- For extended range matches
+    local fallbackMinLevel = -1
+    local futureGuide   -- First guide ahead of player's level
+    local skippedGuides = {}
+
+    for i, zone in ipairs(route) do
+        local _, _, minText, maxText = string.find(zone.levels or "", "(%d+)%-(%d+)")
+        local minLevel = tonumber(minText) or 1
+        local maxLevel = tonumber(maxText) or 60
+
+        if self.guides[zone.guide] then
+            -- Priority 1: Player is within actual level range
+            if level >= minLevel and level <= maxLevel then
+                -- Pick the guide with the highest minLevel that still fits
+                if minLevel > bestMinLevel then
+                    bestGuide = zone.guide
+                    bestMinLevel = minLevel
+                end
+                -- Priority 2: Player is slightly over (within +2 buffer for overlap)
+            elseif level > maxLevel and level <= maxLevel + 2 then
+                if minLevel > fallbackMinLevel then
+                    fallbackGuide = zone.guide
+                    fallbackMinLevel = minLevel
+                end
+                -- Priority 3: Guide is ahead of player (for fallback)
+            elseif level < minLevel and not futureGuide then
+                futureGuide = zone.guide
+            end
+        else
+            -- Guide doesn't exist, record it as skipped
+            table.insert(skippedGuides, zone.guide)
+        end
+    end
+
+    -- Warn about skipped guides
+    if table.getn(skippedGuides) > 0 then
+        self:Print("|cffff9900Warning: Skipped missing guides: " .. table.concat(skippedGuides, ", ") .. "|r")
+    end
+
+    -- Return best match in priority order
+    return bestGuide or fallbackGuide or futureGuide
+end
+
+function AegisPathfinder:ApplyRouteSelection(race)
+    self.db.char.currentroute = race
+    self.db.char.routeselected = true
+
+    local route = self.routes[race]
+    local nextguide = self:GetNextRouteGuideForLevel(route, UnitLevel("player"))
+    if not nextguide and route and route[1] and route[1].guide then
+        nextguide = route[1].guide
+    end
+    if nextguide then
+        self.db.char.currentguide = nextguide
+        self:LoadGuide(self.db.char.currentguide)
+    end
+end
+
+---------------------------------
+--  Starting Zone Selection    --
+--  (Branch-and-Rejoin Logic)  --
+---------------------------------
+
+-- Define starting zones for each faction
+-- These are the "branch" points - race-specific 1-12 zones
+AegisPathfinder.startingZones = {
+    Alliance = {
+        { race = "Human",    zone = "Elwynn Forest",        guide = "Elwynn Forest (1-12)",        levels = "1-12", rejoinLevel = 12 },
+        { race = "Dwarf",    zone = "Dun Morogh",           guide = "Dun Morogh (1-12)",           levels = "1-12", rejoinLevel = 12 },
+        { race = "NightElf", zone = "Teldrassil",           guide = "Teldrassil (1-12)",           levels = "1-12", rejoinLevel = 12 },
+        { race = "Gnome",    zone = "Dun Morogh",           guide = "Dun Morogh (1-12)",           levels = "1-12", rejoinLevel = 12 },
+        { race = "HighElf",  zone = "Thalassian Highlands", guide = "Thalassian Highlands (1-10)", levels = "1-10", rejoinLevel = 12 }, -- Turtle WoW
+        -- RestedXP Speedleveling Guides
+        { race = "Human",    zone = "RXP (Human)",          guide = "RXP/1-6 Northshire",          levels = "1-21", rejoinLevel = 21 },
+        { race = "Dwarf",    zone = "RXP (Dwarf)",          guide = "RXP/1-6 Coldridge Valley",    levels = "1-21", rejoinLevel = 21 },
+        { race = "Gnome",    zone = "RXP (Gnome)",          guide = "RXP/1-6 Coldridge Valley",    levels = "1-21", rejoinLevel = 21 },
+        { race = "NightElf", zone = "RXP (NightElf)",       guide = "RXP/1-6 Shadowglen",          levels = "1-21", rejoinLevel = 21 },
+    },
+    Horde = {
+        { race = "Orc",      zone = "Durotar",           guide = "Durotar (1-12)",             levels = "1-12", rejoinLevel = 12 },
+        { race = "Troll",    zone = "Durotar",           guide = "Durotar (1-12)",             levels = "1-12", rejoinLevel = 12 },
+        { race = "Tauren",   zone = "Mulgore",           guide = "Mulgore (1-12)",             levels = "1-12", rejoinLevel = 12 },
+        { race = "Undead",   zone = "Tirisfal Glades",   guide = "Tirisfal (1-12)",            levels = "1-12", rejoinLevel = 12 },
+        { race = "Goblin",   zone = "Blackstone Island", guide = "Blackstone Island (1-10)",   levels = "1-10", rejoinLevel = 10 }, -- Turtle WoW
+        -- RestedXP Speedleveling Guides
+        { race = "Human",    zone = "RXP (Human)",       guide = "RXP/1-6 Northshire",         levels = "1-21", rejoinLevel = 21 },
+        { race = "Dwarf",    zone = "RXP (Dwarf)",       guide = "RXP/1-6 Coldridge Valley",   levels = "1-21", rejoinLevel = 21 },
+        { race = "Gnome",    zone = "RXP (Gnome)",       guide = "RXP/1-6 Coldridge Valley",   levels = "1-21", rejoinLevel = 21 },
+        { race = "NightElf", zone = "RXP (NightElf)",    guide = "RXP/1-6 Shadowglen",         levels = "1-21", rejoinLevel = 21 },
+        { race = "Orc",      zone = "RXP (Orc)",         guide = "RXP/1-6 Orc/Troll",          levels = "1-23", rejoinLevel = 23 },
+        { race = "Troll",    zone = "RXP (Troll)",       guide = "RXP/1-6 Orc/Troll",          levels = "1-23", rejoinLevel = 23 },
+        { race = "Tauren",   zone = "RXP (Tauren)",      guide = "RXP/1-6 Tauren",             levels = "1-23", rejoinLevel = 23 },
+        { race = "Undead",   zone = "RXP (Undead)",      guide = "RXP/1-6 Undead",             levels = "1-23", rejoinLevel = 23 },
+
+        ---
+        { race = "Warrior",  zone = "Kamisayo Speedrun", guide = "RXP/Kamisayo Speedrun 1-13", levels = "1-60", rejoinLevel = 60, class = "Warrior", isSpeedrun = true },
+    },
+}
+
+-- Get available starting zones for the player's faction
+function AegisPathfinder:GetAvailableStartingZones()
+    local faction = self.myfaction
+    local zones = self.startingZones[faction] or {}
+    local available = {}
+    local _, playerClass = UnitClass("player")
+
+    -- Filter to only include zones with existing guides and matching class
+    for _, zoneInfo in ipairs(zones) do
+        if self.guides[zoneInfo.guide] then
+            -- Check class filter if present
+            if zoneInfo.class then
+                if zoneInfo.class == playerClass then
+                    table.insert(available, zoneInfo)
+                end
+            else
+                table.insert(available, zoneInfo)
+            end
+        end
+    end
+
+    return available
+end
+
+-- Get the player's native starting zone based on their race
+function AegisPathfinder:GetNativeStartingZone()
+    local routeName = self:GetRouteForRace()
+    local faction = self.myfaction
+    local zones = self.startingZones[faction] or {}
+
+    for _, zoneInfo in ipairs(zones) do
+        if zoneInfo.race == routeName then
+            return zoneInfo
+        end
+    end
+
+    -- Fallback to first zone for faction
+    return zones[1]
+end
+
+-- Check if the current guide is a starting zone guide
+function AegisPathfinder:IsInStartingZone()
+    local currentGuide = self.db.char.currentguide
+    if not currentGuide then return false end
+
+    local faction = self.myfaction
+    local zones = self.startingZones[faction] or {}
+
+    for _, zoneInfo in ipairs(zones) do
+        if zoneInfo.guide == currentGuide then
+            return true, zoneInfo
+        end
+    end
+
+    return false
+end
+
+-- Get the rejoin point (shared route) based on current starting zone
+-- The rejoin point is where all starting zone paths converge
+function AegisPathfinder:GetRejoinGuide()
+    local faction = self.myfaction
+    local playerLevel = UnitLevel("player")
+
+    -- Shared routes after starting zone (level 12+)
+    -- Alliance converges to Darkshore/Westfall path
+    -- Horde converges to Barrens path
+    local rejoinGuides = {
+        Alliance = {
+            { guide = "Westfall (12-17)",   minLevel = 12, maxLevel = 17 },
+            { guide = "Darkshore (12-17)",  minLevel = 12, maxLevel = 17 },
+            { guide = "Loch Modan (17-18)", minLevel = 17, maxLevel = 18 },
+        },
+        Horde = {
+            { guide = "The Barrens (12-20)",       minLevel = 12, maxLevel = 20 },
+            { guide = "Silverpine Forest (12-20)", minLevel = 12, maxLevel = 20 },
+        },
+    }
+
+    local guideList = rejoinGuides[faction] or {}
+
+    -- Find the best rejoin guide for player's level
+    for _, entry in ipairs(guideList) do
+        if self.guides[entry.guide] then
+            if playerLevel >= entry.minLevel and playerLevel <= entry.maxLevel + 2 then
+                return entry.guide
+            end
+        end
+    end
+
+    -- Fallback to first available rejoin guide
+    for _, entry in ipairs(guideList) do
+        if self.guides[entry.guide] then
+            return entry.guide
+        end
+    end
+
+    return nil
+end
+
+-- Handle starting zone completion and transition to shared path
+function AegisPathfinder:CheckStartingZoneCompletion()
+    local inStartingZone, zoneInfo = self:IsInStartingZone()
+    if not inStartingZone then return false end
+
+    local playerLevel = UnitLevel("player")
+    local rejoinLevel = zoneInfo and zoneInfo.rejoinLevel or 12
+
+    -- Check if player has outleveled the starting zone
+    if playerLevel >= rejoinLevel then
+        -- Check if current guide is complete (or nearly complete)
+        local totalSteps = self.actions and table.getn(self.actions) or 0
+        if totalSteps == 0 then return false end
+
+        local completedSteps = 0
+        for i, quest in ipairs(self.quests) do
+            if self.turnedin[quest] then
+                completedSteps = completedSteps + 1
+            end
+        end
+
+        local completion = completedSteps / totalSteps
+        -- Transition when guide is 80%+ complete or player is 2+ levels above rejoin
+        if completion >= 0.8 or playerLevel >= rejoinLevel + 2 then
+            self:TransitionFromStartingZone()
+            return true
+        end
+    end
+
+    return false
+end
+
+-- Transition from starting zone to shared leveling path
+function AegisPathfinder:TransitionFromStartingZone()
+    local L = self.Locale
+
+    -- Mark starting zone as complete
+    self.db.char.startingzonecomplete = true
+    self.db.char.completion[self.db.char.currentguide] = 1
+
+    self:Print("|cff00ff00" .. L["Starting zone complete!"] .. "|r")
+    self:Print(L["Transitioning to shared leveling path..."])
+
+    -- Get the rejoin guide
+    local rejoinGuide = self:GetRejoinGuide()
+    if rejoinGuide then
+        self.db.char.currentguide = rejoinGuide
+        self:LoadGuide(rejoinGuide)
+        self:UpdateStatusFrame()
+        self:UpdateGuideListPanel()
+    else
+        -- Fallback to standard LoadNextGuide behavior
+        self:LoadNextGuide()
+    end
+end
+
+-- Show the Starting Zone Selector UI
+function AegisPathfinder:ShowStartingZoneSelector()
+    if not self.startingZoneSelectorFrame then
+        self:CreateStartingZoneSelectorFrame()
+    end
+    self:UpdateStartingZoneSelectorPanel()
+    self.startingZoneSelectorFrame:Show()
+end
+
+function AegisPathfinder:CreateStartingZoneSelectorFrame()
+    local L = self.Locale
+    local f = CreateFrame("Frame", "AegisPathfinderStartingZoneSelectorFrame", UIParent)
+    f:SetWidth(380)
+    f:SetHeight(320)
+    f:SetPoint("CENTER", UIParent, "CENTER", 0, 50)
+    self.Theme:Panel(f, "panel")
+    f:SetMovable(true)
+    f:EnableMouse(true)
+    f:RegisterForDrag("LeftButton")
+    f:SetScript("OnDragStart", function() this:StartMoving() end)
+    f:SetScript("OnDragStop", function() this:StopMovingOrSizing() end)
+    f:SetFrameStrata("DIALOG")
+
+    -- Title
+    local title = f:CreateFontString(nil, "ARTWORK")
+    AegisPathfinder.Theme:SetFont(title, "display", 15)
+    title:SetPoint("TOP", f, "TOP", 0, -20)
+    title:SetText(L["Choose Starting Zone"])
+
+    -- Description
+    local desc = f:CreateFontString(nil, "ARTWORK")
+    AegisPathfinder.Theme:SetFont(desc, "body", 12)
+    desc:SetPoint("TOP", title, "BOTTOM", 0, -10)
+    desc:SetWidth(340)
+    desc:SetText(L["Select which starting zone you want to level through:"])
+
+    -- Native race indicator
+    local nativeText = f:CreateFontString(nil, "ARTWORK")
+    AegisPathfinder.Theme:SetFont(nativeText, "body", 12)
+    nativeText:SetPoint("TOP", desc, "BOTTOM", 0, -15)
+    nativeText:SetWidth(340)
+    f.nativeText = nativeText
+
+    -- Container for zone buttons
+    local buttonContainer = CreateFrame("Frame", nil, f)
+    buttonContainer:SetPoint("TOP", nativeText, "BOTTOM", 0, -10)
+    buttonContainer:SetWidth(340)
+    buttonContainer:SetHeight(180)
+    f.buttonContainer = buttonContainer
+
+    -- Zone buttons (will be populated dynamically)
+    f.zoneButtons = {}
+    for i = 1, 6 do
+        local btn = CreateFrame("Button", nil, buttonContainer, "UIPanelButtonTemplate")
+        btn:SetWidth(300)
+        btn:SetHeight(28)
+        btn:SetPoint("TOP", buttonContainer, "TOP", 0, -(i - 1) * 32)
+        btn:Hide()
+
+        btn:SetScript("OnClick", function()
+            if this.zoneInfo then
+                AegisPathfinder:SelectStartingZone(this.zoneInfo)
+                f:Hide()
+            end
+        end)
+
+        f.zoneButtons[i] = btn
+    end
+
+    -- Info text at bottom
+    local infoText = f:CreateFontString(nil, "ARTWORK")
+    AegisPathfinder.Theme:SetFont(infoText, "body", 11)
+    infoText:SetPoint("BOTTOM", f, "BOTTOM", 0, 40)
+    infoText:SetWidth(340)
+    infoText:SetTextColor(0.7, 0.7, 0.7)
+    infoText:SetText(L["You can change starting zones from the Options menu"])
+
+    -- Close button
+    local closeBtn = CreateFrame("Button", nil, f, "UIPanelCloseButton")
+    closeBtn:SetPoint("TOPRIGHT", f, "TOPRIGHT", -5, -5)
+
+    self.startingZoneSelectorFrame = f
+    table.insert(UISpecialFrames, "AegisPathfinderStartingZoneSelectorFrame")
+    f:Hide()
+end
+
+function AegisPathfinder:UpdateStartingZoneSelectorPanel()
+    local f = self.startingZoneSelectorFrame
+    if not f or not f:IsVisible() then return end
+
+    local L = self.Locale
+    local nativeZone = self:GetNativeStartingZone()
+    local availableZones = self:GetAvailableStartingZones()
+
+    -- Show native race info
+    if nativeZone then
+        local _, race = UnitRace("player")
+        f.nativeText:SetText("|cff00ff00" .. L["Recommended for your race"] .. ":|r " .. race .. " - " .. nativeZone
+            .zone)
+    else
+        f.nativeText:SetText("")
+    end
+
+    -- Hide all buttons first
+    for i, btn in ipairs(f.zoneButtons) do
+        btn:Hide()
+        btn.zoneInfo = nil
+    end
+
+    -- Populate buttons with available zones
+    for i, zoneInfo in ipairs(availableZones) do
+        local btn = f.zoneButtons[i]
+        if btn then
+            local isNative = nativeZone and (zoneInfo.race == nativeZone.race)
+            local displayText = zoneInfo.zone .. " (" .. zoneInfo.levels .. ")"
+
+            if zoneInfo.isSpeedrun then
+                displayText = "|cffff8800[Speedrun]|r " .. displayText
+            elseif zoneInfo.isSurvival then
+                displayText = "|cff00ffcc[Survival]|r " .. displayText
+            elseif isNative then
+                displayText = displayText .. " |cff00ff00*|r"
+            end
+
+            btn:SetText(displayText)
+            btn.zoneInfo = zoneInfo
+            btn:Show()
+        end
+    end
+
+    -- Adjust frame height based on number of zones
+    local numZones = table.getn(availableZones)
+    local height = 180 + (numZones * 32)
+    f:SetHeight(math.max(220, height))
+end
+
+-- Select a starting zone and begin leveling there
+function AegisPathfinder:SelectStartingZone(zoneInfo)
+    local L = self.Locale
+
+    -- Save the selection
+    self.db.char.startingzoneselected = true
+    self.db.char.selectedstartingzone = zoneInfo.race
+    self.db.char.startingzonecomplete = false
+    self.db.char.rejoinlevel = zoneInfo.rejoinLevel or 12
+
+    -- Also set the route to match the starting zone's race
+    -- This ensures the shared route after rejoin is appropriate
+    self.db.char.currentroute = zoneInfo.race
+    self.db.char.routeselected = true
+
+    -- Set route pack based on zone type
+    if zoneInfo.isSpeedrun then
+        self.db.char.routepack = "Kamisayo Speedrun"
+        local pack = self.routepacks["Kamisayo Speedrun"]
+        if pack then
+            for race, route in pairs(pack.routes) do
+                self.routes[race] = route
+            end
+        end
+    elseif zoneInfo.isSurvival then
+        self.db.char.routepack = "RestedXP"
+        local pack = self.routepacks["RestedXP"]
+        if pack then
+            for race, route in pairs(pack.routes) do
+                self.routes[race] = route
+            end
+        end
+    else
+        if not self.db.char.routepack then
+            self.db.char.routepack = "VanillaGuide"
+        end
+    end
+
+    -- Load the starting zone guide
+    if self.guides[zoneInfo.guide] then
+        self.db.char.currentguide = zoneInfo.guide
+        self:LoadGuide(zoneInfo.guide)
+
+        local playerRoute = self:GetRouteForRace()
+
+        if zoneInfo.race ~= playerRoute then
+            self:Print(string.format(L["Cross-race start: %s"], zoneInfo.zone))
+        end
+
+        self:Print(string.format(L["You have been assigned the %s leveling route."], zoneInfo.zone))
+    else
+        self:Print("|cffff0000Error: Guide not found: " .. zoneInfo.guide .. "|r")
+    end
+
+    self:UpdateStatusFrame()
+    self:UpdateGuideListPanel()
+end
+
+-- Modified InitializeRoute to show starting zone selector for new characters
+function AegisPathfinder:InitializeRouteWithStartingZone()
+    local playerLevel = UnitLevel("player")
+
+    -- If player is level 1-10 and hasn't selected a starting zone, show selector
+    if playerLevel <= 10 and not self.db.char.startingzoneselected then
+        -- Auto-detect race and pre-select the native starting zone
+        local nativeZone = self:GetNativeStartingZone()
+        if nativeZone and self.guides[nativeZone.guide] then
+            -- Silently apply native zone as default
+            self:SelectStartingZone(nativeZone)
+        else
+            -- Show selector if native zone doesn't exist
+            self:ShowStartingZoneSelector()
+        end
+        return true
+    end
+
+    -- If player already selected a starting zone but hasn't completed it
+    if self.db.char.startingzoneselected and not self.db.char.startingzonecomplete then
+        -- Check if they've outleveled the starting zone
+        if self:CheckStartingZoneCompletion() then
+            return true
+        end
+    end
+
+    return false
+end
+
+function AegisPathfinder:SetupErrorCapture()
+    if self.errorCaptured then return end
+    self.errorCaptured = true
+    self.errorLog = self.errorLog or {}
+
+    local originalHandler = geterrorhandler()
+    seterrorhandler(function(errorMessage)
+        local timestamp = date("%H:%M:%S")
+        local stack = debugstack and debugstack(2, 12, 12) or "(no stack)"
+        local entry = string.format("[%s] %s\n%s", timestamp, tostring(errorMessage), tostring(stack))
+        table.insert(self.errorLog, 1, entry)
+        if table.getn(self.errorLog) > 50 then
+            table.remove(self.errorLog)
+        end
+        if originalHandler then
+            originalHandler(errorMessage)
+        end
+    end)
+end
+
+function AegisPathfinder:ShowErrorLog()
+    if not self.errorLogFrame then
+        self:CreateErrorLogFrame()
+    end
+    self.errorLogFrame:Show()
+end
+
+function AegisPathfinder:CreateErrorLogFrame()
+    local f = CreateFrame("Frame", "AegisPathfinderErrorLogFrame", UIParent)
+    f:SetWidth(520)
+    f:SetHeight(360)
+    f:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+    self.Theme:Panel(f, "panel")
+    f:SetMovable(true)
+    f:EnableMouse(true)
+    f:RegisterForDrag("LeftButton")
+    f:SetScript("OnDragStart", function() this:StartMoving() end)
+    f:SetScript("OnDragStop", function() this:StopMovingOrSizing() end)
+    f:SetFrameStrata("DIALOG")
+    f:Hide()
+
+    local title = f:CreateFontString(nil, "ARTWORK")
+    AegisPathfinder.Theme:SetFont(title, "display", 15)
+    title:SetPoint("TOP", f, "TOP", 0, -16)
+    title:SetText("AEGIS: Pathfinder Error Log")
+
+    local desc = f:CreateFontString(nil, "ARTWORK")
+    AegisPathfinder.Theme:SetFont(desc, "body", 12)
+    desc:SetPoint("TOP", title, "BOTTOM", 0, -8)
+    desc:SetWidth(480)
+    desc:SetText("Most recent errors are at the top. Use Ctrl+C to copy.")
+
+    local scrollFrame = CreateFrame("ScrollFrame", "AegisPathfinderErrorLogScrollFrame", f, "UIPanelScrollFrameTemplate")
+    scrollFrame:SetPoint("TOPLEFT", f, "TOPLEFT", 16, -60)
+    scrollFrame:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", -32, 16)
+
+    local editBox = CreateFrame("EditBox", "AegisPathfinderErrorLogEditBox", scrollFrame)
+    editBox:SetMultiLine(true)
+    editBox:SetFontObject("ChatFontNormal")
+    editBox:SetWidth(470)
+    editBox:SetAutoFocus(false)
+    editBox:SetScript("OnEscapePressed", function() f:Hide() end)
+    editBox:SetScript("OnEditFocusGained", function()
+        editBox:HighlightText(0)
+    end)
+
+    scrollFrame:SetScrollChild(editBox)
+    f.editBox = editBox
+
+    local closeBtn = CreateFrame("Button", nil, f, "UIPanelCloseButton")
+    closeBtn:SetPoint("TOPRIGHT", f, "TOPRIGHT", -5, -5)
+
+    f:SetScript("OnShow", function()
+        local entries = AegisPathfinder.errorLog or {}
+        if table.getn(entries) == 0 then
+            f.editBox:SetText("No errors captured yet.")
+        else
+            f.editBox:SetText(table.concat(entries, "\n\n"))
+        end
+        if f.editBox.SetCursorPosition then
+            f.editBox:SetCursorPosition(0)
+        end
+        f.editBox:HighlightText(0)
+    end)
+
+    self.errorLogFrame = f
+end
+
+---------------------------------
+--      Utility Functions      --
+---------------------------------
+
+function AegisPathfinder.select(index, ...)
+    assert(tonumber(index) or index == "#", "Invalid argument #1 to select(). Usage: select(\"#\"|int,...)")
+    if index == "#" then
+        return tonumber(arg.n) or 0
+    end
+    for i = 1, index - 1 do
+        table.remove(arg, 1)
+    end
+    return unpack(arg)
+end
+
+function AegisPathfinder.join(delimiter, list)
+    assert(type(delimiter) == "string" and type(list) == "table",
+        "Invalid arguments to join(). Usage: string.join(delimiter, list)")
+    local len = getn(list)
+    if len == 0 then
+        return ""
+    end
+    local s = list[1]
+    for i = 2, len do
+        s = string.format("%s%s%s", s, delimiter, list[i])
+    end
+    return s
+end
+
+function AegisPathfinder.trim(s)
+    return (string.gsub(s, "^%s*(.-)%s*$", "%1"))
+end
+
+function AegisPathfinder.split(...)
+    assert(arg.n > 0 and type(arg[1]) == "string",
+        "Invalid arguments to split(). Usage: string.split([separator], subject)")
+    local sep, s = arg[1], arg[2]
+    if s == nil then
+        s, sep = sep, ":"
+    end
+    local fields = {}
+    local pattern = string.format("([^%s]+)", sep)
+    string.gsub(s, pattern, function(c) fields[table.getn(fields) + 1] = c end)
+    return fields
+end
+
+function AegisPathfinder.modf(f)
+    if f > 0 then
+        return math.floor(f), math.mod(f, 1)
+    end
+    return math.ceil(f), math.mod(f, 1)
+end
+
+function AegisPathfinder.ColorGradient(perc)
+    if perc >= 1 then
+        return 0, 1, 0
+    elseif perc <= 0 then
+        return 1, 0, 0
+    end
+
+    local segment, relperc = AegisPathfinder.modf(perc * 2)
+    local r1, g1, b1, r2, g2, b2 = AegisPathfinder.select((segment * 3) + 1, 1, 0, 0, 1, 0.82, 0, 0, 1, 0)
+    return r1 + (r2 - r1) * relperc, g1 + (g2 - g1) * relperc, b1 + (b2 - b1) * relperc
+end
+
+function AegisPathfinder.GetQuadrant(frame)
+    local x, y = frame:GetCenter()
+    if not x or not y then return "BOTTOMLEFT", "BOTTOM", "LEFT" end
+    local hhalf = (x > UIParent:GetWidth() / 2) and "RIGHT" or "LEFT"
+    local vhalf = (y > UIParent:GetHeight() / 2) and "TOP" or "BOTTOM"
+    return vhalf .. hhalf, vhalf, hhalf
+end
+
+function AegisPathfinder.GetUIParentAnchor(frame)
+    local w, h, x, y = UIParent:GetWidth(), UIParent:GetHeight(), frame:GetCenter()
+    local hhalf, vhalf = (x > w / 2) and "RIGHT" or "LEFT", (y > h / 2) and "TOP" or "BOTTOM"
+    local dx = hhalf == "RIGHT" and math.floor(frame:GetRight() + 0.5) - w or math.floor(frame:GetLeft() + 0.5)
+    local dy = vhalf == "TOP" and math.floor(frame:GetTop() + 0.5) - h or math.floor(frame:GetBottom() + 0.5)
+    return vhalf .. hhalf, dx, dy
+end
+
+function AegisPathfinder:SyncWithPfQuestHistory(force)
+    if not pfQuest_history then return end
+
+    if force then
+        self.db.char.completedquestsbyid = {}
+        self.db.char.completedquests = {}
+        if self.db.char.turnins then
+            for k in pairs(self.db.char.turnins) do
+                self.db.char.turnins[k] = nil
+            end
+        end
+        if self.turnedin then
+            for k in pairs(self.turnedin) do
+                self.turnedin[k] = nil
+            end
+        end
+        if self.db.char.currentguide then
+            self.db.char.turnins[self.db.char.currentguide] = self.turnedin or {}
+        end
+    end
+
+    local imported = 0
+
+    -- pfQuest_history is a SavedVariablesPerCharacter flat table:
+    -- pfQuest_history[qid] = { [1] = timestamp, [2] = level }
+    for qid, data in pairs(pfQuest_history) do
+        local qidNum = tonumber(qid)
+        if qidNum and type(data) == "table" then
+            if not self.db.char.completedquestsbyid[qidNum] then
+                self.db.char.completedquestsbyid[qidNum] = true
+                imported = imported + 1
+            end
+
+            -- Also populate the name-based completion table if we can find the name in pfQuest
+            if pfDB and pfDB.quests and pfDB.quests.loc and pfDB.quests.loc[qidNum] then
+                local questName = pfDB.quests.loc[qidNum]["T"]
+                if questName then
+                    local cleanQuest = string.gsub(questName, "%[[0-9%+%-]+]%s", "")
+                    cleanQuest = string.gsub(cleanQuest, AegisPathfinder.Locale.PART_GSUB, "")
+                    self.db.char.completedquests[cleanQuest] = true
+                end
+            end
+        end
+    end
+
+    if imported > 0 then
+        self:Debug(string.format("Imported %d completed quests from pfQuest history.", imported))
+    end
+end
+
+function AegisPathfinder:DumpLoc()
+    if IsShiftKeyDown() then
+        if not self.db.global.savedpoints then
+            self:Print("No saved points")
+        else
+            for t in string.gfind(self.db.global.savedpoints, "([^\n]+)") do self:Print(t) end
+        end
+    elseif IsControlKeyDown() then
+        self.db.global.savedpoints = nil
+        self:Print("Saved points cleared")
+    else
+        local _, _, x, y = Astrolabe:GetCurrentPlayerPosition()
+        local s = string.format("%s, %s, (%.2f, %.2f) -- %s %s", GetZoneText(), GetSubZoneText(), x * 100, y * 100,
+            self:GetObjectiveInfo())
+        self.db.global.savedpoints = (self.db.global.savedpoints or "") .. s .. "\n"
+        self:Print(s)
+    end
+end
