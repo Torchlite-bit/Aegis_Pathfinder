@@ -56,6 +56,7 @@ Theme.texture = {
 	pillFill    = MEDIA .. "pill-fill",
 	pillBorder  = MEDIA .. "pill-border",
 	tabFill     = MEDIA .. "tab-fill",
+	tabBorder   = MEDIA .. "tab-border",
 	circleFill  = MEDIA .. "circle-fill",
 	circleBorder= MEDIA .. "circle-border",
 	glow        = MEDIA .. "glow",
@@ -348,6 +349,70 @@ function Theme:Pill(parent, label, width, height)
 			self.fill:SetTint("panel3")
 			Theme:TextColor(self.label, "textDim")
 		end
+	end
+
+	b:SetActive(false)
+	return b
+end
+
+--[[ Dungeon chip.
+
+	Two stacked lines -- the short code above its full name -- which is how the
+	concept fits fifteen dungeons into a panel without a scrollbar. A small
+	blue dot marks a dungeon the loaded guide actually has steps for, so the
+	grid distinguishes "I could run this" from "this guide knows about it".
+]]
+function Theme:Chip(parent, code, name, width, height)
+	local b = CreateFrame("Button", nil, parent)
+	b:SetWidth(width or 78)
+	b:SetHeight(height or 34)
+
+	local fill = self:NineSlice(b, self.texture.tabFill, "BACKGROUND", "panel3")
+	local border = self:NineSlice(b, self.texture.tabBorder, "BORDER", "border")
+
+	local codeText = b:CreateFontString(nil, "OVERLAY")
+	self:SetFont(codeText, "display", 11)
+	codeText:SetPoint("TOPLEFT", b, "TOPLEFT", 6, -4)
+	codeText:SetText(code)
+	self:TextColor(codeText, "text")
+
+	local nameText = b:CreateFontString(nil, "OVERLAY")
+	self:SetFont(nameText, "body", 9)
+	nameText:SetPoint("TOPLEFT", codeText, "BOTTOMLEFT", 0, -1)
+	nameText:SetPoint("RIGHT", b, "RIGHT", -4, 0)
+	nameText:SetJustifyH("LEFT")
+	nameText:SetText(name)
+	self:TextColor(nameText, "textDim")
+
+	local dot = b:CreateTexture(nil, "OVERLAY")
+	dot:SetTexture(self.texture.circleFill)
+	dot:SetWidth(5); dot:SetHeight(5)
+	dot:SetPoint("TOPRIGHT", b, "TOPRIGHT", -4, -4)
+	self:Tint(dot, "blue")
+	dot:Hide()
+
+	b.fill, b.border, b.codeText, b.nameText, b.dot = fill, border, codeText, nameText, dot
+
+	function b:SetActive(active)
+		self.__active = active and true or false
+		if self.__active then
+			self.fill:SetTint("accent")
+			-- Dark text on the accent fill, as the concept has it.
+			self.codeText:SetTextColor(0.05, 0.10, 0.02)
+			self.nameText:SetTextColor(0.05, 0.10, 0.02)
+			Theme:Tint(self.dot, "border")
+		else
+			self.fill:SetTint("panel3")
+			Theme:TextColor(self.codeText, "text")
+			Theme:TextColor(self.nameText, "textDim")
+			Theme:Tint(self.dot, "blue")
+		end
+	end
+	function b:IsActive() return self.__active end
+
+	--- Mark that the loaded guide has steps referencing this dungeon.
+	function b:SetWired(wired)
+		if wired then self.dot:Show() else self.dot:Hide() end
 	end
 
 	b:SetActive(false)

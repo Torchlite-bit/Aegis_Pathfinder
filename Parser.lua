@@ -56,6 +56,48 @@ function AegisPathfinder:GetObjectiveTag(tag, i)
 	return self.select(3, string.find(tags, "|" .. tag .. "|([^|]*)|?"))
 end
 
+--[[ Which dungeons a guide has steps for.
+
+	The |D| filter runs at parse time, so a step for a dungeon the player has
+	not opted into is gone from self.actions entirely -- there is no way to ask
+	the parsed guide what it knows about. This scans the raw guide text
+	instead, which is the only place the full picture survives.
+
+	Used by the dungeon panel to mark which chips are relevant to the guide
+	you are actually on. Results are cached per guide: the scan walks the whole
+	guide text, and guides run to hundreds of steps.
+]]
+function AegisPathfinder:GetGuideDungeons(guideName)
+	guideName = guideName or self.db.char.currentguide
+	if not guideName then return {} end
+
+	self.guidedungeoncache = self.guidedungeoncache or {}
+	if self.guidedungeoncache[guideName] then
+		return self.guidedungeoncache[guideName]
+	end
+
+	local found = {}
+	local loader = self.guides and self.guides[guideName]
+	if type(loader) == "function" then
+		-- A guide that errors while loading must not take the panel down with
+		-- it; an empty result just means no chips get marked.
+		local ok, text = pcall(loader)
+		if ok and type(text) == "string" then
+			for tag in string.gfind(text, "|D|([^|]+)|") do
+				for _, part in ipairs(self.split("/", tag)) do
+					if string.sub(part, 1, 1) == "!" then part = string.sub(part, 2) end
+					part = string.upper(part)
+					if part ~= "" then found[part] = true end
+				end
+			end
+		end
+	end
+
+	self.guidedungeoncache[guideName] = found
+
+	return found
+end
+
 local function DumpQuestDebug(accepts, turnins, completes)
 	for quest in pairs(accepts) do if not turnins[quest] then AegisPathfinder:Debug(string.format(
 			"Quest has no 'turnin' objective: %s", quest)) end end

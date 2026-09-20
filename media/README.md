@@ -38,7 +38,7 @@ multi-colour art bakes colour in: `nav-arrow.tga` and `progress-fill.tga`.
 | `panel-fill.tga` | 32×32 | Nine-slice window body, 10px corner radius |
 | `panel-border.tga` | 32×32 | Nine-slice 1px border |
 | `pill-fill.tga` / `pill-border.tga` | 32×32 | Route-pack selector pills |
-| `tab-fill.tga` | 32×32 | Tab bar, 6px radius |
+| `tab-fill.tga` / `tab-border.tga` | 32×32 | Tab bar and dungeon chips, 6px radius |
 | `circle-fill.tga` / `circle-border.tga` | 32×32 | Step checkbox |
 | `glow.tga` | 64×64 | Auto-detect halo and focus rings |
 | `shadow.tga` | 64×64 | Panel drop shadow |

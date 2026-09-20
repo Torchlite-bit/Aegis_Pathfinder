@@ -114,12 +114,28 @@ appears wherever a step is shown. Panel buttons are display-face pills.
 The three dialog frames in `Core.lua` (route selector, starting-zone selector,
 error log) use `Theme:Panel` in place of Blizzard's dialog art.
 
+### Dungeon chips -- `OptionsFrame.lua`
+
+A wrapping grid of `Theme:Chip`, three across, replacing the vertical checkbox
+list. Each chip stacks the short code over the full name, which is how the
+concept fits fifteen dungeons into a panel without a scrollbar. Active chips
+take the accent fill with dark text.
+
+The blue dot is not decorative. `AegisPathfinder:GetGuideDungeons` scans the
+**raw** guide text for `|D|` tags and marks the dungeons the loaded guide
+actually has steps for, so the grid distinguishes "I could run this" from
+"this guide knows about it". It has to read raw text because the `|D|` filter
+runs at parse time -- a step for a dungeon you have not opted into is gone
+from `self.actions` entirely, so the parsed guide cannot answer the question.
+A negated tag (`|D|!DM|`) still counts as a reference: the step is
+conditional, the relevance is not. Results are cached per guide, since the
+scan walks guides that run to hundreds of steps.
+
 ### Still to do
 
-The concept's tab bar with `XP`/`TPL` badges, the dungeon chips with their blue
-"wired" dot, and the branch modal's tabbed categories are specified in the
-concept but not built -- the existing guide list and branch selector cover the
-same function with different furniture.
+The concept's tab bar with `XP`/`TPL` badges and the branch modal's tabbed
+categories are specified in the concept but not built -- the existing guide
+list and branch selector cover the same function with different furniture.
 
 ## Verification
 

@@ -421,6 +421,7 @@ def main():
     record("pill-fill.tga", rounded(32, 16, path="pill-fill.tga"))
     record("pill-border.tga", rounded(32, 16, width=1, path="pill-border.tga"))
     record("tab-fill.tga", rounded(32, 6, path="tab-fill.tga"))
+    record("tab-border.tga", rounded(32, 6, width=1, path="tab-border.tga"))
     record("circle-fill.tga", circle(32, path="circle-fill.tga"))
     record("circle-border.tga", circle(32, width=2, path="circle-border.tga"))
     record("glow.tga", glow())

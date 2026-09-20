@@ -3,6 +3,11 @@ local L = AegisPathfinder.Locale
 local ww = WidgetWarlock
 local Theme = AegisPathfinder.Theme
 
+-- Dungeon chip grid geometry.
+local CHIP_W, CHIP_H, CHIP_GAP, CHIP_PAD = 78, 34, 6, 12
+local CHIP_COLS = 3
+local CHIP_TOP = 52          -- below the title and its hint
+
 function AegisPathfinder:CreateConfigPanel()
 	local frame = CreateFrame("Frame", "AegisPathfinderOptions", UIParent)
 	AegisPathfinder.optionsframe = frame
@@ -195,18 +200,36 @@ function AegisPathfinder:CreateDungeonPanel()
 	local frame = CreateFrame("Frame", "AegisPathfinderDungeons", UIParent)
 	self.dungeonframe = frame
 	frame:SetFrameStrata("DIALOG")
-	frame:SetWidth(180)
-	frame:SetHeight(380)
+	-- Three chips per row, as the concept lays them out.
+	frame:SetWidth(CHIP_COLS * (CHIP_W + CHIP_GAP) - CHIP_GAP + CHIP_PAD * 2)
+	frame:SetHeight(300)
 	Theme:Panel(frame, "panel")
 	frame:Hide()
 
 	local closebutton = CreateFrame("Button", nil, frame, "UIPanelCloseButton")
 	closebutton:SetPoint("TOPRIGHT", frame, "TOPRIGHT")
 
-	local title = ww.SummonFontString(frame, nil, "SubZoneTextFont", nil, "TOPLEFT", frame, "TOPLEFT", 10, -10)
-	local fontname, fontheight, fontflags = title:GetFont()
-	title:SetFont(fontname, 16, fontflags)
-	title:SetText("Dungeons")
+	local title = frame:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(title, "display", 14)
+	title:SetPoint("TOPLEFT", frame, "TOPLEFT", CHIP_PAD, -10)
+	title:SetText("DUNGEONS")
+	Theme:TextColor(title, "accent")
+
+	local hint = frame:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(hint, "body", 10)
+	hint:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -3)
+	hint:SetPoint("RIGHT", frame, "RIGHT", -CHIP_PAD, 0)
+	hint:SetJustifyH("LEFT")
+	hint:SetText("Opting in makes a dungeon's setup steps mandatory.")
+	Theme:TextColor(hint, "textDim")
+
+	local wiredHint = frame:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(wiredHint, "body", 10)
+	wiredHint:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", CHIP_PAD, 9)
+	wiredHint:SetPoint("RIGHT", frame, "RIGHT", -CHIP_PAD, 0)
+	wiredHint:SetJustifyH("LEFT")
+	Theme:TextColor(wiredHint, "blue")
+	frame.wiredHint = wiredHint
 
 	local dungeons = {
 		{ code = "RFC",       name = "Ragefire Chasm" },
@@ -226,35 +249,41 @@ function AegisPathfinder:CreateDungeonPanel()
 		{ code = "BRD",       name = "Blackrock Depths" },
 	}
 
-	local prev = title
-	frame.checkboxes = {}
+	frame.chips = {}
 	for idx, d in ipairs(dungeons) do
-		local cb = ww.SummonCheckBox(18, frame, "TOPLEFT", 10, idx == 1 and -35 or -22)
-		if idx == 1 then
-			cb:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -10)
-		else
-			cb:SetPoint("TOPLEFT", prev, "BOTTOMLEFT", 0, -4)
-		end
+		local chip = Theme:Chip(frame, d.code, d.name, CHIP_W, CHIP_H)
+		local col = math.mod(idx - 1, CHIP_COLS)
+		local row = math.floor((idx - 1) / CHIP_COLS)
+		chip:SetPoint("TOPLEFT", frame, "TOPLEFT",
+			CHIP_PAD + col * (CHIP_W + CHIP_GAP),
+			-(CHIP_TOP + row * (CHIP_H + CHIP_GAP)))
+		chip.dungeonCode = d.code
 
-		local text = ww.SummonFontString(cb, "OVERLAY", "GameFontNormalSmall", d.name, "LEFT", cb, "RIGHT", 5, 0)
-		cb.dungeonCode = d.code
-
-		local code = d.code
-		cb:SetScript("OnClick", function()
-			AegisPathfinder.db.char.Dungeons[code] = not not cb:GetChecked()
+		local code, name = d.code, d.name
+		chip:SetScript("OnClick", function()
+			local on = not chip:IsActive()
+			chip:SetActive(on)
+			AegisPathfinder.db.char.Dungeons[code] = on
 			AegisPathfinder:LoadGuide(AegisPathfinder.db.char.currentguide)
+			AegisPathfinder:RefreshDungeonPanel()
 		end)
+		chip:SetScript("OnEnter", function()
+			GameTooltip:SetOwner(this, "ANCHOR_RIGHT")
+			GameTooltip:SetText(name)
+		end)
+		chip:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
-		table.insert(frame.checkboxes, cb)
-		prev = cb
+		table.insert(frame.chips, chip)
 	end
+
+	-- Size to the rows actually laid out rather than a fixed height.
+	local rows = math.ceil(table.getn(dungeons) / CHIP_COLS)
+	frame:SetHeight(CHIP_TOP + rows * (CHIP_H + CHIP_GAP) + 26)
 
 	local function OnShow(f)
 		f = f or this
 		AegisPathfinder:PositionDungeonPanel()
-		for _, cb in ipairs(f.checkboxes) do
-			cb:SetChecked(AegisPathfinder.db.char.Dungeons[cb.dungeonCode])
-		end
+		AegisPathfinder:RefreshDungeonPanel()
 		f:SetAlpha(0)
 		f:SetScript("OnUpdate", ww.FadeIn)
 	end
@@ -364,3 +393,34 @@ function AegisPathfinder:CreateFiltersPanel()
 end
 
 table.insert(UISpecialFrames, "AegisPathfinderOptions")
+
+
+--- Sync chip state with saved settings and with the loaded guide.
+--
+-- The blue dot marks a dungeon the current guide actually has |D| steps for,
+-- which is the difference between "I could run this" and "this guide knows
+-- about it". Without it every chip looks equally relevant no matter which
+-- guide you are on.
+function AegisPathfinder:RefreshDungeonPanel()
+	local frame = self.dungeonframe
+	if not frame or not frame.chips then return end
+
+	local wired = self:GetGuideDungeons()
+	local wiredCount = 0
+
+	for _, chip in ipairs(frame.chips) do
+		chip:SetActive(self.db.char.Dungeons[chip.dungeonCode])
+		local isWired = wired[chip.dungeonCode] and true or false
+		chip:SetWired(isWired)
+		if isWired then wiredCount = wiredCount + 1 end
+	end
+
+    if frame.wiredHint then
+		if wiredCount > 0 then
+			frame.wiredHint:SetText(string.format(
+				"Dotted: %d referenced by this guide.", wiredCount))
+		else
+			frame.wiredHint:SetText("This guide has no dungeon steps.")
+		end
+	end
+end

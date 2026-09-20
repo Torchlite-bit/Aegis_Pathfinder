@@ -143,7 +143,10 @@ local function newFontString(name, parent, layer)
 	function fs:SetFontObject() end
 	function fs:SetText(t) self.__text = t end
 	function fs:GetText() return self.__text end
-	function fs:SetTextColor(r, g, b, a) checkColor("FontString:SetTextColor", r, g, b, a) end
+	function fs:SetTextColor(r, g, b, a)
+		checkColor("FontString:SetTextColor", r, g, b, a)
+		self.__color = { r, g, b, a }
+	end
 	function fs:SetJustifyH(v)
 		if v ~= "LEFT" and v ~= "RIGHT" and v ~= "CENTER" then
 			complain("SetJustifyH('%s')", tostring(v))

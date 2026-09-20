@@ -62,7 +62,8 @@ want, and return — you resume at the step matching your level. A gold
 `[BRANCH]` tag shows while you are off the main path.
 
 **Dungeons.** Toggle which of 15 dungeons you intend to run. Opting in promotes
-their setup and prerequisite steps to mandatory; opting out hides them.
+their setup and prerequisite steps to mandatory; opting out hides them. A blue
+dot marks the dungeons the guide you are currently on actually has steps for.
 
 **Filters.** Solo or group mode, and whether Auction House steps appear.
 Defaults follow the route pack you chose.
@@ -127,7 +128,7 @@ sh Tools/run_tests.sh
 
 Runs everything that can be checked without a client: Lua syntax, Lua 5.0
 compatibility, `.toc` and `Guides.xml` integrity, TGA validity, that no panel
-has drifted off the theme, and four test suites that execute the addon's own
+has drifted off the theme, and five test suites that execute the addon's own
 code against a stubbed 1.12 API.
 
 None of it proves the UI looks right. That needs a client.
