@@ -101,7 +101,10 @@ local function OnClick()
     end
 end
 
-local frame = CreateFrame("Frame", "AegisPathfinderGuideList", AegisPathfinder.statusframe)
+-- Parented to UIParent, not the status card: the card is hidden by default and
+-- a child of a hidden frame cannot be shown. It is still anchored to the card,
+-- which keeps a position whether or not it is drawn.
+local frame = CreateFrame("Frame", "AegisPathfinderGuideList", UIParent)
 AegisPathfinder.guidelistframe = frame
 frame:SetFrameStrata("DIALOG")
 frame:SetWidth(660)

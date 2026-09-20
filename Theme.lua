@@ -11,7 +11,7 @@
 	panel, band, pill and tab in the addon.
 ]]
 
-local MEDIA = "Interface\\AddOns\\AegisPathfinder\\media\\"
+local MEDIA = "Interface\\AddOns\\Aegis_Pathfinder\\media\\"
 
 AegisPathfinder.Theme = {}
 local Theme = AegisPathfinder.Theme
@@ -62,7 +62,6 @@ Theme.texture = {
 	glow        = MEDIA .. "glow",
 	shadow      = MEDIA .. "shadow",
 	progress    = MEDIA .. "progress-fill",
-	navArrow    = MEDIA .. "nav-arrow",
 	logo        = MEDIA .. "logo",
 	wordmark    = MEDIA .. "wordmark",
 }

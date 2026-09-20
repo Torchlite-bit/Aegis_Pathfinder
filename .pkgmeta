@@ -1,4 +1,4 @@
-package-as: AegisPathfinder
+package-as: Aegis_Pathfinder
 
 ignore:
     - README.md

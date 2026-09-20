@@ -36,9 +36,6 @@ SS = 4  # supersampling factor
 # lives in Theme.lua.
 ACCENT_DEEP = (46, 133, 14)
 ACCENT_GLOW = (143, 224, 102)
-ARROW_TOP = (168, 255, 143)
-ARROW_MID = (111, 217, 79)
-ARROW_BOT = (74, 156, 48)
 
 WHITE = (255, 255, 255)
 
@@ -188,35 +185,6 @@ def progress_fill(w=64, h=8):
         for y in range(h):
             px[x, y] = col + (255,)
     return write_tga(img, os.path.join(MEDIA, "progress-fill.tga"))
-
-
-def nav_arrow(size=64):
-    """The signature navigation arrow.
-
-    Same silhouette as the concept's SVG path (M50,10 L90,66 L50,52 L10,66 Z)
-    mapped into the texture, with its three-stop vertical gradient.
-    """
-    img = canvas(size)
-    d = ImageDraw.Draw(img)
-    s = size * SS
-
-    def pt(x, y):
-        return (x / 100.0 * s, y / 80.0 * s)
-
-    d.polygon([pt(50, 8), pt(92, 68), pt(50, 53), pt(8, 68)], fill=WHITE + (255,))
-
-    # Apply the gradient through the shape's own alpha.
-    img = img.resize((size, size), Image.LANCZOS)
-    px = img.load()
-    for y in range(size):
-        t = y / float(size - 1)
-        col = lerp(ARROW_TOP, ARROW_MID, t / 0.55) if t < 0.55 else \
-            lerp(ARROW_MID, ARROW_BOT, (t - 0.55) / 0.45)
-        for x in range(size):
-            a = px[x, y][3]
-            if a:
-                px[x, y] = col + (a,)
-    return write_tga(img, os.path.join(MEDIA, "nav-arrow.tga"))
 
 
 # --------------------------------------------------------------------------
@@ -427,7 +395,6 @@ def main():
     record("glow.tga", glow())
     record("shadow.tga", shadow())
     record("progress-fill.tga", progress_fill())
-    record("nav-arrow.tga", nav_arrow())
     record("logo.tga", logo())
     record("wordmark.tga", wordmark())
 

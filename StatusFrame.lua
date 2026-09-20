@@ -23,6 +23,8 @@ local Theme = AegisPathfinder.Theme
 
 -- Concept geometry: the status bar is a 352px card, not a one-line strip.
 local CARD_WIDTH = 352
+local ROW_TOP = 24        -- height of the title row
+local PAD = 10
 
 local f = CreateFrame("Button", nil, UIParent)
 AegisPathfinder.statusframe = f
@@ -33,12 +35,24 @@ f:SetFrameStrata("LOW")
 f:EnableMouse(true)
 f:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 AegisPathfinder.statusskin = Theme:Panel(f, "panel")
+-- Hidden until asked for. AegisPathfinder:PositionStatusFrame() restores the
+-- player's choice once the saved variables have loaded.
+f:Hide()
 
-local check = Theme:StepCheck(f, CHECKSIZE)
-check:SetPoint("LEFT", f, "LEFT", GAP, 0)
+-- The title row is its own frame pinned to the top of the card. Anchoring
+-- these controls straight to the card with LEFT/RIGHT also pins their vertical
+-- centre, so as soon as the card grew past one line they drifted into the
+-- middle of it and overlapped the description.
+local titleRow = CreateFrame("Frame", nil, f)
+titleRow:SetHeight(ROW_TOP)
+titleRow:SetPoint("TOPLEFT", f, "TOPLEFT", 0, 0)
+titleRow:SetPoint("TOPRIGHT", f, "TOPRIGHT", 0, 0)
+
+local check = Theme:StepCheck(titleRow, CHECKSIZE)
+check:SetPoint("LEFT", titleRow, "LEFT", GAP, 0)
 
 -- Previous objective button
-local prevBtn = CreateFrame("Button", nil, f)
+local prevBtn = CreateFrame("Button", nil, titleRow)
 prevBtn:SetWidth(14)
 prevBtn:SetHeight(20)
 prevBtn:SetPoint("LEFT", check, "RIGHT", 2, 0)
@@ -54,19 +68,19 @@ prevBtn:SetScript("OnEnter", function()
 end)
 prevBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
-local icon = ww.SummonTexture(f, "ARTWORK", ICONSIZE, ICONSIZE, nil, "LEFT", prevBtn, "RIGHT", GAP - 4, 0)
-local text = f:CreateFontString(nil, "OVERLAY")
+local icon = ww.SummonTexture(titleRow, "ARTWORK", ICONSIZE, ICONSIZE, nil, "LEFT", prevBtn, "RIGHT", GAP - 4, 0)
+local text = titleRow:CreateFontString(nil, "OVERLAY")
 Theme:SetFont(text, "display", 13)
 Theme:TextColor(text, "text")
 text:SetJustifyH("LEFT")
-text:SetPoint("RIGHT", f, "RIGHT", -GAP - 4 - 18, 0)
+text:SetPoint("RIGHT", titleRow, "RIGHT", -GAP - 4 - 18, 0)
 text:SetPoint("LEFT", icon, "RIGHT", GAP - 4, 0)
 
 -- Next objective button
-local nextBtn = CreateFrame("Button", nil, f)
+local nextBtn = CreateFrame("Button", nil, titleRow)
 nextBtn:SetWidth(14)
 nextBtn:SetHeight(20)
-nextBtn:SetPoint("RIGHT", f, "RIGHT", -GAP, 0)
+nextBtn:SetPoint("RIGHT", titleRow, "RIGHT", -GAP, 0)
 local nextGlyph = nextBtn:CreateFontString(nil, "OVERLAY")
 Theme:SetFont(nextGlyph, "display", 18)
 nextGlyph:SetPoint("CENTER", nextBtn, "CENTER", 0, 0)
@@ -130,9 +144,6 @@ item:Hide()
 	the card grows to fit; AegisPathfinder:LayoutStatusCard() sizes it.
 ]]
 
-local ROW_TOP = 24        -- height of the existing title row
-local PAD = 10
-
 -- Gold [Branch] tag, shown while off the main route.
 local branchTag = f:CreateFontString(nil, "OVERLAY")
 Theme:SetFont(branchTag, "display", 10)
@@ -171,6 +182,7 @@ progressText:SetPoint("LEFT", progress, "RIGHT", 7, 0)
 Theme:TextColor(progressText, "textDim")
 
 AegisPathfinder.statuscard = {
+	titleRow = titleRow, title = text,
 	branchTag = branchTag, desc = desc, meta = meta,
 	progress = progress, progressText = progressText,
 }
@@ -204,83 +216,6 @@ function AegisPathfinder:LayoutStatusCard()
 	f:SetHeight(y + PAD)
 end
 
---[[ Navigation callout.
-
-	The concept's signature element: an arrow that points at the current
-	objective, with the instruction, distance and a rough time to walk it. The
-	arrow is a texture rather than a rotated frame because 1.12 can only rotate
-	a texture, and only about its own centre.
-]]
-
-local callout = CreateFrame("Frame", nil, UIParent)
-callout:SetWidth(180)
-callout:SetHeight(96)
-callout:SetPoint("BOTTOM", f, "TOP", 0, 10)
-callout:SetFrameStrata("LOW")
-Theme:NineSlice(callout, Theme.texture.panelFill, "BACKGROUND", "panel2", 0.95)
-
-local calloutArrow = callout:CreateTexture(nil, "ARTWORK")
-calloutArrow:SetTexture(Theme.texture.navArrow)
-calloutArrow:SetWidth(36)
-calloutArrow:SetHeight(36)
-calloutArrow:SetPoint("TOP", callout, "TOP", 0, -12)
-
-local calloutText = callout:CreateFontString(nil, "OVERLAY")
-Theme:SetFont(calloutText, "body2", 12)
-calloutText:SetPoint("TOP", calloutArrow, "BOTTOM", 0, -8)
-calloutText:SetWidth(164)
-Theme:TextColor(calloutText, "text")
-
-local calloutDist = callout:CreateFontString(nil, "OVERLAY")
-Theme:SetFont(calloutDist, "body2", 11)
-calloutDist:SetPoint("TOP", calloutText, "BOTTOM", 0, -6)
-Theme:TextColor(calloutDist, "goldDeep")
-
-AegisPathfinder.navcallout = {
-	frame = callout, arrow = calloutArrow,
-	instruction = calloutText, distance = calloutDist,
-}
-callout:Hide()
-
--- What the arrow says for each action, mirroring the concept's phrasing.
-local NAV_PHRASES = {
-	ACCEPT = "Head to the quest giver",
-	TURNIN = "Head to the quest giver",
-	COMPLETE = "Continue to the objective",
-	KILL = "Continue to the objective",
-	GRIND = "Continue to the objective",
-	RUN = "Follow the path ahead",
-	HEARTH = "Return to the inn",
-	SETHEARTH = "Return to the inn",
-	FLY = "Head to the flight master",
-	GETFLIGHTPOINT = "Head to the flight master",
-	BOAT = "Head to the dock",
-	BUY = "Head to the vendor",
-	USE = "Head to the vendor",
-	TRAIN = "Head to the trainer",
-}
-
-function AegisPathfinder:UpdateNavCallout(action)
-	local nav = self.navcallout
-	if not self.db.char.shownavcallout then
-		nav.frame:Hide()
-		return
-	end
-
-	nav.frame:Show()
-	nav.instruction:SetText(NAV_PHRASES[action] or "Follow the path")
-
-	-- Distance comes from the waypoint provider when one is active. Without
-	-- it there is nothing honest to show, so the line is left blank rather
-	-- than filled with a made-up number.
-	local dist = self.lastwaypointdistance
-	if dist then
-		nav.distance:SetText(string.format("%d yd", dist))
-	else
-		nav.distance:SetText("")
-	end
-end
-
 local f2 = CreateFrame("Frame", nil, UIParent)
 local f2anchor = "RIGHT"
 f2:SetHeight(32)
@@ -310,6 +245,34 @@ f2:SetScript("OnUpdate", function()
 	end
 end)
 
+--- Show or hide the objectives panel, anchored to whichever side of the screen
+--- the status card is on. Called from the card, and from a bare slash command:
+--- the panel is the addon's main surface, so it is what /apg opens.
+function AegisPathfinder:ToggleObjectivePanel()
+	if self.objectiveframe:IsVisible() then
+		HideUIPanel(self.objectiveframe)
+		return
+	end
+	local quad, vhalf, hhalf = self.GetQuadrant(f)
+	local anchpoint = (vhalf == "TOP" and "BOTTOM" or "TOP") .. hhalf
+	self.objectiveframe:ClearAllPoints()
+	self.objectiveframe:SetPoint(quad, f, anchpoint)
+	ShowUIPanel(self.objectiveframe)
+end
+
+--- Show or hide the status card itself. It is hidden by default -- the panel
+--- carries the same information with room to read it -- so this is how it
+--- comes back.
+function AegisPathfinder:ToggleStatusFrame()
+	if f:IsVisible() then
+		HideUIPanel(f)
+		self:HideStatusFrameChildren()
+	else
+		ShowUIPanel(f)
+	end
+	self.db.char.showstatusframe = f:IsVisible()
+end
+
 function AegisPathfinder:HideStatusFrameChildren()
 	if AegisPathfinder.objectiveframe:IsVisible() then HideUIPanel(AegisPathfinder.objectiveframe) end
 	if AegisPathfinder.optionsframe:IsVisible() then HideUIPanel(AegisPathfinder.optionsframe) end
@@ -325,6 +288,12 @@ function AegisPathfinder:PositionStatusFrame()
 	if self.db.profile.itemframepoint then
 		item:ClearAllPoints()
 		item:SetPoint(self.db.profile.itemframepoint, self.db.profile.itemframex, self.db.profile.itemframey)
+	end
+
+	if self.db.char.showstatusframe then
+		ShowUIPanel(f)
+	else
+		f:Hide()
 	end
 end
 
@@ -361,7 +330,7 @@ function AegisPathfinder:IsAutoDetectable(action, i)
 end
 
 --- Fill in the card rows under the title: description, quest id and
---- coordinates, branch tag, guide progress, and the navigation callout.
+--- coordinates, branch tag and guide progress.
 function AegisPathfinder:UpdateStatusCard(i, action, note, totalSteps)
 	local card = self.statuscard
 	if not card then return end
@@ -435,7 +404,6 @@ function AegisPathfinder:UpdateStatusCard(i, action, note, totalSteps)
 	end
 
 	self:LayoutStatusCard()
-	self:UpdateNavCallout(action)
 end
 
 function AegisPathfinder:SetStatusText(i)
@@ -741,15 +709,7 @@ f:SetScript("OnClick", function()
 	else
 		if btn == "LeftButton" then
 			-- Left-click: Show/hide objectives panel
-			if AegisPathfinder.objectiveframe:IsVisible() then
-				HideUIPanel(AegisPathfinder.objectiveframe)
-			else
-				local quad, vhalf, hhalf = AegisPathfinder.GetQuadrant(self)
-				local anchpoint = (vhalf == "TOP" and "BOTTOM" or "TOP") .. hhalf
-				AegisPathfinder.objectiveframe:ClearAllPoints()
-				AegisPathfinder.objectiveframe:SetPoint(quad, self, anchpoint)
-				ShowUIPanel(AegisPathfinder.objectiveframe)
-			end
+			AegisPathfinder:ToggleObjectivePanel()
 		else
 			-- Right-click: Show/hide quest log
 			if QuestLogFrame:IsVisible() or (EQL3_QuestLogFrame and EQL3_QuestLogFrame:IsVisible()) then

@@ -26,10 +26,11 @@ matched to your server for quest-giver lookups and prerequisite warnings.
 ## Installing
 
 1. Install ClassicAPI v1.5.9+
-2. Put the addon in `World of Warcraft/Interface/AddOns/AegisPathfinder/`
+2. Put the addon in `World of Warcraft/Interface/AddOns/Aegis_Pathfinder/`
 3. Restart the client
 
-The folder must be named `AegisPathfinder`, matching `AegisPathfinder.toc`.
+The folder must be named `Aegis_Pathfinder`, matching `Aegis_Pathfinder.toc` —
+the addon's texture paths are absolute and will not resolve otherwise.
 
 Upgrading from TurtleGuide / VanillaGuide+? Your saved progress carries over
 automatically the first time you log in. Guides you wrote yourself keep working
@@ -39,7 +40,8 @@ too — the old `TurtleGuide` global is still an alias.
 
 | Command | |
 |---|---|
-| `/apg` | Open the options panel |
+| `/apg` | Open the objectives panel |
+| `/apg statusbar` | Show or hide the compact status card |
 | `/apg next` / `prev` | Step forward or back |
 | `/apg goto <n>` | Jump to a step |
 | `/apg reset` | Reset progress in the current guide |
@@ -50,6 +52,11 @@ too — the old `TurtleGuide` global is still an alias.
 
 `/pathfinder` and `/vg` do the same thing. There is deliberately no `/aegis` —
 that belongs to another addon in the AEGIS suite.
+
+The objectives panel is the main surface, so a bare `/apg` opens it. The
+options menu is a right-click on the minimap or FuBar icon, and every entry in
+it is also a subcommand. The compact status card is off until you ask for it
+with `/apg statusbar`.
 
 ## What it does
 
