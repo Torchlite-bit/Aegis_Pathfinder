@@ -2,7 +2,7 @@
 
 AEGIS: Pathfinder stands on a decade of other people's work. This file records
 everyone whose work is in it, and is the list the in-game credits panel
-(`/aegis credits`) mirrors.
+(`/apg credits`) mirrors.
 
 If you contribute, add yourself. See [CONTRIBUTING.md](CONTRIBUTING.md).
 

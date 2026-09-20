@@ -14,6 +14,7 @@ stub.install(_G)
 
 GameTooltip_Hide = function() end
 HideUIPanel = function(f) if f and f.Hide then f:Hide() end end
+ShowUIPanel = function(f) if f and f.Show then f:Show() end end
 SetItemButtonTexture = function() end
 C_Timer = { After = function() end, NewTicker = function() end }
 C_Item = { GetItemCount = function() return 0 end }
@@ -64,9 +65,10 @@ check(f:GetWidth() == 352, "the card should be 352px wide per the concept, got %
 	tostring(f:GetWidth()))
 check(AegisPathfinder.statusskin ~= nil, "the status frame was not skinned")
 check(AegisPathfinder.statuscard ~= nil, "the status card rows were not built")
-check(AegisPathfinder.navcallout ~= nil, "the navigation callout was not built")
-check(not AegisPathfinder.navcallout.frame:IsShown(),
-	"the callout starts hidden until there is a step to point at")
+check(AegisPathfinder.navcallout == nil,
+	"the navigation callout was removed; nothing should rebuild it")
+check(not f:IsShown(),
+	"the card starts hidden -- the objectives panel is the default surface")
 
 -- Auto-detection -------------------------------------------------------------
 
@@ -107,7 +109,6 @@ AegisPathfinder.tags = {
 }
 AegisPathfinder.turnedin = {}
 AegisPathfinder.db.char.isbranching = false
-AegisPathfinder.db.char.shownavcallout = true
 
 AegisPathfinder:UpdateStatusCard(1, "ACCEPT",
 	"Aerthand Skyshield in Brinthilien (48.3, 84.3)", 2)
@@ -211,36 +212,88 @@ check(string.find(card.meta:GetText(), "RavenCraft", 1, true) ~= nil,
 	tostring(card.meta:GetText()))
 AegisPathfinder.db.profile.server = "octowow"
 
--- Navigation callout ---------------------------------------------------------
+-- Title row anchoring --------------------------------------------------------
 
-local nav = AegisPathfinder.navcallout
-AegisPathfinder.db.char.shownavcallout = true
-AegisPathfinder:UpdateNavCallout("ACCEPT")
-check(nav.frame:IsShown(), "the callout shows when enabled")
-check(nav.instruction:GetText() == "Head to the quest giver",
-	"ACCEPT should read 'Head to the quest giver', got '%s'",
-	tostring(nav.instruction:GetText()))
-AegisPathfinder:UpdateNavCallout("BOAT")
-check(nav.instruction:GetText() == "Head to the dock",
-	"BOAT should read 'Head to the dock', got '%s'", tostring(nav.instruction:GetText()))
-AegisPathfinder:UpdateNavCallout("SOMETHINGELSE")
-check(nav.instruction:GetText() == "Follow the path",
-	"an unmapped action should fall back, got '%s'", tostring(nav.instruction:GetText()))
+-- The title row and everything on it must be pinned to the TOP of the card.
+-- Anchoring the checkbox, arrows, icon and title straight to the card with
+-- LEFT/RIGHT also pins their vertical centre, so once the card grew past one
+-- line they slid into the middle of it and printed over the description.
+local titleRow = card.titleRow
+check(titleRow ~= nil, "the title row was not built")
 
--- With no distance from a provider, show nothing rather than inventing one.
-AegisPathfinder.lastwaypointdistance = nil
-AegisPathfinder:UpdateNavCallout("RUN")
-check(nav.distance:GetText() == "",
-	"distance should be blank when no provider reports one, got '%s'",
-	tostring(nav.distance:GetText()))
-AegisPathfinder.lastwaypointdistance = 120
-AegisPathfinder:UpdateNavCallout("RUN")
-check(nav.distance:GetText() == "120 yd",
-	"distance should render in yards, got '%s'", tostring(nav.distance:GetText()))
+local function anchorsOf(region)
+	local seen = {}
+	for _, p in ipairs(region.__points) do seen[p[1]] = p end
+	return seen
+end
 
-AegisPathfinder.db.char.shownavcallout = false
-AegisPathfinder:UpdateNavCallout("RUN")
-check(not nav.frame:IsShown(), "the callout hides when disabled")
+local rowAnchors = anchorsOf(titleRow)
+check(rowAnchors.TOPLEFT ~= nil and rowAnchors.TOPRIGHT ~= nil,
+	"the title row must be pinned TOPLEFT and TOPRIGHT to the card")
+check(rowAnchors.TOPLEFT[3] == "TOPLEFT" and rowAnchors.TOPLEFT[4] == 0
+	and rowAnchors.TOPLEFT[5] == 0,
+	"the title row must sit flush against the top of the card")
+check(titleRow:GetHeight() == 24,
+	"the title row is one 24px line, got %s", tostring(titleRow:GetHeight()))
+
+-- Nothing on the title row may be parented to the card, or it will drift as
+-- the card grows.
+for _, name in ipairs({ "title" }) do
+	check(card[name]:GetParent() == titleRow,
+		"the %s must be parented to the title row, not the card", name)
+end
+
+-- The regression itself: grow the card with a long description and check the
+-- title is still above it rather than sitting on top of it.
+AegisPathfinder.actions = { "ACCEPT" }
+AegisPathfinder.quests = { "A quest@1@" }
+AegisPathfinder.tags = { "|QID|41187| |N|A note long enough that the card has to grow several lines to fit it, which is what used to push the title down into it|" }
+AegisPathfinder:UpdateStatusCard(1, "ACCEPT",
+	"A note long enough that the card has to grow several lines to fit it, which is what used to push the title down into it", 1)
+check(f:GetHeight() > 24, "the card should have grown past one line for this test")
+check(anchorsOf(card.title).RIGHT[2] == titleRow,
+	"the title is anchored to the title row, so it cannot drift as the card grows")
+
+-- Visibility -----------------------------------------------------------------
+
+-- The panels the card anchors are siblings, not children: a hidden card must
+-- not be able to take the guide list down with it.
+AegisPathfinder.objectiveframe = CreateFrame("Frame")
+AegisPathfinder.optionsframe = CreateFrame("Frame")
+AegisPathfinder.guidelistframe = CreateFrame("Frame")
+AegisPathfinder.objectiveframe:Hide()
+
+AegisPathfinder:ToggleObjectivePanel()
+check(AegisPathfinder.objectiveframe:IsShown(),
+	"a bare command opens the objectives panel")
+AegisPathfinder:ToggleObjectivePanel()
+check(not AegisPathfinder.objectiveframe:IsShown(), "and closes it again")
+
+-- The card is remembered per character, so toggling it records the choice.
+AegisPathfinder.db.char.showstatusframe = false
+AegisPathfinder:ToggleStatusFrame()
+check(f:IsShown(), "toggling brings the card back")
+check(AegisPathfinder.db.char.showstatusframe == true,
+	"and the choice is saved, so it survives a reload")
+
+-- Hiding it must take its panels with it rather than leave them orphaned.
+AegisPathfinder.objectiveframe:Show()
+AegisPathfinder.guidelistframe:Show()
+AegisPathfinder:ToggleStatusFrame()
+check(not f:IsShown(), "toggling hides the card again")
+check(AegisPathfinder.db.char.showstatusframe == false, "and saves that too")
+check(not AegisPathfinder.objectiveframe:IsShown(),
+	"hiding the card closes the panels anchored to it")
+check(not AegisPathfinder.guidelistframe:IsShown(),
+	"including the guide list")
+
+-- PositionStatusFrame restores the saved choice on login.
+AegisPathfinder.db.char.showstatusframe = true
+AegisPathfinder:PositionStatusFrame()
+check(f:IsShown(), "the saved choice is restored at login")
+AegisPathfinder.db.char.showstatusframe = false
+AegisPathfinder:PositionStatusFrame()
+check(not f:IsShown(), "and stays hidden when that was the choice")
 
 -- Report ---------------------------------------------------------------------
 

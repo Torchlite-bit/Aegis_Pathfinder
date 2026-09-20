@@ -89,8 +89,10 @@ local defaults = {
     mapnotecoords = true,
     waypointprovider = "auto", -- see Navigation.lua providerorder
     server = nil,             -- see Servers.lua; nil means the default dataset
-    showstatusframe = true,
-    shownavcallout = true, -- the concept's arrow/distance callout
+    -- The objectives panel is the main surface and carries the same step with
+    -- room to read it, so the compact card stays out of the way until asked
+    -- for. /apg statusbar brings it back.
+    showstatusframe = false,
     showuseitem = true,
     showuseitemcomplete = true,
     skipfollowups = true,
@@ -135,6 +137,10 @@ local defaults = {
         ["BRD"] = true,
     },
 }
+
+-- Named rather than left to AceConsole's random key, so the handler it
+-- installs in SlashCmdList can be found and wrapped afterwards.
+local SLASH_HANDLER = "AEGISPATHFINDER"
 
 local options = {
     type = "group",
@@ -254,12 +260,19 @@ local options = {
             end,
             order = 2.5,
         },
-        StatusFrame = {
-            name = "Toggle Status",
-            desc = "Show/Hide Status Frame",
+        Objectives = {
+            name = "Objectives",
+            desc = "Show/Hide the objectives panel",
+            type = "execute",
+            func = function() AegisPathfinder:ToggleObjectivePanel() end,
+            order = 2.9,
+        },
+        StatusBar = {
+            name = "Status Bar",
+            desc = "Show/Hide the compact status card",
             type = "toggle",
             get = function() return AegisPathfinder.statusframe:IsVisible() end,
-            set = "OnClick",
+            set = function() AegisPathfinder:ToggleStatusFrame() end,
             order = 3,
         },
         SelectRoute = {
@@ -503,7 +516,25 @@ function AegisPathfinder:OnInitialize()
     if self.db.char.UseAH == nil then
         self.db.char.UseAH = defaults.UseAH
     end
-    self:RegisterChatCommand({ "/aegis", "/pathfinder", "/vg" }, options)
+    -- /aegis belongs to another addon in the AEGIS suite; registering it
+    -- here would collide with it.
+    self:RegisterChatCommand({ "/apg", "/pathfinder", "/vg" }, options, SLASH_HANDLER)
+
+    --[[ A bare /apg opens the objectives panel.
+
+        AceConsole's own handler answers an empty argument with the Dewdrop
+        options menu, which is not what anyone typing /vg is looking for -- the
+        panel is the addon's main surface. There is no hook for the empty case,
+        so wrap the handler AceConsole just installed: subcommands still go to
+        it, and the menu is still a right-click on the minimap icon away.
+    ]]
+    local aceHandler = SlashCmdList[SLASH_HANDLER]
+    SlashCmdList[SLASH_HANDLER] = function(msg)
+        if not msg or self.trim(msg) == "" then
+            return self:ToggleObjectivePanel()
+        end
+        return aceHandler(msg)
+    end
     self.OnMenuRequest = options
     self:SetupErrorCapture()
     if not FuBar then
@@ -632,20 +663,16 @@ function AegisPathfinder:PLAYER_LEVEL_UP()
 end
 
 function AegisPathfinder:OnTooltipUpdate()
-    local hint = "\nClick to show/hide the Status\nRight-click for Options"
+    local hint = "\nClick to show/hide the Objectives\nRight-click for Options"
     T:SetHint(hint)
 end
 
 function AegisPathfinder:OnTextUpdate()
-    self:SetText("VanillaGuide+")
+    self:SetText("Pathfinder")
 end
 
 function AegisPathfinder:OnClick()
-    if AegisPathfinder.statusframe:IsVisible() then
-        HideUIPanel(AegisPathfinder.statusframe)
-    else
-        ShowUIPanel(AegisPathfinder.statusframe)
-    end
+    AegisPathfinder:ToggleObjectivePanel()
 end
 
 local REGISTER_BATCH = 25       -- guides registered per resume

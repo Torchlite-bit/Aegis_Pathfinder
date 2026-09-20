@@ -26,10 +26,11 @@ matched to your server for quest-giver lookups and prerequisite warnings.
 ## Installing
 
 1. Install ClassicAPI v1.5.9+
-2. Put the addon in `World of Warcraft/Interface/AddOns/AegisPathfinder/`
+2. Put the addon in `World of Warcraft/Interface/AddOns/Aegis_Pathfinder/`
 3. Restart the client
 
-The folder must be named `AegisPathfinder`, matching `AegisPathfinder.toc`.
+The folder must be named `Aegis_Pathfinder`, matching `Aegis_Pathfinder.toc` —
+the addon's texture paths are absolute and will not resolve otherwise.
 
 Upgrading from TurtleGuide / VanillaGuide+? Your saved progress carries over
 automatically the first time you log in. Guides you wrote yourself keep working
@@ -39,16 +40,23 @@ too — the old `TurtleGuide` global is still an alias.
 
 | Command | |
 |---|---|
-| `/aegis` | Open the options panel |
-| `/aegis next` / `prev` | Step forward or back |
-| `/aegis goto <n>` | Jump to a step |
-| `/aegis reset` | Reset progress in the current guide |
-| `/aegis materials` | Reagents the rest of this guide still needs |
-| `/aegis credits` | Everyone whose work is in this addon |
-| `/aegis server` | Cycle which server you play on |
-| `/aegis serverstatus` | Guide data provenance per server |
+| `/apg` | Open the objectives panel |
+| `/apg statusbar` | Show or hide the compact status card |
+| `/apg next` / `prev` | Step forward or back |
+| `/apg goto <n>` | Jump to a step |
+| `/apg reset` | Reset progress in the current guide |
+| `/apg materials` | Reagents the rest of this guide still needs |
+| `/apg credits` | Everyone whose work is in this addon |
+| `/apg server` | Cycle which server you play on |
+| `/apg serverstatus` | Guide data provenance per server |
 
-`/pathfinder` and `/vg` do the same thing.
+`/pathfinder` and `/vg` do the same thing. There is deliberately no `/aegis` —
+that belongs to another addon in the AEGIS suite.
+
+The objectives panel is the main surface, so a bare `/apg` opens it. The
+options menu is a right-click on the minimap or FuBar icon, and every entry in
+it is also a subcommand. The compact status card is off until you ask for it
+with `/apg statusbar`.
 
 ## What it does
 
@@ -72,7 +80,7 @@ Defaults follow the route pack you chose.
 **Professions.** Ten 1–300 routes with trainers, craft counts, reagents and
 recipe sources, tracked against your actual skill level. See below.
 
-**Materials.** `/aegis materials` totals the reagents the rest of the current
+**Materials.** `/apg materials` totals the reagents the rest of the current
 guide still needs — counted from where you actually are, not from step one, so
 it is the number you want at the auction house rather than the one you needed
 when you started.
@@ -116,12 +124,12 @@ Guide content here was authored against **OctoWoW**. It is likely but not
 guaranteed to be correct on Capybara Paradise or RavenCraft (which launched in
 August 2026).
 
-Tell the addon which server you are on with `/aegis server`. It does not swap
+Tell the addon which server you are on with `/apg server`. It does not swap
 in a per-server dataset — only one exists — but it will say so on the status
 card when the loaded guide's data was authored somewhere else, which is the
 most likely reason a waypoint points at nothing.
 
-`/aegis serverstatus` shows what is known per server, including which pfQuest
+`/apg serverstatus` shows what is known per server, including which pfQuest
 pack to use: `pfQuest-octo` for OctoWoW, the original `pfQuest-turtle` for
 Capybara Paradise, and none confirmed for RavenCraft.
 
@@ -188,7 +196,7 @@ so `git log` and `git blame` still attribute each line to whoever wrote it.
 | **The Inter Project Authors** | Inter (SIL OFL 1.1) |
 
 The full list is in [CONTRIBUTORS.md](CONTRIBUTORS.md), and in game under
-`/aegis credits` — credit should be visible to people using the addon, not
+`/apg credits` — credit should be visible to people using the addon, not
 only to people reading the repository.
 
 A fan project, not affiliated with or endorsed by Blizzard Entertainment,

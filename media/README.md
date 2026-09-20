@@ -28,7 +28,7 @@ is caught before it is committed.
 Colour is **not** baked into most files. Shapes are white masks that
 `Theme.lua` tints with `SetVertexColor`, which is why a single 32×32
 rounded-rectangle serves every panel, tab, pill and band. Only genuinely
-multi-colour art bakes colour in: `nav-arrow.tga` and `progress-fill.tga`.
+multi-colour art bakes colour in: `progress-fill.tga`.
 
 ## Contents
 
@@ -43,7 +43,6 @@ multi-colour art bakes colour in: `nav-arrow.tga` and `progress-fill.tga`.
 | `glow.tga` | 64×64 | Auto-detect halo and focus rings |
 | `shadow.tga` | 64×64 | Panel drop shadow |
 | `progress-fill.tga` | 64×8 | accent-deep → accent-glow gradient |
-| `nav-arrow.tga` | 64×64 | Navigation arrow, three-stop gradient |
 | `logo.tga` | 64×64 | Minimap / FuBar icon |
 | `wordmark.tga` | 256×32 | PATHFINDER wordmark, pre-rendered |
 | `icons/*.tga` | 32×32 | One glyph per guide action code (17) |

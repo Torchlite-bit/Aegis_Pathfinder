@@ -16,13 +16,13 @@ against it.
 | Concept | `Theme.color` | Hex | Used for |
 |---|---|---|---|
 | `--panel` | `panel` | `202020` | Window bodies |
-| `--panel-2` | `panel2` | `111111` | Headers, footers, callout |
+| `--panel-2` | `panel2` | `111111` | Headers, footers |
 | `--panel-3` | `panel3` | `1a1a1a` | In-town steps, inactive pills |
 | `--tabbg` | `tabbg` | `3b3b3b` | Tab strips, nav rows |
 | `--accent` | `accent` | `52c722` | Progress, active states, meta text |
 | `--accent-deep` | `accentDeep` | `2e850e` | Gradient start, branch pill |
 | `--accent-glow` | `accentGlow` | `8fe066` | Gradient end, pill text |
-| `--gold` / `--gold-deep` | `gold` / `goldDeep` | `ffed71` / `e8b93a` | Branch tag, callout distance |
+| `--gold` / `--gold-deep` | `gold` / `goldDeep` | `ffed71` / `e8b93a` | Branch tag |
 | `--band-green` / `--band-red` | `bandGreen` / `bandRed` | `2e850e` / `7c1820` | Step bands |
 | `--danger` | `danger` | `e8636b` | Errors |
 | `--blue` | `blue` | `5b9fd6` | Wired-dungeon marker |
@@ -53,8 +53,8 @@ frame.
 the 17 action codes gets a generated 32×32 glyph instead. They are silhouettes,
 not line art, because they render at roughly 14px where thin strokes vanish.
 
-**Gradients.** Baked into the texture (`progress-fill.tga`, `nav-arrow.tga`) —
-there is no runtime gradient.
+**Gradients.** Baked into the texture (`progress-fill.tga`) — there is no
+runtime gradient.
 
 ## Surfaces
 
@@ -84,15 +84,6 @@ reports them by id; travel steps qualify only while a waypoint provider is
 active; profession steps qualify because they resolve off skill events.
 Everything else — a note to read, a vendor to visit, a mob to grind — only the
 player can confirm.
-
-### Navigation callout — `StatusFrame.lua`
-
-The concept's signature element: arrow, instruction, distance. The arrow is a
-texture because 1.12 can only rotate a texture, and only about its own centre.
-
-Phrasing follows the concept per action type ("Head to the quest giver",
-"Head to the dock", …). When no waypoint provider reports a distance, the line
-is blank — an invented number would be worse than none.
 
 ### Objectives panel, options panels, guide list -- `ObjectivesFrame.lua`, `OptionsFrame.lua`, `GuideListFrame.lua`
 
