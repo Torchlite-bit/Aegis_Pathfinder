@@ -11,17 +11,12 @@ WidgetWarlock.TooltipBorderBG = {
 }
 
 
+-- Checkboxes come from the theme so every panel picks up the concept's
+-- ring-and-fill without each call site changing. Theme:StepCheck builds a
+-- CheckButton, so SetChecked/GetChecked/OnClick behave as before.
 function WidgetWarlock.SummonCheckBox(size, parent, a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20)
-	local check = CreateFrame("CheckButton", nil, parent)
-	check:SetWidth(size)
-	check:SetHeight(size)
+	local check = AegisPathfinder.Theme:StepCheck(parent, size)
 	if AegisPathfinder.select(1, a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20) then check:SetPoint(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20) end
-
-	check:SetNormalTexture("Interface\\Buttons\\UI-CheckBox-Up")
-	check:SetPushedTexture("Interface\\Buttons\\UI-CheckBox-Down")
-	check:SetHighlightTexture("Interface\\Buttons\\UI-CheckBox-Highlight")
-	check:SetDisabledCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check-Disabled")
-	check:SetCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check")
 
 	return check
 end
@@ -37,15 +32,26 @@ function WidgetWarlock.SummonTexture(parent, layer, w, h, texture, a1,a2,a3,a4,a
 end
 
 
+-- Maps the Blizzard font objects the panels were written against onto the
+-- theme's faces, so callers keep passing "GameFontNormalSmall" and get
+-- Inter/Rajdhani. { role, size, colour }
+local FONT_ROLES = {
+	GameFontNormalSmall    = { "body", 11, "textDim" },
+	GameFontNormal         = { "body", 12, "text" },
+	GameFontNormalLarge    = { "display", 15, "text" },
+	GameFontHighlight      = { "body", 12, "text" },
+	GameFontHighlightSmall = { "body", 11, "text" },
+	GameFontDisable        = { "body", 12, "subtle" },
+	NumberFontNormalLarge  = { "display", 14, "accent" },
+	SubZoneTextFont        = { "display", 18, "text" },
+}
+
 function WidgetWarlock.SummonFontString(parent, layer, inherit, text, a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20)
 	local fs = parent:CreateFontString(nil, layer)
-	-- Explicitly set font object for WoW 1.12 compatibility
-	if inherit then
-		local fontObj = getglobal(inherit)
-		if fontObj then
-			fs:SetFontObject(fontObj)
-		end
-	end
+	local Theme = AegisPathfinder.Theme
+	local role = inherit and FONT_ROLES[inherit] or FONT_ROLES.GameFontNormal
+	Theme:SetFont(fs, role[1], role[2])
+	Theme:TextColor(fs, role[3])
 	fs:SetText(text)
 	if AegisPathfinder.select(1, a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20) then fs:SetPoint(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20) end
 	return fs

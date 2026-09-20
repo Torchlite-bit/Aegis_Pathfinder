@@ -179,6 +179,34 @@ def check_xml(rep):
     rep.ok("xml", n)
 
 
+# Blizzard chrome the reskin replaced. Any of these creeping back means a panel
+# has drifted off the theme, which is invisible until someone loads the client.
+BLIZZARD_CHROME = [
+    (re.compile(r"\bSetBackdrop\s*\("), "SetBackdrop -- use Theme:Panel or Theme:Strip"),
+    (re.compile(r"TooltipBorderBG"), "TooltipBorderBG -- use Theme:Panel"),
+    (re.compile(r"Interface\\\\DialogFrame"), "Blizzard dialog art -- use Theme:Panel"),
+    (re.compile(r"Interface\\\\Buttons\\\\UI-CheckBox"), "Blizzard checkbox -- use Theme:StepCheck"),
+    (re.compile(r"Interface\\\\Buttons\\\\UI-Panel-Button"), "Blizzard button art -- use the themed button"),
+    (re.compile(r"SetFontObject\s*\(\s*GameFont"), "GameFont object -- use Theme:SetFont"),
+]
+
+# WidgetWarlock keeps TooltipBorderBG as public API for guides written against
+# it, and its scrollbar still uses Blizzard's knob art.
+CHROME_EXEMPT = {"WidgetWarlock.lua"}
+
+
+def check_theme(rep):
+    files = [p for p in sorted(walk({".lua"}))
+             if is_shipped(p) and os.path.basename(p) not in CHROME_EXEMPT]
+    for path in files:
+        code = strip_lua_noise(open(path, encoding="utf-8", errors="replace").read())
+        for lineno, line in enumerate(code.splitlines(), 1):
+            for pattern, why in BLIZZARD_CHROME:
+                if pattern.search(line):
+                    rep.fail("theme", path, "line %d uses %s" % (lineno, why))
+    rep.ok("theme", len(files))
+
+
 def check_media(rep):
     files = sorted(walk({".tga", ".blp"}))
     for path in files:
@@ -208,6 +236,7 @@ def main():
     check_lua50(rep)
     check_toc(rep)
     check_xml(rep)
+    check_theme(rep)
     check_media(rep)
     return rep.summary()
 

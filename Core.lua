@@ -303,7 +303,7 @@ local options = {
         },
         AutoBranch = {
             name = "Auto Branch",
-            desc = "Automatically branch to Turtle WoW zones when available",
+            desc = "Automatically branch to Turtle-lineage custom zones when available",
             type = "toggle",
             get = function() return AegisPathfinder.db.char.autobranch end,
             set = function(v) AegisPathfinder.db.char.autobranch = v end,
@@ -1621,14 +1621,7 @@ function AegisPathfinder:CreateRouteSelectorFrame()
     f:SetWidth(300)
     f:SetHeight(550)
     f:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
-    f:SetBackdrop({
-        bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
-        edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
-        tile = true,
-        tileSize = 32,
-        edgeSize = 32,
-        insets = { left = 11, right = 12, top = 12, bottom = 11 }
-    })
+    self.Theme:Panel(f, "panel")
     f:SetMovable(true)
     f:EnableMouse(true)
     f:RegisterForDrag("LeftButton")
@@ -1637,19 +1630,19 @@ function AegisPathfinder:CreateRouteSelectorFrame()
     f:SetFrameStrata("DIALOG")
 
     local title = f:CreateFontString(nil, "ARTWORK")
-    title:SetFontObject(GameFontNormalLarge)
+    AegisPathfinder.Theme:SetFont(title, "display", 15)
     title:SetPoint("TOP", f, "TOP", 0, -20)
     title:SetText(L["Select Your Race"])
 
     -- Route Pack section
     local packHeader = f:CreateFontString(nil, "ARTWORK")
-    packHeader:SetFontObject(GameFontNormal)
+    AegisPathfinder.Theme:SetFont(packHeader, "body", 12)
     packHeader:SetPoint("TOP", title, "BOTTOM", 0, -12)
     packHeader:SetText("|cffffd100Route Pack:|r")
 
     -- Current pack display
     local packStatus = f:CreateFontString(nil, "ARTWORK")
-    packStatus:SetFontObject(GameFontHighlightSmall)
+    AegisPathfinder.Theme:SetFont(packStatus, "body", 11)
     packStatus:SetPoint("TOP", packHeader, "BOTTOM", 0, -4)
     packStatus:SetWidth(260)
     f.packStatus = packStatus
@@ -1687,7 +1680,7 @@ function AegisPathfinder:CreateRouteSelectorFrame()
 
     -- Separator
     local sep = f:CreateFontString(nil, "ARTWORK")
-    sep:SetFontObject(GameFontNormal)
+    AegisPathfinder.Theme:SetFont(sep, "body", 12)
     if lastPackBtn then
         sep:SetPoint("TOP", lastPackBtn, "BOTTOM", 0, -10)
     else
@@ -1696,7 +1689,7 @@ function AegisPathfinder:CreateRouteSelectorFrame()
     sep:SetText("|cffffd100Race Override:|r")
 
     local desc = f:CreateFontString(nil, "ARTWORK")
-    desc:SetFontObject(GameFontHighlight)
+    AegisPathfinder.Theme:SetFont(desc, "body", 12)
     desc:SetPoint("TOP", sep, "BOTTOM", 0, -4)
     desc:SetWidth(260)
     desc:SetText(L["Choose a leveling route based on your race:"])
@@ -2075,14 +2068,7 @@ function AegisPathfinder:CreateStartingZoneSelectorFrame()
     f:SetWidth(380)
     f:SetHeight(320)
     f:SetPoint("CENTER", UIParent, "CENTER", 0, 50)
-    f:SetBackdrop({
-        bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
-        edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
-        tile = true,
-        tileSize = 32,
-        edgeSize = 32,
-        insets = { left = 11, right = 12, top = 12, bottom = 11 }
-    })
+    self.Theme:Panel(f, "panel")
     f:SetMovable(true)
     f:EnableMouse(true)
     f:RegisterForDrag("LeftButton")
@@ -2092,20 +2078,20 @@ function AegisPathfinder:CreateStartingZoneSelectorFrame()
 
     -- Title
     local title = f:CreateFontString(nil, "ARTWORK")
-    title:SetFontObject(GameFontNormalLarge)
+    AegisPathfinder.Theme:SetFont(title, "display", 15)
     title:SetPoint("TOP", f, "TOP", 0, -20)
     title:SetText(L["Choose Starting Zone"])
 
     -- Description
     local desc = f:CreateFontString(nil, "ARTWORK")
-    desc:SetFontObject(GameFontHighlight)
+    AegisPathfinder.Theme:SetFont(desc, "body", 12)
     desc:SetPoint("TOP", title, "BOTTOM", 0, -10)
     desc:SetWidth(340)
     desc:SetText(L["Select which starting zone you want to level through:"])
 
     -- Native race indicator
     local nativeText = f:CreateFontString(nil, "ARTWORK")
-    nativeText:SetFontObject(GameFontNormal)
+    AegisPathfinder.Theme:SetFont(nativeText, "body", 12)
     nativeText:SetPoint("TOP", desc, "BOTTOM", 0, -15)
     nativeText:SetWidth(340)
     f.nativeText = nativeText
@@ -2138,7 +2124,7 @@ function AegisPathfinder:CreateStartingZoneSelectorFrame()
 
     -- Info text at bottom
     local infoText = f:CreateFontString(nil, "ARTWORK")
-    infoText:SetFontObject(GameFontNormalSmall)
+    AegisPathfinder.Theme:SetFont(infoText, "body", 11)
     infoText:SetPoint("BOTTOM", f, "BOTTOM", 0, 40)
     infoText:SetWidth(340)
     infoText:SetTextColor(0.7, 0.7, 0.7)
@@ -2322,14 +2308,7 @@ function AegisPathfinder:CreateErrorLogFrame()
     f:SetWidth(520)
     f:SetHeight(360)
     f:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
-    f:SetBackdrop({
-        bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
-        edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
-        tile = true,
-        tileSize = 32,
-        edgeSize = 32,
-        insets = { left = 11, right = 12, top = 12, bottom = 11 }
-    })
+    self.Theme:Panel(f, "panel")
     f:SetMovable(true)
     f:EnableMouse(true)
     f:RegisterForDrag("LeftButton")
@@ -2339,12 +2318,12 @@ function AegisPathfinder:CreateErrorLogFrame()
     f:Hide()
 
     local title = f:CreateFontString(nil, "ARTWORK")
-    title:SetFontObject(GameFontNormalLarge)
+    AegisPathfinder.Theme:SetFont(title, "display", 15)
     title:SetPoint("TOP", f, "TOP", 0, -16)
     title:SetText("AEGIS: Pathfinder Error Log")
 
     local desc = f:CreateFontString(nil, "ARTWORK")
-    desc:SetFontObject(GameFontHighlight)
+    AegisPathfinder.Theme:SetFont(desc, "body", 12)
     desc:SetPoint("TOP", title, "BOTTOM", 0, -8)
     desc:SetWidth(480)
     desc:SetText("Most recent errors are at the top. Use Ctrl+C to copy.")

@@ -1,5 +1,6 @@
 local AegisPathfinder = AegisPathfinder
 local ww = WidgetWarlock
+local Theme = AegisPathfinder.Theme
 
 local title
 
@@ -110,9 +111,7 @@ frame:SetFrameStrata("DIALOG")
 frame:SetWidth(660)
 frame:SetHeight(320 + 28)
 frame:SetPoint("TOPRIGHT", AegisPathfinder.statusframe, "BOTTOMRIGHT")
-frame:SetBackdrop(ww.TooltipBorderBG)
-frame:SetBackdropColor(0.09, 0.09, 0.19, 1)
-frame:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.5)
+Theme:Panel(frame, "panel")
 frame:Hide()
 
 local closebutton = CreateFrame("Button", nil, frame, "UIPanelCloseButton")

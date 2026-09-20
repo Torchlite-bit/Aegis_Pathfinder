@@ -2,6 +2,7 @@
 local AegisPathfinder = AegisPathfinder
 local L = AegisPathfinder.Locale
 local ww = WidgetWarlock
+local Theme = AegisPathfinder.Theme
 
 
 local ROWHEIGHT = 30
@@ -26,9 +27,7 @@ frame:SetFrameStrata("DIALOG")
 frame:SetWidth(DEFAULT_WIDTH)
 frame:SetHeight(DEFAULT_HEIGHT)
 frame:SetPoint("TOPRIGHT", AegisPathfinder.statusframe, "BOTTOMRIGHT")
-frame:SetBackdrop(ww.TooltipBorderBG)
-frame:SetBackdropColor(0.09, 0.09, 0.19, 1)
-frame:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.5)
+AegisPathfinder.objectiveskin = Theme:Panel(frame, "panel")
 frame:Hide()
 frame:SetScript("OnShow", function() AegisPathfinder:UpdateObjectivePanel() end)
 table.insert(UISpecialFrames, "AegisPathfinderObjectives")
@@ -52,32 +51,25 @@ for x = 1, 3 do
 		local dot = grip:CreateTexture(nil, "OVERLAY")
 		dot:SetWidth(2)
 		dot:SetHeight(2)
-		dot:SetTexture(0.5, 0.5, 0.5, 0.7)
+		dot:SetTexture(Theme.texture.solid)
+		Theme:Tint(dot, "textDim", 0.55)
 		dot:SetPoint("BOTTOMRIGHT", -x * 4, y * 4)
 		table.insert(gripDots, dot)
 	end
 end
 
 grip:SetScript("OnEnter", function()
-	for _, dot in ipairs(gripDots) do
-		dot:SetTexture(1, 0.82, 0, 1)
-	end
+	for _, dot in ipairs(gripDots) do Theme:Tint(dot, "accent", 1) end
 end)
 grip:SetScript("OnLeave", function()
-	for _, dot in ipairs(gripDots) do
-		dot:SetTexture(0.5, 0.5, 0.5, 0.7)
-	end
+	for _, dot in ipairs(gripDots) do Theme:Tint(dot, "textDim", 0.55) end
 end)
 grip:SetScript("OnMouseDown", function()
-	for _, dot in ipairs(gripDots) do
-		dot:SetTexture(1, 1, 1, 1)
-	end
+	for _, dot in ipairs(gripDots) do Theme:Tint(dot, "accentGlow", 1) end
 	frame:StartSizing("BOTTOMRIGHT")
 end)
 grip:SetScript("OnMouseUp", function()
-	for _, dot in ipairs(gripDots) do
-		dot:SetTexture(0.5, 0.5, 0.5, 0.7)
-	end
+	for _, dot in ipairs(gripDots) do Theme:Tint(dot, "textDim", 0.55) end
 	frame:StopMovingOrSizing()
 	AegisPathfinder:OnObjectiveFrameResized()
 end)
@@ -131,21 +123,28 @@ local function CreateButton(parent, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11
 	b:SetWidth(80)
 	b:SetHeight(22)
 
-	-- Fonts --
-	b:SetDisabledFontObject(GameFontDisable)
-	b:SetHighlightFontObject(GameFontHighlight)
-	b:SetTextFontObject(GameFontNormal)
+	-- Themed pill, replacing the Blizzard panel-button artwork. SetText is
+	-- shadowed so existing call sites keep working unchanged.
+	b.__fill = Theme:NineSlice(b, Theme.texture.pillFill, "BACKGROUND", "panel3")
+	b.__border = Theme:NineSlice(b, Theme.texture.pillBorder, "BORDER", "border")
 
-	-- Textures --
-	b:SetNormalTexture("Interface\\Buttons\\UI-Panel-Button-Up")
-	b:SetPushedTexture("Interface\\Buttons\\UI-Panel-Button-Down")
-	b:SetHighlightTexture("Interface\\Buttons\\UI-Panel-Button-Highlight")
-	b:SetDisabledTexture("Interface\\Buttons\\UI-Panel-Button-Disabled")
-	b:GetNormalTexture():SetTexCoord(0, 0.625, 0, 0.6875)
-	b:GetPushedTexture():SetTexCoord(0, 0.625, 0, 0.6875)
-	b:GetHighlightTexture():SetTexCoord(0, 0.625, 0, 0.6875)
-	b:GetDisabledTexture():SetTexCoord(0, 0.625, 0, 0.6875)
-	b:GetHighlightTexture():SetBlendMode("ADD")
+	local label = b:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(label, "display", 11)
+	label:SetPoint("CENTER", b, "CENTER", 0, 0)
+	Theme:TextColor(label, "textDim")
+	b.__label = label
+
+	function b:SetText(t) self.__label:SetText(string.upper(t or "")) end
+	function b:GetText() return self.__label:GetText() end
+
+	b:SetScript("OnEnter", function()
+		this.__fill:SetTint("tabbg")
+		Theme:TextColor(this.__label, "text")
+	end)
+	b:SetScript("OnLeave", function()
+		this.__fill:SetTint("panel3")
+		Theme:TextColor(this.__label, "textDim")
+	end)
 
 	return b
 end
@@ -187,22 +186,29 @@ function AegisPathfinder:UpdateObjectivePanel()
 		b:SetScript("OnClick", function() frame:Hide(); self:DebugGuideSequence(true) end)
 	end
 
-	title = ww.SummonFontString(frame, nil, "SubZoneTextFont", nil, "BOTTOM", frame, "TOP")
-	local fontname, fontheight, fontflags = title:GetFont()
-	title:SetFont(fontname, 18, fontflags)
+	title = frame:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(title, "display", 18)
+	title:SetPoint("BOTTOM", frame, "TOP", 0, 4)
+	Theme:TextColor(title, "text")
 
 	-- Current objective header (prominent display)
 	local currentHeader = CreateFrame("Frame", nil, frame)
 	currentHeader:SetHeight(50)
 	currentHeader:SetPoint("TOPLEFT", frame, "TOPLEFT", 6, -6)
 	currentHeader:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -26, -6)
-	currentHeader:SetBackdrop({bgFile = "Interface/Tooltips/UI-Tooltip-Background"})
-	currentHeader:SetBackdropColor(0.2, 0.4, 0.6, 0.8)
+	Theme:Strip(currentHeader, "panel2")
+	Theme:Divider(currentHeader, currentHeader, "BOTTOMLEFT", 0, 0)
 
 	local currentIcon = ww.SummonTexture(currentHeader, nil, 36, 36, nil, "LEFT", currentHeader, "LEFT", 8, 0)
-	local currentText = ww.SummonFontString(currentHeader, nil, "GameFontNormalLarge", nil, "LEFT", currentIcon, "RIGHT", 8, 6)
-	local currentNote = ww.SummonFontString(currentHeader, nil, "GameFontNormalSmall", nil, "TOPLEFT", currentText, "BOTTOMLEFT", 0, -2)
-	currentNote:SetTextColor(0.9, 0.7, 0.2)
+	local currentText = currentHeader:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(currentText, "display", 15)
+	currentText:SetPoint("LEFT", currentIcon, "RIGHT", 8, 6)
+	Theme:TextColor(currentText, "text")
+
+	local currentNote = currentHeader:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(currentNote, "body", 11)
+	currentNote:SetPoint("TOPLEFT", currentText, "BOTTOMLEFT", 0, -2)
+	Theme:TextColor(currentNote, "textDim")
 
 	-- Navigation buttons in header
 	local prevHeaderBtn = CreateButton(currentHeader, "RIGHT", currentHeader, "RIGHT", -90, 0)
@@ -237,7 +243,10 @@ function AegisPathfinder:UpdateObjectivePanel()
 	frame.currentText = currentText
 	frame.currentNote = currentNote
 
-	completed = ww.SummonFontString(frame, nil, "NumberFontNormalLarge", nil, "BOTTOMLEFT", 10, 10)
+	completed = frame:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(completed, "display", 14)
+	completed:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 10, 10)
+	Theme:TextColor(completed, "accent")
 
 	scrollbar, upbutt, downbutt = ww.ConjureScrollBar(frame)
 	scrollbar:SetPoint("TOPRIGHT", frame, -7, -21)
@@ -256,17 +265,35 @@ function AegisPathfinder:UpdateObjectivePanel()
 		PlaySound("UChatScrollButton")
 	end)
 
-	local bg = {bgFile = "Interface/Tooltips/UI-Tooltip-Background"}
 	for i = 1, MAX_ROWS do
 		local row = CreateFrame("Button", nil, frame)
 		row:SetPoint("TOPLEFT", i == 1 and frame or rows[i - 1], i == 1 and "TOPLEFT" or "BOTTOMLEFT", 0, i == 1 and -58 or 0)
 		row:SetPoint("RIGHT", scrollbar, "LEFT", -4, 0)
 		row:SetHeight(ROWHEIGHT)
-		row:SetBackdrop(bg)
 
-		local check = ww.SummonCheckBox(ROWHEIGHT - ROWOFFSET, row, "LEFT", ROWOFFSET, 0)
+		-- Flat row with a left accent bar on the active step, as in the
+		-- concept. The bar is hidden until UpdateOHPanel marks the row.
+		row.bg = row:CreateTexture(nil, "BACKGROUND")
+		row.bg:SetTexture(Theme.texture.solid)
+		row.bg:SetAllPoints(row)
+		row.bg:SetVertexColor(1, 1, 1, 0.035)
+		row.bg:Hide()
+
+		row.activebar = row:CreateTexture(nil, "BORDER")
+		row.activebar:SetTexture(Theme.texture.solid)
+		row.activebar:SetWidth(2)
+		row.activebar:SetPoint("TOPLEFT", row, "TOPLEFT", 0, 0)
+		row.activebar:SetPoint("BOTTOMLEFT", row, "BOTTOMLEFT", 0, 0)
+		Theme:Tint(row.activebar, "accent")
+		row.activebar:Hide()
+
+		local check = Theme:StepCheck(row, ROWHEIGHT - ROWOFFSET)
+		check:SetPoint("LEFT", row, "LEFT", ROWOFFSET, 0)
 		local icon = ww.SummonTexture(row, nil, ROWHEIGHT - ROWOFFSET, ROWHEIGHT - ROWOFFSET, nil, "LEFT", check, "RIGHT", ROWOFFSET, 0)
-		local text = ww.SummonFontString(row, nil, "GameFontNormal", nil, "LEFT", icon, "RIGHT", ROWOFFSET, 0)
+		local text = row:CreateFontString(nil, "OVERLAY")
+		Theme:SetFont(text, "body", 12)
+		text:SetPoint("LEFT", icon, "RIGHT", ROWOFFSET, 0)
+		Theme:TextColor(text, "text")
 
 		local detailhover = CreateFrame("Button", nil, row)
 		detailhover:SetHeight(ROWHEIGHT - ROWOFFSET)
@@ -275,10 +302,11 @@ function AegisPathfinder:UpdateObjectivePanel()
 		detailhover:SetScript("OnEnter", ShowTooltip)
 		detailhover:SetScript("OnLeave", HideTooltip)
 
-		local detail = ww.SummonFontString(detailhover, nil, "GameFontNormal", nil)
+		local detail = detailhover:CreateFontString(nil, "OVERLAY")
+		Theme:SetFont(detail, "body", 11)
 		detail:SetAllPoints(detailhover)
 		detail:SetJustifyH("RIGHT")
-		detail:SetTextColor(240 / 255, 121 / 255, 2 / 255)
+		Theme:TextColor(detail, "goldDeep")
 		detailhover.text = detail
 
 		check:SetScript("OnClick", function()
@@ -431,23 +459,30 @@ function AegisPathfinder:UpdateOHPanel(value)
 			complete = not turnedin and (not accepted[shortname] or (accepted[shortname] == name)) and complete
 			local checked = turnedin or action == "ACCEPT" and logi or action == "COMPLETE" and complete
 
+			-- Row state, following the concept: the active step gets a faint
+			-- wash and a left accent bar, a completed step dims, everything
+			-- else is flat.
+			row.bg:Hide()
+			row.activebar:Hide()
+
 			if isActive then
-				-- ACTIVE: Bright highlight
-				row:SetBackdropColor(0.2, 0.4, 0.6, 0.7)
-				row.text:SetTextColor(1, 1, 1)
+				row.bg:SetVertexColor(1, 1, 1, 0.035)
+				row.bg:Show()
+				row.activebar:Show()
+				Theme:TextColor(row.text, "text")
 			elseif checked then
-				-- COMPLETED: Dimmed
-				row:SetBackdropColor(0.1, 0.1, 0.1, 0.3)
-				row.text:SetTextColor(0.5, 0.5, 0.5)
+				Theme:TextColor(row.text, "subtle")
 			elseif intown then
-				-- IN-TOWN: Green tint
-				row:SetBackdropColor(0, 0.3, 0, 0.4)
-				row.text:SetTextColor(0.8, 1, 0.8)
+				-- |T| in-town steps keep a hint of accent.
+				row.bg:SetVertexColor(Theme.color.accent[1], Theme.color.accent[2],
+					Theme.color.accent[3], 0.06)
+				row.bg:Show()
+				Theme:TextColor(row.text, "accentGlow")
 			else
-				-- UPCOMING: Normal
-				row:SetBackdropColor(0, 0, 0, 0)
-				row.text:SetTextColor(1, 0.82, 0)
+				Theme:TextColor(row.text, "textDim")
 			end
+
+			row.check:SetAutoEligible(self:IsAutoDetectable(action, idx))
 
 			-- Show quest progress for COMPLETE objectives
 			local progressText = ""

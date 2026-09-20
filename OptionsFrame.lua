@@ -1,6 +1,7 @@
 local AegisPathfinder = AegisPathfinder
 local L = AegisPathfinder.Locale
 local ww = WidgetWarlock
+local Theme = AegisPathfinder.Theme
 
 function AegisPathfinder:CreateConfigPanel()
 	local frame = CreateFrame("Frame", "AegisPathfinderOptions", UIParent)
@@ -9,9 +10,7 @@ function AegisPathfinder:CreateConfigPanel()
 	frame:SetWidth(310)
 	frame:SetHeight(16 + 28 * 8)
 	frame:SetPoint("TOPRIGHT", AegisPathfinder.statusframe, "BOTTOMRIGHT")
-	frame:SetBackdrop(ww.TooltipBorderBG)
-	frame:SetBackdropColor(0.09, 0.09, 0.19, 1)
-	frame:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.5)
+	Theme:Panel(frame, "panel")
 	frame:Hide()
 
 	local closebutton = CreateFrame("Button", nil, frame, "UIPanelCloseButton")
@@ -33,7 +32,7 @@ function AegisPathfinder:CreateConfigPanel()
 	qskipfollowups:SetScript("OnClick", function() self.db.char.skipfollowups = not self.db.char.skipfollowups end)
 
 	local autobranch = ww.SummonCheckBox(22, qskipfollowups, "TOPLEFT", 0, -20)
-	ww.SummonFontString(autobranch, "OVERLAY", "GameFontNormalSmall", "Auto-branch to Turtle WoW zones", "LEFT",
+	ww.SummonFontString(autobranch, "OVERLAY", "GameFontNormalSmall", "Auto-branch to custom zones", "LEFT",
 		autobranch, "RIGHT", 5, 0)
 	autobranch:SetScript("OnClick", function() self.db.char.autobranch = not self.db.char.autobranch end)
 
@@ -198,9 +197,7 @@ function AegisPathfinder:CreateDungeonPanel()
 	frame:SetFrameStrata("DIALOG")
 	frame:SetWidth(180)
 	frame:SetHeight(380)
-	frame:SetBackdrop(ww.TooltipBorderBG)
-	frame:SetBackdropColor(0.09, 0.09, 0.19, 1)
-	frame:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.5)
+	Theme:Panel(frame, "panel")
 	frame:Hide()
 
 	local closebutton = CreateFrame("Button", nil, frame, "UIPanelCloseButton")
@@ -297,9 +294,7 @@ function AegisPathfinder:CreateFiltersPanel()
 	frame:SetFrameStrata("DIALOG")
 	frame:SetWidth(180)
 	frame:SetHeight(155)
-	frame:SetBackdrop(ww.TooltipBorderBG)
-	frame:SetBackdropColor(0.09, 0.09, 0.19, 1)
-	frame:SetBackdropBorderColor(0.5, 0.5, 0.5, 0.5)
+	Theme:Panel(frame, "panel")
 	frame:Hide()
 
 	local closebutton = CreateFrame("Button", nil, frame, "UIPanelCloseButton")
