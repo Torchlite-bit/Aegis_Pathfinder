@@ -33,11 +33,12 @@ That runs everything that can run without a WoW client:
 
 | Check | What it covers |
 |---|---|
-| `Tools/verify.py` | Lua syntax, Lua 5.0 compatibility for shipped files, `.toc` paths, `Guides.xml` completeness, TGA validity |
+| `Tools/verify.py` | Lua syntax, Lua 5.0 compatibility for shipped files, `.toc` paths, `Guides.xml` completeness, TGA validity, no Blizzard chrome |
 | `Tools/convert_professions.py --check` | The profession source document still parses and is internally consistent |
 | `Tools/test_theme.lua` | The theme layer against a stubbed 1.12 API |
 | `Tools/test_professions.lua` | Generated guides through the real parsers |
 | `Tools/test_statusframe.lua` | The status card's layout and population |
+| `Tools/test_servers.lua` | Guide data provenance and mismatch detection |
 
 Everything must pass before you open a PR. **None of it proves the UI looks
 right** — that still needs someone to load the addon on a 1.12 client and look

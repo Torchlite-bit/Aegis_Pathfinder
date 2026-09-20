@@ -30,6 +30,7 @@ Core.lua
 Theme.lua
 WidgetWarlock.lua
 Credits.lua
+Servers.lua
 Parser.lua
 QuestShellPlusParser.lua
 Navigation.lua

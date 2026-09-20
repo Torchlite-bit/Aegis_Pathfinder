@@ -47,6 +47,8 @@ too — the old `TurtleGuide` global is still an alias.
 | `/aegis goto <n>` | Jump to a step |
 | `/aegis reset` | Reset progress in the current guide |
 | `/aegis credits` | Everyone whose work is in this addon |
+| `/aegis server` | Cycle which server you play on |
+| `/aegis serverstatus` | Guide data provenance per server |
 
 `/pathfinder` and `/vg` do the same thing.
 
@@ -104,12 +106,19 @@ past roughly patch 1.17 independently, so **quest ids and coordinates are not
 guaranteed to be identical between them**.
 
 Guide content here was authored against **OctoWoW**. It is likely but not
-guaranteed to be correct on Capybara Paradise and RavenCraft (which launched in
-August 2026). The server selector records which dataset you are on; it does not
-yet swap in a per-server dataset, because only one exists.
+guaranteed to be correct on Capybara Paradise or RavenCraft (which launched in
+August 2026).
 
-If you hit a wrong waypoint on a non-OctoWoW server, that is the most likely
-cause. Reports welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
+Tell the addon which server you are on with `/aegis server`. It does not swap
+in a per-server dataset — only one exists — but it will say so on the status
+card when the loaded guide's data was authored somewhere else, which is the
+most likely reason a waypoint points at nothing.
+
+`/aegis serverstatus` shows what is known per server, including which pfQuest
+pack to use: `pfQuest-octo` for OctoWoW, the original `pfQuest-turtle` for
+Capybara Paradise, and none confirmed for RavenCraft.
+
+Reports welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Development
 
@@ -118,8 +127,9 @@ sh Tools/run_tests.sh
 ```
 
 Runs everything that can be checked without a client: Lua syntax, Lua 5.0
-compatibility, `.toc` and `Guides.xml` integrity, TGA validity, and three test
-suites that execute the addon's own code against a stubbed 1.12 API.
+compatibility, `.toc` and `Guides.xml` integrity, TGA validity, that no panel
+has drifted off the theme, and four test suites that execute the addon's own
+code against a stubbed 1.12 API.
 
 None of it proves the UI looks right. That needs a client.
 

@@ -88,6 +88,7 @@ local defaults = {
     mapquestgivers = true,
     mapnotecoords = true,
     waypointprovider = "auto", -- see Navigation.lua providerorder
+    server = nil,             -- see Servers.lua; nil means the default dataset
     showstatusframe = true,
     shownavcallout = true, -- the concept's arrow/distance callout
     showuseitem = true,
@@ -144,6 +145,18 @@ local options = {
             desc = "Everyone whose work is in this addon",
             type = "execute",
             func = function() AegisPathfinder:PrintCredits() end,
+        },
+        Server = {
+            name = "Server",
+            desc = "Which server you play on, and whether guide data is verified there",
+            type = "execute",
+            func = function() AegisPathfinder:CycleServer() end,
+        },
+        ServerStatus = {
+            name = "Server Status",
+            desc = "Show guide data provenance for each server",
+            type = "execute",
+            func = function() AegisPathfinder:PrintServerStatus() end,
         },
         DiagNav = {
             name = "Navigation Diag",

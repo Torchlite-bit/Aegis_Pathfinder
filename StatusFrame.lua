@@ -391,8 +391,17 @@ function AegisPathfinder:UpdateStatusCard(i, action, note, totalSteps)
 		if x and y then table.insert(bits, x .. ", " .. y) end
 	end
 
-	if table.getn(bits) > 0 then
+	-- A guide whose data was authored for another server is the most likely
+	-- cause of a waypoint pointing at nothing, and it fails silently
+	-- otherwise. Say so on the card rather than letting the player wonder.
+	local dataWarning = self:GetDataSourceWarning()
+	if dataWarning then
+		card.meta:SetText(dataWarning)
+		Theme:TextColor(card.meta, "danger")
+		card.meta:Show()
+	elseif table.getn(bits) > 0 then
 		card.meta:SetText(table.concat(bits, "  -  "))
+		Theme:TextColor(card.meta, "accent")
 		card.meta:Show()
 	else
 		card.meta:Hide()

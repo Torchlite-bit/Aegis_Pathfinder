@@ -19,6 +19,7 @@ C_Timer = { After = function() end, NewTicker = function() end }
 C_Item = { GetItemCount = function() return 0 end }
 
 AegisPathfinder = {
+	qsplusguides = {},
 	guides = {}, guidelist = {}, nextzones = {},
 	actions = {}, quests = {}, tags = {}, turnedin = {},
 	current = 1, myfaction = "Alliance",
@@ -46,6 +47,7 @@ end
 dofile("WidgetWarlock.lua")
 dofile("Theme.lua")
 dofile("Parser.lua")      -- provides GetObjectiveTag
+dofile("Servers.lua")     -- provides GetDataSourceWarning
 dofile("StatusFrame.lua")
 
 local failures, checks = {}, 0
@@ -152,6 +154,27 @@ AegisPathfinder:UpdateStatusCard(1, "USE", "Takes you from 1 to 63.", 1)
 check(string.find(card.meta:GetText(), "Alchemy 1-63", 1, true) ~= nil,
 	"a profession step should show its skill range, got '%s'",
 	tostring(card.meta:GetText()))
+
+-- Data-source provenance -----------------------------------------------------
+
+-- On the native server the meta row carries the step's own data.
+AegisPathfinder.db.profile.server = "octowow"
+AegisPathfinder.actions = { "ACCEPT" }
+AegisPathfinder.quests = { "Refugees no More@1@" }
+AegisPathfinder.tags = { "|QID|41187| |N|Aerthand Skyshield (48.3, 84.3)|" }
+AegisPathfinder:UpdateStatusCard(1, "ACCEPT", "Aerthand Skyshield (48.3, 84.3)", 1)
+check(string.find(card.meta:GetText(), "QID 41187", 1, true) ~= nil,
+	"no warning on the native server, got '%s'", tostring(card.meta:GetText()))
+
+-- On another server the row becomes the mismatch warning, because a guide
+-- pointing at the wrong coordinates is worth more than the quest id.
+AegisPathfinder.db.profile.server = "ravencraft"
+AegisPathfinder:UpdateStatusCard(1, "ACCEPT", "Aerthand Skyshield (48.3, 84.3)", 1)
+check(card.meta:IsShown(), "a data mismatch must be visible")
+check(string.find(card.meta:GetText(), "RavenCraft", 1, true) ~= nil,
+	"the mismatch warning should name the player's server, got '%s'",
+	tostring(card.meta:GetText()))
+AegisPathfinder.db.profile.server = "octowow"
 
 -- Navigation callout ---------------------------------------------------------
 

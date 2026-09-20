@@ -94,24 +94,43 @@ Phrasing follows the concept per action type ("Head to the quest giver",
 "Head to the dock", …). When no waypoint provider reports a distance, the line
 is blank — an invented number would be worse than none.
 
+### Objectives panel, options panels, guide list -- `ObjectivesFrame.lua`, `OptionsFrame.lua`, `GuideListFrame.lua`
+
+All on the theme. Rather than edit every call site, the two shared widget
+helpers in `WidgetWarlock.lua` build themed widgets:
+
+| Helper | Now returns |
+|---|---|
+| `SummonCheckBox` | `Theme:StepCheck` -- a CheckButton, so `SetChecked`/`GetChecked`/`OnClick` are unchanged |
+| `SummonFontString` | A font string mapped from the Blizzard font object name onto a theme face and colour |
+
+`Theme.lua` therefore loads before `WidgetWarlock.lua`.
+
+Objectives rows follow the concept's model: a faint wash plus a left accent bar
+on the active step, dimmed text when complete, a hint of accent on `|T|`
+in-town steps, and the auto-detect halo on row checkboxes, so that signal
+appears wherever a step is shown. Panel buttons are display-face pills.
+
+The three dialog frames in `Core.lua` (route selector, starting-zone selector,
+error log) use `Theme:Panel` in place of Blizzard's dialog art.
+
 ### Still to do
 
-The objectives panel, options panel and branch modal still use their inherited
-Blizzard chrome. They are functional; they are not yet on the theme. Porting
-them means the same treatment: `Theme:Panel` for the frame, `Theme:Strip` for
-headers and tab bars, `Theme:Pill` for the route selector, `Theme:Band` for
-accept/turn-in rows in the step list, and the generated action glyphs in place
-of the current icon set.
-
 The concept's tab bar with `XP`/`TPL` badges, the dungeon chips with their blue
-"wired" dot, and the Professions tab of the branch modal are all specified in
-the concept and unbuilt.
+"wired" dot, and the branch modal's tabbed categories are specified in the
+concept but not built -- the existing guide list and branch selector cover the
+same function with different furniture.
 
 ## Verification
 
 `Tools/verify.py` checks every texture is a 32-bit RLE TGA with power-of-two
 dimensions and bottom-left origin — the format matching the two textures the
 addon already shipped and which are known to load on this client.
+
+`Tools/verify.py` also fails the build on Blizzard chrome -- `SetBackdrop`,
+`TooltipBorderBG`, dialog/checkbox/button art, `GameFont` objects -- across
+every shipped file, so a panel drifting off the theme is caught here rather
+than in the client.
 
 `Tools/test_theme.lua` and `Tools/test_statusframe.lua` execute the real code
 against a stubbed API and assert the geometry and state transitions.
