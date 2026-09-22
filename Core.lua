@@ -103,6 +103,14 @@ local defaults = {
     completedquestsbyid = {}, -- {[questId] = true} from server
     lastserverquery = 0,      -- timestamp for throttling
     -- Branching state
+    -- Open guides, as the tab bar shows them. Tab 1 is the main route -- the
+    -- one auto-advance follows and the one you cannot close. The rest are
+    -- guides opened beside it.
+    tabs = nil,          -- built on first use; see EnsureTabs
+    activetab = 1,
+    -- Derived from the tabs above and kept in step with them by SyncBranchState.
+    -- Plenty of code reads these, and a branch is just "the active tab is not
+    -- the first one", so they stay rather than being torn out.
     isbranching = false,
     branchsavedguide = nil,
     branchsavedstep = nil,
@@ -1484,63 +1492,198 @@ function AegisPathfinder:GoToObjective(stepNum)
 end
 
 ---------------------------------
---      Branching Functions    --
+--      Guide tabs             --
 ---------------------------------
 
--- Branch to a different guide while saving current position
-function AegisPathfinder:BranchToGuide(guideName)
+--[[ The open guides.
+
+    The panel used to hold one guide, plus at most one branch off it. The
+    concept's tab bar implies as many as you want open at once, so this is a
+    list: tab 1 is the main route -- what auto-advance follows, and the tab
+    you cannot close -- and anything after it is a guide opened beside it.
+
+    Each tab remembers its own step, so switching back to one puts you where
+    you left it rather than at the top.
+]]
+function AegisPathfinder:EnsureTabs()
+    local db = self.db.char
+    if db.tabs and table.getn(db.tabs) > 0 then return db.tabs end
+
+    db.tabs = {}
+    -- Carry over a one-deep branch saved by an older version: the guide that
+    -- was set aside becomes tab 1, the branch becomes tab 2.
+    if db.isbranching and db.branchsavedguide then
+        table.insert(db.tabs, { guide = db.branchsavedguide, step = db.branchsavedstep or 1 })
+        table.insert(db.tabs, { guide = db.currentguide or db.branchsavedguide, step = self.current or 1 })
+        db.activetab = 2
+    else
+        table.insert(db.tabs, { guide = db.currentguide or "No Guide", step = self.current or 1 })
+        db.activetab = 1
+    end
+    return db.tabs
+end
+
+--- The tab the player is looking at.
+function AegisPathfinder:GetActiveTab()
+    local tabs = self:EnsureTabs()
+    local i = self.db.char.activetab or 1
+    if i < 1 or i > table.getn(tabs) then i = 1; self.db.char.activetab = 1 end
+    return tabs[i], i
+end
+
+--[[ Keep the branch fields in step with the tab list.
+
+    Everything that asks "am I on a branch?" is really asking "is the active
+    tab something other than the main route?", so the old fields are answered
+    from the tabs rather than maintained separately and allowed to disagree.
+]]
+function AegisPathfinder:SyncBranchState()
+    local db = self.db.char
+    local tabs = self:EnsureTabs()
+    local active = db.activetab or 1
+
+    db.isbranching = active > 1
+    if db.isbranching then
+        db.branchsavedguide = tabs[1] and tabs[1].guide
+        db.branchsavedstep = tabs[1] and tabs[1].step
+    else
+        db.branchsavedguide = nil
+        db.branchsavedstep = nil
+    end
+end
+
+--- Remember where the player is in the tab they are leaving.
+function AegisPathfinder:StashActiveStep()
+    local tab = self:GetActiveTab()
+    if tab and self.current then tab.step = self.current end
+end
+
+--- Index of the tab showing this guide, or nil.
+function AegisPathfinder:FindTab(guideName)
+    local tabs = self:EnsureTabs()
+    for i, tab in ipairs(tabs) do
+        if tab.guide == guideName then return i end
+    end
+    return nil
+end
+
+--[[ Open a guide in a tab, or switch to it if it already has one.
+
+    Opening never replaces what you were reading: the guide you were on keeps
+    its tab and its place in it.
+]]
+function AegisPathfinder:OpenGuideTab(guideName)
     if not guideName or not self.guides[guideName] then
         self:Print("Invalid guide: " .. tostring(guideName))
         return
     end
 
-    -- Don't branch if already on this guide
-    if self.db.char.currentguide == guideName then
-        self:Print("Already on this guide.")
+    local existing = self:FindTab(guideName)
+    if existing then
+        self:SwitchToTab(existing)
         return
     end
 
-    -- Save current state if not already branching
-    if not self.db.char.isbranching then
-        self.db.char.branchsavedguide = self.db.char.currentguide
-        self.db.char.branchsavedstep = self.current
-        self.db.char.isbranching = true
-        self:Print(string.format("Branching to %s (main route saved: %s)", guideName, self.db.char.branchsavedguide))
-    else
-        self:Print(string.format("Switching branch to %s", guideName))
-    end
+    self:StashActiveStep()
+    local tabs = self:EnsureTabs()
+    table.insert(tabs, { guide = guideName, step = 1 })
+    self.db.char.activetab = table.getn(tabs)
+    self:SyncBranchState()
 
-    -- Load the branch guide
+    self:Print(string.format("Opened %s (%s stays open)", guideName,
+        tabs[1] and tabs[1].guide or "the main route"))
     self:LoadGuide(guideName)
     self:UpdateStatusFrame()
     self:UpdateGuideListPanel()
 end
 
--- Return from branch to saved main route
+--- Show the guide in tab `index`, resuming where it was left.
+function AegisPathfinder:SwitchToTab(index)
+    local tabs = self:EnsureTabs()
+    local tab = tabs[index]
+    if not tab then return end
+    if index == (self.db.char.activetab or 1) then return end
+
+    self:StashActiveStep()
+    self.db.char.activetab = index
+    self:SyncBranchState()
+
+    self:LoadGuide(tab.guide)
+    if tab.step then self.current = tab.step end
+    self:UpdateStatusFrame()
+    self:UpdateGuideListPanel()
+end
+
+--[[ Close a tab.
+
+    Tab 1 is the main route and stays; there would be nothing to fall back to.
+    Closing the tab you are on returns you to the main route, which is what
+    the concept's branch-tab ✕ does.
+]]
+function AegisPathfinder:CloseTab(index)
+    local tabs = self:EnsureTabs()
+    if index == 1 or not tabs[index] then return end
+
+    local wasActive = (self.db.char.activetab or 1) == index
+    if not wasActive then self:StashActiveStep() end
+
+    table.remove(tabs, index)
+
+    local active = self.db.char.activetab or 1
+    if wasActive then
+        active = 1
+    elseif active > index then
+        active = active - 1
+    end
+    self.db.char.activetab = active
+    self:SyncBranchState()
+
+    local tab = tabs[active]
+    if tab then
+        self:LoadGuide(tab.guide)
+        if tab.step then self.current = tab.step end
+    end
+    self:UpdateStatusFrame()
+    self:UpdateGuideListPanel()
+end
+
+---------------------------------
+--      Branching Functions    --
+---------------------------------
+
+--- Branching is opening a guide in another tab. Kept as a name because the
+--- guide list, the slash commands and the profession guides all call it.
+function AegisPathfinder:BranchToGuide(guideName)
+    self:OpenGuideTab(guideName)
+end
+
+--[[ Go back to the main route, closing the tab you were on.
+
+    If the player has out-levelled the guide sitting in tab 1 while they were
+    away, tab 1 is re-pointed at the level-appropriate one rather than sending
+    them back to content they have grown out of.
+]]
 function AegisPathfinder:ReturnFromBranch()
-    if not self.db.char.isbranching then
-        self:Print("Not currently on a branch.")
+    local tabs = self:EnsureTabs()
+    local active = self.db.char.activetab or 1
+    if active == 1 then
+        self:Print("Already on the main route.")
         return
     end
 
-    local savedGuide = self.db.char.branchsavedguide
-    local savedStep = self.db.char.branchsavedstep
-    local playerLevel = UnitLevel("player")
+    table.remove(tabs, active)
+    self.db.char.activetab = 1
+    self:SyncBranchState()
 
-    -- Clear branch state
-    self.db.char.isbranching = false
-    self.db.char.branchsavedguide = nil
-    self.db.char.branchsavedstep = nil
-
-    -- Find level-appropriate guide for current level
-    local optimalGuide = self:GetOptimizedGuideForLevel(playerLevel)
+    local savedGuide = tabs[1] and tabs[1].guide
+    local optimalGuide = self:GetOptimizedGuideForLevel(UnitLevel("player"))
 
     if optimalGuide and optimalGuide ~= savedGuide and self.guides[optimalGuide] then
-        -- Player has leveled past their saved guide, load level-appropriate one
         self:Print("Returning to optimized path: " .. optimalGuide)
+        tabs[1].guide = optimalGuide
+        tabs[1].step = 1
         self:LoadGuide(optimalGuide)
     elseif savedGuide and self.guides[savedGuide] then
-        -- Return to saved guide
         self:Print("Returning to: " .. savedGuide)
         self:LoadGuide(savedGuide)
         -- SmartSkipToStep will handle positioning

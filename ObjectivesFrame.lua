@@ -49,6 +49,12 @@ local rows = {}
 local scrollbar, upbutt, downbutt
 local navStepNum, navCount, guideProgress
 local footerQid, footerCount, meter
+local guideTabs = {}
+
+-- How many guides can be open at once. Six 150px tabs plus the + button fill
+-- a 630px panel; past that the bar would scroll, which the concept does not do.
+local MAX_TABS = 6
+local TAB_W = 150
 
 
 local frame = CreateFrame("Frame", "AegisPathfinderObjectives", UIParent)
@@ -86,11 +92,20 @@ gripTex:SetTexture(Theme.texture.grip)
 gripTex:SetAllPoints(grip)
 Theme:Tint(gripTex, "textDim", 0.55)
 
-grip:SetScript("OnEnter", function() Theme:Tint(gripTex, "accent", 1) end)
-grip:SetScript("OnLeave", function() Theme:Tint(gripTex, "textDim", 0.55) end)
+grip:SetScript("OnLeave", function()
+	Theme:Tint(gripTex, "textDim", 0.55)
+	GameTooltip:Hide()
+end)
 grip:SetScript("OnMouseDown", function()
 	Theme:Tint(gripTex, "accentGlow", 1)
 	frame:StartSizing("BOTTOMRIGHT")
+end)
+grip:SetScript("OnEnter", function()
+	Theme:Tint(gripTex, "accent", 1)
+	if not AegisPathfinder.db.char.overviewmode then
+		GameTooltip:SetOwner(this, "ANCHOR_LEFT")
+		GameTooltip:SetText("Height follows the step in focus mode", nil, nil, nil, nil, true)
+	end
 end)
 grip:SetScript("OnMouseUp", function()
 	Theme:Tint(gripTex, "textDim", 0.55)
@@ -121,9 +136,6 @@ local function OnShow(f)
 	ResetScrollbar()
 	f:SetAlpha(0)
 	f:SetScript("OnUpdate", ww.FadeIn)
-
-	if AegisPathfinder.optionsframe:IsVisible() then HideUIPanel(AegisPathfinder.optionsframe) end
-	if AegisPathfinder.guidelistframe:IsVisible() then HideUIPanel(AegisPathfinder.guidelistframe) end
 end
 
 
@@ -149,8 +161,10 @@ function AegisPathfinder:UpdateObjectivePanel()
 	local menuChip = Theme:ChipButton(header, "menu")
 	menuChip:SetPoint("LEFT", header, "LEFT", 8, 0)
 	menuChip:SetScript("OnClick", function()
-		frame:Hide()
-		AegisPathfinder.optionsframe:Show()
+		-- Beside the guide, not instead of it: the concept puts #options at
+		-- right:456px and #objectives at right:40px, both on screen at once.
+		local opts = AegisPathfinder.optionsframe
+		if opts:IsVisible() then opts:Hide() else opts:Show() end
 	end)
 	menuChip:SetScript("OnEnter", function()
 		this.fill:SetTint("text", 0.10)
@@ -206,13 +220,17 @@ function AegisPathfinder:UpdateObjectivePanel()
 
 	--[[ Tab bar.
 
-		The concept's model for the branch system: the guide you are on is a
-		tab, branching opens a second one beside it, and closing that tab is
-		how you come back.
+		One tab per open guide. Tab 1 is the main route -- what auto-advance
+		follows, and the one you cannot close -- and anything after it is a
+		guide opened beside it. Clicking a tab switches to it, resuming where
+		you left it; the ✕ closes it; the + opens another.
 
-		The badge marks whether the main guide is authored (XP) or a
-		placeholder (TPL) -- the same signal the guide list carries, in the one
-		place you are looking while you follow it.
+		Tabs are built once as a pool and shown as far as the open guides
+		reach, so switching guides never creates a frame.
+
+		The badge marks whether a guide is authored (XP) or a placeholder
+		(TPL) -- the same signal the guide list carries, in the one place you
+		are looking while you follow it.
 	]]
 	local tabbar = CreateFrame("Frame", nil, frame)
 	tabbar:SetHeight(TABBAR_H)
@@ -221,15 +239,41 @@ function AegisPathfinder:UpdateObjectivePanel()
 	Theme:Strip(tabbar, "tabbg")
 	Theme:Divider(tabbar, tabbar, "BOTTOMLEFT", 0, 0)
 
-	local function MakeTab(width)
+	local function MakeTab(index)
 		local t = CreateFrame("Button", nil, tabbar)
 		t:SetHeight(TABBAR_H - 5)
-		t:SetWidth(width)
+		t:SetWidth(TAB_W)
+		t.index = index
 		t.fill = Theme:NineSlice(t, Theme.texture.tabFill, "BACKGROUND", "tabbg")
+
+		t.badge = Theme:Badge(t, "XP", "xp")
+		t.badge:SetPoint("LEFT", t, "LEFT", 7, 0)
+
 		t.label = t:CreateFontString(nil, "OVERLAY")
 		Theme:SetFont(t.label, "body", 11)
 		t.label:SetJustifyH("LEFT")
+		t.label:SetPoint("LEFT", t.badge, "RIGHT", 6, 0)
+		t.label:SetPoint("RIGHT", t, "RIGHT", -18, 0)
 		Theme:TextColor(t.label, "textDim")
+
+		-- Tab 1 is the main route and has no ✕: closing it would leave the
+		-- addon with no guide to fall back to.
+		t.close = Theme:GlyphButton(t, "close", 8, 14)
+		t.close:SetPoint("RIGHT", t, "RIGHT", -4, 0)
+		t.close.index = index
+		t.close:SetScript("OnClick", function()
+			AegisPathfinder:CloseTab(this.index)
+			AegisPathfinder:UpdateObjectiveTabs()
+		end)
+		t.close:SetScript("OnEnter", function()
+			Theme:Tint(this.glyph, "text")
+			GameTooltip:SetOwner(this, "ANCHOR_BOTTOM")
+			GameTooltip:SetText("Close this guide")
+		end)
+		t.close:SetScript("OnLeave", function()
+			Theme:Tint(this.glyph, "textDim")
+			GameTooltip:Hide()
+		end)
 
 		function t:SetActive(active)
 			if active then
@@ -241,58 +285,44 @@ function AegisPathfinder:UpdateObjectivePanel()
 			end
 		end
 
+		t:SetScript("OnClick", function()
+			AegisPathfinder:SwitchToTab(this.index)
+			AegisPathfinder:UpdateObjectiveTabs()
+		end)
+		t:SetScript("OnEnter", function()
+			local tab = AegisPathfinder.db.char.tabs and AegisPathfinder.db.char.tabs[this.index]
+			if not tab then return end
+			GameTooltip:SetOwner(this, "ANCHOR_BOTTOM")
+			GameTooltip:SetText(this.index == 1
+				and ("Main route: " .. tab.guide)
+				or ("Switch to " .. tab.guide))
+		end)
+		t:SetScript("OnLeave", function() GameTooltip:Hide() end)
+
+		t:Hide()
 		return t
 	end
 
-	local mainTab = MakeTab(210)
-	mainTab:SetPoint("BOTTOMLEFT", tabbar, "BOTTOMLEFT", 8, 0)
-	mainTab.badge = Theme:Badge(mainTab, "XP", "xp")
-	mainTab.badge:SetPoint("LEFT", mainTab, "LEFT", 7, 0)
-	mainTab.label:SetPoint("LEFT", mainTab.badge, "RIGHT", 6, 0)
-	mainTab.label:SetPoint("RIGHT", mainTab, "RIGHT", -6, 0)
-	mainTab:SetScript("OnClick", function()
-		-- Clicking the guide you left is how you go back to it.
-		if AegisPathfinder.db.char.isbranching then
-			AegisPathfinder:ReturnFromBranch()
+	for i = 1, MAX_TABS do
+		guideTabs[i] = MakeTab(i)
+		if i == 1 then
+			guideTabs[i]:SetPoint("BOTTOMLEFT", tabbar, "BOTTOMLEFT", 8, 0)
+			guideTabs[i].close:Hide()
+		else
+			guideTabs[i]:SetPoint("BOTTOMLEFT", guideTabs[i - 1], "BOTTOMRIGHT", 2, 0)
 		end
-	end)
-	mainTab:SetScript("OnEnter", function()
-		if not AegisPathfinder.db.char.isbranching then return end
-		GameTooltip:SetOwner(this, "ANCHOR_BOTTOM")
-		GameTooltip:SetText("Return to " .. (AegisPathfinder.db.char.branchsavedguide or "the main route"))
-	end)
-	mainTab:SetScript("OnLeave", function() GameTooltip:Hide() end)
-
-	local branchTab = MakeTab(190)
-	branchTab:SetPoint("LEFT", mainTab, "RIGHT", 2, 0)
-	branchTab.label:SetPoint("LEFT", branchTab, "LEFT", 8, 0)
-	branchTab.label:SetPoint("RIGHT", branchTab, "RIGHT", -20, 0)
-
-	local branchClose = Theme:GlyphButton(branchTab, "close", 8, 14)
-	branchClose:SetPoint("RIGHT", branchTab, "RIGHT", -4, 0)
-	branchClose:SetScript("OnClick", function() AegisPathfinder:ReturnFromBranch() end)
-	branchClose:SetScript("OnEnter", function()
-		Theme:Tint(this.glyph, "text")
-		GameTooltip:SetOwner(this, "ANCHOR_BOTTOM")
-		GameTooltip:SetText("Close this branch and return")
-	end)
-	branchClose:SetScript("OnLeave", function()
-		Theme:Tint(this.glyph, "textDim")
-		GameTooltip:Hide()
-	end)
-	branchTab:Hide()
+	end
 
 	local addTab = Theme:GlyphButton(tabbar, "plus", 10, TABBAR_H - 9)
-	addTab:SetPoint("LEFT", branchTab, "RIGHT", 4, 0)
 	Theme:NineSlice(addTab, Theme.texture.tabBorder, "BORDER", "subtle")
 	addTab:SetScript("OnClick", function()
-		frame:Hide()
+		-- Opens beside the guide, not instead of it.
 		AegisPathfinder.guidelistframe:Show()
 	end)
 	addTab:SetScript("OnEnter", function()
 		Theme:Tint(this.glyph, "accent")
 		GameTooltip:SetOwner(this, "ANCHOR_BOTTOM")
-		GameTooltip:SetText("Branch to another guide")
+		GameTooltip:SetText("Open another guide")
 	end)
 	addTab:SetScript("OnLeave", function()
 		Theme:Tint(this.glyph, "textDim")
@@ -300,7 +330,10 @@ function AegisPathfinder:UpdateObjectivePanel()
 	end)
 
 	frame.tabbar = tabbar
-	frame.mainTab, frame.branchTab, frame.addTab = mainTab, branchTab, addTab
+	frame.guideTabs, frame.addTab = guideTabs, addTab
+	-- The first tab is the main route; plenty of older code still reaches for
+	-- it by this name.
+	frame.mainTab = guideTabs[1]
 
 	--[[ Nav row: ← N → , with the count on the right.
 
@@ -586,50 +619,102 @@ function AegisPathfinder:UpdateObjectivePanel()
 end
 
 
---- Keep the tab bar in step with which guide is loaded and whether the
---- player is off on a branch.
+--- Redraw the tab bar from the list of open guides.
 function AegisPathfinder:UpdateObjectiveTabs()
-	if not frame.mainTab then return end
+	if not frame.guideTabs or not frame.guideTabs[1] then return end
 
-	local branching = self.db.char.isbranching
-	-- While branching, currentguide is the branch; the guide you left is
-	-- saved separately.
-	local mainName = (branching and self.db.char.branchsavedguide)
-		or self.db.char.currentguide or "No Guide"
+	local tabs = self:EnsureTabs()
+	local count = math.min(table.getn(tabs), MAX_TABS)
+	local active = self.db.char.activetab or 1
+	local last
 
-	frame.mainTab.label:SetText(mainName)
-	frame.mainTab.badge:SetKind(self:IsTemplateGuide(mainName) and "tpl" or "xp",
-		self:IsTemplateGuide(mainName) and "TPL" or "XP")
-	frame.mainTab:SetActive(not branching)
-
-	if branching then
-		frame.branchTab:Show()
-		frame.branchTab.label:SetText(self.db.char.currentguide or "Branch")
-		frame.branchTab:SetActive(true)
-		frame.addTab:SetPoint("LEFT", frame.branchTab, "RIGHT", 4, 0)
-	else
-		frame.branchTab:Hide()
-		-- With no branch tab between them, the + button follows the main tab
-		-- rather than floating where the hidden tab used to be.
-		frame.addTab:SetPoint("LEFT", frame.mainTab, "RIGHT", 4, 0)
+	for i = 1, MAX_TABS do
+		local button = frame.guideTabs[i]
+		local tab = i <= count and tabs[i] or nil
+		if not tab then
+			button:Hide()
+		else
+			button:Show()
+			button.label:SetText(tab.guide)
+			button.badge:SetKind(self:IsTemplateGuide(tab.guide) and "tpl" or "xp",
+				self:IsTemplateGuide(tab.guide) and "TPL" or "XP")
+			button:SetActive(i == active)
+			last = button
+		end
 	end
+
+	-- The + follows whichever tab is last, rather than floating where a
+	-- closed one used to be.
+	frame.addTab:ClearAllPoints()
+	if last then
+		frame.addTab:SetPoint("LEFT", last, "RIGHT", 4, 0)
+	else
+		frame.addTab:SetPoint("LEFT", frame.tabbar, "LEFT", 8, 0)
+	end
+
+	-- Past MAX_TABS there is nowhere to put another tab, so stop offering.
+	if table.getn(tabs) >= MAX_TABS then frame.addTab:Hide() else frame.addTab:Show() end
+end
+
+--[[ Size the panel to the mode it is in.
+
+	The concept gives `.steps-list` flex:0 0 auto in focus mode and
+	flex:1 1 auto in overview, so a panel showing one step is only as tall as
+	that step while a panel showing the list fills its max-height. Without this
+	focus mode is a mostly-empty box with a single row at the top.
+
+	The height the player dragged the panel to belongs to overview mode, and is
+	restored when they switch back; focus-mode heights are computed and never
+	saved, which is what `layoutlock` is guarding.
+]]
+function AegisPathfinder:LayoutPanelHeight()
+	if not frame.footer then return end
+	-- SetHeight fires OnSizeChanged, which resizes, which repaints, which
+	-- lands back here; without this guard the first layout never returns.
+	if frame.layoutlock then return end
+	local overview = self.db.char.overviewmode and true or false
+
+	frame.layoutlock = true
+	if overview then
+		frame:SetHeight(self.db.profile.objframeheight or DEFAULT_HEIGHT)
+	else
+		local h = CHROME_TOP + ROWHEIGHT + FOOTER_H + 6
+		if frame.meter and frame.meter:IsShown() then
+			h = h + frame.meter:GetHeight() + 6
+		end
+		frame:SetHeight(h)
+	end
+	frame.layoutlock = nil
+end
+
+--[[ How many step rows to draw right now.
+
+	Focus mode draws exactly one whatever the panel's height. Overview draws
+	as many as fit. Derived from the panel's current size on every call rather
+	than cached, because the mode and the height both change and a cached count
+	left the list a paint behind whichever changed last.
+]]
+function AegisPathfinder:VisibleRowCount()
+	if not self.db.char.overviewmode then return 1 end
+	local fits = math.floor((frame:GetHeight() - CHROME_TOP - FOOTER_H) / ROWHEIGHT)
+	return math.max(1, math.min(fits, MAX_ROWS))
 end
 
 function AegisPathfinder:OnObjectiveFrameResized()
+	-- Mid-layout the panel is already being told what size to be.
+	if frame.layoutlock then return end
 	local w = frame:GetWidth()
 	local h = frame:GetHeight()
 
 	self.db.profile.objframewidth = w
-	self.db.profile.objframeheight = h
+	-- Only overview heights are the player's; focus-mode ones are computed.
+	if self.db.char.overviewmode then
+		self.db.profile.objframeheight = h
+	end
 
-	local contentHeight = h - CHROME_TOP - FOOTER_H
-	NUMROWS = math.max(1, math.floor(contentHeight / ROWHEIGHT))
-	if NUMROWS > MAX_ROWS then NUMROWS = MAX_ROWS end
-
-	-- Focus mode draws one row whatever the panel's height.
-	local shown = self.db.char.overviewmode and NUMROWS or 1
+	NUMROWS = self:VisibleRowCount()
 	for i, row in ipairs(rows) do
-		if i > shown then row:Hide() end
+		if i > NUMROWS then row:Hide() end
 	end
 
 	if scrollbar and self.actions then
@@ -660,7 +745,8 @@ local VERB = {
 function AegisPathfinder:ToggleOverviewMode()
 	self.db.char.overviewmode = not self.db.char.overviewmode
 	if frame.expandChip then frame.expandChip:SetActive(self.db.char.overviewmode) end
-	-- The row count and the scrollbar both depend on the mode.
+	-- The panel's height, the row count and the scrollbar all follow the mode.
+	self:LayoutPanelHeight()
 	self:OnObjectiveFrameResized()
 	self:UpdateOHPanel()
 end
@@ -706,7 +792,36 @@ function AegisPathfinder:UpdateOHPanel(value)
 		starting at the current step, or NUMROWS slots starting at the scroll
 		offset. ]]
 	local overview = self.db.char.overviewmode and true or false
-	local shown = overview and NUMROWS or 1
+
+	--[[ The meter, then the height, then the row count -- in that order.
+
+		Focus mode's height depends on whether the meter is showing, and how
+		many rows fit depends on the height, so settling them in any other
+		order leaves the list a paint behind whichever changed last.
+
+		The meter is only for a step whose quest is in the log with countable
+		objectives left; a step with nothing to count gets no meter rather
+		than an empty one.
+	]]
+	local showMeter = false
+	if not overview then
+		local curAction = self:GetObjectiveInfo(self.current)
+		local _, curLogi, curComplete = self:GetObjectiveStatus(self.current)
+		if curAction == "COMPLETE" and curLogi and not curComplete then
+			local label, have, need = ReadLeaderboard(curLogi)
+			if label and need and need > 0 then
+				meter.label:SetText(label)
+				meter.count:SetText(string.format("%d / %d", have, need))
+				meter.bar:SetProgress(have / need)
+				showMeter = true
+			end
+		end
+	end
+	if showMeter then meter:Show() else meter:Hide() end
+	self:LayoutPanelHeight()
+
+	local shown = self:VisibleRowCount()
+	NUMROWS = shown
 
 	if self.guidechanged then
 		self.guidechanged = nil
@@ -862,27 +977,6 @@ function AegisPathfinder:UpdateOHPanel(value)
 	navStepNum:SetText(tostring(self.current))
 	navCount:SetText(string.format("%d of %d \194\183 %d done", self.current, total, doneCount))
 	guideProgress:SetProgress(total > 0 and (doneCount / total) or 0)
-
-	--[[ The objective meter, under the single step in focus mode.
-
-		Only for a step whose quest is in the log with countable objectives
-		left. A step with nothing to count gets no meter rather than an empty
-		one. ]]
-	local showMeter = false
-	if not overview then
-		local action = self:GetObjectiveInfo(self.current)
-		local _, logi, complete = self:GetObjectiveStatus(self.current)
-		if action == "COMPLETE" and logi and not complete then
-			local label, have, need = ReadLeaderboard(logi)
-			if label and need and need > 0 then
-				meter.label:SetText(label)
-				meter.count:SetText(string.format("%d / %d", have, need))
-				meter.bar:SetProgress(have / need)
-				showMeter = true
-			end
-		end
-	end
-	if showMeter then meter:Show() else meter:Hide() end
 
 	--[[ Footer: the current step's quest id, and progress through the guide.
 

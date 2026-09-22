@@ -64,6 +64,16 @@ function AegisPathfinder:GetStepMeta(i)
 	if self.__dataWarning then return nil, self.__dataWarning, true end
 	return qid, qid and ("QID " .. qid) or nil, false
 end
+-- The tab model lives in Core.lua; this suite is about the rows, so one tab
+-- is enough for it.
+function AegisPathfinder:EnsureTabs()
+	self.db.char.tabs = self.db.char.tabs
+		or { { guide = self.db.char.currentguide, step = 1 } }
+	self.db.char.activetab = self.db.char.activetab or 1
+	return self.db.char.tabs
+end
+function AegisPathfinder:SwitchToTab() end
+function AegisPathfinder:CloseTab() end
 function AegisPathfinder:ToggleOverviewMode()
 	self.db.char.overviewmode = not self.db.char.overviewmode
 	if self.objectiveframe.expandChip then
@@ -234,6 +244,34 @@ for i, row in ipairs(built) do
 	end
 end
 
+-- Panels open beside the guide, not instead of it ------------------------------
+
+--[[ The ☰ chip used to hide the panel before showing Config, so opening
+	settings closed the guide you were reading. The concept has both on screen
+	at once -- #options at right:456px, #objectives at right:40px. ]]
+local menuChip
+for _, child in ipairs(frame.header.__children) do
+	if child.glyph and child.glyph:GetTexture() == Theme.glyph.menu then menuChip = child end
+end
+check(menuChip ~= nil, "the header has no menu chip")
+
+frame:Show()
+AegisPathfinder.optionsframe:Hide()
+menuChip:GetScript("OnClick")()
+check(frame:IsShown(), "opening Config must not close the guide")
+check(AegisPathfinder.optionsframe:IsShown(), "and Config should be open")
+menuChip:GetScript("OnClick")()
+check(frame:IsShown(), "closing Config leaves the guide alone")
+check(not AegisPathfinder.optionsframe:IsShown(), "and Config is shut")
+
+-- Same for the + that opens the guide list.
+local addTab = frame.addTab
+AegisPathfinder.guidelistframe:Hide()
+addTab:GetScript("OnClick")()
+check(frame:IsShown(), "opening the guide list must not close the guide")
+check(AegisPathfinder.guidelistframe:IsShown(), "and the guide list should be open")
+AegisPathfinder.guidelistframe:Hide()
+
 -- Focus mode and overview -------------------------------------------------------
 
 --[[ The concept's two modes. Focus -- the default -- shows the one step you
@@ -251,9 +289,21 @@ check(built[1].i == 2,
 check(built[1].band:IsShown(),
 	"the step it shows is still styled by its own rules -- an active ACCEPT is a band")
 
+--[[ The concept gives .steps-list flex:0 0 auto in focus mode, so the window
+	is only as tall as the step it shows; overview gets flex:1 1 auto and fills
+	its max-height. Without this focus mode is a mostly-empty box. ]]
+local focusHeight = frame:GetHeight()
+
 AegisPathfinder.db.char.overviewmode = true
 AegisPathfinder:UpdateOHPanel(0)
 check(built[2]:IsShown(), "overview mode brings the rest of the list back")
+
+local overviewHeight = frame:GetHeight()
+check(focusHeight < overviewHeight,
+	"focus mode should shrink the panel to its one step (%s) rather than leaving it at the overview height (%s)",
+	tostring(focusHeight), tostring(overviewHeight))
+check(focusHeight <= 86 + 44 + 24 + 12,
+	"and that height is chrome plus one row, got %s", tostring(focusHeight))
 
 -- Toggling flips the mode and the chip's state together.
 AegisPathfinder.db.char.overviewmode = false

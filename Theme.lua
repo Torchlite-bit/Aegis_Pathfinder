@@ -68,6 +68,7 @@ Theme.texture = {
 	wordmark    = MEDIA .. "wordmark",
 	grip        = MEDIA .. "grip",
 	navArrow    = MEDIA .. "nav-arrow",
+	scrollThumb = MEDIA .. "scroll-thumb",
 }
 
 --[[ Chrome glyphs.
@@ -88,6 +89,8 @@ Theme.glyph = {
 	bang         = MEDIA .. "icons\\bang",
 	pin          = MEDIA .. "icons\\pin",
 	expand       = MEDIA .. "icons\\expand",
+	caretUp      = MEDIA .. "icons\\caret-up",
+	caretDown    = MEDIA .. "icons\\caret-down",
 }
 
 Theme.font = {
@@ -747,6 +750,61 @@ function Theme:Header(frame, height)
 	end
 
 	return h
+end
+
+--[[ Scrollbar.
+
+	The last Blizzard art in the addon: WidgetWarlock's scrollbar used the
+	stock knob and the character-sheet frame around it, which read as a foreign
+	object on a flat panel. This is the concept's own -- a dark track, a
+	stadium thumb at the accent, and small caret buttons at either end.
+
+	It keeps the Slider widget, so SetMinMaxValues / SetValue / OnValueChanged
+	are unchanged and existing call sites do not care.
+]]
+function Theme:ScrollBar(parent, width)
+	local f = CreateFrame("Slider", nil, parent)
+	width = width or 10
+	f:SetWidth(width)
+	f:SetOrientation("VERTICAL")
+
+	local track = f:CreateTexture(nil, "BACKGROUND")
+	track:SetTexture(self.texture.solid)
+	track:SetAllPoints(f)
+	track:SetVertexColor(0, 0, 0, 0.35)
+
+	-- A Slider's thumb is a single texture, so the stadium is stretched rather
+	-- than nine-sliced; the mask's radius is half its width, which keeps the
+	-- caps circular for any thumb taller than it is wide.
+	f:SetThumbTexture(self.texture.scrollThumb)
+	local thumb = f:GetThumbTexture()
+	thumb:SetWidth(width)
+	thumb:SetHeight(28)
+	self:Tint(thumb, "subtle")
+
+	local function StepButton(glyphName, point, rel)
+		local b = self:GlyphButton(f, glyphName, 7, width)
+		b:SetPoint(point, f, rel)
+		b:SetTints("textDim", "accent")
+		return b
+	end
+
+	local up = StepButton("caretUp", "BOTTOM", "TOP")
+	local down = StepButton("caretDown", "TOP", "BOTTOM")
+
+	-- Sliders have no Enable/Disable of their own on these; the call sites
+	-- expect the buttons to dim at the ends of the range.
+	local function Dim(b, disabled)
+		b.__disabled = disabled
+		Theme:Tint(b.glyph, disabled and "border" or b.__idle)
+	end
+	function up:Disable() Dim(self, true) end
+	function up:Enable() Dim(self, false) end
+	function down:Disable() Dim(self, true) end
+	function down:Enable() Dim(self, false) end
+
+	f.track, f.up, f.down = track, up, down
+	return f, up, down
 end
 
 --[[ Subhead.

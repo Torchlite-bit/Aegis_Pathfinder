@@ -421,6 +421,14 @@ def _expand(d, s):           # header -- switch between one step and all of them
     d.polygon([(s * .24, s * .76), (s * .52, s * .76), (s * .24, s * .48)], fill=W)
 
 
+def _caret(d, s, facing):
+    """Small solid triangle for a scrollbar's step buttons."""
+    if facing == "up":
+        d.polygon([(s * .50, s * .30), (s * .76, s * .66), (s * .24, s * .66)], fill=W)
+    else:
+        d.polygon([(s * .50, s * .70), (s * .24, s * .34), (s * .76, s * .34)], fill=W)
+
+
 def _pin(d, s):              # map pin -- prefixes a coordinate pair
     d.ellipse([s * .22, s * .10, s * .78, s * .66], fill=W)
     d.polygon([(s * .34, s * .56), (s * .66, s * .56), (s * .50, s * .92)], fill=W)
@@ -439,7 +447,19 @@ CHROME = {
     "bang": _bang,
     "pin": _pin,
     "expand": _expand,
+    "caret-up": lambda d, s: _caret(d, s, "up"),
+    "caret-down": lambda d, s: _caret(d, s, "down"),
 }
+
+
+def scroll_thumb(size=32):
+    """The scrollbar's knob: a stadium, rounded at both ends.
+
+    A scrollbar is 8px wide and its knob is drawn at whatever height the
+    content asks for, so this is nine-sliced rather than stretched -- hence a
+    full-width radius, which keeps the caps circular at any length.
+    """
+    return rounded(size, size // 2, path="scroll-thumb.tga")
 
 
 def nav_arrow(size=64):
@@ -568,6 +588,7 @@ def main():
     record("progress-fill.tga", progress_fill())
     record("logo.tga", logo())
     record("wordmark.tga", wordmark())
+    record("scroll-thumb.tga", scroll_thumb())
     record("nav-arrow.tga", nav_arrow())
     record("grip.tga", grip())
 

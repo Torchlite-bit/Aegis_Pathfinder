@@ -310,6 +310,20 @@ function AegisPathfinder:LoadGuide(name, complete)
 
 	self.db.char.currentguide = self.guides[name] and name or self.guidelist[1]
 
+	--[[ Keep the active tab pointing at what is actually loaded.
+
+		Guides also change without anyone touching a tab -- LoadNextGuide when
+		a route rolls over, or picking a different route pack -- and a tab bar
+		naming the guide you were on two zones ago is worse than none.
+	]]
+	if self.EnsureTabs then
+		local tab = self:GetActiveTab()
+		if tab and tab.guide ~= self.db.char.currentguide then
+			tab.guide = self.db.char.currentguide
+			tab.step = 1
+		end
+	end
+
 	self:Debug(string.format("Loading guide: %s", name))
 	self.guidechanged = true
 	-- Extract zone name from guide name, stripping any path prefix (e.g., "Optimized/")

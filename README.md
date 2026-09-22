@@ -62,11 +62,11 @@ FuBar icon, and every entry in it is also a subcommand.
 RestedXP, or RXP Hardcore. Your race's starting zone is selected for you, and
 all races merge into a shared route after level 12.
 
-**Branching.** Jump from the main route to any zone guide, do as much as you
-want, and return — you resume at the step matching your level. The objectives
-panel shows this as tabs: the guide you left stays open beside the one you
-branched to, and closing that tab brings you back. A gold `[BRANCH]` tag shows
-on the branch tab while you are off the main path.
+**Tabs.** Up to six guides open at once, one per tab. The first is your main
+route — what the addon advances along on its own, and the one tab you cannot
+close. Open a zone guide or a profession beside it, do as much as you want, and
+click back; each tab remembers its own place. Closing a tab you branched to
+returns you to the main route, resuming at the step matching your level.
 
 **Dungeons.** Toggle which of 15 dungeons you intend to run. Opting in promotes
 their setup and prerequisite steps to mandatory; opting out hides them. A blue

@@ -144,6 +144,11 @@ saved.
 The concept's `#objectives`, and now the addon's only window: header, tab bar,
 nav row, a 4px progress rule, the step list, and the footer.
 
+**Panels open beside the guide, not instead of it.** The ☰ chip used to hide
+the panel before showing Config, so opening settings closed what you were
+reading; the concept has `#options` at `right:456px` and `#objectives` at
+`right:40px`, both on screen. Same for the `+` and the guide list.
+
 **Two modes**, behind the header's third chip. Focus -- the default -- shows
 the one step you are on and nothing else, which is how you follow a guide;
 overview shows the whole list, which is how you look ahead. The chip takes
@@ -156,6 +161,14 @@ leaderboard text -- "Kobold Vermin slain: 3/8" -- parsed into its three parts.
 An objective with nothing countable in it ("Speak to Marshal Dughan") gets no
 meter rather than an empty one. Overview mode folds the same text into the
 step's note line instead, as the concept does.
+
+**Height follows the mode.** The concept gives `.steps-list` `flex:0 0 auto`
+in focus mode and `flex:1 1 auto` in overview, so a panel showing one step is
+only as tall as that step. `LayoutPanelHeight` computes the focus height and
+restores the dragged height for overview; a focus height is never saved, since
+it is derived rather than chosen. The meter, then the height, then the row
+count settle in that order — any other order leaves the list a paint behind
+whichever changed last.
 
 **The footer** carries live state rather than the slash-command hint it used
 to: the current step's quest id on the left in accent, how far through the
@@ -244,32 +257,31 @@ Nothing in it is profession-specific -- any guide carrying `|MATS|` tags gets
 a materials list. Sorted alphabetically: it is a list you read while hunting
 for one item, not a ranking.
 
+### Scrollbar -- `Theme:ScrollBar`
+
+The last Blizzard art in the addon. `WidgetWarlock.ConjureScrollBar` used the
+stock knob plus the character-sheet scroll frame around it, which read as a
+foreign object on a flat panel; it now delegates here. A dark track, a stadium
+thumb (`scroll-thumb.tga`, radius half its width, so the caps stay circular at
+any length) and caret step buttons. It is still a Slider, so
+`SetMinMaxValues` / `SetValue` / `OnValueChanged` are unchanged.
+
 ### Objectives panel tab bar -- `ObjectivesFrame.lua`
 
-The concept's model for the branch system: the guide you are on is a tab,
-branching opens a second beside it, and closing that tab is how you come back.
-The addon expressed the same thing as a button plus a status tag, which says
-less about where you are.
+One tab per open guide, up to six. Tab 1 is the main route — what auto-advance
+follows, and the one with no ✕ because there would be nothing to fall back to.
+Clicking a tab switches to it and resumes where it was left; the `+` opens
+another; at six the `+` stops offering what it cannot do.
 
-| Concept element | Implementation |
-|---|---|
-| `.tab` with `.tab-badge` | Main tab, naming the guide, with `Theme:Badge` marking it `XP` (authored) or `TPL` (placeholder) |
-| `.tab.branch-tab` with `.tab-close` | Branch tab, shown only while branching; its `x` returns you |
-| `.tab-add` | `+`, opening the guide list to branch from |
+The model is `db.char.tabs` (a list of `{guide, step}`) plus `activetab`, in
+`Core.lua`. It replaced a one-deep branch — main plus at most one branch off
+it — and the old `isbranching` / `branchsavedguide` / `branchsavedstep` fields
+are still written, derived from the tabs by `SyncBranchState`, because a dozen
+call sites read them and "am I branching?" is just "is the active tab not the
+first one?". A character saved under the old model migrates on first use.
 
-Two things here are subtle enough to be worth stating. While branching,
-`db.char.currentguide` is the **branch** — the guide you left is in
-`db.char.branchsavedguide` — so the main tab reads that one or it names the
-wrong guide. And the `+` button re-anchors when the branch tab hides, or it
-floats in the gap the hidden tab used to occupy.
-
-`TABBAR_H` also feeds `HEADER_HEIGHT`, which drives the visible-row maths in
-`OnObjectiveFrameResized`; the two have to move together.
-
-The bottom button row keeps its **Guides** and **Return Main** buttons, which
-now duplicate `+` and the tab affordances. That is deliberate: they are
-familiar, `Return Main` only appears while branching anyway, and removing a
-working control is a worse surprise than a redundant one.
+Tabs are a fixed pool of frames shown as far as the open guides reach, so
+switching guides never creates a frame.
 
 ### Still to do
 
