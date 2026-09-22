@@ -76,6 +76,12 @@ local function newObject(kind, name, parent)
 	function o:SetAllPoints(other) table.insert(self.__points, { "ALL", other }) end
 	function o:ClearAllPoints() self.__points = {} end
 	function o:GetNumPoints() return table.getn(self.__points) end
+	-- 1-indexed like the real API; no index means the first point.
+	function o:GetPoint(i)
+		local p = self.__points[i or 1]
+		if not p then return nil end
+		return p[1], p[2], p[3], p[4], p[5]
+	end
 
 	function o:Show() self.__shown = true end
 	function o:Hide() self.__shown = false end
@@ -200,8 +206,11 @@ local function newFrame(frameType, name, parent)
 	function f:UnregisterEvent() end
 	function f:EnableMouse() end
 	function f:RegisterForClicks() end
-	function f:RegisterForDrag() end
-	function f:SetMovable() end
+	-- Drag state is recorded rather than ignored: "the panel is draggable" is a
+	-- claim a test can only check by looking at what was wired up.
+	function f:RegisterForDrag(button) self.__dragButton = button end
+	function f:SetMovable(v) self.__movable = v and true or false end
+	function f:IsMovable() return self.__movable and true or false end
 	function f:SetResizable() end
 	function f:SetMinResize() end
 	function f:SetMaxResize() end
@@ -219,8 +228,8 @@ local function newFrame(frameType, name, parent)
 	function f:SetFrameLevel(l) self.__level = l end
 	function f:GetFrameLevel() return self.__level or 1 end
 	function f:SetToplevel() end
-	function f:StartMoving() end
-	function f:StopMovingOrSizing() end
+	function f:StartMoving() self.__moving = true end
+	function f:StopMovingOrSizing() self.__moving = false end
 	function f:SetBackdrop(bd) self.__backdrop = bd end
 	function f:SetBackdropColor(r, g, b, a) checkColor("SetBackdropColor", r, g, b, a) end
 	function f:SetBackdropBorderColor(r, g, b, a) checkColor("SetBackdropBorderColor", r, g, b, a) end

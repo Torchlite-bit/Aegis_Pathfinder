@@ -162,6 +162,67 @@ Theme:SetActionIcon(icon, "ZZZ")
 check(icon:GetTexture() == Theme.actionIcon.N,
 	"an unknown action code should fall back to the note glyph")
 
+--[[ The frames index icons by parsed action name, not by DSL letter, so the
+	name-keyed table is the one that actually gets drawn. It was missing until
+	the panels were still rendering Blizzard quest art over a themed panel. ]]
+local ACTION_NAMES = {
+	"ACCEPT", "TURNIN", "COMPLETE", "NOTE", "RUN", "HEARTH", "SETHEARTH",
+	"FLY", "GETFLIGHTPOINT", "BUY", "BOAT", "KILL", "GRIND", "USE", "TRAIN",
+	"DIE", "PET",
+}
+for _, name in ipairs(ACTION_NAMES) do
+	local path = Theme.actionIconByName[name]
+	check(path ~= nil, "no glyph mapped for action '%s'", name)
+	check(path == nil or string.find(path, "Aegis_Pathfinder", 1, true) ~= nil,
+		"action '%s' should draw an addon glyph, got '%s'", name, tostring(path))
+end
+
+-- Chrome glyphs ---------------------------------------------------------------
+
+-- The concept draws its chrome with characters the 1.12 font cannot render,
+-- so each one has to exist as a mask.
+local GLYPHS = {
+	"menu", "close", "plus", "arrowLeft", "arrowRight",
+	"chevronLeft", "chevronRight", "tick", "bang", "pin",
+}
+for _, name in ipairs(GLYPHS) do
+	local path = Theme.glyph[name]
+	check(path ~= nil, "chrome glyph '%s' is not declared", name)
+	check(path == nil or not string.find(path, "%.tga$"),
+		"chrome glyph '%s' carries a file extension", name)
+end
+
+-- Panel chrome ----------------------------------------------------------------
+
+local win = CreateFrame("Frame", nil, UIParent)
+win:SetWidth(300); win:SetHeight(200)
+local header, sub = Theme:Chrome(win, "Config")
+check(header ~= nil and sub ~= nil, "Chrome should build a header and a subhead")
+check(win:IsMovable(), "Chrome should make its window movable")
+check(header.__dragButton == "LeftButton",
+	"Chrome should register the header for left-button drag")
+check(sub.label:GetText() == "CONFIG",
+	"the subhead uppercases like the concept's CSS, got '%s'",
+	tostring(sub.label:GetText()))
+check(header.wordmark:GetTexture() == Theme.texture.wordmark,
+	"the header carries the pre-rendered wordmark")
+
+-- Position round-trip: what PositionSaver stores, RestorePosition must apply.
+AegisPathfinder.db = { profile = {} }
+win:ClearAllPoints()
+win:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -40, 60)
+Theme:PositionSaver("testwin")(win)
+check(AegisPathfinder.db.profile.testwinpoint == "BOTTOMRIGHT",
+	"PositionSaver should record the anchor point, got '%s'",
+	tostring(AegisPathfinder.db.profile.testwinpoint))
+
+local other = CreateFrame("Frame", nil, UIParent)
+check(Theme:RestorePosition(other, "testwin") == true,
+	"RestorePosition should report that it placed the frame")
+check(other:GetPoint() == "BOTTOMRIGHT", "and should apply the saved point")
+check(Theme:RestorePosition(other, "neversaved") == false,
+	"with nothing saved it should leave the frame's own anchors alone")
+
 -- Report ---------------------------------------------------------------------
 
 local apiErrors = stub.report()

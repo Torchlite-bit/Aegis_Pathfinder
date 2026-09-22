@@ -53,6 +53,16 @@ frame.
 the 17 action codes gets a generated 32×32 glyph instead. They are silhouettes,
 not line art, because they render at roughly 14px where thin strokes vanish.
 
+The frames index these by parsed action name (`ACCEPT`, `SETHEARTH`), not by
+DSL letter, so `Theme.actionIconByName` is the table `AegisPathfinder.icons`
+actually resolves through. Before that existed the panels were still drawing
+stock quest-log art -- bevelled, bordered, a different palette -- on top of
+the themed background.
+
+**Chrome glyphs.** The concept draws its own chrome with characters the client
+font has no glyph for: `☰ ✕ + ← → ‹ › ✓ ! 📍`. Each is generated the same way
+and lives in `Theme.glyph`.
+
 **Gradients.** Baked into the texture (`progress-fill.tga`) — there is no
 runtime gradient.
 
@@ -85,10 +95,62 @@ active; profession steps qualify because they resolve off skill events.
 Everything else — a note to read, a vendor to visit, a mob to grind — only the
 player can confirm.
 
-### Objectives panel, options panels, guide list -- `ObjectivesFrame.lua`, `OptionsFrame.lua`, `GuideListFrame.lua`
+### Window chrome -- `Theme:Chrome`
 
-All on the theme. Rather than edit every call site, the two shared widget
-helpers in `WidgetWarlock.lua` build themed widgets:
+Every floating window in the concept is the same `.chrome-frame`, so one call
+builds all of it:
+
+| Concept element | Implementation |
+|---|---|
+| `.panel-header` | `Theme:Header` -- a `panel-2` strip, the wordmark centred, a 1px rule beneath |
+| `.panel-wordmark` | `wordmark.tga`, not a font string: the concept sets `.18em` letter-spacing, which 1.12 font strings cannot do |
+| `.chip-btn` | `Theme:ChipButton` -- a 20px rounded square carrying one glyph |
+| `.subhead` | `Theme:Subhead` -- a `tabbg` strip naming the window in small uppercase |
+| `cursor:grab` on the header | `MakeDragHandle`: `SetMovable` + `RegisterForDrag`, with the drop position saved per profile |
+
+The header's corners are a problem the concept does not have. It clips its
+strips to the window radius with `overflow:hidden`; 1.12 cannot clip, so a
+flat strip across the top of a rounded panel pokes square corners out past it.
+`Theme:CapStrip` nine-slices `cap-top.tga` / `cap-bottom.tga` instead --
+rounded on the edge that meets the panel, square on the edge that meets the
+body.
+
+A window that has been dragged stays where it was put: `Theme:PositionSaver`
+records the drop, `Theme:RestorePosition` re-applies it, and the "snap beside
+the status card" logic in each panel's `OnShow` only runs when nothing was
+saved.
+
+### Objectives panel -- `ObjectivesFrame.lua`
+
+The concept's `#objectives`, top to bottom: header, tab bar, nav row, a 4px
+progress rule, the step list, and the footer hint. The panel used to carry a
+50px block repeating the current step's icon, title and note -- the same
+information the status card shows -- where the concept spends that row on
+moving through the guide instead.
+
+Rows are fixed 44px slots holding either of the concept's two row models:
+
+| Concept | Implementation |
+|---|---|
+| `.zrow` | Dot, action glyph, title, and the note beneath it in `#8f8f86` |
+| `.zrow.active` | A faint wash plus the left accent bar |
+| `.zrow.done` | Dimmed |
+| `.zband.red` / `.zband.green` | `Theme:Band` laid over the whole slot |
+
+A step becomes a band only when it is an `ACCEPT` or `TURNIN` **and** is either
+the current step or already satisfied -- the same rule as the concept's
+`bandable && (st.done || idx === state.stepIndex)`. Any other quest hand-off
+further down the list stays an ordinary row, so the list does not turn into a
+wall of colour.
+
+Fixed slots rather than the concept's content-height rows: these guides run to
+a few hundred steps and the list scrolls, which needs a row height known in
+advance. Title and note are therefore clipped to one line each.
+
+### Shared widgets -- `WidgetWarlock.lua`
+
+Rather than edit every call site, the two shared widget helpers build themed
+widgets:
 
 | Helper | Now returns |
 |---|---|
@@ -97,13 +159,9 @@ helpers in `WidgetWarlock.lua` build themed widgets:
 
 `Theme.lua` therefore loads before `WidgetWarlock.lua`.
 
-Objectives rows follow the concept's model: a faint wash plus a left accent bar
-on the active step, dimmed text when complete, a hint of accent on `|T|`
-in-town steps, and the auto-detect halo on row checkboxes, so that signal
-appears wherever a step is shown. Panel buttons are display-face pills.
-
-The three dialog frames in `Core.lua` (route selector, starting-zone selector,
-error log) use `Theme:Panel` in place of Blizzard's dialog art.
+`Theme:PanelButton` and `Theme:CloseChip` do the same job for
+`UIPanelButtonTemplate` and `UIPanelCloseButton`, which is what every
+secondary panel and all three `Core.lua` dialogs were still built from.
 
 ### Dungeon chips -- `OptionsFrame.lua`
 

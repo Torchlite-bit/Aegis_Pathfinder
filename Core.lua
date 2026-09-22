@@ -54,26 +54,27 @@ function AegisPathfinder:GetRouteForRace(race)
     return race and (string.gsub(race, "%s", "")) or nil
 end
 
-AegisPathfinder.icons = setmetatable({
-    ACCEPT = "Interface\\GossipFrame\\AvailableQuestIcon",
-    COMPLETE = "Interface\\Icons\\Ability_DualWield",
-    TURNIN = "Interface\\GossipFrame\\ActiveQuestIcon",
-    KILL = "Interface\\Icons\\Ability_Creature_Cursed_02",
-    RUN = "Interface\\Icons\\Ability_Tracking",
-    MAP = "Interface\\Icons\\Ability_Spy",
-    FLY = "Interface\\Icons\\Ability_Rogue_Sprint",
-    SETHEARTH = "Interface\\AddOns\\AegisPathfinder\\media\\resting.tga",
-    HEARTH = "Interface\\Icons\\INV_Misc_Rune_01",
-    NOTE = "Interface\\Icons\\INV_Misc_Note_01",
-    GRIND = "Interface\\Icons\\INV_Stone_GrindingStone_05",
-    USE = "Interface\\Icons\\INV_Misc_Bag_08",
-    BUY = "Interface\\Icons\\INV_Misc_Coin_01",
-    BOAT = "Interface\\Icons\\Ability_Druid_AquaticForm",
-    GETFLIGHTPOINT = "Interface\\Icons\\Ability_Hunter_EagleEye",
-    PET = "Interface\\Icons\\Ability_Hunter_BeastCall02",
-    DIE = "Interface\\AddOns\\AegisPathfinder\\media\\dead.tga",
-    TRAIN = "Interface\\GossipFrame\\TrainerGossipIcon",
-}, { __index = function() return "Interface\\Icons\\INV_Misc_QuestionMark" end })
+--[[ Action glyphs.
+
+    The generated silhouettes from Theme.lua, not Blizzard's icon art. Stock
+    quest-log icons carry their own border, palette and 8px bevel, which read as
+    a foreign object on the concept's flat panels -- and they were the reason
+    every list in the addon still looked like a 2006 UI under a new skin.
+
+    An unknown code falls back to the note glyph rather than a question mark:
+    a guide line the parser did not recognise should look like a line to read,
+    not like a missing asset.
+]]
+-- Header plus subhead on the concept's window chrome, which every dialog below
+-- now wears; their bodies start beneath it.
+local DIALOG_CHROME = 30 + 18
+
+AegisPathfinder.icons = setmetatable({}, {
+    __index = function(_, action)
+        local Theme = AegisPathfinder.Theme
+        return Theme.actionIconByName[action] or Theme.actionIcon.N
+    end,
+})
 
 local defaults = {
     debug = false,
@@ -1682,25 +1683,18 @@ end
 function AegisPathfinder:CreateRouteSelectorFrame()
     local f = CreateFrame("Frame", "AegisPathfinderRouteSelectorFrame", UIParent)
     f:SetWidth(300)
-    f:SetHeight(550)
+    f:SetHeight(550 + DIALOG_CHROME)
     f:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
     self.Theme:Panel(f, "panel")
-    f:SetMovable(true)
-    f:EnableMouse(true)
-    f:RegisterForDrag("LeftButton")
-    f:SetScript("OnDragStart", function() this:StartMoving() end)
-    f:SetScript("OnDragStop", function() this:StopMovingOrSizing() end)
     f:SetFrameStrata("DIALOG")
 
-    local title = f:CreateFontString(nil, "ARTWORK")
-    AegisPathfinder.Theme:SetFont(title, "display", 15)
-    title:SetPoint("TOP", f, "TOP", 0, -20)
-    title:SetText(L["Select Your Race"])
+    local _, sub = self.Theme:Chrome(f, L["Select Your Race"],
+        self.Theme:PositionSaver("routeframe"))
 
     -- Route Pack section
     local packHeader = f:CreateFontString(nil, "ARTWORK")
     AegisPathfinder.Theme:SetFont(packHeader, "body", 12)
-    packHeader:SetPoint("TOP", title, "BOTTOM", 0, -12)
+    packHeader:SetPoint("TOP", sub, "BOTTOM", 0, -10)
     packHeader:SetText("|cffffd100Route Pack:|r")
 
     -- Current pack display
@@ -1715,7 +1709,7 @@ function AegisPathfinder:CreateRouteSelectorFrame()
     local lastPackBtn
     local availablePacks = self:GetAvailableRoutePacks()
     for i, pack in ipairs(availablePacks) do
-        local btn = CreateFrame("Button", nil, f, "UIPanelButtonTemplate")
+        local btn = Theme:PanelButton(f)
         btn:SetWidth(200)
         btn:SetHeight(24)
         if lastPackBtn then
@@ -1794,7 +1788,7 @@ function AegisPathfinder:CreateRouteSelectorFrame()
     for i, raceInfo in ipairs(races) do
         local displayName = raceInfo.name
         local routeName = raceInfo.route
-        local btn = CreateFrame("Button", nil, f, "UIPanelButtonTemplate")
+        local btn = Theme:PanelButton(f)
         btn:SetWidth(200)
         btn:SetHeight(30)
         if lastButton then
@@ -1811,8 +1805,6 @@ function AegisPathfinder:CreateRouteSelectorFrame()
     end
 
     -- Close button
-    local closeBtn = CreateFrame("Button", nil, f, "UIPanelCloseButton")
-    closeBtn:SetPoint("TOPRIGHT", f, "TOPRIGHT", -5, -5)
 
     self.routeSelectorFrame = f
 
@@ -2129,26 +2121,18 @@ function AegisPathfinder:CreateStartingZoneSelectorFrame()
     local L = self.Locale
     local f = CreateFrame("Frame", "AegisPathfinderStartingZoneSelectorFrame", UIParent)
     f:SetWidth(380)
-    f:SetHeight(320)
+    f:SetHeight(320 + DIALOG_CHROME)
     f:SetPoint("CENTER", UIParent, "CENTER", 0, 50)
     self.Theme:Panel(f, "panel")
-    f:SetMovable(true)
-    f:EnableMouse(true)
-    f:RegisterForDrag("LeftButton")
-    f:SetScript("OnDragStart", function() this:StartMoving() end)
-    f:SetScript("OnDragStop", function() this:StopMovingOrSizing() end)
     f:SetFrameStrata("DIALOG")
 
-    -- Title
-    local title = f:CreateFontString(nil, "ARTWORK")
-    AegisPathfinder.Theme:SetFont(title, "display", 15)
-    title:SetPoint("TOP", f, "TOP", 0, -20)
-    title:SetText(L["Choose Starting Zone"])
+    local _, sub = self.Theme:Chrome(f, L["Choose Starting Zone"],
+        self.Theme:PositionSaver("startzoneframe"))
 
     -- Description
     local desc = f:CreateFontString(nil, "ARTWORK")
     AegisPathfinder.Theme:SetFont(desc, "body", 12)
-    desc:SetPoint("TOP", title, "BOTTOM", 0, -10)
+    desc:SetPoint("TOP", sub, "BOTTOM", 0, -10)
     desc:SetWidth(340)
     desc:SetText(L["Select which starting zone you want to level through:"])
 
@@ -2169,7 +2153,7 @@ function AegisPathfinder:CreateStartingZoneSelectorFrame()
     -- Zone buttons (will be populated dynamically)
     f.zoneButtons = {}
     for i = 1, 6 do
-        local btn = CreateFrame("Button", nil, buttonContainer, "UIPanelButtonTemplate")
+        local btn = Theme:PanelButton(buttonContainer)
         btn:SetWidth(300)
         btn:SetHeight(28)
         btn:SetPoint("TOP", buttonContainer, "TOP", 0, -(i - 1) * 32)
@@ -2194,8 +2178,6 @@ function AegisPathfinder:CreateStartingZoneSelectorFrame()
     infoText:SetText(L["You can change starting zones from the Options menu"])
 
     -- Close button
-    local closeBtn = CreateFrame("Button", nil, f, "UIPanelCloseButton")
-    closeBtn:SetPoint("TOPRIGHT", f, "TOPRIGHT", -5, -5)
 
     self.startingZoneSelectorFrame = f
     table.insert(UISpecialFrames, "AegisPathfinderStartingZoneSelectorFrame")
@@ -2369,30 +2351,23 @@ end
 function AegisPathfinder:CreateErrorLogFrame()
     local f = CreateFrame("Frame", "AegisPathfinderErrorLogFrame", UIParent)
     f:SetWidth(520)
-    f:SetHeight(360)
+    f:SetHeight(360 + DIALOG_CHROME)
     f:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
     self.Theme:Panel(f, "panel")
-    f:SetMovable(true)
-    f:EnableMouse(true)
-    f:RegisterForDrag("LeftButton")
-    f:SetScript("OnDragStart", function() this:StartMoving() end)
-    f:SetScript("OnDragStop", function() this:StopMovingOrSizing() end)
     f:SetFrameStrata("DIALOG")
     f:Hide()
 
-    local title = f:CreateFontString(nil, "ARTWORK")
-    AegisPathfinder.Theme:SetFont(title, "display", 15)
-    title:SetPoint("TOP", f, "TOP", 0, -16)
-    title:SetText("AEGIS: Pathfinder Error Log")
+    local _, sub = self.Theme:Chrome(f, "Error Log",
+        self.Theme:PositionSaver("errorlogframe"))
 
     local desc = f:CreateFontString(nil, "ARTWORK")
     AegisPathfinder.Theme:SetFont(desc, "body", 12)
-    desc:SetPoint("TOP", title, "BOTTOM", 0, -8)
+    desc:SetPoint("TOP", sub, "BOTTOM", 0, -8)
     desc:SetWidth(480)
     desc:SetText("Most recent errors are at the top. Use Ctrl+C to copy.")
 
     local scrollFrame = CreateFrame("ScrollFrame", "AegisPathfinderErrorLogScrollFrame", f, "UIPanelScrollFrameTemplate")
-    scrollFrame:SetPoint("TOPLEFT", f, "TOPLEFT", 16, -60)
+    scrollFrame:SetPoint("TOPLEFT", f, "TOPLEFT", 16, -(DIALOG_CHROME + 34))
     scrollFrame:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", -32, 16)
 
     local editBox = CreateFrame("EditBox", "AegisPathfinderErrorLogEditBox", scrollFrame)
@@ -2408,8 +2383,6 @@ function AegisPathfinder:CreateErrorLogFrame()
     scrollFrame:SetScrollChild(editBox)
     f.editBox = editBox
 
-    local closeBtn = CreateFrame("Button", nil, f, "UIPanelCloseButton")
-    closeBtn:SetPoint("TOPRIGHT", f, "TOPRIGHT", -5, -5)
 
     f:SetScript("OnShow", function()
         local entries = AegisPathfinder.errorLog or {}

@@ -55,6 +55,8 @@ Theme.texture = {
 	panelBorder = MEDIA .. "panel-border",
 	pillFill    = MEDIA .. "pill-fill",
 	pillBorder  = MEDIA .. "pill-border",
+	capTop      = MEDIA .. "cap-top",
+	capBottom   = MEDIA .. "cap-bottom",
 	tabFill     = MEDIA .. "tab-fill",
 	tabBorder   = MEDIA .. "tab-border",
 	circleFill  = MEDIA .. "circle-fill",
@@ -64,6 +66,26 @@ Theme.texture = {
 	progress    = MEDIA .. "progress-fill",
 	logo        = MEDIA .. "logo",
 	wordmark    = MEDIA .. "wordmark",
+	grip        = MEDIA .. "grip",
+}
+
+--[[ Chrome glyphs.
+
+	The concept draws its own chrome with characters -- a hamburger, a close
+	cross, arrows, chevrons, a tick, a map pin. The 1.12 font renders none of
+	them, so each is a generated mask like every other shape here.
+]]
+Theme.glyph = {
+	menu         = MEDIA .. "icons\\menu",
+	close        = MEDIA .. "icons\\close",
+	plus         = MEDIA .. "icons\\plus",
+	arrowLeft    = MEDIA .. "icons\\arrow-left",
+	arrowRight   = MEDIA .. "icons\\arrow-right",
+	chevronLeft  = MEDIA .. "icons\\chevron-left",
+	chevronRight = MEDIA .. "icons\\chevron-right",
+	tick         = MEDIA .. "icons\\tick",
+	bang         = MEDIA .. "icons\\bang",
+	pin          = MEDIA .. "icons\\pin",
 }
 
 Theme.font = {
@@ -95,6 +117,34 @@ Theme.actionIcon = {
 	t = MEDIA .. "icons\\train",
 	D = MEDIA .. "icons\\die",
 	P = MEDIA .. "icons\\pet",
+}
+
+--[[ The same glyphs, keyed by action name rather than DSL letter.
+
+	The frames read `AegisPathfinder.icons[action]` where action is the parsed
+	name ("ACCEPT", "SETHEARTH"), so this is the table Core.lua publishes as
+	that field. Before the reskin it held Blizzard icon paths, which is why the
+	panels were still drawing stock quest-log art on a themed background.
+]]
+Theme.actionIconByName = {
+	ACCEPT         = Theme.actionIcon.A,
+	TURNIN         = Theme.actionIcon.T,
+	COMPLETE       = Theme.actionIcon.C,
+	NOTE           = Theme.actionIcon.N,
+	RUN            = Theme.actionIcon.R,
+	MAP            = Theme.actionIcon.R,
+	HEARTH         = Theme.actionIcon.H,
+	SETHEARTH      = Theme.actionIcon.h,
+	FLY            = Theme.actionIcon.F,
+	GETFLIGHTPOINT = Theme.actionIcon.f,
+	BUY            = Theme.actionIcon.B,
+	BOAT           = Theme.actionIcon.b,
+	KILL           = Theme.actionIcon.K,
+	GRIND          = Theme.actionIcon.G,
+	USE            = Theme.actionIcon.U,
+	TRAIN          = Theme.actionIcon.t,
+	DIE            = Theme.actionIcon.D,
+	PET            = Theme.actionIcon.P,
 }
 
 Theme.CORNER = 10        -- --radius:10px
@@ -220,6 +270,20 @@ function Theme:Strip(frame, colorName, alpha)
 	t:SetAllPoints(frame)
 	self:Tint(t, colorName or "panel2", alpha)
 	return t
+end
+
+--[[ Strip that meets a panel edge.
+
+	The concept clips its header and footer to the window's corner radius with
+	overflow:hidden. 1.12 cannot clip, so a flat Strip laid across the top of a
+	panel pokes square corners out past the rounded ones. This nine-slices a
+	mask that is rounded on the edge it touches and square on the edge that
+	meets the body. `edge` is "top" or "bottom".
+]]
+function Theme:CapStrip(frame, colorName, edge, alpha)
+	return self:NineSlice(frame,
+		edge == "bottom" and self.texture.capBottom or self.texture.capTop,
+		"BACKGROUND", colorName or "panel2", alpha)
 end
 
 -- 1px rule in the concept's border colour.
@@ -351,6 +415,45 @@ function Theme:Pill(parent, label, width, height)
 	end
 
 	b:SetActive(false)
+	return b
+end
+
+--[[ Panel button.
+
+	The concept has no plain button -- every action in it is a pill -- so this
+	is `.pill` sized for a panel row. It shadows SetText/GetText so it drops
+	straight into call sites that were built around UIPanelButtonTemplate, and
+	uppercases like the concept does in CSS.
+]]
+function Theme:PanelButton(parent, label, width, height)
+	local b = self:Pill(parent, label, width or 150, height or 22)
+
+	function b:SetText(t) self.label:SetText(string.upper(t or "")) end
+	function b:GetText() return self.label:GetText() end
+
+	b:SetScript("OnEnter", function()
+		if this.__active then return end
+		this.fill:SetTint("tabbg")
+		Theme:TextColor(this.label, "text")
+	end)
+	b:SetScript("OnLeave", function()
+		if this.__active then return end
+		this.fill:SetTint("panel3")
+		Theme:TextColor(this.label, "textDim")
+	end)
+
+	return b
+end
+
+--[[ Close chip.
+
+	The concept's header ✕. Replaces UIPanelCloseButton, whose art is Blizzard
+	dialog chrome and whose built-in handler hides its own parent -- so the
+	frame to hide is passed explicitly here rather than inferred.
+]]
+function Theme:CloseChip(parent, target)
+	local b = self:ChipButton(parent, "close")
+	b:SetScript("OnClick", function() (target or parent):Hide() end)
 	return b
 end
 
@@ -521,6 +624,175 @@ function Theme:Band(parent, height)
 	end
 
 	return f
+end
+
+--[[ Bare glyph button.
+
+	A clickable mask with no chrome of its own -- the concept's `.nav-btn` and
+	`.navrow-arrow`, which are transparent until hovered and then take the
+	accent. `size` is the glyph, `box` the click target around it.
+]]
+function Theme:GlyphButton(parent, glyphName, size, box)
+	local b = CreateFrame("Button", nil, parent)
+	size = size or 12
+	b:SetWidth(box or (size + 8))
+	b:SetHeight(box or (size + 8))
+
+	local g = b:CreateTexture(nil, "ARTWORK")
+	g:SetTexture(self.glyph[glyphName] or glyphName)
+	g:SetWidth(size); g:SetHeight(size)
+	g:SetPoint("CENTER", b, "CENTER", 0, 0)
+	self:Tint(g, "textDim")
+
+	b.glyph = g
+	b.__idle, b.__hover = "textDim", "accent"
+
+	--- Recolour for a button whose resting and hover tints differ from the
+	--- nav-row default (the header chips sit on panel2 and go white).
+	function b:SetTints(idle, hover)
+		self.__idle, self.__hover = idle, hover
+		Theme:Tint(self.glyph, idle)
+	end
+
+	b:SetScript("OnEnter", function() Theme:Tint(this.glyph, this.__hover) end)
+	b:SetScript("OnLeave", function() Theme:Tint(this.glyph, this.__idle) end)
+
+	return b
+end
+
+--[[ Header chip.
+
+	The concept's `.chip-btn`: a 24px rounded square with a 1px border and a
+	barely-there fill, carrying one glyph. Used for the hamburger and close
+	controls in every panel header.
+]]
+function Theme:ChipButton(parent, glyphName, size)
+	local b = self:GlyphButton(parent, glyphName, 10, size or 20)
+
+	local fill = self:NineSlice(b, self.texture.tabFill, "BACKGROUND", "text", 0.04)
+	self:NineSlice(b, self.texture.tabBorder, "BORDER", "border")
+	b.fill = fill
+	b:SetTints("textDim", "text")
+
+	b:SetScript("OnEnter", function()
+		this.fill:SetTint("text", 0.10)
+		Theme:Tint(this.glyph, this.__hover)
+	end)
+	b:SetScript("OnLeave", function()
+		this.fill:SetTint("text", 0.04)
+		Theme:Tint(this.glyph, this.__idle)
+	end)
+
+	return b
+end
+
+--[[ Panel header.
+
+	Every floating window in the concept wears the same one: a `--panel-2`
+	strip with the PATHFINDER wordmark centred, optional chips either side, a
+	1px rule beneath it, and the whole strip as the window's drag handle.
+
+	The wordmark is a pre-rendered texture rather than a font string -- the
+	concept sets .18em letter-spacing, which 1.12 font strings cannot do.
+]]
+function Theme:Header(frame, height)
+	local h = CreateFrame("Frame", nil, frame)
+	h:SetHeight(height or 30)
+	h:SetPoint("TOPLEFT", frame, "TOPLEFT", 1, -1)
+	h:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -1, -1)
+	self:CapStrip(h, "panel2", "top")
+	self:Divider(h, h, "BOTTOMLEFT", 0, 0)
+
+	local mark = h:CreateTexture(nil, "ARTWORK")
+	mark:SetTexture(self.texture.wordmark)
+	mark:SetWidth(128); mark:SetHeight(16)
+	mark:SetPoint("CENTER", h, "CENTER", 0, 0)
+	self:Tint(mark, "text")
+
+	h.wordmark = mark
+
+	--- Make the window follow this header. The position is handed back through
+	--- `onMoved` so the caller can persist it.
+	function h:MakeDragHandle(target, onMoved)
+		target:SetMovable(true)
+		target:EnableMouse(true)
+		self:EnableMouse(true)
+		self:RegisterForDrag("LeftButton")
+		self:SetScript("OnDragStart", function() target:StartMoving() end)
+		self:SetScript("OnDragStop", function()
+			target:StopMovingOrSizing()
+			if onMoved then onMoved(target) end
+		end)
+		return self
+	end
+
+	return h
+end
+
+--[[ Subhead.
+
+	The concept's `.subhead`: a `--tabbg` strip under the header naming what
+	this particular window is, in small uppercase. The header carries the
+	product, the subhead carries the page.
+]]
+function Theme:Subhead(frame, anchor, text)
+	local s = CreateFrame("Frame", nil, frame)
+	s:SetHeight(18)
+	s:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 0, 0)
+	s:SetPoint("TOPRIGHT", anchor, "BOTTOMRIGHT", 0, 0)
+	self:Strip(s, "tabbg")
+	self:Divider(s, s, "BOTTOMLEFT", 0, 0)
+
+	local fs = s:CreateFontString(nil, "OVERLAY")
+	self:SetFont(fs, "display", 10)
+	fs:SetPoint("LEFT", s, "LEFT", 14, 0)
+	fs:SetText(string.upper(text or ""))
+	self:TextColor(fs, "textDim")
+
+	s.label = fs
+	return s
+end
+
+--[[ The whole window chrome in one call.
+
+	Header with the wordmark, a close chip, the drag wiring, and -- when the
+	window needs to name itself -- a subhead beneath. Returns both so callers
+	can anchor their body to whichever is lowest.
+
+	`onMoved` receives the frame after a drag so the caller can persist where
+	it was dropped.
+]]
+function Theme:Chrome(frame, subtitle, onMoved)
+	local header = self:Header(frame)
+	header:MakeDragHandle(frame, onMoved)
+
+	local close = self:CloseChip(header, frame)
+	close:SetPoint("RIGHT", header, "RIGHT", -8, 0)
+
+	local sub = subtitle and self:Subhead(frame, header, subtitle) or nil
+
+	frame.header, frame.subhead = header, sub
+	return header, sub
+end
+
+--- Persist a frame's position under `key` in the profile, as a drag callback.
+function Theme:PositionSaver(key)
+	return function(f)
+		local point, _, _, x, y = f:GetPoint()
+		local db = AegisPathfinder.db and AegisPathfinder.db.profile
+		if not db then return end
+		db[key .. "point"], db[key .. "x"], db[key .. "y"] = point, x, y
+	end
+end
+
+--- Restore what PositionSaver stored. No saved position leaves the frame's
+--- own anchors alone.
+function Theme:RestorePosition(frame, key)
+	local db = AegisPathfinder.db and AegisPathfinder.db.profile
+	if not db or not db[key .. "point"] then return false end
+	frame:ClearAllPoints()
+	frame:SetPoint(db[key .. "point"], db[key .. "x"], db[key .. "y"])
+	return true
 end
 
 -- Action-type icon. Falls back to the note glyph for an unknown code so a

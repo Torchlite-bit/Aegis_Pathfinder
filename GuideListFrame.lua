@@ -2,11 +2,15 @@ local AegisPathfinder = AegisPathfinder
 local ww = WidgetWarlock
 local Theme = AegisPathfinder.Theme
 
-local title
-
 local NUMROWS, COLWIDTH = 16, 210
 local ROWHEIGHT = 305 / NUMROWS
 local TOTALROWS = NUMROWS * 3
+
+-- Header (30) + subhead (18) + the category tab strip below it. The tab bar
+-- used to start at -28 while the first row started at -30, so the top two rows
+-- of every column were drawn underneath it.
+local HEADER_H, SUBHEAD_H, TABSTRIP_H = 30, 18, 30
+local CHROME_TOP = HEADER_H + SUBHEAD_H + TABSTRIP_H
 
 local offset = 0
 local rows = {}
@@ -108,25 +112,28 @@ local frame = CreateFrame("Frame", "AegisPathfinderGuideList", UIParent)
 AegisPathfinder.guidelistframe = frame
 frame:SetFrameStrata("DIALOG")
 frame:SetWidth(660)
-frame:SetHeight(320 + 28)
+frame:SetHeight(CHROME_TOP + 305 + 14)
 frame:SetPoint("TOPRIGHT", AegisPathfinder.statusframe, "BOTTOMRIGHT")
 Theme:Panel(frame, "panel")
 frame:Hide()
 
-local closebutton = CreateFrame("Button", nil, frame, "UIPanelCloseButton")
-closebutton:SetPoint("TOPRIGHT", frame, "TOPRIGHT")
-frame.closebutton = closebutton
+-- The concept's window chrome: wordmark, close chip, drag handle, and a
+-- subhead naming this window. It replaces the title that used to float
+-- outside the frame, which is also why this panel could not be moved.
+local header, subhead = Theme:Chrome(frame, "Guide List",
+    Theme:PositionSaver("guidelistframe"))
+-- Branch state belongs on the subhead now that there is one.
+frame.title = subhead.label
 
-local title = ww.SummonFontString(frame, nil, "SubZoneTextFont", nil, "BOTTOM", frame, "TOP")
-local fontname, fontheight, fontflags = title:GetFont()
-title:SetFont(fontname, 18, fontflags)
-title:SetText("Guide List")
-frame.title = title
-
--- Level filter checkbox
-local filterCheck = ww.SummonCheckBox(18, frame, "TOPLEFT", 15, -6)
-local filterLabel = ww.SummonFontString(filterCheck, "OVERLAY", "GameFontNormalSmall", "Level filter (+/-5)", "LEFT",
-    filterCheck, "RIGHT", 2, 0)
+-- Level filter, on the subhead strip rather than a row of its own -- the
+-- panel is a list, and every pixel of chrome is a guide it cannot show.
+local filterCheck = Theme:StepCheck(subhead, 13)
+filterCheck:SetPoint("LEFT", subhead, "LEFT", 150, 0)
+local filterLabel = subhead:CreateFontString(nil, "OVERLAY")
+Theme:SetFont(filterLabel, "body", 10)
+filterLabel:SetPoint("LEFT", filterCheck, "RIGHT", 5, 0)
+filterLabel:SetText("Level filter (+/-5)")
+Theme:TextColor(filterLabel, "textDim")
 filterCheck:SetScript("OnClick", function()
     levelFilterOn = not levelFilterOn
     filterCheck:SetChecked(levelFilterOn)
@@ -156,7 +163,8 @@ local TAB_W, TAB_H, TAB_GAP = 84, 22, 2
 
 for idx, def in ipairs(CATEGORY_TABS) do
     local tab = Theme:Tab(frame, def.label, TAB_W, TAB_H)
-    tab:SetPoint("TOPLEFT", frame, "TOPLEFT", 12 + (idx - 1) * (TAB_W + TAB_GAP), -28)
+    tab:SetPoint("TOPLEFT", frame, "TOPLEFT", 12 + (idx - 1) * (TAB_W + TAB_GAP),
+        -(HEADER_H + SUBHEAD_H + 4))
     tab.categoryKey = def.key
 
     local key = def.key
@@ -171,12 +179,10 @@ end
 
 AegisPathfinder.guidecategorytabs = categoryTabs
 
--- Return to Main button
-local returnBtn = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
-returnBtn:SetWidth(120)
-returnBtn:SetHeight(20)
-returnBtn:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -32, -6)
-returnBtn:SetText("Return to Main")
+-- Return to Main sits in the header beside the close chip, where the concept
+-- puts window-level actions.
+local returnBtn = Theme:PanelButton(header, "Return to Main", 120, 18)
+returnBtn:SetPoint("RIGHT", frame.header, "RIGHT", -34, 0)
 returnBtn:SetScript("OnClick", function()
     AegisPathfinder:ReturnFromBranch()
     AegisPathfinder:UpdateGuideListPanel()
@@ -196,7 +202,7 @@ for i = 1, TOTALROWS do
 
     local row = CreateFrame("CheckButton", nil, frame)
     if i == 1 then
-        row:SetPoint("TOPLEFT", anchor, point, 15, -30)
+        row:SetPoint("TOPLEFT", anchor, point, 15, -CHROME_TOP)
     else
         row:SetPoint("TOPLEFT", anchor, point)
     end
@@ -236,7 +242,7 @@ end
 
 -- Slider for scrolling
 local slider = CreateFrame("Slider", "AegisPathfinderGuideListSlider", frame, "UIPanelScrollBarTemplate")
-slider:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -8, -45)
+slider:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -8, -CHROME_TOP)
 slider:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -8, 25)
 slider:SetMinMaxValues(0, 100)
 slider:SetValueStep(1)
@@ -254,10 +260,14 @@ slider:SetValue(0)
 
 frame:SetScript("OnShow", function()
     offset = 0
-    local quad, vhalf, hhalf = AegisPathfinder.GetQuadrant(AegisPathfinder.statusframe)
-    local anchpoint = (vhalf == "TOP" and "BOTTOM" or "TOP") .. hhalf
-    this:ClearAllPoints()
-    this:SetPoint(quad, AegisPathfinder.statusframe, anchpoint)
+    -- Snap beside the status card only if the player has not dragged this
+    -- window somewhere of their own; otherwise reopening would undo the move.
+    if not Theme:RestorePosition(this, "guidelistframe") then
+        local quad, vhalf, hhalf = AegisPathfinder.GetQuadrant(AegisPathfinder.statusframe)
+        local anchpoint = (vhalf == "TOP" and "BOTTOM" or "TOP") .. hhalf
+        this:ClearAllPoints()
+        this:SetPoint(quad, AegisPathfinder.statusframe, anchpoint)
+    end
     AegisPathfinder:UpdateGuideListPanel()
     this:SetAlpha(0)
     this:SetScript("OnUpdate", ww.FadeIn)
@@ -297,9 +307,9 @@ function AegisPathfinder:UpdateGuideListPanel()
 
     -- Update title to show branch status
     if self.db.char.isbranching then
-        frame.title:SetText("Guide List |cff00ff00(Branching)|r")
+        frame.title:SetText("GUIDE LIST |cff00ff00(BRANCHING)|r")
     else
-        frame.title:SetText("Guide List")
+        frame.title:SetText("GUIDE LIST")
     end
 
     -- Show/hide Return to Main button

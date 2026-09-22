@@ -24,6 +24,9 @@ local ROW_H = 16
 local PAD = 12
 local WIDTH = 260
 
+-- Header plus subhead, the concept's chrome on every window.
+local CHROME_TOP = 30 + 18
+
 local rows = {}
 local offset = 0
 
@@ -32,29 +35,18 @@ function AegisPathfinder:CreateMaterialsPanel()
 	self.materialsframe = frame
 	frame:SetFrameStrata("DIALOG")
 	frame:SetWidth(WIDTH)
-	frame:SetHeight(PAD * 2 + 44 + ROWS * ROW_H)
+	frame:SetHeight(CHROME_TOP + PAD * 2 + 26 + ROWS * ROW_H)
 	frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
 	Theme:Panel(frame, "panel")
 	frame:Hide()
 
-	frame:SetMovable(true)
-	frame:EnableMouse(true)
-	frame:RegisterForDrag("LeftButton")
-	frame:SetScript("OnDragStart", function() frame:StartMoving() end)
-	frame:SetScript("OnDragStop", function() frame:StopMovingOrSizing() end)
-
-	local closebutton = CreateFrame("Button", nil, frame, "UIPanelCloseButton")
-	closebutton:SetPoint("TOPRIGHT", frame, "TOPRIGHT")
-
-	local title = frame:CreateFontString(nil, "OVERLAY")
-	Theme:SetFont(title, "display", 14)
-	title:SetPoint("TOPLEFT", frame, "TOPLEFT", PAD, -10)
-	title:SetText("MATERIALS")
-	Theme:TextColor(title, "accent")
+	-- The whole window drags by its header now, like every other panel, rather
+	-- than by any pixel of its body.
+	Theme:Chrome(frame, "Materials", Theme:PositionSaver("materialsframe"))
 
 	local subtitle = frame:CreateFontString(nil, "OVERLAY")
 	Theme:SetFont(subtitle, "body", 10)
-	subtitle:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -3)
+	subtitle:SetPoint("TOPLEFT", frame, "TOPLEFT", PAD, -(CHROME_TOP + 5))
 	subtitle:SetPoint("RIGHT", frame, "RIGHT", -PAD, 0)
 	subtitle:SetJustifyH("LEFT")
 	Theme:TextColor(subtitle, "textDim")
@@ -65,7 +57,7 @@ function AegisPathfinder:CreateMaterialsPanel()
 	for i = 1, ROWS do
 		local row = CreateFrame("Frame", nil, frame)
 		row:SetHeight(ROW_H)
-		row:SetPoint("TOPLEFT", frame, "TOPLEFT", PAD, -(44 + (i - 1) * ROW_H))
+		row:SetPoint("TOPLEFT", frame, "TOPLEFT", PAD, -(CHROME_TOP + 26 + (i - 1) * ROW_H))
 		row:SetPoint("RIGHT", frame, "RIGHT", -PAD - 18, 0)
 
 		local qty = row:CreateFontString(nil, "OVERLAY")
@@ -88,7 +80,7 @@ function AegisPathfinder:CreateMaterialsPanel()
 
 	local slider = CreateFrame("Slider", "AegisPathfinderMaterialsSlider", frame,
 		"UIPanelScrollBarTemplate")
-	slider:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -8, -48)
+	slider:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -8, -(CHROME_TOP + 26))
 	slider:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -8, 12)
 	slider:SetMinMaxValues(0, 0)
 	slider:SetValueStep(1)

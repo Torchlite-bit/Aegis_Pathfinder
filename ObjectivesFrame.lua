@@ -1,3 +1,20 @@
+--[[ The objectives panel -- the guide window, and the addon's main surface.
+
+	Laid out as the concept's `#objectives` panel, top to bottom:
+
+	  .panel-header       header strip: ☰ · PATHFINDER · ✕, and the drag handle
+	  .tabbar             the guide you are on, the one you branched to, and +
+	  .navrow             ← step number → , with the step count on the right
+	  .zprogress-track    4px bar of guide completion
+	  .steps-list         the steps
+	  .panel-footer-hint  the slash commands
+
+	Rows follow the concept's two models. Most steps are a `.zrow`: a dot, an
+	action glyph, the step title, and the note beneath it in grey. ACCEPT and
+	TURNIN steps become a full-width `.zband` once they are the current step or
+	are done -- red while outstanding, green once satisfied -- which is how the
+	concept makes "there is a quest to hand in here" impossible to scroll past.
+]]
 
 local AegisPathfinder = AegisPathfinder
 local L = AegisPathfinder.Locale
@@ -5,21 +22,32 @@ local ww = WidgetWarlock
 local Theme = AegisPathfinder.Theme
 
 
-local ROWHEIGHT = 30
-local ROWOFFSET = 6
-local TABBAR_H = 26
-local HEADER_HEIGHT = 55 + TABBAR_H
+-- Concept geometry. CHROME_TOP is everything above the step list; the list
+-- and the footer divide what is left.
+local HEADER_H   = 30
+local TABBAR_H   = 26
+local NAVROW_H   = 26
+local PROGRESS_H = 4
+local FOOTER_H   = 24
+local CHROME_TOP = HEADER_H + TABBAR_H + NAVROW_H + PROGRESS_H
+
+local ROWHEIGHT = 44          -- title over note, as the concept stacks them
+local ROWPAD    = 14          -- .zrow padding-left
+local DOTSIZE   = 14
+local ICONSIZE  = 16
+
 local DEFAULT_WIDTH = 630
-local DEFAULT_HEIGHT = 305 + 28
+local DEFAULT_HEIGHT = 420
 local MIN_WIDTH = 400
-local MIN_HEIGHT = 200
+local MIN_HEIGHT = 240
 local MAX_ROWS = 30
-local NUMROWS = math.floor((305 - HEADER_HEIGHT) / ROWHEIGHT)
+local NUMROWS = 1
 
 
 local offset = 0
 local rows = {}
-local scrollbar, upbutt, downbutt, title, completed
+local scrollbar, upbutt, downbutt
+local navStepNum, navCount, guideProgress
 
 
 local frame = CreateFrame("Frame", "AegisPathfinderObjectives", UIParent)
@@ -33,44 +61,36 @@ frame:Hide()
 frame:SetScript("OnShow", function() AegisPathfinder:UpdateObjectivePanel() end)
 table.insert(UISpecialFrames, "AegisPathfinderObjectives")
 
--- Make frame resizable
 frame:SetResizable(true)
 frame:SetMinResize(MIN_WIDTH, MIN_HEIGHT)
 frame:SetMaxResize(1200, 800)
 
--- Resize grip in bottom-right corner
+
+--[[ Resize grip.
+
+	One generated texture rather than six placed dots: the cluster keeps its
+	spacing, and hover is a single tint instead of a loop.
+]]
 local grip = CreateFrame("Frame", nil, frame)
-grip:SetWidth(16)
-grip:SetHeight(16)
-grip:SetPoint("BOTTOMRIGHT", -2, 2)
+grip:SetWidth(14)
+grip:SetHeight(14)
+grip:SetPoint("BOTTOMRIGHT", -4, 4)
 grip:EnableMouse(true)
-grip:SetFrameLevel(frame:GetFrameLevel() + 2)
+grip:SetFrameLevel(frame:GetFrameLevel() + 4)
 
-local gripDots = {}
-for x = 1, 3 do
-	for y = 1, 4 - x do
-		local dot = grip:CreateTexture(nil, "OVERLAY")
-		dot:SetWidth(2)
-		dot:SetHeight(2)
-		dot:SetTexture(Theme.texture.solid)
-		Theme:Tint(dot, "textDim", 0.55)
-		dot:SetPoint("BOTTOMRIGHT", -x * 4, y * 4)
-		table.insert(gripDots, dot)
-	end
-end
+local gripTex = grip:CreateTexture(nil, "OVERLAY")
+gripTex:SetTexture(Theme.texture.grip)
+gripTex:SetAllPoints(grip)
+Theme:Tint(gripTex, "textDim", 0.55)
 
-grip:SetScript("OnEnter", function()
-	for _, dot in ipairs(gripDots) do Theme:Tint(dot, "accent", 1) end
-end)
-grip:SetScript("OnLeave", function()
-	for _, dot in ipairs(gripDots) do Theme:Tint(dot, "textDim", 0.55) end
-end)
+grip:SetScript("OnEnter", function() Theme:Tint(gripTex, "accent", 1) end)
+grip:SetScript("OnLeave", function() Theme:Tint(gripTex, "textDim", 0.55) end)
 grip:SetScript("OnMouseDown", function()
-	for _, dot in ipairs(gripDots) do Theme:Tint(dot, "accentGlow", 1) end
+	Theme:Tint(gripTex, "accentGlow", 1)
 	frame:StartSizing("BOTTOMRIGHT")
 end)
 grip:SetScript("OnMouseUp", function()
-	for _, dot in ipairs(gripDots) do Theme:Tint(dot, "textDim", 0.55) end
+	Theme:Tint(gripTex, "textDim", 0.55)
 	frame:StopMovingOrSizing()
 	AegisPathfinder:OnObjectiveFrameResized()
 end)
@@ -83,7 +103,6 @@ end)
 
 
 local function ResetScrollbar()
-	local f = this
 	local newval = math.max(0, (AegisPathfinder.current or 0) - NUMROWS / 2 - 1)
 	local steps = AegisPathfinder.actions and table.getn(AegisPathfinder.actions) or 0
 
@@ -110,103 +129,48 @@ local function HideTooltip()
 	end
 end
 
-local function ShowTooltip()
-	local f = this
-	if f.text:GetStringWidth() <= f:GetWidth() then return end
-
-	GameTooltip:SetOwner(f, "ANCHOR_RIGHT")
-	GameTooltip:SetText(f.text:GetText(), nil, nil, nil, nil, true)
-end
-
-local function CreateButton(parent, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20)
-	local b = CreateFrame("Button", nil, parent)
-	if AegisPathfinder.select("#", a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20) > 0 then b:SetPoint(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20) end
-	b:SetWidth(80)
-	b:SetHeight(22)
-
-	-- Themed pill, replacing the Blizzard panel-button artwork. SetText is
-	-- shadowed so existing call sites keep working unchanged.
-	b.__fill = Theme:NineSlice(b, Theme.texture.pillFill, "BACKGROUND", "panel3")
-	b.__border = Theme:NineSlice(b, Theme.texture.pillBorder, "BORDER", "border")
-
-	local label = b:CreateFontString(nil, "OVERLAY")
-	Theme:SetFont(label, "display", 11)
-	label:SetPoint("CENTER", b, "CENTER", 0, 0)
-	Theme:TextColor(label, "textDim")
-	b.__label = label
-
-	function b:SetText(t) self.__label:SetText(string.upper(t or "")) end
-	function b:GetText() return self.__label:GetText() end
-
-	b:SetScript("OnEnter", function()
-		this.__fill:SetTint("tabbg")
-		Theme:TextColor(this.__label, "text")
-	end)
-	b:SetScript("OnLeave", function()
-		this.__fill:SetTint("panel3")
-		Theme:TextColor(this.__label, "textDim")
-	end)
-
-	return b
-end
-
 
 function AegisPathfinder:UpdateObjectivePanel()
 	frame:SetScript("OnShow", nil)
-	local guidebutton = CreateButton(frame, "BOTTOMRIGHT", -24, 6)
-	guidebutton:SetText("Guides")
-	guidebutton:SetScript("OnClick", function() frame:Hide(); AegisPathfinder.guidelistframe:Show() end)
 
-	local configbutton = CreateButton(frame, "RIGHT", guidebutton, "LEFT")
-	configbutton:SetText(L["Config"])
-	configbutton:SetScript("OnClick", function() frame:Hide(); AegisPathfinder.optionsframe:Show() end)
+	--[[ Header.
 
-	local routebutton = CreateButton(frame, "RIGHT", configbutton, "LEFT")
-	routebutton:SetText("Route")
-	routebutton:SetScript("OnClick", function() frame:Hide(); AegisPathfinder:ShowRouteSelector() end)
+		Every window in the concept wears the same strip, and it is what you
+		drag the window by -- which is why the panel could not be moved before:
+		it had a floating title above the frame and no handle at all.
+	]]
+	local header = Theme:Header(frame, HEADER_H)
+	header:MakeDragHandle(frame, Theme:PositionSaver("objframe"))
 
-	local materialsbutton = CreateButton(frame, "RIGHT", routebutton, "LEFT")
-	materialsbutton:SetText("Materials")
-	materialsbutton:SetScript("OnClick", function() AegisPathfinder:ToggleMaterialsPanel() end)
-	materialsbutton:SetScript("OnEnter", function()
-		GameTooltip:SetOwner(this, "ANCHOR_TOP")
-		GameTooltip:SetText("Reagents the rest of this guide still needs", nil, nil, nil, nil, true)
+	local menuChip = Theme:ChipButton(header, "menu")
+	menuChip:SetPoint("LEFT", header, "LEFT", 8, 0)
+	menuChip:SetScript("OnClick", function()
+		frame:Hide()
+		AegisPathfinder.optionsframe:Show()
 	end)
-	materialsbutton:SetScript("OnLeave", function() GameTooltip:Hide() end)
-
-	-- Return to Main button (only visible when branching)
-	local returnbutton = CreateButton(frame, "RIGHT", materialsbutton, "LEFT")
-	returnbutton:SetWidth(100)
-	returnbutton:SetText("Return Main")
-	returnbutton:SetScript("OnClick", function() AegisPathfinder:ReturnFromBranch() end)
-	returnbutton:SetScript("OnEnter", function()
-		GameTooltip:SetOwner(this, "ANCHOR_TOP")
-		if AegisPathfinder.db.char.branchsavedguide then
-			GameTooltip:SetText("Return to: " .. AegisPathfinder.db.char.branchsavedguide)
-		else
-			GameTooltip:SetText("Return to main route")
-		end
+	menuChip:SetScript("OnEnter", function()
+		this.fill:SetTint("text", 0.10)
+		Theme:Tint(this.glyph, "text")
+		GameTooltip:SetOwner(this, "ANCHOR_BOTTOM")
+		GameTooltip:SetText(L["Config"])
 	end)
-	returnbutton:SetScript("OnLeave", function() GameTooltip:Hide() end)
-	frame.returnbutton = returnbutton
+	menuChip:SetScript("OnLeave", function()
+		this.fill:SetTint("text", 0.04)
+		Theme:Tint(this.glyph, "textDim")
+		GameTooltip:Hide()
+	end)
 
-	if AegisPathfinder.db.char.debug then
-		local b = CreateButton(frame, "RIGHT", returnbutton, "LEFT")
-		b:SetText("Debug All")
-		b:SetScript("OnClick", function() frame:Hide(); self:DebugGuideSequence(true) end)
-	end
+	local closeChip = Theme:ChipButton(header, "close")
+	closeChip:SetPoint("RIGHT", header, "RIGHT", -8, 0)
+	closeChip:SetScript("OnClick", function() frame:Hide() end)
 
-	title = frame:CreateFontString(nil, "OVERLAY")
-	Theme:SetFont(title, "display", 18)
-	title:SetPoint("BOTTOM", frame, "TOP", 0, 4)
-	Theme:TextColor(title, "text")
+	frame.header = header
 
 	--[[ Tab bar.
 
 		The concept's model for the branch system: the guide you are on is a
 		tab, branching opens a second one beside it, and closing that tab is
-		how you come back. The addon expressed the same thing as a button plus
-		a status tag, which says less about where you are.
+		how you come back.
 
 		The badge marks whether the main guide is authored (XP) or a
 		placeholder (TPL) -- the same signal the guide list carries, in the one
@@ -214,13 +178,14 @@ function AegisPathfinder:UpdateObjectivePanel()
 	]]
 	local tabbar = CreateFrame("Frame", nil, frame)
 	tabbar:SetHeight(TABBAR_H)
-	tabbar:SetPoint("TOPLEFT", frame, "TOPLEFT", 6, -4)
-	tabbar:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -26, -4)
+	tabbar:SetPoint("TOPLEFT", header, "BOTTOMLEFT", 0, 0)
+	tabbar:SetPoint("TOPRIGHT", header, "BOTTOMRIGHT", 0, 0)
 	Theme:Strip(tabbar, "tabbg")
+	Theme:Divider(tabbar, tabbar, "BOTTOMLEFT", 0, 0)
 
 	local function MakeTab(width)
 		local t = CreateFrame("Button", nil, tabbar)
-		t:SetHeight(TABBAR_H - 4)
+		t:SetHeight(TABBAR_H - 5)
 		t:SetWidth(width)
 		t.fill = Theme:NineSlice(t, Theme.texture.tabFill, "BACKGROUND", "tabbg")
 		t.label = t:CreateFontString(nil, "OVERLAY")
@@ -265,136 +230,185 @@ function AegisPathfinder:UpdateObjectivePanel()
 	branchTab.label:SetPoint("LEFT", branchTab, "LEFT", 8, 0)
 	branchTab.label:SetPoint("RIGHT", branchTab, "RIGHT", -20, 0)
 
-	local branchClose = CreateFrame("Button", nil, branchTab)
-	branchClose:SetWidth(14)
-	branchClose:SetHeight(14)
+	local branchClose = Theme:GlyphButton(branchTab, "close", 8, 14)
 	branchClose:SetPoint("RIGHT", branchTab, "RIGHT", -4, 0)
-	local closeGlyph = branchClose:CreateFontString(nil, "OVERLAY")
-	Theme:SetFont(closeGlyph, "body", 11)
-	closeGlyph:SetPoint("CENTER", branchClose, "CENTER", 0, 0)
-	closeGlyph:SetText("x")
-	Theme:TextColor(closeGlyph, "textDim")
 	branchClose:SetScript("OnClick", function() AegisPathfinder:ReturnFromBranch() end)
 	branchClose:SetScript("OnEnter", function()
-		Theme:TextColor(closeGlyph, "text")
+		Theme:Tint(this.glyph, "text")
 		GameTooltip:SetOwner(this, "ANCHOR_BOTTOM")
 		GameTooltip:SetText("Close this branch and return")
 	end)
 	branchClose:SetScript("OnLeave", function()
-		Theme:TextColor(closeGlyph, "textDim")
+		Theme:Tint(this.glyph, "textDim")
 		GameTooltip:Hide()
 	end)
 	branchTab:Hide()
 
-	local addTab = CreateFrame("Button", nil, tabbar)
-	addTab:SetWidth(20)
-	addTab:SetHeight(TABBAR_H - 8)
+	local addTab = Theme:GlyphButton(tabbar, "plus", 10, TABBAR_H - 9)
 	addTab:SetPoint("LEFT", branchTab, "RIGHT", 4, 0)
-	Theme:NineSlice(addTab, Theme.texture.tabFill, "BACKGROUND", "panel3")
-	local addGlyph = addTab:CreateFontString(nil, "OVERLAY")
-	Theme:SetFont(addGlyph, "display", 14)
-	addGlyph:SetPoint("CENTER", addTab, "CENTER", 0, 0)
-	addGlyph:SetText("+")
-	Theme:TextColor(addGlyph, "textDim")
+	Theme:NineSlice(addTab, Theme.texture.tabBorder, "BORDER", "subtle")
 	addTab:SetScript("OnClick", function()
 		frame:Hide()
 		AegisPathfinder.guidelistframe:Show()
 	end)
 	addTab:SetScript("OnEnter", function()
-		Theme:TextColor(addGlyph, "accent")
+		Theme:Tint(this.glyph, "accent")
 		GameTooltip:SetOwner(this, "ANCHOR_BOTTOM")
 		GameTooltip:SetText("Branch to another guide")
 	end)
 	addTab:SetScript("OnLeave", function()
-		Theme:TextColor(addGlyph, "textDim")
+		Theme:Tint(this.glyph, "textDim")
 		GameTooltip:Hide()
 	end)
 
 	frame.tabbar = tabbar
 	frame.mainTab, frame.branchTab, frame.addTab = mainTab, branchTab, addTab
 
-	-- Current objective header (prominent display)
-	local currentHeader = CreateFrame("Frame", nil, frame)
-	currentHeader:SetHeight(50)
-	currentHeader:SetPoint("TOPLEFT", frame, "TOPLEFT", 6, -(6 + TABBAR_H))
-	currentHeader:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -26, -(6 + TABBAR_H))
-	Theme:Strip(currentHeader, "panel2")
-	Theme:Divider(currentHeader, currentHeader, "BOTTOMLEFT", 0, 0)
+	--[[ Nav row: ← N → , with the count on the right.
 
-	local currentIcon = ww.SummonTexture(currentHeader, nil, 36, 36, nil, "LEFT", currentHeader, "LEFT", 8, 0)
-	local currentText = currentHeader:CreateFontString(nil, "OVERLAY")
-	Theme:SetFont(currentText, "display", 15)
-	currentText:SetPoint("LEFT", currentIcon, "RIGHT", 8, 6)
-	Theme:TextColor(currentText, "text")
+		This replaces the 50px "current objective" block the panel used to
+		carry. That block repeated the status card underneath it -- the same
+		icon, title and note, twice on screen -- where the concept spends the
+		row on moving through the guide instead.
+	]]
+	local navrow = CreateFrame("Frame", nil, frame)
+	navrow:SetHeight(NAVROW_H)
+	navrow:SetPoint("TOPLEFT", tabbar, "BOTTOMLEFT", 0, 0)
+	navrow:SetPoint("TOPRIGHT", tabbar, "BOTTOMRIGHT", 0, 0)
+	Theme:Strip(navrow, "tabbg")
+	Theme:Divider(navrow, navrow, "BOTTOMLEFT", 0, 0)
 
-	local currentNote = currentHeader:CreateFontString(nil, "OVERLAY")
-	Theme:SetFont(currentNote, "body", 11)
-	currentNote:SetPoint("TOPLEFT", currentText, "BOTTOMLEFT", 0, -2)
-	Theme:TextColor(currentNote, "textDim")
+	local prevArrow = Theme:GlyphButton(navrow, "arrowLeft", 11, 20)
+	prevArrow:SetPoint("LEFT", navrow, "LEFT", ROWPAD - 4, 0)
+	prevArrow:SetScript("OnClick", function() AegisPathfinder:GoToPreviousObjective() end)
 
-	-- Navigation buttons in header
-	local prevHeaderBtn = CreateButton(currentHeader, "RIGHT", currentHeader, "RIGHT", -90, 0)
-	prevHeaderBtn:SetWidth(32) prevHeaderBtn:SetText("<")
-	prevHeaderBtn:SetScript("OnClick", function() AegisPathfinder:GoToPreviousObjective() end)
-	prevHeaderBtn:SetScript("OnEnter", function()
-		GameTooltip:SetOwner(this, "ANCHOR_TOP")
-		GameTooltip:SetText("Previous objective")
+	navStepNum = navrow:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(navStepNum, "display", 15)
+	navStepNum:SetPoint("LEFT", prevArrow, "RIGHT", 6, 0)
+	navStepNum:SetJustifyH("CENTER")
+	navStepNum:SetWidth(44)
+	Theme:TextColor(navStepNum, "text")
+
+	local nextArrow = Theme:GlyphButton(navrow, "arrowRight", 11, 20)
+	nextArrow:SetPoint("LEFT", navStepNum, "RIGHT", 6, 0)
+	nextArrow:SetScript("OnClick", function() AegisPathfinder:SkipToNextObjective() end)
+
+	-- Marking the step done and moving on is a third action, and one the
+	-- concept reaches by ticking the step. Kept here as well because the panel
+	-- is where you go when a step will not complete itself.
+	local doneArrow = Theme:GlyphButton(navrow, "tick", 11, 20)
+	doneArrow:SetPoint("LEFT", nextArrow, "RIGHT", 2, 0)
+	doneArrow:SetScript("OnClick", function()
+		AegisPathfinder:SetTurnedIn()
+		AegisPathfinder:UpdateStatusFrame()
 	end)
-	prevHeaderBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
-	local nextHeaderBtn = CreateButton(currentHeader, "LEFT", prevHeaderBtn, "RIGHT", 2, 0)
-	nextHeaderBtn:SetWidth(32) nextHeaderBtn:SetText(">")
-	nextHeaderBtn:SetScript("OnClick", function() AegisPathfinder:SkipToNextObjective() end)
-	nextHeaderBtn:SetScript("OnEnter", function()
+	local function ArrowTip(btn, tip)
+		btn:SetScript("OnEnter", function()
+			Theme:Tint(this.glyph, "text")
+			GameTooltip:SetOwner(this, "ANCHOR_BOTTOM")
+			GameTooltip:SetText(tip)
+		end)
+		btn:SetScript("OnLeave", function()
+			Theme:Tint(this.glyph, "textDim")
+			GameTooltip:Hide()
+		end)
+	end
+	ArrowTip(prevArrow, "Previous objective")
+	ArrowTip(nextArrow, "Skip to next objective")
+	ArrowTip(doneArrow, "Mark complete and advance")
+
+	navCount = navrow:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(navCount, "body", 10)
+	navCount:SetPoint("RIGHT", navrow, "RIGHT", -ROWPAD, 0)
+	navCount:SetJustifyH("RIGHT")
+	Theme:TextColor(navCount, "textDim")
+
+	frame.navrow = navrow
+
+	-- Guide completion, as a 4px rule across the full width.
+	guideProgress = Theme:ProgressBar(frame, PROGRESS_H)
+	guideProgress:SetPoint("TOPLEFT", navrow, "BOTTOMLEFT", 0, 0)
+	guideProgress:SetPoint("TOPRIGHT", navrow, "BOTTOMRIGHT", 0, 0)
+	frame.guideProgress = guideProgress
+
+	--[[ Footer.
+
+		The concept's hint line. Materials has no concept equivalent and is a
+		view rather than a setting, so it keeps a button here; everything else
+		the old button row carried now lives where the concept puts it --
+		Config and Route behind the header's ☰, Guides behind the tab bar's +,
+		and returning from a branch on the branch tab itself.
+	]]
+	local footer = CreateFrame("Frame", nil, frame)
+	footer:SetHeight(FOOTER_H)
+	footer:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 1, 1)
+	footer:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -1, 1)
+	Theme:CapStrip(footer, "panel2", "bottom")
+
+	local footerRule = footer:CreateTexture(nil, "OVERLAY")
+	footerRule:SetTexture(Theme.texture.solid)
+	footerRule:SetHeight(1)
+	footerRule:SetPoint("TOPLEFT", footer, "TOPLEFT", 0, 0)
+	footerRule:SetPoint("TOPRIGHT", footer, "TOPRIGHT", 0, 0)
+	Theme:Tint(footerRule, "border")
+
+	local hint = footer:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(hint, "body", 10)
+	hint:SetPoint("CENTER", footer, "CENTER", 0, 0)
+	hint:SetText("/apg next  \194\183  /apg prev  \194\183  /apg goto <n>")
+	Theme:TextColor(hint, "textDim")
+
+	local materials = Theme:GlyphButton(footer, "use", 11, 18)
+	materials:SetPoint("LEFT", footer, "LEFT", ROWPAD - 4, 0)
+	materials:SetScript("OnClick", function() AegisPathfinder:ToggleMaterialsPanel() end)
+	materials:SetScript("OnEnter", function()
+		Theme:Tint(this.glyph, "accent")
 		GameTooltip:SetOwner(this, "ANCHOR_TOP")
-		GameTooltip:SetText("Skip to next objective")
+		GameTooltip:SetText("Reagents the rest of this guide still needs", nil, nil, nil, nil, true)
 	end)
-	nextHeaderBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
-
-	local skipHeaderBtn = CreateButton(currentHeader, "LEFT", nextHeaderBtn, "RIGHT", 2, 0)
-	skipHeaderBtn:SetWidth(32) skipHeaderBtn:SetText(">>")
-	skipHeaderBtn:SetScript("OnClick", function() AegisPathfinder:SetTurnedIn(); AegisPathfinder:UpdateStatusFrame() end)
-	skipHeaderBtn:SetScript("OnEnter", function()
-		GameTooltip:SetOwner(this, "ANCHOR_TOP")
-		GameTooltip:SetText("Mark complete and advance")
+	materials:SetScript("OnLeave", function()
+		Theme:Tint(this.glyph, "textDim")
+		GameTooltip:Hide()
 	end)
-	skipHeaderBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
-	frame.currentHeader = currentHeader
-	frame.currentIcon = currentIcon
-	frame.currentText = currentText
-	frame.currentNote = currentNote
+	if self.db.char.debug then
+		local dbg = Theme:Pill(footer, "Debug", 60, FOOTER_H - 6)
+		dbg:SetPoint("RIGHT", footer, "RIGHT", -(ROWPAD + 8), 0)
+		dbg:SetScript("OnClick", function() frame:Hide(); self:DebugGuideSequence(true) end)
+	end
 
-	completed = frame:CreateFontString(nil, "OVERLAY")
-	Theme:SetFont(completed, "display", 14)
-	completed:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 10, 10)
-	Theme:TextColor(completed, "accent")
+	frame.footer = footer
 
 	scrollbar, upbutt, downbutt = ww.ConjureScrollBar(frame)
-	scrollbar:SetPoint("TOPRIGHT", frame, -7, -(21 + TABBAR_H))
-	scrollbar:SetPoint("BOTTOM", frame, 0, 22 + 22)
-	scrollbar:SetScript("OnValueChanged", function() local f, val = this, arg1 self:UpdateOHPanel(val) end)
+	scrollbar:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -7, -(CHROME_TOP + 14))
+	scrollbar:SetPoint("BOTTOM", frame, "BOTTOM", 0, FOOTER_H + 18)
+	scrollbar:SetScript("OnValueChanged", function() local val = arg1 self:UpdateOHPanel(val) end)
 
 	upbutt:SetScript("OnClick", function()
-		local f = this
 		scrollbar:SetValue(offset - NUMROWS + 1)
 		PlaySound("UChatScrollButton")
 	end)
 
 	downbutt:SetScript("OnClick", function()
-		local f = this
 		scrollbar:SetValue(offset + NUMROWS - 1)
 		PlaySound("UChatScrollButton")
 	end)
 
+	--[[ Step rows.
+
+		Each slot carries both of the concept's row models and shows one of
+		them. A `.zrow` dot/glyph/title/note, or -- for an ACCEPT or TURNIN
+		that is current or done -- the coloured band laid over the whole slot.
+	]]
 	for i = 1, MAX_ROWS do
 		local row = CreateFrame("Button", nil, frame)
-		row:SetPoint("TOPLEFT", i == 1 and frame or rows[i - 1], i == 1 and "TOPLEFT" or "BOTTOMLEFT", 0, i == 1 and -(58 + TABBAR_H) or 0)
+		row:SetPoint("TOPLEFT", i == 1 and frame or rows[i - 1],
+			i == 1 and "TOPLEFT" or "BOTTOMLEFT", i == 1 and 1 or 0, i == 1 and -CHROME_TOP or 0)
 		row:SetPoint("RIGHT", scrollbar, "LEFT", -4, 0)
 		row:SetHeight(ROWHEIGHT)
 
-		-- Flat row with a left accent bar on the active step, as in the
-		-- concept. The bar is hidden until UpdateOHPanel marks the row.
+		-- Faint wash on the active step, plus the left accent bar.
 		row.bg = row:CreateTexture(nil, "BACKGROUND")
 		row.bg:SetTexture(Theme.texture.solid)
 		row.bg:SetAllPoints(row)
@@ -409,61 +423,83 @@ function AegisPathfinder:UpdateObjectivePanel()
 		Theme:Tint(row.activebar, "accent")
 		row.activebar:Hide()
 
-		local check = Theme:StepCheck(row, ROWHEIGHT - ROWOFFSET)
-		check:SetPoint("LEFT", row, "LEFT", ROWOFFSET, 0)
-		local icon = ww.SummonTexture(row, nil, ROWHEIGHT - ROWOFFSET, ROWHEIGHT - ROWOFFSET, nil, "LEFT", check, "RIGHT", ROWOFFSET, 0)
+		local check = Theme:StepCheck(row, DOTSIZE)
+		check:SetPoint("LEFT", row, "LEFT", ROWPAD, 0)
+
+		local icon = row:CreateTexture(nil, "ARTWORK")
+		icon:SetWidth(ICONSIZE); icon:SetHeight(ICONSIZE)
+		icon:SetPoint("LEFT", check, "RIGHT", 9, 0)
+
+		-- Title over note, both clipped to one line: the concept stacks them,
+		-- and a fixed row height is what lets a 268-step guide scroll.
 		local text = row:CreateFontString(nil, "OVERLAY")
 		Theme:SetFont(text, "body", 12)
-		text:SetPoint("LEFT", icon, "RIGHT", ROWOFFSET, 0)
+		text:SetPoint("TOPLEFT", icon, "TOPRIGHT", 9, 1)
+		text:SetPoint("RIGHT", row, "RIGHT", -ROWPAD, 0)
+		text:SetJustifyH("LEFT")
+		text:SetHeight(16)
 		Theme:TextColor(text, "text")
 
-		local detailhover = CreateFrame("Button", nil, row)
-		detailhover:SetHeight(ROWHEIGHT - ROWOFFSET)
-		detailhover:SetPoint("LEFT", text, "RIGHT", ROWOFFSET * 3, 0)
-		detailhover:SetPoint("RIGHT", scrollbar, "LEFT", -ROWOFFSET, 0)
-		detailhover:SetScript("OnEnter", ShowTooltip)
-		detailhover:SetScript("OnLeave", HideTooltip)
-
-		local detail = detailhover:CreateFontString(nil, "OVERLAY")
+		local detail = row:CreateFontString(nil, "OVERLAY")
 		Theme:SetFont(detail, "body", 11)
-		detail:SetAllPoints(detailhover)
-		detail:SetJustifyH("RIGHT")
-		Theme:TextColor(detail, "goldDeep")
-		detailhover.text = detail
+		detail:SetPoint("TOPLEFT", text, "BOTTOMLEFT", 0, -2)
+		detail:SetPoint("RIGHT", row, "RIGHT", -ROWPAD, 0)
+		detail:SetJustifyH("LEFT")
+		detail:SetHeight(15)
+		-- #8f8f86 in the concept: dimmer than --text-dim, so the note reads as
+		-- support for the title rather than competing with it.
+		detail:SetTextColor(0.56, 0.56, 0.52)
+
+		--[[ The band, covering the slot when this step is an ACCEPT or TURNIN
+			that is current or done. Its own button so a click anywhere on it
+			toggles the step, as the concept has it. ]]
+		local band = Theme:Band(row, ROWHEIGHT)
+		band:SetPoint("TOPLEFT", row, "TOPLEFT", 0, 0)
+		band:SetPoint("BOTTOMRIGHT", row, "BOTTOMRIGHT", 0, 0)
+		band:Hide()
+
+		local bandTag = band:CreateFontString(nil, "OVERLAY")
+		Theme:SetFont(bandTag, "body", 9)
+		bandTag:SetPoint("RIGHT", band, "RIGHT", -10, 0)
+		bandTag:SetTextColor(1, 1, 1)
+		band.tag = bandTag
 
 		check:SetScript("OnClick", function()
-			local f = this
-			self:SetTurnedIn(row.i, f:GetChecked())
+			self:SetTurnedIn(row.i, this:GetChecked())
 		end)
 
-		row:SetScript("OnClick", function()
-			AegisPathfinder:GoToObjective(row.i)
-		end)
+		row:SetScript("OnClick", function() AegisPathfinder:GoToObjective(row.i) end)
+		band:SetScript("OnClick", function() AegisPathfinder:GoToObjective(row.i) end)
 
-		detailhover:SetScript("OnClick", function()
-			AegisPathfinder:GoToObjective(row.i)
+		row:SetScript("OnEnter", function()
+			if this.__tip then
+				GameTooltip:SetOwner(this, "ANCHOR_RIGHT")
+				GameTooltip:SetText(this.__tip, nil, nil, nil, nil, true)
+			end
 		end)
+		row:SetScript("OnLeave", HideTooltip)
 
 		row.text = text
 		row.detail = detail
 		row.check = check
 		row.icon = icon
+		row.band = band
 		rows[i] = row
 	end
 
 	frame:EnableMouseWheel()
 	frame:SetScript("OnMouseWheel", function()
-		local f, val = this, arg1
-		scrollbar:SetValue(offset - val)
+		scrollbar:SetValue(offset - arg1)
 	end)
 
-	-- Restore saved size
+	-- Restore saved size and position.
 	if self.db.profile.objframewidth then
 		frame:SetWidth(self.db.profile.objframewidth)
 	end
 	if self.db.profile.objframeheight then
 		frame:SetHeight(self.db.profile.objframeheight)
 	end
+	Theme:RestorePosition(frame, "objframe")
 
 	self:OnObjectiveFrameResized()
 
@@ -507,32 +543,39 @@ function AegisPathfinder:OnObjectiveFrameResized()
 	local w = frame:GetWidth()
 	local h = frame:GetHeight()
 
-	-- Save dimensions
 	self.db.profile.objframewidth = w
 	self.db.profile.objframeheight = h
 
-	-- Recalculate visible rows
-	local contentHeight = h - 28 - HEADER_HEIGHT  -- 28 for bottom buttons area
+	local contentHeight = h - CHROME_TOP - FOOTER_H
 	NUMROWS = math.max(1, math.floor(contentHeight / ROWHEIGHT))
 	if NUMROWS > MAX_ROWS then NUMROWS = MAX_ROWS end
 
-	-- Show/hide rows based on new count
 	for i, row in ipairs(rows) do
-		if i > NUMROWS then
-			row:Hide()
-		end
+		if i > NUMROWS then row:Hide() end
 	end
 
-	-- Update scrollbar range
 	if scrollbar and self.actions then
 		scrollbar:SetMinMaxValues(0, math.max(table.getn(self.actions) - NUMROWS, 1))
 	end
 
-	-- Refresh display
 	if frame:IsVisible() and self.current then
 		self:UpdateOHPanel()
 	end
 end
+
+
+--[[ Which steps the concept renders as a coloured band rather than a row.
+
+	Quest hand-offs, and only those: they are the steps where standing in the
+	right place is not enough, and the band is what stops one being scrolled
+	past. Everything else is a plain row.
+]]
+local BANDABLE = { ACCEPT = true, TURNIN = true }
+
+local VERB = {
+	ACCEPT = { "Accept", "Accepted" },
+	TURNIN = { "Turn in", "Turned in" },
+}
 
 
 local accepted = {}
@@ -545,26 +588,7 @@ function AegisPathfinder:UpdateOHPanel(value)
 	-- the step list and the current step directly.
 	if not self.actions or not self.current then return end
 
-	-- Update title with branch indicator
-	local guideName = self.db.char.currentguide or L["No Guide Loaded"]
-	if self.db.char.isbranching then
-		title:SetText("|cff00ff00[Branch]|r " .. guideName)
-	else
-		title:SetText(guideName)
-	end
-
-	-- Show/hide return button based on branch status
-	if frame.returnbutton then
-		if self.db.char.isbranching then
-			frame.returnbutton:Show()
-			frame.returnbutton:Enable()
-		else
-			frame.returnbutton:Hide()
-		end
-	end
-
-	local r, g, b = self.ColorGradient((self.current - 1) / table.getn(self.actions))
-	completed:SetText(string.format(L["|cff%02x%02x%02x%d%% complete"], r * 255, g * 255, b * 255, (self.current - 1) / table.getn(self.actions) * 100))
+	local total = table.getn(self.actions)
 
 	if self.guidechanged then
 		self.guidechanged = nil
@@ -573,11 +597,11 @@ function AegisPathfinder:UpdateOHPanel(value)
 	end
 
 	if value then offset = math.floor(value) end
-	if (offset + NUMROWS) > table.getn(self.actions) then offset = table.getn(self.actions) - NUMROWS end
+	if (offset + NUMROWS) > total then offset = total - NUMROWS end
 	if offset < 0 then offset = 0 end
 
 	if offset == 0 then upbutt:Disable() else upbutt:Enable() end
-	if offset == (table.getn(self.actions) - NUMROWS) then downbutt:Disable() else downbutt:Enable() end
+	if offset == (total - NUMROWS) then downbutt:Disable() else downbutt:Enable() end
 
 	if not value or acceptedDirty then
 		for i in pairs(accepted) do accepted[i] = nil end
@@ -586,12 +610,13 @@ function AegisPathfinder:UpdateOHPanel(value)
 			for i in pairs(self.actions) do
 				local action, name = self:GetObjectiveInfo(i)
 				local _, _, quest = string.find(name, L.PART_FIND)
-				local _, _, part = string.find(name, ".*%(Part (%d+)%)")
 				if quest and not accepted[quest] and not self:GetObjectiveStatus(i) then accepted[quest] = name end
 			end
 		end
 		acceptedDirty = false
 	end
+
+	local doneCount = 0
 
 	for i, row in ipairs(rows) do
 		if i > NUMROWS then row:Hide()
@@ -606,78 +631,110 @@ function AegisPathfinder:UpdateOHPanel(value)
 			local isActive = (idx == self.current)
 			row:Show()
 
-			-- Visual hierarchy based on status
 			local shortname = string.gsub(name, L.PART_GSUB, "")
 			logi = not turnedin and (not accepted[shortname] or (accepted[shortname] == name)) and logi
 			complete = not turnedin and (not accepted[shortname] or (accepted[shortname] == name)) and complete
 			local checked = turnedin or action == "ACCEPT" and logi or action == "COMPLETE" and complete
 
-			-- Row state, following the concept: the active step gets a faint
-			-- wash and a left accent bar, a completed step dims, everything
-			-- else is flat.
-			row.bg:Hide()
-			row.activebar:Hide()
+			local note = self:GetObjectiveTag("N", idx)
 
-			if isActive then
-				row.bg:SetVertexColor(1, 1, 1, 0.035)
-				row.bg:Show()
-				row.activebar:Show()
-				Theme:TextColor(row.text, "text")
-			elseif checked then
-				Theme:TextColor(row.text, "subtle")
-			elseif intown then
-				-- |T| in-town steps keep a hint of accent.
-				row.bg:SetVertexColor(Theme.color.accent[1], Theme.color.accent[2],
-					Theme.color.accent[3], 0.06)
-				row.bg:Show()
-				Theme:TextColor(row.text, "accentGlow")
-			else
-				Theme:TextColor(row.text, "textDim")
-			end
-
-			row.check:SetAutoEligible(self:IsAutoDetectable(action, idx))
-
-			-- Show quest progress for COMPLETE objectives
-			local progressText = ""
+			-- Quest progress replaces the note on an in-progress COMPLETE step:
+			-- "3/8 boars slain" is what you want while you are doing it.
 			if action == "COMPLETE" and logi and not complete then
 				local numObj = GetNumQuestLeaderBoards(logi)
 				for j = 1, numObj do
-					local text = GetQuestLogLeaderBoard(j, logi)
-					if text then progressText = text break end
+					local lb = GetQuestLogLeaderBoard(j, logi)
+					if lb then note = lb break end
 				end
 			end
 
-			row.icon:SetTexture(self.icons[action])
-			if action ~= "ACCEPT" and action ~= "TURNIN" then row.icon:SetTexCoord(4 / 48, 44 / 48, 4 / 48, 44 / 48) end
-			row.text:SetText(string.format("[%d] %s", idx, name) .. (optional and L[" |cff808080(Optional)"] or ""))
-			row.detail:SetText(progressText ~= "" and progressText or self:GetObjectiveTag("N", idx))
-			row.check:SetChecked(checked)
+			local qid = self:GetObjectiveTag("QID", idx)
+			row.__tip = (qid and ("QID " .. qid .. (note and " \194\183 " or "")) or "") .. (note or "")
+			if row.__tip == "" then row.__tip = nil end
 
-			if (AegisPathfinder.current > idx) and optional and not checked then
-				row.text:SetTextColor(0.5, 0.5, 0.5)
-				row.check:Disable()
-			elseif not isActive and not checked then
-				row.check:Enable()
+			--[[ Band or row.
+
+				A quest hand-off you are standing on, or have done, is a band;
+				the same step further down the list is an ordinary row, so the
+				list does not turn into a wall of colour.
+			]]
+			if BANDABLE[action] and (checked or isActive) then
+				row.bg:Hide()
+				row.activebar:Hide()
+				row.check:Hide()
+				row.icon:Hide()
+				row.text:Hide()
+				row.detail:Hide()
+
+				local verb = VERB[action][checked and 2 or 1]
+				row.band:Show()
+				row.band:SetDone(checked)
+				row.band.icon:SetTexture(checked and Theme.glyph.tick or Theme.glyph.bang)
+				row.band.icon:SetVertexColor(1, 1, 1, 1)
+				row.band.label:SetText(string.format("[%d] %s '%s'", idx, verb, name))
+				row.band.tag:SetText(optional and "OPTIONAL" or "")
 			else
-				row.check:Enable()
-			end
+				row.band:Hide()
+				row.check:Show()
+				row.icon:Show()
+				row.text:Show()
+				row.detail:Show()
 
-			if self.db.char.currentguide == "No Guide" then row.check:Disable() end
+				row.bg:Hide()
+				row.activebar:Hide()
+
+				if isActive then
+					row.bg:SetVertexColor(1, 1, 1, 0.035)
+					row.bg:Show()
+					row.activebar:Show()
+					Theme:TextColor(row.text, "text")
+				elseif checked then
+					-- The concept dims a done step rather than hiding it.
+					Theme:TextColor(row.text, "subtle")
+				elseif intown then
+					-- |T| in-town steps keep a hint of accent.
+					row.bg:SetVertexColor(Theme.color.accent[1], Theme.color.accent[2],
+						Theme.color.accent[3], 0.06)
+					row.bg:Show()
+					Theme:TextColor(row.text, "accentGlow")
+				else
+					Theme:TextColor(row.text, "textDim")
+				end
+
+				row.check:SetAutoEligible(self:IsAutoDetectable(action, idx))
+				row.check:SetChecked(checked)
+
+				row.icon:SetTexture(self.icons[action])
+				Theme:Tint(row.icon, checked and "subtle" or "textDim")
+
+				row.text:SetText(string.format("[%d] %s", idx, name)
+					.. (optional and L[" |cff808080(Optional)"] or ""))
+				row.detail:SetText(note or "")
+
+				if (self.current > idx) and optional and not checked then
+					row.text:SetTextColor(0.5, 0.5, 0.5)
+					row.check:Disable()
+				else
+					row.check:Enable()
+				end
+
+				if self.db.char.currentguide == "No Guide" then row.check:Disable() end
+			end
 		end
 		end -- i > NUMROWS
 	end
 
-	-- Update current objective header
-	if frame.currentIcon and self.current then
-		local action, name = self:GetObjectiveInfo(self.current)
-		local note = self:GetObjectiveTag("N", self.current)
-		frame.currentIcon:SetTexture(self.icons[action])
-		if action ~= "ACCEPT" and action ~= "TURNIN" then
-			frame.currentIcon:SetTexCoord(4 / 48, 44 / 48, 4 / 48, 44 / 48)
-		else
-			frame.currentIcon:SetTexCoord(0, 1, 0, 1)
-		end
-		frame.currentText:SetText(string.format("[%d/%d] %s: %s", self.current, table.getn(self.actions), action, name or "???"))
-		frame.currentNote:SetText(note or "")
-	end
+	--[[ Nav row and the progress rule.
+
+		Steps behind the current one are the done ones: the addon advances
+		past a step only once it is satisfied, which is the same measure the
+		panel reported as "% complete" before. Counting them for real would
+		mean a GetObjectiveStatus call per step on every scroll tick, and
+		these guides run to a few hundred steps.
+	]]
+	doneCount = self.current - 1
+
+	navStepNum:SetText(tostring(self.current))
+	navCount:SetText(string.format("%d of %d \194\183 %d done", self.current, total, doneCount))
+	guideProgress:SetProgress(total > 0 and (doneCount / total) or 0)
 end

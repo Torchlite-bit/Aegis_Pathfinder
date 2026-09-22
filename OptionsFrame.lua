@@ -6,27 +6,27 @@ local Theme = AegisPathfinder.Theme
 -- Dungeon chip grid geometry.
 local CHIP_W, CHIP_H, CHIP_GAP, CHIP_PAD = 78, 34, 6, 12
 local CHIP_COLS = 3
-local CHIP_TOP = 52          -- below the title and its hint
+
+-- The concept's window chrome: a 30px header carrying the wordmark and the
+-- close chip, and an 18px subhead naming the window. Everything a panel draws
+-- starts below it.
+local HEADER_H, SUBHEAD_H = 30, 18
+local CHROME_TOP = HEADER_H + SUBHEAD_H
+local CHIP_TOP = CHROME_TOP + 20   -- below the chrome and the grid's hint
 
 function AegisPathfinder:CreateConfigPanel()
 	local frame = CreateFrame("Frame", "AegisPathfinderOptions", UIParent)
 	AegisPathfinder.optionsframe = frame
 	frame:SetFrameStrata("DIALOG")
 	frame:SetWidth(310)
-	frame:SetHeight(16 + 28 * 8)
+	frame:SetHeight(CHROME_TOP + 16 + 28 * 8)
 	frame:SetPoint("TOPRIGHT", AegisPathfinder.statusframe, "BOTTOMRIGHT")
 	Theme:Panel(frame, "panel")
 	frame:Hide()
 
-	local closebutton = CreateFrame("Button", nil, frame, "UIPanelCloseButton")
-	closebutton:SetPoint("TOPRIGHT", frame, "TOPRIGHT")
+	Theme:Chrome(frame, "Config", Theme:PositionSaver("optionsframe"))
 
-	local title = ww.SummonFontString(frame, nil, "SubZoneTextFont", nil, "BOTTOMLEFT", frame, "TOPLEFT", 5, 0)
-	local fontname, fontheight, fontflags = title:GetFont()
-	title:SetFont(fontname, 18, fontflags)
-	title:SetText("Options")
-
-	local qtrack = ww.SummonCheckBox(22, frame, "TOPLEFT", 5, -5)
+	local qtrack = ww.SummonCheckBox(22, frame, "TOPLEFT", 5, -(CHROME_TOP + 5))
 	ww.SummonFontString(qtrack, "OVERLAY", "GameFontNormalSmall", L["Automatically track quests"], "LEFT", qtrack,
 		"RIGHT", 5, 0)
 	qtrack:SetScript("OnClick", function() self.db.char.trackquests = not self.db.char.trackquests end)
@@ -42,7 +42,7 @@ function AegisPathfinder:CreateConfigPanel()
 	autobranch:SetScript("OnClick", function() self.db.char.autobranch = not self.db.char.autobranch end)
 
 	-- Waypoint provider: cycles through "auto" plus every waypoint addon loaded
-	local waypointBtn = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
+	local waypointBtn = Theme:PanelButton(frame)
 	waypointBtn:SetWidth(286)
 	waypointBtn:SetHeight(22)
 	waypointBtn:SetPoint("TOPLEFT", autobranch, "BOTTOMLEFT", 0, -10)
@@ -53,7 +53,7 @@ function AegisPathfinder:CreateConfigPanel()
 	frame.waypointBtn = waypointBtn
 
 	-- Route selector button
-	local routeBtn = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
+	local routeBtn = Theme:PanelButton(frame)
 	routeBtn:SetWidth(150)
 	routeBtn:SetHeight(22)
 	routeBtn:SetPoint("TOPLEFT", waypointBtn, "BOTTOMLEFT", 0, -6)
@@ -63,7 +63,7 @@ function AegisPathfinder:CreateConfigPanel()
 		AegisPathfinder:ShowRouteSelector()
 	end)
 
-	local dungeonsBtn = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
+	local dungeonsBtn = Theme:PanelButton(frame)
 	dungeonsBtn:SetWidth(130)
 	dungeonsBtn:SetHeight(22)
 	dungeonsBtn:SetPoint("LEFT", routeBtn, "RIGHT", 6, 0)
@@ -73,7 +73,7 @@ function AegisPathfinder:CreateConfigPanel()
 	end)
 	frame.dungeonsBtn = dungeonsBtn
 
-	local branchBtn = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
+	local branchBtn = Theme:PanelButton(frame)
 	branchBtn:SetWidth(150)
 	branchBtn:SetHeight(22)
 	branchBtn:SetPoint("TOPLEFT", routeBtn, "BOTTOMLEFT", 0, -6)
@@ -84,7 +84,7 @@ function AegisPathfinder:CreateConfigPanel()
 	end)
 	frame.branchBtn = branchBtn
 
-	local returnMainBtn = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
+	local returnMainBtn = Theme:PanelButton(frame)
 	returnMainBtn:SetWidth(130)
 	returnMainBtn:SetHeight(22)
 	returnMainBtn:SetPoint("LEFT", branchBtn, "RIGHT", 6, 0)
@@ -95,7 +95,7 @@ function AegisPathfinder:CreateConfigPanel()
 	end)
 	frame.returnMainBtn = returnMainBtn
 
-	local refreshBtn = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
+	local refreshBtn = Theme:PanelButton(frame)
 	refreshBtn:SetWidth(150)
 	refreshBtn:SetHeight(22)
 	refreshBtn:SetPoint("TOPLEFT", branchBtn, "BOTTOMLEFT", 0, -6)
@@ -104,7 +104,7 @@ function AegisPathfinder:CreateConfigPanel()
 		AegisPathfinder:QueryServerCompletedQuests(true)
 	end)
 
-	local errorBtn = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
+	local errorBtn = Theme:PanelButton(frame)
 	errorBtn:SetWidth(130)
 	errorBtn:SetHeight(22)
 	errorBtn:SetPoint("LEFT", refreshBtn, "RIGHT", 6, 0)
@@ -114,7 +114,7 @@ function AegisPathfinder:CreateConfigPanel()
 		AegisPathfinder:ShowErrorLog()
 	end)
 
-	local filtersBtn = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
+	local filtersBtn = Theme:PanelButton(frame)
 	filtersBtn:SetWidth(286)
 	filtersBtn:SetHeight(22)
 	filtersBtn:SetPoint("TOPLEFT", refreshBtn, "BOTTOMLEFT", 0, -6)
@@ -130,18 +130,14 @@ function AegisPathfinder:CreateConfigPanel()
 
 	local function OnShow(f)
 		f = f or this
-		local quad, vhalf, hhalf = self.GetQuadrant(self.statusframe)
-		local anchpoint = (vhalf == "TOP" and "BOTTOM" or "TOP") .. hhalf
-		f:ClearAllPoints()
-		f:SetPoint(quad, self.statusframe, anchpoint)
-		local title_point, title_anchor, title_x, title_y
-		if quad == "TOPLEFT" then
-			title_point, title_anchor, title_x, title_y = "BOTTOMRIGHT", "TOPRIGHT", -5, 0
-		else
-			title_point, title_anchor, title_x, title_y = "BOTTOMLEFT", "TOPLEFT", 5, 0
+		-- Snap beside the status card only while the player has not dragged
+		-- this window somewhere of their own.
+		if not Theme:RestorePosition(f, "optionsframe") then
+			local quad, vhalf, hhalf = self.GetQuadrant(self.statusframe)
+			local anchpoint = (vhalf == "TOP" and "BOTTOM" or "TOP") .. hhalf
+			f:ClearAllPoints()
+			f:SetPoint(quad, self.statusframe, anchpoint)
 		end
-		title:ClearAllPoints()
-		title:SetPoint(title_point, f, title_anchor, title_x, title_y)
 
 		f.qtrack:SetChecked(self.db.char.trackquests)
 		f.qskipfollowups:SetChecked(self.db.char.skipfollowups)
@@ -206,18 +202,11 @@ function AegisPathfinder:CreateDungeonPanel()
 	Theme:Panel(frame, "panel")
 	frame:Hide()
 
-	local closebutton = CreateFrame("Button", nil, frame, "UIPanelCloseButton")
-	closebutton:SetPoint("TOPRIGHT", frame, "TOPRIGHT")
-
-	local title = frame:CreateFontString(nil, "OVERLAY")
-	Theme:SetFont(title, "display", 14)
-	title:SetPoint("TOPLEFT", frame, "TOPLEFT", CHIP_PAD, -10)
-	title:SetText("DUNGEONS")
-	Theme:TextColor(title, "accent")
+	Theme:Chrome(frame, "Dungeons", Theme:PositionSaver("dungeonframe"))
 
 	local hint = frame:CreateFontString(nil, "OVERLAY")
 	Theme:SetFont(hint, "body", 10)
-	hint:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -3)
+	hint:SetPoint("TOPLEFT", frame, "TOPLEFT", CHIP_PAD, -(CHROME_TOP + 4))
 	hint:SetPoint("RIGHT", frame, "RIGHT", -CHIP_PAD, 0)
 	hint:SetJustifyH("LEFT")
 	hint:SetText("Opting in makes a dungeon's setup steps mandatory.")
@@ -322,20 +311,14 @@ function AegisPathfinder:CreateFiltersPanel()
 	self.filtersframe = frame
 	frame:SetFrameStrata("DIALOG")
 	frame:SetWidth(180)
-	frame:SetHeight(155)
+	frame:SetHeight(CHROME_TOP + 125)
 	Theme:Panel(frame, "panel")
 	frame:Hide()
 
-	local closebutton = CreateFrame("Button", nil, frame, "UIPanelCloseButton")
-	closebutton:SetPoint("TOPRIGHT", frame, "TOPRIGHT")
-
-	local title = ww.SummonFontString(frame, nil, "SubZoneTextFont", nil, "TOPLEFT", frame, "TOPLEFT", 10, -10)
-	local fontname, fontheight, fontflags = title:GetFont()
-	title:SetFont(fontname, 16, fontflags)
-	title:SetText("Filters")
+	Theme:Chrome(frame, "Filters", Theme:PositionSaver("filtersframe"))
 
 	-- AH Checkbox
-	local ahCb = ww.SummonCheckBox(18, frame, "TOPLEFT", 10, -40)
+	local ahCb = ww.SummonCheckBox(18, frame, "TOPLEFT", 10, -(CHROME_TOP + 10))
 	local ahText = ww.SummonFontString(ahCb, "OVERLAY", "GameFontNormalSmall", "Use Auction House", "LEFT", ahCb, "RIGHT",
 		5, 0)
 	frame.ahCb = ahCb
@@ -347,16 +330,16 @@ function AegisPathfinder:CreateFiltersPanel()
 
 	-- Play Style Header
 	local psHeader = ww.SummonFontString(frame, "OVERLAY", "GameFontNormal", "Play Style:", "TOPLEFT", frame, "TOPLEFT",
-		10, -75)
+		10, -(CHROME_TOP + 45))
 
 	-- Solo Checkbox
-	local soloCb = ww.SummonCheckBox(18, frame, "TOPLEFT", 10, -95)
+	local soloCb = ww.SummonCheckBox(18, frame, "TOPLEFT", 10, -(CHROME_TOP + 65))
 	local soloText = ww.SummonFontString(soloCb, "OVERLAY", "GameFontNormalSmall", "Solo Mode", "LEFT", soloCb, "RIGHT",
 		5, 0)
 	frame.soloCb = soloCb
 
 	-- Group Checkbox
-	local groupCb = ww.SummonCheckBox(18, frame, "TOPLEFT", 10, -118)
+	local groupCb = ww.SummonCheckBox(18, frame, "TOPLEFT", 10, -(CHROME_TOP + 88))
 	local groupText = ww.SummonFontString(groupCb, "OVERLAY", "GameFontNormalSmall", "Group Mode", "LEFT", groupCb,
 		"RIGHT", 5, 0)
 	frame.groupCb = groupCb

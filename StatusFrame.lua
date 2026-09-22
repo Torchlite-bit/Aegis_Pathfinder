@@ -52,21 +52,20 @@ local check = Theme:StepCheck(titleRow, CHECKSIZE)
 check:SetPoint("LEFT", titleRow, "LEFT", GAP, 0)
 
 -- Previous objective button
-local prevBtn = CreateFrame("Button", nil, titleRow)
-prevBtn:SetWidth(14)
-prevBtn:SetHeight(20)
+-- Generated chevrons, not "<" and ">": the concept uses the single-angle
+-- quotes and the client font renders neither them nor the arrows.
+local prevBtn = Theme:GlyphButton(titleRow, "chevronLeft", 10, 16)
 prevBtn:SetPoint("LEFT", check, "RIGHT", 2, 0)
-local prevGlyph = prevBtn:CreateFontString(nil, "OVERLAY")
-Theme:SetFont(prevGlyph, "display", 18)
-prevGlyph:SetPoint("CENTER", prevBtn, "CENTER", 0, 0)
-prevGlyph:SetText("<")
-Theme:TextColor(prevGlyph, "textDim")
 prevBtn:SetScript("OnClick", function() AegisPathfinder:GoToPreviousObjective() end)
 prevBtn:SetScript("OnEnter", function()
+	Theme:Tint(this.glyph, "accent")
 	GameTooltip:SetOwner(this, "ANCHOR_TOP")
 	GameTooltip:SetText("Previous objective")
 end)
-prevBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
+prevBtn:SetScript("OnLeave", function()
+	Theme:Tint(this.glyph, "textDim")
+	GameTooltip:Hide()
+end)
 
 local icon = ww.SummonTexture(titleRow, "ARTWORK", ICONSIZE, ICONSIZE, nil, "LEFT", prevBtn, "RIGHT", GAP - 4, 0)
 local text = titleRow:CreateFontString(nil, "OVERLAY")
@@ -77,21 +76,18 @@ text:SetPoint("RIGHT", titleRow, "RIGHT", -GAP - 4 - 18, 0)
 text:SetPoint("LEFT", icon, "RIGHT", GAP - 4, 0)
 
 -- Next objective button
-local nextBtn = CreateFrame("Button", nil, titleRow)
-nextBtn:SetWidth(14)
-nextBtn:SetHeight(20)
+local nextBtn = Theme:GlyphButton(titleRow, "chevronRight", 10, 16)
 nextBtn:SetPoint("RIGHT", titleRow, "RIGHT", -GAP, 0)
-local nextGlyph = nextBtn:CreateFontString(nil, "OVERLAY")
-Theme:SetFont(nextGlyph, "display", 18)
-nextGlyph:SetPoint("CENTER", nextBtn, "CENTER", 0, 0)
-nextGlyph:SetText(">")
-Theme:TextColor(nextGlyph, "textDim")
 nextBtn:SetScript("OnClick", function() AegisPathfinder:SkipToNextObjective() end)
 nextBtn:SetScript("OnEnter", function()
+	Theme:Tint(this.glyph, "accent")
 	GameTooltip:SetOwner(this, "ANCHOR_TOP")
 	GameTooltip:SetText("Skip to next objective")
 end)
-nextBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
+nextBtn:SetScript("OnLeave", function()
+	Theme:Tint(this.glyph, "textDim")
+	GameTooltip:Hide()
+end)
 
 -- Return from branch button (only visible when branching)
 local returnBtn = CreateFrame("Button", nil, f)
@@ -253,10 +249,14 @@ function AegisPathfinder:ToggleObjectivePanel()
 		HideUIPanel(self.objectiveframe)
 		return
 	end
-	local quad, vhalf, hhalf = self.GetQuadrant(f)
-	local anchpoint = (vhalf == "TOP" and "BOTTOM" or "TOP") .. hhalf
-	self.objectiveframe:ClearAllPoints()
-	self.objectiveframe:SetPoint(quad, f, anchpoint)
+	-- Snap beside the card only while the player has not placed the panel
+	-- themselves; otherwise every reopen would undo their drag.
+	if not Theme:RestorePosition(self.objectiveframe, "objframe") then
+		local quad, vhalf, hhalf = self.GetQuadrant(f)
+		local anchpoint = (vhalf == "TOP" and "BOTTOM" or "TOP") .. hhalf
+		self.objectiveframe:ClearAllPoints()
+		self.objectiveframe:SetPoint(quad, f, anchpoint)
+	end
 	ShowUIPanel(self.objectiveframe)
 end
 
@@ -454,13 +454,13 @@ function AegisPathfinder:SetStatusText(i)
 		f2:SetPoint(f2anchor, f, f2anchor, 0, 0)
 		f2:SetAlpha(1)
 		icon2:SetTexture(icon:GetTexture())
-		icon2:SetTexCoord(4 / 48, 44 / 48, 4 / 48, 44 / 48)
 		text2:SetText(text:GetText())
 		f2:Show()
 	end
 
+	-- The glyphs are full-bleed masks, so no border trim and a theme tint.
+	Theme:Tint(icon, "textDim")
 	icon:SetTexture(self.icons[action])
-	if action ~= "ACCEPT" and action ~= "TURNIN" then icon:SetTexCoord(4 / 48, 44 / 48, 4 / 48, 44 / 48) end
 	-- |T| marks an in-town objective; the concept lightens the card for it
 	-- instead of the old blue/green backdrop tint.
 	AegisPathfinder.statusskin.fill:SetTint(self:GetObjectiveTag("T") and "panel3" or "panel")

@@ -43,9 +43,13 @@ multi-colour art bakes colour in: `progress-fill.tga`.
 | `glow.tga` | 64×64 | Auto-detect halo and focus rings |
 | `shadow.tga` | 64×64 | Panel drop shadow |
 | `progress-fill.tga` | 64×8 | accent-deep → accent-glow gradient |
+| `cap-top.tga` / `cap-bottom.tga` | 32×32 | Header and footer strips: rounded on the panel edge, square on the body edge |
+| `grip.tga` | 16×16 | Resize grip, six dots |
 | `logo.tga` | 64×64 | Minimap / FuBar icon |
 | `wordmark.tga` | 256×32 | PATHFINDER wordmark, pre-rendered |
 | `icons/*.tga` | 32×32 | One glyph per guide action code (17) |
+| `icons/{menu,close,plus,tick,bang,pin}.tga` | 32×32 | Chrome glyphs the 1.12 font cannot render |
+| `icons/{arrow,chevron}-{left,right}.tga` | 32×32 | Nav row arrows and status bar chevrons |
 
 The nine-slice masks are 32×32 with a 10px corner, so the slice boundaries sit
 at 10/32 and 22/32. `Theme.CORNER` and the `S0`/`S1` constants in `Theme.lua`
