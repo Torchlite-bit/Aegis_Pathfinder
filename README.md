@@ -41,7 +41,6 @@ too — the old `TurtleGuide` global is still an alias.
 | Command | |
 |---|---|
 | `/apg` | Open the objectives panel |
-| `/apg statusbar` | Show or hide the compact status card |
 | `/apg next` / `prev` | Step forward or back |
 | `/apg goto <n>` | Jump to a step |
 | `/apg reset` | Reset progress in the current guide |
@@ -53,10 +52,9 @@ too — the old `TurtleGuide` global is still an alias.
 `/pathfinder` and `/vg` do the same thing. There is deliberately no `/aegis` —
 that belongs to another addon in the AEGIS suite.
 
-The objectives panel is the main surface, so a bare `/apg` opens it. The
-options menu is a right-click on the minimap or FuBar icon, and every entry in
-it is also a subcommand. The compact status card is off until you ask for it
-with `/apg statusbar`.
+The objectives panel is the addon's only window, so a bare `/apg` opens it, and
+it opens with the client. The options menu is a right-click on the minimap or
+FuBar icon, and every entry in it is also a subcommand.
 
 ## What it does
 
@@ -68,7 +66,7 @@ all races merge into a shared route after level 12.
 want, and return — you resume at the step matching your level. The objectives
 panel shows this as tabs: the guide you left stays open beside the one you
 branched to, and closing that tab brings you back. A gold `[BRANCH]` tag shows
-on the status bar while you are off the main path.
+on the branch tab while you are off the main path.
 
 **Dungeons.** Toggle which of 15 dungeons you intend to run. Opting in promotes
 their setup and prerequisite steps to mandatory; opting out hides them. A blue
@@ -89,6 +87,16 @@ when you started.
 a hearthstone, and collecting tagged items all resolve themselves. So do travel
 steps, once a waypoint provider is active. The checkbox wears a halo on steps
 the addon can finish for you, so you know when not to reach for it.
+
+**One step, or all of them.** The panel opens on the step you are on and
+nothing else, with a meter underneath counting whatever the quest wants killed
+or collected. The expand button in the header swaps that for the whole guide
+when you want to look ahead.
+
+**A navigation arrow.** It points at the current objective and says how far and
+how long, floating on the world with no window around it. It needs a waypoint
+provider; with none, or with no waypoint for this step, it hides rather than
+pointing somewhere arbitrary.
 
 ## Professions
 
@@ -126,8 +134,8 @@ August 2026).
 
 Tell the addon which server you are on with `/apg server`. It does not swap
 in a per-server dataset — only one exists — but it will say so on the status
-card when the loaded guide's data was authored somewhere else, which is the
-most likely reason a waypoint points at nothing.
+panel's footer when the loaded guide's data was authored somewhere else, which
+is the most likely reason a waypoint points at nothing.
 
 `/apg serverstatus` shows what is known per server, including which pfQuest
 pack to use: `pfQuest-octo` for OctoWoW, the original `pfQuest-turtle` for
@@ -144,7 +152,7 @@ sh Tools/run_tests.sh
 Runs everything that can be checked without a client: Lua syntax, Lua 5.0
 compatibility, `.toc` and `Guides.xml` integrity, TGA validity, that every
 texture path resolves to a real file, that no panel has drifted off the theme,
-and nine test suites that execute the addon's own code against a stubbed 1.12
+and ten test suites that execute the addon's own code against a stubbed 1.12
 API.
 
 None of it proves the UI looks right. That needs a client.

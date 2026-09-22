@@ -68,32 +68,51 @@ runtime gradient.
 
 ## Surfaces
 
-### Status card — `StatusFrame.lua`
+### Navigation callout -- `NavCallout.lua`
 
-352px wide, matching the concept. Grows vertically to fit whichever rows are
-showing; `AegisPathfinder:LayoutStatusCard()` sizes it.
+The concept's signature element, and the only surface with no window around it:
+`background` and `box-shadow` were dropped, so the arrow, the instruction and
+the distance float directly on the game world.
 
-| Concept element | Implementation |
-|---|---|
-| Card background | `Theme:Panel(f, "panel")` |
-| `.sb-check` | `Theme:StepCheck` — a CheckButton with ring/fill artwork, so it keeps the widget API the Blizzard checkbox had |
-| `.sb-check.auto-eligible` | The halo texture, shown via `SetAutoEligible` |
-| `‹` / `›` | Display-face chevrons, replacing the spellbook page arrows |
-| `.sb-icon` | Generated action glyph, `Theme:SetActionIcon` |
-| `.sb-title` | Display face, 13px |
-| `.sb-branch-tag` | Gold `[BRANCH]`, shown while branching |
-| `.sb-desc` | The `\|N\|` note, with inline coordinates stripped out |
-| `.sb-meta` | Quest id, coordinates, and for profession steps the live skill range |
-| `.sb-progress` | `Theme:ProgressBar` with the baked gradient |
-| `.sb-top.band-red/green` | `Theme:Band` |
+That is what makes the text shadows load-bearing rather than decorative. The
+concept sets `text-shadow: 0 1px 3px rgba(0,0,0,.9), 0 1px 8px rgba(0,0,0,.7)`;
+1.12 offers one hard offset copy through `SetShadowOffset` / `SetShadowColor`,
+so it is drawn at full opacity to carry the same weight. Without it the
+instruction disappears over snow.
 
-**Auto-detected vs. manual completion.** The concept distinguishes them and so
-does the addon: `AegisPathfinder:IsAutoDetectable` decides whether the checkbox
-wears its halo. Quest steps and hearthstone binds qualify because ClassicAPI
-reports them by id; travel steps qualify only while a waypoint provider is
-active; profession steps qualify because they resolve off skill events.
-Everything else — a note to read, a vendor to visit, a mob to grind — only the
-player can confirm.
+**Rotation.** 1.12 has no `SetRotation`. The eight-argument form of
+`SetTexCoord` maps a texture onto an arbitrary quad, which is how vanilla
+addons turned minimap arrows, so `AegisPathfinder.RotateTexture` rotates the
+four corners about (0.5, 0.5). The arrow art is centred in its square for the
+same reason -- a rotation samples outside 0..1 at the corners, and off-centre
+art wobbles as it turns.
+
+**Bearing** comes from `AegisPathfinder:GetWaypointBearing` in
+`Navigation.lua`, which is a compass bearing to the stored waypoint minus the
+player's facing. Distance needs Astrolabe's zone dimension tables to turn map
+percentages into yards; Astrolabe ships with both TomTom and pfQuest, so in
+practice it is there whenever a provider is. When it is not, the arrow still
+points and the distance stays blank -- an invented number would be worse.
+
+With no provider, no waypoint, or the waypoint in another zone, the callout
+hides. An arrow that is confidently wrong is worse than no arrow.
+
+### The status card -- deleted
+
+The concept removed it: every `.sb-*` rule and the whole `#statusbar` block are
+gone, and `renderStatusBar()` became `renderNavCallout()`. `StatusFrame.lua`
+went with it.
+
+Almost nothing in that file was the card, though. `UpdateStatusFrame` is the
+scan that walks the step list, decides which step you are on, auto-completes
+what ClassicAPI can resolve, drives the waypoint and loads the next guide when
+one runs out. That is now `GuideEngine.lua`, along with the use-item button --
+a surface of its own, for `|U|` steps, which the concept does not show and
+which had no business being deleted with the card.
+
+What the card's meta row used to paint is now `GetStepMeta`, which returns the
+quest id, a profession step's live skill range, coordinates buried in the note,
+and any data-source warning, and lets the caller decide how to show them.
 
 ### Window chrome -- `Theme:Chrome`
 
@@ -122,11 +141,27 @@ saved.
 
 ### Objectives panel -- `ObjectivesFrame.lua`
 
-The concept's `#objectives`, top to bottom: header, tab bar, nav row, a 4px
-progress rule, the step list, and the footer hint. The panel used to carry a
-50px block repeating the current step's icon, title and note -- the same
-information the status card shows -- where the concept spends that row on
-moving through the guide instead.
+The concept's `#objectives`, and now the addon's only window: header, tab bar,
+nav row, a 4px progress rule, the step list, and the footer.
+
+**Two modes**, behind the header's third chip. Focus -- the default -- shows
+the one step you are on and nothing else, which is how you follow a guide;
+overview shows the whole list, which is how you look ahead. The chip takes
+`.chip-btn.active` (accent fill, dark glyph) while overview is on, so the panel
+says which of the two you are looking at.
+
+**The objective meter** (`.zobjective`) sits under the single step in focus
+mode: what the quest wants, how much of it you have, and a bar. It is quest-log
+leaderboard text -- "Kobold Vermin slain: 3/8" -- parsed into its three parts.
+An objective with nothing countable in it ("Speak to Marshal Dughan") gets no
+meter rather than an empty one. Overview mode folds the same text into the
+step's note line instead, as the concept does.
+
+**The footer** carries live state rather than the slash-command hint it used
+to: the current step's quest id on the left in accent, how far through the
+guide you are on the right. A data-source warning outranks the id and turns the
+slot red -- it is the most likely reason a waypoint points at nothing, and it
+otherwise fails silently.
 
 Rows are fixed 44px slots holding either of the concept's two row models:
 

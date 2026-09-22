@@ -48,6 +48,7 @@ local offset = 0
 local rows = {}
 local scrollbar, upbutt, downbutt
 local navStepNum, navCount, guideProgress
+local footerQid, footerCount, meter
 
 
 local frame = CreateFrame("Frame", "AegisPathfinderObjectives", UIParent)
@@ -55,7 +56,9 @@ AegisPathfinder.objectiveframe = frame
 frame:SetFrameStrata("DIALOG")
 frame:SetWidth(DEFAULT_WIDTH)
 frame:SetHeight(DEFAULT_HEIGHT)
-frame:SetPoint("TOPRIGHT", AegisPathfinder.statusframe, "BOTTOMRIGHT")
+-- The concept parks it at top:180px; right:40px. There is no status card to
+-- hang off any more, so it anchors to the screen.
+frame:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", -40, -180)
 AegisPathfinder.objectiveskin = Theme:Panel(frame, "panel")
 frame:Hide()
 frame:SetScript("OnShow", function() AegisPathfinder:UpdateObjectivePanel() end)
@@ -114,6 +117,7 @@ end
 
 local function OnShow(f)
 	local f = f or this
+	AegisPathfinder.db.char.panelopen = true
 	ResetScrollbar()
 	f:SetAlpha(0)
 	f:SetScript("OnUpdate", ww.FadeIn)
@@ -160,9 +164,43 @@ function AegisPathfinder:UpdateObjectivePanel()
 		GameTooltip:Hide()
 	end)
 
+	--[[ Focus / overview.
+
+		The concept's third chip. Focus mode -- the default -- shows the one
+		step you are on and nothing else, which is how you follow a guide;
+		overview shows the whole list, which is how you look ahead. The chip
+		takes the accent fill while overview is on, so the panel says which
+		of the two you are looking at.
+	]]
+	local expandChip = Theme:ChipButton(header, "expand")
+	expandChip:SetPoint("LEFT", menuChip, "RIGHT", 6, 0)
+	expandChip:SetScript("OnClick", function()
+		AegisPathfinder:ToggleOverviewMode()
+	end)
+	expandChip:SetScript("OnEnter", function()
+		if not this.__active then
+			this.fill:SetTint("text", 0.10)
+			Theme:Tint(this.glyph, "text")
+		end
+		GameTooltip:SetOwner(this, "ANCHOR_BOTTOM")
+		GameTooltip:SetText(AegisPathfinder.db.char.overviewmode
+			and "Show one step at a time" or "Show all steps")
+	end)
+	expandChip:SetScript("OnLeave", function()
+		if not this.__active then
+			this.fill:SetTint("text", 0.04)
+			Theme:Tint(this.glyph, "textDim")
+		end
+		GameTooltip:Hide()
+	end)
+	frame.expandChip = expandChip
+
 	local closeChip = Theme:ChipButton(header, "close")
 	closeChip:SetPoint("RIGHT", header, "RIGHT", -8, 0)
-	closeChip:SetScript("OnClick", function() frame:Hide() end)
+	closeChip:SetScript("OnClick", function()
+		AegisPathfinder.db.char.panelopen = false
+		frame:Hide()
+	end)
 
 	frame.header = header
 
@@ -334,11 +372,13 @@ function AegisPathfinder:UpdateObjectivePanel()
 
 	--[[ Footer.
 
-		The concept's hint line. Materials has no concept equivalent and is a
-		view rather than a setting, so it keeps a button here; everything else
-		the old button row carried now lives where the concept puts it --
-		Config and Route behind the header's ☰, Guides behind the tab bar's +,
-		and returning from a branch on the branch tab itself.
+		The concept replaced its slash-command hint with live state: the
+		current step's quest id on the left, and how far through the guide you
+		are on the right. Materials has no concept equivalent and is a view
+		rather than a setting, so it keeps its button here; everything else the
+		old button row carried lives where the concept puts it -- Config and
+		Route behind the header's ☰, Guides behind the tab bar's +, and
+		returning from a branch on the branch tab itself.
 	]]
 	local footer = CreateFrame("Frame", nil, frame)
 	footer:SetHeight(FOOTER_H)
@@ -353,11 +393,17 @@ function AegisPathfinder:UpdateObjectivePanel()
 	footerRule:SetPoint("TOPRIGHT", footer, "TOPRIGHT", 0, 0)
 	Theme:Tint(footerRule, "border")
 
-	local hint = footer:CreateFontString(nil, "OVERLAY")
-	Theme:SetFont(hint, "body", 10)
-	hint:SetPoint("CENTER", footer, "CENTER", 0, 0)
-	hint:SetText("/apg next  \194\183  /apg prev  \194\183  /apg goto <n>")
-	Theme:TextColor(hint, "textDim")
+	footerQid = footer:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(footerQid, "body", 10)
+	footerQid:SetPoint("LEFT", footer, "LEFT", ROWPAD + 18, 0)
+	footerQid:SetJustifyH("LEFT")
+	Theme:TextColor(footerQid, "accent")
+
+	footerCount = footer:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(footerCount, "body", 10)
+	footerCount:SetPoint("RIGHT", footer, "RIGHT", -ROWPAD, 0)
+	footerCount:SetJustifyH("RIGHT")
+	Theme:TextColor(footerCount, "textDim")
 
 	local materials = Theme:GlyphButton(footer, "use", 11, 18)
 	materials:SetPoint("LEFT", footer, "LEFT", ROWPAD - 4, 0)
@@ -371,12 +417,6 @@ function AegisPathfinder:UpdateObjectivePanel()
 		Theme:Tint(this.glyph, "textDim")
 		GameTooltip:Hide()
 	end)
-
-	if self.db.char.debug then
-		local dbg = Theme:Pill(footer, "Debug", 60, FOOTER_H - 6)
-		dbg:SetPoint("RIGHT", footer, "RIGHT", -(ROWPAD + 8), 0)
-		dbg:SetScript("OnClick", function() frame:Hide(); self:DebugGuideSequence(true) end)
-	end
 
 	frame.footer = footer
 
@@ -487,6 +527,41 @@ function AegisPathfinder:UpdateObjectivePanel()
 		rows[i] = row
 	end
 
+	--[[ The objective meter.
+
+		The concept shows it under the single step in focus mode: what the
+		quest wants, how much of it you have, and a bar. This is quest-log
+		leaderboard text -- "Kobold Vermin slain: 3/8" -- which the panel used
+		to flatten into the step's note line, where the numbers were easy to
+		miss. Overview mode still does that, as the concept does.
+	]]
+	meter = CreateFrame("Frame", nil, frame)
+	meter:SetHeight(38)
+	meter:SetPoint("TOPLEFT", rows[1], "BOTTOMLEFT", ROWPAD, -2)
+	meter:SetPoint("RIGHT", frame, "RIGHT", -ROWPAD, 0)
+	Theme:NineSlice(meter, Theme.texture.tabFill, "BACKGROUND", "text", 0.04)
+	Theme:NineSlice(meter, Theme.texture.tabBorder, "BORDER", "border")
+	meter:Hide()
+
+	local meterLabel = meter:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(meterLabel, "body", 12)
+	meterLabel:SetPoint("TOPLEFT", meter, "TOPLEFT", 11, -8)
+	meterLabel:SetJustifyH("LEFT")
+	Theme:TextColor(meterLabel, "textDim")
+
+	local meterCount = meter:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(meterCount, "body2", 12)
+	meterCount:SetPoint("TOPRIGHT", meter, "TOPRIGHT", -11, -8)
+	meterCount:SetJustifyH("RIGHT")
+	Theme:TextColor(meterCount, "accent")
+
+	local meterBar = Theme:ProgressBar(meter, 6)
+	meterBar:SetPoint("BOTTOMLEFT", meter, "BOTTOMLEFT", 11, 8)
+	meterBar:SetPoint("BOTTOMRIGHT", meter, "BOTTOMRIGHT", -11, 8)
+
+	meter.label, meter.count, meter.bar = meterLabel, meterCount, meterBar
+	frame.meter = meter
+
 	frame:EnableMouseWheel()
 	frame:SetScript("OnMouseWheel", function()
 		scrollbar:SetValue(offset - arg1)
@@ -500,6 +575,7 @@ function AegisPathfinder:UpdateObjectivePanel()
 		frame:SetHeight(self.db.profile.objframeheight)
 	end
 	Theme:RestorePosition(frame, "objframe")
+	frame.expandChip:SetActive(self.db.char.overviewmode)
 
 	self:OnObjectiveFrameResized()
 
@@ -550,8 +626,10 @@ function AegisPathfinder:OnObjectiveFrameResized()
 	NUMROWS = math.max(1, math.floor(contentHeight / ROWHEIGHT))
 	if NUMROWS > MAX_ROWS then NUMROWS = MAX_ROWS end
 
+	-- Focus mode draws one row whatever the panel's height.
+	local shown = self.db.char.overviewmode and NUMROWS or 1
 	for i, row in ipairs(rows) do
-		if i > NUMROWS then row:Hide() end
+		if i > shown then row:Hide() end
 	end
 
 	if scrollbar and self.actions then
@@ -578,6 +656,38 @@ local VERB = {
 }
 
 
+--- Flip between showing the one step you are on and showing the whole guide.
+function AegisPathfinder:ToggleOverviewMode()
+	self.db.char.overviewmode = not self.db.char.overviewmode
+	if frame.expandChip then frame.expandChip:SetActive(self.db.char.overviewmode) end
+	-- The row count and the scrollbar both depend on the mode.
+	self:OnObjectiveFrameResized()
+	self:UpdateOHPanel()
+end
+
+--[[ A step's quest-log objective, as label and counts.
+
+	The leaderboard text is "Kobold Vermin slain: 3/8"; the meter wants the
+	three parts separately. Anything that does not parse is handed back whole
+	as the label, with no counts, because a guide can carry objectives that are
+	not countable ("Speak to Marshal Dughan").
+]]
+local function ReadLeaderboard(logi)
+	if not logi then return nil end
+	for j = 1, GetNumQuestLeaderBoards(logi) do
+		local text, _, done = GetQuestLogLeaderBoard(j, logi)
+		if text and not done then
+			local _, _, label, have, need = string.find(text, "^(.-):%s*(%d+)%s*/%s*(%d+)%s*$")
+			if label then
+				return label, tonumber(have), tonumber(need)
+			end
+			return text, nil, nil
+		end
+	end
+	return nil
+end
+AegisPathfinder.ReadLeaderboard = ReadLeaderboard
+
 local accepted = {}
 local acceptedDirty = true
 function AegisPathfinder:UpdateOHPanel(value)
@@ -589,6 +699,14 @@ function AegisPathfinder:UpdateOHPanel(value)
 	if not self.actions or not self.current then return end
 
 	local total = table.getn(self.actions)
+	--[[ Focus mode shows exactly one row: the step you are on.
+
+		Everything below still walks the fixed row slots, so the two modes are
+		the same code with a different window onto the step list -- one slot
+		starting at the current step, or NUMROWS slots starting at the scroll
+		offset. ]]
+	local overview = self.db.char.overviewmode and true or false
+	local shown = overview and NUMROWS or 1
 
 	if self.guidechanged then
 		self.guidechanged = nil
@@ -596,12 +714,19 @@ function AegisPathfinder:UpdateOHPanel(value)
 		ResetScrollbar()
 	end
 
-	if value then offset = math.floor(value) end
-	if (offset + NUMROWS) > total then offset = total - NUMROWS end
-	if offset < 0 then offset = 0 end
+	if overview then
+		if value then offset = math.floor(value) end
+		if (offset + NUMROWS) > total then offset = total - NUMROWS end
+		if offset < 0 then offset = 0 end
 
-	if offset == 0 then upbutt:Disable() else upbutt:Enable() end
-	if offset == (total - NUMROWS) then downbutt:Disable() else downbutt:Enable() end
+		if offset == 0 then upbutt:Disable() else upbutt:Enable() end
+		if offset == (total - NUMROWS) then downbutt:Disable() else downbutt:Enable() end
+		scrollbar:Show()
+	else
+		-- One step, so there is nothing to scroll past.
+		offset = self.current - 1
+		scrollbar:Hide()
+	end
 
 	if not value or acceptedDirty then
 		for i in pairs(accepted) do accepted[i] = nil end
@@ -619,7 +744,7 @@ function AegisPathfinder:UpdateOHPanel(value)
 	local doneCount = 0
 
 	for i, row in ipairs(rows) do
-		if i > NUMROWS then row:Hide()
+		if i > shown then row:Hide()
 		else
 		row.i = i + offset
 		local idx = i + offset
@@ -638,13 +763,13 @@ function AegisPathfinder:UpdateOHPanel(value)
 
 			local note = self:GetObjectiveTag("N", idx)
 
-			-- Quest progress replaces the note on an in-progress COMPLETE step:
-			-- "3/8 boars slain" is what you want while you are doing it.
-			if action == "COMPLETE" and logi and not complete then
-				local numObj = GetNumQuestLeaderBoards(logi)
-				for j = 1, numObj do
-					local lb = GetQuestLogLeaderBoard(j, logi)
-					if lb then note = lb break end
+			-- In overview the objective folds into the note line, which is
+			-- what the concept does with it there. In focus mode the meter
+			-- below carries it instead, so the note stays the note.
+			if overview and action == "COMPLETE" and logi and not complete then
+				local label, have, need = ReadLeaderboard(logi)
+				if label then
+					note = need and string.format("%s - %d/%d", label, have, need) or label
 				end
 			end
 
@@ -737,4 +862,42 @@ function AegisPathfinder:UpdateOHPanel(value)
 	navStepNum:SetText(tostring(self.current))
 	navCount:SetText(string.format("%d of %d \194\183 %d done", self.current, total, doneCount))
 	guideProgress:SetProgress(total > 0 and (doneCount / total) or 0)
+
+	--[[ The objective meter, under the single step in focus mode.
+
+		Only for a step whose quest is in the log with countable objectives
+		left. A step with nothing to count gets no meter rather than an empty
+		one. ]]
+	local showMeter = false
+	if not overview then
+		local action = self:GetObjectiveInfo(self.current)
+		local _, logi, complete = self:GetObjectiveStatus(self.current)
+		if action == "COMPLETE" and logi and not complete then
+			local label, have, need = ReadLeaderboard(logi)
+			if label and need and need > 0 then
+				meter.label:SetText(label)
+				meter.count:SetText(string.format("%d / %d", have, need))
+				meter.bar:SetProgress(have / need)
+				showMeter = true
+			end
+		end
+	end
+	if showMeter then meter:Show() else meter:Hide() end
+
+	--[[ Footer: the current step's quest id, and progress through the guide.
+
+		A data-source warning outranks the id. It is the most likely reason a
+		waypoint points at nothing and it otherwise fails silently, so when
+		there is one it takes the slot and turns red. ]]
+	local qid, meta, isWarning = self:GetStepMeta(self.current)
+	if isWarning then
+		footerQid:SetText(meta)
+		Theme:TextColor(footerQid, "danger")
+	elseif qid then
+		footerQid:SetText("QID " .. qid)
+		Theme:TextColor(footerQid, "accent")
+	else
+		footerQid:SetText("")
+	end
+	footerCount:SetText(string.format("%d of %d steps completed", doneCount, total))
 end

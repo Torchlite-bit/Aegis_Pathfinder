@@ -365,7 +365,59 @@ local function MapPoint(zone, x, y, desc, onArrival)
 		onArrival = onArrival,
 	})
 
-	if created then AegisPathfinder.lastwaypoint = true end
+	if created then
+		AegisPathfinder.lastwaypoint = true
+		-- Remember where it went. The providers take a waypoint and give
+		-- nothing back, so this is the only record of what the arrow is
+		-- supposed to be pointing at.
+		AegisPathfinder.waypointtarget = { continent = zc, zoneindex = zi, x = x, y = y }
+	end
+end
+
+--[[ Where the current waypoint is, relative to the player.
+
+	Returns the bearing in radians -- clockwise, relative to the way the player
+	is facing, so zero means "straight ahead" -- and the distance in yards.
+
+	Distance needs Astrolabe's zone dimension tables to turn map percentages
+	into yards. Astrolabe ships with TomTom and with pfQuest, so in practice it
+	is there whenever a waypoint provider is; when it is not, the bearing is
+	still returned and the distance is nil. Saying "that way" without claiming
+	a range beats inventing one.
+]]
+function AegisPathfinder:GetWaypointBearing()
+	local wp = self.waypointtarget
+	if not wp or not self:GetWaypointProvider() then return nil end
+	if WorldMapFrame:IsShown() then return nil end   -- do not yank the player's map
+
+	SetMapToCurrentZone()
+	local c, z = GetCurrentMapContinent(), GetCurrentMapZone()
+	if c ~= wp.continent or z ~= wp.zoneindex then return nil end  -- another zone
+
+	local px, py = GetPlayerMapPosition("player")
+	if not px or (px == 0 and py == 0) then return nil end
+
+	-- Map coordinates run east and *south*; the waypoint is stored 0-100.
+	local east = wp.x / 100 - px
+	local south = wp.y / 100 - py
+	if east == 0 and south == 0 then return 0, 0 end
+
+	-- atan2(east, north) is the compass bearing, clockwise from north.
+	local bearing = math.atan2(east, -south)
+	local facing = GetPlayerFacing and GetPlayerFacing() or 0
+
+	-- GetPlayerFacing grows counter-clockwise from north, so adding it turns a
+	-- compass bearing into one relative to the player.
+	local relative = bearing + facing
+
+	local yards
+	if Astrolabe and Astrolabe.ComputeDistance then
+		local ok, d = pcall(Astrolabe.ComputeDistance, Astrolabe,
+			c, z, px, py, c, z, wp.x / 100, wp.y / 100)
+		if ok and d then yards = d end
+	end
+
+	return relative, yards
 end
 
 -- Set waypoint from coordinates
@@ -381,6 +433,7 @@ function AegisPathfinder:ClearWaypoint()
 		if providers[name].IsAvailable() then providers[name].Clear() end
 	end
 	self.lastwaypoint = nil
+	self.waypointtarget = nil
 end
 
 -- Force waypoint update - directly creates waypoint for current objective

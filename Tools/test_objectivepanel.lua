@@ -58,6 +58,20 @@ function AegisPathfinder:GetObjectiveTag(tag, i)
 	if not t then return nil end
 	return t[tag]
 end
+-- The engine supplies these; the panel only renders what they return.
+function AegisPathfinder:GetStepMeta(i)
+	local qid = self:GetObjectiveTag("QID", i)
+	if self.__dataWarning then return nil, self.__dataWarning, true end
+	return qid, qid and ("QID " .. qid) or nil, false
+end
+function AegisPathfinder:ToggleOverviewMode()
+	self.db.char.overviewmode = not self.db.char.overviewmode
+	if self.objectiveframe.expandChip then
+		self.objectiveframe.expandChip:SetActive(self.db.char.overviewmode)
+	end
+	self:OnObjectiveFrameResized()
+	self:UpdateOHPanel()
+end
 
 AegisPathfinder.statusframe = CreateFrame("Frame", nil, UIParent)
 AegisPathfinder.optionsframe = CreateFrame("Frame", nil, UIParent)
@@ -142,6 +156,9 @@ AegisPathfinder.tags = {
 AegisPathfinder.turnedin = {}
 AegisPathfinder.current = 3
 frame:Show()
+-- The row assertions below describe overview mode, which is what the panel
+-- used to do unconditionally.
+AegisPathfinder.db.char.overviewmode = true
 AegisPathfinder:UpdateOHPanel(0)
 
 -- Rows are fixed slots: slot n shows step n + offset, and offset is 0 here.
@@ -216,6 +233,121 @@ for i, row in ipairs(built) do
 			i, tostring(row.icon:GetTexture()))
 	end
 end
+
+-- Focus mode and overview -------------------------------------------------------
+
+--[[ The concept's two modes. Focus -- the default -- shows the one step you
+	are on; overview shows the list. The chip in the header says which. ]]
+check(frame.expandChip ~= nil, "the overview chip was not built")
+
+AegisPathfinder.db.char.overviewmode = false
+AegisPathfinder.current = 2
+AegisPathfinder:UpdateOHPanel()
+
+check(built[1]:IsShown(), "focus mode shows the current step")
+check(not built[2]:IsShown(), "and nothing else")
+check(built[1].i == 2,
+	"the single row should be the step you are on, got %s", tostring(built[1].i))
+check(built[1].band:IsShown(),
+	"the step it shows is still styled by its own rules -- an active ACCEPT is a band")
+
+AegisPathfinder.db.char.overviewmode = true
+AegisPathfinder:UpdateOHPanel(0)
+check(built[2]:IsShown(), "overview mode brings the rest of the list back")
+
+-- Toggling flips the mode and the chip's state together.
+AegisPathfinder.db.char.overviewmode = false
+frame.expandChip:SetActive(false)
+AegisPathfinder:ToggleOverviewMode()
+check(AegisPathfinder.db.char.overviewmode == true, "toggling turns overview on")
+check(frame.expandChip:IsActive() == true,
+	"and the chip takes the accent so the panel says which mode it is in")
+AegisPathfinder:ToggleOverviewMode()
+check(AegisPathfinder.db.char.overviewmode == false, "toggling again returns to focus")
+check(frame.expandChip:IsActive() == false, "and the chip goes back to plain")
+
+-- The objective meter -------------------------------------------------------
+
+check(frame.meter ~= nil, "the objective meter was not built")
+
+-- No quest-log objective means no meter, rather than an empty one.
+AegisPathfinder.current = 1
+AegisPathfinder:UpdateOHPanel()
+check(not frame.meter:IsShown(), "a NOTE step has nothing to count, so no meter")
+
+-- A COMPLETE step whose quest is in the log with countable objectives left.
+AegisPathfinder.actions[5] = "COMPLETE"
+function AegisPathfinder:GetObjectiveStatus(i)
+	if i == 5 then return nil, 7, false end   -- in the log, not complete
+	return self.turnedin[i]
+end
+GetNumQuestLeaderBoards = function() return 1 end
+GetQuestLogLeaderBoard = function() return "Kobold Vermin slain: 3/8", "monster", nil end
+
+AegisPathfinder.current = 5
+AegisPathfinder:UpdateOHPanel()
+check(frame.meter:IsShown(), "a countable objective gets the meter")
+check(frame.meter.label:GetText() == "Kobold Vermin slain",
+	"the label is the objective without its counts, got '%s'",
+	tostring(frame.meter.label:GetText()))
+check(frame.meter.count:GetText() == "3 / 8",
+	"the count reads as the concept prints it, got '%s'",
+	tostring(frame.meter.count:GetText()))
+frame.meter.bar:SetWidth(200)
+frame.meter.bar:SetProgress(3 / 8)
+check(frame.meter.bar.fill:GetWidth() == 75,
+	"the bar should be three eighths of 200px, got %s",
+	tostring(frame.meter.bar.fill:GetWidth()))
+
+-- An objective with no numbers in it is not a meter.
+GetQuestLogLeaderBoard = function() return "Speak to Marshal Dughan", "event", nil end
+AegisPathfinder:UpdateOHPanel()
+check(not frame.meter:IsShown(),
+	"an objective with nothing to count gets no meter rather than a broken one")
+
+-- Overview mode folds the objective into the note line instead, as the
+-- concept does, and hides the meter.
+GetQuestLogLeaderBoard = function() return "Kobold Vermin slain: 3/8", "monster", nil end
+AegisPathfinder.db.char.overviewmode = true
+AegisPathfinder:UpdateOHPanel(0)
+check(not frame.meter:IsShown(), "overview mode has no meter")
+check(built[5].detail:GetText() == "Kobold Vermin slain - 3/8",
+	"overview folds the objective into the note, got '%s'",
+	tostring(built[5].detail:GetText()))
+AegisPathfinder.db.char.overviewmode = false
+
+-- The footer ------------------------------------------------------------------
+
+-- The concept replaced its slash-command hint with live state.
+local footerStrings = {}
+for _, r in ipairs(frame.footer.__regions) do
+	if r.__kind == "FontString" then table.insert(footerStrings, r) end
+end
+check(table.getn(footerStrings) == 2,
+	"the footer carries a quest id and a count, got %d strings", table.getn(footerStrings))
+
+AegisPathfinder.current = 2       -- step 2 has QID 26
+AegisPathfinder:UpdateOHPanel()
+local qidText, countText
+for _, fs in ipairs(footerStrings) do
+	if string.find(fs:GetText() or "", "QID", 1, true) then qidText = fs:GetText() end
+	if string.find(fs:GetText() or "", "completed", 1, true) then countText = fs:GetText() end
+end
+check(qidText == "QID 26", "the footer names the current step's quest id, got '%s'",
+	tostring(qidText))
+check(countText == "1 of 5 steps completed",
+	"the footer counts the guide, got '%s'", tostring(countText))
+
+-- A data-source mismatch outranks the quest id: it is the reason a waypoint
+-- points at nothing, and it otherwise fails silently.
+AegisPathfinder.__dataWarning = "Guide data authored for OctoWoW"
+AegisPathfinder:UpdateOHPanel()
+local warned = false
+for _, fs in ipairs(footerStrings) do
+	if fs:GetText() == "Guide data authored for OctoWoW" then warned = true end
+end
+check(warned, "a data-source warning should take the footer's left slot")
+AegisPathfinder.__dataWarning = nil
 
 -- Report ---------------------------------------------------------------------
 

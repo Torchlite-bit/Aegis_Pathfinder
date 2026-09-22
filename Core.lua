@@ -89,11 +89,11 @@ local defaults = {
     mapquestgivers = true,
     mapnotecoords = true,
     waypointprovider = "auto", -- see Navigation.lua providerorder
+    -- Focus mode is the concept's default: the step you are on, and nothing
+    -- else. Overview is the whole list, behind the header's expand chip.
+    overviewmode = false,
+    shownavcallout = true,
     server = nil,             -- see Servers.lua; nil means the default dataset
-    -- The objectives panel is the main surface and carries the same step with
-    -- room to read it, so the compact card stays out of the way until asked
-    -- for. /apg statusbar brings it back.
-    showstatusframe = false,
     showuseitem = true,
     showuseitemcomplete = true,
     skipfollowups = true,
@@ -261,20 +261,20 @@ local options = {
             end,
             order = 2.5,
         },
+        NavCallout = {
+            name = "Navigation Arrow",
+            desc = "Show/Hide the arrow pointing at the current objective",
+            type = "toggle",
+            get = function() return AegisPathfinder.db.char.shownavcallout end,
+            set = function() AegisPathfinder:ToggleNavCallout() end,
+            order = 2.95,
+        },
         Objectives = {
             name = "Objectives",
             desc = "Show/Hide the objectives panel",
             type = "execute",
             func = function() AegisPathfinder:ToggleObjectivePanel() end,
             order = 2.9,
-        },
-        StatusBar = {
-            name = "Status Bar",
-            desc = "Show/Hide the compact status card",
-            type = "toggle",
-            get = function() return AegisPathfinder.statusframe:IsVisible() end,
-            set = function() AegisPathfinder:ToggleStatusFrame() end,
-            order = 3,
         },
         SelectRoute = {
             name = "Select Route",
@@ -546,7 +546,12 @@ function AegisPathfinder:OnInitialize()
     if self.myfaction == nil then
         self:RegisterEvent("PLAYER_ENTERING_WORLD")
     end
-    self:PositionStatusFrame()
+    self:PositionItemButton()
+    -- The panel is the addon's only window and the concept has it open, so it
+    -- opens with the client unless the player closed it last session.
+    if self.db.char.panelopen ~= false then
+        self.objectiveframe:Show()
+    end
     self:CreateConfigPanel()
 
     if migratedLegacyDB then

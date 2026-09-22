@@ -113,7 +113,7 @@ AegisPathfinder.guidelistframe = frame
 frame:SetFrameStrata("DIALOG")
 frame:SetWidth(660)
 frame:SetHeight(CHROME_TOP + 305 + 14)
-frame:SetPoint("TOPRIGHT", AegisPathfinder.statusframe, "BOTTOMRIGHT")
+frame:SetPoint("TOPRIGHT", AegisPathfinder.objectiveframe, "TOPLEFT", -8, 0)
 Theme:Panel(frame, "panel")
 frame:Hide()
 
@@ -263,10 +263,10 @@ frame:SetScript("OnShow", function()
     -- Snap beside the status card only if the player has not dragged this
     -- window somewhere of their own; otherwise reopening would undo the move.
     if not Theme:RestorePosition(this, "guidelistframe") then
-        local quad, vhalf, hhalf = AegisPathfinder.GetQuadrant(AegisPathfinder.statusframe)
+        local quad, vhalf, hhalf = AegisPathfinder.GetQuadrant(AegisPathfinder.objectiveframe)
         local anchpoint = (vhalf == "TOP" and "BOTTOM" or "TOP") .. hhalf
         this:ClearAllPoints()
-        this:SetPoint(quad, AegisPathfinder.statusframe, anchpoint)
+        this:SetPoint(quad, AegisPathfinder.objectiveframe, anchpoint)
     end
     AegisPathfinder:UpdateGuideListPanel()
     this:SetAlpha(0)

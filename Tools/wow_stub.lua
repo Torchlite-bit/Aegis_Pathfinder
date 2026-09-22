@@ -115,13 +115,27 @@ local function newTexture(name, parent, layer)
 		self.__texture = path
 	end
 	function t:GetTexture() return self.__texture end
-	function t:SetTexCoord(l, r, tt, b)
-		for _, v in pairs({ l, r, tt, b }) do
-			if type(v) ~= "number" then
-				complain("Texture:SetTexCoord got %s", tostring(v))
+	--[[ Both forms the client accepts.
+
+		Four arguments are the usual left/right/top/bottom crop. Eight map the
+		texture onto an arbitrary quad, corner by corner, which is the only way
+		to rotate a texture on this client -- there is no SetRotation in 1.12.
+	]]
+	function t:SetTexCoord(a, b, c, d, e, f, g, h)
+		local args = { a, b, c, d, e, f, g, h }
+		local n = 0
+		for i = 1, 8 do if args[i] ~= nil then n = i end end
+		if n ~= 4 and n ~= 8 then
+			complain("Texture:SetTexCoord takes 4 or 8 numbers, got %d", n)
+			return
+		end
+		for i = 1, n do
+			if type(args[i]) ~= "number" then
+				complain("Texture:SetTexCoord got %s", tostring(args[i]))
+				return
 			end
 		end
-		self.__texcoord = { l, r, tt, b }
+		self.__texcoord = { unpack(args, 1, n) }
 	end
 	function t:SetVertexColor(r, g, b, a)
 		checkColor("Texture:SetVertexColor", r, g, b, a)
@@ -159,6 +173,19 @@ local function newFontString(name, parent, layer)
 		end
 	end
 	function fs:SetJustifyV() end
+	-- Text shadows, recorded rather than ignored: the navigation callout has
+	-- no panel behind it, so whether its text is shadowed decides whether it
+	-- can be read over snow.
+	function fs:SetShadowOffset(x, y)
+		if type(x) ~= "number" or type(y) ~= "number" then
+			complain("SetShadowOffset(%s, %s) not numbers", tostring(x), tostring(y))
+		end
+		self.__shadowOffset = { x, y }
+	end
+	function fs:SetShadowColor(r, g, b, a)
+		checkColor("FontString:SetShadowColor", r, g, b, a)
+		self.__shadowColor = { r, g, b, a }
+	end
 	function fs:GetStringWidth() return string.len(self.__text or "") * 6 end
 	function fs:SetWordWrap() end
 
@@ -271,7 +298,11 @@ end
 function stub.install(env)
 	env = env or _G
 	env.CreateFrame = function(frameType, name, parent, template)
-		return newFrame(frameType, name, parent)
+		local f = newFrame(frameType, name, parent)
+		-- The real client publishes a named frame as a global, which is how
+		-- UISpecialFrames entries and getglobal() lookups resolve.
+		if name then env[name] = f end
+		return f
 	end
 	env.UIParent = newFrame("Frame", "UIParent", nil)
 	env.UIParent:SetWidth(1024); env.UIParent:SetHeight(768)

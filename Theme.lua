@@ -67,6 +67,7 @@ Theme.texture = {
 	logo        = MEDIA .. "logo",
 	wordmark    = MEDIA .. "wordmark",
 	grip        = MEDIA .. "grip",
+	navArrow    = MEDIA .. "nav-arrow",
 }
 
 --[[ Chrome glyphs.
@@ -86,6 +87,7 @@ Theme.glyph = {
 	tick         = MEDIA .. "icons\\tick",
 	bang         = MEDIA .. "icons\\bang",
 	pin          = MEDIA .. "icons\\pin",
+	expand       = MEDIA .. "icons\\expand",
 }
 
 Theme.font = {
@@ -674,11 +676,29 @@ function Theme:ChipButton(parent, glyphName, size)
 	b.fill = fill
 	b:SetTints("textDim", "text")
 
+	--[[ The concept's `.chip-btn.active`: accent fill, dark glyph. It marks a
+		chip that toggles something which is currently on, rather than one that
+		just opens a window. An active chip ignores hover, because there is
+		nowhere brighter for it to go. ]]
+	function b:SetActive(active)
+		self.__active = active and true or false
+		if self.__active then
+			self.fill:SetTint("accent", 1)
+			self.glyph:SetVertexColor(0.05, 0.10, 0.02, 1)
+		else
+			self.fill:SetTint("text", 0.04)
+			Theme:Tint(self.glyph, self.__idle)
+		end
+	end
+	function b:IsActive() return self.__active end
+
 	b:SetScript("OnEnter", function()
+		if this.__active then return end
 		this.fill:SetTint("text", 0.10)
 		Theme:Tint(this.glyph, this.__hover)
 	end)
 	b:SetScript("OnLeave", function()
+		if this.__active then return end
 		this.fill:SetTint("text", 0.04)
 		Theme:Tint(this.glyph, this.__idle)
 	end)

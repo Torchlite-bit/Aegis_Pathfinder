@@ -36,6 +36,11 @@ SS = 4  # supersampling factor
 # lives in Theme.lua.
 ACCENT_DEEP = (46, 133, 14)
 ACCENT_GLOW = (143, 224, 102)
+# The navigation arrow's three gradient stops, straight from the concept's
+# <linearGradient id="arrowGrad">.
+ARROW_TOP = (168, 255, 143)
+ARROW_MID = (111, 217, 79)
+ARROW_BOT = (74, 156, 48)
 
 WHITE = (255, 255, 255)
 
@@ -401,6 +406,21 @@ def _bang(d, s):             # red band -- step outstanding
     d.ellipse([s * .40, s * .70, s * .60, s * .90], fill=W)
 
 
+def _expand(d, s):           # header -- switch between one step and all of them
+    """Diagonal double-headed arrow, per the concept's #obj-expand-btn SVG.
+
+    The concept strokes it at 2.2 of 24 units; at the 10px this renders to,
+    that is thinner than a pixel, so it is drawn heavier and the arrowheads
+    are filled rather than stroked.
+    """
+    w = int(s * .085)
+    d.line([s * .28, s * .72, s * .72, s * .28], fill=W, width=w)
+    # Upper-right head
+    d.polygon([(s * .76, s * .24), (s * .76, s * .52), (s * .48, s * .24)], fill=W)
+    # Lower-left head
+    d.polygon([(s * .24, s * .76), (s * .52, s * .76), (s * .24, s * .48)], fill=W)
+
+
 def _pin(d, s):              # map pin -- prefixes a coordinate pair
     d.ellipse([s * .22, s * .10, s * .78, s * .66], fill=W)
     d.polygon([(s * .34, s * .56), (s * .66, s * .56), (s * .50, s * .92)], fill=W)
@@ -418,7 +438,42 @@ CHROME = {
     "tick": _tick,
     "bang": _bang,
     "pin": _pin,
+    "expand": _expand,
 }
+
+
+def nav_arrow(size=64):
+    """The signature navigation arrow.
+
+    Same silhouette as the concept's SVG path (M50,10 L90,66 L50,52 L10,66 Z)
+    mapped into the texture, with its three-stop vertical gradient. Colour is
+    baked in rather than tinted, because it is a gradient and 1.12 has none.
+
+    It points straight up. Bearing comes from rotating it at runtime, which on
+    this client means mapping it onto a rotated quad with the eight-argument
+    form of SetTexCoord -- so the art must stay centred in its square or it
+    will wobble as it turns.
+    """
+    img = canvas(size)
+    d = ImageDraw.Draw(img)
+    s = size * SS
+
+    def pt(x, y):
+        return (x / 100.0 * s, y / 80.0 * s)
+
+    d.polygon([pt(50, 8), pt(92, 68), pt(50, 53), pt(8, 68)], fill=WHITE + (255,))
+
+    img = img.resize((size, size), Image.LANCZOS)
+    px = img.load()
+    for y in range(size):
+        t = y / float(size - 1)
+        col = lerp(ARROW_TOP, ARROW_MID, t / 0.55) if t < 0.55 else \
+            lerp(ARROW_MID, ARROW_BOT, (t - 0.55) / 0.45)
+        for x in range(size):
+            a = px[x, y][3]
+            if a:
+                px[x, y] = col + (a,)
+    return write_tga(img, os.path.join(MEDIA, "nav-arrow.tga"))
 
 
 def grip(size=16):
@@ -513,6 +568,7 @@ def main():
     record("progress-fill.tga", progress_fill())
     record("logo.tga", logo())
     record("wordmark.tga", wordmark())
+    record("nav-arrow.tga", nav_arrow())
     record("grip.tga", grip())
 
     for name, fn in sorted(ICONS.items()):

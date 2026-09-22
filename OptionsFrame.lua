@@ -20,7 +20,7 @@ function AegisPathfinder:CreateConfigPanel()
 	frame:SetFrameStrata("DIALOG")
 	frame:SetWidth(310)
 	frame:SetHeight(CHROME_TOP + 16 + 28 * 8)
-	frame:SetPoint("TOPRIGHT", AegisPathfinder.statusframe, "BOTTOMRIGHT")
+	frame:SetPoint("TOPRIGHT", AegisPathfinder.objectiveframe, "TOPLEFT", -8, 0)
 	Theme:Panel(frame, "panel")
 	frame:Hide()
 
@@ -133,10 +133,10 @@ function AegisPathfinder:CreateConfigPanel()
 		-- Snap beside the status card only while the player has not dragged
 		-- this window somewhere of their own.
 		if not Theme:RestorePosition(f, "optionsframe") then
-			local quad, vhalf, hhalf = self.GetQuadrant(self.statusframe)
+			local quad, vhalf, hhalf = self.GetQuadrant(self.objectiveframe)
 			local anchpoint = (vhalf == "TOP" and "BOTTOM" or "TOP") .. hhalf
 			f:ClearAllPoints()
-			f:SetPoint(quad, self.statusframe, anchpoint)
+			f:SetPoint(quad, self.objectiveframe, anchpoint)
 		end
 
 		f.qtrack:SetChecked(self.db.char.trackquests)
@@ -183,7 +183,7 @@ end
 
 function AegisPathfinder:PositionDungeonPanel()
 	if not self.dungeonframe or not self.optionsframe then return end
-	local quad, vhalf, hhalf = self.GetQuadrant(self.statusframe)
+	local quad, vhalf, hhalf = self.GetQuadrant(self.objectiveframe)
 	self.dungeonframe:ClearAllPoints()
 	if hhalf == "LEFT" then
 		self.dungeonframe:SetPoint("TOPLEFT", self.optionsframe, "TOPRIGHT", 5, 0)
@@ -297,7 +297,7 @@ end
 
 function AegisPathfinder:PositionFiltersPanel()
 	if not self.filtersframe or not self.optionsframe then return end
-	local quad, vhalf, hhalf = self.GetQuadrant(self.statusframe)
+	local quad, vhalf, hhalf = self.GetQuadrant(self.objectiveframe)
 	self.filtersframe:ClearAllPoints()
 	if hhalf == "LEFT" then
 		self.filtersframe:SetPoint("TOPRIGHT", self.optionsframe, "TOPLEFT", -5, 0)
