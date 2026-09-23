@@ -268,9 +268,27 @@ local function newFrame(frameType, name, parent)
 	function f:GetNormalTexture() return newTexture(nil, self, "ARTWORK") end
 	function f:SetThumbTexture() end
 	function f:GetThumbTexture() return newTexture(nil, self, "ARTWORK") end
-	function f:SetMinMaxValues() end
-	function f:SetValue() end
-	function f:GetValue() return 0 end
+	-- Sliders remember their range and value, so a scroll bar's wiring can
+	-- be checked rather than assumed.
+	function f:SetMinMaxValues(lo, hi) self.__min, self.__max = lo, hi end
+	function f:GetMinMaxValues() return self.__min or 0, self.__max or 0 end
+	function f:SetValue(v)
+		self.__value = v
+		local h = self.__scripts.OnValueChanged
+		if h then
+			local oldThis, oldArg = this, arg1
+			this, arg1 = self, v
+			h()
+			this, arg1 = oldThis, oldArg
+		end
+	end
+	function f:GetValue() return self.__value or 0 end
+	-- ScrollFrame: a child that is offset by the vertical scroll.
+	function f:SetScrollChild(child) self.__scrollChild = child end
+	function f:GetScrollChild() return self.__scrollChild end
+	function f:SetVerticalScroll(v) self.__vscroll = v end
+	function f:GetVerticalScroll() return self.__vscroll or 0 end
+	function f:UpdateScrollChildRect() end
 	function f:SetValueStep() end
 	function f:SetOrientation() end
 	function f:Disable() self.__enabled = false end

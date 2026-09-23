@@ -202,7 +202,9 @@ AegisPathfinder:RegisterRoute("Goblin", MergeRoutes({
 
 -- VanillaGuide Route Pack (default) - uses the existing Optimized routes
 AegisPathfinder:RegisterRoutePack("VanillaGuide", {
-    displayName = "VanillaGuide",
+    -- Shown as the concept names it. The key stays "VanillaGuide": it is what
+    -- every existing character has saved in its routepack field.
+    displayName = "Optimized",
     description = "Quest-optimized 1-60 leveling",
     routes = {
         Human = MergeRoutes({

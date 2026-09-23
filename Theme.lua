@@ -69,6 +69,7 @@ Theme.texture = {
 	grip        = MEDIA .. "grip",
 	navArrow    = MEDIA .. "nav-arrow",
 	scrollThumb = MEDIA .. "scroll-thumb",
+	switchTrack = MEDIA .. "switch-track",
 }
 
 --[[ Chrome glyphs.
@@ -805,6 +806,195 @@ function Theme:ScrollBar(parent, width)
 
 	f.track, f.up, f.down = track, up, down
 	return f, up, down
+end
+
+--[[ Form widgets for the options panel.
+
+	The concept's #options body is a stack of sections, each an accent `h3`
+	over its controls: <select> dropdowns, a pill group, the dungeon chips,
+	sliding .switch toggles, and .fine-print notes under them. 1.12 has none
+	of those, so each is built here from the same masks as everything else.
+]]
+
+--- The concept's `.options-body h3`: 12px uppercase display face in accent,
+--- with a 1px rule under it. Returns the frame; its height is fixed.
+function Theme:SectionHeader(parent, text, width)
+	local f = CreateFrame("Frame", nil, parent)
+	f:SetHeight(20)
+	if width then f:SetWidth(width) end
+
+	local fs = f:CreateFontString(nil, "OVERLAY")
+	self:SetFont(fs, "display", 12)
+	fs:SetPoint("TOPLEFT", f, "TOPLEFT", 0, 0)
+	fs:SetText(string.upper(text or ""))
+	self:TextColor(fs, "accent")
+
+	local rule = f:CreateTexture(nil, "ARTWORK")
+	rule:SetTexture(self.texture.solid)
+	rule:SetHeight(1)
+	rule:SetPoint("BOTTOMLEFT", f, "BOTTOMLEFT", 0, 0)
+	rule:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", 0, 0)
+	self:Tint(rule, "border")
+
+	f.label, f.rule = fs, rule
+	return f
+end
+
+--- `.fine-print`: 11.5px dim prose that wraps to the width it is given.
+function Theme:FinePrint(parent, width)
+	local fs = parent:CreateFontString(nil, "OVERLAY")
+	self:SetFont(fs, "body", 11)
+	fs:SetWidth(width)
+	fs:SetJustifyH("LEFT")
+	self:TextColor(fs, "textDim")
+	return fs
+end
+
+--[[ The concept's `.toggle-row`: a sliding switch and its label, the whole
+	row clickable.
+
+	Off: a faint track with a white knob on the left. On: an accent-deep
+	track with a near-black knob on the right. `onChange(on)` fires on click.
+]]
+function Theme:Switch(parent, label, onChange)
+	local row = CreateFrame("Button", nil, parent)
+	row:SetHeight(22)
+
+	local track = row:CreateTexture(nil, "ARTWORK")
+	track:SetTexture(self.texture.switchTrack)
+	track:SetWidth(36); track:SetHeight(20)
+	track:SetPoint("LEFT", row, "LEFT", 0, 0)
+
+	local knob = row:CreateTexture(nil, "OVERLAY")
+	knob:SetTexture(self.texture.circleFill)
+	knob:SetWidth(16); knob:SetHeight(16)
+
+	local fs = row:CreateFontString(nil, "OVERLAY")
+	self:SetFont(fs, "body", 13)
+	fs:SetPoint("LEFT", track, "RIGHT", 9, 0)
+	fs:SetText(label or "")
+	self:TextColor(fs, "text")
+
+	row.track, row.knob, row.label = track, knob, fs
+
+	function row:SetOn(on)
+		self.__on = on and true or false
+		self.knob:ClearAllPoints()
+		if self.__on then
+			Theme:Tint(self.track, "accentDeep")
+			self.knob:SetPoint("LEFT", self.track, "LEFT", 18, 0)
+			self.knob:SetVertexColor(0.04, 0.05, 0.04, 1)     -- #0a0d09
+		else
+			Theme:Tint(self.track, "text", 0.10)
+			self.knob:SetPoint("LEFT", self.track, "LEFT", 2, 0)
+			Theme:Tint(self.knob, "text")
+		end
+	end
+	function row:IsOn() return self.__on end
+
+	row:SetScript("OnClick", function()
+		this:SetOn(not this.__on)
+		if onChange then onChange(this.__on) end
+	end)
+
+	row:SetOn(false)
+	return row
+end
+
+--[[ The concept's <select>.
+
+	A 1.12 client has no native dropdown that takes a theme, so this is a
+	button showing the current choice with a caret, and a list that opens
+	under it. The list is parented to UIParent at a higher strata so a
+	scrolling panel cannot draw over it. Picking an item closes the list and
+	calls `onSelect(value)`.
+]]
+function Theme:Dropdown(parent, width, onSelect)
+	local b = CreateFrame("Button", nil, parent)
+	b:SetWidth(width); b:SetHeight(30)
+	b.fill = self:NineSlice(b, self.texture.tabFill, "BACKGROUND", "panel2")
+	self:NineSlice(b, self.texture.tabBorder, "BORDER", "border")
+
+	local fs = b:CreateFontString(nil, "OVERLAY")
+	self:SetFont(fs, "body", 13)
+	fs:SetPoint("LEFT", b, "LEFT", 10, 0)
+	fs:SetPoint("RIGHT", b, "RIGHT", -24, 0)
+	fs:SetJustifyH("LEFT")
+	self:TextColor(fs, "text")
+
+	local caret = b:CreateTexture(nil, "OVERLAY")
+	caret:SetTexture(self.glyph.caretDown)
+	caret:SetWidth(10); caret:SetHeight(10)
+	caret:SetPoint("RIGHT", b, "RIGHT", -10, 0)
+	self:Tint(caret, "textDim")
+
+	local list = CreateFrame("Frame", nil, UIParent)
+	list:SetFrameStrata("FULLSCREEN_DIALOG")
+	list:SetWidth(width)
+	list:SetPoint("TOPLEFT", b, "BOTTOMLEFT", 0, -2)
+	self:Panel(list, "panel2", false)
+	list:Hide()
+
+	b.label, b.caret, b.list, b.items, b.rows = fs, caret, list, {}, {}
+
+	--- items: a list of { value = ..., label = ... }
+	function b:SetItems(items)
+		self.items = items or {}
+		for i, item in ipairs(self.items) do
+			local row = self.rows[i]
+			if not row then
+				row = CreateFrame("Button", nil, self.list)
+				row:SetHeight(22)
+				row:SetPoint("TOPLEFT", self.list, "TOPLEFT", 1, -(4 + (i - 1) * 22))
+				row:SetPoint("RIGHT", self.list, "RIGHT", -1, 0)
+				local hl = row:CreateTexture(nil, "HIGHLIGHT")
+				hl:SetTexture(Theme.texture.solid)
+				hl:SetAllPoints(row)
+				hl:SetVertexColor(1, 1, 1, 0.06)
+				row.text = row:CreateFontString(nil, "OVERLAY")
+				Theme:SetFont(row.text, "body", 12)
+				row.text:SetPoint("LEFT", row, "LEFT", 10, 0)
+				row.owner = self
+				row:SetScript("OnClick", function()
+					local owner = this.owner
+					owner:SetValue(this.value)
+					owner.list:Hide()
+					if owner.onSelect then owner.onSelect(this.value) end
+				end)
+				self.rows[i] = row
+			end
+			row.value = item.value
+			row.text:SetText(item.label)
+			row:Show()
+		end
+		for i = table.getn(self.items) + 1, table.getn(self.rows) do self.rows[i]:Hide() end
+		self.list:SetHeight(8 + table.getn(self.items) * 22)
+		self:SetValue(self.value)
+	end
+
+	function b:SetValue(value)
+		self.value = value
+		local shown = ""
+		for _, item in ipairs(self.items) do
+			if item.value == value then shown = item.label end
+		end
+		self.label:SetText(shown)
+		for _, row in ipairs(self.rows) do
+			if row.value == value then Theme:TextColor(row.text, "accent")
+			else Theme:TextColor(row.text, "text") end
+		end
+	end
+	function b:GetValue() return self.value end
+
+	b.onSelect = onSelect
+	b:SetScript("OnClick", function()
+		if this.list:IsShown() then this.list:Hide() else this.list:Show() end
+	end)
+	b:SetScript("OnHide", function() this.list:Hide() end)
+	b:SetScript("OnEnter", function() Theme:Tint(this.caret, "accent") end)
+	b:SetScript("OnLeave", function() Theme:Tint(this.caret, "textDim") end)
+
+	return b
 end
 
 --[[ Subhead.

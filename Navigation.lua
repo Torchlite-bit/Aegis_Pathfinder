@@ -307,6 +307,15 @@ function AegisPathfinder:CycleWaypointProvider()
 	self:ForceWaypointUpdate()
 end
 
+--- Pick a provider by name ("auto" for the preference order), as the options
+--- panel's dropdown does. Cycling is still there for the slash command.
+function AegisPathfinder:SetWaypointProvider(name)
+	self:ClearWaypoint()
+	self.db.char.waypointprovider = name or "auto"
+	self:Debug("Waypoint provider set to " .. self.db.char.waypointprovider)
+	self:ForceWaypointUpdate()
+end
+
 -- Helper to get valid zone data (ensures map is set to player location)
 local function GetPlayerZoneData()
 	-- Save current map state

@@ -1,255 +1,285 @@
+--[[ OptionsFrame.lua -- the concept's #options panel.
+
+	One window, one scrolling body, sections top to bottom:
+
+	  Race          a dropdown of your faction's races
+	  Route pack    pills, with a preview of the route underneath
+	  Dungeons      the chip grid
+	  Filters       group mode and Auction House steps, as sliding switches
+	  Server        a dropdown, with what is known about that server's data
+
+	That is the concept. It used to be a menu of buttons that opened the
+	dungeons, the filters and the route picker as three more windows; all of
+	that lives here now, in the concept's language.
+
+	The concept has no home for the addon's own behaviour settings, the
+	waypoint provider or the maintenance actions, so they follow as three more
+	sections in the same style -- the substitution is the extra sections, not
+	a different look.
+]]
+
 local AegisPathfinder = AegisPathfinder
-local L = AegisPathfinder.Locale
 local ww = WidgetWarlock
 local Theme = AegisPathfinder.Theme
 
--- Dungeon chip grid geometry.
-local CHIP_W, CHIP_H, CHIP_GAP, CHIP_PAD = 78, 34, 6, 12
-local CHIP_COLS = 3
-
--- The concept's window chrome: a 30px header carrying the wordmark and the
--- close chip, and an 18px subhead naming the window. Everything a panel draws
--- starts below it.
+-- Concept geometry: .panel{width:396px}, .options-body{padding:12px 14px 16px},
+-- section{margin-bottom:16px}.
+local WIDTH, HEIGHT = 396, 560
 local HEADER_H, SUBHEAD_H = 30, 18
 local CHROME_TOP = HEADER_H + SUBHEAD_H
-local CHIP_TOP = CHROME_TOP + 20   -- below the chrome and the grid's hint
+local PAD_X, PAD_TOP, PAD_BOTTOM = 14, 12, 16
+local SCROLL_W = 10
+local BODY_W = WIDTH - PAD_X * 2 - SCROLL_W - 4
+local SECTION_GAP = 16
+local HEADER_GAP = 7                  -- h3 margin-bottom
+
+-- The dungeon grid: four across in a 396px panel.
+local CHIP_COLS, CHIP_GAP, CHIP_H = 4, 6, 34
+local CHIP_W = math.floor((BODY_W - (CHIP_COLS - 1) * CHIP_GAP) / CHIP_COLS)
+
+-- The route preview: .route-preview{max-height:150px}, rows of about 20px.
+local PREVIEW_ROWS, PREVIEW_ROW_H = 7, 20
+local PREVIEW_H = PREVIEW_ROWS * PREVIEW_ROW_H + 8
+
+local DUNGEONS = {
+	{ code = "RFC",       name = "Ragefire Chasm" },
+	{ code = "WC",        name = "Wailing Caverns" },
+	{ code = "DM",        name = "Deadmines" },
+	{ code = "SFK",       name = "Shadowfang Keep" },
+	{ code = "BFD",       name = "Blackfathom Deeps" },
+	{ code = "STOCKADES", name = "The Stockade" },
+	{ code = "GNOMER",    name = "Gnomeregan" },
+	{ code = "RFK",       name = "Razorfen Kraul" },
+	{ code = "SM",        name = "Scarlet Monastery" },
+	{ code = "RFD",       name = "Razorfen Downs" },
+	{ code = "ULDA",      name = "Uldaman" },
+	{ code = "ZF",        name = "Zul'Farrak" },
+	{ code = "MARA",      name = "Maraudon" },
+	{ code = "ST",        name = "Sunken Temple" },
+	{ code = "BRD",       name = "Blackrock Depths" },
+}
+
+-- Races each faction can be routed as. The value is the route name the
+-- route packs are keyed by.
+local RACES = {
+	Alliance = {
+		{ label = "Human",     route = "Human" },
+		{ label = "Dwarf",     route = "Dwarf" },
+		{ label = "Night Elf", route = "NightElf" },
+		{ label = "Gnome",     route = "Gnome" },
+		{ label = "High Elf",  route = "HighElf" },
+	},
+	Horde = {
+		{ label = "Orc",    route = "Orc" },
+		{ label = "Troll",  route = "Troll" },
+		{ label = "Tauren", route = "Tauren" },
+		{ label = "Undead", route = "Undead" },
+		{ label = "Goblin", route = "Goblin" },
+	},
+}
+
+--- Reload whichever guide is on screen so a filter change takes effect.
+local function ReloadCurrentGuide()
+	local self = AegisPathfinder
+	if self:HasNoGuide() then return end
+	self:LoadGuide(self.db.char.currentguide)
+	self:UpdateStatusFrame()
+end
 
 function AegisPathfinder:CreateConfigPanel()
 	local frame = CreateFrame("Frame", "AegisPathfinderOptions", UIParent)
-	AegisPathfinder.optionsframe = frame
+	self.optionsframe = frame
 	frame:SetFrameStrata("DIALOG")
-	frame:SetWidth(310)
-	frame:SetHeight(CHROME_TOP + 16 + 28 * 8)
+	frame:SetWidth(WIDTH)
+	frame:SetHeight(HEIGHT)
+	-- .#options sits left of #objectives in the concept (right:456px against
+	-- right:40px), so it opens beside the guide rather than over it.
 	frame:SetPoint("TOPRIGHT", AegisPathfinder.objectiveframe, "TOPLEFT", -8, 0)
 	Theme:Panel(frame, "panel")
 	frame:Hide()
 
 	Theme:Chrome(frame, "Config", Theme:PositionSaver("optionsframe"))
 
-	local qtrack = ww.SummonCheckBox(22, frame, "TOPLEFT", 5, -(CHROME_TOP + 5))
-	ww.SummonFontString(qtrack, "OVERLAY", "GameFontNormalSmall", L["Automatically track quests"], "LEFT", qtrack,
-		"RIGHT", 5, 0)
-	qtrack:SetScript("OnClick", function() self.db.char.trackquests = not self.db.char.trackquests end)
-
-	local qskipfollowups = ww.SummonCheckBox(22, qtrack, "TOPLEFT", 0, -20)
-	ww.SummonFontString(qskipfollowups, "OVERLAY", "GameFontNormalSmall", L["Automatically skip suggested follow-ups"],
-		"LEFT", qskipfollowups, "RIGHT", 5, 0)
-	qskipfollowups:SetScript("OnClick", function() self.db.char.skipfollowups = not self.db.char.skipfollowups end)
-
-	local autobranch = ww.SummonCheckBox(22, qskipfollowups, "TOPLEFT", 0, -20)
-	ww.SummonFontString(autobranch, "OVERLAY", "GameFontNormalSmall", "Auto-branch to custom zones", "LEFT",
-		autobranch, "RIGHT", 5, 0)
-	autobranch:SetScript("OnClick", function() self.db.char.autobranch = not self.db.char.autobranch end)
-
-	-- Waypoint provider: cycles through "auto" plus every waypoint addon loaded
-	local waypointBtn = Theme:PanelButton(frame)
-	waypointBtn:SetWidth(286)
-	waypointBtn:SetHeight(22)
-	waypointBtn:SetPoint("TOPLEFT", autobranch, "BOTTOMLEFT", 0, -10)
-	waypointBtn:SetScript("OnClick", function()
-		AegisPathfinder:CycleWaypointProvider()
-		waypointBtn:SetText(L["Waypoints"] .. ": " .. AegisPathfinder:GetWaypointProviderLabel())
-	end)
-	frame.waypointBtn = waypointBtn
-
-	-- Route selector button
-	local routeBtn = Theme:PanelButton(frame)
-	routeBtn:SetWidth(150)
-	routeBtn:SetHeight(22)
-	routeBtn:SetPoint("TOPLEFT", waypointBtn, "BOTTOMLEFT", 0, -6)
-	routeBtn:SetText("Change Route")
-	routeBtn:SetScript("OnClick", function()
-		AegisPathfinder:ShowRouteSelector()
-	end)
-
-	local dungeonsBtn = Theme:PanelButton(frame)
-	dungeonsBtn:SetWidth(130)
-	dungeonsBtn:SetHeight(22)
-	dungeonsBtn:SetPoint("LEFT", routeBtn, "RIGHT", 6, 0)
-	dungeonsBtn:SetText("Dungeons RXP")
-	dungeonsBtn:SetScript("OnClick", function()
-		AegisPathfinder:ToggleDungeonPanel()
-	end)
-	frame.dungeonsBtn = dungeonsBtn
-
-	local branchBtn = Theme:PanelButton(frame)
-	branchBtn:SetWidth(150)
-	branchBtn:SetHeight(22)
-	branchBtn:SetPoint("TOPLEFT", routeBtn, "BOTTOMLEFT", 0, -6)
-	branchBtn:SetText("Branch to Zone")
-	branchBtn:SetScript("OnClick", function()
-		AegisPathfinder:ShowGuideList(true)
-	end)
-	frame.branchBtn = branchBtn
-
-	local returnMainBtn = Theme:PanelButton(frame)
-	returnMainBtn:SetWidth(130)
-	returnMainBtn:SetHeight(22)
-	returnMainBtn:SetPoint("LEFT", branchBtn, "RIGHT", 6, 0)
-	returnMainBtn:SetText("Return to Main")
-	returnMainBtn:SetScript("OnClick", function()
-		AegisPathfinder:ReturnFromBranch()
-	end)
-	frame.returnMainBtn = returnMainBtn
-
-	local refreshBtn = Theme:PanelButton(frame)
-	refreshBtn:SetWidth(150)
-	refreshBtn:SetHeight(22)
-	refreshBtn:SetPoint("TOPLEFT", branchBtn, "BOTTOMLEFT", 0, -6)
-	refreshBtn:SetText("Rescan Progress")
-	refreshBtn:SetScript("OnClick", function()
-		AegisPathfinder:QueryServerCompletedQuests(true)
-	end)
-
-	local errorBtn = Theme:PanelButton(frame)
-	errorBtn:SetWidth(130)
-	errorBtn:SetHeight(22)
-	errorBtn:SetPoint("LEFT", refreshBtn, "RIGHT", 6, 0)
-	errorBtn:SetText("Error Log")
-	errorBtn:SetScript("OnClick", function()
-		AegisPathfinder:ShowErrorLog()
-	end)
-
-	local filtersBtn = Theme:PanelButton(frame)
-	filtersBtn:SetWidth(286)
-	filtersBtn:SetHeight(22)
-	filtersBtn:SetPoint("TOPLEFT", refreshBtn, "BOTTOMLEFT", 0, -6)
-	filtersBtn:SetText("Filters (Solo/Group/AH) RXP")
-	filtersBtn:SetScript("OnClick", function()
-		AegisPathfinder:ToggleFiltersPanel()
-	end)
-	frame.filtersBtn = filtersBtn
-
-	frame.qtrack = qtrack
-	frame.qskipfollowups = qskipfollowups
-	frame.autobranch = autobranch
-
-	local function OnShow(f)
-		f = f or this
-		-- Snap beside the status card only while the player has not dragged
-		-- this window somewhere of their own.
-		if not Theme:RestorePosition(f, "optionsframe") then
-			local quad, vhalf, hhalf = self.GetQuadrant(self.objectiveframe)
-			local anchpoint = (vhalf == "TOP" and "BOTTOM" or "TOP") .. hhalf
-			f:ClearAllPoints()
-			f:SetPoint(quad, self.objectiveframe, anchpoint)
-		end
-
-		f.qtrack:SetChecked(self.db.char.trackquests)
-		f.qskipfollowups:SetChecked(self.db.char.skipfollowups)
-		f.autobranch:SetChecked(self.db.char.autobranch)
-		f.waypointBtn:SetText(L["Waypoints"] .. ": " .. self:GetWaypointProviderLabel())
-
-		-- Enable/disable return button based on branch status
-		if self.db.char.isbranching then
-			f.returnMainBtn:Enable()
-			f.returnMainBtn:SetText("Return to Main")
-		else
-			f.returnMainBtn:Disable()
-			f.returnMainBtn:SetText("(Not branching)")
-		end
-		f:SetAlpha(0)
-		f:SetScript("OnUpdate", ww.FadeIn)
-	end
-
-	frame:SetScript("OnShow", OnShow)
-	frame:SetScript("OnHide", function()
-		if AegisPathfinder.dungeonframe then
-			AegisPathfinder.dungeonframe:Hide()
-		end
-		if AegisPathfinder.filtersframe then
-			AegisPathfinder.filtersframe:Hide()
+	-- The concept's header carries a ☰ on the left of this window too, titled
+	-- "Back". Here it brings the guide forward.
+	local back = Theme:ChipButton(frame.header, "menu")
+	back:SetPoint("LEFT", frame.header, "LEFT", 8, 0)
+	back:SetScript("OnClick", function()
+		if not AegisPathfinder.objectiveframe:IsShown() then
+			AegisPathfinder.objectiveframe:Show()
 		end
 	end)
-	ww.SetFadeTime(frame, 0.5)
-	OnShow(frame)
-end
+	back:SetScript("OnEnter", function()
+		this.fill:SetTint("text", 0.10)
+		Theme:Tint(this.glyph, "text")
+		GameTooltip:SetOwner(this, "ANCHOR_BOTTOM")
+		GameTooltip:SetText("Back to the guide")
+	end)
+	back:SetScript("OnLeave", function()
+		this.fill:SetTint("text", 0.04)
+		Theme:Tint(this.glyph, "textDim")
+		GameTooltip:Hide()
+	end)
 
-function AegisPathfinder:ToggleDungeonPanel()
-	if not self.dungeonframe then
-		self:CreateDungeonPanel()
+	--[[ The scrolling body.
+
+		The concept's .options-body is overflow-y:auto: seven sections do not
+		fit a 560px window. A ScrollFrame holds them, the theme's scroll bar
+		drives it, and the mouse wheel works anywhere over the panel.
+	]]
+	local scroll = CreateFrame("ScrollFrame", "AegisPathfinderOptionsScroll", frame)
+	scroll:SetPoint("TOPLEFT", frame, "TOPLEFT", PAD_X, -(CHROME_TOP + PAD_TOP))
+	scroll:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(PAD_X + SCROLL_W), PAD_BOTTOM)
+
+	local body = CreateFrame("Frame", nil, scroll)
+	body:SetWidth(BODY_W)
+	body:SetHeight(1)
+	scroll:SetScrollChild(body)
+
+	local bar = Theme:ScrollBar(frame, SCROLL_W)
+	bar:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -6, -(CHROME_TOP + PAD_TOP + SCROLL_W))
+	bar:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -6, PAD_BOTTOM + SCROLL_W)
+	bar:SetMinMaxValues(0, 0)
+	bar:SetValue(0)
+	bar:SetScript("OnValueChanged", function() scroll:SetVerticalScroll(arg1 or 0) end)
+	bar.up:SetScript("OnClick", function() bar:SetValue(math.max(0, bar:GetValue() - 40)) end)
+	bar.down:SetScript("OnClick", function()
+		local _, hi = bar:GetMinMaxValues()
+		bar:SetValue(math.min(hi, bar:GetValue() + 40))
+	end)
+
+	frame:EnableMouseWheel(true)
+	frame:SetScript("OnMouseWheel", function()
+		local _, hi = bar:GetMinMaxValues()
+		local v = bar:GetValue() - (arg1 or 0) * 40
+		if v < 0 then v = 0 elseif v > hi then v = hi end
+		bar:SetValue(v)
+	end)
+
+	-- Lay the sections out top to bottom with a running cursor.
+	local y = 0
+	local function place(region, height, gap)
+		region:ClearAllPoints()
+		region:SetPoint("TOPLEFT", body, "TOPLEFT", 0, -y)
+		y = y + height + (gap or 0)
 	end
-	if self.dungeonframe:IsShown() then
-		self.dungeonframe:Hide()
-	else
-		self.dungeonframe:Show()
-		self:PositionDungeonPanel()
+	local function section(title)
+		local h = Theme:SectionHeader(body, title, BODY_W)
+		place(h, 20, HEADER_GAP)
+		return h
 	end
-end
-
-function AegisPathfinder:PositionDungeonPanel()
-	if not self.dungeonframe or not self.optionsframe then return end
-	local quad, vhalf, hhalf = self.GetQuadrant(self.objectiveframe)
-	self.dungeonframe:ClearAllPoints()
-	if hhalf == "LEFT" then
-		self.dungeonframe:SetPoint("TOPLEFT", self.optionsframe, "TOPRIGHT", 5, 0)
-	else
-		self.dungeonframe:SetPoint("TOPRIGHT", self.optionsframe, "TOPLEFT", -5, 0)
+	local function note(text)
+		local fs = Theme:FinePrint(body, BODY_W)
+		fs:SetText(text or "")
+		place(fs, fs:GetHeight(), 0)
+		return fs
 	end
-end
 
-function AegisPathfinder:CreateDungeonPanel()
-	local frame = CreateFrame("Frame", "AegisPathfinderDungeons", UIParent)
-	self.dungeonframe = frame
-	frame:SetFrameStrata("DIALOG")
-	-- Three chips per row, as the concept lays them out.
-	frame:SetWidth(CHIP_COLS * (CHIP_W + CHIP_GAP) - CHIP_GAP + CHIP_PAD * 2)
-	frame:SetHeight(300)
-	Theme:Panel(frame, "panel")
-	frame:Hide()
+	frame.sections = {}
 
-	Theme:Chrome(frame, "Dungeons", Theme:PositionSaver("dungeonframe"))
+	-- Race -----------------------------------------------------------------------
+	table.insert(frame.sections, section("Race"))
+	local race = Theme:Dropdown(body, BODY_W, function(route)
+		AegisPathfinder:SelectRoute(route)
+		AegisPathfinder:RefreshConfigPanel()
+	end)
+	place(race, 30, SECTION_GAP)
+	frame.race = race
 
-	local hint = frame:CreateFontString(nil, "OVERLAY")
-	Theme:SetFont(hint, "body", 10)
-	hint:SetPoint("TOPLEFT", frame, "TOPLEFT", CHIP_PAD, -(CHROME_TOP + 4))
-	hint:SetPoint("RIGHT", frame, "RIGHT", -CHIP_PAD, 0)
-	hint:SetJustifyH("LEFT")
-	hint:SetText("Opting in makes a dungeon's setup steps mandatory.")
+	-- Route pack -------------------------------------------------------------------
+	table.insert(frame.sections, section("Route pack"))
+
+	-- One pill per pack this character can use, wrapping if they do not fit.
+	local pillRow = CreateFrame("Frame", nil, body)
+	pillRow:SetWidth(BODY_W)
+	frame.packPills = {}
+	local px, py = 0, 0
+	for _, pack in ipairs(self:GetAvailableRoutePacks()) do
+		local pill = Theme:Pill(pillRow, pack.displayName, 60, 26)
+		pill:SetWidth(pill.label:GetStringWidth() + 26)
+		if px > 0 and px + pill:GetWidth() > BODY_W then
+			px, py = 0, py + 32
+		end
+		pill:SetPoint("TOPLEFT", pillRow, "TOPLEFT", px, -py)
+		px = px + pill:GetWidth() + 6
+		pill.packName = pack.name
+		pill.description = pack.description
+		pill:SetScript("OnClick", function()
+			AegisPathfinder:SelectRoutePack(this.packName)
+			AegisPathfinder:RefreshConfigPanel()
+		end)
+		pill:SetScript("OnEnter", function()
+			GameTooltip:SetOwner(this, "ANCHOR_RIGHT")
+			GameTooltip:SetText(this.description, nil, nil, nil, nil, true)
+		end)
+		pill:SetScript("OnLeave", function() GameTooltip:Hide() end)
+		table.insert(frame.packPills, pill)
+	end
+	pillRow:SetHeight(py + 26)
+	place(pillRow, py + 26, 9)
+
+	--[[ The route preview: level range and zone, one row per leg of the route
+		this race takes under this pack. It scrolls on the mouse wheel, as the
+		concept's max-height:150px list does. ]]
+	local preview = CreateFrame("Frame", nil, body)
+	preview:SetWidth(BODY_W)
+	preview:SetHeight(PREVIEW_H)
+	Theme:NineSlice(preview, Theme.texture.tabFill, "BACKGROUND", { 0, 0, 0 }, 0.25)
+	Theme:NineSlice(preview, Theme.texture.tabBorder, "BORDER", "border")
+	preview.rows, preview.offset, preview.entries = {}, 0, {}
+	for i = 1, PREVIEW_ROWS do
+		local row = CreateFrame("Frame", nil, preview)
+		row:SetHeight(PREVIEW_ROW_H)
+		row:SetPoint("TOPLEFT", preview, "TOPLEFT", 10, -(4 + (i - 1) * PREVIEW_ROW_H))
+		row:SetPoint("RIGHT", preview, "RIGHT", -10, 0)
+		row.lvl = row:CreateFontString(nil, "OVERLAY")
+		Theme:SetFont(row.lvl, "body2", 11)
+		row.lvl:SetPoint("LEFT", row, "LEFT", 0, 0)
+		row.lvl:SetWidth(52)
+		row.lvl:SetJustifyH("LEFT")
+		Theme:TextColor(row.lvl, "accent")
+		row.zone = row:CreateFontString(nil, "OVERLAY")
+		Theme:SetFont(row.zone, "body", 11)
+		row.zone:SetPoint("LEFT", row.lvl, "RIGHT", 8, 0)
+		row.zone:SetPoint("RIGHT", row, "RIGHT", 0, 0)
+		row.zone:SetJustifyH("LEFT")
+		Theme:TextColor(row.zone, "textDim")
+		preview.rows[i] = row
+	end
+	preview:EnableMouseWheel(true)
+	preview:SetScript("OnMouseWheel", function()
+		local maxOffset = math.max(0, table.getn(this.entries) - PREVIEW_ROWS)
+		this.offset = math.max(0, math.min(maxOffset, this.offset - (arg1 or 0)))
+		AegisPathfinder:DrawRoutePreview()
+	end)
+	place(preview, PREVIEW_H, SECTION_GAP)
+	frame.preview = preview
+
+	-- Dungeons ---------------------------------------------------------------------
+	local dungeonHeader = section("Dungeons")
+	local hint = dungeonHeader:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(hint, "body", 11)
+	hint:SetPoint("LEFT", dungeonHeader.label, "RIGHT", 6, 0)
+	hint:SetText("- RestedXP guides")
 	Theme:TextColor(hint, "textDim")
+	table.insert(frame.sections, dungeonHeader)
 
-	local wiredHint = frame:CreateFontString(nil, "OVERLAY")
-	Theme:SetFont(wiredHint, "body", 10)
-	wiredHint:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", CHIP_PAD, 9)
-	wiredHint:SetPoint("RIGHT", frame, "RIGHT", -CHIP_PAD, 0)
-	wiredHint:SetJustifyH("LEFT")
-	Theme:TextColor(wiredHint, "blue")
-	frame.wiredHint = wiredHint
-
-	local dungeons = {
-		{ code = "RFC",       name = "Ragefire Chasm" },
-		{ code = "WC",        name = "Wailing Caverns" },
-		{ code = "DM",        name = "Deadmines" },
-		{ code = "SFK",       name = "Shadowfang Keep" },
-		{ code = "BFD",       name = "Blackfathom Deeps" },
-		{ code = "STOCKADES", name = "The Stockade" },
-		{ code = "GNOMER",    name = "Gnomeregan" },
-		{ code = "RFK",       name = "Razorfen Kraul" },
-		{ code = "SM",        name = "Scarlet Monastery" },
-		{ code = "RFD",       name = "Razorfen Downs" },
-		{ code = "ULDA",      name = "Uldaman" },
-		{ code = "ZF",        name = "Zul'Farrak" },
-		{ code = "MARA",      name = "Maraudon" },
-		{ code = "ST",        name = "Sunken Temple" },
-		{ code = "BRD",       name = "Blackrock Depths" },
-	}
-
+	local grid = CreateFrame("Frame", nil, body)
+	grid:SetWidth(BODY_W)
 	frame.chips = {}
-	for idx, d in ipairs(dungeons) do
-		local chip = Theme:Chip(frame, d.code, d.name, CHIP_W, CHIP_H)
+	for idx, d in ipairs(DUNGEONS) do
+		local chip = Theme:Chip(grid, d.code, d.name, CHIP_W, CHIP_H)
 		local col = math.mod(idx - 1, CHIP_COLS)
 		local row = math.floor((idx - 1) / CHIP_COLS)
-		chip:SetPoint("TOPLEFT", frame, "TOPLEFT",
-			CHIP_PAD + col * (CHIP_W + CHIP_GAP),
-			-(CHIP_TOP + row * (CHIP_H + CHIP_GAP)))
+		chip:SetPoint("TOPLEFT", grid, "TOPLEFT",
+			col * (CHIP_W + CHIP_GAP), -(row * (CHIP_H + CHIP_GAP)))
 		chip.dungeonCode = d.code
-
 		local code, name = d.code, d.name
 		chip:SetScript("OnClick", function()
-			local on = not chip:IsActive()
-			chip:SetActive(on)
+			local on = not this:IsActive()
+			this:SetActive(on)
 			AegisPathfinder.db.char.Dungeons[code] = on
-			AegisPathfinder:LoadGuide(AegisPathfinder.db.char.currentguide)
+			ReloadCurrentGuide()
 			AegisPathfinder:RefreshDungeonPanel()
 		end)
 		chip:SetScript("OnEnter", function()
@@ -257,134 +287,237 @@ function AegisPathfinder:CreateDungeonPanel()
 			GameTooltip:SetText(name)
 		end)
 		chip:SetScript("OnLeave", function() GameTooltip:Hide() end)
-
 		table.insert(frame.chips, chip)
 	end
+	local gridRows = math.ceil(table.getn(DUNGEONS) / CHIP_COLS)
+	local gridH = gridRows * (CHIP_H + CHIP_GAP) - CHIP_GAP
+	grid:SetHeight(gridH)
+	place(grid, gridH, 6)
 
-	-- Size to the rows actually laid out rather than a fixed height.
-	local rows = math.ceil(table.getn(dungeons) / CHIP_COLS)
-	frame:SetHeight(CHIP_TOP + rows * (CHIP_H + CHIP_GAP) + 26)
+	note("Toggling a dungeon on forces its setup and prerequisite steps to "
+		.. "mandatory and reveals them in guides that reference it; toggling "
+		.. "off hides them.")
+	local wired = Theme:FinePrint(body, BODY_W)
+	Theme:TextColor(wired, "blue")
+	place(wired, 16, SECTION_GAP)
+	frame.wiredHint = wired
 
-	local function OnShow(f)
-		f = f or this
-		AegisPathfinder:PositionDungeonPanel()
-		AegisPathfinder:RefreshDungeonPanel()
-		f:SetAlpha(0)
-		f:SetScript("OnUpdate", ww.FadeIn)
+	-- Filters ------------------------------------------------------------------------
+	table.insert(frame.sections, section("Filters"))
+	local group = Theme:Switch(body, "Group mode", function(on)
+		AegisPathfinder.db.char.PlayStyle = on and "GROUP" or "SOLO"
+		ReloadCurrentGuide()
+		AegisPathfinder:RefreshConfigPanel()
+	end)
+	group:SetWidth(BODY_W)
+	place(group, 22, 8)
+	local ah = Theme:Switch(body, "Auction House steps", function(on)
+		AegisPathfinder.db.char.UseAH = on
+		ReloadCurrentGuide()
+		AegisPathfinder:RefreshConfigPanel()
+	end)
+	ah:SetWidth(BODY_W)
+	place(ah, 22, 6)
+	local filterNote = Theme:FinePrint(body, BODY_W)
+	place(filterNote, 16, SECTION_GAP)
+	frame.groupSwitch, frame.ahSwitch, frame.filterNote = group, ah, filterNote
+
+	-- Server -------------------------------------------------------------------------
+	table.insert(frame.sections, section("Server"))
+	local server = Theme:Dropdown(body, BODY_W, function(key)
+		AegisPathfinder:SetCurrentServer(key)
+		AegisPathfinder:RefreshConfigPanel()
+	end)
+	local serverItems = {}
+	for _, info in ipairs(self.servers or {}) do
+		table.insert(serverItems, { value = info.key, label = info.label })
 	end
+	server:SetItems(serverItems)
+	place(server, 30, 6)
+	local serverNote = Theme:FinePrint(body, BODY_W)
+	place(serverNote, 44, SECTION_GAP)
+	frame.server, frame.serverNote = server, serverNote
 
-	frame:SetScript("OnShow", OnShow)
+	-- Beyond the concept: the addon's own settings, in the same language. -------
+	table.insert(frame.sections, section("Guide behaviour"))
+	frame.switches = {}
+	local BEHAVIOUR = {
+		{ key = "autoquest",     label = "Accept and turn in quests automatically" },
+		{ key = "trackquests",   label = "Track quests automatically" },
+		{ key = "skipfollowups", label = "Skip suggested follow-ups" },
+		{ key = "autobranch",    label = "Open custom-zone guides automatically" },
+		{ key = "shownavcallout", label = "Navigation arrow" },
+	}
+	for _, def in ipairs(BEHAVIOUR) do
+		local key = def.key
+		local sw = Theme:Switch(body, def.label, function(on)
+			AegisPathfinder.db.char[key] = on
+			-- The arrow is the one setting with something on screen to update.
+			if key == "shownavcallout" then AegisPathfinder:UpdateNavCallout() end
+		end)
+		sw:SetWidth(BODY_W)
+		sw.settingKey = key
+		place(sw, 22, 8)
+		frame.switches[key] = sw
+	end
+	y = y + SECTION_GAP - 8
+
+	table.insert(frame.sections, section("Waypoints"))
+	local waypoints = Theme:Dropdown(body, BODY_W, function(name)
+		AegisPathfinder:SetWaypointProvider(name)
+		AegisPathfinder:RefreshConfigPanel()
+	end)
+	place(waypoints, 30, SECTION_GAP)
+	frame.waypoints = waypoints
+
+	table.insert(frame.sections, section("Maintenance"))
+	local rescan = Theme:Pill(body, "Rescan progress", 140, 26)
+	rescan:SetScript("OnClick", function() AegisPathfinder:QueryServerCompletedQuests(true) end)
+	local errors = Theme:Pill(body, "Error log", 100, 26)
+	errors:SetScript("OnClick", function() AegisPathfinder:ShowErrorLog() end)
+	rescan:SetPoint("TOPLEFT", body, "TOPLEFT", 0, -y)
+	errors:SetPoint("LEFT", rescan, "RIGHT", 6, 0)
+	y = y + 26 + 6
+	note("Rescan asks the server which quests this character has completed and "
+		.. "re-marks the guide from that.")
+	frame.rescan, frame.errorlog = rescan, errors
+
+	--[[ Now the body's height is known, the scroll bar can be given its range:
+		how far past the visible area the sections run. ]]
+	y = y + PAD_BOTTOM
+	body:SetHeight(y)
+	frame.bodyHeight = y
+	local visible = HEIGHT - CHROME_TOP - PAD_TOP - PAD_BOTTOM
+	bar:SetMinMaxValues(0, math.max(0, y - visible))
+	bar:SetValue(0)
+
+	frame.scroll, frame.body, frame.scrollbar = scroll, body, bar
+
+	frame:SetScript("OnShow", function()
+		-- Snap beside the guide only while the player has not dragged this
+		-- window somewhere of their own.
+		if not Theme:RestorePosition(this, "optionsframe") then
+			local _, _, hhalf = AegisPathfinder.GetQuadrant(AegisPathfinder.objectiveframe)
+			this:ClearAllPoints()
+			if hhalf == "LEFT" then
+				this:SetPoint("TOPLEFT", AegisPathfinder.objectiveframe, "TOPRIGHT", 8, 0)
+			else
+				this:SetPoint("TOPRIGHT", AegisPathfinder.objectiveframe, "TOPLEFT", -8, 0)
+			end
+		end
+		AegisPathfinder:RefreshConfigPanel()
+		this:SetAlpha(0)
+		this:SetScript("OnUpdate", ww.FadeIn)
+	end)
+	frame:SetScript("OnHide", function()
+		race.list:Hide()
+		server.list:Hide()
+		waypoints.list:Hide()
+	end)
 	ww.SetFadeTime(frame, 0.5)
 
-	table.insert(UISpecialFrames, "AegisPathfinderDungeons")
+	table.insert(UISpecialFrames, "AegisPathfinderOptions")
 end
 
-function AegisPathfinder:ToggleFiltersPanel()
-	if not self.filtersframe then
-		self:CreateFiltersPanel()
-	end
-	if self.filtersframe:IsShown() then
-		self.filtersframe:Hide()
-	else
-		self.filtersframe:Show()
-		self:PositionFiltersPanel()
-	end
-end
-
-function AegisPathfinder:PositionFiltersPanel()
-	if not self.filtersframe or not self.optionsframe then return end
-	local quad, vhalf, hhalf = self.GetQuadrant(self.objectiveframe)
-	self.filtersframe:ClearAllPoints()
-	if hhalf == "LEFT" then
-		self.filtersframe:SetPoint("TOPRIGHT", self.optionsframe, "TOPLEFT", -5, 0)
-	else
-		self.filtersframe:SetPoint("TOPLEFT", self.optionsframe, "TOPRIGHT", 5, 0)
+--- Draw the visible slice of the route preview.
+function AegisPathfinder:DrawRoutePreview()
+	local preview = self.optionsframe and self.optionsframe.preview
+	if not preview then return end
+	for i, row in ipairs(preview.rows) do
+		local entry = preview.entries[i + preview.offset]
+		if entry then
+			row.lvl:SetText(entry.levels or "")
+			row.zone:SetText(entry.zone or entry.guide or "")
+			row:Show()
+		else
+			row:Hide()
+		end
 	end
 end
 
-function AegisPathfinder:CreateFiltersPanel()
-	local frame = CreateFrame("Frame", "AegisPathfinderFilters", UIParent)
-	self.filtersframe = frame
-	frame:SetFrameStrata("DIALOG")
-	frame:SetWidth(180)
-	frame:SetHeight(CHROME_TOP + 125)
-	Theme:Panel(frame, "panel")
-	frame:Hide()
+--- Bring every control into line with the saved settings.
+function AegisPathfinder:RefreshConfigPanel()
+	local frame = self.optionsframe
+	if not frame then return end
+	local db = self.db.char
 
-	Theme:Chrome(frame, "Filters", Theme:PositionSaver("filtersframe"))
+	-- Race: this faction's races, the player's own marked.
+	local faction = self.myfaction or "Alliance"
+	local mine = self:GetRouteForRace()
+	local items = {}
+	for _, r in ipairs(RACES[faction] or RACES.Alliance) do
+		local label = r.label .. " (" .. faction .. ")"
+		if r.route == mine then label = label .. " - yours" end
+		table.insert(items, { value = r.route, label = label })
+	end
+	frame.race:SetItems(items)
+	frame.race:SetValue(db.currentroute or mine)
 
-	-- AH Checkbox
-	local ahCb = ww.SummonCheckBox(18, frame, "TOPLEFT", 10, -(CHROME_TOP + 10))
-	local ahText = ww.SummonFontString(ahCb, "OVERLAY", "GameFontNormalSmall", "Use Auction House", "LEFT", ahCb, "RIGHT",
-		5, 0)
-	frame.ahCb = ahCb
+	-- Route pack, and the route it gives this race.
+	local current = db.routepack or "VanillaGuide"
+	for _, pill in ipairs(frame.packPills) do
+		pill:SetActive(pill.packName == current)
+	end
+	local pack = self.routepacks and self.routepacks[current]
+	local route = pack and pack.routes and pack.routes[db.currentroute or mine]
+	frame.preview.entries = route or {}
+	frame.preview.offset = 0
+	self:DrawRoutePreview()
 
-	ahCb:SetScript("OnClick", function()
-		AegisPathfinder.db.char.UseAH = not not ahCb:GetChecked()
-		AegisPathfinder:LoadGuide(AegisPathfinder.db.char.currentguide)
-	end)
+	self:RefreshDungeonPanel()
 
-	-- Play Style Header
-	local psHeader = ww.SummonFontString(frame, "OVERLAY", "GameFontNormal", "Play Style:", "TOPLEFT", frame, "TOPLEFT",
-		10, -(CHROME_TOP + 45))
+	-- Filters, and the one-line summary the concept prints under them.
+	local grouped = (db.PlayStyle or "SOLO") == "GROUP"
+	frame.groupSwitch:SetOn(grouped)
+	frame.ahSwitch:SetOn(db.UseAH)
+	frame.filterNote:SetText((grouped and "Group mode" or "Solo mode")
+		.. " \194\183 Auction House steps " .. (db.UseAH and "shown" or "hidden"))
 
-	-- Solo Checkbox
-	local soloCb = ww.SummonCheckBox(18, frame, "TOPLEFT", 10, -(CHROME_TOP + 65))
-	local soloText = ww.SummonFontString(soloCb, "OVERLAY", "GameFontNormalSmall", "Solo Mode", "LEFT", soloCb, "RIGHT",
-		5, 0)
-	frame.soloCb = soloCb
+	-- Server, and what is known about guide data there.
+	local key = self:GetCurrentServer()
+	frame.server:SetValue(key)
+	local info = self:GetServerInfo(key)
+	local source = self:GetServerInfo(self.defaultDataSource)
+	local lines = {}
+	if info and info.dataset == "native" then
+		table.insert(lines, "Guide data here is authored against " .. info.label .. ".")
+	elseif info then
+		table.insert(lines, "Guide data here is authored against "
+			.. (source and source.label or "another server")
+			.. " and has not been checked on " .. info.label
+			.. ". Quest ids and coordinates may differ.")
+	end
+	if info then
+		table.insert(lines, info.pfquest and ("pfQuest pack: " .. info.pfquest)
+			or "No pfQuest pack confirmed for this server.")
+	end
+	frame.serverNote:SetText(table.concat(lines, " "))
 
-	-- Group Checkbox
-	local groupCb = ww.SummonCheckBox(18, frame, "TOPLEFT", 10, -(CHROME_TOP + 88))
-	local groupText = ww.SummonFontString(groupCb, "OVERLAY", "GameFontNormalSmall", "Group Mode", "LEFT", groupCb,
-		"RIGHT", 5, 0)
-	frame.groupCb = groupCb
-
-	soloCb:SetScript("OnClick", function()
-		soloCb:SetChecked(true)
-		groupCb:SetChecked(false)
-		AegisPathfinder.db.char.PlayStyle = "SOLO"
-		AegisPathfinder:LoadGuide(AegisPathfinder.db.char.currentguide)
-	end)
-
-	groupCb:SetScript("OnClick", function()
-		groupCb:SetChecked(true)
-		soloCb:SetChecked(false)
-		AegisPathfinder.db.char.PlayStyle = "GROUP"
-		AegisPathfinder:LoadGuide(AegisPathfinder.db.char.currentguide)
-	end)
-
-	local function OnShow(f)
-		f = f or this
-		AegisPathfinder:PositionFiltersPanel()
-		f.ahCb:SetChecked(AegisPathfinder.db.char.UseAH)
-		local playstyle = AegisPathfinder.db.char.PlayStyle or "SOLO"
-		f.soloCb:SetChecked(playstyle == "SOLO")
-		f.groupCb:SetChecked(playstyle == "GROUP")
-		f:SetAlpha(0)
-		f:SetScript("OnUpdate", ww.FadeIn)
+	-- The addon's own switches.
+	for key, sw in pairs(frame.switches) do
+		sw:SetOn(db[key])
 	end
 
-	frame:SetScript("OnShow", OnShow)
-	ww.SetFadeTime(frame, 0.5)
-
-	table.insert(UISpecialFrames, "AegisPathfinderFilters")
+	-- Waypoint providers actually loaded, plus automatic.
+	local wp = { { value = "auto", label = "Automatic" } }
+	for _, provider in ipairs(self:GetWaypointProviders()) do
+		table.insert(wp, { value = provider.name, label = provider.label })
+	end
+	frame.waypoints:SetItems(wp)
+	frame.waypoints:SetValue(db.waypointprovider or "auto")
 end
 
-table.insert(UISpecialFrames, "AegisPathfinderOptions")
-
-
---- Sync chip state with saved settings and with the loaded guide.
+--- Sync the dungeon chips with saved settings and with the loaded guide.
 --
 -- The blue dot marks a dungeon the current guide actually has |D| steps for,
 -- which is the difference between "I could run this" and "this guide knows
 -- about it". Without it every chip looks equally relevant no matter which
 -- guide you are on.
 function AegisPathfinder:RefreshDungeonPanel()
-	local frame = self.dungeonframe
+	local frame = self.optionsframe
 	if not frame or not frame.chips then return end
 
-	local wired = self:GetGuideDungeons()
+	local wired = self:HasNoGuide() and {} or self:GetGuideDungeons()
 	local wiredCount = 0
 
 	for _, chip in ipairs(frame.chips) do
@@ -394,12 +527,10 @@ function AegisPathfinder:RefreshDungeonPanel()
 		if isWired then wiredCount = wiredCount + 1 end
 	end
 
-    if frame.wiredHint then
-		if wiredCount > 0 then
-			frame.wiredHint:SetText(string.format(
-				"Dotted: %d referenced by this guide.", wiredCount))
-		else
-			frame.wiredHint:SetText("This guide has no dungeon steps.")
-		end
+	if wiredCount > 0 then
+		frame.wiredHint:SetText(string.format(
+			"Dotted: %d referenced by this guide.", wiredCount))
+	else
+		frame.wiredHint:SetText("This guide has no dungeon steps.")
 	end
 end

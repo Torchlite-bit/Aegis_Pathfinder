@@ -211,14 +211,34 @@ widgets:
 `UIPanelButtonTemplate` and `UIPanelCloseButton`, which is what every
 secondary panel and all three `Core.lua` dialogs were still built from.
 
-### Dungeon chips -- `OptionsFrame.lua`
+### Options panel -- `OptionsFrame.lua`
 
-A wrapping grid of `Theme:Chip`, three across, replacing the vertical checkbox
-list. Each chip stacks the short code over the full name, which is how the
-concept fits fifteen dungeons into a panel without a scrollbar. Active chips
-take the accent fill with dark text.
+The concept's `#options`: one 396px window, header and `Config` subhead, and a
+scrolling body of sections — Race, Route pack, Dungeons, Filters, Server — each
+an accent uppercase `h3` over its controls. It used to be a column of pill
+buttons that opened the dungeons, the filters and the route picker as three
+more windows; all of that is sections now.
 
-The blue dot is not decorative. `AegisPathfinder:GetGuideDungeons` scans the
+| Concept | Implementation |
+|---|---|
+| `.options-body h3` | `Theme:SectionHeader` — 12px display, accent, 1px rule under it |
+| `<select>` | `Theme:Dropdown` — a button with a caret, and a list at `FULLSCREEN_DIALOG` strata so the scrolling body cannot draw over it |
+| `.pill-group` | `Theme:Pill`, sized to its label and wrapping |
+| `.route-preview` | Level range in accent, zone in dim, one row per leg of the route this race takes under the selected pack; scrolls on the wheel |
+| `.dchip` grid | `Theme:Chip`, four across |
+| `.toggle-row` + `.switch` | `Theme:Switch` — `switch-track.tga` (a stadium) and a circle knob that slides from left to right |
+| `.fine-print` | `Theme:FinePrint` |
+| `overflow-y:auto` | A ScrollFrame, the theme's scroll bar, and the wheel anywhere on the panel |
+
+**Substitutions.** The concept has no home for the addon's own behaviour
+settings, the waypoint provider or the Rescan / Error log actions, so they
+follow as three more sections in the same language. The concept's route pills
+include a "Zone Completion" pack that the addon does not have; the pills are
+the packs this character can actually use. The pack stored as `VanillaGuide`
+is shown as "Optimized", the concept's name for it — only the display name
+changed, since the key is saved on every character.
+
+**The dungeon grid's blue dot is not decorative.** `AegisPathfinder:GetGuideDungeons` scans the
 **raw** guide text for `|D|` tags and marks the dungeons the loaded guide
 actually has steps for, so the grid distinguishes "I could run this" from
 "this guide knows about it". It has to read raw text because the `|D|` filter

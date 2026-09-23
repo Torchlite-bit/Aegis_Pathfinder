@@ -58,15 +58,18 @@ FuBar icon, and every entry in it is also a subcommand.
 
 ## What it does
 
-**Routes.** Pick a route pack: Zone Completion, Optimized (Joana's routes),
-RestedXP, or RXP Hardcore. Your race's starting zone is selected for you, and
-all races merge into a shared route after level 12.
+**Routes.** Pick a route pack in the options panel: Optimized (Joana's
+routes), RestedXP, or RXP Hardcore — plus Kamisayo Speedrun for Horde warriors.
+A preview underneath shows the route your race takes under it. Your race's
+starting zone is selected for you, and all races merge into a shared route
+after level 12.
 
-**Tabs.** Up to six guides open at once, one per tab. The first is your main
-route — what the addon advances along on its own, and the one tab you cannot
-close. Open a zone guide or a profession beside it, do as much as you want, and
-click back; each tab remembers its own place. Closing a tab you branched to
-returns you to the main route, resuming at the step matching your level.
+**Tabs.** Up to eight guides open at once, one per tab, sharing the bar's
+width. The first is your main route — what the addon advances along on its
+own. Left-click a guide in the list to open it beside what you are reading, or
+right-click to load it into the tab you are on; each tab remembers its own
+place. Every tab can be closed; close them all and the panel waits, empty, for
+you to pick one.
 
 **Dungeons.** Toggle which of 15 dungeons you intend to run. Opting in promotes
 their setup and prerequisite steps to mandatory; opting out hides them. A blue
@@ -152,7 +155,7 @@ sh Tools/run_tests.sh
 Runs everything that can be checked without a client: Lua syntax, Lua 5.0
 compatibility, `.toc` and `Guides.xml` integrity, TGA validity, that every
 texture path resolves to a real file, that no panel has drifted off the theme,
-and ten test suites that execute the addon's own code against a stubbed 1.12
+and eleven test suites that execute the addon's own code against a stubbed 1.12
 API.
 
 None of it proves the UI looks right. That needs a client.

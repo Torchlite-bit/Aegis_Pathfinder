@@ -462,6 +462,20 @@ def scroll_thumb(size=32):
     return rounded(size, size // 2, path="scroll-thumb.tga")
 
 
+def switch_track(w=64, h=32):
+    """The concept's .switch: a 36x20 stadium with an 11px radius.
+
+    Drawn at 2:1 with a radius of half its height, so the ends stay round
+    when it is shown at 36x20. A single stretched texture rather than a
+    nine-slice, because a toggle never changes size.
+    """
+    img = Image.new("RGBA", (w * SS, h * SS), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    d.rounded_rectangle([0, 0, w * SS - 1, h * SS - 1], radius=h * SS // 2, fill=W)
+    img = img.resize((w, h), Image.LANCZOS)
+    return write_tga(img, os.path.join(MEDIA, "switch-track.tga"))
+
+
 def nav_arrow(size=64):
     """The signature navigation arrow.
 
@@ -589,6 +603,7 @@ def main():
     record("logo.tga", logo())
     record("wordmark.tga", wordmark())
     record("scroll-thumb.tga", scroll_thumb())
+    record("switch-track.tga", switch_track())
     record("nav-arrow.tga", nav_arrow())
     record("grip.tga", grip())
 
