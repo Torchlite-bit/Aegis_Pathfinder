@@ -330,7 +330,29 @@ def check_media(rep):
         for label, value in (("width", width), ("height", height)):
             if value == 0 or (value & (value - 1)) != 0:
                 rep.fail("media", path, "%s %d is not a power of two" % (label, value))
+        if os.path.basename(path) == "shadow.tga":
+            check_shadow_ring(rep, path)
     rep.ok("media", len(files))
+
+
+def check_shadow_ring(rep, path):
+    """The panel shadow must be transparent where the panel is.
+
+    Theme:Panel draws it in the same layer as the fill, and 1.12 does not
+    order textures within a layer; the old shadow, darkest in its middle,
+    drew a dark square straight through the guide panel. Needs Pillow, which
+    Tools/make_assets.py needs anyway; skipped without it.
+    """
+    try:
+        from PIL import Image
+    except ImportError:
+        return
+    img = Image.open(path).convert("RGBA")
+    w, h = img.size
+    if img.getpixel((w // 2, h // 2))[3] != 0:
+        rep.fail("media", path, "the shadow is not clear in the middle; it will show through the panel")
+    if img.getpixel((3, h // 2))[3] == 0:
+        rep.fail("media", path, "the shadow has nothing outside the panel's edge")
 
 
 # Every "Interface\\AddOns\\..." path Theme.lua hands the client. The client

@@ -181,15 +181,36 @@ def glow(size=64):
     return write_tga(img, os.path.join(MEDIA, "glow.tga"))
 
 
-def shadow(size=64):
-    """Soft drop shadow behind floating panels."""
+def shadow(size=64, outset=7, radius=10):
+    """Soft drop shadow behind floating panels, as a ring.
+
+    The panel's rounded edge sits `outset` px in from every side of the
+    texture; the shadow is darkest there and falls to nothing at the
+    texture's edge. Inside the panel it is transparent: Theme:Panel draws it
+    in the same layer as the fill, and 1.12 does not promise which of the two
+    draws first, so anything here could land on top of the panel.
+
+    Nine-sliced by Theme.SHADOW_GEOM (18px corners, 7px outset), which is
+    what keeps the falloff 7px wide however large the panel is. The corners
+    must hold the whole of the panel's corner arc: outset + radius <= 18.
+    """
+    assert outset + radius <= 18
     img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
     px = img.load()
-    c = (size - 1) / 2.0
+    lo, hi = outset, size - outset          # the panel's edges, in texture px
     for y in range(size):
         for x in range(size):
-            dist = max(abs(x - c), abs(y - c)) / c
-            a = max(0.0, 1.0 - dist) ** 1.6
+            cx, cy = x + 0.5, y + 0.5
+            # Distance outside the panel's rounded rect (negative inside).
+            qx = max(lo + radius - cx, 0, cx - (hi - radius))
+            qy = max(lo + radius - cy, 0, cy - (hi - radius))
+            d = (qx * qx + qy * qy) ** 0.5 - radius
+            if d < -1.0:
+                a = 0.0                      # under the panel
+            elif d <= 0.0:
+                a = 1.0                      # the panel's antialiased rim
+            else:
+                a = max(0.0, 1.0 - d / outset) ** 1.6
             px[x, y] = (0, 0, 0, int(210 * a))
     return write_tga(img, os.path.join(MEDIA, "shadow.tga"))
 

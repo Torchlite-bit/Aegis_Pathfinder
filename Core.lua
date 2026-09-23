@@ -168,6 +168,12 @@ local options = {
             type = "execute",
             func = function() AegisPathfinder:ToggleMaterialsPanel() end,
         },
+        ResetPanels = {
+            name = "Reset Panels",
+            desc = "Put every window back where it opens by default, at its default size",
+            type = "execute",
+            func = function() AegisPathfinder:ResetWindowLayout() end,
+        },
         Server = {
             name = "Server",
             desc = "Which server you play on, and whether guide data is verified there",
