@@ -78,13 +78,13 @@ function AegisPathfinder:CreateMaterialsPanel()
 		rows[i] = row
 	end
 
-	local slider = CreateFrame("Slider", "AegisPathfinderMaterialsSlider", frame,
-		"UIPanelScrollBarTemplate")
-	slider:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -8, -(CHROME_TOP + 26))
-	slider:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -8, 12)
+	-- The theme's scroll bar, not UIPanelScrollBarTemplate's Blizzard art.
+	local SCROLL_W = 10
+	local slider = Theme:ScrollBar(frame, SCROLL_W)
+	slider:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -6, -(CHROME_TOP + 26 + SCROLL_W))
+	slider:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -6, 12 + SCROLL_W)
 	slider:SetMinMaxValues(0, 0)
 	slider:SetValueStep(1)
-	slider:SetWidth(16)
 	slider:SetValue(0)
 	slider:SetScript("OnValueChanged", function()
 		if slider.updating then return end
@@ -92,6 +92,9 @@ function AegisPathfinder:CreateMaterialsPanel()
 		AegisPathfinder:UpdateMaterialsPanel()
 	end)
 	frame.slider = slider
+
+	frame:EnableMouseWheel(true)
+	frame:SetScript("OnMouseWheel", function() slider:Nudge(-(arg1 or 0)) end)
 
 	frame:SetScript("OnShow", function()
 		offset = 0

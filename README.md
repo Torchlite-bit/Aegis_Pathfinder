@@ -155,8 +155,8 @@ sh Tools/run_tests.sh
 Runs everything that can be checked without a client: Lua syntax, Lua 5.0
 compatibility, `.toc` and `Guides.xml` integrity, TGA validity, that every
 texture path resolves to a real file, that no panel has drifted off the theme,
-that every window stacks rather than interleaving with the others, and twelve
-test suites that execute the addon's own code against a stubbed 1.12 API.
+that every window stacks rather than interleaving with the others, and
+thirteen test suites that execute the addon's own code against a stubbed 1.12 API.
 
 None of it proves the UI looks right. That needs a client.
 

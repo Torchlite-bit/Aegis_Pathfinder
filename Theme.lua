@@ -806,6 +806,19 @@ function Theme:ScrollBar(parent, width)
 	function down:Disable() Dim(self, true) end
 	function down:Enable() Dim(self, false) end
 
+	-- By default the carets move one `step` (a row, unless the caller says
+	-- otherwise) and stop at the ends. Callers that page differently set
+	-- their own OnClick.
+	f.step = 1
+	function f:Nudge(delta)
+		local lo, hi = self:GetMinMaxValues()
+		local v = self:GetValue() + delta
+		if v < lo then v = lo elseif v > hi then v = hi end
+		self:SetValue(v)
+	end
+	up:SetScript("OnClick", function() f:Nudge(-f.step) end)
+	down:SetScript("OnClick", function() f:Nudge(f.step) end)
+
 	f.track, f.up, f.down = track, up, down
 	return f, up, down
 end

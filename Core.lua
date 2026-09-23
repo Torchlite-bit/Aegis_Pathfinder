@@ -2444,9 +2444,30 @@ function AegisPathfinder:CreateErrorLogFrame()
     desc:SetWidth(480)
     desc:SetText("Most recent errors are at the top. Use Ctrl+C to copy.")
 
-    local scrollFrame = CreateFrame("ScrollFrame", "AegisPathfinderErrorLogScrollFrame", f, "UIPanelScrollFrameTemplate")
+    local scrollFrame = CreateFrame("ScrollFrame", "AegisPathfinderErrorLogScrollFrame", f)
     scrollFrame:SetPoint("TOPLEFT", f, "TOPLEFT", 16, -(DIALOG_CHROME + 34))
     scrollFrame:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", -32, 16)
+
+    -- The theme's scroll bar. UIPanelScrollFrameTemplate brought Blizzard's
+    -- gold arrows and knob with it, the last stock art on any window.
+    local SCROLL_W, LINE = 10, 40
+    local bar = self.Theme:ScrollBar(f, SCROLL_W)
+    bar:SetPoint("TOPRIGHT", f, "TOPRIGHT", -12, -(DIALOG_CHROME + 34 + SCROLL_W))
+    bar:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", -12, 16 + SCROLL_W)
+    bar.step = LINE
+    bar:SetMinMaxValues(0, 0)
+    bar:SetValue(0)
+    bar:SetScript("OnValueChanged", function() scrollFrame:SetVerticalScroll(arg1 or 0) end)
+    f.scrollbar = bar
+
+    -- The edit box grows with its text; the range follows it.
+    scrollFrame:SetScript("OnScrollRangeChanged", function()
+        local range = scrollFrame:GetVerticalScrollRange() or 0
+        bar:SetMinMaxValues(0, range)
+        if bar:GetValue() > range then bar:SetValue(range) end
+    end)
+    scrollFrame:EnableMouseWheel(true)
+    scrollFrame:SetScript("OnMouseWheel", function() bar:Nudge(-(arg1 or 0) * LINE) end)
 
     local editBox = CreateFrame("EditBox", "AegisPathfinderErrorLogEditBox", scrollFrame)
     editBox:SetMultiLine(true)
@@ -2456,6 +2477,18 @@ function AegisPathfinder:CreateErrorLogFrame()
     editBox:SetScript("OnEscapePressed", function() f:Hide() end)
     editBox:SetScript("OnEditFocusGained", function()
         editBox:HighlightText(0)
+    end)
+    -- Keep the cursor in view as it moves, which the template used to do:
+    -- arg2 is the cursor's offset down from the top (negative), arg4 its
+    -- height.
+    editBox:SetScript("OnCursorChanged", function()
+        local y, h = -(arg2 or 0), arg4 or 0
+        local top, view = scrollFrame:GetVerticalScroll(), scrollFrame:GetHeight()
+        if y < top then
+            bar:SetValue(y)
+        elseif y + h > top + view then
+            bar:SetValue(y + h - view)
+        end
     end)
 
     scrollFrame:SetScrollChild(editBox)
@@ -2473,6 +2506,7 @@ function AegisPathfinder:CreateErrorLogFrame()
             f.editBox:SetCursorPosition(0)
         end
         f.editBox:HighlightText(0)
+        f.scrollbar:SetValue(0)
     end)
 
     self.errorLogFrame = f

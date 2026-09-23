@@ -256,6 +256,7 @@ BLIZZARD_CHROME = [
     (re.compile(r'"UIPanelCloseButton"'), "UIPanelCloseButton -- use Theme:CloseChip"),
     (re.compile(r'"OptionsButtonTemplate"'), "OptionsButtonTemplate -- use Theme:PanelButton"),
     (re.compile(r'"UIPanelScroll(Up|Down)ButtonTemplate"'), "Blizzard scroll button -- use Theme:ScrollBar"),
+    (re.compile(r'"UIPanelScroll(Bar|Frame)Template"'), "Blizzard scroll bar -- use Theme:ScrollBar"),
     (re.compile(r"Interface\\\\Buttons\\\\UI-ScrollBar"), "Blizzard scrollbar art -- use Theme:ScrollBar"),
     # Stock icon art: bevelled, bordered, and a different palette to the
     # generated glyphs in media/icons.

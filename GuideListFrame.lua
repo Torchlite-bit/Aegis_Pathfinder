@@ -242,13 +242,17 @@ for i = 1, TOTALROWS do
     rows[i] = row
 end
 
--- Slider for scrolling
-local slider = CreateFrame("Slider", "AegisPathfinderGuideListSlider", frame, "UIPanelScrollBarTemplate")
-slider:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -8, -CHROME_TOP)
-slider:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -8, 25)
+-- The theme's scroll bar. UIPanelScrollBarTemplate brought Blizzard's gold
+-- arrows and knob onto a flat panel, and its arrows moved by half the bar's
+-- height in pixels -- a hundred-odd rows of a list that scrolls by row.
+-- Three 210px columns from x=15 end at 645; the bar sits clear of them.
+local SCROLL_W = 10
+local slider = Theme:ScrollBar(frame, SCROLL_W)
+slider:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -4, -(CHROME_TOP + SCROLL_W))
+slider:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -4, 25 + SCROLL_W)
 slider:SetMinMaxValues(0, 100)
 slider:SetValueStep(1)
-slider:SetWidth(16)
+slider.step = NUMROWS
 frame.slider = slider
 
 slider:SetScript("OnValueChanged", function()

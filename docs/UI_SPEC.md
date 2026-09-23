@@ -304,6 +304,13 @@ thumb (`scroll-thumb.tga`, radius half its width, so the caps stay circular at
 any length) and caret step buttons. It is still a Slider, so
 `SetMinMaxValues` / `SetValue` / `OnValueChanged` are unchanged.
 
+The carets move by the bar's `step` -- a row by default, a column of 16 in the
+guide list, 40px in the error log -- and stop at the ends of the range. Every
+scrolling list uses it: the objectives panel, the options body, the guide
+list, the materials panel and the error log. The last three were still on
+`UIPanelScrollBarTemplate` / `UIPanelScrollFrameTemplate`, which drew
+Blizzard's gold arrows and knob; `Tools/verify.py` now fails on either.
+
 ### Objectives panel tab bar -- `ObjectivesFrame.lua`
 
 One tab per open guide, up to six. Tab 1 is the main route — what auto-advance

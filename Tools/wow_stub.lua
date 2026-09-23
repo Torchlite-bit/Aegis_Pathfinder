@@ -308,6 +308,15 @@ local function newFrame(frameType, name, parent)
 	function f:SetVerticalScroll(v) self.__vscroll = v end
 	function f:GetVerticalScroll() return self.__vscroll or 0 end
 	function f:UpdateScrollChildRect() end
+	-- How far the child overhangs the frame; a test sets __vrange to stand
+	-- in for the client measuring it.
+	function f:GetVerticalScrollRange() return self.__vrange or 0 end
+	-- EditBox.
+	function f:SetMultiLine(v) self.__multiline = v and true or false end
+	function f:SetAutoFocus() end
+	function f:SetFontObject() end
+	function f:HighlightText() end
+	function f:SetCursorPosition(p) self.__cursor = p end
 	function f:SetValueStep() end
 	function f:SetOrientation() end
 	function f:Disable() self.__enabled = false end
@@ -320,7 +329,8 @@ local function newFrame(frameType, name, parent)
 			complain("SetButtonState('%s')", tostring(s))
 		end
 	end
-	function f:SetText() end
+	function f:SetText(t) self.__text = t end
+	function f:GetText() return self.__text end
 	function f:SetScale() end
 	function f:GetEffectiveScale() return 1 end
 	function f:SetHitRectInsets() end
