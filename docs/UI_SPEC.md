@@ -139,6 +139,24 @@ records the drop, `Theme:RestorePosition` re-applies it, and the "snap beside
 the status card" logic in each panel's `OnShow` only runs when nothing was
 saved.
 
+**Stacking.** The concept's windows are DOM elements, and one simply paints
+over another. 1.12 draws a whole strata in frame-level order, across every
+window at once, and a frame starts one level above its parent -- so two
+windows built at the same level have their headers at the same level, their
+chips at the same level, and so on down. Overlap them and they interleave:
+one window's close chip and scrollbar drawn through the other's body.
+
+`Theme:RegisterWindow` (which `Theme:Chrome` calls, and the objectives panel
+calls itself) keeps the windows in bands instead. Showing a window, or
+grabbing its header, moves its whole frame tree above every other open
+window's, preserving each frame's height within its own window, and packs the
+rest back down beneath it from a fixed base -- so levels are rebuilt rather
+than raised, and never climb toward the client's ceiling. `SetToplevel` covers
+clicks on a window's rows and buttons, where the client raises the window
+itself; the order it leaves is read back from the roots' levels on the next
+restack. `Tools/verify.py` fails a file that puts more windows in `DIALOG`
+than it registers.
+
 ### Objectives panel -- `ObjectivesFrame.lua`
 
 The concept's `#objectives`, and now the addon's only window: header, tab bar,

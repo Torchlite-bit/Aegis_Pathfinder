@@ -378,6 +378,29 @@ def check_texture_paths(rep):
     rep.ok("textures", checked)
 
 
+# Every window is in the DIALOG strata, where the client draws frames in
+# level order across all windows at once. A window that is not registered with
+# Theme's stacking keeps the level it was built at, and interleaves with any
+# window it overlaps -- chips and scrollbars drawn through the other's body.
+# Theme:Chrome registers its window; anything else calls RegisterWindow.
+DIALOG_STRATA = re.compile(r'SetFrameStrata\s*\(\s*"DIALOG"\s*\)')
+STACKED = re.compile(r"(?:\bChrome|\bRegisterWindow)\s*\(")
+
+
+def check_stacking(rep):
+    files = [p for p in sorted(walk({".lua"}))
+             if is_shipped(p) and os.path.basename(p) != "Theme.lua"]
+    for path in files:
+        code = strip_lua_comments(open(path, encoding="utf-8", errors="replace").read())
+        windows = len(DIALOG_STRATA.findall(code))
+        stacked = len(STACKED.findall(code))
+        if windows > stacked:
+            rep.fail("stacking", path,
+                     "%d DIALOG window(s) but %d registered with Theme's stacking "
+                     "-- use Theme:Chrome or Theme:RegisterWindow" % (windows, stacked))
+    rep.ok("stacking", len(files))
+
+
 def main():
     print("Verifying %s\n" % ROOT)
     rep = Report()
@@ -387,6 +410,7 @@ def main():
     check_xml(rep)
     check_theme(rep)
     check_theme_scope(rep)
+    check_stacking(rep)
     check_media(rep)
     check_texture_paths(rep)
     return rep.summary()

@@ -78,6 +78,8 @@ AegisPathfinder.objectiveskin = Theme:Panel(frame, "panel")
 frame:Hide()
 frame:SetScript("OnShow", function() AegisPathfinder:UpdateObjectivePanel() end)
 table.insert(UISpecialFrames, "AegisPathfinderObjectives")
+-- Stacks with the other windows rather than interleaving with them.
+Theme:RegisterWindow(frame)
 
 frame:SetResizable(true)
 frame:SetMinResize(MIN_WIDTH, MIN_HEIGHT)

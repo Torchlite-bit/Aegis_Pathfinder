@@ -252,9 +252,28 @@ local function newFrame(frameType, name, parent)
 	function f:GetPushedTexture() return newTexture(nil, self, "ARTWORK") end
 	function f:SetClampedToScreen() end
 	function f:SetFrameStrata(s) self.__strata = s end
-	function f:SetFrameLevel(l) self.__level = l end
-	function f:GetFrameLevel() return self.__level or 1 end
-	function f:SetToplevel() end
+	--[[ Frame levels, as the client assigns them: a frame starts one above
+		its parent. Whether SetFrameLevel drags a frame's children along with
+		it is not something the 1.12 client documents, so stub.cascadeLevels
+		lets a test run both ways and check it does not depend on either. ]]
+	function f:SetFrameLevel(l)
+		if type(l) ~= "number" then complain("SetFrameLevel(%s) not a number", tostring(l)) end
+		local delta = l - (self.__level or 0)
+		self.__level = l
+		if stub.cascadeLevels and delta ~= 0 then
+			local function shift(fr)
+				for _, c in ipairs(fr.__children) do
+					c.__level = (c.__level or 0) + delta
+					shift(c)
+				end
+			end
+			shift(self)
+		end
+	end
+	function f:GetFrameLevel() return self.__level or 0 end
+	function f:GetChildren() return unpack(self.__children) end
+	function f:SetToplevel(v) self.__toplevel = v and true or false end
+	function f:IsToplevel() return self.__toplevel or false end
 	function f:StartMoving() self.__moving = true end
 	function f:StopMovingOrSizing() self.__moving = false end
 	function f:SetBackdrop(bd) self.__backdrop = bd end
@@ -308,6 +327,7 @@ local function newFrame(frameType, name, parent)
 	function f:CreateTitleRegion() return newObject("TitleRegion", nil, self) end
 
 	if parent and parent.__children then table.insert(parent.__children, f) end
+	f.__level = parent and parent.__level and (parent.__level + 1) or 0
 	return f
 end
 

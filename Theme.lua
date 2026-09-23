@@ -742,6 +742,8 @@ function Theme:Header(frame, height)
 		target:EnableMouse(true)
 		self:EnableMouse(true)
 		self:RegisterForDrag("LeftButton")
+		-- Grabbing a window brings it forward, before it moves.
+		self:SetScript("OnMouseDown", function() Theme:BringToFront(target) end)
 		self:SetScript("OnDragStart", function() target:StartMoving() end)
 		self:SetScript("OnDragStop", function()
 			target:StopMovingOrSizing()
@@ -1040,7 +1042,113 @@ function Theme:Chrome(frame, subtitle, onMoved)
 	local sub = subtitle and self:Subhead(frame, header, subtitle) or nil
 
 	frame.header, frame.subhead = header, sub
+	self:RegisterWindow(frame)
 	return header, sub
+end
+
+--[[ Window stacking.
+
+	Every window lives in the DIALOG strata, and the client draws a strata
+	in frame-level order -- across windows, not window by window. A frame
+	starts one level above its parent, so two windows both created at level
+	1 have their headers at 2, their chips at 3, and so on: overlap them and
+	they interleave, one window's close chip and scrollbar drawn through the
+	other's body. That is the "clipping".
+
+	So the windows are kept in bands. Showing one, or grabbing its header,
+	moves its whole frame tree above every other open window's, keeping each
+	frame's height above its own window's root, and the rest are packed back
+	down beneath it in the order they were in. Levels are rebuilt from
+	STACK_BASE every time rather than raised from wherever they got to, so
+	they never climb.
+
+	SetToplevel covers the clicks this cannot see -- on a row, a button, any
+	child with the mouse enabled -- by letting the client raise the window
+	itself. What order the client leaves things in is read back from the
+	roots' levels the next time this runs, so the two agree.
+]]
+local STACK_BASE = 10
+-- Spare levels between one window's band and the next. A frame a window
+-- creates after it was stacked starts one above its parent, and without the
+-- gap that can be the next window's lowest level.
+local STACK_GAP = 4
+Theme.windows = {}
+
+-- Every frame under `f`, parents before their children.
+local function Descendants(f, out)
+	local kids = { f:GetChildren() }
+	for _, k in ipairs(kids) do
+		table.insert(out, k)
+		Descendants(k, out)
+	end
+	return out
+end
+
+-- Move `w` and everything under it so its root sits at `base`. Returns the
+-- highest level the tree now occupies.
+local function Restack(w, base)
+	local root = w:GetFrameLevel()
+	local tree = Descendants(w, {})
+	-- Read every offset before writing any: if the client drags children
+	-- along when a parent moves, reading after would see them moved twice.
+	local offsets = {}
+	for i, k in ipairs(tree) do
+		offsets[i] = math.max(k:GetFrameLevel() - root, 1)
+	end
+	w:SetFrameLevel(base)
+	local top = base
+	for i, k in ipairs(tree) do
+		local level = base + offsets[i]
+		k:SetFrameLevel(level)
+		if level > top then top = level end
+	end
+	return top
+end
+
+function Theme:RegisterWindow(frame)
+	if self:IsWindow(frame) then return frame end
+	table.insert(self.windows, frame)
+	if frame.SetToplevel then frame:SetToplevel(true) end
+
+	-- The window's own OnShow belongs to the window, and some replace it
+	-- after building themselves, so the hook lives on a child of its own:
+	-- a child's OnShow fires whenever its parent is shown.
+	local watch = CreateFrame("Frame", nil, frame)
+	watch:SetWidth(1); watch:SetHeight(1)
+	watch:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, 0)
+	watch:SetScript("OnShow", function() Theme:BringToFront(frame) end)
+	frame.stackWatch = watch
+	return frame
+end
+
+function Theme:IsWindow(frame)
+	for _, w in ipairs(self.windows) do
+		if w == frame then return true end
+	end
+	return false
+end
+
+--- Put `frame` on top of every other open window, whole tree and all.
+function Theme:BringToFront(frame)
+	if not self:IsWindow(frame) then return end
+	local order, index = {}, {}
+	for i, w in ipairs(self.windows) do
+		index[w] = i
+		if w ~= frame and w:IsShown() then table.insert(order, w) end
+	end
+	-- The order the other windows are in now, bottom first; registration
+	-- order breaks ties so two windows at one level do not swap each time.
+	table.sort(order, function(a, b)
+		local la, lb = a:GetFrameLevel(), b:GetFrameLevel()
+		if la ~= lb then return la < lb end
+		return index[a] < index[b]
+	end)
+	table.insert(order, frame)
+
+	local cursor = STACK_BASE
+	for _, w in ipairs(order) do
+		cursor = Restack(w, cursor) + 1 + STACK_GAP
+	end
 end
 
 --- Persist a frame's position under `key` in the profile, as a drag callback.
