@@ -64,12 +64,14 @@ A preview underneath shows the route your race takes under it. Your race's
 starting zone is selected for you, and all races merge into a shared route
 after level 12.
 
-**Tabs.** Up to eight guides open at once, one per tab, sharing the bar's
-width. The first is your main route — what the addon advances along on its
-own. Left-click a guide in the list to open it beside what you are reading, or
-right-click to load it into the tab you are on; each tab remembers its own
-place. Every tab can be closed; close them all and the panel waits, empty, for
-you to pick one.
+**Tabs.** Up to eight guides open at once, one per tab. The bar shows up to
+four at a time — fewer on a narrow panel — and arrows either side (or the
+mouse wheel over the bar) scroll through the rest; the tab you are on is
+always brought into view. The first is your main route — what the addon
+advances along on its own. Left-click a guide in the list to open it beside
+what you are reading, or right-click to load it into the tab you are on; each
+tab remembers its own place. Every tab can be closed; close them all and the
+panel waits, empty, for you to pick one.
 
 **Dungeons.** Toggle which of 15 dungeons you intend to run. Opting in promotes
 their setup and prerequisite steps to mandatory; opting out hides them. A blue

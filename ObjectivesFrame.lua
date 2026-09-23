@@ -53,17 +53,27 @@ local guideTabs = {}
 
 --[[ Tab sizing.
 
-	Tabs share the bar's width rather than each claiming a fixed 150px, which
-	is what pushed the + and the last tab out past the panel's edge once three
-	or four guides were open. A tab is as wide as the concept's .tab max-width
-	when there is room, and narrows as more open; below BADGE_MIN it drops the
-	XP/TPL badge so what is left of the width goes to the name.
+	The bar shows at most VISIBLE_TABS guides at once -- fewer on a panel too
+	narrow to give each TAB_W_MIN -- and a ‹ › pair scrolls through the rest.
+	Squeezing every open guide into the bar instead is what reduced five of
+	them to "Optim... North... Gilnea...".
+
+	The tabs that are shown share the room, up to the concept's .tab
+	max-width; below BADGE_MIN a tab drops its XP/TPL badge so the width goes
+	to the name.
 ]]
 local MAX_TABS = AegisPathfinder.MAX_GUIDE_TABS or 8
+local VISIBLE_TABS = 4
 local TAB_W_MAX = 190      -- .tab{max-width:190px}
+local TAB_W_MIN = 100      -- narrower and the name is mostly ellipsis
 local TAB_GAP = 2
-local BADGE_MIN = 96
+local BADGE_MIN = 130
 local ADD_W = TABBAR_H - 9
+local ARROW_W = 16
+
+-- The first tab in view, and what the bar last showed: the view follows the
+-- active tab when that changes, and otherwise stays where the arrows put it.
+local tabFirst, shownActive, shownCount = 1, nil, nil
 
 
 local frame = CreateFrame("Frame", "AegisPathfinderObjectives", UIParent)
@@ -235,8 +245,10 @@ function AegisPathfinder:UpdateObjectivePanel()
 		follows -- and anything after it is a guide opened beside it. Clicking a tab switches to it, resuming where
 		you left it; the ✕ closes it; the + opens another.
 
-		Tabs are built once as a pool and shown as far as the open guides
-		reach, so switching guides never creates a frame.
+		Tabs are built once as a pool, one per possible guide, and the bar
+		shows a window onto them -- as many as fit at a readable width, four
+		at most -- with ‹ › to scroll the rest into view. Switching guides
+		never creates a frame.
 
 		The badge marks whether a guide is authored (XP) or a placeholder
 		(TPL) -- the same signal the guide list carries, in the one place you
@@ -325,14 +337,51 @@ function AegisPathfinder:UpdateObjectivePanel()
 		return t
 	end
 
+	-- Anchored as they are shown, by UpdateObjectiveTabs: which tab sits
+	-- first depends on where the bar is scrolled to.
 	for i = 1, MAX_TABS do
 		guideTabs[i] = MakeTab(i)
-		if i == 1 then
-			guideTabs[i]:SetPoint("BOTTOMLEFT", tabbar, "BOTTOMLEFT", 8, 0)
-		else
-			guideTabs[i]:SetPoint("BOTTOMLEFT", guideTabs[i - 1], "BOTTOMRIGHT", TAB_GAP, 0)
-		end
 	end
+
+	--[[ Scrolling the bar.
+
+		‹ at the left edge, › after the last tab in view, both only while
+		there are more guides open than the bar shows. Each moves the view by
+		one tab and dims at its end. The wheel over the bar does the same.
+	]]
+	local function TabArrow(glyphName, delta, tip)
+		local b = Theme:GlyphButton(tabbar, glyphName, 9, ARROW_W)
+		b:SetScript("OnClick", function()
+			if this.__disabled then return end
+			AegisPathfinder:ScrollObjectiveTabs(delta)
+		end)
+		b:SetScript("OnEnter", function()
+			if this.__disabled then return end
+			Theme:Tint(this.glyph, "accent")
+			GameTooltip:SetOwner(this, "ANCHOR_BOTTOM")
+			GameTooltip:SetText(tip)
+		end)
+		b:SetScript("OnLeave", function()
+			Theme:Tint(this.glyph, this.__disabled and "subtle" or "textDim")
+			GameTooltip:Hide()
+		end)
+		function b:SetEnabled(on)
+			self.__disabled = not on
+			Theme:Tint(self.glyph, on and "textDim" or "subtle")
+		end
+		function b:IsEnabled() return not self.__disabled end
+		b:Hide()
+		return b
+	end
+	local tabLeft = TabArrow("chevronLeft", -1, "Earlier guides")
+	local tabRight = TabArrow("chevronRight", 1, "Later guides")
+	-- Centred on the tabs, which sit on the bar's bottom edge.
+	tabLeft:SetPoint("LEFT", tabbar, "BOTTOMLEFT", 8, (TABBAR_H - 5) / 2)
+
+	tabbar:EnableMouseWheel(true)
+	tabbar:SetScript("OnMouseWheel", function()
+		AegisPathfinder:ScrollObjectiveTabs(-(arg1 or 0))
+	end)
 
 	local addTab = Theme:GlyphButton(tabbar, "plus", 10, TABBAR_H - 9)
 	Theme:NineSlice(addTab, Theme.texture.tabBorder, "BORDER", "subtle")
@@ -352,6 +401,7 @@ function AegisPathfinder:UpdateObjectivePanel()
 
 	frame.tabbar = tabbar
 	frame.guideTabs, frame.addTab = guideTabs, addTab
+	frame.tabLeft, frame.tabRight = tabLeft, tabRight
 	-- The first tab is the main route; plenty of older code still reaches for
 	-- it by this name.
 	frame.mainTab = guideTabs[1]
@@ -664,44 +714,97 @@ function AegisPathfinder:UpdateObjectiveTabs()
 	local tabs = self:EnsureTabs()
 	local count = math.min(table.getn(tabs), MAX_TABS)
 	local active = self.db.char.activetab or 1
-	local last
 
-	-- Share the bar: 8px in from the left, the + and its gap on the right.
+	-- How many tabs fit at a readable width: 8px in from the left, the + and
+	-- its gap on the right, and room for the arrows once they are needed.
+	local function fit(room)
+		local n = math.floor((room + TAB_GAP) / (TAB_W_MIN + TAB_GAP))
+		return math.max(1, math.min(VISIBLE_TABS, n))
+	end
+	local room = frame:GetWidth() - 2 - 8 - (ADD_W + 4) - 8
+	local overflow = count > fit(room)
+	if overflow then room = room - 2 * (ARROW_W + 2) end
+	local visible = math.min(count, fit(room))
+
+	-- Follow the active tab when it changes -- a switch, an open, a close --
+	-- and otherwise leave the view where the arrows put it, so a repaint does
+	-- not yank it back.
+	if active ~= shownActive or count ~= shownCount then
+		if active < tabFirst then
+			tabFirst = active
+		elseif active > tabFirst + visible - 1 then
+			tabFirst = active - visible + 1
+		end
+		shownActive, shownCount = active, count
+	end
+	tabFirst = math.max(1, math.min(tabFirst, count - visible + 1))
+	local lastShown = tabFirst + visible - 1
+
 	local width = TAB_W_MAX
-	if count > 0 then
-		local room = frame:GetWidth() - 2 - 8 - (ADD_W + 4) - 8
-		width = math.floor((room - (count - 1) * TAB_GAP) / count)
+	if visible > 0 then
+		width = math.floor((room - (visible - 1) * TAB_GAP) / visible)
 		if width > TAB_W_MAX then width = TAB_W_MAX end
 	end
 
+	local prev
 	for i = 1, MAX_TABS do
 		local button = frame.guideTabs[i]
-		local tab = i <= count and tabs[i] or nil
-		if not tab then
+		local tab = tabs[i]
+		if not tab or i < tabFirst or i > lastShown then
 			button:Hide()
 		else
+			button:ClearAllPoints()
+			if prev then
+				button:SetPoint("BOTTOMLEFT", prev, "BOTTOMRIGHT", TAB_GAP, 0)
+			else
+				button:SetPoint("BOTTOMLEFT", frame.tabbar, "BOTTOMLEFT",
+					overflow and (8 + ARROW_W + 2) or 8, 0)
+			end
 			button:Show()
 			button:SetWidth(width)
 			button:SetBadgeShown(width >= BADGE_MIN)
-			button.label:SetText(tab.guide)
+			-- The pack prefix ("Optimized/") is the same on every tab and
+			-- costs a third of a narrow one; the tooltip keeps the full name.
+			button.label:SetText((string.gsub(tab.guide, "^.*/", "")))
 			button.badge:SetKind(self:IsTemplateGuide(tab.guide) and "tpl" or "xp",
 				self:IsTemplateGuide(tab.guide) and "TPL" or "XP")
 			button:SetActive(i == active)
-			last = button
+			prev = button
 		end
 	end
 
-	-- The + follows whichever tab is last, rather than floating where a
-	-- closed one used to be.
+	if overflow then
+		frame.tabLeft:Show()
+		frame.tabRight:Show()
+		frame.tabLeft:SetEnabled(tabFirst > 1)
+		frame.tabRight:SetEnabled(lastShown < count)
+		frame.tabRight:ClearAllPoints()
+		frame.tabRight:SetPoint("LEFT", prev, "RIGHT", 2, 0)
+	else
+		frame.tabLeft:Hide()
+		frame.tabRight:Hide()
+	end
+
+	-- The + follows whatever is last, rather than floating where a closed
+	-- tab used to be.
 	frame.addTab:ClearAllPoints()
-	if last then
-		frame.addTab:SetPoint("LEFT", last, "RIGHT", 4, 0)
+	if overflow then
+		frame.addTab:SetPoint("LEFT", frame.tabRight, "RIGHT", 4, 0)
+	elseif prev then
+		frame.addTab:SetPoint("LEFT", prev, "RIGHT", 4, 0)
 	else
 		frame.addTab:SetPoint("LEFT", frame.tabbar, "LEFT", 8, 0)
 	end
 
 	-- Past MAX_TABS there is nowhere to put another tab, so stop offering.
 	if table.getn(tabs) >= MAX_TABS then frame.addTab:Hide() else frame.addTab:Show() end
+end
+
+--- Move the tab bar's view by `delta` tabs. Only the view: the guide you are
+--- reading stays the one you are reading until you click a tab.
+function AegisPathfinder:ScrollObjectiveTabs(delta)
+	tabFirst = tabFirst + (delta or 0)
+	self:UpdateObjectiveTabs()
 end
 
 --[[ The panel with every guide closed.

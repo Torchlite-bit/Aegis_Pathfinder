@@ -123,7 +123,8 @@ too, so treat it as built unless something below contradicts it:
   ☰ and ✕ chips, subhead strip, 1px rules, rounded caps
 - Drag by the header, with the drop position saved per profile and reopening
   respecting it
-- Tab bar with the XP/TPL badge, closable branch tab, `+`
+- Tab bar with the XP/TPL badge, a ✕ on every tab, `+`, and ‹ › scrolling
+  once more guides are open than fit (four at most in view)
 - Nav row, the 4px progress rule, and the red/green bands for `ACCEPT` and
   `TURNIN` that are current or satisfied
 - Rows with the note stacked under the title in `#8f8f86`

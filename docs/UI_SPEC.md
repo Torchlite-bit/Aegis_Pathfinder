@@ -313,10 +313,23 @@ Blizzard's gold arrows and knob; `Tools/verify.py` now fails on either.
 
 ### Objectives panel tab bar -- `ObjectivesFrame.lua`
 
-One tab per open guide, up to six. Tab 1 is the main route — what auto-advance
-follows, and the one with no ✕ because there would be nothing to fall back to.
-Clicking a tab switches to it and resumes where it was left; the `+` opens
-another; at six the `+` stops offering what it cannot do.
+One tab per open guide, up to eight. Tab 1 is the main route — what
+auto-advance follows. Every tab has a ✕, the first included; closing the last
+one leaves the panel empty, with "Click here to load a guide" in place of the
+steps. Clicking a tab switches to it and resumes where it was left; the `+`
+opens the guide list beside the panel; at eight the `+` stops offering what it
+cannot do.
+
+The bar does not squeeze every open guide in: at five that reduced each tab to
+"Optim…". It shows as many as fit at 100px or more, four at most (four at the
+default 630px width, three at 420px), and a `‹` `›` pair appears either side
+once there are more. Each arrow, or a notch of the mouse wheel over the bar,
+moves the view one tab and dims at its end. The view follows the active tab
+when that changes — opening a guide, switching from the guide list, closing
+one — and otherwise stays where the arrows left it, so a repaint does not
+yank it back. Tab labels drop the pack prefix (`Optimized/`) that every tab
+shares; the tooltip keeps the full name. Below 130px a tab drops its XP/TPL
+badge so the width goes to the name.
 
 The model is `db.char.tabs` (a list of `{guide, step}`) plus `activetab`, in
 `Core.lua`. It replaced a one-deep branch — main plus at most one branch off
@@ -325,8 +338,8 @@ are still written, derived from the tabs by `SyncBranchState`, because a dozen
 call sites read them and "am I branching?" is just "is the active tab not the
 first one?". A character saved under the old model migrates on first use.
 
-Tabs are a fixed pool of frames shown as far as the open guides reach, so
-switching guides never creates a frame.
+Tabs are a fixed pool of frames, anchored as they come into view, so switching
+guides or scrolling the bar never creates a frame.
 
 ### Still to do
 

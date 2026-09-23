@@ -1511,8 +1511,9 @@ end
 AegisPathfinder.NO_GUIDE = "No Guide"
 local NO_GUIDE = AegisPathfinder.NO_GUIDE
 
--- How many guides can be open at once. The tab bar shrinks tabs to fit, down
--- to a width that still shows a readable name; eight is where that runs out.
+-- How many guides can be open at once. The tab bar scrolls, so this is not
+-- about width: past eight, paging through tabs to find a guide is slower than
+-- the guide list it was opened from.
 AegisPathfinder.MAX_GUIDE_TABS = 8
 local MAX_GUIDE_TABS = AegisPathfinder.MAX_GUIDE_TABS
 

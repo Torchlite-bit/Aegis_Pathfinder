@@ -225,33 +225,117 @@ AegisPathfinder:UpdateObjectiveTabs()
 check(lastAnchorTarget(frame.addTab) == frame.guideTabs[2],
 	"with two, + follows the last one rather than floating where a closed tab was")
 
--- Tabs share the bar rather than each taking a fixed width -- which is what
--- pushed the last ones out past the panel's edge.
-local function rightEdge()
-	-- Walk the chain: 8px in, then each shown tab and its gap, then the +.
-	local x = 8
+--[[ More guides than fit.
+
+	Squeezing every open guide into the bar is what reduced five of them to
+	"Optim... North... Gilnea...". The bar shows as many as fit at a readable
+	width -- four at most -- and a ‹ › pair scrolls through the rest. ]]
+local function shown()
+	local out = {}
 	for i = 1, 8 do
-		local b = frame.guideTabs[i]
-		if b:IsShown() then x = x + b:GetWidth() + 2 end
+		if frame.guideTabs[i]:IsShown() then table.insert(out, i) end
 	end
-	return x - 2 + 4 + frame.addTab:GetWidth()
+	return out
 end
+local function shownList() return table.concat(shown(), ",") end
+-- Walk the row left to right: 8px in, ‹, the tabs in view, ›, then the +.
+local function rightEdge()
+	local x = 8
+	if frame.tabLeft:IsShown() then x = x + frame.tabLeft:GetWidth() + 2 end
+	for _, i in ipairs(shown()) do x = x + frame.guideTabs[i]:GetWidth() + 2 end
+	x = x - 2
+	if frame.tabRight:IsShown() then x = x + 2 + frame.tabRight:GetWidth() end
+	if frame.addTab:IsShown() then x = x + 4 + frame.addTab:GetWidth() end
+	return x
+end
+local function narrowest()
+	local w = math.huge
+	for _, i in ipairs(shown()) do w = math.min(w, frame.guideTabs[i]:GetWidth()) end
+	return w
+end
+-- As the client fires it: with `this` set to the button.
+local function click(b)
+	local old = this
+	this = b
+	b:GetScript("OnClick")()
+	this = old
+end
+
+-- Two open: both fit, and there is nothing to scroll.
+check(not frame.tabLeft:IsShown() and not frame.tabRight:IsShown(),
+	"with room for every tab there are no arrows")
+
 for _, name in ipairs({ "A (1-2)", "B (1-2)", "C (1-2)", "D (1-2)", "E (1-2)", "F (1-2)" }) do
 	AegisPathfinder:OpenGuideTab(name)
 end
 AegisPathfinder:UpdateObjectiveTabs()
 check(table.getn(AegisPathfinder.db.char.tabs) == 8, "eight tabs open, got: %s", names())
+check(table.getn(shown()) == 4, "the bar shows four of them, got %s", shownList())
+check(narrowest() >= 100, "each at a readable width, got %d px", narrowest())
+check(frame.guideTabs[8]:IsShown(), "including the one just opened, which is the one you are on")
+check(shownList() == "5,6,7,8", "so the view is the last four, got %s", shownList())
+check(frame.tabLeft:IsShown() and frame.tabRight:IsShown(), "and the arrows appear")
+check(frame.tabLeft:IsEnabled() and not frame.tabRight:IsEnabled(),
+	"‹ has somewhere to go, › does not")
 check(rightEdge() <= frame:GetWidth(),
-	"eight tabs and the + must fit inside the panel (%d of %d px)",
+	"the arrows, four tabs and the + fit inside the panel (%d of %d px)",
 	rightEdge(), frame:GetWidth())
-check(not frame.guideTabs[8].badge:IsShown(),
-	"narrow tabs drop the badge so the name keeps the room")
+check(lastAnchorTarget(frame.tabRight) == frame.guideTabs[8], "› follows the last tab in view")
+check(lastAnchorTarget(frame.addTab) == frame.tabRight, "and the + follows ›")
+check(frame.guideTabs[8].badge:IsShown(), "at this width the badge still fits")
 
--- Narrowing the panel narrows the tabs with it.
+-- The arrows move the view, one tab at a time, and only the view.
+click(frame.tabLeft)
+check(shownList() == "4,5,6,7", "‹ moves the view back one tab, got %s", shownList())
+check(AegisPathfinder.db.char.activetab == 8, "without switching guides")
+check(frame.tabRight:IsEnabled(), "and › has somewhere to go again")
+AegisPathfinder:UpdateObjectiveTabs()
+check(shownList() == "4,5,6,7", "a repaint leaves the view where you put it, got %s", shownList())
+for _ = 1, 10 do click(frame.tabLeft) end
+check(shownList() == "1,2,3,4", "‹ stops at the first tab, got %s", shownList())
+check(not frame.tabLeft:IsEnabled(), "and dims there")
+click(frame.tabRight)
+check(shownList() == "2,3,4,5", "› moves forward one, got %s", shownList())
+
+-- The wheel over the bar does the same.
+arg1 = -1; frame.tabbar:GetScript("OnMouseWheel")()
+check(shownList() == "3,4,5,6", "wheel down scrolls forward, got %s", shownList())
+arg1 = 1; frame.tabbar:GetScript("OnMouseWheel")()
+check(shownList() == "2,3,4,5", "wheel up scrolls back, got %s", shownList())
+
+-- Clicking a tab in view switches to it without moving the view.
+click(frame.guideTabs[3])
+check(AegisPathfinder.db.char.activetab == 3, "clicking a tab in view switches to it")
+check(shownList() == "2,3,4,5", "and the view stays put, got %s", shownList())
+
+-- Picking an already-open guide from the list switches to its tab, and
+-- that tab comes into view.
+AegisPathfinder:OpenGuideTab("F (1-2)")
+AegisPathfinder:UpdateObjectiveTabs()
+check(AegisPathfinder.db.char.activetab == 8, "picking an open guide switches to its tab")
+check(shownList() == "5,6,7,8", "and scrolls to it, got %s", shownList())
+AegisPathfinder:SwitchToTab(1)
+AegisPathfinder:UpdateObjectiveTabs()
+check(shownList() == "1,2,3,4", "in either direction, got %s", shownList())
+
+-- The prefix every tab shares is not worth a third of a tab.
+AegisPathfinder.db.char.tabs[2].guide = "Optimized/Elwynn Forest (1-10)"
+AegisPathfinder:UpdateObjectiveTabs()
+check(frame.guideTabs[2].label:GetText() == "Elwynn Forest (1-10)",
+	"a tab names the guide without its pack prefix, got '%s'",
+	tostring(frame.guideTabs[2].label:GetText()))
+AegisPathfinder.db.char.tabs[2].guide = "Alchemy (1-300)"
+
+-- A narrower panel shows fewer at a time, still at a readable width.
 frame:SetWidth(420)
 AegisPathfinder:UpdateObjectiveTabs()
-check(rightEdge() <= 420, "tabs must still fit a 420px panel, reach %d px", rightEdge())
+check(table.getn(shown()) == 3, "a 420px panel shows three, got %s", shownList())
+check(narrowest() >= 100, "each still readable, got %d px", narrowest())
+check(rightEdge() <= 420, "and the row still fits, reaching %d px", rightEdge())
+check(not frame.guideTabs[1].badge:IsShown(),
+	"narrow tabs drop the badge so the name keeps the room")
 frame:SetWidth(630)
+AegisPathfinder:UpdateObjectiveTabs()
 
 -- Past capacity there is nowhere to put another, and it says so.
 AegisPathfinder.__printed = nil
