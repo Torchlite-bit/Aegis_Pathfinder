@@ -26,6 +26,8 @@ local VALID_LAYERS = {
 }
 
 stub.errors = {}
+stub.cursor = { 0, 0 }
+stub.mouseDown = false
 
 local function complain(fmt, ...)
 	local msg = string.format(fmt, ...)
@@ -81,6 +83,48 @@ local function newObject(kind, name, parent)
 		local p = self.__points[i or 1]
 		if not p then return nil end
 		return p[1], p[2], p[3], p[4], p[5]
+	end
+
+	--[[ Where the frame sits, in UIParent coordinates (origin bottom-left),
+		worked out from its first anchor the way the client does. Enough for
+		code that reads an edge and re-anchors by it; SetAllPoints and
+		multi-point sizing are not modelled. ]]
+	local function frac(point)
+		local fx, fy = 0.5, 0.5
+		if string.find(point, "LEFT") then fx = 0 elseif string.find(point, "RIGHT") then fx = 1 end
+		if string.find(point, "TOP") then fy = 1 elseif string.find(point, "BOTTOM") then fy = 0 end
+		return fx, fy
+	end
+	function o:__rect()
+		local pt = self.__points[1]
+		local w, h = self:GetWidth(), self:GetHeight()
+		if not pt then
+			if not self.__parent then return 0, 0, w, h end   -- UIParent / WorldFrame
+			return nil
+		end
+		if pt[1] == "ALL" then return nil end
+		local rel, relP, x, y = pt[2], pt[3], pt[4], pt[5]
+		if type(rel) == "number" then            -- SetPoint(p, x, y)
+			rel, relP, x, y = self.__parent, pt[1], rel, relP
+		end
+		rel = rel or self.__parent
+		if type(rel) ~= "table" or not rel.__rect then return nil end
+		local rl, rb, rw, rh = rel:__rect()
+		if not rl then return nil end
+		local rfx, rfy = frac(relP or pt[1])
+		local ax, ay = rl + rfx * rw + (x or 0), rb + rfy * rh + (y or 0)
+		local fx, fy = frac(pt[1])
+		return ax - fx * w, ay - fy * h, w, h
+	end
+	function o:GetLeft() local l = self:__rect(); return l end
+	function o:GetBottom() local _, b = self:__rect(); return b end
+	function o:GetTop()
+		local _, b, _, h = self:__rect()
+		return b and (b + h)
+	end
+	function o:GetRight()
+		local l, _, w = self:__rect()
+		return l and (l + w)
 	end
 
 	function o:Show() self.__shown = true end
@@ -250,7 +294,7 @@ local function newFrame(frameType, name, parent)
 	function f:GetDisabledTexture() return newTexture(nil, self, "ARTWORK") end
 	function f:GetHighlightTexture() return newTexture(nil, self, "HIGHLIGHT") end
 	function f:GetPushedTexture() return newTexture(nil, self, "ARTWORK") end
-	function f:SetClampedToScreen() end
+	function f:SetClampedToScreen(v) self.__clamped = v and true or false end
 	function f:SetFrameStrata(s) self.__strata = s end
 	--[[ Frame levels, as the client assigns them: a frame starts one above
 		its parent. Whether SetFrameLevel drags a frame's children along with
@@ -367,6 +411,9 @@ function stub.install(env)
 	env.GameFontNormalSmall = {}
 	env.GameFontHighlight = {}
 	env.getglobal = function(n) return env[n] end
+	-- The cursor, in screen pixels; a test moves it by setting stub.cursor.
+	env.GetCursorPosition = function() return stub.cursor[1], stub.cursor[2] end
+	env.IsMouseButtonDown = function() return stub.mouseDown end
 	env.UnitFactionGroup = function() return "Alliance" end
 	env.UnitLevel = function() return 1 end
 	env.UnitClass = function() return "Warrior", "WARRIOR" end

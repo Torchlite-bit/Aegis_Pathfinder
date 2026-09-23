@@ -109,7 +109,15 @@ local function check(cond, fmt, ...)
 end
 
 local frame = AegisPathfinder.objectiveframe
+-- A player coming from the version where the grip set the height directly.
+AegisPathfinder.db.profile.objframeheight = 500
 AegisPathfinder:UpdateObjectivePanel()
+
+check(AegisPathfinder.db.profile.objframemaxheight == 500
+	and AegisPathfinder.db.profile.objframeheight == nil,
+	"an old saved height becomes the cap, not the height, got cap %s height %s",
+	tostring(AegisPathfinder.db.profile.objframemaxheight),
+	tostring(AegisPathfinder.db.profile.objframeheight))
 
 -- Header ---------------------------------------------------------------------
 
@@ -135,13 +143,39 @@ if dragStart and dragStop then
 	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 120, -80)
 	dragStop()
 	check(frame.__moving == false, "releasing should stop the move")
-	check(AegisPathfinder.db.profile.objframepoint == "TOPLEFT"
-		and AegisPathfinder.db.profile.objframex == 120
-		and AegisPathfinder.db.profile.objframey == -80,
-		"where the panel was dropped must be saved, got %s %s,%s",
-		tostring(AegisPathfinder.db.profile.objframepoint),
-		tostring(AegisPathfinder.db.profile.objframex),
-		tostring(AegisPathfinder.db.profile.objframey))
+
+	-- Pinned by its top-left, where it was dropped, and by nothing else:
+	-- the client's own choice of anchor is what can leave a window growing
+	-- upward, or with two anchors and a height it cannot change.
+	local p, rel, relP, x, y = frame:GetPoint(1)
+	check(frame:GetNumPoints() == 1 and p == "TOPLEFT" and rel == UIParent and relP == "BOTTOMLEFT",
+		"a dropped panel is anchored by its top-left alone, got %d point(s), %s to %s",
+		frame:GetNumPoints(), tostring(p), tostring(relP))
+	check(frame:GetLeft() == 120 and frame:GetTop() == 768 - 80,
+		"where it was dropped, got %s,%s", tostring(frame:GetLeft()), tostring(frame:GetTop()))
+
+	local db = AegisPathfinder.db.profile
+	check(db.objframepoint == "TOPLEFT" and db.objframerel == "BOTTOMLEFT"
+		and db.objframex == 120 and db.objframey == 688,
+		"where the panel was dropped must be saved, got %s/%s %s,%s",
+		tostring(db.objframepoint), tostring(db.objframerel),
+		tostring(db.objframex), tostring(db.objframey))
+
+	-- And put back there, against the corner it was measured from.
+	frame:ClearAllPoints()
+	frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+	AegisPathfinder.Theme:RestorePosition(frame, "objframe")
+	check(frame:GetLeft() == 120 and frame:GetTop() == 688,
+		"restoring puts it back where it was dropped, got %s,%s",
+		tostring(frame:GetLeft()), tostring(frame:GetTop()))
+
+	-- A position saved before the relative point was kept reads as it was
+	-- written: the point against the same point.
+	db.objframepoint, db.objframerel, db.objframex, db.objframey = "TOPRIGHT", nil, -40, -180
+	AegisPathfinder.Theme:RestorePosition(frame, "objframe")
+	check(frame:GetRight() == 1024 - 40 and frame:GetTop() == 768 - 180,
+		"an older save still restores, got right %s top %s",
+		tostring(frame:GetRight()), tostring(frame:GetTop()))
 end
 
 -- Chrome ---------------------------------------------------------------------
@@ -316,6 +350,128 @@ check(frame.expandChip:IsActive() == true,
 AegisPathfinder:ToggleOverviewMode()
 check(AegisPathfinder.db.char.overviewmode == false, "toggling again returns to focus")
 check(frame.expandChip:IsActive() == false, "and the chip goes back to plain")
+
+-- The panel is as tall as what it shows -------------------------------------------
+
+--[[ The concept's panel is height:auto under a max-height. A step with a
+	long note shows all of it and the panel grows to fit; a short one shrinks
+	it back. Nothing the grip does can leave the panel a size its content
+	does not fit, which is how it got stuck. ]]
+local CHROME, FOOTER = 86, 24
+AegisPathfinder.db.char.overviewmode = false
+AegisPathfinder.current = 3            -- a RUN step: a row, not a band
+AegisPathfinder.tags[3].N = "Travel to Goldshire"
+AegisPathfinder:UpdateOHPanel()
+local shortRow, shortPanel = built[1]:GetHeight(), frame:GetHeight()
+-- Anchored by its bottom, as the client can leave a window moved in the lower
+-- half of the screen: growing must still leave the header where it is.
+local bottomNow = frame:GetBottom()
+frame:ClearAllPoints()
+frame:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 100, bottomNow)
+local top = frame:GetTop()
+
+local long = string.rep("Follow the road south past the farms and the river. ", 12)
+AegisPathfinder.tags[3].N = long
+AegisPathfinder:UpdateOHPanel()
+check(built[1].note:IsShown() and built[1].note:GetText() == long,
+	"focus mode shows the whole note, not one clipped line")
+check(not built[1].detail:IsShown(), "and not the one-line version")
+check(built[1]:GetHeight() > shortRow,
+	"the row grows for a long note (%s, was %s)", built[1]:GetHeight(), shortRow)
+check(frame:GetHeight() == CHROME + built[1]:GetHeight() + 8 + FOOTER,
+	"and the panel is exactly chrome, the row and the footer, got %s", frame:GetHeight())
+check(frame:GetTop() == top, "it grows downward: the header does not move (%s, was %s)",
+	tostring(frame:GetTop()), tostring(top))
+
+AegisPathfinder.tags[3].N = "Travel to Goldshire"
+AegisPathfinder:UpdateOHPanel()
+check(frame:GetHeight() == shortPanel, "and shrinks back for a short one, got %s (was %s)",
+	frame:GetHeight(), shortPanel)
+
+-- In focus mode the row runs to the panel's edge; there is no scrollbar
+-- beside it to stop at.
+local function rightTarget(row)
+	for _, pt in ipairs(row.__points) do
+		if pt[1] == "RIGHT" then return pt[2] end
+	end
+end
+check(rightTarget(built[1]) == frame, "a focus-mode row reaches the panel's edge")
+
+-- Overview is as tall as the list, up to the cap.
+AegisPathfinder.db.char.overviewmode = true
+AegisPathfinder:UpdateOHPanel(0)
+check(rightTarget(built[1]) ~= frame, "an overview row stops at the scrollbar")
+check(frame:GetHeight() == CHROME + 5 * 44 + 2 + FOOTER,
+	"five steps fit under the cap, so the panel is as tall as five rows, got %s",
+	frame:GetHeight())
+for i = 1, 5 do check(built[i]:IsShown(), "overview row %d shows", i) end
+AegisPathfinder.db.profile.objframemaxheight = 260
+AegisPathfinder:UpdateOHPanel(0)
+check(frame:GetHeight() == 260, "a lower cap stops it there, got %s", frame:GetHeight())
+check(built[3]:IsShown() and not built[4]:IsShown(),
+	"showing as many rows as fit, and a scrollbar for the rest")
+AegisPathfinder.db.char.overviewmode = false
+
+-- The grip ----------------------------------------------------------------------------
+
+--[[ Sideways sets the width, down sets the cap -- the concept's grip -- and it
+	never hands the frame to the client's StartSizing, whose re-anchoring is
+	what left the panel stuck. ]]
+local startedSizing = false
+frame.StartSizing = function() startedSizing = true end
+local grip = frame.grip
+local w0 = frame:GetWidth()
+local cap0 = AegisPathfinder:GetPanelCap()
+stub.mouseDown = true
+stub.cursor = { 500, 300 }
+grip:GetScript("OnMouseDown")()
+local p1, _, r1 = frame:GetPoint(1)
+check(p1 == "TOPLEFT" and r1 == "BOTTOMLEFT" and frame:GetNumPoints() == 1,
+	"grabbing the grip pins the panel by its top-left, so it grows right and down")
+stub.cursor = { 560, 200 }
+grip:GetScript("OnUpdate")()
+check(frame:GetWidth() == w0 + 60, "dragging right widens it, got %s (was %s)", frame:GetWidth(), w0)
+check(AegisPathfinder:GetPanelCap() == cap0 + 100,
+	"dragging down raises the cap, got %s (was %s)", AegisPathfinder:GetPanelCap(), cap0)
+check(AegisPathfinder.db.profile.objframewidth == w0 + 60, "the width is saved")
+check(frame:GetHeight() < AegisPathfinder:GetPanelCap(),
+	"but the panel stays the height of its step, not the cap (%s)", frame:GetHeight())
+stub.cursor = { -2000, 300 }
+grip:GetScript("OnUpdate")()
+check(frame:GetWidth() == 320, "no narrower than the concept's 320, got %s", frame:GetWidth())
+-- The button comes up somewhere the grip does not hear about.
+stub.mouseDown = false
+grip:GetScript("OnUpdate")()
+check(grip:GetScript("OnUpdate") == nil, "letting go ends the drag even off the grip")
+check(not startedSizing, "and the client's StartSizing was never involved")
+
+-- A client whose IsMouseButtonDown does not read "LeftButton" as held, even
+-- mid-drag, must not have every drag end the moment it starts.
+stub.mouseDown = false
+stub.cursor = { 500, 300 }
+local wBefore = frame:GetWidth()
+grip:GetScript("OnMouseDown")()
+stub.cursor = { 540, 300 }
+grip:GetScript("OnUpdate")()
+check(frame:GetWidth() == wBefore + 40,
+	"the grip still sizes when the button cannot be polled, got %s (was %s)",
+	frame:GetWidth(), wBefore)
+grip:GetScript("OnMouseUp")()
+check(grip:GetScript("OnUpdate") == nil, "and letting go on the grip ends it")
+
+-- Resetting -----------------------------------------------------------------------------
+
+local profile = AegisPathfinder.db.profile
+profile.objframepoint, profile.objframerel, profile.objframex, profile.objframey = "TOPLEFT", "BOTTOMLEFT", 5, 5
+profile.guidelistframepoint = "CENTER"
+AegisPathfinder:ResetWindowLayout()
+check(profile.objframepoint == nil and profile.guidelistframepoint == nil,
+	"/apg resetpanels forgets every saved position")
+check(profile.objframewidth == nil and profile.objframemaxheight == nil,
+	"and the panel's size")
+check(frame:GetWidth() == 630 and frame:GetRight() == 1024 - 40 and frame:GetTop() == 768 - 180,
+	"putting the guide back at the concept's top-right, 630 wide, got %s wide at right %s top %s",
+	frame:GetWidth(), tostring(frame:GetRight()), tostring(frame:GetTop()))
 
 -- The objective meter -------------------------------------------------------
 

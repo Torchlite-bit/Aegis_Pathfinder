@@ -44,6 +44,7 @@ too — the old `TurtleGuide` global is still an alias.
 | `/apg next` / `prev` | Step forward or back |
 | `/apg goto <n>` | Jump to a step |
 | `/apg reset` | Reset progress in the current guide |
+| `/apg resetpanels` | Put every window back where it opens by default |
 | `/apg materials` | Reagents the rest of this guide still needs |
 | `/apg credits` | Everyone whose work is in this addon |
 | `/apg server` | Cycle which server you play on |
@@ -94,9 +95,11 @@ steps, once a waypoint provider is active. The checkbox wears a halo on steps
 the addon can finish for you, so you know when not to reach for it.
 
 **One step, or all of them.** The panel opens on the step you are on and
-nothing else, with a meter underneath counting whatever the quest wants killed
-or collected. The expand button in the header swaps that for the whole guide
-when you want to look ahead.
+nothing else, with its note in full and a meter underneath counting whatever
+the quest wants killed or collected. The expand button in the header swaps
+that for the whole guide when you want to look ahead. The panel sizes itself
+to what it shows; the grip in its corner sets the width, and how tall it may
+grow.
 
 **A navigation arrow.** It points at the current objective and says how far and
 how long, floating on the world with no window around it. It needs a waypoint
