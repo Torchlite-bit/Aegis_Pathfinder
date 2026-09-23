@@ -105,8 +105,8 @@ local defaults = {
     lastserverquery = 0,      -- timestamp for throttling
     -- Branching state
     -- Open guides, as the tab bar shows them. Tab 1 is the main route -- the
-    -- one auto-advance follows and the one you cannot close. The rest are
-    -- guides opened beside it.
+    -- one auto-advance follows. The rest are guides opened beside it. Empty
+    -- when the player has closed them all.
     tabs = nil,          -- built on first use; see EnsureTabs
     activetab = 1,
     -- Derived from the tabs above and kept in step with them by SyncBranchState.
@@ -1208,6 +1208,8 @@ function AegisPathfinder:SetTurnedIn(i, value, noupdate)
         i = self.current
         value = true
     end
+    -- No step to mark: every guide is closed.
+    if not i or not self.quests or not self.quests[i] then return end
 
     local qid = self:GetObjectiveTag("QID", i)
     if qid and not value then
@@ -1518,8 +1520,8 @@ local MAX_GUIDE_TABS = AegisPathfinder.MAX_GUIDE_TABS
 
     The panel used to hold one guide, plus at most one branch off it. The
     concept's tab bar implies as many as you want open at once, so this is a
-    list: tab 1 is the main route -- what auto-advance follows, and the tab
-    you cannot close -- and anything after it is a guide opened beside it.
+    list: tab 1 is the main route -- what auto-advance follows -- and
+    anything after it is a guide opened beside it. Any of them can be closed.
 
     Each tab remembers its own step, so switching back to one puts you where
     you left it rather than at the top.

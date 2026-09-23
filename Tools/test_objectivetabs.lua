@@ -302,12 +302,83 @@ AegisPathfinder.guidelistframe:Hide()
 frame.emptyState:GetScript("OnClick")()
 check(AegisPathfinder.guidelistframe:IsShown(), "clicking it opens the guide list")
 
--- And picking a guide from an empty panel opens it in a tab.
-AegisPathfinder:LoadGuideInTab("Elwynn Forest (1-12)")
+check(not frame.navrow.stepControls[1]:IsShown()
+	and not frame.navrow.stepControls[2]:IsShown()
+	and not frame.navrow.stepControls[3]:IsShown(),
+	"with no guide there is nothing to step through, so the step arrows go")
+
+--[[ Picking a guide from the empty panel, with the real LoadGuide.
+
+	Everything above runs a LoadGuide that only moves currentguide, which is
+	how this shipped broken: the real one records how far through the
+	outgoing guide you got as (current - 1) / steps, and with every tab
+	closed there is no current step. It threw after the tab had been added,
+	so the player got a tab with no guide in it. ]]
+local fakeLoadGuide = AegisPathfinder.LoadGuide
+do
+	local kept = {}
+	for k, v in pairs(AegisPathfinder) do kept[k] = v end
+	function AegisPathfinder.split(delim, text)
+		local out = {}
+		for piece in string.gfind(text, "([^" .. delim .. "]+)") do table.insert(out, piece) end
+		return out
+	end
+	function AegisPathfinder:IsDebugging() return false end
+	dofile("Parser.lua")
+	local real = AegisPathfinder.LoadGuide
+	-- Keep only the real LoadGuide; everything it calls stays as the test has it.
+	for k, v in pairs(kept) do AegisPathfinder[k] = v end
+	AegisPathfinder.LoadGuide = real
+end
+function AegisPathfinder:WarmCaches() end
+function AegisPathfinder:SmartSkipToStep() self.current = 1 end
+AegisPathfinder.db.char.completion = {}
+AegisPathfinder.db.char.turnins = {}
+AegisPathfinder.guides["Elwynn Forest (1-12)"] = function() return [[
+A A Threat Within |QID|783| |N|Deputy Willem, outside the abbey|
+T A Threat Within |QID|783| |N|Marshal McBride, inside|
+]] end
+
+local ok, err = pcall(function()
+	AegisPathfinder:LoadGuideInTab("Elwynn Forest (1-12)")
+end)
+check(ok, "opening a guide from the empty panel must not error: %s", tostring(err))
 check(table.getn(AegisPathfinder.db.char.tabs) == 1,
 	"a guide picked with nothing open gets a tab, got: %s", names())
+check(AegisPathfinder.db.char.currentguide == "Elwynn Forest (1-12)",
+	"and the guide is actually loaded into it, got '%s'",
+	tostring(AegisPathfinder.db.char.currentguide))
+check(table.getn(AegisPathfinder.actions) == 2,
+	"its steps are parsed, got %d", table.getn(AegisPathfinder.actions))
+check(AegisPathfinder.current == 1, "and there is a step to be on")
+check(AegisPathfinder.db.char.completion["No Guide"] == nil,
+	"nothing is recorded against the empty panel as if it were a guide")
 AegisPathfinder:UpdateOHPanel()
 check(not frame.emptyState:IsShown(), "and the empty state goes away")
+check(frame.guideTabs[1]:IsShown() and frame.guideTabs[1].label:GetText() == "Elwynn Forest (1-12)",
+	"the tab names the guide, got '%s'", tostring(frame.guideTabs[1].label:GetText()))
+check(frame.navrow.stepControls[1]:IsShown(), "and the step arrows come back")
+
+-- Left-click from the list takes the same path, through OpenGuideTab.
+AegisPathfinder:CloseTab(1)
+ok, err = pcall(function() AegisPathfinder:OpenGuideTab("Elwynn Forest (1-12)") end)
+check(ok, "opening a new tab from the empty panel must not error: %s", tostring(err))
+check(table.getn(AegisPathfinder.actions) == 2, "and loads the guide into it")
+
+-- The ✓ in the nav row, with nothing open, has nothing to mark. It is hidden
+-- then, but SetTurnedIn with no step is also reachable from key bindings.
+AegisPathfinder:CloseTab(1)
+AegisPathfinder.LoadGuide = fakeLoadGuide
+do
+	local stubSetTurnedIn = AegisPathfinder.SetTurnedIn
+	local sfrom = string.find(core, "function AegisPathfinder:SetTurnedIn", 1, true)
+	local sto = sfrom and string.find(core, "\nend\n", sfrom, true)
+	assert(sfrom and sto, "could not find SetTurnedIn in Core.lua")
+	assert(loadstring(string.sub(core, sfrom, sto + 4)))()
+	ok, err = pcall(function() AegisPathfinder:SetTurnedIn() end)
+	check(ok, "marking the current step done with no guide open must not error: %s", tostring(err))
+	AegisPathfinder.SetTurnedIn = stubSetTurnedIn
+end
 
 -- Migration -------------------------------------------------------------------------
 

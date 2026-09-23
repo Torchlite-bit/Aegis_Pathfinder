@@ -302,10 +302,16 @@ end
 
 function AegisPathfinder:LoadGuide(name, complete)
 	if not name then return end
-	if complete then
-		self.db.char.completion[self.db.char.currentguide] = 1
-	elseif self.actions then
-		self.db.char.completion[self.db.char.currentguide] = (self.current - 1) / table.getn(self.actions)
+	-- Record how far through the outgoing guide the player got. With every
+	-- tab closed there is no outgoing guide -- no step, nothing parsed -- and
+	-- nothing to record.
+	local outgoing = self.db.char.currentguide
+	if outgoing and outgoing ~= AegisPathfinder.NO_GUIDE then
+		if complete then
+			self.db.char.completion[outgoing] = 1
+		elseif self.actions and self.current and table.getn(self.actions) > 0 then
+			self.db.char.completion[outgoing] = (self.current - 1) / table.getn(self.actions)
+		end
 	end
 
 	self.db.char.currentguide = self.guides[name] and name or self.guidelist[1]

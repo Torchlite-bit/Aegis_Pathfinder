@@ -230,8 +230,7 @@ function AegisPathfinder:UpdateObjectivePanel()
 	--[[ Tab bar.
 
 		One tab per open guide. Tab 1 is the main route -- what auto-advance
-		follows, and the one you cannot close -- and anything after it is a
-		guide opened beside it. Clicking a tab switches to it, resuming where
+		follows -- and anything after it is a guide opened beside it. Clicking a tab switches to it, resuming where
 		you left it; the ✕ closes it; the + opens another.
 
 		Tabs are built once as a pool and shown as far as the open guides
@@ -408,6 +407,7 @@ function AegisPathfinder:UpdateObjectivePanel()
 	ArrowTip(prevArrow, "Previous objective")
 	ArrowTip(nextArrow, "Skip to next objective")
 	ArrowTip(doneArrow, "Mark complete and advance")
+	navrow.stepControls = { prevArrow, nextArrow, doneArrow }
 
 	navCount = navrow:CreateFontString(nil, "OVERLAY")
 	Theme:SetFont(navCount, "body", 10)
@@ -723,6 +723,10 @@ function AegisPathfinder:ShowEmptyState(empty)
 		frame.emptyState:Show()
 	else
 		frame.emptyState:Hide()
+	end
+	-- Stepping through a guide needs a guide.
+	for _, b in ipairs(frame.navrow.stepControls) do
+		if empty then b:Hide() else b:Show() end
 	end
 end
 
