@@ -318,7 +318,13 @@ function AegisPathfinder:LoadGuide(name, complete)
 	]]
 	if self.EnsureTabs then
 		local tab = self:GetActiveTab()
-		if tab and tab.guide ~= self.db.char.currentguide then
+		if not tab then
+			-- Loaded with every tab closed -- a route pick, or first login --
+			-- so the guide gets a tab rather than showing with none.
+			table.insert(self:EnsureTabs(), { guide = self.db.char.currentguide, step = 1 })
+			self.db.char.activetab = 1
+			self:SyncBranchState()
+		elseif tab.guide ~= self.db.char.currentguide then
 			tab.guide = self.db.char.currentguide
 			tab.step = 1
 		end

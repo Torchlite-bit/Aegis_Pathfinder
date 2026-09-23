@@ -53,8 +53,8 @@ local function ShowTooltip()
         table.insert(lines, "|cffffd100" .. f.guide .. "|r")
         table.insert(lines, "")
     end
-    table.insert(lines, "Left-click: Load this guide")
-    table.insert(lines, "Right-click: Branch to this guide")
+    table.insert(lines, "Left-click: Open in a new tab")
+    table.insert(lines, "Right-click: Load in the current tab")
 
     if f.guide and AegisPathfinder.db.char.completion[f.guide] == 1 then
         table.insert(lines, "Shift-click: Reset progress")
@@ -75,33 +75,35 @@ local function OnClick()
         AegisPathfinder.db.char.turnins[f.guide] = {}
         AegisPathfinder:UpdateGuideListPanel()
         GameTooltip:Hide()
-    elseif btn == "RightButton" then
-        local text = f.guide
-        if text then
-            AegisPathfinder:BranchToGuide(text)
-            AegisPathfinder:UpdateGuideListPanel()
-        end
     else
         local text = f.guide
         if not text then
             f:SetChecked(false)
-        else
-            local isRXP = string.find(text, "^RXP/")
-            local isRXPHC = string.find(text, "^RXP_Hardcore/")
-            local currentPack = AegisPathfinder.db.char.routepack
-
-            -- If manually picking an RXP guide, ensure an RXP-based route pack is active
-            -- so that auto-navigation continues with compatible guides
-            if isRXPHC and currentPack ~= "RXP Hardcore" then
-                AegisPathfinder:SelectRoutePack("RXP Hardcore")
-            elseif isRXP and currentPack ~= "RestedXP" and currentPack ~= "Kamisayo Speedrun" then
-                AegisPathfinder:SelectRoutePack("RestedXP")
-            end
-
-            AegisPathfinder:LoadGuide(text)
-            AegisPathfinder:UpdateStatusFrame()
-            AegisPathfinder:UpdateGuideListPanel()
+            return
         end
+
+        local isRXP = string.find(text, "^RXP/")
+        local isRXPHC = string.find(text, "^RXP_Hardcore/")
+        local currentPack = AegisPathfinder.db.char.routepack
+
+        -- If manually picking an RXP guide, ensure an RXP-based route pack is active
+        -- so that auto-navigation continues with compatible guides
+        if isRXPHC and currentPack ~= "RXP Hardcore" then
+            AegisPathfinder:SelectRoutePack("RXP Hardcore")
+        elseif isRXP and currentPack ~= "RestedXP" and currentPack ~= "Kamisayo Speedrun" then
+            AegisPathfinder:SelectRoutePack("RestedXP")
+        end
+
+        --[[ Picking a guide never closes the one you were reading. Left-click
+            opens it in a tab of its own -- or switches to it, if it already
+            has one. Right-click is the deliberate "replace what this tab
+            shows". ]]
+        if btn == "RightButton" then
+            AegisPathfinder:LoadGuideInTab(text)
+        else
+            AegisPathfinder:OpenGuideTab(text)
+        end
+        AegisPathfinder:UpdateGuideListPanel()
     end
 end
 

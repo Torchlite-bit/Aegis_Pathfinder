@@ -650,8 +650,16 @@ function AegisPathfinder:InitializeRoute()
         end
     end
 
-    self.db.char.currentguide = self.db.char.currentguide or self.guidelist[1]
-    self:LoadGuide(self.db.char.currentguide)
+    --[[ Closing every tab is remembered across a reload. LoadGuide would
+        otherwise take "No Guide" as a name it does not know and fall back to
+        the first guide in the list, reopening something behind the
+        player's back. ]]
+    if self:HasNoGuide() and self.db.char.routeselected then
+        self:UnloadGuide()
+    else
+        self.db.char.currentguide = self.db.char.currentguide or self.guidelist[1]
+        self:LoadGuide(self.db.char.currentguide)
+    end
     self.initializeDone = true
     for _, event in pairs(self.TrackEvents) do self:RegisterEvent(event) end
     -- Register for level up to check starting zone completion
@@ -1495,6 +1503,16 @@ end
 --      Guide tabs             --
 ---------------------------------
 
+-- The sentinel the addon has always stored for "no guide loaded". It is not a
+-- registered guide, which is what stops LoadNextGuide advancing from it.
+AegisPathfinder.NO_GUIDE = "No Guide"
+local NO_GUIDE = AegisPathfinder.NO_GUIDE
+
+-- How many guides can be open at once. The tab bar shrinks tabs to fit, down
+-- to a width that still shows a readable name; eight is where that runs out.
+AegisPathfinder.MAX_GUIDE_TABS = 8
+local MAX_GUIDE_TABS = AegisPathfinder.MAX_GUIDE_TABS
+
 --[[ The open guides.
 
     The panel used to hold one guide, plus at most one branch off it. The
@@ -1507,7 +1525,9 @@ end
 ]]
 function AegisPathfinder:EnsureTabs()
     local db = self.db.char
-    if db.tabs and table.getn(db.tabs) > 0 then return db.tabs end
+    -- An empty list is a real state -- the player closed every guide -- and
+    -- must survive a reload. Only a missing list means "never built".
+    if db.tabs then return db.tabs end
 
     db.tabs = {}
     -- Carry over a one-deep branch saved by an older version: the guide that
@@ -1516,19 +1536,42 @@ function AegisPathfinder:EnsureTabs()
         table.insert(db.tabs, { guide = db.branchsavedguide, step = db.branchsavedstep or 1 })
         table.insert(db.tabs, { guide = db.currentguide or db.branchsavedguide, step = self.current or 1 })
         db.activetab = 2
-    else
-        table.insert(db.tabs, { guide = db.currentguide or "No Guide", step = self.current or 1 })
+    elseif db.currentguide and db.currentguide ~= NO_GUIDE then
+        table.insert(db.tabs, { guide = db.currentguide, step = self.current or 1 })
         db.activetab = 1
     end
     return db.tabs
 end
 
---- The tab the player is looking at.
+--- The tab the player is looking at, or nil with every guide closed.
 function AegisPathfinder:GetActiveTab()
     local tabs = self:EnsureTabs()
+    if table.getn(tabs) == 0 then return nil, 0 end
     local i = self.db.char.activetab or 1
     if i < 1 or i > table.getn(tabs) then i = 1; self.db.char.activetab = 1 end
     return tabs[i], i
+end
+
+--- True when every guide has been closed and the panel is showing its empty
+--- state rather than a guide.
+function AegisPathfinder:HasNoGuide()
+    return table.getn(self:EnsureTabs()) == 0
+end
+
+--[[ Put the addon into the no-guide state.
+
+    Nothing loaded, nothing to advance, no waypoint. `currentguide` becomes the
+    same "No Guide" sentinel the addon has always used for a fresh character,
+    which LoadNextGuide already refuses to advance from -- so closing the last
+    tab cannot be undone behind the player's back by the auto-advance chain.
+]]
+function AegisPathfinder:UnloadGuide()
+    self.db.char.currentguide = NO_GUIDE
+    self.actions, self.quests, self.tags = {}, {}, {}
+    self.current = nil
+    self.guidechanged = true
+    if self.ClearWaypoint then self:ClearWaypoint() end
+    if self.navcallout then self.navcallout:Hide() end
 end
 
 --[[ Keep the branch fields in step with the tab list.
@@ -1542,7 +1585,7 @@ function AegisPathfinder:SyncBranchState()
     local tabs = self:EnsureTabs()
     local active = db.activetab or 1
 
-    db.isbranching = active > 1
+    db.isbranching = active > 1 and tabs[active] ~= nil
     if db.isbranching then
         db.branchsavedguide = tabs[1] and tabs[1].guide
         db.branchsavedstep = tabs[1] and tabs[1].step
@@ -1570,7 +1613,8 @@ end
 --[[ Open a guide in a tab, or switch to it if it already has one.
 
     Opening never replaces what you were reading: the guide you were on keeps
-    its tab and its place in it.
+    its tab and its place in it. Past MAX_GUIDE_TABS the bar has nowhere to
+    put another, so it says so rather than silently dropping one.
 ]]
 function AegisPathfinder:OpenGuideTab(guideName)
     if not guideName or not self.guides[guideName] then
@@ -1584,14 +1628,34 @@ function AegisPathfinder:OpenGuideTab(guideName)
         return
     end
 
-    self:StashActiveStep()
     local tabs = self:EnsureTabs()
+    if table.getn(tabs) >= MAX_GUIDE_TABS then
+        self:Print(string.format("%d guides are open -- close one to open %s.",
+            MAX_GUIDE_TABS, guideName))
+        return
+    end
+
+    self:StashActiveStep()
     table.insert(tabs, { guide = guideName, step = 1 })
     self.db.char.activetab = table.getn(tabs)
     self:SyncBranchState()
 
-    self:Print(string.format("Opened %s (%s stays open)", guideName,
-        tabs[1] and tabs[1].guide or "the main route"))
+    self:LoadGuide(guideName)
+    self:UpdateStatusFrame()
+    self:UpdateGuideListPanel()
+end
+
+--- Load a guide into the tab you are on, replacing what it showed. With no
+--- tab open this is the same as opening one.
+function AegisPathfinder:LoadGuideInTab(guideName)
+    if not guideName or not self.guides[guideName] then return end
+    if self:HasNoGuide() then return self:OpenGuideTab(guideName) end
+
+    local existing = self:FindTab(guideName)
+    if existing then return self:SwitchToTab(existing) end
+
+    local tab = self:GetActiveTab()
+    tab.guide, tab.step = guideName, 1
     self:LoadGuide(guideName)
     self:UpdateStatusFrame()
     self:UpdateGuideListPanel()
@@ -1604,7 +1668,7 @@ function AegisPathfinder:SwitchToTab(index)
     if not tab then return end
     if index == (self.db.char.activetab or 1) then return end
 
-    self:StashActiveStep()
+    if not self:HasNoGuide() then self:StashActiveStep() end
     self.db.char.activetab = index
     self:SyncBranchState()
 
@@ -1614,22 +1678,32 @@ function AegisPathfinder:SwitchToTab(index)
     self:UpdateGuideListPanel()
 end
 
---[[ Close a tab.
+--[[ Close a tab. Every tab can be closed, the first one included.
 
-    Tab 1 is the main route and stays; there would be nothing to fall back to.
-    Closing the tab you are on returns you to the main route, which is what
-    the concept's branch-tab ✕ does.
+    Closing the tab you are on returns you to the first tab -- the main route,
+    which is what the concept's branch-tab ✕ does -- or, if that was the first
+    tab, to whatever became first. Closing the last one leaves the panel empty,
+    waiting for a guide to be chosen, rather than quietly loading one.
 ]]
 function AegisPathfinder:CloseTab(index)
     local tabs = self:EnsureTabs()
-    if index == 1 or not tabs[index] then return end
+    if not tabs[index] then return end
 
-    local wasActive = (self.db.char.activetab or 1) == index
+    local active = self.db.char.activetab or 1
+    local wasActive = active == index
     if not wasActive then self:StashActiveStep() end
 
     table.remove(tabs, index)
 
-    local active = self.db.char.activetab or 1
+    if table.getn(tabs) == 0 then
+        self.db.char.activetab = 1
+        self:SyncBranchState()
+        self:UnloadGuide()
+        self:UpdateOHPanel()
+        self:UpdateGuideListPanel()
+        return
+    end
+
     if wasActive then
         active = 1
     elseif active > index then
@@ -1638,8 +1712,9 @@ function AegisPathfinder:CloseTab(index)
     self.db.char.activetab = active
     self:SyncBranchState()
 
+    -- Only reload when the guide on screen actually changed.
     local tab = tabs[active]
-    if tab then
+    if wasActive then
         self:LoadGuide(tab.guide)
         if tab.step then self.current = tab.step end
     end

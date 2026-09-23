@@ -72,6 +72,7 @@ function AegisPathfinder:EnsureTabs()
 	self.db.char.activetab = self.db.char.activetab or 1
 	return self.db.char.tabs
 end
+function AegisPathfinder:HasNoGuide() return table.getn(self:EnsureTabs()) == 0 end
 function AegisPathfinder:SwitchToTab() end
 function AegisPathfinder:CloseTab() end
 function AegisPathfinder:ToggleOverviewMode()

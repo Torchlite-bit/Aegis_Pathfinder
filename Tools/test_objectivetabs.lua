@@ -79,7 +79,7 @@ dofile("ObjectivesFrame.lua")
 -- The tab model lives in Core.lua, which is far too large to load under the
 -- stub; lift just the functions under test out of it.
 local core = io.open("Core.lua"):read("*a")
-local from = string.find(core, "function AegisPathfinder:EnsureTabs", 1, true)
+local from = string.find(core, "AegisPathfinder.NO_GUIDE =", 1, true)
 local to = string.find(core, "---------------------------------\n--      Branching Functions", 1, true)
 assert(from and to, "could not find the tab block in Core.lua")
 assert(loadstring(string.sub(core, from, to - 1)))()
@@ -113,8 +113,8 @@ check(frame.guideTabs[1].label:GetText() == "Elwynn Forest (1-12)",
 	"the first tab names the loaded guide, got '%s'",
 	tostring(frame.guideTabs[1].label:GetText()))
 check(not frame.guideTabs[2]:IsShown(), "and no others until you open one")
-check(not frame.guideTabs[1].close:IsShown(),
-	"the main route has no close button -- there is nothing to fall back to")
+check(frame.guideTabs[1].close:IsShown(),
+	"every tab can be closed, even when it is the only one")
 check(frame.guideTabs[1].badge.label:GetText() == "XP",
 	"an authored guide gets the XP badge, got '%s'",
 	tostring(frame.guideTabs[1].badge.label:GetText()))
@@ -201,10 +201,6 @@ check(AegisPathfinder.db.char.activetab == 2,
 	"the active index follows the tab, got %s",
 	tostring(AegisPathfinder.db.char.activetab))
 
--- The main route is not closable, by button or by call.
-AegisPathfinder:CloseTab(1)
-check(table.getn(AegisPathfinder.db.char.tabs) == 2,
-	"tab 1 is the main route and cannot be closed, got: %s", names())
 
 -- Returning from a branch closes it and goes back to tab 1.
 AegisPathfinder:SwitchToTab(2)
@@ -229,16 +225,97 @@ AegisPathfinder:UpdateObjectiveTabs()
 check(lastAnchorTarget(frame.addTab) == frame.guideTabs[2],
 	"with two, + follows the last one rather than floating where a closed tab was")
 
--- Past the bar's capacity there is nowhere to put another tab.
-for _, name in ipairs({ "A (1-2)", "B (1-2)", "C (1-2)", "D (1-2)" }) do
+-- Tabs share the bar rather than each taking a fixed width -- which is what
+-- pushed the last ones out past the panel's edge.
+local function rightEdge()
+	-- Walk the chain: 8px in, then each shown tab and its gap, then the +.
+	local x = 8
+	for i = 1, 8 do
+		local b = frame.guideTabs[i]
+		if b:IsShown() then x = x + b:GetWidth() + 2 end
+	end
+	return x - 2 + 4 + frame.addTab:GetWidth()
+end
+for _, name in ipairs({ "A (1-2)", "B (1-2)", "C (1-2)", "D (1-2)", "E (1-2)", "F (1-2)" }) do
 	AegisPathfinder:OpenGuideTab(name)
 end
 AegisPathfinder:UpdateObjectiveTabs()
-check(table.getn(AegisPathfinder.db.char.tabs) == 6, "six tabs open, got: %s", names())
+check(table.getn(AegisPathfinder.db.char.tabs) == 8, "eight tabs open, got: %s", names())
+check(rightEdge() <= frame:GetWidth(),
+	"eight tabs and the + must fit inside the panel (%d of %d px)",
+	rightEdge(), frame:GetWidth())
+check(not frame.guideTabs[8].badge:IsShown(),
+	"narrow tabs drop the badge so the name keeps the room")
+
+-- Narrowing the panel narrows the tabs with it.
+frame:SetWidth(420)
+AegisPathfinder:UpdateObjectiveTabs()
+check(rightEdge() <= 420, "tabs must still fit a 420px panel, reach %d px", rightEdge())
+frame:SetWidth(630)
+
+-- Past capacity there is nowhere to put another, and it says so.
+AegisPathfinder.__printed = nil
+AegisPathfinder:OpenGuideTab("G (1-2)")
+check(table.getn(AegisPathfinder.db.char.tabs) == 8,
+	"a ninth guide must not open, got: %s", names())
+check(AegisPathfinder.__printed, "and the player is told why")
+AegisPathfinder:UpdateObjectiveTabs()
 check(not frame.addTab:IsShown(),
 	"at capacity the + stops offering what it cannot do")
 
+-- Replacing what a tab shows ----------------------------------------------------
+
+AegisPathfinder:SwitchToTab(2)
+AegisPathfinder:LoadGuideInTab("Westfall (12-17)")
+check(table.getn(AegisPathfinder.db.char.tabs) == 8,
+	"loading into a tab must not add one, got: %s", names())
+check(AegisPathfinder.db.char.tabs[2].guide == "Westfall (12-17)",
+	"the tab you are on shows the new guide, got '%s'",
+	tostring(AegisPathfinder.db.char.tabs[2].guide))
+
+-- Closing everything ------------------------------------------------------------
+
+--[[ Every tab closes, the first included. Closing the last leaves the panel
+	empty and waiting, rather than quietly loading a guide -- and that has to
+	survive the auto-advance chain, which is why the sentinel is "No Guide". ]]
+while table.getn(AegisPathfinder.db.char.tabs) > 0 do
+	AegisPathfinder:CloseTab(1)
+end
+check(AegisPathfinder:HasNoGuide(), "with every tab closed there is no guide")
+check(AegisPathfinder.db.char.currentguide == "No Guide",
+	"and currentguide is the sentinel LoadNextGuide refuses to advance from, got '%s'",
+	tostring(AegisPathfinder.db.char.currentguide))
+check(AegisPathfinder.current == nil, "no current step")
+check(AegisPathfinder.db.char.isbranching == false, "and nothing to branch from")
+
+frame:Show()      -- a hidden panel does not repaint; it will on OnShow
+AegisPathfinder:UpdateOHPanel()
+check(frame.emptyState:IsShown(), "the panel shows its empty state")
+check(frame.emptyState.text:GetText() == "Click here to load a guide",
+	"inviting a pick, got '%s'", tostring(frame.emptyState.text:GetText()))
+for i = 1, 8 do
+	check(not frame.guideTabs[i]:IsShown(), "tab %d should be gone", i)
+end
+
+-- The invitation is a button onto the guide list.
+AegisPathfinder.guidelistframe:Hide()
+frame.emptyState:GetScript("OnClick")()
+check(AegisPathfinder.guidelistframe:IsShown(), "clicking it opens the guide list")
+
+-- And picking a guide from an empty panel opens it in a tab.
+AegisPathfinder:LoadGuideInTab("Elwynn Forest (1-12)")
+check(table.getn(AegisPathfinder.db.char.tabs) == 1,
+	"a guide picked with nothing open gets a tab, got: %s", names())
+AegisPathfinder:UpdateOHPanel()
+check(not frame.emptyState:IsShown(), "and the empty state goes away")
+
 -- Migration -------------------------------------------------------------------------
+
+-- An empty list is a real state and must not be rebuilt on the next read.
+AegisPathfinder.db.char.tabs = {}
+AegisPathfinder.db.char.currentguide = "No Guide"
+check(table.getn(AegisPathfinder:EnsureTabs()) == 0,
+	"a closed-everything list stays empty rather than being rebuilt")
 
 -- A character saved by the old one-deep branch model.
 AegisPathfinder.db.char.tabs = nil

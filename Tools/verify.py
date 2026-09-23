@@ -111,14 +111,62 @@ def is_shipped(path):
     return True
 
 
-def strip_lua_comments(src):
-    """Blank out comments, keeping string literals.
+def _scan_lua(src, keep_strings):
+    """Blank out Lua comments, and optionally string literals, in one pass.
 
-    Line numbers are preserved so a failure still points at the right line.
+    Comments and strings have to be recognised together: a `--` inside a
+    string is not a comment, and a quote inside a comment is not a string.
+    Stripping them in two separate regex passes got that wrong -- a message
+    reading "open -- close one" lost its closing quote to the comment pass,
+    and the string pass then ran on across the following lines.
+
+    Newlines are always kept, so a failure still points at the right line.
     """
-    src = re.sub(r"--\[(=*)\[.*?\]\1\]",
-                 lambda m: "\n" * m.group(0).count("\n"), src, flags=re.S)
-    return re.sub(r"--[^\n]*", "", src)
+    out = []
+    i, n = 0, len(src)
+
+    def long_bracket(at):
+        # "[[", "[=[", ... -> the matching closer, or None if not a long bracket
+        m = re.match(r"\[(=*)\[", src[at:])
+        return ("]" + m.group(1) + "]", len(m.group(0))) if m else (None, 0)
+
+    def blank(text):
+        return "".join(c if c == "\n" else " " for c in text)
+
+    while i < n:
+        c = src[i]
+        if src.startswith("--", i):
+            closer, width = long_bracket(i + 2)
+            if closer:
+                end = src.find(closer, i + 2 + width)
+                end = n if end < 0 else end + len(closer)
+            else:
+                end = src.find("\n", i)
+                end = n if end < 0 else end
+            out.append(blank(src[i:end]))
+            i = end
+        elif c == "[" and long_bracket(i)[0]:
+            closer, width = long_bracket(i)
+            end = src.find(closer, i + width)
+            end = n if end < 0 else end + len(closer)
+            out.append(src[i:end] if keep_strings else '""' + blank(src[i:end])[2:])
+            i = end
+        elif c in "\"'":
+            j = i + 1
+            while j < n and src[j] != c and src[j] != "\n":
+                j += 2 if src[j] == "\\" else 1
+            end = min(j + 1, n)
+            out.append(src[i:end] if keep_strings else c + c + blank(src[i + 2:end]))
+            i = end
+        else:
+            out.append(c)
+            i += 1
+    return "".join(out)
+
+
+def strip_lua_comments(src):
+    """Blank out comments, keeping string literals."""
+    return _scan_lua(src, keep_strings=True)
 
 
 def strip_lua_noise(src):
@@ -128,11 +176,7 @@ def strip_lua_noise(src):
     or a frame template name must read the strings, so it wants
     strip_lua_comments instead -- see check_theme.
     """
-    src = strip_lua_comments(src)
-    src = re.sub(r"\[(=*)\[.*?\]\1\]", '""', src, flags=re.S)
-    src = re.sub(r'"(?:\\.|[^"\\])*"', '""', src)
-    src = re.sub(r"'(?:\\.|[^'\\])*'", "''", src)
-    return src
+    return _scan_lua(src, keep_strings=False)
 
 
 def check_lua50(rep):
