@@ -374,6 +374,41 @@ local function MapPoint(zone, x, y, desc, onArrival)
 	end
 end
 
+--[[ Which way the player is facing, in radians counter-clockwise from north.
+
+	GetPlayerFacing arrived in a much later client than 1.12, so it is only
+	here if ClassicAPI backports it. The vanilla-era way is the player arrow on
+	the minimap: an unnamed Model child of Minimap whose model file is
+	MinimapArrow, and whose GetFacing is the player's heading. Found once and
+	remembered. With neither, there is no heading, and an arrow that ignores
+	which way you are facing would point somewhere wrong -- so it returns nil.
+]]
+local minimapArrow
+function AegisPathfinder:GetPlayerFacing()
+	if GetPlayerFacing then
+		local ok, f = pcall(GetPlayerFacing)
+		if ok and f then return f end
+	end
+
+	if not minimapArrow and Minimap and Minimap.GetChildren then
+		for _, child in ipairs({ Minimap:GetChildren() }) do
+			if child.IsObjectType and child:IsObjectType("Model") and not child:GetName() then
+				local ok, model = pcall(child.GetModel, child)
+				if ok and type(model) == "string"
+					and string.find(string.lower(model), "minimaparrow", 1, true) then
+					minimapArrow = child
+					break
+				end
+			end
+		end
+	end
+	if minimapArrow then
+		local ok, f = pcall(minimapArrow.GetFacing, minimapArrow)
+		if ok and f then return f end
+	end
+	return nil
+end
+
 --[[ Where the current waypoint is, relative to the player.
 
 	Returns the bearing in radians -- clockwise, relative to the way the player
@@ -390,12 +425,18 @@ function AegisPathfinder:GetWaypointBearing()
 	if not wp or not self:GetWaypointProvider() then return nil end
 	if WorldMapFrame:IsShown() then return nil end   -- do not yank the player's map
 
-	SetMapToCurrentZone()
+	-- This runs several times a second while the arrow is up, so only reset
+	-- the map when it has stopped reporting a position -- which is what it
+	-- does once the player has left the zone the map was last set to.
+	local px, py = GetPlayerMapPosition("player")
+	if not px or (px == 0 and py == 0) then
+		SetMapToCurrentZone()
+		px, py = GetPlayerMapPosition("player")
+	end
+	if not px or (px == 0 and py == 0) then return nil end
+
 	local c, z = GetCurrentMapContinent(), GetCurrentMapZone()
 	if c ~= wp.continent or z ~= wp.zoneindex then return nil end  -- another zone
-
-	local px, py = GetPlayerMapPosition("player")
-	if not px or (px == 0 and py == 0) then return nil end
 
 	-- Map coordinates run east and *south*; the waypoint is stored 0-100.
 	local east = wp.x / 100 - px
@@ -404,7 +445,8 @@ function AegisPathfinder:GetWaypointBearing()
 
 	-- atan2(east, north) is the compass bearing, clockwise from north.
 	local bearing = math.atan2(east, -south)
-	local facing = GetPlayerFacing and GetPlayerFacing() or 0
+	local facing = AegisPathfinder:GetPlayerFacing()
+	if not facing then return nil end   -- no heading means no honest arrow
 
 	-- GetPlayerFacing grows counter-clockwise from north, so adding it turns a
 	-- compass bearing into one relative to the player.

@@ -127,6 +127,18 @@ check(frame.distance:GetText() == "140 yd",
 check(frame.eta:GetText() == "0:20",
 	"140 yards at 7 yd/s is 20 seconds, got '%s'", tostring(frame.eta:GetText()))
 
+-- The sign is pinned: the callout hands RotateTexture the negated bearing,
+-- because rotating the texture coordinates turns the image the other way.
+-- Checked against a reference rotation so a stray sign flip cannot slip back.
+local ref = UIParent:CreateTexture(nil, "ARTWORK")
+AegisPathfinder.RotateTexture(ref, -0.5)
+local got = frame.arrow.__texcoord
+local same = got ~= nil
+for i = 1, 8 do
+	if not got or not close(got[i], ref.__texcoord[i]) then same = false end
+end
+check(same, "a bearing of 0.5 should rotate the texture by -0.5")
+
 -- A provider that gives a heading but no range says nothing about distance.
 AegisPathfinder.__yards = nil
 AegisPathfinder:UpdateNavCallout()
@@ -156,6 +168,21 @@ AegisPathfinder.actions = { "SOMETHINGELSE" }
 AegisPathfinder:UpdateNavCallout()
 check(frame.instruction:GetText() == "Follow the path",
 	"an unmapped action falls back, got '%s'", tostring(frame.instruction:GetText()))
+
+-- The driver keeps it pointing as the player moves, and keeps ticking while
+-- the callout itself is hidden so it can come back.
+AegisPathfinder.actions = { "ACCEPT" }
+AegisPathfinder.__bearing, AegisPathfinder.__yards = nil, nil
+AegisPathfinder:UpdateNavCallout()
+check(not frame:IsShown(), "hidden with no bearing")
+AegisPathfinder.__bearing, AegisPathfinder.__yards = 1.0, 30
+local tick = frame.driver:GetScript("OnUpdate")
+arg1 = 0.05; tick()
+check(not frame:IsShown(), "the driver waits out its throttle before redrawing")
+arg1 = 0.06; tick()
+check(frame:IsShown(), "and then brings the callout back once a bearing appears")
+check(frame.distance:GetText() == "30 yd", "with the new range, got '%s'",
+	tostring(frame.distance:GetText()))
 
 -- Turned off, it stays off whatever the bearing says.
 AegisPathfinder.db.char.shownavcallout = false

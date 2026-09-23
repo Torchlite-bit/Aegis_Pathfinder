@@ -153,7 +153,11 @@ function AegisPathfinder:UpdateNavCallout()
 		return
 	end
 
-	RotateTexture(arrow, bearing)
+	--[[ Negated on purpose. `bearing` is clockwise from where the player faces,
+		but RotateTexture turns the texture *coordinates*: sampling a quad
+		rotated clockwise makes the image appear rotated counter-clockwise. So
+		the arrow points clockwise by `bearing` when it is handed -bearing. ]]
+	RotateTexture(arrow, -bearing)
 	instruction:SetText(PHRASES[action] or "Follow the path")
 
 	if yards then
@@ -175,6 +179,27 @@ function AegisPathfinder:ToggleNavCallout()
 	self:UpdateNavCallout()
 end
 
+
+--[[ Keep it pointing while the player moves.
+
+	The callout is refreshed when the step changes, but bearing and range
+	change every time the player walks or turns. A separate driver frame does
+	the ticking: the callout hides itself when there is no bearing, and a
+	hidden frame gets no OnUpdate, so it could never notice one come back.
+]]
+local TICK = 0.1
+local driver = CreateFrame("Frame")
+local sinceTick = 0
+driver:SetScript("OnUpdate", function()
+	sinceTick = sinceTick + (arg1 or 0)
+	if sinceTick < TICK then return end
+	sinceTick = 0
+	local self = AegisPathfinder
+	if self.db and self.db.char.shownavcallout and self.current then
+		self:UpdateNavCallout()
+	end
+end)
+frame.driver = driver
 
 -- Drag: the concept makes the whole block the handle.
 frame:SetMovable(true)
