@@ -19,12 +19,17 @@ echo
 echo "== lua tests =="
 lua5.1 Tools/test_theme.lua
 lua5.1 Tools/test_professions.lua
-lua5.1 Tools/test_statusframe.lua
+lua5.1 Tools/test_guideengine.lua
+lua5.1 Tools/test_navcallout.lua
 lua5.1 Tools/test_servers.lua
 lua5.1 Tools/test_dungeons.lua
 lua5.1 Tools/test_guidelist.lua
 lua5.1 Tools/test_materials.lua
 lua5.1 Tools/test_objectivetabs.lua
+lua5.1 Tools/test_objectivepanel.lua
+lua5.1 Tools/test_options.lua
+lua5.1 Tools/test_stacking.lua
+lua5.1 Tools/test_scrolling.lua
 
 echo
 echo "All offline checks passed."

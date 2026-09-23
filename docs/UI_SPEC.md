@@ -53,42 +53,170 @@ frame.
 the 17 action codes gets a generated 32×32 glyph instead. They are silhouettes,
 not line art, because they render at roughly 14px where thin strokes vanish.
 
+The frames index these by parsed action name (`ACCEPT`, `SETHEARTH`), not by
+DSL letter, so `Theme.actionIconByName` is the table `AegisPathfinder.icons`
+actually resolves through. Before that existed the panels were still drawing
+stock quest-log art -- bevelled, bordered, a different palette -- on top of
+the themed background.
+
+**Chrome glyphs.** The concept draws its own chrome with characters the client
+font has no glyph for: `☰ ✕ + ← → ‹ › ✓ ! 📍`. Each is generated the same way
+and lives in `Theme.glyph`.
+
 **Gradients.** Baked into the texture (`progress-fill.tga`) — there is no
 runtime gradient.
 
 ## Surfaces
 
-### Status card — `StatusFrame.lua`
+### Navigation callout -- `NavCallout.lua`
 
-352px wide, matching the concept. Grows vertically to fit whichever rows are
-showing; `AegisPathfinder:LayoutStatusCard()` sizes it.
+The concept's signature element, and the only surface with no window around it:
+`background` and `box-shadow` were dropped, so the arrow, the instruction and
+the distance float directly on the game world.
+
+That is what makes the text shadows load-bearing rather than decorative. The
+concept sets `text-shadow: 0 1px 3px rgba(0,0,0,.9), 0 1px 8px rgba(0,0,0,.7)`;
+1.12 offers one hard offset copy through `SetShadowOffset` / `SetShadowColor`,
+so it is drawn at full opacity to carry the same weight. Without it the
+instruction disappears over snow.
+
+**Rotation.** 1.12 has no `SetRotation`. The eight-argument form of
+`SetTexCoord` maps a texture onto an arbitrary quad, which is how vanilla
+addons turned minimap arrows, so `AegisPathfinder.RotateTexture` rotates the
+four corners about (0.5, 0.5). The arrow art is centred in its square for the
+same reason -- a rotation samples outside 0..1 at the corners, and off-centre
+art wobbles as it turns.
+
+**Bearing** comes from `AegisPathfinder:GetWaypointBearing` in
+`Navigation.lua`, which is a compass bearing to the stored waypoint minus the
+player's facing. Distance needs Astrolabe's zone dimension tables to turn map
+percentages into yards; Astrolabe ships with both TomTom and pfQuest, so in
+practice it is there whenever a provider is. When it is not, the arrow still
+points and the distance stays blank -- an invented number would be worse.
+
+With no provider, no waypoint, or the waypoint in another zone, the callout
+hides. An arrow that is confidently wrong is worse than no arrow.
+
+### The status card -- deleted
+
+The concept removed it: every `.sb-*` rule and the whole `#statusbar` block are
+gone, and `renderStatusBar()` became `renderNavCallout()`. `StatusFrame.lua`
+went with it.
+
+Almost nothing in that file was the card, though. `UpdateStatusFrame` is the
+scan that walks the step list, decides which step you are on, auto-completes
+what ClassicAPI can resolve, drives the waypoint and loads the next guide when
+one runs out. That is now `GuideEngine.lua`, along with the use-item button --
+a surface of its own, for `|U|` steps, which the concept does not show and
+which had no business being deleted with the card.
+
+What the card's meta row used to paint is now `GetStepMeta`, which returns the
+quest id, a profession step's live skill range, coordinates buried in the note,
+and any data-source warning, and lets the caller decide how to show them.
+
+### Window chrome -- `Theme:Chrome`
+
+Every floating window in the concept is the same `.chrome-frame`, so one call
+builds all of it:
 
 | Concept element | Implementation |
 |---|---|
-| Card background | `Theme:Panel(f, "panel")` |
-| `.sb-check` | `Theme:StepCheck` — a CheckButton with ring/fill artwork, so it keeps the widget API the Blizzard checkbox had |
-| `.sb-check.auto-eligible` | The halo texture, shown via `SetAutoEligible` |
-| `‹` / `›` | Display-face chevrons, replacing the spellbook page arrows |
-| `.sb-icon` | Generated action glyph, `Theme:SetActionIcon` |
-| `.sb-title` | Display face, 13px |
-| `.sb-branch-tag` | Gold `[BRANCH]`, shown while branching |
-| `.sb-desc` | The `\|N\|` note, with inline coordinates stripped out |
-| `.sb-meta` | Quest id, coordinates, and for profession steps the live skill range |
-| `.sb-progress` | `Theme:ProgressBar` with the baked gradient |
-| `.sb-top.band-red/green` | `Theme:Band` |
+| `.panel-header` | `Theme:Header` -- a `panel-2` strip, the wordmark centred, a 1px rule beneath |
+| `.panel-wordmark` | `wordmark.tga`, not a font string: the concept sets `.18em` letter-spacing, which 1.12 font strings cannot do |
+| `.chip-btn` | `Theme:ChipButton` -- a 20px rounded square carrying one glyph |
+| `.subhead` | `Theme:Subhead` -- a `tabbg` strip naming the window in small uppercase |
+| `cursor:grab` on the header | `MakeDragHandle`: `SetMovable` + `RegisterForDrag`, with the drop position saved per profile |
 
-**Auto-detected vs. manual completion.** The concept distinguishes them and so
-does the addon: `AegisPathfinder:IsAutoDetectable` decides whether the checkbox
-wears its halo. Quest steps and hearthstone binds qualify because ClassicAPI
-reports them by id; travel steps qualify only while a waypoint provider is
-active; profession steps qualify because they resolve off skill events.
-Everything else — a note to read, a vendor to visit, a mob to grind — only the
-player can confirm.
+The header's corners are a problem the concept does not have. It clips its
+strips to the window radius with `overflow:hidden`; 1.12 cannot clip, so a
+flat strip across the top of a rounded panel pokes square corners out past it.
+`Theme:CapStrip` nine-slices `cap-top.tga` / `cap-bottom.tga` instead --
+rounded on the edge that meets the panel, square on the edge that meets the
+body.
 
-### Objectives panel, options panels, guide list -- `ObjectivesFrame.lua`, `OptionsFrame.lua`, `GuideListFrame.lua`
+A window that has been dragged stays where it was put: `Theme:PositionSaver`
+records the drop, `Theme:RestorePosition` re-applies it, and the "snap beside
+the status card" logic in each panel's `OnShow` only runs when nothing was
+saved.
 
-All on the theme. Rather than edit every call site, the two shared widget
-helpers in `WidgetWarlock.lua` build themed widgets:
+**Stacking.** The concept's windows are DOM elements, and one simply paints
+over another. 1.12 draws a whole strata in frame-level order, across every
+window at once, and a frame starts one level above its parent -- so two
+windows built at the same level have their headers at the same level, their
+chips at the same level, and so on down. Overlap them and they interleave:
+one window's close chip and scrollbar drawn through the other's body.
+
+`Theme:RegisterWindow` (which `Theme:Chrome` calls, and the objectives panel
+calls itself) keeps the windows in bands instead. Showing a window, or
+grabbing its header, moves its whole frame tree above every other open
+window's, preserving each frame's height within its own window, and packs the
+rest back down beneath it from a fixed base -- so levels are rebuilt rather
+than raised, and never climb toward the client's ceiling. `SetToplevel` covers
+clicks on a window's rows and buttons, where the client raises the window
+itself; the order it leaves is read back from the roots' levels on the next
+restack. `Tools/verify.py` fails a file that puts more windows in `DIALOG`
+than it registers.
+
+### Objectives panel -- `ObjectivesFrame.lua`
+
+The concept's `#objectives`, and now the addon's only window: header, tab bar,
+nav row, a 4px progress rule, the step list, and the footer.
+
+**Panels open beside the guide, not instead of it.** The ☰ chip used to hide
+the panel before showing Config, so opening settings closed what you were
+reading; the concept has `#options` at `right:456px` and `#objectives` at
+`right:40px`, both on screen. Same for the `+` and the guide list.
+
+**Two modes**, behind the header's third chip. Focus -- the default -- shows
+the one step you are on and nothing else, which is how you follow a guide;
+overview shows the whole list, which is how you look ahead. The chip takes
+`.chip-btn.active` (accent fill, dark glyph) while overview is on, so the panel
+says which of the two you are looking at.
+
+**The objective meter** (`.zobjective`) sits under the single step in focus
+mode: what the quest wants, how much of it you have, and a bar. It is quest-log
+leaderboard text -- "Kobold Vermin slain: 3/8" -- parsed into its three parts.
+An objective with nothing countable in it ("Speak to Marshal Dughan") gets no
+meter rather than an empty one. Overview mode folds the same text into the
+step's note line instead, as the concept does.
+
+**Height follows the mode.** The concept gives `.steps-list` `flex:0 0 auto`
+in focus mode and `flex:1 1 auto` in overview, so a panel showing one step is
+only as tall as that step. `LayoutPanelHeight` computes the focus height and
+restores the dragged height for overview; a focus height is never saved, since
+it is derived rather than chosen. The meter, then the height, then the row
+count settle in that order — any other order leaves the list a paint behind
+whichever changed last.
+
+**The footer** carries live state rather than the slash-command hint it used
+to: the current step's quest id on the left in accent, how far through the
+guide you are on the right. A data-source warning outranks the id and turns the
+slot red -- it is the most likely reason a waypoint points at nothing, and it
+otherwise fails silently.
+
+Rows are fixed 44px slots holding either of the concept's two row models:
+
+| Concept | Implementation |
+|---|---|
+| `.zrow` | Dot, action glyph, title, and the note beneath it in `#8f8f86` |
+| `.zrow.active` | A faint wash plus the left accent bar |
+| `.zrow.done` | Dimmed |
+| `.zband.red` / `.zband.green` | `Theme:Band` laid over the whole slot |
+
+A step becomes a band only when it is an `ACCEPT` or `TURNIN` **and** is either
+the current step or already satisfied -- the same rule as the concept's
+`bandable && (st.done || idx === state.stepIndex)`. Any other quest hand-off
+further down the list stays an ordinary row, so the list does not turn into a
+wall of colour.
+
+Fixed slots rather than the concept's content-height rows: these guides run to
+a few hundred steps and the list scrolls, which needs a row height known in
+advance. Title and note are therefore clipped to one line each.
+
+### Shared widgets -- `WidgetWarlock.lua`
+
+Rather than edit every call site, the two shared widget helpers build themed
+widgets:
 
 | Helper | Now returns |
 |---|---|
@@ -97,22 +225,38 @@ helpers in `WidgetWarlock.lua` build themed widgets:
 
 `Theme.lua` therefore loads before `WidgetWarlock.lua`.
 
-Objectives rows follow the concept's model: a faint wash plus a left accent bar
-on the active step, dimmed text when complete, a hint of accent on `|T|`
-in-town steps, and the auto-detect halo on row checkboxes, so that signal
-appears wherever a step is shown. Panel buttons are display-face pills.
+`Theme:PanelButton` and `Theme:CloseChip` do the same job for
+`UIPanelButtonTemplate` and `UIPanelCloseButton`, which is what every
+secondary panel and all three `Core.lua` dialogs were still built from.
 
-The three dialog frames in `Core.lua` (route selector, starting-zone selector,
-error log) use `Theme:Panel` in place of Blizzard's dialog art.
+### Options panel -- `OptionsFrame.lua`
 
-### Dungeon chips -- `OptionsFrame.lua`
+The concept's `#options`: one 396px window, header and `Config` subhead, and a
+scrolling body of sections — Race, Route pack, Dungeons, Filters, Server — each
+an accent uppercase `h3` over its controls. It used to be a column of pill
+buttons that opened the dungeons, the filters and the route picker as three
+more windows; all of that is sections now.
 
-A wrapping grid of `Theme:Chip`, three across, replacing the vertical checkbox
-list. Each chip stacks the short code over the full name, which is how the
-concept fits fifteen dungeons into a panel without a scrollbar. Active chips
-take the accent fill with dark text.
+| Concept | Implementation |
+|---|---|
+| `.options-body h3` | `Theme:SectionHeader` — 12px display, accent, 1px rule under it |
+| `<select>` | `Theme:Dropdown` — a button with a caret, and a list at `FULLSCREEN_DIALOG` strata so the scrolling body cannot draw over it |
+| `.pill-group` | `Theme:Pill`, sized to its label and wrapping |
+| `.route-preview` | Level range in accent, zone in dim, one row per leg of the route this race takes under the selected pack; scrolls on the wheel |
+| `.dchip` grid | `Theme:Chip`, four across |
+| `.toggle-row` + `.switch` | `Theme:Switch` — `switch-track.tga` (a stadium) and a circle knob that slides from left to right |
+| `.fine-print` | `Theme:FinePrint` |
+| `overflow-y:auto` | A ScrollFrame, the theme's scroll bar, and the wheel anywhere on the panel |
 
-The blue dot is not decorative. `AegisPathfinder:GetGuideDungeons` scans the
+**Substitutions.** The concept has no home for the addon's own behaviour
+settings, the waypoint provider or the Rescan / Error log actions, so they
+follow as three more sections in the same language. The concept's route pills
+include a "Zone Completion" pack that the addon does not have; the pills are
+the packs this character can actually use. The pack stored as `VanillaGuide`
+is shown as "Optimized", the concept's name for it — only the display name
+changed, since the key is saved on every character.
+
+**The dungeon grid's blue dot is not decorative.** `AegisPathfinder:GetGuideDungeons` scans the
 **raw** guide text for `|D|` tags and marks the dungeons the loaded guide
 actually has steps for, so the grid distinguishes "I could run this" from
 "this guide knows about it". It has to read raw text because the `|D|` filter
@@ -151,32 +295,51 @@ Nothing in it is profession-specific -- any guide carrying `|MATS|` tags gets
 a materials list. Sorted alphabetically: it is a list you read while hunting
 for one item, not a ranking.
 
+### Scrollbar -- `Theme:ScrollBar`
+
+The last Blizzard art in the addon. `WidgetWarlock.ConjureScrollBar` used the
+stock knob plus the character-sheet scroll frame around it, which read as a
+foreign object on a flat panel; it now delegates here. A dark track, a stadium
+thumb (`scroll-thumb.tga`, radius half its width, so the caps stay circular at
+any length) and caret step buttons. It is still a Slider, so
+`SetMinMaxValues` / `SetValue` / `OnValueChanged` are unchanged.
+
+The carets move by the bar's `step` -- a row by default, a column of 16 in the
+guide list, 40px in the error log -- and stop at the ends of the range. Every
+scrolling list uses it: the objectives panel, the options body, the guide
+list, the materials panel and the error log. The last three were still on
+`UIPanelScrollBarTemplate` / `UIPanelScrollFrameTemplate`, which drew
+Blizzard's gold arrows and knob; `Tools/verify.py` now fails on either.
+
 ### Objectives panel tab bar -- `ObjectivesFrame.lua`
 
-The concept's model for the branch system: the guide you are on is a tab,
-branching opens a second beside it, and closing that tab is how you come back.
-The addon expressed the same thing as a button plus a status tag, which says
-less about where you are.
+One tab per open guide, up to eight. Tab 1 is the main route — what
+auto-advance follows. Every tab has a ✕, the first included; closing the last
+one leaves the panel empty, with "Click here to load a guide" in place of the
+steps. Clicking a tab switches to it and resumes where it was left; the `+`
+opens the guide list beside the panel; at eight the `+` stops offering what it
+cannot do.
 
-| Concept element | Implementation |
-|---|---|
-| `.tab` with `.tab-badge` | Main tab, naming the guide, with `Theme:Badge` marking it `XP` (authored) or `TPL` (placeholder) |
-| `.tab.branch-tab` with `.tab-close` | Branch tab, shown only while branching; its `x` returns you |
-| `.tab-add` | `+`, opening the guide list to branch from |
+The bar does not squeeze every open guide in: at five that reduced each tab to
+"Optim…". It shows as many as fit at 100px or more, four at most (four at the
+default 630px width, three at 420px), and a `‹` `›` pair appears either side
+once there are more. Each arrow, or a notch of the mouse wheel over the bar,
+moves the view one tab and dims at its end. The view follows the active tab
+when that changes — opening a guide, switching from the guide list, closing
+one — and otherwise stays where the arrows left it, so a repaint does not
+yank it back. Tab labels drop the pack prefix (`Optimized/`) that every tab
+shares; the tooltip keeps the full name. Below 130px a tab drops its XP/TPL
+badge so the width goes to the name.
 
-Two things here are subtle enough to be worth stating. While branching,
-`db.char.currentguide` is the **branch** — the guide you left is in
-`db.char.branchsavedguide` — so the main tab reads that one or it names the
-wrong guide. And the `+` button re-anchors when the branch tab hides, or it
-floats in the gap the hidden tab used to occupy.
+The model is `db.char.tabs` (a list of `{guide, step}`) plus `activetab`, in
+`Core.lua`. It replaced a one-deep branch — main plus at most one branch off
+it — and the old `isbranching` / `branchsavedguide` / `branchsavedstep` fields
+are still written, derived from the tabs by `SyncBranchState`, because a dozen
+call sites read them and "am I branching?" is just "is the active tab not the
+first one?". A character saved under the old model migrates on first use.
 
-`TABBAR_H` also feeds `HEADER_HEIGHT`, which drives the visible-row maths in
-`OnObjectiveFrameResized`; the two have to move together.
-
-The bottom button row keeps its **Guides** and **Return Main** buttons, which
-now duplicate `+` and the tab affordances. That is deliberate: they are
-familiar, `Return Main` only appears while branching anyway, and removing a
-working control is a worse surprise than a redundant one.
+Tabs are a fixed pool of frames, anchored as they come into view, so switching
+guides or scrolling the bar never creates a frame.
 
 ### Still to do
 

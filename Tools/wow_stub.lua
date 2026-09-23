@@ -76,6 +76,12 @@ local function newObject(kind, name, parent)
 	function o:SetAllPoints(other) table.insert(self.__points, { "ALL", other }) end
 	function o:ClearAllPoints() self.__points = {} end
 	function o:GetNumPoints() return table.getn(self.__points) end
+	-- 1-indexed like the real API; no index means the first point.
+	function o:GetPoint(i)
+		local p = self.__points[i or 1]
+		if not p then return nil end
+		return p[1], p[2], p[3], p[4], p[5]
+	end
 
 	function o:Show() self.__shown = true end
 	function o:Hide() self.__shown = false end
@@ -109,13 +115,27 @@ local function newTexture(name, parent, layer)
 		self.__texture = path
 	end
 	function t:GetTexture() return self.__texture end
-	function t:SetTexCoord(l, r, tt, b)
-		for _, v in pairs({ l, r, tt, b }) do
-			if type(v) ~= "number" then
-				complain("Texture:SetTexCoord got %s", tostring(v))
+	--[[ Both forms the client accepts.
+
+		Four arguments are the usual left/right/top/bottom crop. Eight map the
+		texture onto an arbitrary quad, corner by corner, which is the only way
+		to rotate a texture on this client -- there is no SetRotation in 1.12.
+	]]
+	function t:SetTexCoord(a, b, c, d, e, f, g, h)
+		local args = { a, b, c, d, e, f, g, h }
+		local n = 0
+		for i = 1, 8 do if args[i] ~= nil then n = i end end
+		if n ~= 4 and n ~= 8 then
+			complain("Texture:SetTexCoord takes 4 or 8 numbers, got %d", n)
+			return
+		end
+		for i = 1, n do
+			if type(args[i]) ~= "number" then
+				complain("Texture:SetTexCoord got %s", tostring(args[i]))
+				return
 			end
 		end
-		self.__texcoord = { l, r, tt, b }
+		self.__texcoord = { unpack(args, 1, n) }
 	end
 	function t:SetVertexColor(r, g, b, a)
 		checkColor("Texture:SetVertexColor", r, g, b, a)
@@ -153,6 +173,19 @@ local function newFontString(name, parent, layer)
 		end
 	end
 	function fs:SetJustifyV() end
+	-- Text shadows, recorded rather than ignored: the navigation callout has
+	-- no panel behind it, so whether its text is shadowed decides whether it
+	-- can be read over snow.
+	function fs:SetShadowOffset(x, y)
+		if type(x) ~= "number" or type(y) ~= "number" then
+			complain("SetShadowOffset(%s, %s) not numbers", tostring(x), tostring(y))
+		end
+		self.__shadowOffset = { x, y }
+	end
+	function fs:SetShadowColor(r, g, b, a)
+		checkColor("FontString:SetShadowColor", r, g, b, a)
+		self.__shadowColor = { r, g, b, a }
+	end
 	function fs:GetStringWidth() return string.len(self.__text or "") * 6 end
 	function fs:SetWordWrap() end
 
@@ -200,8 +233,11 @@ local function newFrame(frameType, name, parent)
 	function f:UnregisterEvent() end
 	function f:EnableMouse() end
 	function f:RegisterForClicks() end
-	function f:RegisterForDrag() end
-	function f:SetMovable() end
+	-- Drag state is recorded rather than ignored: "the panel is draggable" is a
+	-- claim a test can only check by looking at what was wired up.
+	function f:RegisterForDrag(button) self.__dragButton = button end
+	function f:SetMovable(v) self.__movable = v and true or false end
+	function f:IsMovable() return self.__movable and true or false end
 	function f:SetResizable() end
 	function f:SetMinResize() end
 	function f:SetMaxResize() end
@@ -216,11 +252,30 @@ local function newFrame(frameType, name, parent)
 	function f:GetPushedTexture() return newTexture(nil, self, "ARTWORK") end
 	function f:SetClampedToScreen() end
 	function f:SetFrameStrata(s) self.__strata = s end
-	function f:SetFrameLevel(l) self.__level = l end
-	function f:GetFrameLevel() return self.__level or 1 end
-	function f:SetToplevel() end
-	function f:StartMoving() end
-	function f:StopMovingOrSizing() end
+	--[[ Frame levels, as the client assigns them: a frame starts one above
+		its parent. Whether SetFrameLevel drags a frame's children along with
+		it is not something the 1.12 client documents, so stub.cascadeLevels
+		lets a test run both ways and check it does not depend on either. ]]
+	function f:SetFrameLevel(l)
+		if type(l) ~= "number" then complain("SetFrameLevel(%s) not a number", tostring(l)) end
+		local delta = l - (self.__level or 0)
+		self.__level = l
+		if stub.cascadeLevels and delta ~= 0 then
+			local function shift(fr)
+				for _, c in ipairs(fr.__children) do
+					c.__level = (c.__level or 0) + delta
+					shift(c)
+				end
+			end
+			shift(self)
+		end
+	end
+	function f:GetFrameLevel() return self.__level or 0 end
+	function f:GetChildren() return unpack(self.__children) end
+	function f:SetToplevel(v) self.__toplevel = v and true or false end
+	function f:IsToplevel() return self.__toplevel or false end
+	function f:StartMoving() self.__moving = true end
+	function f:StopMovingOrSizing() self.__moving = false end
 	function f:SetBackdrop(bd) self.__backdrop = bd end
 	function f:SetBackdropColor(r, g, b, a) checkColor("SetBackdropColor", r, g, b, a) end
 	function f:SetBackdropBorderColor(r, g, b, a) checkColor("SetBackdropBorderColor", r, g, b, a) end
@@ -232,9 +287,36 @@ local function newFrame(frameType, name, parent)
 	function f:GetNormalTexture() return newTexture(nil, self, "ARTWORK") end
 	function f:SetThumbTexture() end
 	function f:GetThumbTexture() return newTexture(nil, self, "ARTWORK") end
-	function f:SetMinMaxValues() end
-	function f:SetValue() end
-	function f:GetValue() return 0 end
+	-- Sliders remember their range and value, so a scroll bar's wiring can
+	-- be checked rather than assumed.
+	function f:SetMinMaxValues(lo, hi) self.__min, self.__max = lo, hi end
+	function f:GetMinMaxValues() return self.__min or 0, self.__max or 0 end
+	function f:SetValue(v)
+		self.__value = v
+		local h = self.__scripts.OnValueChanged
+		if h then
+			local oldThis, oldArg = this, arg1
+			this, arg1 = self, v
+			h()
+			this, arg1 = oldThis, oldArg
+		end
+	end
+	function f:GetValue() return self.__value or 0 end
+	-- ScrollFrame: a child that is offset by the vertical scroll.
+	function f:SetScrollChild(child) self.__scrollChild = child end
+	function f:GetScrollChild() return self.__scrollChild end
+	function f:SetVerticalScroll(v) self.__vscroll = v end
+	function f:GetVerticalScroll() return self.__vscroll or 0 end
+	function f:UpdateScrollChildRect() end
+	-- How far the child overhangs the frame; a test sets __vrange to stand
+	-- in for the client measuring it.
+	function f:GetVerticalScrollRange() return self.__vrange or 0 end
+	-- EditBox.
+	function f:SetMultiLine(v) self.__multiline = v and true or false end
+	function f:SetAutoFocus() end
+	function f:SetFontObject() end
+	function f:HighlightText() end
+	function f:SetCursorPosition(p) self.__cursor = p end
 	function f:SetValueStep() end
 	function f:SetOrientation() end
 	function f:Disable() self.__enabled = false end
@@ -247,13 +329,15 @@ local function newFrame(frameType, name, parent)
 			complain("SetButtonState('%s')", tostring(s))
 		end
 	end
-	function f:SetText() end
+	function f:SetText(t) self.__text = t end
+	function f:GetText() return self.__text end
 	function f:SetScale() end
 	function f:GetEffectiveScale() return 1 end
 	function f:SetHitRectInsets() end
 	function f:CreateTitleRegion() return newObject("TitleRegion", nil, self) end
 
 	if parent and parent.__children then table.insert(parent.__children, f) end
+	f.__level = parent and parent.__level and (parent.__level + 1) or 0
 	return f
 end
 
@@ -262,7 +346,11 @@ end
 function stub.install(env)
 	env = env or _G
 	env.CreateFrame = function(frameType, name, parent, template)
-		return newFrame(frameType, name, parent)
+		local f = newFrame(frameType, name, parent)
+		-- The real client publishes a named frame as a global, which is how
+		-- UISpecialFrames entries and getglobal() lookups resolve.
+		if name then env[name] = f end
+		return f
 	end
 	env.UIParent = newFrame("Frame", "UIParent", nil)
 	env.UIParent:SetWidth(1024); env.UIParent:SetHeight(768)

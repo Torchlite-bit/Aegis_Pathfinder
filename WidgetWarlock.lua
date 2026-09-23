@@ -48,10 +48,11 @@ local FONT_ROLES = {
 
 function WidgetWarlock.SummonFontString(parent, layer, inherit, text, a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20)
 	local fs = parent:CreateFontString(nil, layer)
-	local Theme = AegisPathfinder.Theme
+	-- Looked up per call: this file can load before Theme.lua.
+	local theme = AegisPathfinder.Theme
 	local role = inherit and FONT_ROLES[inherit] or FONT_ROLES.GameFontNormal
-	Theme:SetFont(fs, role[1], role[2])
-	Theme:TextColor(fs, role[3])
+	theme:SetFont(fs, role[1], role[2])
+	theme:TextColor(fs, role[3])
 	fs:SetText(text)
 	if AegisPathfinder.select(1, a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20) then fs:SetPoint(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20) end
 	return fs
@@ -90,37 +91,13 @@ end
 --      Scroll Bar      --
 --------------------------
 
+--[[ Scrollbar.
+
+	Delegates to Theme:ScrollBar. The old one was built from Blizzard's knob
+	and the character-sheet scroll frame; the signature is kept because the
+	call sites only ever wanted a slider and two step buttons.
+]]
 function WidgetWarlock.ConjureScrollBar(parent, hasborder)
-	local f = CreateFrame("Slider", nil, parent)
-	f:SetWidth(16)
-
-	local upbutt = CreateFrame("Button", nil, f, "UIPanelScrollUpButtonTemplate")
-	upbutt:SetPoint("BOTTOM", f, "TOP")
-
-	local downbutt = CreateFrame("Button", nil, f, "UIPanelScrollDownButtonTemplate")
-	downbutt:SetPoint("TOP", f, "BOTTOM")
-
-	f:SetThumbTexture("Interface\\Buttons\\UI-ScrollBar-Knob")
-	local thumb = f:GetThumbTexture()
-	thumb:SetHeight(16)
-	thumb:SetWidth(16)
-	thumb:SetTexCoord(0.25, 0.75, 0.25, 0.75)
-
-	if hasborder then
-		local uptext = f:CreateTexture(nil, "BACKGROUND")
-		uptext:SetWidth(31)
-		uptext:SetHeight(256)
-		uptext:SetPoint("TOPLEFT", upbutt, "TOPLEFT", -7, 5)
-		uptext:SetTexture("Interface\\PaperDollInfoFrame\\UI-Character-ScrollBar")
-		uptext:SetTexCoord(0, 0.484375, 0, 1.0)
-
-		local downtex = f:CreateTexture(nil, "BACKGROUND")
-		downtex:SetWidth(31)
-		downtex:SetHeight(106)
-		downtex:SetPoint("BOTTOMLEFT", downbutt, "BOTTOMLEFT", -7, -3)
-		downtex:SetTexture("Interface\\PaperDollInfoFrame\\UI-Character-ScrollBar")
-		downtex:SetTexCoord(0.515625, 1.0, 0, 0.4140625)
-	end
-
-	return f, upbutt, downbutt
+	return AegisPathfinder.Theme:ScrollBar(parent)
 end
+

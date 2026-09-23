@@ -36,10 +36,13 @@ QuestShellPlusParser.lua
 Navigation.lua
 QuestTracker.lua
 Professions.lua
-StatusFrame.lua
+GuideEngine.lua
+NavCallout.lua
+# The objectives panel is the addon's only window, and the other panels anchor
+# themselves to it at load, so it has to exist before they do.
+ObjectivesFrame.lua
 OptionsFrame.lua
 GuideListFrame.lua
-ObjectivesFrame.lua
 MaterialsFrame.lua
 
 # Routes

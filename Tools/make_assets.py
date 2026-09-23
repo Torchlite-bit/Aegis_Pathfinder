@@ -36,6 +36,11 @@ SS = 4  # supersampling factor
 # lives in Theme.lua.
 ACCENT_DEEP = (46, 133, 14)
 ACCENT_GLOW = (143, 224, 102)
+# The navigation arrow's three gradient stops, straight from the concept's
+# <linearGradient id="arrowGrad">.
+ARROW_TOP = (168, 255, 143)
+ARROW_MID = (111, 217, 79)
+ARROW_BOT = (74, 156, 48)
 
 WHITE = (255, 255, 255)
 
@@ -127,6 +132,27 @@ def rounded(size, radius, width=None, path=None):
                             radius=radius * SS, outline=WHITE + (255,), width=width * SS)
     else:
         d.rounded_rectangle(box, radius=radius * SS, fill=WHITE + (255,))
+    return finish(img, size, path)
+
+
+def capped(size, radius, edge, path):
+    """Rectangle rounded on one edge only, square on the other.
+
+    The concept clips its header and footer strips to the window's corner with
+    overflow:hidden. The 1.12 client cannot clip, so a strip that meets the
+    top or bottom of a panel needs its own mask: rounded where it touches the
+    panel edge, square where it meets the body.
+    """
+    img = canvas(size)
+    d = ImageDraw.Draw(img)
+    s = size * SS
+    r = radius * SS
+    d.rounded_rectangle([0, 0, s - 1, s - 1], radius=r, fill=WHITE + (255,))
+    # Square off the far edge by painting the outer half of it flat.
+    if edge == "top":
+        d.rectangle([0, s - r - 1, s - 1, s - 1], fill=WHITE + (255,))
+    else:
+        d.rectangle([0, 0, s - 1, r], fill=WHITE + (255,))
     return finish(img, size, path)
 
 
@@ -326,6 +352,183 @@ ICONS = {
 
 
 # --------------------------------------------------------------------------
+# UI chrome glyphs
+# --------------------------------------------------------------------------
+# The concept draws its chrome with characters the 1.12 font cannot render:
+# the header's hamburger and close chips, the nav row's arrows, the status
+# bar's chevrons, the band ticks, and the resize grip's dot cluster. Each
+# becomes a white mask, tinted in Lua like every other shape.
+
+def _menu(d, s):             # header -- hamburger, the concept's opener
+    for y in (.28, .48, .68):
+        d.rounded_rectangle([s * .16, s * y, s * .84, s * (y + .08)],
+                            radius=s * .04, fill=W)
+
+
+def _close(d, s):            # header / branch tab -- close
+    w = int(s * .10)
+    d.line([s * .24, s * .24, s * .76, s * .76], fill=W, width=w)
+    d.line([s * .76, s * .24, s * .24, s * .76], fill=W, width=w)
+
+
+def _plus(d, s):             # tab bar -- branch to another guide
+    d.rounded_rectangle([s * .44, s * .18, s * .56, s * .82], radius=s * .06, fill=W)
+    d.rounded_rectangle([s * .18, s * .44, s * .82, s * .56], radius=s * .06, fill=W)
+
+
+def _triangle(d, s, facing):
+    """Solid triangle. facing is 'left' or 'right'."""
+    if facing == "left":
+        d.polygon([(s * .30, s * .50), (s * .68, s * .18), (s * .68, s * .82)], fill=W)
+    else:
+        d.polygon([(s * .70, s * .50), (s * .32, s * .18), (s * .32, s * .82)], fill=W)
+
+
+def _chevron(d, s, facing):
+    """Open chevron -- the status bar's small step arrows."""
+    w = int(s * .11)
+    if facing == "left":
+        d.line([s * .62, s * .20, s * .34, s * .50], fill=W, width=w)
+        d.line([s * .34, s * .50, s * .62, s * .80], fill=W, width=w)
+    else:
+        d.line([s * .38, s * .20, s * .66, s * .50], fill=W, width=w)
+        d.line([s * .66, s * .50, s * .38, s * .80], fill=W, width=w)
+
+
+def _tick(d, s):             # green band -- step satisfied
+    w = int(s * .13)
+    d.line([s * .20, s * .52, s * .42, s * .74], fill=W, width=w)
+    d.line([s * .42, s * .74, s * .80, s * .26], fill=W, width=w)
+
+
+def _bang(d, s):             # red band -- step outstanding
+    d.rounded_rectangle([s * .42, s * .14, s * .58, s * .60], radius=s * .07, fill=W)
+    d.ellipse([s * .40, s * .70, s * .60, s * .90], fill=W)
+
+
+def _expand(d, s):           # header -- switch between one step and all of them
+    """Diagonal double-headed arrow, per the concept's #obj-expand-btn SVG.
+
+    The concept strokes it at 2.2 of 24 units; at the 10px this renders to,
+    that is thinner than a pixel, so it is drawn heavier and the arrowheads
+    are filled rather than stroked.
+    """
+    w = int(s * .085)
+    d.line([s * .28, s * .72, s * .72, s * .28], fill=W, width=w)
+    # Upper-right head
+    d.polygon([(s * .76, s * .24), (s * .76, s * .52), (s * .48, s * .24)], fill=W)
+    # Lower-left head
+    d.polygon([(s * .24, s * .76), (s * .52, s * .76), (s * .24, s * .48)], fill=W)
+
+
+def _caret(d, s, facing):
+    """Small solid triangle for a scrollbar's step buttons."""
+    if facing == "up":
+        d.polygon([(s * .50, s * .30), (s * .76, s * .66), (s * .24, s * .66)], fill=W)
+    else:
+        d.polygon([(s * .50, s * .70), (s * .24, s * .34), (s * .76, s * .34)], fill=W)
+
+
+def _pin(d, s):              # map pin -- prefixes a coordinate pair
+    d.ellipse([s * .22, s * .10, s * .78, s * .66], fill=W)
+    d.polygon([(s * .34, s * .56), (s * .66, s * .56), (s * .50, s * .92)], fill=W)
+    d.ellipse([s * .40, s * .28, s * .60, s * .48], fill=(0, 0, 0, 0))
+
+
+CHROME = {
+    "menu": _menu,
+    "close": _close,
+    "plus": _plus,
+    "arrow-left": lambda d, s: _triangle(d, s, "left"),
+    "arrow-right": lambda d, s: _triangle(d, s, "right"),
+    "chevron-left": lambda d, s: _chevron(d, s, "left"),
+    "chevron-right": lambda d, s: _chevron(d, s, "right"),
+    "tick": _tick,
+    "bang": _bang,
+    "pin": _pin,
+    "expand": _expand,
+    "caret-up": lambda d, s: _caret(d, s, "up"),
+    "caret-down": lambda d, s: _caret(d, s, "down"),
+}
+
+
+def scroll_thumb(size=32):
+    """The scrollbar's knob: a stadium, rounded at both ends.
+
+    A scrollbar is 8px wide and its knob is drawn at whatever height the
+    content asks for, so this is nine-sliced rather than stretched -- hence a
+    full-width radius, which keeps the caps circular at any length.
+    """
+    return rounded(size, size // 2, path="scroll-thumb.tga")
+
+
+def switch_track(w=64, h=32):
+    """The concept's .switch: a 36x20 stadium with an 11px radius.
+
+    Drawn at 2:1 with a radius of half its height, so the ends stay round
+    when it is shown at 36x20. A single stretched texture rather than a
+    nine-slice, because a toggle never changes size.
+    """
+    img = Image.new("RGBA", (w * SS, h * SS), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    d.rounded_rectangle([0, 0, w * SS - 1, h * SS - 1], radius=h * SS // 2, fill=W)
+    img = img.resize((w, h), Image.LANCZOS)
+    return write_tga(img, os.path.join(MEDIA, "switch-track.tga"))
+
+
+def nav_arrow(size=64):
+    """The signature navigation arrow.
+
+    Same silhouette as the concept's SVG path (M50,10 L90,66 L50,52 L10,66 Z)
+    mapped into the texture, with its three-stop vertical gradient. Colour is
+    baked in rather than tinted, because it is a gradient and 1.12 has none.
+
+    It points straight up. Bearing comes from rotating it at runtime, which on
+    this client means mapping it onto a rotated quad with the eight-argument
+    form of SetTexCoord -- so the art must stay centred in its square or it
+    will wobble as it turns.
+    """
+    img = canvas(size)
+    d = ImageDraw.Draw(img)
+    s = size * SS
+
+    def pt(x, y):
+        return (x / 100.0 * s, y / 80.0 * s)
+
+    d.polygon([pt(50, 8), pt(92, 68), pt(50, 53), pt(8, 68)], fill=WHITE + (255,))
+
+    img = img.resize((size, size), Image.LANCZOS)
+    px = img.load()
+    for y in range(size):
+        t = y / float(size - 1)
+        col = lerp(ARROW_TOP, ARROW_MID, t / 0.55) if t < 0.55 else \
+            lerp(ARROW_MID, ARROW_BOT, (t - 0.55) / 0.45)
+        for x in range(size):
+            a = px[x, y][3]
+            if a:
+                px[x, y] = col + (a,)
+    return write_tga(img, os.path.join(MEDIA, "nav-arrow.tga"))
+
+
+def grip(size=16):
+    """The concept's resize grip: six dots stepped into the bottom-right.
+
+    One texture rather than six placed regions, so the cluster keeps its
+    spacing at any frame size and tints in a single call.
+    """
+    img = canvas(size)
+    d = ImageDraw.Draw(img)
+    s = size * SS
+    r = s * .055
+    for col in range(3):
+        for row in range(3 - col):
+            cx = s * (.86 - col * .26)
+            cy = s * (.86 - row * .26)
+            d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=W)
+    return finish(img, size, "grip.tga")
+
+
+# --------------------------------------------------------------------------
 # Branding
 # --------------------------------------------------------------------------
 
@@ -388,6 +591,8 @@ def main():
     record("panel-border.tga", rounded(32, 10, width=1, path="panel-border.tga"))
     record("pill-fill.tga", rounded(32, 16, path="pill-fill.tga"))
     record("pill-border.tga", rounded(32, 16, width=1, path="pill-border.tga"))
+    record("cap-top.tga", capped(32, 10, "top", "cap-top.tga"))
+    record("cap-bottom.tga", capped(32, 10, "bottom", "cap-bottom.tga"))
     record("tab-fill.tga", rounded(32, 6, path="tab-fill.tga"))
     record("tab-border.tga", rounded(32, 6, width=1, path="tab-border.tga"))
     record("circle-fill.tga", circle(32, path="circle-fill.tga"))
@@ -397,8 +602,15 @@ def main():
     record("progress-fill.tga", progress_fill())
     record("logo.tga", logo())
     record("wordmark.tga", wordmark())
+    record("scroll-thumb.tga", scroll_thumb())
+    record("switch-track.tga", switch_track())
+    record("nav-arrow.tga", nav_arrow())
+    record("grip.tga", grip())
 
     for name, fn in sorted(ICONS.items()):
+        record("icons/%s.tga" % name, _icon(fn, name))
+
+    for name, fn in sorted(CHROME.items()):
         record("icons/%s.tga" % name, _icon(fn, name))
 
     for name, nbytes in made:

@@ -130,6 +130,43 @@ frame:Hide()
 local ok = pcall(function() AegisPathfinder:UpdateMaterialsPanel() end)
 check(ok, "updating a hidden panel should be safe")
 
+-- Scrolling --------------------------------------------------------------------
+
+-- More reagents than rows. The bar is the theme's -- UIPanelScrollBarTemplate
+-- brought Blizzard's arrows and knob -- and it moves a row at a time.
+local many = {}
+for i = 1, 25 do table.insert(many, string.format("1x Reagent %02d", i)) end
+AegisPathfinder.tags = {
+	"|SKILL|Alchemy 1 10| |CRAFT|1 Thing| |MATS|" .. table.concat(many, ", ") .. "|",
+	"|QID|2|", "|QID|3|",
+}
+frame:Show()
+AegisPathfinder:UpdateMaterialsPanel()
+local bar = frame.slider
+check(bar.track ~= nil and bar.up ~= nil and bar.down ~= nil,
+	"the list scrolls with the theme's bar")
+check(bar:IsShown(), "which shows once the list outgrows the rows")
+local _, hi = bar:GetMinMaxValues()
+check(hi == 7, "25 reagents in 18 rows scroll by 7, got %s", tostring(hi))
+
+-- The rows are the panel's children carrying a quantity and a name.
+local function firstRow()
+	for _, r in ipairs({ frame:GetChildren() }) do
+		if r.qty and r.name then return r.name:GetText() end
+	end
+end
+check(firstRow() == "Reagent 01", "the list starts at the top, got '%s'", tostring(firstRow()))
+bar.down:GetScript("OnClick")()
+check(firstRow() == "Reagent 02", "the down caret moves one row, got '%s'", tostring(firstRow()))
+arg1 = -1; frame:GetScript("OnMouseWheel")()
+check(firstRow() == "Reagent 03", "and so does the wheel, got '%s'", tostring(firstRow()))
+for _ = 1, 20 do bar.down:GetScript("OnClick")() end
+check(bar:GetValue() == 7, "and neither runs past the end, got %s", tostring(bar:GetValue()))
+for _ = 1, 20 do bar.up:GetScript("OnClick")() end
+check(bar:GetValue() == 0 and firstRow() == "Reagent 01",
+	"or past the top, got %s", tostring(bar:GetValue()))
+frame:Hide()
+
 -- End-to-end against the source document ------------------------------------
 
 --[[ The strongest check available offline.

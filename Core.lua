@@ -54,26 +54,28 @@ function AegisPathfinder:GetRouteForRace(race)
     return race and (string.gsub(race, "%s", "")) or nil
 end
 
-AegisPathfinder.icons = setmetatable({
-    ACCEPT = "Interface\\GossipFrame\\AvailableQuestIcon",
-    COMPLETE = "Interface\\Icons\\Ability_DualWield",
-    TURNIN = "Interface\\GossipFrame\\ActiveQuestIcon",
-    KILL = "Interface\\Icons\\Ability_Creature_Cursed_02",
-    RUN = "Interface\\Icons\\Ability_Tracking",
-    MAP = "Interface\\Icons\\Ability_Spy",
-    FLY = "Interface\\Icons\\Ability_Rogue_Sprint",
-    SETHEARTH = "Interface\\AddOns\\AegisPathfinder\\media\\resting.tga",
-    HEARTH = "Interface\\Icons\\INV_Misc_Rune_01",
-    NOTE = "Interface\\Icons\\INV_Misc_Note_01",
-    GRIND = "Interface\\Icons\\INV_Stone_GrindingStone_05",
-    USE = "Interface\\Icons\\INV_Misc_Bag_08",
-    BUY = "Interface\\Icons\\INV_Misc_Coin_01",
-    BOAT = "Interface\\Icons\\Ability_Druid_AquaticForm",
-    GETFLIGHTPOINT = "Interface\\Icons\\Ability_Hunter_EagleEye",
-    PET = "Interface\\Icons\\Ability_Hunter_BeastCall02",
-    DIE = "Interface\\AddOns\\AegisPathfinder\\media\\dead.tga",
-    TRAIN = "Interface\\GossipFrame\\TrainerGossipIcon",
-}, { __index = function() return "Interface\\Icons\\INV_Misc_QuestionMark" end })
+--[[ Action glyphs.
+
+    The generated silhouettes from Theme.lua, not Blizzard's icon art. Stock
+    quest-log icons carry their own border, palette and 8px bevel, which read as
+    a foreign object on the concept's flat panels -- and they were the reason
+    every list in the addon still looked like a 2006 UI under a new skin.
+
+    An unknown code falls back to the note glyph rather than a question mark:
+    a guide line the parser did not recognise should look like a line to read,
+    not like a missing asset.
+]]
+-- Header plus subhead on the concept's window chrome, which every dialog below
+-- now wears; their bodies start beneath it.
+local DIALOG_CHROME = 30 + 18
+
+AegisPathfinder.icons = setmetatable({}, {
+    __index = function(_, action)
+        -- Looked up per call: Core.lua loads before Theme.lua.
+        local theme = AegisPathfinder.Theme
+        return theme.actionIconByName[action] or theme.actionIcon.N
+    end,
+})
 
 local defaults = {
     debug = false,
@@ -88,11 +90,11 @@ local defaults = {
     mapquestgivers = true,
     mapnotecoords = true,
     waypointprovider = "auto", -- see Navigation.lua providerorder
+    -- Focus mode is the concept's default: the step you are on, and nothing
+    -- else. Overview is the whole list, behind the header's expand chip.
+    overviewmode = false,
+    shownavcallout = true,
     server = nil,             -- see Servers.lua; nil means the default dataset
-    -- The objectives panel is the main surface and carries the same step with
-    -- room to read it, so the compact card stays out of the way until asked
-    -- for. /apg statusbar brings it back.
-    showstatusframe = false,
     showuseitem = true,
     showuseitemcomplete = true,
     skipfollowups = true,
@@ -102,6 +104,14 @@ local defaults = {
     completedquestsbyid = {}, -- {[questId] = true} from server
     lastserverquery = 0,      -- timestamp for throttling
     -- Branching state
+    -- Open guides, as the tab bar shows them. Tab 1 is the main route -- the
+    -- one auto-advance follows. The rest are guides opened beside it. Empty
+    -- when the player has closed them all.
+    tabs = nil,          -- built on first use; see EnsureTabs
+    activetab = 1,
+    -- Derived from the tabs above and kept in step with them by SyncBranchState.
+    -- Plenty of code reads these, and a branch is just "the active tab is not
+    -- the first one", so they stay rather than being torn out.
     isbranching = false,
     branchsavedguide = nil,
     branchsavedstep = nil,
@@ -260,20 +270,20 @@ local options = {
             end,
             order = 2.5,
         },
+        NavCallout = {
+            name = "Navigation Arrow",
+            desc = "Show/Hide the arrow pointing at the current objective",
+            type = "toggle",
+            get = function() return AegisPathfinder.db.char.shownavcallout end,
+            set = function() AegisPathfinder:ToggleNavCallout() end,
+            order = 2.95,
+        },
         Objectives = {
             name = "Objectives",
             desc = "Show/Hide the objectives panel",
             type = "execute",
             func = function() AegisPathfinder:ToggleObjectivePanel() end,
             order = 2.9,
-        },
-        StatusBar = {
-            name = "Status Bar",
-            desc = "Show/Hide the compact status card",
-            type = "toggle",
-            get = function() return AegisPathfinder.statusframe:IsVisible() end,
-            set = function() AegisPathfinder:ToggleStatusFrame() end,
-            order = 3,
         },
         SelectRoute = {
             name = "Select Route",
@@ -545,7 +555,12 @@ function AegisPathfinder:OnInitialize()
     if self.myfaction == nil then
         self:RegisterEvent("PLAYER_ENTERING_WORLD")
     end
-    self:PositionStatusFrame()
+    self:PositionItemButton()
+    -- The panel is the addon's only window and the concept has it open, so it
+    -- opens with the client unless the player closed it last session.
+    if self.db.char.panelopen ~= false then
+        self.objectiveframe:Show()
+    end
     self:CreateConfigPanel()
 
     if migratedLegacyDB then
@@ -636,8 +651,16 @@ function AegisPathfinder:InitializeRoute()
         end
     end
 
-    self.db.char.currentguide = self.db.char.currentguide or self.guidelist[1]
-    self:LoadGuide(self.db.char.currentguide)
+    --[[ Closing every tab is remembered across a reload. LoadGuide would
+        otherwise take "No Guide" as a name it does not know and fall back to
+        the first guide in the list, reopening something behind the
+        player's back. ]]
+    if self:HasNoGuide() and self.db.char.routeselected then
+        self:UnloadGuide()
+    else
+        self.db.char.currentguide = self.db.char.currentguide or self.guidelist[1]
+        self:LoadGuide(self.db.char.currentguide)
+    end
     self.initializeDone = true
     for _, event in pairs(self.TrackEvents) do self:RegisterEvent(event) end
     -- Register for level up to check starting zone completion
@@ -1185,6 +1208,8 @@ function AegisPathfinder:SetTurnedIn(i, value, noupdate)
         i = self.current
         value = true
     end
+    -- No step to mark: every guide is closed.
+    if not i or not self.quests or not self.quests[i] then return end
 
     local qid = self:GetObjectiveTag("QID", i)
     if qid and not value then
@@ -1478,63 +1503,266 @@ function AegisPathfinder:GoToObjective(stepNum)
 end
 
 ---------------------------------
---      Branching Functions    --
+--      Guide tabs             --
 ---------------------------------
 
--- Branch to a different guide while saving current position
-function AegisPathfinder:BranchToGuide(guideName)
+-- The sentinel the addon has always stored for "no guide loaded". It is not a
+-- registered guide, which is what stops LoadNextGuide advancing from it.
+AegisPathfinder.NO_GUIDE = "No Guide"
+local NO_GUIDE = AegisPathfinder.NO_GUIDE
+
+-- How many guides can be open at once. The tab bar scrolls, so this is not
+-- about width: past eight, paging through tabs to find a guide is slower than
+-- the guide list it was opened from.
+AegisPathfinder.MAX_GUIDE_TABS = 8
+local MAX_GUIDE_TABS = AegisPathfinder.MAX_GUIDE_TABS
+
+--[[ The open guides.
+
+    The panel used to hold one guide, plus at most one branch off it. The
+    concept's tab bar implies as many as you want open at once, so this is a
+    list: tab 1 is the main route -- what auto-advance follows -- and
+    anything after it is a guide opened beside it. Any of them can be closed.
+
+    Each tab remembers its own step, so switching back to one puts you where
+    you left it rather than at the top.
+]]
+function AegisPathfinder:EnsureTabs()
+    local db = self.db.char
+    -- An empty list is a real state -- the player closed every guide -- and
+    -- must survive a reload. Only a missing list means "never built".
+    if db.tabs then return db.tabs end
+
+    db.tabs = {}
+    -- Carry over a one-deep branch saved by an older version: the guide that
+    -- was set aside becomes tab 1, the branch becomes tab 2.
+    if db.isbranching and db.branchsavedguide then
+        table.insert(db.tabs, { guide = db.branchsavedguide, step = db.branchsavedstep or 1 })
+        table.insert(db.tabs, { guide = db.currentguide or db.branchsavedguide, step = self.current or 1 })
+        db.activetab = 2
+    elseif db.currentguide and db.currentguide ~= NO_GUIDE then
+        table.insert(db.tabs, { guide = db.currentguide, step = self.current or 1 })
+        db.activetab = 1
+    end
+    return db.tabs
+end
+
+--- The tab the player is looking at, or nil with every guide closed.
+function AegisPathfinder:GetActiveTab()
+    local tabs = self:EnsureTabs()
+    if table.getn(tabs) == 0 then return nil, 0 end
+    local i = self.db.char.activetab or 1
+    if i < 1 or i > table.getn(tabs) then i = 1; self.db.char.activetab = 1 end
+    return tabs[i], i
+end
+
+--- True when every guide has been closed and the panel is showing its empty
+--- state rather than a guide.
+function AegisPathfinder:HasNoGuide()
+    return table.getn(self:EnsureTabs()) == 0
+end
+
+--[[ Put the addon into the no-guide state.
+
+    Nothing loaded, nothing to advance, no waypoint. `currentguide` becomes the
+    same "No Guide" sentinel the addon has always used for a fresh character,
+    which LoadNextGuide already refuses to advance from -- so closing the last
+    tab cannot be undone behind the player's back by the auto-advance chain.
+]]
+function AegisPathfinder:UnloadGuide()
+    self.db.char.currentguide = NO_GUIDE
+    self.actions, self.quests, self.tags = {}, {}, {}
+    self.current = nil
+    self.guidechanged = true
+    if self.ClearWaypoint then self:ClearWaypoint() end
+    if self.navcallout then self.navcallout:Hide() end
+end
+
+--[[ Keep the branch fields in step with the tab list.
+
+    Everything that asks "am I on a branch?" is really asking "is the active
+    tab something other than the main route?", so the old fields are answered
+    from the tabs rather than maintained separately and allowed to disagree.
+]]
+function AegisPathfinder:SyncBranchState()
+    local db = self.db.char
+    local tabs = self:EnsureTabs()
+    local active = db.activetab or 1
+
+    db.isbranching = active > 1 and tabs[active] ~= nil
+    if db.isbranching then
+        db.branchsavedguide = tabs[1] and tabs[1].guide
+        db.branchsavedstep = tabs[1] and tabs[1].step
+    else
+        db.branchsavedguide = nil
+        db.branchsavedstep = nil
+    end
+end
+
+--- Remember where the player is in the tab they are leaving.
+function AegisPathfinder:StashActiveStep()
+    local tab = self:GetActiveTab()
+    if tab and self.current then tab.step = self.current end
+end
+
+--- Index of the tab showing this guide, or nil.
+function AegisPathfinder:FindTab(guideName)
+    local tabs = self:EnsureTabs()
+    for i, tab in ipairs(tabs) do
+        if tab.guide == guideName then return i end
+    end
+    return nil
+end
+
+--[[ Open a guide in a tab, or switch to it if it already has one.
+
+    Opening never replaces what you were reading: the guide you were on keeps
+    its tab and its place in it. Past MAX_GUIDE_TABS the bar has nowhere to
+    put another, so it says so rather than silently dropping one.
+]]
+function AegisPathfinder:OpenGuideTab(guideName)
     if not guideName or not self.guides[guideName] then
         self:Print("Invalid guide: " .. tostring(guideName))
         return
     end
 
-    -- Don't branch if already on this guide
-    if self.db.char.currentguide == guideName then
-        self:Print("Already on this guide.")
+    local existing = self:FindTab(guideName)
+    if existing then
+        self:SwitchToTab(existing)
         return
     end
 
-    -- Save current state if not already branching
-    if not self.db.char.isbranching then
-        self.db.char.branchsavedguide = self.db.char.currentguide
-        self.db.char.branchsavedstep = self.current
-        self.db.char.isbranching = true
-        self:Print(string.format("Branching to %s (main route saved: %s)", guideName, self.db.char.branchsavedguide))
-    else
-        self:Print(string.format("Switching branch to %s", guideName))
+    local tabs = self:EnsureTabs()
+    if table.getn(tabs) >= MAX_GUIDE_TABS then
+        self:Print(string.format("%d guides are open -- close one to open %s.",
+            MAX_GUIDE_TABS, guideName))
+        return
     end
 
-    -- Load the branch guide
+    self:StashActiveStep()
+    table.insert(tabs, { guide = guideName, step = 1 })
+    self.db.char.activetab = table.getn(tabs)
+    self:SyncBranchState()
+
     self:LoadGuide(guideName)
     self:UpdateStatusFrame()
     self:UpdateGuideListPanel()
 end
 
--- Return from branch to saved main route
-function AegisPathfinder:ReturnFromBranch()
-    if not self.db.char.isbranching then
-        self:Print("Not currently on a branch.")
+--- Load a guide into the tab you are on, replacing what it showed. With no
+--- tab open this is the same as opening one.
+function AegisPathfinder:LoadGuideInTab(guideName)
+    if not guideName or not self.guides[guideName] then return end
+    if self:HasNoGuide() then return self:OpenGuideTab(guideName) end
+
+    local existing = self:FindTab(guideName)
+    if existing then return self:SwitchToTab(existing) end
+
+    local tab = self:GetActiveTab()
+    tab.guide, tab.step = guideName, 1
+    self:LoadGuide(guideName)
+    self:UpdateStatusFrame()
+    self:UpdateGuideListPanel()
+end
+
+--- Show the guide in tab `index`, resuming where it was left.
+function AegisPathfinder:SwitchToTab(index)
+    local tabs = self:EnsureTabs()
+    local tab = tabs[index]
+    if not tab then return end
+    if index == (self.db.char.activetab or 1) then return end
+
+    if not self:HasNoGuide() then self:StashActiveStep() end
+    self.db.char.activetab = index
+    self:SyncBranchState()
+
+    self:LoadGuide(tab.guide)
+    if tab.step then self.current = tab.step end
+    self:UpdateStatusFrame()
+    self:UpdateGuideListPanel()
+end
+
+--[[ Close a tab. Every tab can be closed, the first one included.
+
+    Closing the tab you are on returns you to the first tab -- the main route,
+    which is what the concept's branch-tab ✕ does -- or, if that was the first
+    tab, to whatever became first. Closing the last one leaves the panel empty,
+    waiting for a guide to be chosen, rather than quietly loading one.
+]]
+function AegisPathfinder:CloseTab(index)
+    local tabs = self:EnsureTabs()
+    if not tabs[index] then return end
+
+    local active = self.db.char.activetab or 1
+    local wasActive = active == index
+    if not wasActive then self:StashActiveStep() end
+
+    table.remove(tabs, index)
+
+    if table.getn(tabs) == 0 then
+        self.db.char.activetab = 1
+        self:SyncBranchState()
+        self:UnloadGuide()
+        self:UpdateOHPanel()
+        self:UpdateGuideListPanel()
         return
     end
 
-    local savedGuide = self.db.char.branchsavedguide
-    local savedStep = self.db.char.branchsavedstep
-    local playerLevel = UnitLevel("player")
+    if wasActive then
+        active = 1
+    elseif active > index then
+        active = active - 1
+    end
+    self.db.char.activetab = active
+    self:SyncBranchState()
 
-    -- Clear branch state
-    self.db.char.isbranching = false
-    self.db.char.branchsavedguide = nil
-    self.db.char.branchsavedstep = nil
+    -- Only reload when the guide on screen actually changed.
+    local tab = tabs[active]
+    if wasActive then
+        self:LoadGuide(tab.guide)
+        if tab.step then self.current = tab.step end
+    end
+    self:UpdateStatusFrame()
+    self:UpdateGuideListPanel()
+end
 
-    -- Find level-appropriate guide for current level
-    local optimalGuide = self:GetOptimizedGuideForLevel(playerLevel)
+---------------------------------
+--      Branching Functions    --
+---------------------------------
+
+--- Branching is opening a guide in another tab. Kept as a name because the
+--- guide list, the slash commands and the profession guides all call it.
+function AegisPathfinder:BranchToGuide(guideName)
+    self:OpenGuideTab(guideName)
+end
+
+--[[ Go back to the main route, closing the tab you were on.
+
+    If the player has out-levelled the guide sitting in tab 1 while they were
+    away, tab 1 is re-pointed at the level-appropriate one rather than sending
+    them back to content they have grown out of.
+]]
+function AegisPathfinder:ReturnFromBranch()
+    local tabs = self:EnsureTabs()
+    local active = self.db.char.activetab or 1
+    if active == 1 then
+        self:Print("Already on the main route.")
+        return
+    end
+
+    table.remove(tabs, active)
+    self.db.char.activetab = 1
+    self:SyncBranchState()
+
+    local savedGuide = tabs[1] and tabs[1].guide
+    local optimalGuide = self:GetOptimizedGuideForLevel(UnitLevel("player"))
 
     if optimalGuide and optimalGuide ~= savedGuide and self.guides[optimalGuide] then
-        -- Player has leveled past their saved guide, load level-appropriate one
         self:Print("Returning to optimized path: " .. optimalGuide)
+        tabs[1].guide = optimalGuide
+        tabs[1].step = 1
         self:LoadGuide(optimalGuide)
     elseif savedGuide and self.guides[savedGuide] then
-        -- Return to saved guide
         self:Print("Returning to: " .. savedGuide)
         self:LoadGuide(savedGuide)
         -- SmartSkipToStep will handle positioning
@@ -1671,173 +1899,16 @@ end
 --      Route Functions        --
 ---------------------------------
 
--- Show route selection UI
+--[[ Route selection.
+
+    It was a window of its own -- a stack of pack buttons over a stack of race
+    buttons. The concept puts race and route pack at the top of the options
+    panel, so that is where this goes now.
+]]
 function AegisPathfinder:ShowRouteSelector()
-    if not self.routeSelectorFrame then
-        self:CreateRouteSelectorFrame()
-    end
-    self.routeSelectorFrame:Show()
-end
-
-function AegisPathfinder:CreateRouteSelectorFrame()
-    local f = CreateFrame("Frame", "AegisPathfinderRouteSelectorFrame", UIParent)
-    f:SetWidth(300)
-    f:SetHeight(550)
-    f:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
-    self.Theme:Panel(f, "panel")
-    f:SetMovable(true)
-    f:EnableMouse(true)
-    f:RegisterForDrag("LeftButton")
-    f:SetScript("OnDragStart", function() this:StartMoving() end)
-    f:SetScript("OnDragStop", function() this:StopMovingOrSizing() end)
-    f:SetFrameStrata("DIALOG")
-
-    local title = f:CreateFontString(nil, "ARTWORK")
-    AegisPathfinder.Theme:SetFont(title, "display", 15)
-    title:SetPoint("TOP", f, "TOP", 0, -20)
-    title:SetText(L["Select Your Race"])
-
-    -- Route Pack section
-    local packHeader = f:CreateFontString(nil, "ARTWORK")
-    AegisPathfinder.Theme:SetFont(packHeader, "body", 12)
-    packHeader:SetPoint("TOP", title, "BOTTOM", 0, -12)
-    packHeader:SetText("|cffffd100Route Pack:|r")
-
-    -- Current pack display
-    local packStatus = f:CreateFontString(nil, "ARTWORK")
-    AegisPathfinder.Theme:SetFont(packStatus, "body", 11)
-    packStatus:SetPoint("TOP", packHeader, "BOTTOM", 0, -4)
-    packStatus:SetWidth(260)
-    f.packStatus = packStatus
-
-    -- Pack buttons container
-    f.packButtons = {}
-    local lastPackBtn
-    local availablePacks = self:GetAvailableRoutePacks()
-    for i, pack in ipairs(availablePacks) do
-        local btn = CreateFrame("Button", nil, f, "UIPanelButtonTemplate")
-        btn:SetWidth(200)
-        btn:SetHeight(24)
-        if lastPackBtn then
-            btn:SetPoint("TOP", lastPackBtn, "BOTTOM", 0, -4)
-        else
-            btn:SetPoint("TOP", packStatus, "BOTTOM", 0, -6)
-        end
-        btn.packName = pack.name
-        btn.packDescription = pack.description
-        btn:SetText(pack.displayName)
-        btn:SetScript("OnClick", function()
-            AegisPathfinder:SelectRoutePack(this.packName)
-            AegisPathfinder:UpdateRouteSelectorPackHighlight()
-        end)
-        btn:SetScript("OnEnter", function()
-            GameTooltip:SetOwner(this, "ANCHOR_RIGHT")
-            GameTooltip:SetText(this.packDescription, nil, nil, nil, nil, true)
-        end)
-        btn:SetScript("OnLeave", function()
-            GameTooltip:Hide()
-        end)
-        f.packButtons[i] = btn
-        lastPackBtn = btn
-    end
-
-    -- Separator
-    local sep = f:CreateFontString(nil, "ARTWORK")
-    AegisPathfinder.Theme:SetFont(sep, "body", 12)
-    if lastPackBtn then
-        sep:SetPoint("TOP", lastPackBtn, "BOTTOM", 0, -10)
-    else
-        sep:SetPoint("TOP", packStatus, "BOTTOM", 0, -10)
-    end
-    sep:SetText("|cffffd100Race Override:|r")
-
-    local desc = f:CreateFontString(nil, "ARTWORK")
-    AegisPathfinder.Theme:SetFont(desc, "body", 12)
-    desc:SetPoint("TOP", sep, "BOTTOM", 0, -4)
-    desc:SetWidth(260)
-    desc:SetText(L["Choose a leveling route based on your race:"])
-
-    -- Create race buttons (including Turtle WoW custom races)
-    -- Add "My Race" at top to use actual detected race
-    local detectedRace = UnitRace("player") -- localized, for the label
-    local detectedRoute = self:GetRouteForRace()
-
-    local races = {}
-    -- Add detected race first with special label
-    table.insert(races, { name = "My Race: " .. tostring(detectedRace), route = detectedRoute, highlight = true })
-
-    if self.myfaction == "Alliance" then
-        local allianceRaces = {
-            { name = "Human",     route = "Human" },
-            { name = "Dwarf",     route = "Dwarf" },
-            { name = "Night Elf", route = "NightElf" },
-            { name = "Gnome",     route = "Gnome" },
-            { name = "High Elf",  route = "HighElf" }, -- Turtle WoW
-        }
-        for _, r in ipairs(allianceRaces) do
-            table.insert(races, r)
-        end
-    else
-        local hordeRaces = {
-            { name = "Orc",    route = "Orc" },
-            { name = "Troll",  route = "Troll" },
-            { name = "Tauren", route = "Tauren" },
-            { name = "Undead", route = "Undead" },
-            { name = "Goblin", route = "Goblin" }, -- Turtle WoW
-        }
-        for _, r in ipairs(hordeRaces) do
-            table.insert(races, r)
-        end
-    end
-
-    local lastButton
-    for i, raceInfo in ipairs(races) do
-        local displayName = raceInfo.name
-        local routeName = raceInfo.route
-        local btn = CreateFrame("Button", nil, f, "UIPanelButtonTemplate")
-        btn:SetWidth(200)
-        btn:SetHeight(30)
-        if lastButton then
-            btn:SetPoint("TOP", lastButton, "BOTTOM", 0, -10)
-        else
-            btn:SetPoint("TOP", desc, "BOTTOM", 0, -10)
-        end
-        btn:SetText(displayName)
-        btn:SetScript("OnClick", function()
-            AegisPathfinder:SelectRoute(routeName)
-            f:Hide()
-        end)
-        lastButton = btn
-    end
-
-    -- Close button
-    local closeBtn = CreateFrame("Button", nil, f, "UIPanelCloseButton")
-    closeBtn:SetPoint("TOPRIGHT", f, "TOPRIGHT", -5, -5)
-
-    self.routeSelectorFrame = f
-
-    -- Update pack highlight on show
-    f:SetScript("OnShow", function()
-        AegisPathfinder:UpdateRouteSelectorPackHighlight()
-    end)
-
-    f:Hide()
-end
-
-function AegisPathfinder:UpdateRouteSelectorPackHighlight()
-    local f = self.routeSelectorFrame
-    if not f then return end
-
-    local current = self.db.char.routepack or "VanillaGuide"
-    f.packStatus:SetText("Active: |cff00ff00" .. current .. "|r")
-
-    for _, btn in ipairs(f.packButtons) do
-        if btn.packName == current then
-            btn:SetText("|cff00ff00" .. btn.packName .. "|r")
-        else
-            btn:SetText(btn.packName)
-        end
-    end
+    if not self.optionsframe then self:CreateConfigPanel() end
+    self.optionsframe:Show()
+    if self.optionsframe.scrollbar then self.optionsframe.scrollbar:SetValue(0) end
 end
 
 function AegisPathfinder:SelectRoute(race)
@@ -2129,26 +2200,18 @@ function AegisPathfinder:CreateStartingZoneSelectorFrame()
     local L = self.Locale
     local f = CreateFrame("Frame", "AegisPathfinderStartingZoneSelectorFrame", UIParent)
     f:SetWidth(380)
-    f:SetHeight(320)
+    f:SetHeight(320 + DIALOG_CHROME)
     f:SetPoint("CENTER", UIParent, "CENTER", 0, 50)
     self.Theme:Panel(f, "panel")
-    f:SetMovable(true)
-    f:EnableMouse(true)
-    f:RegisterForDrag("LeftButton")
-    f:SetScript("OnDragStart", function() this:StartMoving() end)
-    f:SetScript("OnDragStop", function() this:StopMovingOrSizing() end)
     f:SetFrameStrata("DIALOG")
 
-    -- Title
-    local title = f:CreateFontString(nil, "ARTWORK")
-    AegisPathfinder.Theme:SetFont(title, "display", 15)
-    title:SetPoint("TOP", f, "TOP", 0, -20)
-    title:SetText(L["Choose Starting Zone"])
+    local _, sub = self.Theme:Chrome(f, L["Choose Starting Zone"],
+        self.Theme:PositionSaver("startzoneframe"))
 
     -- Description
     local desc = f:CreateFontString(nil, "ARTWORK")
     AegisPathfinder.Theme:SetFont(desc, "body", 12)
-    desc:SetPoint("TOP", title, "BOTTOM", 0, -10)
+    desc:SetPoint("TOP", sub, "BOTTOM", 0, -10)
     desc:SetWidth(340)
     desc:SetText(L["Select which starting zone you want to level through:"])
 
@@ -2169,7 +2232,7 @@ function AegisPathfinder:CreateStartingZoneSelectorFrame()
     -- Zone buttons (will be populated dynamically)
     f.zoneButtons = {}
     for i = 1, 6 do
-        local btn = CreateFrame("Button", nil, buttonContainer, "UIPanelButtonTemplate")
+        local btn = AegisPathfinder.Theme:PanelButton(buttonContainer)
         btn:SetWidth(300)
         btn:SetHeight(28)
         btn:SetPoint("TOP", buttonContainer, "TOP", 0, -(i - 1) * 32)
@@ -2194,8 +2257,6 @@ function AegisPathfinder:CreateStartingZoneSelectorFrame()
     infoText:SetText(L["You can change starting zones from the Options menu"])
 
     -- Close button
-    local closeBtn = CreateFrame("Button", nil, f, "UIPanelCloseButton")
-    closeBtn:SetPoint("TOPRIGHT", f, "TOPRIGHT", -5, -5)
 
     self.startingZoneSelectorFrame = f
     table.insert(UISpecialFrames, "AegisPathfinderStartingZoneSelectorFrame")
@@ -2369,31 +2430,45 @@ end
 function AegisPathfinder:CreateErrorLogFrame()
     local f = CreateFrame("Frame", "AegisPathfinderErrorLogFrame", UIParent)
     f:SetWidth(520)
-    f:SetHeight(360)
+    f:SetHeight(360 + DIALOG_CHROME)
     f:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
     self.Theme:Panel(f, "panel")
-    f:SetMovable(true)
-    f:EnableMouse(true)
-    f:RegisterForDrag("LeftButton")
-    f:SetScript("OnDragStart", function() this:StartMoving() end)
-    f:SetScript("OnDragStop", function() this:StopMovingOrSizing() end)
     f:SetFrameStrata("DIALOG")
     f:Hide()
 
-    local title = f:CreateFontString(nil, "ARTWORK")
-    AegisPathfinder.Theme:SetFont(title, "display", 15)
-    title:SetPoint("TOP", f, "TOP", 0, -16)
-    title:SetText("AEGIS: Pathfinder Error Log")
+    local _, sub = self.Theme:Chrome(f, "Error Log",
+        self.Theme:PositionSaver("errorlogframe"))
 
     local desc = f:CreateFontString(nil, "ARTWORK")
     AegisPathfinder.Theme:SetFont(desc, "body", 12)
-    desc:SetPoint("TOP", title, "BOTTOM", 0, -8)
+    desc:SetPoint("TOP", sub, "BOTTOM", 0, -8)
     desc:SetWidth(480)
     desc:SetText("Most recent errors are at the top. Use Ctrl+C to copy.")
 
-    local scrollFrame = CreateFrame("ScrollFrame", "AegisPathfinderErrorLogScrollFrame", f, "UIPanelScrollFrameTemplate")
-    scrollFrame:SetPoint("TOPLEFT", f, "TOPLEFT", 16, -60)
+    local scrollFrame = CreateFrame("ScrollFrame", "AegisPathfinderErrorLogScrollFrame", f)
+    scrollFrame:SetPoint("TOPLEFT", f, "TOPLEFT", 16, -(DIALOG_CHROME + 34))
     scrollFrame:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", -32, 16)
+
+    -- The theme's scroll bar. UIPanelScrollFrameTemplate brought Blizzard's
+    -- gold arrows and knob with it, the last stock art on any window.
+    local SCROLL_W, LINE = 10, 40
+    local bar = self.Theme:ScrollBar(f, SCROLL_W)
+    bar:SetPoint("TOPRIGHT", f, "TOPRIGHT", -12, -(DIALOG_CHROME + 34 + SCROLL_W))
+    bar:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", -12, 16 + SCROLL_W)
+    bar.step = LINE
+    bar:SetMinMaxValues(0, 0)
+    bar:SetValue(0)
+    bar:SetScript("OnValueChanged", function() scrollFrame:SetVerticalScroll(arg1 or 0) end)
+    f.scrollbar = bar
+
+    -- The edit box grows with its text; the range follows it.
+    scrollFrame:SetScript("OnScrollRangeChanged", function()
+        local range = scrollFrame:GetVerticalScrollRange() or 0
+        bar:SetMinMaxValues(0, range)
+        if bar:GetValue() > range then bar:SetValue(range) end
+    end)
+    scrollFrame:EnableMouseWheel(true)
+    scrollFrame:SetScript("OnMouseWheel", function() bar:Nudge(-(arg1 or 0) * LINE) end)
 
     local editBox = CreateFrame("EditBox", "AegisPathfinderErrorLogEditBox", scrollFrame)
     editBox:SetMultiLine(true)
@@ -2404,12 +2479,22 @@ function AegisPathfinder:CreateErrorLogFrame()
     editBox:SetScript("OnEditFocusGained", function()
         editBox:HighlightText(0)
     end)
+    -- Keep the cursor in view as it moves, which the template used to do:
+    -- arg2 is the cursor's offset down from the top (negative), arg4 its
+    -- height.
+    editBox:SetScript("OnCursorChanged", function()
+        local y, h = -(arg2 or 0), arg4 or 0
+        local top, view = scrollFrame:GetVerticalScroll(), scrollFrame:GetHeight()
+        if y < top then
+            bar:SetValue(y)
+        elseif y + h > top + view then
+            bar:SetValue(y + h - view)
+        end
+    end)
 
     scrollFrame:SetScrollChild(editBox)
     f.editBox = editBox
 
-    local closeBtn = CreateFrame("Button", nil, f, "UIPanelCloseButton")
-    closeBtn:SetPoint("TOPRIGHT", f, "TOPRIGHT", -5, -5)
 
     f:SetScript("OnShow", function()
         local entries = AegisPathfinder.errorLog or {}
@@ -2422,6 +2507,7 @@ function AegisPathfinder:CreateErrorLogFrame()
             f.editBox:SetCursorPosition(0)
         end
         f.editBox:HighlightText(0)
+        f.scrollbar:SetValue(0)
     end)
 
     self.errorLogFrame = f

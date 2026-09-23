@@ -302,13 +302,39 @@ end
 
 function AegisPathfinder:LoadGuide(name, complete)
 	if not name then return end
-	if complete then
-		self.db.char.completion[self.db.char.currentguide] = 1
-	elseif self.actions then
-		self.db.char.completion[self.db.char.currentguide] = (self.current - 1) / table.getn(self.actions)
+	-- Record how far through the outgoing guide the player got. With every
+	-- tab closed there is no outgoing guide -- no step, nothing parsed -- and
+	-- nothing to record.
+	local outgoing = self.db.char.currentguide
+	if outgoing and outgoing ~= AegisPathfinder.NO_GUIDE then
+		if complete then
+			self.db.char.completion[outgoing] = 1
+		elseif self.actions and self.current and table.getn(self.actions) > 0 then
+			self.db.char.completion[outgoing] = (self.current - 1) / table.getn(self.actions)
+		end
 	end
 
 	self.db.char.currentguide = self.guides[name] and name or self.guidelist[1]
+
+	--[[ Keep the active tab pointing at what is actually loaded.
+
+		Guides also change without anyone touching a tab -- LoadNextGuide when
+		a route rolls over, or picking a different route pack -- and a tab bar
+		naming the guide you were on two zones ago is worse than none.
+	]]
+	if self.EnsureTabs then
+		local tab = self:GetActiveTab()
+		if not tab then
+			-- Loaded with every tab closed -- a route pick, or first login --
+			-- so the guide gets a tab rather than showing with none.
+			table.insert(self:EnsureTabs(), { guide = self.db.char.currentguide, step = 1 })
+			self.db.char.activetab = 1
+			self:SyncBranchState()
+		elseif tab.guide ~= self.db.char.currentguide then
+			tab.guide = self.db.char.currentguide
+			tab.step = 1
+		end
+	end
 
 	self:Debug(string.format("Loading guide: %s", name))
 	self.guidechanged = true
