@@ -8,6 +8,7 @@ Checks what can be checked without a WoW client:
   toc      every file the .toc loads exists, in order
   xml      every Guides.xml lists files that exist, and lists all of them
   theme    no Blizzard chrome or stock icon art on a themed panel
+  scope    no bare `Theme` in a file that never declares one
   media    every texture is a TGA the 1.12 client can load
   textures every path Theme.lua hands the client resolves to a real file
 
@@ -283,6 +284,32 @@ def check_theme(rep):
     rep.ok("theme", len(files))
 
 
+# A bare `Theme` only works in a file that declares `local Theme`: there is no
+# global of that name, and Core.lua loads before Theme.lua so it could not have
+# one anyway. Three buttons in Core.lua were written as Theme:PanelButton and
+# failed on first use, aborting the route and starting-zone dialogs half-built.
+BARE_THEME = re.compile(r"(?<![.\w])Theme\s*[:.]")
+# Top level only: a `local Theme` inside one function does nothing for the
+# rest of the file, and letting it exempt the whole file is how this check
+# first passed over the very bug it was written for.
+LOCAL_THEME = re.compile(r"^local\s+Theme\s*=", re.M)
+
+
+def check_theme_scope(rep):
+    files = [p for p in sorted(walk({".lua"})) if is_shipped(p)]
+    for path in files:
+        src = open(path, encoding="utf-8", errors="replace").read()
+        if LOCAL_THEME.search(src) or os.path.basename(path) == "Theme.lua":
+            continue
+        code = strip_lua_noise(src)
+        for lineno, line in enumerate(code.splitlines(), 1):
+            if BARE_THEME.search(line):
+                rep.fail("scope", path,
+                         "line %d uses a bare Theme with no `local Theme` in the file "
+                         "-- use AegisPathfinder.Theme" % lineno)
+    rep.ok("scope", len(files))
+
+
 def check_media(rep):
     files = sorted(walk({".tga", ".blp"}))
     for path in files:
@@ -359,6 +386,7 @@ def main():
     check_toc(rep)
     check_xml(rep)
     check_theme(rep)
+    check_theme_scope(rep)
     check_media(rep)
     check_texture_paths(rep)
     return rep.summary()

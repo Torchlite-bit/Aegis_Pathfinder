@@ -48,10 +48,11 @@ local FONT_ROLES = {
 
 function WidgetWarlock.SummonFontString(parent, layer, inherit, text, a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20)
 	local fs = parent:CreateFontString(nil, layer)
-	local Theme = AegisPathfinder.Theme
+	-- Looked up per call: this file can load before Theme.lua.
+	local theme = AegisPathfinder.Theme
 	local role = inherit and FONT_ROLES[inherit] or FONT_ROLES.GameFontNormal
-	Theme:SetFont(fs, role[1], role[2])
-	Theme:TextColor(fs, role[3])
+	theme:SetFont(fs, role[1], role[2])
+	theme:TextColor(fs, role[3])
 	fs:SetText(text)
 	if AegisPathfinder.select(1, a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20) then fs:SetPoint(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20) end
 	return fs

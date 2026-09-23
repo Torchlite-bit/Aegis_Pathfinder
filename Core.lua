@@ -71,8 +71,9 @@ local DIALOG_CHROME = 30 + 18
 
 AegisPathfinder.icons = setmetatable({}, {
     __index = function(_, action)
-        local Theme = AegisPathfinder.Theme
-        return Theme.actionIconByName[action] or Theme.actionIcon.N
+        -- Looked up per call: Core.lua loads before Theme.lua.
+        local theme = AegisPathfinder.Theme
+        return theme.actionIconByName[action] or theme.actionIcon.N
     end,
 })
 
@@ -1932,7 +1933,7 @@ function AegisPathfinder:CreateRouteSelectorFrame()
     local lastPackBtn
     local availablePacks = self:GetAvailableRoutePacks()
     for i, pack in ipairs(availablePacks) do
-        local btn = Theme:PanelButton(f)
+        local btn = AegisPathfinder.Theme:PanelButton(f)
         btn:SetWidth(200)
         btn:SetHeight(24)
         if lastPackBtn then
@@ -2011,7 +2012,7 @@ function AegisPathfinder:CreateRouteSelectorFrame()
     for i, raceInfo in ipairs(races) do
         local displayName = raceInfo.name
         local routeName = raceInfo.route
-        local btn = Theme:PanelButton(f)
+        local btn = AegisPathfinder.Theme:PanelButton(f)
         btn:SetWidth(200)
         btn:SetHeight(30)
         if lastButton then
@@ -2376,7 +2377,7 @@ function AegisPathfinder:CreateStartingZoneSelectorFrame()
     -- Zone buttons (will be populated dynamically)
     f.zoneButtons = {}
     for i = 1, 6 do
-        local btn = Theme:PanelButton(buttonContainer)
+        local btn = AegisPathfinder.Theme:PanelButton(buttonContainer)
         btn:SetWidth(300)
         btn:SetHeight(28)
         btn:SetPoint("TOP", buttonContainer, "TOP", 0, -(i - 1) * 32)
