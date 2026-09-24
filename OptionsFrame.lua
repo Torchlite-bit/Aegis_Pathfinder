@@ -347,6 +347,7 @@ function AegisPathfinder:CreateConfigPanel()
 		{ key = "showactiveitems", label = "Active items window" },
 		{ key = "showactivetargets", label = "Active targets window" },
 		{ key = "showmacros", label = "Macros window (AegisTarget, AegisItem)" },
+		{ key = "questicons", label = "Quest icons: mark quest NPCs as you mouse over them" },
 	}
 	for _, def in ipairs(BEHAVIOUR) do
 		local key = def.key
@@ -354,7 +355,8 @@ function AegisPathfinder:CreateConfigPanel()
 			AegisPathfinder.db.char[key] = on
 			-- The settings with something on screen to update.
 			if key == "showminimapbutton" then AegisPathfinder:UpdateMinimapButton() end
-			if key == "showactiveitems" or key == "showactivetargets" or key == "showmacros" then
+			if key == "showactiveitems" or key == "showactivetargets" or key == "showmacros"
+				or key == "questicons" then
 				AegisPathfinder:RefreshActiveFrames()
 			end
 		end)

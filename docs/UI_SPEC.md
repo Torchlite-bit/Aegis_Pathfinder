@@ -468,10 +468,25 @@ the units that drop its objective items, likeliest drop first. pfQuest's
 step's action glyph (the kill glyph in `danger` for an enemy) and, in its
 corner, the raid mark it will apply -- the one piece of Blizzard art here,
 because it is the in-game marker itself. A click is `TargetByName(name, true)`
-and `SetRaidTarget`: a star for a friend, a skull for the first kind of enemy
-and a cross for the rest, going by `UnitCanAttack` over the database. An
+and `SetRaidTarget` with the entry's context mark (quest icons, below). An
 existing mark is not set again (which would toggle it off). The tile of
 whoever is targeted takes the accent border, relit on `PLAYER_TARGET_CHANGED`.
+
+**Quest icons.** Each target carries a context and the mark that says it,
+as RestedXP's Quest Icons do: `talk` star (an ACCEPT's starters, a TURNIN's
+enders, `|NPC|` names), `interact` square (a friendly objective unit), `kill`
+skull (a hostile objective unit), `loot` cross (a unit that drops an
+objective item). pfQuest's `fac` decides friend from enemy; at marking time a
+`kill` or `loot` unit that `UnitCanAttack` says cannot be attacked gets the
+square. On `UPDATE_MOUSEOVER_UNIT` and `PLAYER_TARGET_CHANGED` the unit
+(`mouseover`, `target`) is marked if its name is wanted: the current step's
+targets first, then, for each quest in the log (ids from ClassicAPI's
+`C_QuestLog.GetQuestIDForLogIndex`, headers skipped), an unfinished quest's
+COMPLETE targets or a finished one's TURNIN targets, up to 40 names, rebuilt
+on every repaint. Never over an existing mark, on a player or a corpse, or in
+a raid. `questicons` switches it off. The step's targets are worked out
+whether or not the Targets window is showing: the icons and the macro use
+them too.
 
 **Macros**, the third window, under Targets (or whichever is showing above
 it), with a tile for each of two character macros the addon writes and keeps

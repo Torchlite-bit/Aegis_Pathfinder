@@ -113,13 +113,32 @@ use — the current step's, and those for any quest in your log that is not done
 yet. **Active Targets** has a button for whoever the step wants you to find: the
 quest's giver or hand-in, what it wants killed, what drops what it wants
 collected, the trainer a profession step sends you to. Click one to target it
-and mark it — a star on a friendly NPC, a skull (then a cross) on an enemy.
+and mark it for what the quest wants with them (see **Quest icons**).
 `/apg target` does the same for the next one each time you press it, so a macro
 with just that line works like RestedXP's; both also have key bindings under
 *AEGIS: Pathfinder* in the key bindings menu. Targets come from pfQuest's
 database, so quest steps need pfQuest; profession steps name their trainers
 themselves. Either window can be dragged anywhere, or switched off in the
 options panel.
+
+**Quest icons.** Mouse over or target anyone a quest wants and the right raid
+marker goes on them by itself, as RestedXP's Quest Icons do:
+
+| Marker | Means | Who |
+|---|---|---|
+| Star | Talk | Gives or takes the quest; the trainer or vendor a profession step names |
+| Square | Interact | A friendly NPC the quest's objectives involve |
+| Skull | Kill | An enemy the quest wants killed |
+| Cross | Loot | An enemy that drops what the quest wants collected |
+
+It covers the current step and every quest in your log: what an unfinished
+quest wants killed or looted, and who takes a finished one. It never replaces a
+marker already there (a party member's, say), skips players and corpses, and
+stays out of raids, where markers belong to the leaders. Someone marked for
+killing who turns out not to be attackable gets a square instead. Quest-log
+marks need pfQuest and ClassicAPI (which gives the log's quest ids); without
+ClassicAPI only the current step is marked. The options panel can switch it
+off.
 
 **Macros.** A third small window, **Macros**, holds two real macros the addon
 writes into your character's macro book and keeps up to date: **AegisTarget**,

@@ -30,15 +30,31 @@ TargetByName = function(name, exact)
 	world.lastExact = exact
 	if world.near[name] then target = name end
 end
-UnitExists = function(unit) return unit == "target" and target ~= nil end
-UnitName = function(unit) if unit == "target" then return target end end
-UnitCanAttack = function(_, unit) return unit == "target" and world.hostile[target] or false end
-GetRaidTargetIndex = function(unit) return unit == "target" and marks[target] or nil end
+local mouseover
+local function who(unit)
+	if unit == "target" then return target elseif unit == "mouseover" then return mouseover end
+end
+UnitExists = function(unit) return who(unit) ~= nil end
+UnitName = function(unit) return who(unit) end
+UnitCanAttack = function(_, unit) return who(unit) ~= nil and world.hostile[who(unit)] or false end
+GetRaidTargetIndex = function(unit) return who(unit) and marks[who(unit)] or nil end
 SetRaidTarget = function(unit, index)
 	world.setCount = (world.setCount or 0) + 1
-	if unit == "target" then marks[target] = index end
+	if who(unit) then marks[who(unit)] = index end
 end
 UseContainerItem = function(bag, slot) table.insert(used, { bag, slot }) end
+-- The quest log (ClassicAPI gives its quest ids).
+local party = { raid = 0 }
+UnitIsPlayer = function(unit) return world.players and world.players[UnitName(unit)] or false end
+UnitIsDead = function(unit) return world.dead and world.dead[UnitName(unit)] or false end
+GetNumRaidMembers = function() return party.raid end
+local questLog = {}
+GetNumQuestLogEntries = function() return table.getn(questLog) end
+GetQuestLogTitle = function(i)
+	local q = questLog[i]
+	return q.title, 1, nil, q.header, nil, q.complete and 1 or nil
+end
+C_QuestLog = { GetQuestIDForLogIndex = function(i) return questLog[i] and questLog[i].id end }
 
 -- The macro book, as 1.12 keeps it: 18 account slots, then 18 character ones.
 local book = { account = {}, character = {} }
@@ -301,8 +317,10 @@ check(names(t) == "Deputy Willem", "a TURNIN step's is who takes it, got '%s'", 
 t = AegisPathfinder:GetActiveTargets(3)
 check(names(t) == "Kobold Vermin, Kobold Worker, Defias Thug, Kobold Laborer",
 	"a COMPLETE step's are what it wants killed, then what drops what it wants, likeliest first, got '%s'", names(t))
-check(t[1].kind == "enemy" and t[1].mark == MARK.SKULL, "the first enemy gets a skull")
-check(t[2].mark == MARK.CROSS and t[4].mark == MARK.CROSS, "the rest a cross")
+check(t[1].context == "kill" and t[1].mark == MARK.SKULL, "an enemy to kill gets a skull")
+check(t[2].mark == MARK.SKULL, "every one of them")
+check(t[3].context == "loot" and t[3].mark == MARK.CROSS and t[4].mark == MARK.CROSS,
+	"one to loot what the quest wants, a cross")
 
 t = AegisPathfinder:GetActiveTargets(6)
 check(names(t) == "Kobold Tunneler, Murloc Streamrunner",
@@ -371,18 +389,22 @@ check(target == "Kobold Vermin", "someone out of range is not targeted")
 check(string.find(lastPrint(), "Kobold Worker isn't close enough", 1, true) ~= nil,
 	"and it says so, got '%s'", lastPrint())
 
--- The client knows better than the database: a friend who turns out to be
--- attackable gets a skull, an enemy who is not gets a star.
+-- Someone to talk to gets a star.
 AegisPathfinder.current = 1
 AegisPathfinder:PaintActiveFrames()
 world.near["Marshal Dughan"] = true
-world.hostile["Marshal Dughan"] = true
-AegisPathfinder:TargetActive(AegisPathfinder:GetActiveTargets(1)[1])
-check(marks["Marshal Dughan"] == MARK.SKULL, "an attackable 'friend' gets a skull")
-world.hostile["Marshal Dughan"] = nil
 marks = {}
 AegisPathfinder:TargetActive(AegisPathfinder:GetActiveTargets(1)[1])
-check(marks["Marshal Dughan"] == MARK.STAR, "a friend gets a star")
+check(marks["Marshal Dughan"] == MARK.STAR, "a quest giver gets a star")
+
+-- The client knows better than the database: someone "to kill" who cannot
+-- be attacked is someone to interact with.
+world.near["Kobold Vermin"], world.hostile["Kobold Vermin"] = true, nil
+marks = {}
+AegisPathfinder:TargetActive(AegisPathfinder:GetActiveTargets(3)[1])
+check(marks["Kobold Vermin"] == MARK.SQUARE, "an unattackable kill target gets a square, got %s",
+	tostring(marks["Kobold Vermin"]))
+world.hostile["Kobold Vermin"] = true
 check(targets.tiles[1].icon:GetTexture() == Theme.actionIcon.A, "a quest giver's tile is the accept glyph")
 
 -- /apg target: the next one after whoever is targeted, round and round.
@@ -397,7 +419,7 @@ AegisPathfinder:TargetNextActive()
 check(target == "Kobold Laborer", "and the next, got %s", tostring(target))
 AegisPathfinder:TargetNextActive()
 check(target == "Kobold Vermin", "and back round, got %s", tostring(target))
-check(marks["Kobold Laborer"] == MARK.CROSS, "the second kind of enemy gets a cross")
+check(marks["Kobold Laborer"] == MARK.CROSS, "a drop source gets a cross")
 world.near = {}
 target = nil
 local before = table.getn(printed)
@@ -470,6 +492,118 @@ check(not items:IsShown(), "but once the burst has passed")
 check(not driver:IsShown(), "and then it rests")
 stub.bags = saved
 
+-- Quest icons -----------------------------------------------------------------------------
+
+-- A friendly NPC among a quest's objectives is someone to interact with.
+pfDB.quests.data[400] = { obj = { U = { 1 } } }
+AegisPathfinder.actions[8], AegisPathfinder.quests[8], AegisPathfinder.tags[8] = "COMPLETE", "Speak@8@", "|QID|400|"
+local talk = AegisPathfinder:GetActiveTargets(8)[1]
+check(talk and talk.context == "interact" and talk.mark == MARK.SQUARE,
+	"a friend the objectives involve is marked square to interact, got %s", tostring(talk and talk.context))
+
+-- The mark goes on by itself on mouseover, for the step's targets...
+AegisPathfinder.current = 3
+AegisPathfinder:PaintActiveFrames()
+marks = {}
+world.hostile = { ["Kobold Vermin"] = true, ["Defias Thug"] = true, ["Murloc Streamrunner"] = true }
+mouseover = "Kobold Vermin"
+event = "UPDATE_MOUSEOVER_UNIT"
+this = AegisPathfinder.activeEvents
+AegisPathfinder.activeEvents:GetScript("OnEvent")()
+check(marks["Kobold Vermin"] == MARK.SKULL, "mousing over a kill target puts a skull on it")
+mouseover = "Defias Thug"
+AegisPathfinder.activeEvents:GetScript("OnEvent")()
+check(marks["Defias Thug"] == MARK.CROSS, "and a cross on a drop source")
+mouseover = "Stonetusk Boar"
+AegisPathfinder.activeEvents:GetScript("OnEvent")()
+check(marks["Stonetusk Boar"] == nil, "nobody a quest wants is left alone")
+
+-- ...and on targeting.
+target = "Kobold Worker"
+world.hostile["Kobold Worker"] = true
+event = "PLAYER_TARGET_CHANGED"
+AegisPathfinder.activeEvents:GetScript("OnEvent")()
+check(marks["Kobold Worker"] == MARK.SKULL, "targeting one marks it too")
+
+-- Never over someone else's mark, a player, the dead, or in a raid.
+marks = { ["Kobold Vermin"] = 5 }
+mouseover = "Kobold Vermin"
+event = "UPDATE_MOUSEOVER_UNIT"
+AegisPathfinder.activeEvents:GetScript("OnEvent")()
+check(marks["Kobold Vermin"] == 5, "an existing mark stays -- a party member's, say")
+marks = {}
+world.players = { ["Kobold Vermin"] = true }
+AegisPathfinder.activeEvents:GetScript("OnEvent")()
+check(marks["Kobold Vermin"] == nil, "a player who shares the name is not marked")
+world.players, world.dead = nil, { ["Kobold Vermin"] = true }
+AegisPathfinder.activeEvents:GetScript("OnEvent")()
+check(marks["Kobold Vermin"] == nil, "nor a corpse")
+world.dead, party.raid = nil, 10
+AegisPathfinder.activeEvents:GetScript("OnEvent")()
+check(marks["Kobold Vermin"] == nil, "nor anyone in a raid, where marks are the leaders'")
+party.raid = 0
+AegisPathfinder.db.char.questicons = false
+AegisPathfinder.activeEvents:GetScript("OnEvent")()
+check(marks["Kobold Vermin"] == nil, "and nothing at all with quest icons switched off")
+AegisPathfinder.db.char.questicons = nil
+AegisPathfinder.activeEvents:GetScript("OnEvent")()
+check(marks["Kobold Vermin"] == MARK.SKULL, "on by default")
+
+-- Every quest in the log, not just the step's: its objectives while it is
+-- under way, whoever takes it once it is complete.
+questLog = {
+	-- A header is not a quest, whatever id the client hands back for it.
+	{ title = "Elwynn Forest", header = true, id = 200 },
+	{ title = "The Fargodeep Mine", id = 300 },
+	{ title = "A Threat Within", id = 100, complete = true },
+}
+AegisPathfinder.current = 5           -- a travel step, with no targets of its own
+AegisPathfinder:PaintActiveFrames()
+marks = {}
+mouseover = "Murloc Streamrunner"
+AegisPathfinder.activeEvents:GetScript("OnEvent")()
+check(marks["Murloc Streamrunner"] == MARK.CROSS, "a quest in the log marks what drops its items")
+mouseover = "Deputy Willem"
+AegisPathfinder.activeEvents:GetScript("OnEvent")()
+check(marks["Deputy Willem"] == MARK.STAR, "a complete one marks who takes it")
+mouseover = "Marshal Dughan"
+AegisPathfinder.activeEvents:GetScript("OnEvent")()
+check(marks["Marshal Dughan"] == nil, "not who gave it -- that is done")
+mouseover = "Kobold Vermin"
+AegisPathfinder.activeEvents:GetScript("OnEvent")()
+check(marks["Kobold Vermin"] == nil, "and a zone header in the log is not read as a quest")
+
+-- The Targets window switched off, the step's targets still drive the
+-- quest icons and /apg target.
+questLog = {}
+AegisPathfinder.db.char.showactivetargets = false
+AegisPathfinder.current = 3
+AegisPathfinder:PaintActiveFrames()
+check(not targets:IsShown(), "the window stays hidden")
+marks = {}
+mouseover = "Kobold Vermin"
+AegisPathfinder.activeEvents:GetScript("OnEvent")()
+check(marks["Kobold Vermin"] == MARK.SKULL, "but the quest icons still know the step's targets")
+world.near = { ["Kobold Vermin"] = true }
+target = nil
+check(AegisPathfinder:TargetNextActive() and target == "Kobold Vermin", "and so does /apg target")
+AegisPathfinder.db.char.showactivetargets = nil
+world.near, target = {}, nil
+
+-- Without ClassicAPI's quest ids, the step alone.
+local api = C_QuestLog
+C_QuestLog = nil
+questLog = { { title = "The Fargodeep Mine", id = 300 } }
+AegisPathfinder.current = 5
+AegisPathfinder:PaintActiveFrames()
+marks = {}
+mouseover = "Murloc Streamrunner"
+AegisPathfinder.activeEvents:GetScript("OnEvent")()
+check(marks["Murloc Streamrunner"] == nil, "no quest ids, no quest-log marks")
+C_QuestLog = api
+questLog, mouseover = {}, nil
+AegisPathfinder.actions[8], AegisPathfinder.quests[8], AegisPathfinder.tags[8] = nil, nil, nil
+
 -- Macros ---------------------------------------------------------------------------------
 
 local mw = AegisPathfinder.macrosframe
@@ -520,7 +654,7 @@ target, marks = nil, {}
 this = mw.targetTile
 mw.targetTile:GetScript("OnClick")()
 check(target == "Kobold Worker", "the click targets the first one in range, got %s", tostring(target))
-check(marks["Kobold Worker"] == MARK.CROSS, "and marks it")
+check(marks["Kobold Worker"] == MARK.SKULL, "and marks it")
 used = {}
 this = mw.itemTile
 mw.itemTile:GetScript("OnClick")()

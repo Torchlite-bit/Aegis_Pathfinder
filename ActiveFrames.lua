@@ -11,9 +11,12 @@
 	Active Targets holds a button for whoever the current step wants you to
 	find -- the quest's giver or hand-in, what its objectives want killed or
 	drop, the trainer a profession step sends you to. A click targets them and
-	marks them: a star on a friendly NPC, a skull (then a cross, for a second
-	kind) on an enemy. RestedXP does this with a macro; a 1.12 addon may call
-	TargetByName and SetRaidTarget itself, so this needs none.
+	marks them for what the quest wants with them: a star to talk, a square
+	to interact with, a skull to kill, a cross to loot. RestedXP does this with a macro; a 1.12 addon may call TargetByName
+	and SetRaidTarget itself, so this needs none.
+
+	Quest icons put the same marks on by themselves as you mouse over or
+	target anyone the current step or any quest in your log wants.
 
 	The names come from the step's |NPC| tag, and from pfQuest's database by
 	the step's quest id: its starters, enders, objective units, and the units
@@ -40,9 +43,19 @@ local MAX_TARGETS = 4
 local THROTTLE = 0.25
 
 -- SetRaidTarget's indices.
-local STAR, CROSS, SKULL = 1, 7, 8
-AegisPathfinder.RAID_MARKS = { STAR = STAR, CROSS = CROSS, SKULL = SKULL }
-local MARK_NAME = { [STAR] = "a star", [CROSS] = "a cross", [SKULL] = "a skull" }
+local STAR, SQUARE, CROSS, SKULL = 1, 6, 7, 8
+AegisPathfinder.RAID_MARKS = { STAR = STAR, SQUARE = SQUARE, CROSS = CROSS, SKULL = SKULL }
+
+--[[ Quest icons: which mark says what, as RestedXP has them.
+
+	  star    talk      gives or takes the quest, or a trainer or vendor
+	  square  interact  a friendly NPC the objectives involve
+	  skull   kill      an enemy the quest wants dead
+	  cross   loot      an enemy that drops what the quest wants collected
+]]
+local CONTEXT_MARK = { talk = STAR, interact = SQUARE, kill = SKULL, loot = CROSS }
+local MARK_NAME = { [STAR] = "a star (talk)", [SQUARE] = "a square (interact)",
+	[SKULL] = "a skull (kill)", [CROSS] = "a cross (loot)" }
 
 -- The raid-marker sheet is a 4x4 grid in index order.
 local MARK_SHEET = "Interface\\TargetingFrame\\UI-RaidTargetingIcons"
@@ -138,45 +151,42 @@ local function PfFriendly(id)
 	return string.find(fac, mine, 1, true) ~= nil
 end
 
---- Whom step `i` (the current one by default) wants you to find:
---- { name, kind = "npc"|"enemy", mark, action }, at most MAX_TARGETS.
-function AegisPathfinder:GetActiveTargets(i)
-	i = i or self.current
-	local out = {}
-	if not self.actions or not i or not self.actions[i] then return out end
-	local action = self.actions[i]
-
-	local seen, enemies = {}, 0
-	local function add(name, kind)
-		if not name or seen[name] or table.getn(out) >= MAX_TARGETS then return end
+-- A target list builder: `add(name, kind, context)` keeps the first of each
+-- name, up to `max`, marked for its context.
+local function TargetList(action, max)
+	local out, seen = {}, {}
+	local function add(name, kind, context)
+		if not name or seen[name] or table.getn(out) >= max then return end
 		seen[name] = true
-		local mark = STAR
-		if kind == "enemy" then
-			enemies = enemies + 1
-			mark = enemies == 1 and SKULL or CROSS
-		end
-		table.insert(out, { name = name, kind = kind, mark = mark, action = action })
+		table.insert(out, { name = name, kind = kind, context = context,
+			mark = CONTEXT_MARK[context], action = action })
 	end
-	local function units(list)
-		for _, id in ipairs(list or {}) do
-			add(PfUnitName(id), PfFriendly(id) and "npc" or "enemy")
-		end
-	end
+	return out, add
+end
 
-	for _, name in ipairs(self:GetObjectiveTag("NPC", i) or {}) do add(name, "npc") end
-
-	local qid = tonumber((self:GetObjectiveTag("QID", i)))
+-- Who quest `qid` sends you to, by what the step does with it: its givers
+-- to ACCEPT, its takers to TURNIN, and for COMPLETE its objective units
+-- (friends to interact with, enemies to kill) then whoever drops its
+-- objective items, likeliest first.
+local function QuestTargets(qid, action, add)
 	local quests = pfDB and pfDB.quests and pfDB.quests.data
 	local quest = qid and quests and quests[qid]
-	if not quest then return out end
+	if not quest then return end
+
+	local function units(list, context)
+		for _, id in ipairs(list or {}) do
+			local friend = PfFriendly(id)
+			add(PfUnitName(id), friend and "npc" or "enemy",
+				context or (friend and "interact" or "kill"))
+		end
+	end
 
 	if action == "ACCEPT" then
-		units(quest.start and quest.start.U)
+		units(quest.start and quest.start.U, "talk")
 	elseif action == "TURNIN" then
-		units(quest["end"] and quest["end"].U)
+		units(quest["end"] and quest["end"].U, "talk")
 	elseif action == "COMPLETE" then
 		units(quest.obj and quest.obj.U)
-		-- Whoever drops what it wants collected, likeliest first.
 		local items = pfDB.items and pfDB.items.data
 		for _, itemId in ipairs(quest.obj and quest.obj.I or {}) do
 			local drops = items and items[itemId] and items[itemId].U
@@ -190,10 +200,61 @@ function AegisPathfinder:GetActiveTargets(i)
 			end)
 			local ids = {}
 			for _, d in ipairs(sorted) do table.insert(ids, d.id) end
-			units(ids)
+			units(ids, "loot")
 		end
 	end
+end
+
+--- Whom step `i` (the current one by default) wants you to find:
+--- { name, kind = "npc"|"enemy", context, mark, action }, at most
+--- MAX_TARGETS. `context` is talk, interact, kill or loot; `mark` the raid
+--- mark that says so.
+function AegisPathfinder:GetActiveTargets(i)
+	i = i or self.current
+	if not self.actions or not i or not self.actions[i] then return {} end
+	local action = self.actions[i]
+	local out, add = TargetList(action, MAX_TARGETS)
+
+	for _, name in ipairs(self:GetObjectiveTag("NPC", i) or {}) do add(name, "npc", "talk") end
+	QuestTargets(tonumber((self:GetObjectiveTag("QID", i))), action, add)
 	return out
+end
+
+--[[ Quest icons.
+
+	The mark goes on by itself when you mouse over or target someone a quest
+	wants: the current step's targets, and for every other quest in your log
+	its objectives -- or, once it is complete, whoever takes it. Only on the
+	unmarked, the living and the non-players, and not in a raid, where marks
+	belong to its leaders.
+]]
+local MAX_ICON_TARGETS = 40
+
+--- Everyone quest icons may mark, by name: the step's first, then the log's.
+function AegisPathfinder:GetQuestIconTargets(stepTargets)
+	local byName, count = {}, 0
+	local function keep(t)
+		if not byName[t.name] and count < MAX_ICON_TARGETS then
+			byName[t.name] = t
+			count = count + 1
+		end
+	end
+	for _, t in ipairs(stepTargets or {}) do keep(t) end
+
+	-- The quest log's ids come from ClassicAPI; without it, the step alone.
+	local ids = C_QuestLog and C_QuestLog.GetQuestIDForLogIndex
+	if not ids or not pfDB then return byName end
+	for li = 1, GetNumQuestLogEntries() or 0 do
+		local _, _, _, isHeader, _, isComplete = GetQuestLogTitle(li)
+		local qid = not isHeader and ids(li)
+		if qid then
+			local action = isComplete == 1 and "TURNIN" or "COMPLETE"
+			local list, add = TargetList(action, MAX_TARGETS)
+			QuestTargets(qid, action, add)
+			for _, t in ipairs(list) do keep(t) end
+		end
+	end
+	return byName
 end
 
 --[[ The actions. ]]
@@ -219,19 +280,35 @@ function AegisPathfinder:UseActiveItem(n)
 	return true
 end
 
--- Mark the current target as `entry`: a star on a friend, the entry's skull
--- or cross on an enemy. What the client says about the unit outranks what the
--- database did. An existing mark is left alone -- setting it again is how the
--- stock UI takes one off.
-local function Mark(entry)
-	local mark = STAR
-	if UnitCanAttack("player", "target") then
-		mark = entry.kind == "enemy" and entry.mark or SKULL
+-- Mark `unit` for `entry`'s context. What the client says outranks the
+-- database: someone to kill or loot who cannot be attacked is someone to
+-- interact with. The same mark is not set again -- setting it again is how
+-- the stock UI takes one off.
+local function Mark(entry, unit)
+	unit = unit or "target"
+	local mark = entry.mark or STAR
+	if (entry.context == "kill" or entry.context == "loot") and not UnitCanAttack("player", unit) then
+		mark = SQUARE
 	end
-	if SetRaidTarget and GetRaidTargetIndex("target") ~= mark then
-		SetRaidTarget("target", mark)
+	if SetRaidTarget and GetRaidTargetIndex(unit) ~= mark then
+		SetRaidTarget(unit, mark)
 	end
 	return true
+end
+
+local iconTargets = {}
+
+--- Quest icons: mark `unit` ("mouseover" or "target") if a quest wants it.
+function AegisPathfinder:AutoMark(unit)
+	local char = self.db and self.db.char
+	if not char or char.questicons == false then return false end
+	if not UnitExists(unit) or UnitIsPlayer(unit) or UnitIsDead(unit) then return false end
+	if GetNumRaidMembers and GetNumRaidMembers() > 0 then return false end
+	-- Someone's mark already, ours or a party member's.
+	if GetRaidTargetIndex(unit) then return false end
+	local entry = iconTargets[UnitName(unit)]
+	if not entry then return false end
+	return Mark(entry, unit)
 end
 
 --- Target `entry` by name and mark it. False, and a word in chat unless
@@ -696,16 +773,21 @@ function AegisPathfinder:PaintActiveFrames()
 		items:Hide()
 	end
 
-	activeTargets = char.showactivetargets ~= false and self:GetActiveTargets() or {}
-	n = table.getn(activeTargets)
+	-- The step's targets feed the macro and the quest icons as well, so they
+	-- are worked out whether or not their window is showing.
+	activeTargets = self:GetActiveTargets()
+	iconTargets = self:GetQuestIconTargets(activeTargets)
+	n = char.showactivetargets ~= false and table.getn(activeTargets) or 0
 	if n > 0 then
 		Fit(targets, n, TargetTile)
 		for i = 1, n do
 			local b, entry = targets.tiles[i], activeTargets[i]
-			local glyph = entry.kind == "enemy" and Theme.actionIcon.K
+			local hostile = entry.context == "kill" or entry.context == "loot"
+			local glyph = hostile and Theme.actionIcon.K
+				or entry.context == "interact" and Theme.actionIcon.U
 				or Theme.actionIconByName[entry.action] or Theme.actionIcon.N
 			b.icon:SetTexture(glyph)
-			Theme:Tint(b.icon, entry.kind == "enemy" and "danger" or "text")
+			Theme:Tint(b.icon, hostile and "danger" or "text")
 			b.mark:SetTexCoord(MarkCoords(entry.mark))
 			b.mark:Show()
 			b.count:SetText("")
@@ -758,9 +840,13 @@ end
 local events = CreateFrame("Frame")
 events:RegisterEvent("BAG_UPDATE")
 events:RegisterEvent("PLAYER_TARGET_CHANGED")
+events:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
 events:SetScript("OnEvent", function()
 	if event == "PLAYER_TARGET_CHANGED" then
 		AegisPathfinder:PaintTargetBorders()
+		AegisPathfinder:AutoMark("target")
+	elseif event == "UPDATE_MOUSEOVER_UNIT" then
+		AegisPathfinder:AutoMark("mouseover")
 	else
 		Request(THROTTLE)
 	end

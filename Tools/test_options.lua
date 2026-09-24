@@ -244,7 +244,7 @@ check(db.showminimapbutton == false and AegisPathfinder.__minimapRefreshed,
 
 -- The Active Items, Active Targets and Macros windows: a switch each, on unless the
 -- saved setting says otherwise, repainting as they change.
-for _, key in ipairs({ "showactiveitems", "showactivetargets", "showmacros" }) do
+for _, key in ipairs({ "showactiveitems", "showactivetargets", "showmacros", "questicons" }) do
 	local sw = frame.switches[key]
 	check(sw ~= nil, "%s has a switch", key)
 	if sw then
