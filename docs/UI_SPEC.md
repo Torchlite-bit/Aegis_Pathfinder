@@ -74,11 +74,11 @@ client's equivalent, `GameTooltip`, is Blizzard's bevelled card in FrizQuadrata
 addon's tooltips too. `Theme:ShowTip(owner, side, text, detail, color)` is the
 addon's own: a `panel-2` card in the body face, the hint in `--text` over dimmer
 detail lines, as wide as its longest line up to 260px, in the `TOOLTIP` strata,
-hiding itself if its owner disappears under the cursor. Only the use-item
-button still opens `GameTooltip`, since only it can show a game item, and
-`Tools/verify.py` fails any other file that does. The use-item button itself
-is the theme's rounded tile around the item's icon now, not
-`ItemButtonTemplate`'s square action-button border.
+hiding itself if its owner disappears under the cursor. Only the Active Items
+buttons still open `GameTooltip`, since only it can show a game item, and
+`Tools/verify.py` fails any other file that does. Those buttons are the theme's
+rounded tile around the item's icon, not `ItemButtonTemplate`'s square
+action-button border.
 
 **Gradients.** Baked into the texture (`progress-fill.tga`) — there is no
 runtime gradient.
@@ -147,9 +147,9 @@ went with it.
 Almost nothing in that file was the card, though. `UpdateStatusFrame` is the
 scan that walks the step list, decides which step you are on, auto-completes
 what ClassicAPI can resolve, drives the waypoint and loads the next guide when
-one runs out. That is now `GuideEngine.lua`, along with the use-item button --
-a surface of its own, for `|U|` steps, which the concept does not show and
-which had no business being deleted with the card.
+one runs out. That is now `GuideEngine.lua`. The use-item button for `|U|`
+steps lived there too until it became the Active Items window
+(`ActiveFrames.lua`, below).
 
 What the card's meta row used to paint is now `GetStepMeta`, which returns the
 quest id, a profession step's live skill range, coordinates buried in the note,
@@ -433,6 +433,53 @@ the step settles, which marks things stale for one OnUpdate, and
 Finishing the route removes it. It only syncs while the guide it was sent
 from is the one loaded. Exchange's demo mode shows made-up projects in place
 of the saved list, so nothing is sent or removed while it is on.
+
+### Active Items and Active Targets -- `ActiveFrames.lua`
+
+Not in the concept: RestedXP's two small windows, asked for by name. Each is a
+`Theme:Panel` with an 18px `Theme:Header` strip carrying its title (`ACTIVE
+ITEMS`, `ACTIVE TARGETS`, `display` 11) in place of the wordmark, and a row of
+32px tiles -- the theme's rounded square, `panel-2` fill, a hairline border
+that takes the accent on hover. The width fits the tiles or the title,
+whichever is wider. `MEDIUM` strata, not `DIALOG`: they are part of the HUD,
+not windows that stack.
+
+Until dragged, Items hangs under the guide (`TOPRIGHT` to its `BOTTOMRIGHT`,
+6px down) and Targets under Items -- or under the guide while Items has
+nothing to show. Dragged by the title, each is saved (`activeitems`,
+`activetargets`) and stays; Reset Panels forgets both. A window mid-drag is
+not re-anchored by a repaint. Each hides when it has nothing to show, and the
+options panel can switch either off (`showactiveitems`, `showactivetargets`).
+
+**Items** replaced the single floating use-item button. A tile per item the
+guide wants used, up to six, one per item however many steps want it: the
+current step's `|U|` item first, then any other step's whose quest is in the
+log and not complete. Only what is in the bags -- a tile for an item you do
+not carry is a dead button. The icon is the bag's, cropped of its bevel; a
+stack shows its count in the corner; hover is `GameTooltip:SetBagItem`. A
+click uses it from wherever it is now, and ticks the current step if that is
+a USE step for this item.
+
+**Targets**: a tile per NPC or enemy the current step wants found, up to four.
+From the step's `|NPC|` tag, and from pfQuest's database by the step's quest
+id: an ACCEPT's starters, a TURNIN's enders, a COMPLETE's objective units then
+the units that drop its objective items, likeliest drop first. pfQuest's
+`fac` string says who is friendly to the player's faction. The tile shows the
+step's action glyph (the kill glyph in `danger` for an enemy) and, in its
+corner, the raid mark it will apply -- the one piece of Blizzard art here,
+because it is the in-game marker itself. A click is `TargetByName(name, true)`
+and `SetRaidTarget`: a star for a friend, a skull for the first kind of enemy
+and a cross for the rest, going by `UnitCanAttack` over the database. An
+existing mark is not set again (which would toggle it off). The tile of
+whoever is targeted takes the accent border, relit on `PLAYER_TARGET_CHANGED`.
+
+`/apg target` and a key binding (`Bindings.xml`) target the next of them after
+whoever is targeted, so repeated presses cycle -- RestedXP's macro, without a
+macro. `/apg useitem` and a second binding use the first item.
+
+Step changes repaint on the next frame (`UpdateStatusFrame` calls
+`RefreshActiveFrames`); `BAG_UPDATE` bursts coalesce into one repaint 0.25s
+later.
 
 ### Scrollbar -- `Theme:ScrollBar`
 

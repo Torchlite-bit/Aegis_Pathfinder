@@ -344,13 +344,18 @@ function AegisPathfinder:CreateConfigPanel()
 		{ key = "skipfollowups", label = "Skip suggested follow-ups" },
 		{ key = "autobranch",    label = "Open custom-zone guides automatically" },
 		{ key = "showminimapbutton", label = "Minimap button" },
+		{ key = "showactiveitems", label = "Active items window" },
+		{ key = "showactivetargets", label = "Active targets window" },
 	}
 	for _, def in ipairs(BEHAVIOUR) do
 		local key = def.key
 		local sw = Theme:Switch(body, def.label, function(on)
 			AegisPathfinder.db.char[key] = on
-			-- The one setting with something on screen to update.
+			-- The settings with something on screen to update.
 			if key == "showminimapbutton" then AegisPathfinder:UpdateMinimapButton() end
+			if key == "showactiveitems" or key == "showactivetargets" then
+				AegisPathfinder:RefreshActiveFrames()
+			end
 		end)
 		sw:SetWidth(BODY_W)
 		sw.settingKey = key

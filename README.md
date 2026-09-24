@@ -47,6 +47,8 @@ too — the old `TurtleGuide` global is still an alias.
 | `/apg resetpanels` | Put every window back where it opens by default |
 | `/apg materials` | The shopping list: reagents for this craft, or the rest of the guide |
 | `/apg exchange` | Send the guide's remaining crafts to Aegis: Exchange, or take them back out |
+| `/apg target` | Target and mark the step's next active target (put it in a macro) |
+| `/apg useitem` | Use the first active item |
 | `/apg server` | Cycle which server you play on |
 | `/apg serverstatus` | Guide data provenance per server |
 
@@ -104,6 +106,20 @@ from Exchange** takes it all back out. Recipes you captured in Exchange
 yourself are never touched — if one shares a name with a craft on the route,
 it is set aside while the route's stands in for it and put back afterwards.
 Exchange's demo mode has to be off.
+
+**Active items and targets.** Two small windows, as RestedXP has, hang under
+the guide. **Active Items** has a button for every item the guide wants you to
+use — the current step's, and those for any quest in your log that is not done
+yet. **Active Targets** has a button for whoever the step wants you to find: the
+quest's giver or hand-in, what it wants killed, what drops what it wants
+collected, the trainer a profession step sends you to. Click one to target it
+and mark it — a star on a friendly NPC, a skull (then a cross) on an enemy.
+`/apg target` does the same for the next one each time you press it, so a macro
+with just that line works like RestedXP's; both also have key bindings under
+*AEGIS: Pathfinder* in the key bindings menu. Targets come from pfQuest's
+database, so quest steps need pfQuest; profession steps name their trainers
+themselves. Either window can be dragged anywhere, or switched off in the
+options panel.
 
 **Automatic advancement.** Accepting, completing and turning in quests, binding
 a hearthstone, and collecting tagged items all resolve themselves. So do travel
@@ -192,7 +208,7 @@ Runs everything that can be checked without a client: Lua syntax, Lua 5.0
 compatibility, `.toc` and `Guides.xml` integrity, TGA validity, that every
 texture path resolves to a real file, that no panel has drifted off the theme,
 that every window stacks rather than interleaving with the others, and
-sixteen test suites that execute the addon's own code against a stubbed 1.12 API.
+seventeen test suites that execute the addon's own code against a stubbed 1.12 API.
 
 None of it proves the UI looks right. That needs a client.
 

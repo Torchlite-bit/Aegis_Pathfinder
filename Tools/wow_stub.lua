@@ -280,7 +280,7 @@ local function newFrame(frameType, name, parent)
 	end
 	function f:GetScript(event) return self.__scripts[event] end
 	function f:HookScript(event, fn) self.__scripts[event] = fn end
-	function f:RegisterEvent() end
+	function f:RegisterEvent(e) self.__events = self.__events or {}; self.__events[e] = true end
 	function f:UnregisterEvent() end
 	function f:EnableMouse() end
 	function f:RegisterForClicks(...) self.__clicks = { ... } end
@@ -442,7 +442,7 @@ function stub.install(env)
 	env.GetContainerItemInfo = function(bag, slot)
 		local it = bagItem(bag, slot)
 		if not it then return nil end
-		return "Interface\\Icons\\INV_Misc_QuestionMark", it.count or 1, nil, 1, nil
+		return it.texture or "Interface\\Icons\\INV_Misc_QuestionMark", it.count or 1, nil, 1, nil
 	end
 	return env
 end

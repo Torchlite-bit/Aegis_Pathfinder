@@ -1099,7 +1099,7 @@ function AegisPathfinder:ResetWindowLayout()
 		self.navcallout:ClearAllPoints()
 		self.navcallout:SetPoint("TOP", UIParent, "TOP", 0, -120)
 	end
-	if self.ResetItemButton then self:ResetItemButton() end
+	if self.ResetActiveFrames then self:ResetActiveFrames() end
 	-- By name: any of these may not have been built yet.
 	for _, key in ipairs({ "errorLogFrame", "startingZoneSelectorFrame", "creditsframe" }) do
 		local w = self[key]

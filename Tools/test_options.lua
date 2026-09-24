@@ -64,6 +64,7 @@ function AegisPathfinder:LoadGuide() self.__reloaded = (self.__reloaded or 0) + 
 function AegisPathfinder:UpdateStatusFrame() end
 function AegisPathfinder:UpdateNavCallout() self.__arrowRefreshed = true end
 function AegisPathfinder:UpdateMinimapButton() self.__minimapRefreshed = true end
+function AegisPathfinder:RefreshActiveFrames() self.__activeRefreshed = (self.__activeRefreshed or 0) + 1 end
 function AegisPathfinder:QueryServerCompletedQuests() self.__rescanned = true end
 function AegisPathfinder:ShowErrorLog() self.__errorlog = true end
 
@@ -240,6 +241,19 @@ check(frame.switches.showminimapbutton ~= nil and frame.switches.showminimapbutt
 click(frame.switches.showminimapbutton)
 check(db.showminimapbutton == false and AegisPathfinder.__minimapRefreshed,
 	"which hides the button at once")
+
+-- The Active Items and Active Targets windows: a switch each, on unless the
+-- saved setting says otherwise, repainting as they change.
+for _, key in ipairs({ "showactiveitems", "showactivetargets" }) do
+	local sw = frame.switches[key]
+	check(sw ~= nil, "%s has a switch", key)
+	if sw then
+		local before = AegisPathfinder.__activeRefreshed or 0
+		click(sw)
+		check(db[key] == sw:IsOn(), "%s writes back", key)
+		check((AegisPathfinder.__activeRefreshed or 0) == before + 1, "and repaints the windows at once")
+	end
+end
 
 click(frame.waypoints.rows[2])
 check(db.waypointprovider == "TomTom", "the waypoint dropdown picks a provider, got %s",

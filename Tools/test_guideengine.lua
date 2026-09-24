@@ -73,20 +73,17 @@ check(AegisPathfinder.ToggleStatusFrame == nil,
 -- The engine is not ----------------------------------------------------------
 
 for _, fn in ipairs({ "UpdateStatusFrame", "ScheduleStatusUpdate", "SetStatusText",
-		"IsAutoDetectable", "GetStepMeta", "GetStepProse", "ToggleObjectivePanel",
-		"PositionItemButton", "PLAYER_REGEN_ENABLED" }) do
+		"IsAutoDetectable", "GetStepMeta", "GetStepProse", "ToggleObjectivePanel" }) do
 	check(type(AegisPathfinder[fn]) == "function",
 		"%s is engine, not card, and must survive", fn)
 end
 
--- The use-item button is its own surface and stays.
-check(getglobal("AegisPathfinderItemButton") ~= nil,
-	"the |U| use-item button should still exist")
-local itemButton = getglobal("AegisPathfinderItemButton")
-check(itemButton.border and itemButton.icon,
-	"drawn as the theme's tile around the item's icon, not ItemButtonTemplate")
-check(itemButton.icon.__texcoord and itemButton.icon.__texcoord[1] > 0,
-	"with the game's bevel cropped off the icon")
+-- The single use-item button became the Active Items window (ActiveFrames.lua,
+-- Tools/test_activeframes.lua); nothing here builds it any more.
+check(getglobal("AegisPathfinderItemButton") == nil,
+	"the old use-item button is the Active Items window now")
+check(AegisPathfinder.PLAYER_REGEN_ENABLED == nil,
+	"and the combat wait that only it needed went with it")
 
 -- Auto-detection -------------------------------------------------------------
 
@@ -178,22 +175,21 @@ do
 	AegisPathfinder.turnedin, AegisPathfinder.current = t, c
 end
 
--- The shopping list follows the step ------------------------------------------
+-- The shopping list and the active windows follow the step ---------------------
 
 --[[ The shopping list, and Aegis: Exchange once the list has been sent there,
 	are brought up to date whenever the current step settles -- which has to
 	include running off the end of the guide, or Exchange would keep asking
 	for the last craft's reagents after it was done. ]]
 do
-	local refreshed = 0
+	local refreshed, active = 0, 0
 	function AegisPathfinder:RefreshShoppingList() refreshed = refreshed + 1 end
+	function AegisPathfinder:RefreshActiveFrames() active = active + 1 end
 	function AegisPathfinder:GetObjectiveStatus(i) return self.turnedin[self.quests[i]] end
 	function AegisPathfinder:LoadNextGuide() return false end
 	function AegisPathfinder:GetLootRequirement() return nil end
 	function AegisPathfinder:TrackCurrentQuest() end
 	AegisPathfinder.__provider = nil   -- no waypoint to map
-	UnitAffectingCombat = function() return nil end
-	function AegisPathfinder:IsEventRegistered() return false end
 	function AegisPathfinder:UpdateOHPanel() end
 	function AegisPathfinder:UpdateNavCallout() end
 	function AegisPathfinder:RedriveQuestAutomation() end
@@ -213,11 +209,13 @@ do
 	check(AegisPathfinder.current == 2 and refreshed == 1,
 		"moving to a step refreshes the shopping list once, got step %s and %d refreshes",
 		tostring(AegisPathfinder.current), refreshed)
+	check(active == 1, "and the active items and targets once, got %d", active)
 
 	AegisPathfinder.turnedin["Read two@2@"] = true
 	ok, err = pcall(function() AegisPathfinder:UpdateStatusFrame() end)
 	check(ok, "finishing the guide runs: %s", tostring(err))
 	check(refreshed == 2, "and so does finishing the guide, got %d refreshes", refreshed)
+	check(active == 2, "which empties the active windows too, got %d", active)
 end
 
 -- Report ---------------------------------------------------------------------

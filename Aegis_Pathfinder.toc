@@ -40,6 +40,7 @@ ObjectivesFrame.lua
 OptionsFrame.lua
 GuideListFrame.lua
 MaterialsFrame.lua
+ActiveFrames.lua
 MinimapButton.lua
 
 # Routes

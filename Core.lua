@@ -94,6 +94,8 @@ local defaults = {
     overviewmode = false,
     shownavcallout = true,
     showminimapbutton = true,
+    showactiveitems = true,   -- see ActiveFrames.lua
+    showactivetargets = true,
     server = nil,             -- see Servers.lua; nil means the default dataset
     showuseitem = true,
     showuseitemcomplete = true,
@@ -161,6 +163,18 @@ local options = {
             desc = "The shopping list: reagents for this craft and the rest of the guide",
             type = "execute",
             func = function() AegisPathfinder:ToggleMaterialsPanel() end,
+        },
+        Target = {
+            name = "Target",
+            desc = "Target and mark the current step's next active target -- put /apg target in a macro",
+            type = "execute",
+            func = function() AegisPathfinder:TargetNextActive() end,
+        },
+        UseItem = {
+            name = "Use Item",
+            desc = "Use the first active item",
+            type = "execute",
+            func = function() AegisPathfinder:UseActiveItem(1) end,
         },
         Exchange = {
             name = "Exchange",
@@ -566,7 +580,7 @@ function AegisPathfinder:OnInitialize()
     if self.myfaction == nil then
         self:RegisterEvent("PLAYER_ENTERING_WORLD")
     end
-    self:PositionItemButton()
+    self:PositionActiveFrames()
     -- The panel is the addon's only window and the concept has it open, so it
     -- opens with the client unless the player closed it last session.
     if self.db.char.panelopen ~= false then

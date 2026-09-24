@@ -7,8 +7,8 @@
 	waypoint and loads the next guide when one runs out. The objectives panel
 	renders; this decides what there is to render.
 
-	What is left of the UI here is the use-item button -- the floating icon for
-	a |U| step, which is a surface of its own and not part of the card.
+	The use-item button that used to live here is the Active Items window now,
+	in ActiveFrames.lua.
 
 	UpdateStatusFrame keeps its name despite no status frame existing: it is
 	called from twenty-eight places and renaming it would bury this change in
@@ -31,59 +31,6 @@ local professions = {
 }
 
 local AegisPathfinder = AegisPathfinder
-local Theme = AegisPathfinder.Theme
-
---[[ The use-item button, for |U| steps.
-
-	It was ItemButtonTemplate: the stock square action-button border, with
-	Blizzard's depress and highlight art. Now it is the theme's rounded tile
-	-- a panel-2 fill, a hairline border that takes the accent on hover --
-	around the item's own icon, cropped of the bevel the game bakes into
-	every icon. The tooltip is still GameTooltip's: only it can show an item.
-]]
-local ITEM_SIZE = 36
-local ITEM_INSET = 4
-local item = CreateFrame("Button", "AegisPathfinderItemButton", UIParent)
-AegisPathfinder.itembutton = item
-item:SetFrameStrata("LOW")
-item:SetHeight(ITEM_SIZE)
-item:SetWidth(ITEM_SIZE)
-item:SetPoint("BOTTOMRIGHT", QuestWatchFrame, "TOPRIGHT", -62, 10)
-item:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-
-item.fill = Theme:NineSlice(item, Theme.texture.tabFill, "BACKGROUND", "panel2")
-item.border = Theme:NineSlice(item, Theme.texture.tabBorder, "BORDER", "subtle")
-item.icon = item:CreateTexture(nil, "ARTWORK")
-item.icon:SetPoint("TOPLEFT", item, "TOPLEFT", ITEM_INSET, -ITEM_INSET)
-item.icon:SetPoint("BOTTOMRIGHT", item, "BOTTOMRIGHT", -ITEM_INSET, ITEM_INSET)
-item.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
-
-item:SetScript("OnEnter", function()
-	item.border:SetTint("accent")
-	if not item.uitem then return end
-	GameTooltip:SetOwner(item, "ANCHOR_LEFT")
-	local bag, slot = AegisPathfinder:FindBagSlot(item.uitem)
-	if bag then
-		GameTooltip:SetBagItem(bag, slot)
-	else
-		GameTooltip:SetItemByID(tonumber(item.uitem))
-	end
-	GameTooltip:Show()
-end)
-item:SetScript("OnLeave", function()
-	item.border:SetTint("subtle")
-	GameTooltip:Hide()
-end)
--- Pressed: the icon sinks a pixel, as a button face would.
-item:SetScript("OnMouseDown", function()
-	item.icon:SetPoint("TOPLEFT", item, "TOPLEFT", ITEM_INSET + 1, -ITEM_INSET - 1)
-	item.icon:SetPoint("BOTTOMRIGHT", item, "BOTTOMRIGHT", -ITEM_INSET + 1, ITEM_INSET - 1)
-end)
-item:SetScript("OnMouseUp", function()
-	item.icon:SetPoint("TOPLEFT", item, "TOPLEFT", ITEM_INSET, -ITEM_INSET)
-	item.icon:SetPoint("BOTTOMRIGHT", item, "BOTTOMRIGHT", -ITEM_INSET, ITEM_INSET)
-end)
-item:Hide()
 
 --- Show or hide the objectives panel. It is the addon's only window now, so
 --- this is what a bare /apg does and what the minimap icon toggles.
@@ -93,18 +40,6 @@ function AegisPathfinder:ToggleObjectivePanel()
 	else
 		ShowUIPanel(self.objectiveframe)
 	end
-end
-
---- Restore where the player left the use-item button.
-function AegisPathfinder:PositionItemButton()
-	Theme:RestorePosition(item, "itemframe")
-end
-
---- Its default place, above the quest tracker.
-function AegisPathfinder:ResetItemButton()
-	Theme:ForgetPosition("itemframe")
-	item:ClearAllPoints()
-	item:SetPoint("BOTTOMRIGHT", QuestWatchFrame, "TOPRIGHT", -62, 10)
 end
 
 --[[ Which steps the addon can complete without the player ticking anything.
@@ -232,7 +167,7 @@ function AegisPathfinder:ScheduleStatusUpdate()
 	end)
 end
 
-local lastmapped, lastmappedaction, lastmappedquest, tex, uitem
+local lastmapped, lastmappedaction, lastmappedquest
 function AegisPathfinder:UpdateStatusFrame()
 	--[[ Nothing to scan until a guide has been parsed. At login the guide
 		loads only once every guide file has registered, a few frames and a
@@ -400,12 +335,15 @@ function AegisPathfinder:UpdateStatusFrame()
 	-- step -- including off the end of the guide, when there is nothing left.
 	if not nextstep then
 		if self.RefreshShoppingList then self:RefreshShoppingList() end
+		if self.RefreshActiveFrames then self:RefreshActiveFrames() end
 		return
 	end
 
 	self:SetStatusText(nextstep)
 	self.current = nextstep
 	if self.RefreshShoppingList then self:RefreshShoppingList() end
+	-- The Active Items and Active Targets windows follow the step too.
+	if self.RefreshActiveFrames then self:RefreshActiveFrames() end
 	local action, quest, fullquest = self:GetObjectiveInfo(nextstep)
 	local turnedin, logi, complete = self:GetObjectiveStatus(nextstep)
 	local note, useitem, optional, qid = self:GetObjectiveTag("N", nextstep), self:GetObjectiveTag("U", nextstep),
@@ -422,15 +360,6 @@ function AegisPathfinder:UpdateStatusFrame()
 		self:ParseAndMapCoords(qid, action, note, quest, zonename, self:GetObjectiveTag("NPC", nextstep))
 	end
 
-	tex = useitem and C_Item.GetItemIconByID(tonumber(useitem))
-	uitem = useitem
-	item.uitem = tex and uitem or nil
-	if UnitAffectingCombat("player") then
-		self:RegisterEvent("PLAYER_REGEN_ENABLED")
-	else
-		self:PLAYER_REGEN_ENABLED()
-	end
-
 	self:UpdateOHPanel()
 	self:UpdateNavCallout()
 
@@ -441,36 +370,3 @@ function AegisPathfinder:UpdateStatusFrame()
 	end
 end
 
-function AegisPathfinder:PLAYER_REGEN_ENABLED()
-	if tex then
-		item.icon:SetTexture(tex)
-		item:Show()
-		tex = nil
-	else
-		item:Hide()
-	end
-	if self:IsEventRegistered("PLAYER_REGEN_ENABLED") then
-		self:UnregisterEvent("PLAYER_REGEN_ENABLED")
-	end
-end
-
-item:SetScript("OnClick", function()
-	if AegisPathfinder:GetObjectiveInfo() == "USE" then AegisPathfinder:SetTurnedIn() end
-	if item.uitem then
-		local bag, slot = AegisPathfinder:FindBagSlot(item.uitem)
-		if bag and slot then UseContainerItem(bag, slot) else AegisPathfinder:Print("Item not found") end
-	end
-end)
-
-
-item:RegisterForDrag("LeftButton")
-item:SetMovable(true)
-item:SetClampedToScreen(true)
-item:SetScript("OnDragStart", function()
-	local frame = this
-	frame:StartMoving()
-end)
-item:SetScript("OnDragStop", function()
-	this:StopMovingOrSizing()
-	Theme:PositionSaver("itemframe")(this)
-end)
