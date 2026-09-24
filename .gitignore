@@ -45,3 +45,6 @@ luac.out
 
 # Build output
 /.release
+
+# Python bytecode (Tools/)
+__pycache__/

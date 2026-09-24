@@ -605,7 +605,8 @@ function AegisPathfinder:ForceWaypointUpdate()
 		self.current, action or "nil", quest or "nil", note or "nil", zonename or "nil"))
 
 	-- Clear and recreate waypoint
-	self:ParseAndMapCoords(qid, action, note, quest, zonename)
+	self:ParseAndMapCoords(qid, action, note, quest, zonename,
+		self:GetObjectiveTag("NPC", self.current))
 
 	-- Signal to StatusFrame that waypoint was updated
 	self.waypointForced = true
@@ -679,8 +680,94 @@ function AegisPathfinder:MapPfQuestNPC(qid, action)
 	return false
 end
 
+--[[ Where NPCs are, by name, from pfQuest's database.
+
+	Profession steps name who to go to -- trainers, a tome's vendor, an
+	Artisan quest's giver -- but carry no coordinates: the reference they were
+	generated from gives names and zones only, and coordinates typed in from
+	memory would be wrong often enough to send people to empty ground.
+	pfQuest's unit database has every NPC's spawn points, Turtle-lineage
+	custom zones included (pfQuest-turtle, pfQuest-octo), so the names are
+	looked up there. One pass over the database per set of names, cached.
+
+	Only places the world map can show are kept: a trainer inside a dungeon
+	has no waypoint, and the step's other trainers are the better direction.
+]]
+local npcspots = {}      -- name -> { { zone, x, y }, ... }, or false
+
+local function NPCSpots(names)
+	local wanted = {}
+	for _, name in ipairs(names) do
+		if npcspots[name] == nil then wanted[name] = true end
+	end
+	local units = pfDB and pfDB.units
+	if next(wanted) and units and units.loc and units.data then
+		local zoneloc = pfDB.zones and pfDB.zones.loc or {}
+		for id, uname in pairs(units.loc) do
+			if wanted[uname] then
+				local data = units.data[id]
+				for _, c in pairs(data and data.coords or {}) do
+					local zoneName = zoneloc[c[3]]
+					if zoneName and zonei[zoneName] then
+						npcspots[uname] = npcspots[uname] or {}
+						table.insert(npcspots[uname], { zone = zoneName, x = c[1], y = c[2] })
+					end
+				end
+			end
+		end
+	end
+	-- Only remember "not found" once there was a database to look in.
+	if units and units.loc then
+		for name in pairs(wanted) do
+			if npcspots[name] == nil then npcspots[name] = false end
+		end
+	end
+	return npcspots
+end
+
+--- Send a waypoint to the nearest of `names`. True when one was sent.
+function AegisPathfinder:MapNearestNPC(names, desc)
+	if not names or table.getn(names) == 0 then return false end
+	local spots = NPCSpots(names)
+
+	-- Where the player is, if Astrolabe can say; otherwise their zone's name.
+	local pc, pz, px, py
+	if Astrolabe and Astrolabe.GetCurrentPlayerPosition then
+		local ok, c, z, x, y = pcall(Astrolabe.GetCurrentPlayerPosition, Astrolabe)
+		if ok and c and c > 0 then pc, pz, px, py = c, z, x, y end
+	end
+	local here = GetRealZoneText and GetRealZoneText()
+
+	local best, bestScore
+	for _, name in ipairs(names) do
+		for _, spot in ipairs(spots[name] or {}) do
+			local c, z = zonec[spot.zone], zonei[spot.zone]
+			-- Yards when they can be measured; failing that, the same zone
+			-- beats the same continent beats anywhere.
+			local score
+			if pc and Astrolabe.ComputeDistance then
+				local ok, d = pcall(Astrolabe.ComputeDistance, Astrolabe,
+					pc, pz, px, py, c, z, spot.x / 100, spot.y / 100)
+				if ok and d and (d > 0 or (c == pc and z == pz)) then score = d end
+			end
+			if not score then
+				if spot.zone == here then score = 1e6
+				elseif pc and c == pc then score = 1e7
+				else score = 1e8 end
+			end
+			if not bestScore or score < bestScore then
+				best, bestScore = { name = name, zone = spot.zone, x = spot.x, y = spot.y }, score
+			end
+		end
+	end
+	if not best then return false end
+
+	MapPoint(best.zone, best.x, best.y, (desc or "Go to") .. " (" .. best.name .. ")")
+	return self.waypointtarget ~= nil
+end
+
 -- Parse coordinates from note text and create waypoints
-function AegisPathfinder:ParseAndMapCoords(qid, action, note, desc, zone)
+function AegisPathfinder:ParseAndMapCoords(qid, action, note, desc, zone, npcs)
 	-- Clear existing waypoints first
 	self:ClearWaypoint()
 
@@ -702,6 +789,8 @@ function AegisPathfinder:ParseAndMapCoords(qid, action, note, desc, zone)
 		for x, y in string.gfind(note, L.COORD_MATCH) do
 			MapPoint(zone, tonumber(x), tonumber(y), desc, onArrival)
 		end
+	elseif npcs and self:MapNearestNPC(npcs, desc) then
+		self:Debug("Mapped the nearest of the step's NPCs")
 	elseif (action == "ACCEPT" or action == "TURNIN") then
 		self:Debug("Trying pfQuest lookup for ACCEPT/TURNIN")
 		if pfQuest or pfDB then

@@ -134,6 +134,9 @@ function AegisPathfinder:IsAutoDetectable(action, i)
 		return true
 	end
 	if i and self:IsSkillObjective(i) then return true end
+	-- Rank steps complete on the skill cap, level gates on the level.
+	if i and self:GetObjectiveTag("RANK", i) then return true end
+	if i and action == "GRIND" and self:GetObjectiveTag("LV", i) then return true end
 	if i and self:GetObjectiveTag("L", i) then return true end
 
 	return false
@@ -310,7 +313,25 @@ function AegisPathfinder:UpdateStatusFrame()
 				end
 			end
 
-			if action == "TRAIN" and self:IsTrainingCompleted(name) then return self:SetTurnedIn(i, true) end
+			--[[ Profession steps complete on the numbers the client reports,
+				whatever their action: a rank step when the skill cap reaches
+				it -- training, a secondary profession's tome and its Artisan
+				quest all raise the cap -- and a skill step when the skill
+				does. A step reached with the number already there is done. ]]
+			local rankProf, rankCap = self:GetObjectiveTag("RANK", i)
+			if rankProf and rankCap and self.GetSkillCap then
+				local cap = self:GetSkillCap(rankProf)
+				if cap and cap >= rankCap then return self:SetTurnedIn(i, true) end
+			end
+			local skillProf, _, skillTo = self:GetObjectiveTag("SKILL", i)
+			if skillProf and skillTo and self.GetSkillRank then
+				local rank = self:GetSkillRank(skillProf)
+				if rank and rank >= skillTo then return self:SetTurnedIn(i, true) end
+			end
+
+			if action == "TRAIN" and not rankProf and self:IsTrainingCompleted(name) then
+				return self:SetTurnedIn(i, true)
+			end
 
 			if action == "PET" and self.db.char.petskills[name] then return self:SetTurnedIn(i, true) end
 
@@ -334,9 +355,11 @@ function AegisPathfinder:UpdateStatusFrame()
 			elseif action == "NOTE" or action == "KILL" then
 				incomplete = not optional or haslootitem
 			elseif action == "GRIND" then
-				incomplete = needlevel
+				-- A level gate waits on the level; a gathering step on the
+				-- skill, which is not there yet or it would have completed.
+				incomplete = needlevel or (skillProf and skillTo and true) or false
 			elseif action == "TRAIN" then
-				incomplete = not self:IsTrainingCompleted(name)
+				incomplete = rankProf and true or not self:IsTrainingCompleted(name)
 			else
 				incomplete = not logi
 			end
@@ -390,7 +413,7 @@ function AegisPathfinder:UpdateStatusFrame()
 		lastmappedaction, lastmappedquest = action, fullquest
 		lastmapped = quest
 		self.waypointForced = nil
-		self:ParseAndMapCoords(qid, action, note, quest, zonename)
+		self:ParseAndMapCoords(qid, action, note, quest, zonename, self:GetObjectiveTag("NPC", nextstep))
 	end
 
 	tex = useitem and C_Item.GetItemIconByID(tonumber(useitem))

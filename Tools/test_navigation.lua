@@ -204,6 +204,54 @@ TomTom.active_waypoint = ours
 AegisPathfinder:EnforceArrowMode()
 check(TomTom.active_waypoint == ours, "and with Both it is left pointing")
 
+-- Trainers by name, from pfQuest ---------------------------------------------------
+
+--[[ Profession steps name who to go to but carry no coordinates; the names
+	are looked up in pfQuest's unit database. Here: two Expert enchanting
+	trainers, one inside a dungeon the world map cannot show. ]]
+pfDB = {
+	zones = { loc = { [12] = "Elwynn Forest", [1] = "Dun Morogh", [1337] = "Uldaman" } },
+	units = {
+		loc = { [11072] = "Kitta Firewind", [7406] = "Annora", [5] = "Tomas", [6] = "Cook Ghilm" },
+		data = {
+			[11072] = { coords = { { 64.5, 69.5, 12, 0 } } },
+			[7406]  = { coords = { { 38.0, 70.0, 1337, 0 } } },
+			[5]     = { coords = { { 44.0, 66.0, 12, 0 } } },
+			[6]     = { coords = { { 68.0, 54.0, 1, 0 } } },
+		},
+	},
+}
+db.waypointprovider = "tomtom"
+AegisPathfinder:ClearWaypoint()
+check(AegisPathfinder:MapNearestNPC({ "Annora", "Kitta Firewind" }, "Train Expert Enchanting"),
+	"a trainer is found by name")
+local wpt = AegisPathfinder.waypointtarget
+check(wpt and wpt.zoneindex == 2 and wpt.x == 64.5,
+	"the one the map can show -- Kitta in Elwynn, not Annora inside Uldaman")
+check(TomTom.waypoints[table.getn(TomTom.waypoints)].title
+	== "Pathfinder: Train Expert Enchanting (Kitta Firewind)",
+	"and the waypoint says who, got '%s'", tostring(TomTom.waypoints[table.getn(TomTom.waypoints)].title))
+
+-- The nearest of several, measured by Astrolabe.
+Astrolabe = {
+	GetCurrentPlayerPosition = function() return 1, 1, 0.5, 0.5 end,      -- in Dun Morogh
+	ComputeDistance = function(_, c1, z1, x1, y1, c2, z2) return z2 == 1 and 300 or 2000, 1, 1 end,
+}
+AegisPathfinder:ClearWaypoint()
+AegisPathfinder:MapNearestNPC({ "Tomas", "Cook Ghilm" }, "Learn Cooking")
+check(AegisPathfinder.waypointtarget and AegisPathfinder.waypointtarget.zoneindex == 1,
+	"the nearest trainer is chosen -- Cook Ghilm in Dun Morogh, 300 yd, over Tomas")
+
+check(not AegisPathfinder:MapNearestNPC({ "Nobody Atall" }, "Train"),
+	"a name pfQuest does not know sends nothing")
+
+-- A step's NPCs are mapped when its note has no coordinates.
+AegisPathfinder:ClearWaypoint()
+AegisPathfinder:ParseAndMapCoords(nil, "TRAIN", "Needs skill 125.", "Train Expert Enchanting",
+	nil, { "Kitta Firewind" })
+check(AegisPathfinder.waypointtarget and AegisPathfinder.waypointtarget.x == 64.5,
+	"a training step with no coordinates gets its trainer's")
+
 -- Report ---------------------------------------------------------------------
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end

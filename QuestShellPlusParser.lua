@@ -127,6 +127,28 @@ local function stepToTagString(step)
         end
     end
 
+    -- |LV|<level>| -- a character level the step waits for. A GRIND step with
+    -- one holds the guide until the player gets there: profession ranks have
+    -- level requirements, and a step that sends you to a trainer who will
+    -- refuse you is worse than one that says why you are waiting.
+    if step.level then
+        table.insert(tags, string.format("|LV|%d|", step.level))
+    end
+
+    -- |RANK|<profession> <cap>| -- completes when the profession's skill cap
+    -- reaches <cap>: training a rank, reading a secondary profession's tome,
+    -- or finishing its Artisan quest all raise the cap, and the cap is what
+    -- the client reports reliably.
+    if step.rank and step.rank.profession and step.rank.cap then
+        table.insert(tags, string.format("|RANK|%s %d|", step.rank.profession, step.rank.cap))
+    end
+
+    -- |NPC|<name>;<name>| -- whom the step sends you to. The waypoint goes to
+    -- the nearest of them, found by name in pfQuest's database.
+    if step.npcs and type(step.npcs) == "table" and table.getn(step.npcs) > 0 then
+        table.insert(tags, string.format("|NPC|%s|", table.concat(step.npcs, ";")))
+    end
+
     -- |SRC| -- where the recipe comes from (trainer, vendor, drop).
     if step.source then
         table.insert(tags, string.format("|SRC|%s|", step.source))

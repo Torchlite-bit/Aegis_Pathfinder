@@ -117,10 +117,22 @@ pins either way.
 | Alchemy, Blacksmithing, Cooking, Enchanting, First Aid, Jewelcrafting, Leatherworking, Mining, Survival, Tailoring | Full 1–300 routes |
 | Engineering, Herbalism, Skinning, Fishing | Placeholders — see below |
 
-Each authored guide carries the trainer for each tier (yours only — Alliance
-players are not shown Horde trainers), what to craft in each skill band, the
-reagents, where the recipe comes from, and equally viable alternatives. Steps
-complete themselves as your skill climbs.
+Each authored guide says what to craft in each skill band and roughly how many,
+the reagents (the Materials panel totals what the rest of the route still
+needs), where the recipe comes from, and equally viable alternatives.
+
+Every rank is a step of its own: your faction's trainers, what the rank needs
+and what it costs. Primary crafts wait for the character level a rank needs
+(Apprentice 5, Journeyman 10, Expert 20, Artisan 35) with a "Reach level N"
+step that clears itself once you are there. With pfQuest installed the step
+points the arrow at the nearest of its trainers. Cooking and First Aid do not
+train Expert or Artisan: the guide sends you to buy the Expert tome, and at
+skill 225 — the point the route cannot pass without it — walks you through
+the Artisan quest, level 40 and what to bring included.
+
+Steps complete themselves on the numbers the game reports: a craft or
+gathering step when your skill reaches its target, a rank when your skill cap
+does. Open a guide part-way through and it goes straight to where you are.
 
 The four placeholders are listed but unauthored, and carry a grey `TPL` badge
 in the guide list: the reference these guides were converted from does not
@@ -165,7 +177,7 @@ Runs everything that can be checked without a client: Lua syntax, Lua 5.0
 compatibility, `.toc` and `Guides.xml` integrity, TGA validity, that every
 texture path resolves to a real file, that no panel has drifted off the theme,
 that every window stacks rather than interleaving with the others, and
-fifteen test suites that execute the addon's own code against a stubbed 1.12 API.
+sixteen test suites that execute the addon's own code against a stubbed 1.12 API.
 
 None of it proves the UI looks right. That needs a client.
 

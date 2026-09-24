@@ -32,6 +32,7 @@ lua5.1 Tools/test_stacking.lua
 lua5.1 Tools/test_scrolling.lua
 lua5.1 Tools/test_minimap.lua
 lua5.1 Tools/test_navigation.lua
+lua5.1 Tools/test_professionsteps.lua
 
 echo
 echo "All offline checks passed."

@@ -24,25 +24,39 @@ local SKILL_ALIASES = {
 	["smelting"] = "mining",
 }
 
---- Current rank in a profession, or nil if the player does not have it.
-function AegisPathfinder:GetSkillRank(profession)
+--- Current rank and cap in a profession, or nil if the player does not
+--- have it. The cap is GetSkillLineInfo's seventh value: 75, 150, 225 or 300
+--- as Apprentice, Journeyman, Expert or Artisan.
+function AegisPathfinder:GetSkillLine(profession)
 	if not profession then return nil end
 
 	local wanted = string.lower(profession)
 	wanted = SKILL_ALIASES[wanted] or wanted
 
 	for i = 1, GetNumSkillLines() do
-		local name, isHeader, _, rank = GetSkillLineInfo(i)
+		local name, isHeader, _, rank, _, _, maxRank = GetSkillLineInfo(i)
 		if name and not isHeader then
 			local have = string.lower(name)
 			have = SKILL_ALIASES[have] or have
 			if have == wanted then
-				return rank
+				return rank, maxRank
 			end
 		end
 	end
 
 	return nil
+end
+
+--- Current rank in a profession, or nil if the player does not have it.
+function AegisPathfinder:GetSkillRank(profession)
+	local rank = self:GetSkillLine(profession)
+	return rank
+end
+
+--- The profession's skill cap, or nil if the player does not have it.
+function AegisPathfinder:GetSkillCap(profession)
+	local _, cap = self:GetSkillLine(profession)
+	return cap
 end
 
 --- Progress through the step's skill range, as a 0..1 ratio.

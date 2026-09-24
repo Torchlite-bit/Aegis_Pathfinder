@@ -24,6 +24,10 @@ import zipfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOCX = os.path.join(ROOT, "Tools", "data", "Professions_Reference.docx")
+# Rank levels and costs, the secondary professions' books and quests, and
+# trainers the reference document is missing -- drawn from the owner-supplied
+# FAQ in Tools/data/Profession_FAQ.md.
+TRAINING = os.path.join(ROOT, "Tools", "data", "profession_training.json")
 OUTDIR = os.path.join(ROOT, "Guides", "Professions")
 
 # Professions the concept's Professions tab lists but the document has no route
@@ -307,9 +311,176 @@ def lua_list(items):
     return "{ " + ", ".join(lua_str(i) for i in items) + " }"
 
 
-def emit_steps(p):
-    """Turn a parsed profession into QuestShell+ step tables."""
+RANKS = ("Apprentice", "Journeyman", "Expert", "Artisan")
+FACTIONS = ("Alliance", "Horde")
+
+
+def load_training():
+    import json
+    with open(TRAINING, encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+def rank_of(label):
+    """The rank a route's training step is for, from its label."""
+    for rank in RANKS:
+        if rank in label:
+            return rank
+    return None
+
+
+def trainers_for(p, rank, faction, training):
+    """The faction's trainers for a rank: the reference document's tier that
+    names the rank ("Apprentice / Journeyman" covers both), else the FAQ's."""
+    entries = []
+    for tier in p["trainers"][faction]:
+        if rank in tier["tier"]:
+            entries.extend(tier["entries"])
+    if not entries:
+        entries = (training["supplementTrainers"].get(p["name"], {})
+                   .get(rank, {}).get(faction, []))
+    return entries
+
+
+def where(e):
+    """"Name (Zone)", or "Name (Zone, Place)"."""
+    at = ", ".join(x for x in (e.get("zone"), e.get("place")) if x)
+    return e["name"] + (" (%s)" % at if at else "")
+
+
+def level_gate(what, level):
+    return {"type": "GRIND", "title": "Reach level %d" % level, "level": level,
+            "note": "%s needs character level %d. This step clears itself when you get there."
+                    % (what, level)}
+
+
+def train_steps(p, s, training):
+    """A route's "train the next rank" step, as the player's faction sees it:
+    a level gate where the profession has one, then who to go to, what it
+    costs, and the cap it completes on."""
+    name, rank = p["name"], rank_of(s["label"])
+    info = training["ranks"][rank]
+    gated = name not in training["noLevelRequirement"]
+    out = []
+    if gated:
+        out.append(level_gate("%s %s" % (rank, name), info["level"]))
+
+    needs = []
+    if info["skill"]:
+        needs.append("skill %d" % info["skill"])
+    if gated:
+        needs.append("level %d" % info["level"])
+    head = ("Needs %s; costs %s." % (" and ".join(needs), info["cost"]) if needs
+            else "Costs %s." % info["cost"])
+
+    for fac in FACTIONS:
+        entries = trainers_for(p, rank, fac, training)
+        if entries:
+            note = head + " Trainers: " + ", ".join(where(e) for e in entries) + "."
+        else:
+            note = head + " Ask a city guard for the nearest trainer."
+        step = {"type": "TRAIN", "title": s["label"], "note": note, "faction": fac,
+                "rank": {"profession": name, "cap": info["cap"]}}
+        if entries:
+            step["npcs"] = [e["name"] for e in entries]
+        out.append(step)
+    return out
+
+
+def expert_book_steps(p, sec):
+    """Secondary professions read their Expert rank from a book."""
+    name, book = p["name"], sec["expert"]
+    out = []
+    for fac in FACTIONS:
+        vendors = book["vendors"][fac]
+        who = " or ".join(where(v) for v in vendors)
+        out.append({
+            "type": "BUY", "title": "Buy %s" % book["book"], "faction": fac,
+            "note": "%s sells it for %s. Read it to raise your %s cap to 225; it needs skill 125."
+                    % (who, book["cost"], name),
+            "rank": {"profession": name, "cap": 225},
+            "npcs": [v["name"] for v in vendors],
+        })
+    return out
+
+
+def artisan_quest_steps(p, sec):
+    """Secondary professions earn Artisan by a quest at level 40 and 225."""
+    name, q = p["name"], sec["artisan"]
+    out = [level_gate("The Artisan %s quest" % name, q["level"])]
+    for fac in FACTIONS:
+        st = q["starters"][fac]
+        note = "%s in %s, %s, starts it." % (st["name"], st["zone"], st["place"])
+        step = {"type": "NOTE", "title": "Start the Artisan %s quest" % name, "faction": fac,
+                "note": note + " Needs level %d and skill %d." % (q["level"], q["skill"]),
+                "npcs": [st["name"]]}
+        if q.get("starterOptional"):
+            fin = q["finish"]["name"]
+            step["note"] += " You can skip this and go straight to %s." % fin
+            step["optional"] = True
+        out.append(step)
+
+    if q.get("bring"):
+        out.append({"type": "NOTE", "title": "Gather for %s" % q["finish"]["name"],
+                    "note": q["gatherNote"], "reagents": q["bring"]})
+
+    finishes = q.get("finishes") or {fac: q["finish"] for fac in FACTIONS}
+    shared = len(set(f["name"] for f in finishes.values())) == 1
+    for fac in (("Both",) if shared else FACTIONS):
+        fin = finishes["Alliance" if shared else fac]
+        step = {"type": "NOTE", "title": "Hand in to %s" % fin["name"],
+                "note": "%s, %s. %s" % (fin["zone"], fin["place"], q["finishNote"]),
+                "rank": {"profession": name, "cap": 300}, "npcs": [fin["name"]]}
+        if not shared:
+            step["faction"] = fac
+        out.append(step)
+    return out
+
+
+def split_at(s, skill):
+    """Split a craft or method step at `skill`, sharing the craft count out by
+    skill points. The counts are estimates already; the split keeps their sum."""
+    first, second = dict(s), dict(s)
+    first["to"], second["from"] = skill, skill
+    if s.get("count"):
+        span = s["to"] - s["from"]
+        first["count"] = max(1, int(round(s["count"] * (skill - s["from"]) / float(span))))
+        second["count"] = max(1, s["count"] - first["count"])
+    return first, second
+
+
+def craft_step(p, s):
     name = p["name"]
+    if s["kind"] == "craft":
+        step = {
+            "type": "USE",
+            "title": "Craft %dx %s" % (s["count"], s["item"]),
+            "skill": {"profession": name, "from": s["from"], "to": s["to"]},
+            "craft": {"item": s["item"], "count": s["count"]},
+            "reagents": s["reagents"],
+        }
+        if s["source"]:
+            step["source"] = s["source"]
+        if s["alternatives"]:
+            step["alternatives"] = s["alternatives"]
+    else:
+        step = {
+            "type": "GRIND",
+            "title": s["method"],
+            "skill": {"profession": name, "from": s["from"], "to": s["to"]},
+        }
+    note = "Takes you from %d to %d." % (s["from"], s["to"])
+    if s["note"]:
+        note += " " + s["note"]
+    step["note"] = note
+    return step
+
+
+def emit_steps(p, training=None):
+    """Turn a parsed profession into QuestShell+ step tables."""
+    training = training or load_training()
+    name = p["name"]
+    sec = training["secondary"].get(name)
     out = []
 
     intro = ("A low-cost 1-300 route. Craft counts are estimates"
@@ -320,51 +491,32 @@ def emit_steps(p):
         out.append({"type": "NOTE", "title": "Before you start",
                     "note": p["shoppingNote"]})
 
-    # Trainers, filtered to the player's own faction.
-    for fac in ("Alliance", "Horde"):
-        for tier in p["trainers"][fac]:
-            who = ", ".join(
-                e["name"] + (" (%s)" % e["zone"] if e["zone"] else "")
-                for e in tier["entries"])
-            out.append({
-                "type": "TRAIN",
-                "title": "%s %s (%s)" % (tier["tier"], name, tier["range"]),
-                "note": who,
-                "faction": fac,
-                "optional": True,
-            })
-
+    # A secondary profession's Artisan quest needs skill 225, and nothing past
+    # 225 is reachable without it -- so it goes exactly there, splitting the
+    # route step that crosses 225.
+    route = []
     for s in p["steps"]:
-        if s["kind"] == "train":
-            out.append({"type": "TRAIN", "title": s["label"],
-                        "note": "Skill %s" % s["at"]})
-        elif s["kind"] == "craft":
-            step = {
-                "type": "USE",
-                "title": "Craft %dx %s" % (s["count"], s["item"]),
-                "skill": {"profession": name, "from": s["from"], "to": s["to"]},
-                "craft": {"item": s["item"], "count": s["count"]},
-                "reagents": s["reagents"],
-            }
-            if s["source"]:
-                step["source"] = s["source"]
-            if s["alternatives"]:
-                step["alternatives"] = s["alternatives"]
-            note = "Takes you from %d to %d." % (s["from"], s["to"])
-            if s["note"]:
-                note += " " + s["note"]
-            step["note"] = note
-            out.append(step)
-        elif s["kind"] == "method":
-            step = {
-                "type": "GRIND",
-                "title": s["method"],
-                "skill": {"profession": name, "from": s["from"], "to": s["to"]},
-                "note": "Takes you from %d to %d." % (s["from"], s["to"]),
-            }
-            if s["note"]:
-                step["note"] += " " + s["note"]
-            out.append(step)
+        if sec and s["kind"] == "train" and rank_of(s["label"]) == "Artisan":
+            continue
+        if sec and s["kind"] in ("craft", "method") and s["from"] < 225 < s["to"]:
+            first, second = split_at(s, 225)
+            route += [first, {"kind": "artisan"}, second]
+            continue
+        if sec and s["kind"] in ("craft", "method") and s["from"] == 225 \
+                and not any(r.get("kind") == "artisan" for r in route):
+            route.append({"kind": "artisan"})
+        route.append(s)
+
+    for s in route:
+        if s["kind"] == "artisan":
+            out.extend(artisan_quest_steps(p, sec))
+        elif s["kind"] == "train":
+            if sec and rank_of(s["label"]) == "Expert":
+                out.extend(expert_book_steps(p, sec))
+            else:
+                out.extend(train_steps(p, s, training))
+        else:
+            out.append(craft_step(p, s))
 
     out.append({"type": "NOTE", "title": "Guide Complete",
                 "note": "%s is maxed at %d." % (name, MAX_SKILL)})
@@ -381,6 +533,13 @@ def step_to_lua(step, indent="\t\t"):
         parts.append("faction = %s" % lua_str(step["faction"]))
     if step.get("optional"):
         parts.append("optional = true")
+    if step.get("level"):
+        parts.append("level = %d" % step["level"])
+    if step.get("rank"):
+        rk = step["rank"]
+        parts.append("rank = { profession = %s, cap = %d }" % (lua_str(rk["profession"]), rk["cap"]))
+    if step.get("npcs"):
+        parts.append("npcs = %s" % lua_list(step["npcs"]))
     if step.get("skill"):
         sk = step["skill"]
         parts.append("skill = { profession = %s, from = %d, to = %d }"
@@ -503,7 +662,42 @@ def main():
     else:
         print("Source document is internally consistent.")
 
+    # Every rank a player trains at a trainer has somewhere to go.
+    training = load_training()
+    gaps = []
+    for p in professions:
+        sec = training["secondary"].get(p["name"])
+        for s in p["steps"]:
+            if s["kind"] != "train":
+                continue
+            rank = rank_of(s["label"])
+            if sec and rank in ("Expert", "Artisan"):
+                continue
+            for fac in FACTIONS:
+                if not trainers_for(p, rank, fac, training):
+                    gaps.append("%s %s: no %s trainer" % (rank, p["name"], fac))
+    if gaps:
+        print("\n%d rank(s) with nowhere to train (the step says to ask a guard):" % len(gaps))
+        for msg in gaps:
+            print("  ! " + msg)
+
     if args.check:
+        # The guides are generated; what is committed must be what this
+        # generator writes, or a hand edit -- or a forgotten regeneration --
+        # ships unnoticed.
+        stale = []
+        for p in professions:
+            fn = re.sub(r"[^A-Za-z0-9]+", "_", p["name"]) + ".lua"
+            path = os.path.join(OUTDIR, fn)
+            on_disk = open(path, encoding="utf-8").read() if os.path.exists(path) else None
+            if on_disk != emit_guide(p):
+                stale.append(fn)
+        if stale:
+            print("\nOut of date -- run python3 Tools/convert_professions.py:")
+            for fn in stale:
+                print("  ! Guides/Professions/" + fn)
+            return 1
+        print("\nGenerated guides match the sources.")
         return 0
 
     os.makedirs(OUTDIR, exist_ok=True)

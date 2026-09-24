@@ -116,7 +116,7 @@ local PHRASES = {
 	BOAT = "Head to the dock",
 	BUY = "Head to the vendor",
 	USE = "Head to the vendor",
-	TRAIN = "Head to the vendor",
+	TRAIN = "Head to the trainer",
 }
 
 --- Walking pace in yards per second, for the ETA. Base run speed in 1.12 is
