@@ -19,8 +19,8 @@ ClassicAPI backports modern WoW API to the 1.12 client. It is why this addon
 can track quests by id and advance itself, instead of scraping chat messages
 and matching quest names as strings the way vanilla-era guide addons had to.
 
-Optional, and worth having: [TomTom](https://github.com/sweetgiorni/TomTom) for
-an arrow, and a [pfQuest](https://github.com/shagu/pfQuest) database pack
+Optional, and worth having: [TomTom-TWOW](https://github.com/laytya/TomTom-TWOW)
+for waypoints and map pins, and a [pfQuest](https://github.com/shagu/pfQuest) database pack
 matched to your server for quest-giver lookups and prerequisite warnings.
 
 ## Installing
@@ -105,7 +105,10 @@ grow.
 **A navigation arrow.** It points at the current objective and says how far and
 how long, floating on the world with no window around it. It needs a waypoint
 provider; with none, or with no waypoint for this step, it hides rather than
-pointing somewhere arbitrary.
+pointing somewhere arbitrary. The **Arrow** setting picks whose arrow points at
+the step: this one, the waypoint addon's (TomTom's, pfQuest's), both, or
+neither. By default it is this one alone, and the waypoint addon keeps its map
+pins either way.
 
 ## Professions
 
@@ -162,7 +165,7 @@ Runs everything that can be checked without a client: Lua syntax, Lua 5.0
 compatibility, `.toc` and `Guides.xml` integrity, TGA validity, that every
 texture path resolves to a real file, that no panel has drifted off the theme,
 that every window stacks rather than interleaving with the others, and
-fourteen test suites that execute the addon's own code against a stubbed 1.12 API.
+fifteen test suites that execute the addon's own code against a stubbed 1.12 API.
 
 None of it proves the UI looks right. That needs a client.
 
@@ -207,7 +210,7 @@ so `git log` and `git blame` still attribute each line to whoever wrote it.
 |---|---|
 | **The Ace Development Team** | Ace2 (`AceAddon-2.0`, `AceEvent-2.0`, `AceDB-2.0`, `AceLibrary`, `AceOO-2.0`, `AceConsole-2.0`, `AceDebug-2.0`, `AceHook-2.1`) |
 | **shagu** | [pfQuest](https://github.com/shagu/pfQuest), pfQuest-turtle, pfQuest-octo |
-| **Cladhaire**, ported by **sweetgiorni** | [TomTom](https://github.com/sweetgiorni/TomTom) |
+| **Cladhaire**; the TWOW port by **laytya** and others | [TomTom-TWOW](https://github.com/laytya/TomTom-TWOW) |
 | The authors of MetaMap, MetaMapBWP and Cartographer | Supported waypoint providers |
 | **Indian Type Foundry** | Rajdhani (SIL OFL 1.1) |
 | **The Inter Project Authors** | Inter (SIL OFL 1.1) |

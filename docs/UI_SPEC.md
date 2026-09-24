@@ -102,6 +102,17 @@ points and the distance stays blank -- an invented number would be worse.
 With no provider, no waypoint, or the waypoint in another zone, the callout
 hides. An arrow that is confidently wrong is worse than no arrow.
 
+**Whose arrow.** Out of the box there were two: ours, and the waypoint addon's,
+aimed at the same waypoint. Ours reads the waypoint the addon records for
+itself, not the provider's arrow, so the two are independent, and the options
+panel's **Arrow** section picks: Pathfinder's, the waypoint addon's, both or
+none (`GetArrowMode` / `SetArrowMode` in `Navigation.lua`). The default is
+ours alone; a character who had turned ours off keeps the waypoint addon's.
+TomTom is told `crazy = false` outright -- TomTom-TWOW fills a nil `crazy`
+from its own autoqueue setting, which is on -- and pfQuest's route target is
+simply not set. Cartographer and MetaMap BWP have no waypoint but their arrow,
+so they point whatever is picked, and the setting's note says so.
+
 ### The status card -- deleted
 
 The concept removed it: every `.sb-*` rule and the whole `#statusbar` block are

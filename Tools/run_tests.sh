@@ -31,6 +31,7 @@ lua5.1 Tools/test_options.lua
 lua5.1 Tools/test_stacking.lua
 lua5.1 Tools/test_scrolling.lua
 lua5.1 Tools/test_minimap.lua
+lua5.1 Tools/test_navigation.lua
 
 echo
 echo "All offline checks passed."

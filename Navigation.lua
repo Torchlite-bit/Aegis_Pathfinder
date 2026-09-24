@@ -44,7 +44,10 @@ end
 --------------------------------------------------------------------------------
 
 -- A provider is { label, IsAvailable(), Add(wp), Clear() }, where wp is
---   { zone, continent, zoneindex, x, y, title, description, onArrival }
+--   { zone, continent, zoneindex, x, y, title, description, onArrival, arrow }
+-- `arrow` says whether the provider's own arrow should point at this
+-- waypoint (see GetArrowMode). A provider whose waypoint *is* its arrow --
+-- Cartographer, MetaMap BWP -- marks itself `arrowIsWaypoint` and ignores it.
 -- x and y are map coordinates in 0-100 space. Add() returns true when it
 -- actually created a waypoint. Clear() removes everything that provider created
 -- and must be safe to call when it holds nothing.
@@ -66,17 +69,23 @@ providers.tomtom = {
 	end,
 
 	Add = function(wp)
-		local opts = { title = wp.title, crazy = true, silent = true }
+		-- `crazy` is TomTom's arrow. Left nil, TomTom falls back to its own
+		-- "autoqueue" setting, so it is always said outright.
+		local opts = { title = wp.title, crazy = wp.arrow and true or false, silent = true }
 
-		-- Arrival callback for travel objectives
+		--[[ Arrival callback for travel objectives.
+
+			A waypoint's callbacks replace TomTom's defaults rather than add
+			to them (TomTom-TWOW's LoadWayPoint only fills them in when there
+			are none), and the defaults are what give its map and minimap
+			pins their tooltip and click menu. So start from the defaults. ]]
 		if wp.onArrival then
-			opts.callbacks = {
-				distance = {
-					[15] = function(event, uid, dist, lastdist)
-						AegisPathfinder:Debug("TomTom arrival callback triggered")
-						wp.onArrival()
-					end
-				}
+			opts.callbacks = TomTom.DefaultCallbacks and TomTom:DefaultCallbacks() or {}
+			opts.callbacks.distance = {
+				[15] = function(event, uid, dist, lastdist)
+					AegisPathfinder:Debug("TomTom arrival callback triggered")
+					wp.onArrival()
+				end
 			}
 		end
 
@@ -147,13 +156,15 @@ providers.pfquest = {
 			spawntype = "Waypoint",
 			description = wp.description,
 			texture = texture,
-			arrow = true,
+			arrow = wp.arrow and true or false,
 		})
 
 		-- Aim the pfQuest arrow at this node rather than at whichever quest
-		-- objective happens to be nearest.
+		-- objective happens to be nearest -- when its arrow is wanted at all.
 		pfquesttitle = wp.title
-		pfQuest.route.SetTarget({ title = wp.title, texture = texture, layer = PFQUEST_LAYER })
+		if wp.arrow then
+			pfQuest.route.SetTarget({ title = wp.title, texture = texture, layer = PFQUEST_LAYER })
+		end
 
 		-- Re-stamp the refresh request: SetTarget clobbers queue_update, and
 		-- older pfQuest builds put a boolean there, which breaks pfMap's
@@ -182,6 +193,7 @@ local cartographerids = {}
 
 providers.cartographer = {
 	label = "Cartographer",
+	arrowIsWaypoint = true,
 
 	IsAvailable = function()
 		return Cartographer_Waypoints and true or nil
@@ -207,6 +219,7 @@ local metamapnotes = {}
 
 providers.metamapbwp = {
 	label = "MetaMap BWP",
+	arrowIsWaypoint = true,
 
 	IsAvailable = function()
 		return HasMetaMap() and (HasMetaMapBWP() or MetaMap_LoadBWP) and true or nil
@@ -316,6 +329,61 @@ function AegisPathfinder:SetWaypointProvider(name)
 	self:ForceWaypointUpdate()
 end
 
+--[[ Whose arrow points at the current step.
+
+	The addon draws its own arrow (NavCallout.lua), and the waypoint addon
+	usually has one too -- TomTom's, pfQuest's -- so out of the box there were
+	two, pointing at the same place. Ours reads the waypoint the addon keeps
+	for itself, not the provider's arrow, so the two are independent: either,
+	both or neither can point.
+
+	Two settings underneath: `shownavcallout` for ours (which predates this),
+	and `providerarrow` for theirs. A character from before `providerarrow`
+	existed had the provider's arrow on regardless; they keep it only if they
+	had turned ours off, and otherwise get ours alone.
+]]
+AegisPathfinder.ARROW_MODES = {
+	{ value = "pathfinder", label = "Pathfinder's arrow" },
+	{ value = "provider",   label = "The waypoint addon's arrow" },
+	{ value = "both",       label = "Both arrows" },
+	{ value = "none",       label = "No arrow" },
+}
+
+function AegisPathfinder:GetArrowMode()
+	local db = self.db.char
+	local ours = db.shownavcallout ~= false
+	local theirs = db.providerarrow
+	if theirs == nil then theirs = not ours end
+	if ours and theirs then return "both" end
+	if ours then return "pathfinder" end
+	if theirs then return "provider" end
+	return "none"
+end
+
+--- Whether the waypoint addon's own arrow should be aimed at our waypoints.
+function AegisPathfinder:WantsProviderArrow()
+	local mode = self:GetArrowMode()
+	return mode == "provider" or mode == "both"
+end
+
+--- True when the active provider has no waypoint but its arrow, so the
+--- arrow setting cannot take it away.
+function AegisPathfinder:ProviderArrowIsWaypoint()
+	local provider = self:GetWaypointProvider()
+	return provider and provider.arrowIsWaypoint and true or false
+end
+
+function AegisPathfinder:SetArrowMode(mode)
+	local db = self.db.char
+	db.shownavcallout = (mode == "pathfinder" or mode == "both")
+	db.providerarrow = (mode == "provider" or mode == "both")
+	-- Re-send the step's waypoint so the provider's arrow takes it, or lets
+	-- it go -- removing a TomTom waypoint also clears its arrow.
+	self:ClearWaypoint()
+	self:ForceWaypointUpdate()
+	if self.UpdateNavCallout then self:UpdateNavCallout() end
+end
+
 -- Helper to get valid zone data (ensures map is set to player location)
 local function GetPlayerZoneData()
 	-- Save current map state
@@ -369,9 +437,10 @@ local function MapPoint(zone, x, y, desc, onArrival)
 		zoneindex = zi,
 		x = x,
 		y = y,
-		title = "[TG] " .. desc,
+		title = "Pathfinder: " .. desc,
 		description = desc,
 		onArrival = onArrival,
+		arrow = AegisPathfinder:WantsProviderArrow(),
 	})
 
 	if created then

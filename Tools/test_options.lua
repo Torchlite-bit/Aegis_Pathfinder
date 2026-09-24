@@ -69,6 +69,20 @@ function AegisPathfinder:ShowErrorLog() self.__errorlog = true end
 
 AegisPathfinder.objectiveframe = CreateFrame("Frame", nil, UIParent)
 
+-- The arrow setting lives in Navigation.lua, which enumerates the world map
+-- as it loads; lift just the block under test.
+do
+	local nav = io.open("Navigation.lua"):read("*a")
+	local from = string.find(nav, "--[[ Whose arrow points", 1, true)
+	local to = string.find(nav, "-- Helper to get valid zone data", 1, true)
+	assert(from and to, "could not find the arrow block in Navigation.lua")
+	assert(loadstring(string.sub(nav, from, to - 1)))()
+end
+AegisPathfinder.__provider = { label = "TomTom" }
+function AegisPathfinder:GetWaypointProvider() return self.__provider end
+function AegisPathfinder:ClearWaypoint() self.__cleared = true end
+function AegisPathfinder:ForceWaypointUpdate() self.__resent = true end
+
 dofile("Theme.lua")
 dofile("WidgetWarlock.lua")
 dofile("Servers.lua")
@@ -219,9 +233,8 @@ check(frame.switches.autoquest:IsOn(), "switches start from the saved settings")
 check(not frame.switches.trackquests:IsOn(), "off ones included")
 click(frame.switches.trackquests)
 check(db.trackquests == true, "and write back to them")
-click(frame.switches.shownavcallout)
-check(db.shownavcallout == false, "the arrow switch turns the arrow off")
-check(AegisPathfinder.__arrowRefreshed, "and refreshes it so it goes at once")
+check(frame.switches.shownavcallout == nil,
+	"the arrow is not a switch any more; the Arrow section says whose")
 check(frame.switches.showminimapbutton ~= nil and frame.switches.showminimapbutton:IsOn(),
 	"the minimap button has a switch, on by default")
 click(frame.switches.showminimapbutton)
@@ -231,6 +244,44 @@ check(db.showminimapbutton == false and AegisPathfinder.__minimapRefreshed,
 click(frame.waypoints.rows[2])
 check(db.waypointprovider == "TomTom", "the waypoint dropdown picks a provider, got %s",
 	tostring(db.waypointprovider))
+
+-- Arrow ------------------------------------------------------------------------
+
+--[[ Whose arrow points at the step. A character from before the setting had
+	ours on and the waypoint addon's too -- two arrows -- and gets ours alone. ]]
+check(frame.arrow.label:GetText() == "Pathfinder's arrow",
+	"ours alone by default, got '%s'", tostring(frame.arrow.label:GetText()))
+check(not AegisPathfinder:WantsProviderArrow(), "so the waypoint addon's arrow is not aimed")
+click(frame.arrow)
+local modes = {}
+for i, row in ipairs(frame.arrow.rows) do if row:IsShown() then modes[i] = row.value end end
+check(table.getn(modes) == 4, "four choices: ours, theirs, both, neither, got %d", table.getn(modes))
+AegisPathfinder.__cleared, AegisPathfinder.__resent, AegisPathfinder.__arrowRefreshed = nil, nil, nil
+click(frame.arrow.rows[3])               -- Both
+check(db.shownavcallout == true and db.providerarrow == true and AegisPathfinder:WantsProviderArrow(),
+	"Both keeps ours and aims the waypoint addon's")
+check(AegisPathfinder.__cleared and AegisPathfinder.__resent,
+	"re-sending the waypoint so the change takes at once")
+check(AegisPathfinder.__arrowRefreshed, "and ours is refreshed too")
+click(frame.arrow)
+click(frame.arrow.rows[2])               -- theirs
+check(db.shownavcallout == false and AegisPathfinder:GetArrowMode() == "provider",
+	"the waypoint addon's alone turns ours off")
+check(string.find(frame.arrowNote:GetText(), "map pins", 1, true) ~= nil,
+	"the note says the pins stay whichever arrow, got '%s'", tostring(frame.arrowNote:GetText()))
+
+-- A provider whose waypoint is its arrow cannot have the arrow taken away.
+AegisPathfinder.__provider = { label = "Cartographer", arrowIsWaypoint = true }
+AegisPathfinder:RefreshConfigPanel()
+check(string.find(frame.arrowNote:GetText(), "Cartographer's waypoint is its arrow", 1, true) ~= nil,
+	"and says so for Cartographer, got '%s'", tostring(frame.arrowNote:GetText()))
+AegisPathfinder.__provider = { label = "TomTom" }
+
+-- Someone who had turned ours off before the setting existed kept the
+-- waypoint addon's arrow, and still does.
+db.shownavcallout, db.providerarrow = false, nil
+check(AegisPathfinder:GetArrowMode() == "provider", "an old 'arrow off' keeps the waypoint addon's")
+db.shownavcallout, db.providerarrow = true, false
 
 click(frame.rescan)
 check(AegisPathfinder.__rescanned, "Rescan progress asks the server")
