@@ -1572,6 +1572,7 @@ end
 function AegisPathfinder:UnloadGuide()
     self.db.char.currentguide = NO_GUIDE
     self.actions, self.quests, self.tags = {}, {}, {}
+    self.turnedin = {}
     self.current = nil
     self.guidechanged = true
     if self.ClearWaypoint then self:ClearWaypoint() end
