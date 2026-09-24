@@ -46,7 +46,6 @@ too — the old `TurtleGuide` global is still an alias.
 | `/apg reset` | Reset progress in the current guide |
 | `/apg resetpanels` | Put every window back where it opens by default |
 | `/apg materials` | Reagents the rest of this guide still needs |
-| `/apg credits` | Everyone whose work is in this addon |
 | `/apg server` | Cycle which server you play on |
 | `/apg serverstatus` | Guide data provenance per server |
 
@@ -212,9 +211,9 @@ so `git log` and `git blame` still attribute each line to whoever wrote it.
 | **Indian Type Foundry** | Rajdhani (SIL OFL 1.1) |
 | **The Inter Project Authors** | Inter (SIL OFL 1.1) |
 
-The full list is in [CONTRIBUTORS.md](CONTRIBUTORS.md), and in game under
-`/apg credits` — credit should be visible to people using the addon, not
-only to people reading the repository.
+The full list is in [CONTRIBUTORS.md](CONTRIBUTORS.md), and in game behind the
+**Credits** button at the bottom of the options panel — credit should be
+visible to people using the addon, not only to people reading the repository.
 
 A fan project, not affiliated with or endorsed by Blizzard Entertainment,
 Zygor Guides LLC, RestedXP, or any server team. The interface deliberately

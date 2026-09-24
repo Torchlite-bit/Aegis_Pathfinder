@@ -1059,7 +1059,7 @@ end
 ]]
 local WINDOW_KEYS = {
 	"objframe", "optionsframe", "guidelistframe", "materialsframe",
-	"errorlogframe", "startzoneframe", "navcallout",
+	"errorlogframe", "startzoneframe", "navcallout", "creditsframe",
 }
 
 function AegisPathfinder:ResetWindowLayout()
@@ -1078,7 +1078,7 @@ function AegisPathfinder:ResetWindowLayout()
 		self.navcallout:SetPoint("TOP", UIParent, "TOP", 0, -120)
 	end
 	-- By name: any of these may not have been built yet.
-	for _, key in ipairs({ "materialsframe", "errorLogFrame", "startingZoneSelectorFrame" }) do
+	for _, key in ipairs({ "materialsframe", "errorLogFrame", "startingZoneSelectorFrame", "creditsframe" }) do
 		local w = self[key]
 		if w then
 			w:ClearAllPoints()
