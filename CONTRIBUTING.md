@@ -36,6 +36,7 @@ That runs everything that can run without a WoW client:
 | `Tools/test_dungeons.lua` | Dungeon chips and the guide-reference scan |
 | `Tools/test_guidelist.lua` | Guide categorisation, tabs and badges |
 | `Tools/test_activeframes.lua` | Active Items, Active Targets and Macros: which items and targets each step offers, targeting and raid marks, the generated AegisTarget/AegisItem macros, placement, the key bindings |
+| `Tools/test_nextguide.lua` | Where next?: which custom zones fit a level, and the walk from a route guide to a custom zone and back to the route |
 | `Tools/test_materials.lua` | Shopping list arithmetic, checked against the source document's own shopping list; bag counts, the scope tabs, and sending to Aegis: Exchange |
 | `Tools/test_objectivetabs.lua` | The objectives tab bar and branch state |
 

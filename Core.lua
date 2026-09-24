@@ -119,7 +119,7 @@ local defaults = {
     isbranching = false,
     branchsavedguide = nil,
     branchsavedstep = nil,
-    autobranch = false,           -- auto-branch to Turtle WoW zones
+    offercustomzones = true,      -- offer custom zones when a guide finishes (NextGuideFrame.lua)
     routepack = nil,              -- Active route pack name (e.g., "VanillaGuide", "RestedXP")
     PlayStyle = "SOLO",           -- Default playstyle ("SOLO" or "GROUP")
     UseAH = false,                -- Default Auction House setting (true/false)
@@ -385,12 +385,12 @@ local options = {
             func = function() AegisPathfinder:ReturnFromBranch() end,
             order = 15,
         },
-        AutoBranch = {
-            name = "Auto Branch",
-            desc = "Automatically branch to Turtle-lineage custom zones when available",
+        CustomZones = {
+            name = "Custom Zones",
+            desc = "When a guide finishes, offer the custom zones that fit your level before moving on",
             type = "toggle",
-            get = function() return AegisPathfinder.db.char.autobranch end,
-            set = function(v) AegisPathfinder.db.char.autobranch = v end,
+            get = function() return AegisPathfinder.db.char.offercustomzones ~= false end,
+            set = function(v) AegisPathfinder.db.char.offercustomzones = v end,
             order = 16,
         },
         DebugRoute = {

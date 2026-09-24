@@ -85,6 +85,19 @@ dot marks the dungeons the guide you are currently on actually has steps for.
 **Filters.** Solo or group mode, and whether Auction House steps appear.
 Defaults follow the route pack you chose.
 
+**Custom zones between guides.** When you finish a guide and a custom zone
+fits your level, a small **Where next?** window asks whether to carry on with
+the route or take the custom zone. Finish Redridge Mountains (27-28) at 28, for
+example, and it offers the next Optimized guide or Northwind (28-34). A custom
+zone opens in a tab beside the route, with the route's next guide waiting in the
+first tab. Finish the custom zone and it asks again: back to the route, at the
+guide for the level you are by then, or on to the next custom zone that fits. A
+zone fits when you are inside its level range or one short of it, below its top,
+and have not finished it; with none that fit, nothing is asked. Closing the
+window carries on with the route. The options panel can switch it off (*Offer
+custom zones between guides*). The custom zones are also under the guide
+list's **Custom** tab at any time.
+
 **Professions.** Ten 1–300 routes with trainers, craft counts, reagents and
 recipe sources, tracked against your actual skill level. See below.
 
@@ -239,7 +252,7 @@ Runs everything that can be checked without a client: Lua syntax, Lua 5.0
 compatibility, `.toc` and `Guides.xml` integrity, TGA validity, that every
 texture path resolves to a real file, that no panel has drifted off the theme,
 that every window stacks rather than interleaving with the others, and
-seventeen test suites that execute the addon's own code against a stubbed 1.12 API.
+eighteen test suites that execute the addon's own code against a stubbed 1.12 API.
 
 None of it proves the UI looks right. That needs a client.
 

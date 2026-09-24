@@ -218,6 +218,35 @@ do
 	check(active == 2, "which empties the active windows too, got %d", active)
 end
 
+-- A finished guide offers the custom zones before moving on -------------------------
+
+--[[ When "Where next?" has something to ask (NextGuideFrame.lua), the engine
+	waits for the answer instead of loading the next guide or leaving a
+	branch -- otherwise the question would arrive after the move it is
+	asking about. With nothing to ask, the old path runs. ]]
+do
+	local asked, moved, returned = 0, 0, 0
+	function AegisPathfinder:LoadNextGuide() moved = moved + 1; return false end
+	function AegisPathfinder:ReturnFromBranch() returned = returned + 1 end
+	local answer = true
+	function AegisPathfinder:OfferNextGuide() asked = asked + 1; return answer end
+
+	AegisPathfinder.db.char.isbranching = nil
+	AegisPathfinder:UpdateStatusFrame()
+	check(asked == 1 and moved == 0, "a finished guide asks first and does not move on (asked %d, moved %d)", asked, moved)
+	AegisPathfinder.db.char.isbranching = true
+	AegisPathfinder:UpdateStatusFrame()
+	check(returned == 0, "nor leaves a finished custom zone")
+
+	answer = false
+	AegisPathfinder:UpdateStatusFrame()
+	check(returned == 1, "with nothing to ask, a finished branch returns as before")
+	AegisPathfinder.db.char.isbranching = nil
+	AegisPathfinder:UpdateStatusFrame()
+	check(moved == 1, "and a finished route guide moves on as before")
+	AegisPathfinder.OfferNextGuide = nil
+end
+
 -- Report ---------------------------------------------------------------------
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end

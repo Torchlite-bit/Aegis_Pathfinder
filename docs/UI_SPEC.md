@@ -371,6 +371,41 @@ Placeholder guides carry the concept's grey `TPL` badge (`Theme:Badge`). In a
 list where an unauthored guide looks exactly like an authored one, that badge
 is the only thing distinguishing them.
 
+Custom-zone guides are the **Custom** tab: `GetGuideCategory` matches a
+guide's name against `TURTLE_ZONES` in `Core.lua`, which has to name every
+custom zone -- Scarlet Enclave and Hyjal were once missing and filed under
+Zones. `Tools/test_guidelist.lua` reads that list out of `Core.lua` and checks
+every custom-zone guide against it.
+
+### Where next? -- `NextGuideFrame.lua`
+
+Not in the concept. Asked when a guide finishes, before the engine moves on:
+`UpdateStatusFrame` calls `OfferNextGuide` first, and when it returns true the
+guide waits for the answer instead of `LoadNextGuide` or `ReturnFromBranch`.
+
+It is asked only when a custom zone fits (`GetCustomZoneChoices`): a guide in
+the `turtle` category, not the one just finished, not finished before
+(`db.char.completion`), with the player at least one level short of its bottom
+and below its top. Up to five, lowest first. Nothing fits, nothing is asked,
+and the old path runs. Each finished guide is asked about once a session.
+
+Chrome with a `WHERE NEXT?` subhead, a line naming what was finished, then:
+
+- **The route** (`Theme:SectionHeader` over a full-width `Theme:PanelButton`):
+  "Continue to" the route's next guide (`nextzones`), or, finishing a custom
+  zone, "Back to" the route guide for the player's level now
+  (`GetOptimizedGuideForLevel`). Hidden at the end of the route.
+- **Custom zones**: a button each.
+
+Taking a custom zone from the route opens it in a tab (`OpenGuideTab`) and
+points tab 1 at the route's next guide, so returning resumes the route rather
+than the guide just finished. Taking one from a custom zone replaces that tab
+(`LoadGuideInTab`). Going back is `ReturnFromBranch`. Either way the finished
+guide is recorded as done. Closing the window (its close chip, Escape) is
+"carry on with the route" -- what finishing a guide always did.
+`offercustomzones`, on by default, switches it off; it replaced
+`autobranch`, a switch that nothing read.
+
 ### Shopping list -- `MaterialsFrame.lua`
 
 Not in the concept, which is leveling-focused. It exists because the

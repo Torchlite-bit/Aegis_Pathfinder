@@ -319,6 +319,11 @@ function AegisPathfinder:UpdateStatusFrame()
 	QuestLog_Update()
 	QuestWatch_Update()
 
+	-- A guide just finished: offer the custom zones that fit before moving
+	-- on, if there are any (NextGuideFrame.lua). The guide waits for the
+	-- answer.
+	if not nextstep and self.OfferNextGuide and self:OfferNextGuide() then return end
+
 	-- Check if we're on a branch and it's complete
 	if not nextstep and self.db.char.isbranching then
 		self:Print("Branch guide complete! Returning to main route.")

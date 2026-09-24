@@ -342,7 +342,7 @@ function AegisPathfinder:CreateConfigPanel()
 		{ key = "autoquest",     label = "Accept and turn in quests automatically" },
 		{ key = "trackquests",   label = "Track quests automatically" },
 		{ key = "skipfollowups", label = "Skip suggested follow-ups" },
-		{ key = "autobranch",    label = "Open custom-zone guides automatically" },
+		{ key = "offercustomzones", label = "Offer custom zones between guides" },
 		{ key = "showminimapbutton", label = "Minimap button" },
 		{ key = "showactiveitems", label = "Active items window" },
 		{ key = "showactivetargets", label = "Active targets window" },

@@ -26,7 +26,7 @@ AegisPathfinder = {
 			routepack = "VanillaGuide", currentroute = "Human",
 			PlayStyle = "SOLO", UseAH = false, Dungeons = {},
 			autoquest = true, trackquests = false, skipfollowups = true,
-			autobranch = false, shownavcallout = true, showminimapbutton = true,
+			offercustomzones = true, shownavcallout = true, showminimapbutton = true,
 			waypointprovider = "auto", currentguide = "Elwynn Forest (1-12)",
 		},
 		profile = {},
@@ -241,6 +241,15 @@ check(frame.switches.showminimapbutton ~= nil and frame.switches.showminimapbutt
 click(frame.switches.showminimapbutton)
 check(db.showminimapbutton == false and AegisPathfinder.__minimapRefreshed,
 	"which hides the button at once")
+
+-- Offering the custom zones when a guide finishes: its own switch, in place of
+-- "Open custom-zone guides automatically", which nothing ever read.
+check(frame.switches.autobranch == nil, "the switch that did nothing is gone")
+local offer = frame.switches.offercustomzones
+check(offer ~= nil and offer:IsOn(), "the custom-zone offer has a switch, on")
+click(offer)
+check(db.offercustomzones == false and not offer:IsOn(), "which turns it off")
+click(offer)
 
 -- The Active Items, Active Targets and Macros windows: a switch each, on unless the
 -- saved setting says otherwise, repainting as they change.
