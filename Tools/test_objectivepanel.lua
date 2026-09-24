@@ -74,6 +74,10 @@ function AegisPathfinder:EnsureTabs()
 end
 function AegisPathfinder:HasNoGuide() return table.getn(self:EnsureTabs()) == 0 end
 function AegisPathfinder:SwitchToTab() end
+-- OptionsFrame.lua's, which this suite does not load.
+function AegisPathfinder:ToggleConfigPanel()
+	if self.optionsframe:IsShown() then self.optionsframe:Hide() else self.optionsframe:Show() end
+end
 function AegisPathfinder:CloseTab() end
 function AegisPathfinder:ToggleOverviewMode()
 	self.db.char.overviewmode = not self.db.char.overviewmode
@@ -111,7 +115,18 @@ end
 local frame = AegisPathfinder.objectiveframe
 -- A player coming from the version where the grip set the height directly.
 AegisPathfinder.db.profile.objframeheight = 500
+-- And the old default width, which every earlier version saved on its own.
+AegisPathfinder.db.profile.objframewidth = 630
 AegisPathfinder:UpdateObjectivePanel()
+
+check(AegisPathfinder.db.profile.objframewidth == nil and frame:GetWidth() == 396,
+	"the old default width is dropped for the concept's 396px, got %s saved, %s wide",
+	tostring(AegisPathfinder.db.profile.objframewidth), frame:GetWidth())
+frame:SetWidth(450)
+AegisPathfinder:OnObjectiveFrameResized()
+check(AegisPathfinder.db.profile.objframewidth == nil,
+	"a resize the player did not make is not saved as their choice")
+frame:SetWidth(396)
 
 check(AegisPathfinder.db.profile.objframemaxheight == 500
 	and AegisPathfinder.db.profile.objframeheight == nil,
@@ -469,8 +484,8 @@ check(profile.objframepoint == nil and profile.guidelistframepoint == nil,
 	"/apg resetpanels forgets every saved position")
 check(profile.objframewidth == nil and profile.objframemaxheight == nil,
 	"and the panel's size")
-check(frame:GetWidth() == 630 and frame:GetRight() == 1024 - 40 and frame:GetTop() == 768 - 180,
-	"putting the guide back at the concept's top-right, 630 wide, got %s wide at right %s top %s",
+check(frame:GetWidth() == 396 and frame:GetRight() == 1024 - 40 and frame:GetTop() == 768 - 180,
+	"putting the guide back at the concept's top-right, 396 wide, got %s wide at right %s top %s",
 	frame:GetWidth(), tostring(frame:GetRight()), tostring(frame:GetTop()))
 
 -- The objective meter -------------------------------------------------------
@@ -554,7 +569,24 @@ for _, fs in ipairs(footerStrings) do
 	if fs:GetText() == "Guide data authored for OctoWoW" then warned = true end
 end
 check(warned, "a data-source warning should take the footer's left slot")
+
+-- At 396px a warning and the count do not both fit, so the warning stops at
+-- the count on one line, and the footer's tooltip has all of it.
+local warnString
+for _, fs in ipairs(footerStrings) do
+	if fs:GetText() == "Guide data authored for OctoWoW" then warnString = fs end
+end
+local stopsAtCount = false
+for _, pt in ipairs(warnString.__points) do
+	if pt[1] == "RIGHT" and pt[2] ~= frame.footer then stopsAtCount = true end
+end
+check(stopsAtCount and warnString:GetHeight() == 12,
+	"the warning is held to one line short of the count")
+check(frame.footer.warning == "Guide data authored for OctoWoW",
+	"and the footer keeps the whole warning for its tooltip")
 AegisPathfinder.__dataWarning = nil
+AegisPathfinder:UpdateOHPanel()
+check(frame.footer.warning == nil, "which goes when the warning does")
 
 -- Report ---------------------------------------------------------------------
 

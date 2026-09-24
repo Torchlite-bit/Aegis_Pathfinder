@@ -19,10 +19,6 @@ libs\AceDebug-2.0\AceDebug-2.0.lua
 libs\AceDB-2.0\AceDB-2.0.lua
 libs\AceAddon-2.0\AceAddon-2.0.lua
 libs\AceHook-2.1\AceHook-2.1.lua
-# libs Extra
-libs\Dewdrop-2.0\Dewdrop-2.0.lua
-libs\Tablet-2.0\Tablet-2.0.lua
-libs\FuBarPlugin-2.0\FuBarPlugin-2.0.lua
 
 # Core Addon files
 Locale.lua
@@ -44,6 +40,7 @@ ObjectivesFrame.lua
 OptionsFrame.lua
 GuideListFrame.lua
 MaterialsFrame.lua
+MinimapButton.lua
 
 # Routes
 Routes\Routes.lua

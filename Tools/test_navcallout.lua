@@ -27,6 +27,18 @@ function AegisPathfinder:GetWaypointBearing() return self.__bearing, self.__yard
 dofile("Theme.lua")
 dofile("NavCallout.lua")
 
+-- ToggleNavCallout goes through the arrow setting in Navigation.lua, which
+-- enumerates the world map as it loads; lift just that block.
+do
+	local nav = io.open("Navigation.lua"):read("*a")
+	local from = string.find(nav, "--[[ Whose arrow points", 1, true)
+	local to = string.find(nav, "-- Helper to get valid zone data", 1, true)
+	assert(from and to, "could not find the arrow block in Navigation.lua")
+	assert(loadstring(string.sub(nav, from, to - 1)))()
+end
+function AegisPathfinder:ClearWaypoint() end
+function AegisPathfinder:ForceWaypointUpdate() end
+
 local Theme = AegisPathfinder.Theme
 local frame = AegisPathfinder.navcallout
 
@@ -191,6 +203,15 @@ check(not frame:IsShown(), "the callout hides when switched off")
 AegisPathfinder:ToggleNavCallout()
 check(AegisPathfinder.db.char.shownavcallout == true, "toggling switches it back on")
 check(frame:IsShown(), "and it reappears")
+-- Ours was switched off with no arrow setting saved: a character from before
+-- the setting, who was following the waypoint addon's arrow. Toggling ours
+-- back on leaves theirs as it was, so both point.
+check(AegisPathfinder:GetArrowMode() == "both",
+	"toggling ours leaves the waypoint addon's arrow as it was, got %s",
+	AegisPathfinder:GetArrowMode())
+AegisPathfinder:ToggleNavCallout()
+check(AegisPathfinder:GetArrowMode() == "provider" and not frame:IsShown(),
+	"and toggling ours off again leaves theirs alone too")
 
 -- Report ---------------------------------------------------------------------
 

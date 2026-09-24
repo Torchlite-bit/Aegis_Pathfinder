@@ -30,9 +30,8 @@ local CREDITS = {
 	} },
 	{ "Libraries and data", {
 		"The Ace Development Team -- Ace2",
-		"ckknight -- Dewdrop, Tablet, FuBarPlugin",
 		"shagu -- pfQuest",
-		"Cladhaire, sweetgiorni -- TomTom",
+		"Cladhaire, laytya and the TWOW porters -- TomTom-TWOW",
 	} },
 	{ "Fonts", {
 		"Rajdhani -- (c) 2014 Indian Type Foundry, SIL OFL 1.1",

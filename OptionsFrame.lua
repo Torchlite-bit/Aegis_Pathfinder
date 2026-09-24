@@ -112,13 +112,12 @@ function AegisPathfinder:CreateConfigPanel()
 	back:SetScript("OnEnter", function()
 		this.fill:SetTint("text", 0.10)
 		Theme:Tint(this.glyph, "text")
-		GameTooltip:SetOwner(this, "ANCHOR_BOTTOM")
-		GameTooltip:SetText("Back to the guide")
+		Theme:ShowTip(this, "BOTTOM", "Back to the guide")
 	end)
 	back:SetScript("OnLeave", function()
 		this.fill:SetTint("text", 0.04)
 		Theme:Tint(this.glyph, "textDim")
-		GameTooltip:Hide()
+		Theme:HideTip(this)
 	end)
 
 	--[[ The scrolling body.
@@ -209,10 +208,9 @@ function AegisPathfinder:CreateConfigPanel()
 			AegisPathfinder:RefreshConfigPanel()
 		end)
 		pill:SetScript("OnEnter", function()
-			GameTooltip:SetOwner(this, "ANCHOR_RIGHT")
-			GameTooltip:SetText(this.description, nil, nil, nil, nil, true)
+			Theme:ShowTip(this, "RIGHT", this.description)
 		end)
-		pill:SetScript("OnLeave", function() GameTooltip:Hide() end)
+		pill:SetScript("OnLeave", function() Theme:HideTip(this) end)
 		table.insert(frame.packPills, pill)
 	end
 	pillRow:SetHeight(py + 26)
@@ -283,10 +281,9 @@ function AegisPathfinder:CreateConfigPanel()
 			AegisPathfinder:RefreshDungeonPanel()
 		end)
 		chip:SetScript("OnEnter", function()
-			GameTooltip:SetOwner(this, "ANCHOR_RIGHT")
-			GameTooltip:SetText(name)
+			Theme:ShowTip(this, "RIGHT", name)
 		end)
-		chip:SetScript("OnLeave", function() GameTooltip:Hide() end)
+		chip:SetScript("OnLeave", function() Theme:HideTip(this) end)
 		table.insert(frame.chips, chip)
 	end
 	local gridRows = math.ceil(table.getn(DUNGEONS) / CHIP_COLS)
@@ -346,14 +343,14 @@ function AegisPathfinder:CreateConfigPanel()
 		{ key = "trackquests",   label = "Track quests automatically" },
 		{ key = "skipfollowups", label = "Skip suggested follow-ups" },
 		{ key = "autobranch",    label = "Open custom-zone guides automatically" },
-		{ key = "shownavcallout", label = "Navigation arrow" },
+		{ key = "showminimapbutton", label = "Minimap button" },
 	}
 	for _, def in ipairs(BEHAVIOUR) do
 		local key = def.key
 		local sw = Theme:Switch(body, def.label, function(on)
 			AegisPathfinder.db.char[key] = on
-			-- The arrow is the one setting with something on screen to update.
-			if key == "shownavcallout" then AegisPathfinder:UpdateNavCallout() end
+			-- The one setting with something on screen to update.
+			if key == "showminimapbutton" then AegisPathfinder:UpdateMinimapButton() end
 		end)
 		sw:SetWidth(BODY_W)
 		sw.settingKey = key
@@ -369,6 +366,20 @@ function AegisPathfinder:CreateConfigPanel()
 	end)
 	place(waypoints, 30, SECTION_GAP)
 	frame.waypoints = waypoints
+
+	--[[ Whose arrow points at the step: ours, the waypoint addon's, both, or
+		neither. It replaced a lone "Navigation arrow" switch, which left the
+		waypoint addon's arrow pointing too -- two arrows, one place. ]]
+	table.insert(frame.sections, section("Arrow"))
+	local arrow = Theme:Dropdown(body, BODY_W, function(mode)
+		AegisPathfinder:SetArrowMode(mode)
+		AegisPathfinder:RefreshConfigPanel()
+	end)
+	arrow:SetItems(AegisPathfinder.ARROW_MODES)
+	place(arrow, 30, 6)
+	local arrowNote = Theme:FinePrint(body, BODY_W)
+	place(arrowNote, 30, SECTION_GAP)
+	frame.arrow, frame.arrowNote = arrow, arrowNote
 
 	table.insert(frame.sections, section("Maintenance"))
 	local rescan = Theme:Pill(body, "Rescan progress", 140, 26)
@@ -431,6 +442,17 @@ function AegisPathfinder:CreateConfigPanel()
 	ww.SetFadeTime(frame, 0.5)
 
 	table.insert(UISpecialFrames, "AegisPathfinderOptions")
+end
+
+--- Open the options panel, or close it if it is open. The header's menu chip
+--- and a right-click on the minimap button both land here.
+function AegisPathfinder:ToggleConfigPanel()
+	if not self.optionsframe then self:CreateConfigPanel() end
+	if self.optionsframe:IsShown() then
+		self.optionsframe:Hide()
+	else
+		self.optionsframe:Show()
+	end
 end
 
 --- Draw the visible slice of the route preview.
@@ -519,6 +541,16 @@ function AegisPathfinder:RefreshConfigPanel()
 	end
 	frame.waypoints:SetItems(wp)
 	frame.waypoints:SetValue(db.waypointprovider or "auto")
+
+	frame.arrow:SetValue(self:GetArrowMode())
+	local provider = self:GetWaypointProvider()
+	if provider and provider.arrowIsWaypoint then
+		frame.arrowNote:SetText(provider.label .. "'s waypoint is its arrow, so it points "
+			.. "whichever you pick here.")
+	else
+		frame.arrowNote:SetText("Pathfinder's floats at the top of the screen. The waypoint "
+			.. "addon keeps its map pins either way.")
+	end
 end
 
 --- Sync the dungeon chips with saved settings and with the loaded guide.

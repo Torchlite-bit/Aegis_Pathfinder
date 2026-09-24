@@ -48,7 +48,7 @@ multi-colour art bakes colour in: `nav-arrow.tga` and `progress-fill.tga`.
 | `nav-arrow.tga` | 64×64 | Navigation arrow, three-stop gradient, colour baked in |
 | `scroll-thumb.tga` | 32×32 | Scrollbar knob, stadium |
 | `switch-track.tga` | 64×32 | Options toggle track, stadium |
-| `logo.tga` | 64×64 | Minimap / FuBar icon |
+| `logo.tga` | 64×64 | The AEGIS shield: the minimap button's icon |
 | `wordmark.tga` | 256×32 | PATHFINDER wordmark, pre-rendered |
 | `icons/*.tga` | 32×32 | One glyph per guide action code (17) |
 | `icons/{menu,close,plus,tick,bang,pin,expand}.tga` | 32×32 | Chrome glyphs the 1.12 font cannot render |

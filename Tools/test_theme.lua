@@ -89,6 +89,51 @@ check(bx == 7 and by == -7, "on every side, got %s,%s", tostring(bx), tostring(b
 check(skin.shadow.tl.__width == 18, "its corners hold the whole corner arc, got %s",
 	tostring(skin.shadow.tl.__width))
 
+-- Tooltip --------------------------------------------------------------------
+
+-- The addon's own card, not GameTooltip -- which is shared with the whole UI,
+-- so restyling it would restyle every other addon's tooltips too.
+local owner = CreateFrame("Button", nil, UIParent)
+owner:SetWidth(20); owner:SetHeight(20)
+owner:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+Theme:ShowTip(owner, "BOTTOM", "Close this guide")
+local tip = Theme.tip
+check(tip ~= nil and tip:IsShown(), "ShowTip shows the themed card")
+check(tip.__strata == "TOOLTIP", "above every window")
+check(tip.lines[1]:GetText() == "Close this guide", "carrying the hint")
+check(tip.lines[1].__color and tip.lines[1].__color[1] > 0.9, "in the theme's text colour")
+local tp, towner, trel = tip:GetPoint(1)
+check(tp == "TOP" and towner == owner and trel == "BOTTOM", "opening under its owner")
+local short = tip:GetWidth()
+check(short < 150, "as wide as a short hint needs, got %s", short)
+
+Theme:ShowTip(owner, "RIGHT", "Elwynn Forest (1-10)",
+	{ "Left-click: Open in a new tab", "Right-click: Load in the current tab" })
+check(tip.lines[2]:IsShown() and tip.lines[3]:IsShown(), "detail lines follow the hint")
+check(tip.lines[2].__color[1] < tip.lines[1].__color[1], "dimmer than it")
+check(tip:GetHeight() > 3 * 12, "and the card grows to hold them, got %s", tip:GetHeight())
+Theme:ShowTip(owner, "BOTTOM", string.rep("A long note about where to go next. ", 20))
+check(tip:GetWidth() <= 260 + 16, "a long hint wraps rather than running off, %s wide", tip:GetWidth())
+check(not tip.lines[2]:IsShown(), "and lines from the last tip are not left behind")
+Theme:ShowTip(owner, "TOP", "Guide data: OctoWoW", nil, "danger")
+check(tip.lines[1].__color[1] > 0.85 and tip.lines[1].__color[2] < 0.5, "a warning can take the danger colour")
+
+local other = CreateFrame("Button", nil, UIParent)
+Theme:HideTip(other)
+check(tip:IsShown(), "another frame's OnLeave does not hide a tip it does not own")
+Theme:HideTip(owner)
+check(not tip:IsShown(), "its owner's does")
+
+-- An owner hidden under the cursor -- a tab closed by its own button -- gets
+-- no OnLeave; the card notices and goes.
+Theme:ShowTip(owner, "BOTTOM", "Close this guide")
+owner:Hide()
+local old = this
+this = tip
+tip:GetScript("OnUpdate")()
+this = old
+check(not tip:IsShown(), "a tooltip does not outlive its owner")
+
 -- Progress bar ---------------------------------------------------------------
 
 local bar = Theme:ProgressBar(UIParent, 5)

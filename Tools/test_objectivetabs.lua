@@ -270,7 +270,17 @@ for _, name in ipairs({ "A (1-2)", "B (1-2)", "C (1-2)", "D (1-2)", "E (1-2)", "
 end
 AegisPathfinder:UpdateObjectiveTabs()
 check(table.getn(AegisPathfinder.db.char.tabs) == 8, "eight tabs open, got: %s", names())
-check(table.getn(shown()) == 4, "the bar shows four of them, got %s", shownList())
+
+-- At the concept's 396px, three at a time.
+check(frame:GetWidth() == 396, "the panel opens at the concept's 396px, got %s", frame:GetWidth())
+check(table.getn(shown()) == 3, "which shows three tabs at a time, got %s", shownList())
+check(narrowest() >= 100, "each readable, got %d px", narrowest())
+check(rightEdge() <= 396, "with the arrows and the + still inside it, reaching %d px", rightEdge())
+
+-- Widened, four -- the most the bar shows at once.
+frame:SetWidth(630)
+AegisPathfinder:UpdateObjectiveTabs()
+check(table.getn(shown()) == 4, "a panel widened to 630px shows four, got %s", shownList())
 check(narrowest() >= 100, "each at a readable width, got %d px", narrowest())
 check(frame.guideTabs[8]:IsShown(), "including the one just opened, which is the one you are on")
 check(shownList() == "5,6,7,8", "so the view is the last four, got %s", shownList())
@@ -334,7 +344,7 @@ check(narrowest() >= 100, "each still readable, got %d px", narrowest())
 check(rightEdge() <= 420, "and the row still fits, reaching %d px", rightEdge())
 check(not frame.guideTabs[1].badge:IsShown(),
 	"narrow tabs drop the badge so the name keeps the room")
-frame:SetWidth(630)
+frame:SetWidth(396)
 AegisPathfinder:UpdateObjectiveTabs()
 
 -- Past capacity there is nowhere to put another, and it says so.

@@ -44,7 +44,8 @@ local ICONSIZE  = 16
 	the cap, and nothing the player drags can leave the panel a size its
 	content does not fit.
 ]]
-local DEFAULT_WIDTH = 630
+local DEFAULT_WIDTH = 396                                      -- .panel{width:396px}
+local OLD_DEFAULT_WIDTH = 630
 local DEFAULT_ANCHOR = { "TOPRIGHT", "TOPRIGHT", -40, -180 }  -- top:180px; right:40px
 local MIN_WIDTH, MAX_WIDTH = 320, 1200                         -- makeResizable minWidth
 local DEFAULT_CAP, MIN_CAP = 600, 260                          -- max-height, minHeight
@@ -192,12 +193,11 @@ grip:SetScript("OnMouseUp", function()
 end)
 grip:SetScript("OnEnter", function()
 	Theme:Tint(gripTex, "accent", 1)
-	GameTooltip:SetOwner(this, "ANCHOR_LEFT")
-	GameTooltip:SetText("Drag to set the width and the tallest the panel may grow", nil, nil, nil, nil, true)
+	Theme:ShowTip(this, "LEFT", "Drag to set the width and the tallest the panel may grow")
 end)
 grip:SetScript("OnLeave", function()
 	if not grip.sizing then Theme:Tint(gripTex, "textDim", 0.55) end
-	GameTooltip:Hide()
+	Theme:HideTip(this)
 end)
 
 --[[ Row anchors.
@@ -258,9 +258,7 @@ end
 
 
 local function HideTooltip()
-	if GameTooltip:IsOwned(this) then
-		GameTooltip:Hide()
-	end
+	Theme:HideTip(this)
 end
 
 
@@ -281,19 +279,17 @@ function AegisPathfinder:UpdateObjectivePanel()
 	menuChip:SetScript("OnClick", function()
 		-- Beside the guide, not instead of it: the concept puts #options at
 		-- right:456px and #objectives at right:40px, both on screen at once.
-		local opts = AegisPathfinder.optionsframe
-		if opts:IsVisible() then opts:Hide() else opts:Show() end
+		AegisPathfinder:ToggleConfigPanel()
 	end)
 	menuChip:SetScript("OnEnter", function()
 		this.fill:SetTint("text", 0.10)
 		Theme:Tint(this.glyph, "text")
-		GameTooltip:SetOwner(this, "ANCHOR_BOTTOM")
-		GameTooltip:SetText(L["Config"])
+		Theme:ShowTip(this, "BOTTOM", L["Config"])
 	end)
 	menuChip:SetScript("OnLeave", function()
 		this.fill:SetTint("text", 0.04)
 		Theme:Tint(this.glyph, "textDim")
-		GameTooltip:Hide()
+		Theme:HideTip(this)
 	end)
 
 	--[[ Focus / overview.
@@ -314,8 +310,7 @@ function AegisPathfinder:UpdateObjectivePanel()
 			this.fill:SetTint("text", 0.10)
 			Theme:Tint(this.glyph, "text")
 		end
-		GameTooltip:SetOwner(this, "ANCHOR_BOTTOM")
-		GameTooltip:SetText(AegisPathfinder.db.char.overviewmode
+		Theme:ShowTip(this, "BOTTOM", AegisPathfinder.db.char.overviewmode
 			and "Show one step at a time" or "Show all steps")
 	end)
 	expandChip:SetScript("OnLeave", function()
@@ -323,7 +318,7 @@ function AegisPathfinder:UpdateObjectivePanel()
 			this.fill:SetTint("text", 0.04)
 			Theme:Tint(this.glyph, "textDim")
 		end
-		GameTooltip:Hide()
+		Theme:HideTip(this)
 	end)
 	frame.expandChip = expandChip
 
@@ -398,12 +393,11 @@ function AegisPathfinder:UpdateObjectivePanel()
 		end)
 		t.close:SetScript("OnEnter", function()
 			Theme:Tint(this.glyph, "text")
-			GameTooltip:SetOwner(this, "ANCHOR_BOTTOM")
-			GameTooltip:SetText("Close this guide")
+			Theme:ShowTip(this, "BOTTOM", "Close this guide")
 		end)
 		t.close:SetScript("OnLeave", function()
 			Theme:Tint(this.glyph, "textDim")
-			GameTooltip:Hide()
+			Theme:HideTip(this)
 		end)
 
 		function t:SetActive(active)
@@ -423,12 +417,11 @@ function AegisPathfinder:UpdateObjectivePanel()
 		t:SetScript("OnEnter", function()
 			local tab = AegisPathfinder.db.char.tabs and AegisPathfinder.db.char.tabs[this.index]
 			if not tab then return end
-			GameTooltip:SetOwner(this, "ANCHOR_BOTTOM")
-			GameTooltip:SetText(this.index == 1
+			Theme:ShowTip(this, "BOTTOM", this.index == 1
 				and ("Main route: " .. tab.guide)
 				or ("Switch to " .. tab.guide))
 		end)
-		t:SetScript("OnLeave", function() GameTooltip:Hide() end)
+		t:SetScript("OnLeave", function() Theme:HideTip(this) end)
 
 		t:Hide()
 		return t
@@ -455,12 +448,11 @@ function AegisPathfinder:UpdateObjectivePanel()
 		b:SetScript("OnEnter", function()
 			if this.__disabled then return end
 			Theme:Tint(this.glyph, "accent")
-			GameTooltip:SetOwner(this, "ANCHOR_BOTTOM")
-			GameTooltip:SetText(tip)
+			Theme:ShowTip(this, "BOTTOM", tip)
 		end)
 		b:SetScript("OnLeave", function()
 			Theme:Tint(this.glyph, this.__disabled and "subtle" or "textDim")
-			GameTooltip:Hide()
+			Theme:HideTip(this)
 		end)
 		function b:SetEnabled(on)
 			self.__disabled = not on
@@ -488,12 +480,11 @@ function AegisPathfinder:UpdateObjectivePanel()
 	end)
 	addTab:SetScript("OnEnter", function()
 		Theme:Tint(this.glyph, "accent")
-		GameTooltip:SetOwner(this, "ANCHOR_BOTTOM")
-		GameTooltip:SetText("Open another guide")
+		Theme:ShowTip(this, "BOTTOM", "Open another guide")
 	end)
 	addTab:SetScript("OnLeave", function()
 		Theme:Tint(this.glyph, "textDim")
-		GameTooltip:Hide()
+		Theme:HideTip(this)
 	end)
 
 	frame.tabbar = tabbar
@@ -545,12 +536,11 @@ function AegisPathfinder:UpdateObjectivePanel()
 	local function ArrowTip(btn, tip)
 		btn:SetScript("OnEnter", function()
 			Theme:Tint(this.glyph, "text")
-			GameTooltip:SetOwner(this, "ANCHOR_BOTTOM")
-			GameTooltip:SetText(tip)
+			Theme:ShowTip(this, "BOTTOM", tip)
 		end)
 		btn:SetScript("OnLeave", function()
 			Theme:Tint(this.glyph, "textDim")
-			GameTooltip:Hide()
+			Theme:HideTip(this)
 		end)
 	end
 	ArrowTip(prevArrow, "Previous objective")
@@ -595,29 +585,40 @@ function AegisPathfinder:UpdateObjectivePanel()
 	footerRule:SetPoint("TOPRIGHT", footer, "TOPRIGHT", 0, 0)
 	Theme:Tint(footerRule, "border")
 
-	footerQid = footer:CreateFontString(nil, "OVERLAY")
-	Theme:SetFont(footerQid, "body", 10)
-	footerQid:SetPoint("LEFT", footer, "LEFT", ROWPAD + 18, 0)
-	footerQid:SetJustifyH("LEFT")
-	Theme:TextColor(footerQid, "accent")
-
 	footerCount = footer:CreateFontString(nil, "OVERLAY")
 	Theme:SetFont(footerCount, "body", 10)
 	footerCount:SetPoint("RIGHT", footer, "RIGHT", -ROWPAD, 0)
 	footerCount:SetJustifyH("RIGHT")
 	Theme:TextColor(footerCount, "textDim")
 
+	-- Up to the count and no further, on one line: a data-source warning is
+	-- longer than a 396px footer has room for beside the count, and the
+	-- whole of it is on the footer's tooltip.
+	footerQid = footer:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(footerQid, "body", 10)
+	footerQid:SetPoint("LEFT", footer, "LEFT", ROWPAD + 18, 0)
+	footerQid:SetPoint("RIGHT", footerCount, "LEFT", -8, 0)
+	footerQid:SetHeight(12)
+	footerQid:SetJustifyH("LEFT")
+	Theme:TextColor(footerQid, "accent")
+
+	footer:EnableMouse(true)
+	footer:SetScript("OnEnter", function()
+		if not this.warning then return end
+		Theme:ShowTip(this, "TOP", this.warning, nil, "danger")
+	end)
+	footer:SetScript("OnLeave", function() Theme:HideTip(this) end)
+
 	local materials = Theme:GlyphButton(footer, "use", 11, 18)
 	materials:SetPoint("LEFT", footer, "LEFT", ROWPAD - 4, 0)
 	materials:SetScript("OnClick", function() AegisPathfinder:ToggleMaterialsPanel() end)
 	materials:SetScript("OnEnter", function()
 		Theme:Tint(this.glyph, "accent")
-		GameTooltip:SetOwner(this, "ANCHOR_TOP")
-		GameTooltip:SetText("Reagents the rest of this guide still needs", nil, nil, nil, nil, true)
+		Theme:ShowTip(this, "TOP", "Reagents the rest of this guide still needs")
 	end)
 	materials:SetScript("OnLeave", function()
 		Theme:Tint(this.glyph, "textDim")
-		GameTooltip:Hide()
+		Theme:HideTip(this)
 	end)
 
 	frame.footer = footer
@@ -727,8 +728,7 @@ function AegisPathfinder:UpdateObjectivePanel()
 
 		row:SetScript("OnEnter", function()
 			if this.__tip then
-				GameTooltip:SetOwner(this, "ANCHOR_RIGHT")
-				GameTooltip:SetText(this.__tip, nil, nil, nil, nil, true)
+				Theme:ShowTip(this, "RIGHT", this.__tip)
 			end
 		end)
 		row:SetScript("OnLeave", HideTooltip)
@@ -807,6 +807,10 @@ function AegisPathfinder:UpdateObjectivePanel()
 		profile.objframemaxheight = profile.objframemaxheight or profile.objframeheight
 		profile.objframeheight = nil
 	end
+	-- Earlier versions saved the width on every resize, the first layout
+	-- included, so the old 630px default is stored for nearly everyone
+	-- whether or not they chose it. Only a width set with the grip is kept.
+	if profile.objframewidth == OLD_DEFAULT_WIDTH then profile.objframewidth = nil end
 	if profile.objframewidth then
 		frame:SetWidth(math.max(MIN_WIDTH, math.min(MAX_WIDTH, profile.objframewidth)))
 	end
@@ -1007,7 +1011,8 @@ end
 function AegisPathfinder:OnObjectiveFrameResized()
 	-- Mid-layout the panel is already being told what size to be.
 	if frame.layoutlock then return end
-	self.db.profile.objframewidth = frame:GetWidth()
+	-- The width is saved by the grip, which is the player choosing it; a
+	-- resize for any other reason is not a choice worth remembering.
 
 	NUMROWS = self:VisibleRowCount()
 	for i, row in ipairs(rows) do
@@ -1077,6 +1082,7 @@ function AegisPathfinder:ResetWindowLayout()
 		self.navcallout:ClearAllPoints()
 		self.navcallout:SetPoint("TOP", UIParent, "TOP", 0, -120)
 	end
+	if self.ResetItemButton then self:ResetItemButton() end
 	-- By name: any of these may not have been built yet.
 	for _, key in ipairs({ "materialsframe", "errorLogFrame", "startingZoneSelectorFrame", "creditsframe" }) do
 		local w = self[key]
@@ -1366,6 +1372,7 @@ function AegisPathfinder:UpdateOHPanel(value)
 		waypoint points at nothing and it otherwise fails silently, so when
 		there is one it takes the slot and turns red. ]]
 	local qid, meta, isWarning = self:GetStepMeta(self.current)
+	frame.footer.warning = isWarning and meta or nil
 	if isWarning then
 		footerQid:SetText(meta)
 		Theme:TextColor(footerQid, "danger")

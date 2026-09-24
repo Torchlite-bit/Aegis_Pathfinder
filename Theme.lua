@@ -1077,6 +1077,114 @@ function Theme:Chrome(frame, subtitle, onMoved)
 	return header, sub
 end
 
+--[[ Tooltip.
+
+	GameTooltip is Blizzard's -- bevelled border, gold title, FrizQuadrata --
+	and it is shared with the whole UI, so restyling it would restyle every
+	other addon's tooltips as well. This is the addon's own: a small dark card
+	in the theme's fonts and colours, for every hint the addon gives. Only the
+	use-item button still uses GameTooltip, because only GameTooltip can show
+	a game item.
+
+	One frame, built on first use and reused. The first line is the hint;
+	any further lines are dimmer detail beneath it.
+]]
+local TIP_MAX_W = 260      -- wider than this and a line wraps
+local TIP_PAD = 8
+local TIP_GAP = 3
+local tip
+
+local function TipLine(i)
+	local fs = tip.lines[i]
+	if not fs then
+		fs = tip:CreateFontString(nil, "OVERLAY")
+		Theme:SetFont(fs, "body", i == 1 and 12 or 11)
+		fs:SetJustifyH("LEFT")
+		fs:SetJustifyV("TOP")
+		if i == 1 then
+			fs:SetPoint("TOPLEFT", tip, "TOPLEFT", TIP_PAD, -TIP_PAD)
+		else
+			fs:SetPoint("TOPLEFT", tip.lines[i - 1], "BOTTOMLEFT", 0, -TIP_GAP)
+		end
+		tip.lines[i] = fs
+	end
+	return fs
+end
+
+-- Which way the card opens from its owner, by the side named.
+local TIP_ANCHOR = {
+	BOTTOM = { "TOP", "BOTTOM", 0, -4 },
+	TOP    = { "BOTTOM", "TOP", 0, 4 },
+	RIGHT  = { "BOTTOMLEFT", "TOPRIGHT", 0, 0 },
+	LEFT   = { "BOTTOMRIGHT", "TOPLEFT", 0, 0 },
+}
+
+--- Show the tooltip for `owner`, opening on its `side` ("TOP", "BOTTOM",
+--- "LEFT" or "RIGHT"). `text` is the hint; `detail`, a list of further
+--- lines; `color`, a theme colour for the hint (default "text").
+function Theme:ShowTip(owner, side, text, detail, color)
+	if not tip then
+		tip = CreateFrame("Frame", "AegisPathfinderTip", UIParent)
+		tip:SetFrameStrata("TOOLTIP")
+		tip:SetClampedToScreen(true)
+		self:Panel(tip, "panel2")
+		tip.lines = {}
+		-- A hint outlives its owner otherwise: clicking a tab's close button
+		-- hides the button under the cursor, and a hidden frame gets no
+		-- OnLeave to take its tooltip with it.
+		tip:SetScript("OnUpdate", function()
+			if this.owner and not this.owner:IsVisible() then Theme:HideTip() end
+		end)
+		self.tip = tip
+	end
+	if not text or text == "" then return self:HideTip() end
+
+	local all = { text }
+	for _, line in ipairs(detail or {}) do table.insert(all, line) end
+
+	-- As wide as the longest line, up to TIP_MAX_W; GetStringWidth is the
+	-- unwrapped width whatever the string's width is set to.
+	local width = 0
+	for i, line in ipairs(all) do
+		local fs = TipLine(i)
+		fs:SetText(line)
+		width = math.max(width, fs:GetStringWidth())
+	end
+	width = math.min(math.ceil(width) + 1, TIP_MAX_W)
+
+	local height = 0
+	for i = 1, table.getn(tip.lines) do
+		local fs = tip.lines[i]
+		if i <= table.getn(all) then
+			fs:SetWidth(width)
+			self:TextColor(fs, i == 1 and (color or "text") or "textDim")
+			fs:Show()
+			local h = fs:GetHeight() or 0
+			-- A client that will not measure wrapped text: count the lines.
+			if h < 1 then h = math.ceil(fs:GetStringWidth() / width) * 14 end
+			height = height + h + (i > 1 and TIP_GAP or 0)
+		else
+			fs:Hide()
+		end
+	end
+
+	tip:SetWidth(width + TIP_PAD * 2)
+	tip:SetHeight(height + TIP_PAD * 2)
+	local a = TIP_ANCHOR[side] or TIP_ANCHOR.BOTTOM
+	tip:ClearAllPoints()
+	tip:SetPoint(a[1], owner, a[2], a[3], a[4])
+	tip.owner = owner
+	tip:Show()
+end
+
+--- Hide the tooltip -- only if `owner` is the one showing it, when given.
+function Theme:HideTip(owner)
+	if not tip then return end
+	if owner and tip.owner ~= owner then return end
+	tip.owner = nil
+	tip:Hide()
+end
+
 --[[ Window stacking.
 
 	Every window lives in the DIALOG strata, and the client draws a strata

@@ -78,7 +78,6 @@ if loc == "deDE" then localized = {
 	["Always map coords from notes"] = "Koordinaten immer aus Guide",
 	["Map note coords even when LightHeaded provides coords."] = "Verwende Guide-Koordinaten auch dann, wenn LightHeaded Koordinaten anbietet.",
 	["Help"] = "Hilfe",
-	["Hide minimap icon"] = "Hide minimap icon",
 	["Automatically skip suggested follow-ups"] = "Follow-ups automatisch \195\188berspringen",
 } end
 
@@ -124,7 +123,6 @@ if loc == "frFR" then localized = {
 	["Always map coords from notes"] = "Toujours montrer les coordonn\195\169es trouv\195\169es dans les notes",
 	["Map note coords even when LightHeaded provides coords."] = "Montrer les coordonn\195\169es trouv\195\169es dans les notes m\195\170me si LightHeaded les fournit.",
 	["Help"] = "Aide",
-	["Hide minimap icon"] = "Hide minimap icon",
 	["Automatically skip suggested follow-ups"] = "Sauter automatiquement les follow-ups sugg\195\169r\195\169s",
 } end
 

@@ -68,6 +68,18 @@ the themed background.
 font has no glyph for: `☰ ✕ + ← → ‹ › ✓ ! 📍`. Each is generated the same way
 and lives in `Theme.glyph`.
 
+**Tooltips.** The concept's hints are the browser's `title` attribute; the
+client's equivalent, `GameTooltip`, is Blizzard's bevelled card in FrizQuadrata
+-- and shared with the whole UI, so restyling it would restyle every other
+addon's tooltips too. `Theme:ShowTip(owner, side, text, detail, color)` is the
+addon's own: a `panel-2` card in the body face, the hint in `--text` over dimmer
+detail lines, as wide as its longest line up to 260px, in the `TOOLTIP` strata,
+hiding itself if its owner disappears under the cursor. Only the use-item
+button still opens `GameTooltip`, since only it can show a game item, and
+`Tools/verify.py` fails any other file that does. The use-item button itself
+is the theme's rounded tile around the item's icon now, not
+`ItemButtonTemplate`'s square action-button border.
+
 **Gradients.** Baked into the texture (`progress-fill.tga`) — there is no
 runtime gradient.
 
@@ -101,6 +113,17 @@ points and the distance stays blank -- an invented number would be worse.
 
 With no provider, no waypoint, or the waypoint in another zone, the callout
 hides. An arrow that is confidently wrong is worse than no arrow.
+
+**Whose arrow.** Out of the box there were two: ours, and the waypoint addon's,
+aimed at the same waypoint. Ours reads the waypoint the addon records for
+itself, not the provider's arrow, so the two are independent, and the options
+panel's **Arrow** section picks: Pathfinder's, the waypoint addon's, both or
+none (`GetArrowMode` / `SetArrowMode` in `Navigation.lua`). The default is
+ours alone; a character who had turned ours off keeps the waypoint addon's.
+TomTom is told `crazy = false` outright -- TomTom-TWOW fills a nil `crazy`
+from its own autoqueue setting, which is on -- and pfQuest's route target is
+simply not set. Cartographer and MetaMap BWP have no waypoint but their arrow,
+so they point whatever is picked, and the setting's note says so.
 
 ### The status card -- deleted
 
@@ -184,6 +207,13 @@ leaderboard text -- "Kobold Vermin slain: 3/8" -- parsed into its three parts.
 An objective with nothing countable in it ("Speak to Marshal Dughan") gets no
 meter rather than an empty one. Overview mode folds the same text into the
 step's note line instead, as the concept does.
+
+**Width.** The concept's 396px (`.panel{width:396px}`). It used to open at
+630px, and every earlier version saved the width on any resize, the first
+layout included -- so a stored 630 is read as "never chosen" and dropped. Only
+the grip saves a width now. At 396 a data-source warning in the footer does
+not fit beside the step count, so it stops short of the count on one line and
+the footer's tooltip carries the whole of it.
 
 **Height follows the content.** The concept's panel is `height:auto` under
 `max-height: min(70vh, 600px)`, with `.steps-list` `flex:0 0 auto` in focus
@@ -292,6 +322,25 @@ A negated tag (`|D|!DM|`) still counts as a reference: the step is
 conditional, the relevance is not. Results are cached per guide, since the
 scan walks guides that run to hundreds of steps.
 
+### Minimap button -- `MinimapButton.lua`
+
+Not in the concept, which has no minimap. It used to be FuBarPlugin's:
+Blizzard's quest-log book in the stock round minimap border, and a right-click
+that opened a Dewdrop menu of every setting in Blizzard tooltip chrome. Now it
+is drawn like the rest of the addon -- `logo.tga`, the AEGIS shield, in accent
+on a `panel-2` disc (`circle-fill.tga`) with a `subtle` hairline ring
+(`circle-border.tga`) that takes the accent on hover.
+
+Click toggles the guide, right-click toggles the options panel (every setting
+the Dewdrop menu held is there), and dragging walks it round the minimap's edge
+at 80px from its centre; the angle is saved per profile. "Minimap button" in
+the options panel's Guide behaviour section, or `/apg minimapbutton`, hides it.
+
+Dewdrop-2.0, Tablet-2.0 and FuBarPlugin-2.0 were only there for the old
+button, so they are gone from `libs/` and the `.toc`; AceConsole and AceDB use
+Dewdrop only when it is present. `Tools/verify.py` fails on Blizzard quest-log
+or minimap art, in either backslash form.
+
 ### Guide list -- `GuideListFrame.lua`
 
 The concept's tab bar, replacing five independent category checkboxes with
@@ -347,8 +396,8 @@ opens the guide list beside the panel; at eight the `+` stops offering what it
 cannot do.
 
 The bar does not squeeze every open guide in: at five that reduced each tab to
-"Optim…". It shows as many as fit at 100px or more, four at most (four at the
-default 630px width, three at 420px), and a `‹` `›` pair appears either side
+"Optim…". It shows as many as fit at 100px or more, four at most (three at the
+concept's 396px, four once the panel is widened to about 480px), and a `‹` `›` pair appears either side
 once there are more. Each arrow, or a notch of the mouse wheel over the bar,
 moves the view one tab and dims at its end. The view follows the active tab
 when that changes — opening a guide, switching from the guide list, closing
