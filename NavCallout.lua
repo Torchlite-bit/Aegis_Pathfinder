@@ -196,7 +196,11 @@ driver:SetScript("OnUpdate", function()
 	if sinceTick < TICK then return end
 	sinceTick = 0
 	local self = AegisPathfinder
-	if self.db and self.db.char.shownavcallout and self.current then
+	if not self.db then return end
+	-- Whatever the waypoint addon did with its arrow since the last tick,
+	-- the Arrow setting stands -- including when ours is off.
+	if self.EnforceArrowMode then self:EnforceArrowMode() end
+	if self.db.char.shownavcallout and self.current then
 		self:UpdateNavCallout()
 	end
 end)

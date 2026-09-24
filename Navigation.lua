@@ -491,53 +491,87 @@ end
 
 	Returns the bearing in radians -- clockwise, relative to the way the player
 	is facing, so zero means "straight ahead" -- and the distance in yards.
+	With no bearing it returns nil, nil and a reason, which /apg diagnav shows.
 
-	Distance needs Astrolabe's zone dimension tables to turn map percentages
-	into yards. Astrolabe ships with TomTom and with pfQuest, so in practice it
-	is there whenever a waypoint provider is; when it is not, the bearing is
-	still returned and the distance is nil. Saying "that way" without claiming
-	a range beats inventing one.
+	Astrolabe first, when it is loaded -- TomTom-TWOW and pfQuest both bring
+	it. It measures in yards across zones on a continent, the way TomTom's own
+	arrow does, and it copes with the hidden world map being left on the
+	continent view: which it does itself, when it cannot place the player in
+	a zone, and which the same-zone path below took for "not in the
+	waypoint's zone" -- so our arrow hid while TomTom's went on pointing.
+
+	Without Astrolabe: map coordinates, same zone only, and no distance. An
+	arrow that says "that way" without claiming a range beats inventing one.
 ]]
+local function AstrolabeDelta(wp)
+	if not (Astrolabe and Astrolabe.GetCurrentPlayerPosition and Astrolabe.ComputeDistance) then return end
+	local ok, pc, pz, px, py = pcall(Astrolabe.GetCurrentPlayerPosition, Astrolabe)
+	if not ok or not pc or pc == 0 or not px then return end
+	local ok2, d, dx, dy = pcall(Astrolabe.ComputeDistance, Astrolabe,
+		pc, pz, px, py, wp.continent, wp.zoneindex, wp.x / 100, wp.y / 100)
+	if not ok2 or not d or not dx or not dy then return end
+	-- Astrolabe answers 0, 0, 0 for a zone it has no dimensions for; that is
+	-- "unknown", not "you are standing on it".
+	if d == 0 and (pc ~= wp.continent or pz ~= wp.zoneindex
+		or math.abs(px - wp.x / 100) > 0.001 or math.abs(py - wp.y / 100) > 0.001) then
+		return
+	end
+	return dx, dy, d
+end
+
 function AegisPathfinder:GetWaypointBearing()
 	local wp = self.waypointtarget
-	if not wp or not self:GetWaypointProvider() then return nil end
-	if WorldMapFrame:IsShown() then return nil end   -- do not yank the player's map
+	if not wp then return nil, nil, "no waypoint for this step" end
+	if not self:GetWaypointProvider() then return nil, nil, "no waypoint addon" end
+	if WorldMapFrame:IsShown() then return nil, nil, "the world map is open" end
 
-	-- This runs several times a second while the arrow is up, so only reset
-	-- the map when it has stopped reporting a position -- which is what it
-	-- does once the player has left the zone the map was last set to.
-	local px, py = GetPlayerMapPosition("player")
-	if not px or (px == 0 and py == 0) then
-		SetMapToCurrentZone()
-		px, py = GetPlayerMapPosition("player")
+	local facing = AegisPathfinder:GetPlayerFacing()
+	if not facing then return nil, nil, "no heading from the client" end
+
+	-- East and south of the player, and how far.
+	local east, south, yards = AstrolabeDelta(wp)
+	if not east then
+		-- The map has to be on the player's own zone to read a position in
+		-- it: reset it when it reports none, or a continent (zone 0).
+		local px, py = GetPlayerMapPosition("player")
+		if not px or (px == 0 and py == 0) or GetCurrentMapZone() == 0 then
+			SetMapToCurrentZone()
+			px, py = GetPlayerMapPosition("player")
+		end
+		if not px or (px == 0 and py == 0) then return nil, nil, "no player position" end
+		local c, z = GetCurrentMapContinent(), GetCurrentMapZone()
+		if c ~= wp.continent or z ~= wp.zoneindex then
+			return nil, nil, "the waypoint is in another zone (install TomTom-TWOW or pfQuest to point across zones)"
+		end
+		east, south = wp.x / 100 - px, wp.y / 100 - py
 	end
-	if not px or (px == 0 and py == 0) then return nil end
-
-	local c, z = GetCurrentMapContinent(), GetCurrentMapZone()
-	if c ~= wp.continent or z ~= wp.zoneindex then return nil end  -- another zone
-
-	-- Map coordinates run east and *south*; the waypoint is stored 0-100.
-	local east = wp.x / 100 - px
-	local south = wp.y / 100 - py
-	if east == 0 and south == 0 then return 0, 0 end
+	if east == 0 and south == 0 then return 0, yards or 0 end
 
 	-- atan2(east, north) is the compass bearing, clockwise from north.
 	local bearing = math.atan2(east, -south)
-	local facing = AegisPathfinder:GetPlayerFacing()
-	if not facing then return nil end   -- no heading means no honest arrow
-
 	-- GetPlayerFacing grows counter-clockwise from north, so adding it turns a
 	-- compass bearing into one relative to the player.
-	local relative = bearing + facing
+	return bearing + facing, yards
+end
 
-	local yards
-	if Astrolabe and Astrolabe.ComputeDistance then
-		local ok, d = pcall(Astrolabe.ComputeDistance, Astrolabe,
-			c, z, px, py, c, z, wp.x / 100, wp.y / 100)
-		if ok and d then yards = d end
+--[[ Keep the waypoint addon's arrow off our waypoint when it is not wanted.
+
+	Telling TomTom `crazy = false` keeps it from taking the waypoint when it
+	is added, but not later: TomTom-TWOW's GoToNextWayPoint -- run whenever
+	its arrow's target is reached or cleared, or the player is resurrected --
+	hands the arrow to the last waypoint in its list, which is usually ours.
+	So this runs with the arrow's ticks and takes it back off. Only ever off
+	one of our own waypoints: the player's own TomTom waypoints are theirs.
+]]
+function AegisPathfinder:EnforceArrowMode()
+	if self:WantsProviderArrow() then return end
+	if not (TomTom and TomTom.active_waypoint and TomTom.ClearCrazyArrow) then return end
+	for _, uid in ipairs(tomtomuids) do
+		if TomTom.active_waypoint == uid then
+			TomTom:ClearCrazyArrow()
+			return true
+		end
 	end
-
-	return relative, yards
 end
 
 -- Set waypoint from coordinates

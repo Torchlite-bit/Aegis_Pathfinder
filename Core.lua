@@ -188,6 +188,18 @@ local options = {
                 AegisPathfinder:Print("--- Navigation Status ---")
                 AegisPathfinder:Print("Setting: " .. (AegisPathfinder.db.char.waypointprovider or "auto"))
                 AegisPathfinder:Print("Active: " .. AegisPathfinder:GetWaypointProviderLabel())
+                AegisPathfinder:Print("Arrow: " .. AegisPathfinder:GetArrowMode())
+                local wp = AegisPathfinder.waypointtarget
+                AegisPathfinder:Print(wp and string.format("Waypoint: continent %d zone %d at %.1f, %.1f",
+                    wp.continent, wp.zoneindex, wp.x, wp.y) or "Waypoint: none")
+                local bearing, yards, why = AegisPathfinder:GetWaypointBearing()
+                if bearing then
+                    AegisPathfinder:Print(string.format("Pathfinder's arrow: pointing, %s",
+                        yards and string.format("%d yd", math.floor(yards + 0.5)) or "no distance"))
+                else
+                    AegisPathfinder:Print("Pathfinder's arrow: hidden -- " .. tostring(why))
+                end
+                AegisPathfinder:Print("Astrolabe: " .. ((Astrolabe and Astrolabe.ComputeDistance) and "loaded" or "not loaded"))
 
                 local available = AegisPathfinder:GetWaypointProviders()
                 if table.getn(available) == 0 then

@@ -111,8 +111,16 @@ percentages into yards; Astrolabe ships with both TomTom and pfQuest, so in
 practice it is there whenever a provider is. When it is not, the arrow still
 points and the distance stays blank -- an invented number would be worse.
 
-With no provider, no waypoint, or the waypoint in another zone, the callout
-hides. An arrow that is confidently wrong is worse than no arrow.
+With Astrolabe loaded -- TomTom-TWOW and pfQuest both bring it -- the bearing
+and distance come from it: it measures in yards across the zones of a
+continent, as TomTom's own arrow does, and copes with the hidden world map
+being left on the continent view. Astrolabe does that itself when it cannot
+place the player in a zone, and the same-zone path used to read it as "not in
+the waypoint's zone" and hide, while TomTom's arrow kept pointing. Without
+Astrolabe it falls back to that path (re-centring a continent-view map first).
+With no provider, no waypoint, or no way to measure, the callout hides; an
+arrow that is confidently wrong is worse than no arrow. `/apg diagnav` says
+which of those it is.
 
 **Whose arrow.** Out of the box there were two: ours, and the waypoint addon's,
 aimed at the same waypoint. Ours reads the waypoint the addon records for
@@ -122,7 +130,12 @@ none (`GetArrowMode` / `SetArrowMode` in `Navigation.lua`). The default is
 ours alone; a character who had turned ours off keeps the waypoint addon's.
 TomTom is told `crazy = false` outright -- TomTom-TWOW fills a nil `crazy`
 from its own autoqueue setting, which is on -- and pfQuest's route target is
-simply not set. Cartographer and MetaMap BWP have no waypoint but their arrow,
+simply not set. That is not enough for TomTom on its own: its
+`GoToNextWayPoint`, run when its arrow's target is reached or cleared, hands
+the arrow to the last waypoint in its list, usually ours. So the arrow's
+driver takes TomTom's arrow back off any of *our* waypoints each tick while
+the setting says so (`EnforceArrowMode`); the player's own TomTom waypoints
+are never touched. Cartographer and MetaMap BWP have no waypoint but their arrow,
 so they point whatever is picked, and the setting's note says so.
 
 ### The status card -- deleted
