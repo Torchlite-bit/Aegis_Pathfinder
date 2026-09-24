@@ -82,6 +82,11 @@ end
 -- The use-item button is its own surface and stays.
 check(getglobal("AegisPathfinderItemButton") ~= nil,
 	"the |U| use-item button should still exist")
+local itemButton = getglobal("AegisPathfinderItemButton")
+check(itemButton.border and itemButton.icon,
+	"drawn as the theme's tile around the item's icon, not ItemButtonTemplate")
+check(itemButton.icon.__texcoord and itemButton.icon.__texcoord[1] > 0,
+	"with the game's bevel cropped off the icon")
 
 -- Auto-detection -------------------------------------------------------------
 

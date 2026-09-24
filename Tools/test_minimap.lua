@@ -98,18 +98,21 @@ check(math.abs(a - 90) < 0.01, "and it is put back there next time, got %s", a)
 
 -- The tooltip says what the clicks do -------------------------------------------------------
 
-local lines = {}
-local oldAdd = GameTooltip.AddLine
-GameTooltip.AddLine = function(_, text) table.insert(lines, text) end
 fire(button, "OnEnter")
-GameTooltip.AddLine = oldAdd
+local tip = Theme.tip
+local lines = {}
+for _, fs in ipairs(tip.lines) do
+	if fs:IsShown() then table.insert(lines, fs:GetText()) end
+end
 local said = table.concat(lines, " / ")
+check(tip:IsShown() and tip.owner == button, "hovering shows the addon's own tooltip, not GameTooltip")
 check(string.find(said, "Click", 1, true) and string.find(said, "Right-click", 1, true)
 	and string.find(said, "Drag", 1, true),
 	"the tooltip explains click, right-click and drag, got '%s'", said)
 check(button.ring.__color[2] > 0.7, "and the ring lights on hover")
 fire(button, "OnLeave")
 check(button.ring.__color[2] < 0.4, "and dims again")
+check(not tip:IsShown(), "and the tooltip goes")
 
 -- Hiding it --------------------------------------------------------------------------------
 

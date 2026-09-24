@@ -68,6 +68,18 @@ the themed background.
 font has no glyph for: `☰ ✕ + ← → ‹ › ✓ ! 📍`. Each is generated the same way
 and lives in `Theme.glyph`.
 
+**Tooltips.** The concept's hints are the browser's `title` attribute; the
+client's equivalent, `GameTooltip`, is Blizzard's bevelled card in FrizQuadrata
+-- and shared with the whole UI, so restyling it would restyle every other
+addon's tooltips too. `Theme:ShowTip(owner, side, text, detail, color)` is the
+addon's own: a `panel-2` card in the body face, the hint in `--text` over dimmer
+detail lines, as wide as its longest line up to 260px, in the `TOOLTIP` strata,
+hiding itself if its owner disappears under the cursor. Only the use-item
+button still opens `GameTooltip`, since only it can show a game item, and
+`Tools/verify.py` fails any other file that does. The use-item button itself
+is the theme's rounded tile around the item's icon now, not
+`ItemButtonTemplate`'s square action-button border.
+
 **Gradients.** Baked into the texture (`progress-fill.tga`) — there is no
 runtime gradient.
 

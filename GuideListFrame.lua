@@ -39,20 +39,15 @@ local function SortGuidesByLevel(a, b)
 end
 
 local function HideTooltip()
-    if GameTooltip:IsOwned(this) then
-        GameTooltip:Hide()
-    end
+    Theme:HideTip(this)
 end
 
 local function ShowTooltip()
     local f = this
-    GameTooltip:SetOwner(f, "ANCHOR_RIGHT")
-
+    -- A category header has nothing to click through to.
+    if not f.guide then return Theme:HideTip() end
+    -- The guide's name is the hint; what each click does is the detail.
     local lines = {}
-    if f.guide then
-        table.insert(lines, "|cffffd100" .. f.guide .. "|r")
-        table.insert(lines, "")
-    end
     table.insert(lines, "Left-click: Open in a new tab")
     table.insert(lines, "Right-click: Load in the current tab")
 
@@ -60,11 +55,11 @@ local function ShowTooltip()
         table.insert(lines, "Shift-click: Reset progress")
     end
 
-    if f.guide and AegisPathfinder.db.char.isbranching and AegisPathfinder.db.char.branchsavedguide == f.guide then
-        table.insert(lines, "|cff00ff00(Your saved main route)|r")
+    if AegisPathfinder.db.char.isbranching and AegisPathfinder.db.char.branchsavedguide == f.guide then
+        table.insert(lines, "|cff52c722Your main route|r")
     end
 
-    GameTooltip:SetText(table.concat(lines, "\n"), nil, nil, nil, nil, true)
+    Theme:ShowTip(f, "RIGHT", f.guide, lines)
 end
 
 local function OnClick()
@@ -74,7 +69,7 @@ local function OnClick()
         AegisPathfinder.db.char.completion[f.guide] = nil
         AegisPathfinder.db.char.turnins[f.guide] = {}
         AegisPathfinder:UpdateGuideListPanel()
-        GameTooltip:Hide()
+        Theme:HideTip()
     else
         local text = f.guide
         if not text then

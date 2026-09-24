@@ -67,7 +67,7 @@ local function Dragging()
 end
 
 button:SetScript("OnDragStart", function()
-	GameTooltip:Hide()
+	Theme:HideTip(this)
 	this:SetScript("OnUpdate", Dragging)
 end)
 button:SetScript("OnDragStop", function()
@@ -89,18 +89,16 @@ button:SetScript("OnMouseUp", function() icon:SetPoint("CENTER", button, "CENTER
 button:SetScript("OnEnter", function()
 	Theme:Tint(ring, "accent")
 	Theme:Tint(icon, "accentGlow")
-	GameTooltip:SetOwner(this, "ANCHOR_LEFT")
-	GameTooltip:SetText("AEGIS: Pathfinder")
-	local c = Theme.color.textDim
-	GameTooltip:AddLine("Click to show or hide the guide", c[1], c[2], c[3])
-	GameTooltip:AddLine("Right-click for settings", c[1], c[2], c[3])
-	GameTooltip:AddLine("Drag to move this button", c[1], c[2], c[3])
-	GameTooltip:Show()
+	Theme:ShowTip(this, "LEFT", "AEGIS: Pathfinder", {
+		"Click to show or hide the guide",
+		"Right-click for settings",
+		"Drag to move this button",
+	})
 end)
 button:SetScript("OnLeave", function()
 	Theme:Tint(ring, "subtle")
 	Theme:Tint(icon, "accent")
-	GameTooltip:Hide()
+	Theme:HideTip(this)
 end)
 
 --- Show or hide the button to match the setting, where it was left.

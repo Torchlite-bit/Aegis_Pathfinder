@@ -403,6 +403,25 @@ def check_texture_paths(rep):
     rep.ok("textures", checked)
 
 
+# GameTooltip is shared with the whole UI -- restyling it restyles every other
+# addon's tooltips -- so the addon's hints use Theme:ShowTip, its own card.
+# Only the use-item button may reach for GameTooltip: only it can show an item.
+GAMETOOLTIP = re.compile(r"\bGameTooltip\s*:\s*SetOwner\b")
+GAMETOOLTIP_ALLOWED = {"GuideEngine.lua"}
+
+
+def check_tooltips(rep):
+    files = [p for p in sorted(walk({".lua"}))
+             if is_shipped(p) and os.path.basename(p) not in GAMETOOLTIP_ALLOWED]
+    for path in files:
+        code = strip_lua_noise(open(path, encoding="utf-8", errors="replace").read())
+        for lineno, line in enumerate(code.splitlines(), 1):
+            if GAMETOOLTIP.search(line):
+                rep.fail("tooltips", path,
+                         "line %d opens GameTooltip -- use Theme:ShowTip" % lineno)
+    rep.ok("tooltips", len(files))
+
+
 # Every window is in the DIALOG strata, where the client draws frames in
 # level order across all windows at once. A window that is not registered with
 # Theme's stacking keeps the level it was built at, and interleaves with any
@@ -436,6 +455,7 @@ def main():
     check_theme(rep)
     check_theme_scope(rep)
     check_stacking(rep)
+    check_tooltips(rep)
     check_media(rep)
     check_texture_paths(rep)
     return rep.summary()

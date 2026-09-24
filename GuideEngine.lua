@@ -31,13 +31,35 @@ local professions = {
 }
 
 local AegisPathfinder = AegisPathfinder
-local item = CreateFrame("Button", "AegisPathfinderItemButton", UIParent, "ItemButtonTemplate")
+local Theme = AegisPathfinder.Theme
+
+--[[ The use-item button, for |U| steps.
+
+	It was ItemButtonTemplate: the stock square action-button border, with
+	Blizzard's depress and highlight art. Now it is the theme's rounded tile
+	-- a panel-2 fill, a hairline border that takes the accent on hover --
+	around the item's own icon, cropped of the bevel the game bakes into
+	every icon. The tooltip is still GameTooltip's: only it can show an item.
+]]
+local ITEM_SIZE = 36
+local ITEM_INSET = 4
+local item = CreateFrame("Button", "AegisPathfinderItemButton", UIParent)
+AegisPathfinder.itembutton = item
 item:SetFrameStrata("LOW")
-item:SetHeight(36)
-item:SetWidth(36)
+item:SetHeight(ITEM_SIZE)
+item:SetWidth(ITEM_SIZE)
 item:SetPoint("BOTTOMRIGHT", QuestWatchFrame, "TOPRIGHT", -62, 10)
 item:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+
+item.fill = Theme:NineSlice(item, Theme.texture.tabFill, "BACKGROUND", "panel2")
+item.border = Theme:NineSlice(item, Theme.texture.tabBorder, "BORDER", "subtle")
+item.icon = item:CreateTexture(nil, "ARTWORK")
+item.icon:SetPoint("TOPLEFT", item, "TOPLEFT", ITEM_INSET, -ITEM_INSET)
+item.icon:SetPoint("BOTTOMRIGHT", item, "BOTTOMRIGHT", -ITEM_INSET, ITEM_INSET)
+item.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+
 item:SetScript("OnEnter", function()
+	item.border:SetTint("accent")
 	if not item.uitem then return end
 	GameTooltip:SetOwner(item, "ANCHOR_LEFT")
 	local bag, slot = AegisPathfinder:FindBagSlot(item.uitem)
@@ -48,7 +70,19 @@ item:SetScript("OnEnter", function()
 	end
 	GameTooltip:Show()
 end)
-item:SetScript("OnLeave", GameTooltip_Hide)
+item:SetScript("OnLeave", function()
+	item.border:SetTint("subtle")
+	GameTooltip:Hide()
+end)
+-- Pressed: the icon sinks a pixel, as a button face would.
+item:SetScript("OnMouseDown", function()
+	item.icon:SetPoint("TOPLEFT", item, "TOPLEFT", ITEM_INSET + 1, -ITEM_INSET - 1)
+	item.icon:SetPoint("BOTTOMRIGHT", item, "BOTTOMRIGHT", -ITEM_INSET + 1, ITEM_INSET - 1)
+end)
+item:SetScript("OnMouseUp", function()
+	item.icon:SetPoint("TOPLEFT", item, "TOPLEFT", ITEM_INSET, -ITEM_INSET)
+	item.icon:SetPoint("BOTTOMRIGHT", item, "BOTTOMRIGHT", -ITEM_INSET, ITEM_INSET)
+end)
 item:Hide()
 
 --- Show or hide the objectives panel. It is the addon's only window now, so
@@ -63,10 +97,14 @@ end
 
 --- Restore where the player left the use-item button.
 function AegisPathfinder:PositionItemButton()
-	if self.db.profile.itemframepoint then
-		item:ClearAllPoints()
-		item:SetPoint(self.db.profile.itemframepoint, self.db.profile.itemframex, self.db.profile.itemframey)
-	end
+	Theme:RestorePosition(item, "itemframe")
+end
+
+--- Its default place, above the quest tracker.
+function AegisPathfinder:ResetItemButton()
+	Theme:ForgetPosition("itemframe")
+	item:ClearAllPoints()
+	item:SetPoint("BOTTOMRIGHT", QuestWatchFrame, "TOPRIGHT", -62, 10)
 end
 
 --[[ Which steps the addon can complete without the player ticking anything.
@@ -376,7 +414,7 @@ end
 
 function AegisPathfinder:PLAYER_REGEN_ENABLED()
 	if tex then
-		SetItemButtonTexture(item, tex)
+		item.icon:SetTexture(tex)
 		item:Show()
 		tex = nil
 	else
@@ -404,9 +442,6 @@ item:SetScript("OnDragStart", function()
 	frame:StartMoving()
 end)
 item:SetScript("OnDragStop", function()
-	local frame = this
-	frame:StopMovingOrSizing()
-	local _
-	AegisPathfinder.db.profile.itemframepoint, _, _, AegisPathfinder.db.profile.itemframex, AegisPathfinder.db.profile.itemframey =
-	frame:GetPoint()
+	this:StopMovingOrSizing()
+	Theme:PositionSaver("itemframe")(this)
 end)
