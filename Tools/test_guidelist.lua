@@ -32,7 +32,14 @@ local Theme = AegisPathfinder.Theme
 	two functions under test, kept identical to Core.lua -- if they drift, the
 	check at the bottom of this file fails.
 ]]
-local TURTLE_ZONES = { ["Thalassian Highlands"] = true, ["Balor"] = true }
+-- The zone list itself is read out of Core.lua, so a zone missing there is
+-- missing here too.
+local TURTLE_ZONES = {}
+do
+	local src = io.open("Core.lua"):read("*a")
+	local _, _, block = string.find(src, "local TURTLE_ZONES = (%b{})")
+	for zone in string.gfind(block or "", '%["([^"]+)"%]%s*=%s*true') do TURTLE_ZONES[zone] = true end
+end
 
 function AegisPathfinder:IsTemplateGuide(guideName)
 	local qsp = self.qsplusguides and self.qsplusguides[guideName]
@@ -71,6 +78,22 @@ check(AegisPathfinder:GetGuideCategory("Thalassian Highlands (1-10)") == "turtle
 	"custom zones are detected by zone name")
 check(AegisPathfinder:GetGuideCategory("Westfall (12-17)") == "zone",
 	"anything else is a zone guide")
+
+-- Every custom zone guide belongs under the Custom tab: the ones the
+-- guide list has always had, and the newer Scarlet Enclave and Hyjal, which
+-- used to land under Zones.
+for _, name in ipairs({ "Thalassian Highlands (1-10)", "Blackstone Island (1-10)", "Northwind (28-34)",
+		"Balor (29-34)", "Grim Reaches (33-38)", "Gilneas (39-46)", "Icepoint Rock (40-50)",
+		"Lapidis Isle (48-53)", "Gillijim's Isle (48-53)", "Tel'Abim (54-60)",
+		"Scarlet Enclave (55-60)", "Hyjal (58-60)" }) do
+	check(AegisPathfinder:GetGuideCategory(name) == "turtle", "%s belongs under Custom", name)
+end
+-- Guides/Both holds only custom-zone guides; each of them must be found.
+for file in io.popen("ls Guides/Both/*.lua"):lines() do
+	local _, _, name = string.find(io.open(file):read("*a"), 'RegisterGuide%("([^"]+)"')
+	check(name and AegisPathfinder:GetGuideCategory(name) == "turtle",
+		"%s (%s) belongs under Custom", tostring(name), file)
+end
 
 check(AegisPathfinder:IsTemplateGuide("Fishing (1-300)") == true,
 	"an unauthored guide reports as a template")

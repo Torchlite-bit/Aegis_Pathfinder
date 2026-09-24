@@ -1857,6 +1857,8 @@ local TURTLE_ZONES = {
     ["Gillijims Isle"] = true,
     ["Thalassian Highlands"] = true,
     ["Blackstone Island"] = true,
+    ["Scarlet Enclave"] = true,
+    ["Hyjal"] = true,
 }
 
 -- Categorize a guide by its name
