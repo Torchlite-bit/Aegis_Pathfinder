@@ -262,6 +262,8 @@ BLIZZARD_CHROME = [
     # generated glyphs in media/icons.
     (re.compile(r"Interface\\\\Icons\\\\"), "Blizzard icon art -- use Theme.actionIcon / Theme.glyph"),
     (re.compile(r"Interface\\\\GossipFrame\\\\"), "Blizzard gossip art -- use Theme.actionIcon"),
+    (re.compile(r"Interface\\{1,2}QuestFrame\\{1,2}"), "Blizzard quest-log art -- use Theme.texture / Theme.glyph"),
+    (re.compile(r"Interface\\{1,2}Minimap\\{1,2}"), "Blizzard minimap-button art -- use the theme's disc and ring"),
 ]
 
 # WidgetWarlock keeps TooltipBorderBG as public API for guides written against

@@ -26,7 +26,7 @@ AegisPathfinder = {
 			routepack = "VanillaGuide", currentroute = "Human",
 			PlayStyle = "SOLO", UseAH = false, Dungeons = {},
 			autoquest = true, trackquests = false, skipfollowups = true,
-			autobranch = false, shownavcallout = true,
+			autobranch = false, shownavcallout = true, showminimapbutton = true,
 			waypointprovider = "auto", currentguide = "Elwynn Forest (1-12)",
 		},
 		profile = {},
@@ -63,6 +63,7 @@ function AegisPathfinder:HasNoGuide() return false end
 function AegisPathfinder:LoadGuide() self.__reloaded = (self.__reloaded or 0) + 1 end
 function AegisPathfinder:UpdateStatusFrame() end
 function AegisPathfinder:UpdateNavCallout() self.__arrowRefreshed = true end
+function AegisPathfinder:UpdateMinimapButton() self.__minimapRefreshed = true end
 function AegisPathfinder:QueryServerCompletedQuests() self.__rescanned = true end
 function AegisPathfinder:ShowErrorLog() self.__errorlog = true end
 
@@ -221,6 +222,11 @@ check(db.trackquests == true, "and write back to them")
 click(frame.switches.shownavcallout)
 check(db.shownavcallout == false, "the arrow switch turns the arrow off")
 check(AegisPathfinder.__arrowRefreshed, "and refreshes it so it goes at once")
+check(frame.switches.showminimapbutton ~= nil and frame.switches.showminimapbutton:IsOn(),
+	"the minimap button has a switch, on by default")
+click(frame.switches.showminimapbutton)
+check(db.showminimapbutton == false and AegisPathfinder.__minimapRefreshed,
+	"which hides the button at once")
 
 click(frame.waypoints.rows[2])
 check(db.waypointprovider == "TomTom", "the waypoint dropdown picks a provider, got %s",

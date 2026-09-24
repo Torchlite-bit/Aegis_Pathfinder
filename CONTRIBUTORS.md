@@ -40,7 +40,7 @@ whoever wrote it. As of the port, that history carries commits from
 | Component | Author |
 |---|---|
 | Ace2 (`AceAddon-2.0`, `AceEvent-2.0`, `AceDB-2.0`, `AceLibrary`, `AceOO-2.0`, `AceConsole-2.0`, `AceDebug-2.0`, `AceHook-2.1`) | The **Ace Development Team** |
-| Dewdrop-2.0, Tablet-2.0, FuBarPlugin-2.0 | **ckknight** and the Ace Development Team |
+| Dewdrop-2.0, Tablet-2.0, FuBarPlugin-2.0 (the minimap icon and its menu, until the addon drew its own) | **ckknight** and the Ace Development Team |
 | [pfQuest](https://github.com/shagu/pfQuest) / pfQuest-turtle / pfQuest-octo | **shagu** |
 | [TomTom](https://github.com/sweetgiorni/TomTom) | **Cladhaire**, ported by **sweetgiorni** |
 | MetaMap, MetaMapBWP, Cartographer | Their respective authors — supported waypoint providers |

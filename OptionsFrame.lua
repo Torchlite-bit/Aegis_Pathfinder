@@ -347,13 +347,15 @@ function AegisPathfinder:CreateConfigPanel()
 		{ key = "skipfollowups", label = "Skip suggested follow-ups" },
 		{ key = "autobranch",    label = "Open custom-zone guides automatically" },
 		{ key = "shownavcallout", label = "Navigation arrow" },
+		{ key = "showminimapbutton", label = "Minimap button" },
 	}
 	for _, def in ipairs(BEHAVIOUR) do
 		local key = def.key
 		local sw = Theme:Switch(body, def.label, function(on)
 			AegisPathfinder.db.char[key] = on
-			-- The arrow is the one setting with something on screen to update.
+			-- The two settings with something on screen to update.
 			if key == "shownavcallout" then AegisPathfinder:UpdateNavCallout() end
+			if key == "showminimapbutton" then AegisPathfinder:UpdateMinimapButton() end
 		end)
 		sw:SetWidth(BODY_W)
 		sw.settingKey = key

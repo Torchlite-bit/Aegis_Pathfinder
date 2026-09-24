@@ -1,15 +1,14 @@
 local L = AEGISPATHFINDER_LOCALE
 AEGISPATHFINDER_LOCALE = nil
 
-AegisPathfinder = AceLibrary("AceAddon-2.0"):new("AceConsole-2.0", "AceDB-2.0", "AceDebug-2.0", "AceEvent-2.0", "AceHook-2.1",
-    "FuBarPlugin-2.0")
+-- No FuBarPlugin: the minimap button is the addon's own (MinimapButton.lua),
+-- and its right-click opens the options panel rather than a Dewdrop menu.
+AegisPathfinder = AceLibrary("AceAddon-2.0"):new("AceConsole-2.0", "AceDB-2.0", "AceDebug-2.0", "AceEvent-2.0", "AceHook-2.1")
 
 -- Compatibility alias for the pre-rebrand addon name. Guide files -- including
 -- any authored outside this repository -- call TurtleGuide:RegisterGuide(), so
 -- the old global has to keep resolving to the addon object.
 TurtleGuide = AegisPathfinder
-
-local T = AceLibrary("Tablet-2.0")
 
 AegisPathfinder.guides = {}
 AegisPathfinder.guidelist = {}
@@ -94,6 +93,7 @@ local defaults = {
     -- else. Overview is the whole list, behind the header's expand chip.
     overviewmode = false,
     shownavcallout = true,
+    showminimapbutton = true,
     server = nil,             -- see Servers.lua; nil means the default dataset
     showuseitem = true,
     showuseitemcomplete = true,
@@ -277,6 +277,14 @@ local options = {
             get = function() return AegisPathfinder.db.char.shownavcallout end,
             set = function() AegisPathfinder:ToggleNavCallout() end,
             order = 2.95,
+        },
+        MinimapButton = {
+            name = "Minimap Button",
+            desc = "Show/Hide the button on the minimap",
+            type = "toggle",
+            get = function() return AegisPathfinder.db.char.showminimapbutton end,
+            set = function() AegisPathfinder:ToggleMinimapButton() end,
+            order = 2.96,
         },
         Objectives = {
             name = "Objectives",
@@ -484,17 +492,7 @@ local options = {
     },
 }
 
----------
--- FuBar
----------
-AegisPathfinder.hasIcon = [[Interface\QuestFrame\UI-QuestLog-BookIcon]]
 AegisPathfinder.title = "AEGIS: Pathfinder"
-AegisPathfinder.defaultMinimapPosition = 215
-AegisPathfinder.defaultPosition = "CENTER"
-AegisPathfinder.cannotDetachTooltip = true
-AegisPathfinder.tooltipHiddenWhenEmpty = false
-AegisPathfinder.hideWithoutStandby = true
-AegisPathfinder.independentProfile = true
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -532,11 +530,11 @@ function AegisPathfinder:OnInitialize()
 
     --[[ A bare /apg opens the objectives panel.
 
-        AceConsole's own handler answers an empty argument with the Dewdrop
-        options menu, which is not what anyone typing /vg is looking for -- the
+        AceConsole's own handler answers an empty argument with a list of
+        subcommands, which is not what anyone typing /vg is looking for -- the
         panel is the addon's main surface. There is no hook for the empty case,
         so wrap the handler AceConsole just installed: subcommands still go to
-        it, and the menu is still a right-click on the minimap icon away.
+        it, and the options panel is a right-click on the minimap button away.
     ]]
     local aceHandler = SlashCmdList[SLASH_HANDLER]
     SlashCmdList[SLASH_HANDLER] = function(msg)
@@ -545,12 +543,7 @@ function AegisPathfinder:OnInitialize()
         end
         return aceHandler(msg)
     end
-    self.OnMenuRequest = options
     self:SetupErrorCapture()
-    if not FuBar then
-        self.OnMenuRequest.args.hide.guiName = L["Hide minimap icon"]
-        self.OnMenuRequest.args.hide.desc = L["Hide minimap icon"]
-    end
     self.cachedturnins = self.db.char.cachedturnins
     if self.myfaction == nil then
         self:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -579,6 +572,7 @@ function AegisPathfinder:OnEnable()
 
     self:PatchAstrolabe()
     self:RegisterProfessionEvents()
+    self:UpdateMinimapButton()
 
     if self.db.char.debug then
         self:SetDebugging(true)
@@ -683,19 +677,6 @@ function AegisPathfinder:PLAYER_LEVEL_UP()
     if self.db.char.startingzoneselected and not self.db.char.startingzonecomplete then
         self:CheckStartingZoneCompletion()
     end
-end
-
-function AegisPathfinder:OnTooltipUpdate()
-    local hint = "\nClick to show/hide the Objectives\nRight-click for Options"
-    T:SetHint(hint)
-end
-
-function AegisPathfinder:OnTextUpdate()
-    self:SetText("Pathfinder")
-end
-
-function AegisPathfinder:OnClick()
-    AegisPathfinder:ToggleObjectivePanel()
 end
 
 local REGISTER_BATCH = 25       -- guides registered per resume

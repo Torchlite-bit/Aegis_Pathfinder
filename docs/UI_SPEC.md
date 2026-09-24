@@ -299,6 +299,25 @@ A negated tag (`|D|!DM|`) still counts as a reference: the step is
 conditional, the relevance is not. Results are cached per guide, since the
 scan walks guides that run to hundreds of steps.
 
+### Minimap button -- `MinimapButton.lua`
+
+Not in the concept, which has no minimap. It used to be FuBarPlugin's:
+Blizzard's quest-log book in the stock round minimap border, and a right-click
+that opened a Dewdrop menu of every setting in Blizzard tooltip chrome. Now it
+is drawn like the rest of the addon -- `logo.tga`, the AEGIS shield, in accent
+on a `panel-2` disc (`circle-fill.tga`) with a `subtle` hairline ring
+(`circle-border.tga`) that takes the accent on hover.
+
+Click toggles the guide, right-click toggles the options panel (every setting
+the Dewdrop menu held is there), and dragging walks it round the minimap's edge
+at 80px from its centre; the angle is saved per profile. "Minimap button" in
+the options panel's Guide behaviour section, or `/apg minimapbutton`, hides it.
+
+Dewdrop-2.0, Tablet-2.0 and FuBarPlugin-2.0 were only there for the old
+button, so they are gone from `libs/` and the `.toc`; AceConsole and AceDB use
+Dewdrop only when it is present. `Tools/verify.py` fails on Blizzard quest-log
+or minimap art, in either backslash form.
+
 ### Guide list -- `GuideListFrame.lua`
 
 The concept's tab bar, replacing five independent category checkboxes with

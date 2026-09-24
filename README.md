@@ -52,9 +52,11 @@ too — the old `TurtleGuide` global is still an alias.
 `/pathfinder` and `/vg` do the same thing. There is deliberately no `/aegis` —
 that belongs to another addon in the AEGIS suite.
 
-The objectives panel is the addon's only window, so a bare `/apg` opens it, and
-it opens with the client. The options menu is a right-click on the minimap or
-FuBar icon, and every entry in it is also a subcommand.
+The objectives panel is the addon's main window, so a bare `/apg` opens it, and
+it opens with the client. The AEGIS shield on the edge of the minimap does the
+same on a click; right-click it for the options panel, and drag it to move it
+round the minimap. The options panel can hide it, as can `/apg minimapbutton`.
+FuBar is no longer supported: the button is the addon's own now.
 
 ## What it does
 
@@ -160,7 +162,7 @@ Runs everything that can be checked without a client: Lua syntax, Lua 5.0
 compatibility, `.toc` and `Guides.xml` integrity, TGA validity, that every
 texture path resolves to a real file, that no panel has drifted off the theme,
 that every window stacks rather than interleaving with the others, and
-thirteen test suites that execute the addon's own code against a stubbed 1.12 API.
+fourteen test suites that execute the addon's own code against a stubbed 1.12 API.
 
 None of it proves the UI looks right. That needs a client.
 
@@ -204,7 +206,6 @@ so `git log` and `git blame` still attribute each line to whoever wrote it.
 | | |
 |---|---|
 | **The Ace Development Team** | Ace2 (`AceAddon-2.0`, `AceEvent-2.0`, `AceDB-2.0`, `AceLibrary`, `AceOO-2.0`, `AceConsole-2.0`, `AceDebug-2.0`, `AceHook-2.1`) |
-| **ckknight** and the Ace Development Team | Dewdrop-2.0, Tablet-2.0, FuBarPlugin-2.0 |
 | **shagu** | [pfQuest](https://github.com/shagu/pfQuest), pfQuest-turtle, pfQuest-octo |
 | **Cladhaire**, ported by **sweetgiorni** | [TomTom](https://github.com/sweetgiorni/TomTom) |
 | The authors of MetaMap, MetaMapBWP and Cartographer | Supported waypoint providers |

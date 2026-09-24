@@ -118,6 +118,11 @@ local function newObject(kind, name, parent)
 	end
 	function o:GetLeft() local l = self:__rect(); return l end
 	function o:GetBottom() local _, b = self:__rect(); return b end
+	function o:GetCenter()
+		local l, b, w, h = self:__rect()
+		if not l then return nil end
+		return l + w / 2, b + h / 2
+	end
 	function o:GetTop()
 		local _, b, _, h = self:__rect()
 		return b and (b + h)
@@ -276,7 +281,7 @@ local function newFrame(frameType, name, parent)
 	function f:RegisterEvent() end
 	function f:UnregisterEvent() end
 	function f:EnableMouse() end
-	function f:RegisterForClicks() end
+	function f:RegisterForClicks(...) self.__clicks = { ... } end
 	-- Drag state is recorded rather than ignored: "the panel is draggable" is a
 	-- claim a test can only check by looking at what was wired up.
 	function f:RegisterForDrag(button) self.__dragButton = button end
@@ -399,6 +404,10 @@ function stub.install(env)
 	env.UIParent = newFrame("Frame", "UIParent", nil)
 	env.UIParent:SetWidth(1024); env.UIParent:SetHeight(768)
 	env.QuestWatchFrame = newFrame("Frame", "QuestWatchFrame", env.UIParent)
+	-- The minimap: 140px across, top right of the screen, as the client has it.
+	env.Minimap = newFrame("Frame", "Minimap", env.UIParent)
+	env.Minimap:SetWidth(140); env.Minimap:SetHeight(140)
+	env.Minimap:SetPoint("TOPRIGHT", env.UIParent, "TOPRIGHT", -17, -22)
 	env.WorldFrame = newFrame("Frame", "WorldFrame", nil)
 	env.GameTooltip = newFrame("GameTooltip", "GameTooltip", env.UIParent)
 	env.GameTooltip.SetOwner = function() end

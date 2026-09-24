@@ -30,7 +30,6 @@ local CREDITS = {
 	} },
 	{ "Libraries and data", {
 		"The Ace Development Team -- Ace2",
-		"ckknight -- Dewdrop, Tablet, FuBarPlugin",
 		"shagu -- pfQuest",
 		"Cladhaire, sweetgiorni -- TomTom",
 	} },
