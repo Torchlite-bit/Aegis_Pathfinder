@@ -157,6 +157,22 @@ check(string.find(warnMeta, "RavenCraft", 1, true) ~= nil,
 	"the warning should name the player's server, got '%s'", tostring(warnMeta))
 AegisPathfinder.db.profile.server = "octowow"
 
+-- Before any guide is loaded ------------------------------------------------
+
+--[[ At login the guide loads only after every guide file has registered, and
+	events arrive in between -- SKILL_LINES_CHANGED always does. It reached
+	the engine with no step list and failed on ipairs(nil). ]]
+do
+	local a, q, t, c = AegisPathfinder.actions, AegisPathfinder.quests,
+		AegisPathfinder.turnedin, AegisPathfinder.current
+	AegisPathfinder.actions, AegisPathfinder.quests = nil, nil
+	AegisPathfinder.turnedin, AegisPathfinder.current = nil, nil
+	local ok, err = pcall(function() AegisPathfinder:UpdateStatusFrame() end)
+	check(ok, "an event before the guide loads must not error: %s", tostring(err))
+	AegisPathfinder.actions, AegisPathfinder.quests = a, q
+	AegisPathfinder.turnedin, AegisPathfinder.current = t, c
+end
+
 -- Report ---------------------------------------------------------------------
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end

@@ -193,6 +193,14 @@ end
 
 local lastmapped, lastmappedaction, lastmappedquest, tex, uitem
 function AegisPathfinder:UpdateStatusFrame()
+	--[[ Nothing to scan until a guide has been parsed. At login the guide
+		loads only once every guide file has registered, a few frames and a
+		half-second settle in, and events land in that gap -- SKILL_LINES_CHANGED
+		always does, which is how a skill event reached the loop below with
+		no step list. Whatever happened meanwhile is picked up when the guide
+		loads, which scans from scratch. ]]
+	if not self.actions or not self.quests or not self.turnedin then return end
+
 	self:Debug("UpdateStatusFrame", self.current)
 	local oldcurrent = self.current
 
