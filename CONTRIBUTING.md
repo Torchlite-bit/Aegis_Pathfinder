@@ -8,8 +8,9 @@ if none fits. Nobody will do this for you, and a contribution that goes
 uncredited because the list was not updated is a bug in our process, not yours
 — so if you forget and notice later, send a PR that just adds you.
 
-The in-game credits panel (`/apg credits`) reads from `Credits.lua`, which
-mirrors `CONTRIBUTORS.md`. Update both.
+The in-game credits window (the **Credits** button at the bottom of the
+options panel) reads from `Credits.lua`, which mirrors `CONTRIBUTORS.md`.
+Update both.
 
 ## Branching
 

@@ -74,6 +74,21 @@ check(slice.tl.__width == Theme.CORNER, "corner width should be %d, got %s",
 slice:SetTint("accent")
 check(slice.center.__color[2] > 0.78, "SetTint should recolour every slice")
 
+-- The panel's shadow: a ring outside the panel's edge, not a blob across it.
+-- It shares the fill's layer and 1.12 does not order textures within one, so
+-- a shadow with anything in its middle can draw straight through the panel.
+local shadowed = CreateFrame("Frame", nil, UIParent)
+local skin = Theme:Panel(shadowed, "panel")
+check(skin.shadow.center == nil, "the shadow has no middle piece to draw over the panel")
+check(skin.shadow.tl.__texture == Theme.texture.shadow, "it is the shadow texture")
+local _, _, _, sx, sy = skin.shadow.tl:GetPoint()
+check(sx == -7 and sy == 7, "and it sits 7px outside the panel's corner, got %s,%s",
+	tostring(sx), tostring(sy))
+local _, _, _, bx, by = skin.shadow.br:GetPoint()
+check(bx == 7 and by == -7, "on every side, got %s,%s", tostring(bx), tostring(by))
+check(skin.shadow.tl.__width == 18, "its corners hold the whole corner arc, got %s",
+	tostring(skin.shadow.tl.__width))
+
 -- Progress bar ---------------------------------------------------------------
 
 local bar = Theme:ProgressBar(UIParent, 5)
@@ -220,6 +235,21 @@ local other = CreateFrame("Frame", nil, UIParent)
 check(Theme:RestorePosition(other, "testwin") == true,
 	"RestorePosition should report that it placed the frame")
 check(other:GetPoint() == "BOTTOMRIGHT", "and should apply the saved point")
+check(other:GetRight() == 1024 - 40 and other:GetBottom() == 60,
+	"in the same place, got right %s bottom %s", tostring(other:GetRight()), tostring(other:GetBottom()))
+
+-- A dragged window is pinned by its top-left, wherever the client left it.
+local moved = CreateFrame("Frame", nil, UIParent)
+moved:SetWidth(200); moved:SetHeight(100)
+Theme:Chrome(moved, "Moved")
+moved:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -10, 10)
+moved.header:GetScript("OnDragStop")()
+local mp, _, mrel, mx, my = moved:GetPoint(1)
+check(moved:GetNumPoints() == 1 and mp == "TOPLEFT" and mrel == "BOTTOMLEFT"
+	and mx == 1024 - 10 - 200 and my == 10 + 100,
+	"dropping a window pins it by its top-left where it lies, got %s/%s %s,%s",
+	tostring(mp), tostring(mrel), tostring(mx), tostring(my))
+check(moved.__clamped == true, "windows are kept on screen")
 check(Theme:RestorePosition(other, "neversaved") == false,
 	"with nothing saved it should leave the frame's own anchors alone")
 

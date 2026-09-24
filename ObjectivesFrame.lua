@@ -36,10 +36,20 @@ local ROWPAD    = 14          -- .zrow padding-left
 local DOTSIZE   = 14
 local ICONSIZE  = 16
 
+--[[ Size.
+
+	The concept's panel is as tall as what it shows, up to a max-height of
+	min(70vh, 600px); its grip sets the width and that cap, never the height
+	itself. So a step with a long note makes the panel taller, overview fills
+	the cap, and nothing the player drags can leave the panel a size its
+	content does not fit.
+]]
 local DEFAULT_WIDTH = 630
-local DEFAULT_HEIGHT = 420
-local MIN_WIDTH = 400
-local MIN_HEIGHT = 240
+local DEFAULT_ANCHOR = { "TOPRIGHT", "TOPRIGHT", -40, -180 }  -- top:180px; right:40px
+local MIN_WIDTH, MAX_WIDTH = 320, 1200                         -- makeResizable minWidth
+local DEFAULT_CAP, MIN_CAP = 600, 260                          -- max-height, minHeight
+local NOTE_TOP = 31      -- where the note starts in a row: title's top, its line, a gap
+local NOTE_BOTTOM = 8
 local MAX_ROWS = 30
 local NUMROWS = 1
 
@@ -80,10 +90,10 @@ local frame = CreateFrame("Frame", "AegisPathfinderObjectives", UIParent)
 AegisPathfinder.objectiveframe = frame
 frame:SetFrameStrata("DIALOG")
 frame:SetWidth(DEFAULT_WIDTH)
-frame:SetHeight(DEFAULT_HEIGHT)
+frame:SetHeight(CHROME_TOP + ROWHEIGHT + FOOTER_H)
 -- The concept parks it at top:180px; right:40px. There is no status card to
 -- hang off any more, so it anchors to the screen.
-frame:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", -40, -180)
+frame:SetPoint(DEFAULT_ANCHOR[1], UIParent, DEFAULT_ANCHOR[2], DEFAULT_ANCHOR[3], DEFAULT_ANCHOR[4])
 AegisPathfinder.objectiveskin = Theme:Panel(frame, "panel")
 frame:Hide()
 frame:SetScript("OnShow", function() AegisPathfinder:UpdateObjectivePanel() end)
@@ -91,15 +101,30 @@ table.insert(UISpecialFrames, "AegisPathfinderObjectives")
 -- Stacks with the other windows rather than interleaving with them.
 Theme:RegisterWindow(frame)
 
-frame:SetResizable(true)
-frame:SetMinResize(MIN_WIDTH, MIN_HEIGHT)
-frame:SetMaxResize(1200, 800)
+--- The tallest the panel may be: what the player set with the grip, or the
+--- concept's min(70vh, 600px).
+function AegisPathfinder:GetPanelCap()
+	local cap = self.db.profile.objframemaxheight
+	local screen = UIParent:GetHeight()
+	if not cap then cap = math.min(DEFAULT_CAP, math.floor(screen * 0.7)) end
+	return math.max(MIN_CAP, math.min(cap, screen - 20))
+end
 
 
 --[[ Resize grip.
 
 	One generated texture rather than six placed dots: the cluster keeps its
 	spacing, and hover is a single tint instead of a loop.
+
+	Dragging it sideways sets the width; dragging it down or up sets the
+	panel's height cap, which is the concept's grip exactly -- it writes
+	`maxHeight`, not `height`. The panel's actual height is always what its
+	content needs, up to that cap.
+
+	It does its own sizing rather than calling StartSizing. The client's
+	sizing re-anchors the frame as it sees fit, and a panel left anchored by
+	its top and its bottom ignores SetHeight: that is how the panel got stuck
+	at the size it had been dragged to, unable to follow the step or be moved.
 ]]
 local grip = CreateFrame("Frame", nil, frame)
 grip:SetWidth(14)
@@ -107,32 +132,104 @@ grip:SetHeight(14)
 grip:SetPoint("BOTTOMRIGHT", -4, 4)
 grip:EnableMouse(true)
 grip:SetFrameLevel(frame:GetFrameLevel() + 4)
+frame.grip = grip
 
 local gripTex = grip:CreateTexture(nil, "OVERLAY")
 gripTex:SetTexture(Theme.texture.grip)
 gripTex:SetAllPoints(grip)
 Theme:Tint(gripTex, "textDim", 0.55)
 
-grip:SetScript("OnLeave", function()
+-- Cursor position in the panel's own units.
+local function Cursor()
+	local scale = frame:GetEffectiveScale()
+	local x, y = GetCursorPosition()
+	return x / scale, y / scale
+end
+
+local function StopSizing()
+	grip.sizing = nil
+	grip:SetScript("OnUpdate", nil)
 	Theme:Tint(gripTex, "textDim", 0.55)
-	GameTooltip:Hide()
-end)
+end
+
+local function Sizing()
+	local s = grip.sizing
+	if not s then return end
+	-- A button released somewhere the grip never heard about still ends it --
+	-- where the client can say so (see OnMouseDown).
+	if s.poll and not IsMouseButtonDown("LeftButton") then return StopSizing() end
+	local x, y = Cursor()
+	local db = AegisPathfinder.db.profile
+	local w = math.max(MIN_WIDTH, math.min(MAX_WIDTH, math.floor(s.w + x - s.x + 0.5)))
+	-- Screen y grows upward, so dragging down is a smaller y and a taller cap.
+	local cap = math.max(MIN_CAP, math.min(UIParent:GetHeight() - 20, math.floor(s.cap + s.y - y + 0.5)))
+	db.objframemaxheight = cap
+	if w ~= frame:GetWidth() then
+		db.objframewidth = w
+		frame:SetWidth(w)          -- OnSizeChanged repaints
+	else
+		AegisPathfinder:UpdateOHPanel()
+	end
+end
+
 grip:SetScript("OnMouseDown", function()
 	Theme:Tint(gripTex, "accentGlow", 1)
-	frame:StartSizing("BOTTOMRIGHT")
+	-- Grow right and down from where the panel is, whatever it was anchored by.
+	Theme:AnchorTopLeft(frame)
+	local x, y = Cursor()
+	grip.sizing = {
+		x = x, y = y, w = frame:GetWidth(), cap = AegisPathfinder:GetPanelCap(),
+		-- Only poll the button if the client reports it down now, while it
+		-- is: an IsMouseButtonDown that is missing or reads buttons some
+		-- other way must not end every drag the moment it starts.
+		poll = IsMouseButtonDown and IsMouseButtonDown("LeftButton") and true or false,
+	}
+	grip:SetScript("OnUpdate", Sizing)
+end)
+grip:SetScript("OnMouseUp", function()
+	Sizing()
+	StopSizing()
 end)
 grip:SetScript("OnEnter", function()
 	Theme:Tint(gripTex, "accent", 1)
-	if not AegisPathfinder.db.char.overviewmode then
-		GameTooltip:SetOwner(this, "ANCHOR_LEFT")
-		GameTooltip:SetText("Height follows the step in focus mode", nil, nil, nil, nil, true)
+	GameTooltip:SetOwner(this, "ANCHOR_LEFT")
+	GameTooltip:SetText("Drag to set the width and the tallest the panel may grow", nil, nil, nil, nil, true)
+end)
+grip:SetScript("OnLeave", function()
+	if not grip.sizing then Theme:Tint(gripTex, "textDim", 0.55) end
+	GameTooltip:Hide()
+end)
+
+--[[ Row anchors.
+
+	Rows reach the scrollbar in overview, and the panel's edge in focus mode,
+	where there is no scrollbar: anchored to a hidden one they left a strip of
+	dead panel down the right-hand side.
+]]
+local rowsOverview
+local function AnchorRows(overview)
+	if rowsOverview == overview then return end
+	rowsOverview = overview
+	for i, row in ipairs(rows) do
+		row:ClearAllPoints()
+		if i == 1 then
+			row:SetPoint("TOPLEFT", frame, "TOPLEFT", 1, -CHROME_TOP)
+		else
+			row:SetPoint("TOPLEFT", rows[i - 1], "BOTTOMLEFT", 0, 0)
+		end
+		if overview then
+			row:SetPoint("RIGHT", scrollbar, "LEFT", -4, 0)
+		else
+			row:SetPoint("RIGHT", frame, "RIGHT", -1, 0)
+		end
 	end
-end)
-grip:SetScript("OnMouseUp", function()
-	Theme:Tint(gripTex, "textDim", 0.55)
-	frame:StopMovingOrSizing()
-	AegisPathfinder:OnObjectiveFrameResized()
-end)
+end
+
+-- The width a focus-mode note wraps to: the row, less the dot, the glyph and
+-- the padding either side of the text.
+local function NoteWidth()
+	return frame:GetWidth() - 2 - (ROWPAD + DOTSIZE + 9 + ICONSIZE + 9) - ROWPAD
+end
 
 frame:SetScript("OnSizeChanged", function()
 	if rows and rows[1] then
@@ -548,9 +645,6 @@ function AegisPathfinder:UpdateObjectivePanel()
 	]]
 	for i = 1, MAX_ROWS do
 		local row = CreateFrame("Button", nil, frame)
-		row:SetPoint("TOPLEFT", i == 1 and frame or rows[i - 1],
-			i == 1 and "TOPLEFT" or "BOTTOMLEFT", i == 1 and 1 or 0, i == 1 and -CHROME_TOP or 0)
-		row:SetPoint("RIGHT", scrollbar, "LEFT", -4, 0)
 		row:SetHeight(ROWHEIGHT)
 
 		-- Faint wash on the active step, plus the left accent bar.
@@ -568,8 +662,10 @@ function AegisPathfinder:UpdateObjectivePanel()
 		Theme:Tint(row.activebar, "accent")
 		row.activebar:Hide()
 
+		-- Top-aligned, as the concept's flex-start row is: a row that grows
+		-- for a long note keeps its dot, glyph and title where they were.
 		local check = Theme:StepCheck(row, DOTSIZE)
-		check:SetPoint("LEFT", row, "LEFT", ROWPAD, 0)
+		check:SetPoint("TOPLEFT", row, "TOPLEFT", ROWPAD, -(ROWHEIGHT - DOTSIZE) / 2)
 
 		local icon = row:CreateTexture(nil, "ARTWORK")
 		icon:SetWidth(ICONSIZE); icon:SetHeight(ICONSIZE)
@@ -594,6 +690,19 @@ function AegisPathfinder:UpdateObjectivePanel()
 		-- #8f8f86 in the concept: dimmer than --text-dim, so the note reads as
 		-- support for the title rather than competing with it.
 		detail:SetTextColor(0.56, 0.56, 0.52)
+
+		--[[ The same note, in full. Focus mode shows one step, so it has the
+			room to show all of it and grows to fit; the one-line version
+			above is for the list, where a fixed row height is what lets a
+			268-step guide scroll. Anchored by one corner and given a width,
+			so its height is the wrapped text's and can be read back. ]]
+		local note = row:CreateFontString(nil, "OVERLAY")
+		Theme:SetFont(note, "body", 11)
+		note:SetPoint("TOPLEFT", text, "BOTTOMLEFT", 0, -2)
+		note:SetJustifyH("LEFT")
+		note:SetJustifyV("TOP")
+		note:SetTextColor(0.56, 0.56, 0.52)
+		note:Hide()
 
 		--[[ The band, covering the slot when this step is an ACCEPT or TURNIN
 			that is current or done. Its own button so a click anywhere on it
@@ -626,11 +735,13 @@ function AegisPathfinder:UpdateObjectivePanel()
 
 		row.text = text
 		row.detail = detail
+		row.note = note
 		row.check = check
 		row.icon = icon
 		row.band = band
 		rows[i] = row
 	end
+	AnchorRows(self.db.char.overviewmode and true or false)
 
 	--[[ The objective meter.
 
@@ -688,12 +799,16 @@ function AegisPathfinder:UpdateObjectivePanel()
 		scrollbar:SetValue(offset - arg1)
 	end)
 
-	-- Restore saved size and position.
-	if self.db.profile.objframewidth then
-		frame:SetWidth(self.db.profile.objframewidth)
+	-- Restore saved width and position. The height is never restored: it is
+	-- whatever the content needs. A height saved by an older version was the
+	-- overview height the player dragged to, which is what the cap now is.
+	local profile = self.db.profile
+	if profile.objframeheight then
+		profile.objframemaxheight = profile.objframemaxheight or profile.objframeheight
+		profile.objframeheight = nil
 	end
-	if self.db.profile.objframeheight then
-		frame:SetHeight(self.db.profile.objframeheight)
+	if profile.objframewidth then
+		frame:SetWidth(math.max(MIN_WIDTH, math.min(MAX_WIDTH, profile.objframewidth)))
 	end
 	Theme:RestorePosition(frame, "objframe")
 	frame.expandChip:SetActive(self.db.char.overviewmode)
@@ -835,34 +950,44 @@ function AegisPathfinder:ShowEmptyState(empty)
 	end
 end
 
---[[ Size the panel to the mode it is in.
+--[[ Size the panel to what it shows.
 
-	The concept gives `.steps-list` flex:0 0 auto in focus mode and
-	flex:1 1 auto in overview, so a panel showing one step is only as tall as
-	that step while a panel showing the list fills its max-height. Without this
-	focus mode is a mostly-empty box with a single row at the top.
+	The concept's panel is height:auto under a max-height: focus mode is as
+	tall as the one step (its note in full) and the meter under it; overview
+	is as tall as the list, which for any real guide means the cap. Nothing
+	here is saved -- the cap is the player's, the height is the content's.
 
-	The height the player dragged the panel to belongs to overview mode, and is
-	restored when they switch back; focus-mode heights are computed and never
-	saved, which is what `layoutlock` is guarding.
+	The panel is pinned by a top corner before its height changes, so it
+	grows and shrinks from the bottom edge rather than moving its header.
 ]]
+function AegisPathfinder:PanelContentHeight()
+	if self:HasNoGuide() then return ROWHEIGHT + 6 end
+	if self.db.char.overviewmode then
+		local total = self.actions and table.getn(self.actions) or 0
+		return math.max(1, math.min(total, MAX_ROWS)) * ROWHEIGHT + 2
+	end
+	local h = rows[1] and rows[1]:GetHeight() or ROWHEIGHT
+	if frame.meter and frame.meter:IsShown() then
+		h = h + 2 + frame.meter:GetHeight()
+	end
+	return h + 8
+end
+
 function AegisPathfinder:LayoutPanelHeight()
 	if not frame.footer then return end
 	-- SetHeight fires OnSizeChanged, which resizes, which repaints, which
 	-- lands back here; without this guard the first layout never returns.
 	if frame.layoutlock then return end
-	local overview = self.db.char.overviewmode and true or false
+
+	local h = CHROME_TOP + self:PanelContentHeight() + FOOTER_H
+	h = math.min(h, self:GetPanelCap())
 
 	frame.layoutlock = true
-	if overview and not self:HasNoGuide() then
-		frame:SetHeight(self.db.profile.objframeheight or DEFAULT_HEIGHT)
-	else
-		local h = CHROME_TOP + ROWHEIGHT + FOOTER_H + 6
-		if frame.meter and frame.meter:IsShown() then
-			h = h + frame.meter:GetHeight() + 6
-		end
-		frame:SetHeight(h)
+	local point = frame:GetPoint(1)
+	if frame:GetNumPoints() ~= 1 or not point or not string.find(point, "^TOP") then
+		Theme:AnchorTopLeft(frame)
 	end
+	frame:SetHeight(h)
 	frame.layoutlock = nil
 end
 
@@ -882,14 +1007,7 @@ end
 function AegisPathfinder:OnObjectiveFrameResized()
 	-- Mid-layout the panel is already being told what size to be.
 	if frame.layoutlock then return end
-	local w = frame:GetWidth()
-	local h = frame:GetHeight()
-
-	self.db.profile.objframewidth = w
-	-- Only overview heights are the player's; focus-mode ones are computed.
-	if self.db.char.overviewmode then
-		self.db.profile.objframeheight = h
-	end
+	self.db.profile.objframewidth = frame:GetWidth()
 
 	NUMROWS = self:VisibleRowCount()
 	for i, row in ipairs(rows) do
@@ -930,6 +1048,51 @@ function AegisPathfinder:ToggleOverviewMode()
 	self:LayoutPanelHeight()
 	self:OnObjectiveFrameResized()
 	self:UpdateOHPanel()
+end
+
+--[[ Put every window back where it opens by default, at its default size.
+
+	The way out when a window has ended up somewhere unusable. Positions and
+	the panel's width and cap are forgotten; the guide goes back to the
+	concept's top-right spot, the arrow to the top of the screen, and the
+	panels that snap beside the guide do so again when next opened.
+]]
+local WINDOW_KEYS = {
+	"objframe", "optionsframe", "guidelistframe", "materialsframe",
+	"errorlogframe", "startzoneframe", "navcallout", "creditsframe",
+}
+
+function AegisPathfinder:ResetWindowLayout()
+	for _, key in ipairs(WINDOW_KEYS) do Theme:ForgetPosition(key) end
+	local profile = self.db.profile
+	profile.objframewidth, profile.objframemaxheight, profile.objframeheight = nil, nil, nil
+
+	frame:ClearAllPoints()
+	frame:SetPoint(DEFAULT_ANCHOR[1], UIParent, DEFAULT_ANCHOR[2], DEFAULT_ANCHOR[3], DEFAULT_ANCHOR[4])
+	frame:SetWidth(DEFAULT_WIDTH)
+	self:LayoutPanelHeight()
+	self:UpdateOHPanel()
+
+	if self.navcallout then
+		self.navcallout:ClearAllPoints()
+		self.navcallout:SetPoint("TOP", UIParent, "TOP", 0, -120)
+	end
+	-- By name: any of these may not have been built yet.
+	for _, key in ipairs({ "materialsframe", "errorLogFrame", "startingZoneSelectorFrame", "creditsframe" }) do
+		local w = self[key]
+		if w then
+			w:ClearAllPoints()
+			w:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+		end
+	end
+	-- These place themselves beside the guide as they open.
+	for _, key in ipairs({ "optionsframe", "guidelistframe" }) do
+		local w = self[key]
+		if w and w:IsShown() then w:Hide(); w:Show() end
+	end
+	-- Resizing the panel above saves its width as it goes; forget it again.
+	profile.objframewidth = nil
+	self:Print("Windows reset to where they open by default.")
 end
 
 --[[ A step's quest-log objective, as label and counts.
@@ -981,6 +1144,7 @@ function AegisPathfinder:UpdateOHPanel(value)
 		starting at the current step, or NUMROWS slots starting at the scroll
 		offset. ]]
 	local overview = self.db.char.overviewmode and true or false
+	AnchorRows(overview)
 
 	--[[ The meter, then the height, then the row count -- in that order.
 
@@ -1088,6 +1252,8 @@ function AegisPathfinder:UpdateOHPanel(value)
 				list does not turn into a wall of colour.
 			]]
 			if BANDABLE[action] and (checked or isActive) then
+				row:SetHeight(ROWHEIGHT)
+				row.note:Hide()
 				row.bg:Hide()
 				row.activebar:Hide()
 				row.check:Hide()
@@ -1140,6 +1306,29 @@ function AegisPathfinder:UpdateOHPanel(value)
 					.. (optional and L[" |cff808080(Optional)"] or ""))
 				row.detail:SetText(note or "")
 
+				-- The list keeps every row one height; the one step in focus
+				-- mode shows its whole note and grows to fit it.
+				if overview then
+					row.note:Hide()
+					row.detail:Show()
+					row:SetHeight(ROWHEIGHT)
+				else
+					row.detail:Hide()
+					row.note:SetWidth(NoteWidth())
+					row.note:SetText(note or "")
+					row.note:Show()
+					local noteH = 0
+					if note and note ~= "" then
+						noteH = row.note:GetHeight() or 0
+						-- A client that will not measure wrapped text: estimate
+						-- the lines from the unwrapped width.
+						if noteH < 1 then
+							noteH = math.ceil(row.note:GetStringWidth() / NoteWidth()) * 14
+						end
+					end
+					row:SetHeight(math.max(ROWHEIGHT, NOTE_TOP + noteH + NOTE_BOTTOM))
+				end
+
 				if (self.current > idx) and optional and not checked then
 					row.text:SetTextColor(0.5, 0.5, 0.5)
 					row.check:Disable()
@@ -1152,6 +1341,10 @@ function AegisPathfinder:UpdateOHPanel(value)
 		end
 		end -- i > NUMROWS
 	end
+
+	-- Focus mode's height is the step's, which is only known once it is
+	-- painted.
+	if not overview then self:LayoutPanelHeight() end
 
 	--[[ Nav row and the progress rule.
 

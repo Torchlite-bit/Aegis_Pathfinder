@@ -46,8 +46,13 @@ stretch along one axis, and a stretched centre, positioned with `SetTexCoord`.
 rounded-rect serves every panel, tab, pill and band, and a palette change is a
 Lua edit rather than a re-render.
 
-**Shadows.** `box-shadow` becomes a `shadow.tga` texture inset behind the
-frame.
+**Shadows.** `box-shadow` becomes `shadow.tga`, nine-sliced 7px outside the
+frame (`Theme.SHADOW_GEOM`: 18px corners, no middle piece). It is a ring:
+darkest at the panel's edge, gone 7px out, and transparent inside. That last
+part matters. The shadow shares the fill's `BACKGROUND` layer, and 1.12 does
+not order two textures within a layer, so the first version -- a stretched
+blob, darkest in its middle -- drew a dark square straight through the guide
+panel. `Tools/verify.py` fails a shadow that is not clear in the middle.
 
 **Icons.** The concept uses emoji, which the 1.12 font cannot render. Each of
 the 17 action codes gets a generated 32×32 glyph instead. They are silhouettes,
@@ -180,13 +185,26 @@ An objective with nothing countable in it ("Speak to Marshal Dughan") gets no
 meter rather than an empty one. Overview mode folds the same text into the
 step's note line instead, as the concept does.
 
-**Height follows the mode.** The concept gives `.steps-list` `flex:0 0 auto`
-in focus mode and `flex:1 1 auto` in overview, so a panel showing one step is
-only as tall as that step. `LayoutPanelHeight` computes the focus height and
-restores the dragged height for overview; a focus height is never saved, since
-it is derived rather than chosen. The meter, then the height, then the row
-count settle in that order — any other order leaves the list a paint behind
-whichever changed last.
+**Height follows the content.** The concept's panel is `height:auto` under
+`max-height: min(70vh, 600px)`, with `.steps-list` `flex:0 0 auto` in focus
+mode and `flex:1 1 auto` in overview. So `LayoutPanelHeight` makes the panel
+exactly as tall as what it shows, up to a cap: in focus mode, the one step
+(with its note in full) and the meter; in overview, the list, which for any
+real guide means the cap. The height is never saved -- only the width and the
+cap are the player's.
+
+The resize grip is the concept's `makeResizable`: sideways sets the width
+(320px minimum), down or up sets the cap (260px minimum), never the height.
+It does its own sizing from `GetCursorPosition` rather than `StartSizing`. The
+client's sizing re-anchors the frame as it sees fit, and a panel left anchored
+by its top and its bottom ignores `SetHeight`, which is how the panel once got
+stuck at a dragged size, unable to follow the step or be moved. A height
+saved by that older version becomes the cap.
+
+Every window is pinned by its top-left corner after a drag (`Theme:AnchorTopLeft`),
+so it grows downward and has one anchor to save, and `PositionSaver` keeps the
+relative point as well as the offsets. Windows are clamped to the screen.
+`/apg resetpanels` forgets every saved position and size.
 
 **The footer** carries live state rather than the slash-command hint it used
 to: the current step's quest id on the left in accent, how far through the
@@ -194,7 +212,7 @@ guide you are on the right. A data-source warning outranks the id and turns the
 slot red -- it is the most likely reason a waypoint points at nothing, and it
 otherwise fails silently.
 
-Rows are fixed 44px slots holding either of the concept's two row models:
+Rows are 44px slots holding either of the concept's two row models:
 
 | Concept | Implementation |
 |---|---|
@@ -209,9 +227,13 @@ the current step or already satisfied -- the same rule as the concept's
 further down the list stays an ordinary row, so the list does not turn into a
 wall of colour.
 
-Fixed slots rather than the concept's content-height rows: these guides run to
-a few hundred steps and the list scrolls, which needs a row height known in
-advance. Title and note are therefore clipped to one line each.
+In overview the slots are a fixed height rather than the concept's
+content-height rows: these guides run to a few hundred steps and the list
+scrolls by step, which needs a row height known in advance, so title and note
+are clipped to one line each and the full note is in the row's tooltip. Focus
+mode shows one step and has the room, so its row grows to show the whole note
+(a second, wrapping font string, measured after it is set), and runs to the
+panel's edge since there is no scrollbar beside it.
 
 ### Shared widgets -- `WidgetWarlock.lua`
 
@@ -250,7 +272,11 @@ more windows; all of that is sections now.
 
 **Substitutions.** The concept has no home for the addon's own behaviour
 settings, the waypoint provider or the Rescan / Error log actions, so they
-follow as three more sections in the same language. The concept's route pills
+follow as three more sections in the same language. Last comes **About**, with
+a **Credits** button that opens the credits as a window of their own -- the
+same chrome and section layout as this panel, beside it on the side away from
+the guide, closing when the options panel does. Credits used to be a slash
+command that printed into chat. The concept's route pills
 include a "Zone Completion" pack that the addon does not have; the pills are
 the packs this character can actually use. The pack stored as `VanillaGuide`
 is shown as "Optimized", the concept's name for it — only the display name

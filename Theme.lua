@@ -192,9 +192,17 @@ end
 -- Builds a rounded panel out of a 32x32 mask: four fixed corners, four edges
 -- that stretch along one axis, and a stretched centre. The 1.12 client has no
 -- rounded-rectangle primitive, so this is how the concept's --radius survives.
-function Theme:NineSlice(frame, file, layer, colorName, alpha)
+--
+-- `geom` is for masks sliced differently from the 32px/10px panel set:
+-- `corner` is the corner's size on screen, `slice` where it ends in the
+-- texture (0..0.5), `outset` how far past the frame's edges the whole thing
+-- reaches, and `noCenter` skips the middle piece.
+function Theme:NineSlice(frame, file, layer, colorName, alpha, geom)
 	local parts, t = {}, nil
-	local C = self.CORNER
+	local C = geom and geom.corner or self.CORNER
+	local S0, S1 = S0, S1
+	if geom and geom.slice then S0, S1 = geom.slice, 1 - geom.slice end
+	local O = geom and geom.outset or 0
 
 	local function piece(name, coords)
 		t = frame:CreateTexture(nil, layer or "BACKGROUND")
@@ -210,10 +218,10 @@ function Theme:NineSlice(frame, file, layer, colorName, alpha)
 	for _, c in pairs({ tl, tr, bl, br }) do
 		c:SetWidth(C); c:SetHeight(C)
 	end
-	tl:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, 0)
-	tr:SetPoint("TOPRIGHT", frame, "TOPRIGHT", 0, 0)
-	bl:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 0, 0)
-	br:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 0, 0)
+	tl:SetPoint("TOPLEFT", frame, "TOPLEFT", -O, O)
+	tr:SetPoint("TOPRIGHT", frame, "TOPRIGHT", O, O)
+	bl:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", -O, -O)
+	br:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", O, -O)
 
 	local top = piece("top", { S0, S1, 0, S0 })
 	top:SetHeight(C)
@@ -235,9 +243,11 @@ function Theme:NineSlice(frame, file, layer, colorName, alpha)
 	right:SetPoint("TOPRIGHT", tr, "BOTTOMRIGHT", 0, 0)
 	right:SetPoint("BOTTOMRIGHT", br, "TOPRIGHT", 0, 0)
 
-	local center = piece("center", { S0, S1, S0, S1 })
-	center:SetPoint("TOPLEFT", tl, "BOTTOMRIGHT", 0, 0)
-	center:SetPoint("BOTTOMRIGHT", br, "TOPLEFT", 0, 0)
+	if not (geom and geom.noCenter) then
+		local center = piece("center", { S0, S1, S0, S1 })
+		center:SetPoint("TOPLEFT", tl, "BOTTOMRIGHT", 0, 0)
+		center:SetPoint("BOTTOMRIGHT", br, "TOPLEFT", 0, 0)
+	end
 
 	function parts:SetTint(name, a)
 		for _, tex in pairs(self) do
@@ -254,15 +264,20 @@ end
 
 -- A floating window: tinted fill, 1px border in the concept's near-black, and
 -- a soft drop shadow standing in for CSS box-shadow.
+--
+-- The shadow is a ring, not a blob: transparent inside the panel's edge and
+-- falling off over the 7px outside it, nine-sliced so the falloff keeps that
+-- width at any size. It shares the BACKGROUND layer with the fill, and 1.12
+-- does not promise which of two textures in one layer draws first -- a
+-- stretched blob, dark in the middle, drew straight through the fill.
+local SHADOW_GEOM = { corner = 18, slice = 18 / 64, outset = 7, noCenter = true }
+Theme.SHADOW_GEOM = SHADOW_GEOM
+
 function Theme:Panel(frame, colorName, withShadow)
 	local skin = {}
 	if withShadow ~= false then
-		local shadow = frame:CreateTexture(nil, "BACKGROUND")
-		shadow:SetTexture(self.texture.shadow)
-		shadow:SetPoint("TOPLEFT", frame, "TOPLEFT", -7, 7)
-		shadow:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 7, -9)
-		shadow:SetVertexColor(0, 0, 0, 0.62)
-		skin.shadow = shadow
+		skin.shadow = self:NineSlice(frame, self.texture.shadow, "BACKGROUND",
+			{ 0, 0, 0 }, 0.62, SHADOW_GEOM)
 	end
 	skin.fill = self:NineSlice(frame, self.texture.panelFill, "BACKGROUND", colorName or "panel")
 	skin.border = self:NineSlice(frame, self.texture.panelBorder, "BORDER", "border")
@@ -747,6 +762,9 @@ function Theme:Header(frame, height)
 		self:SetScript("OnDragStart", function() target:StartMoving() end)
 		self:SetScript("OnDragStop", function()
 			target:StopMovingOrSizing()
+			-- The client anchors a moved frame however suits it; pin it by
+			-- its top-left so it grows downward and has one anchor to save.
+			Theme:AnchorTopLeft(target)
 			if onMoved then onMoved(target) end
 		end)
 		return self
@@ -1122,6 +1140,9 @@ function Theme:RegisterWindow(frame)
 	if self:IsWindow(frame) then return frame end
 	table.insert(self.windows, frame)
 	if frame.SetToplevel then frame:SetToplevel(true) end
+	-- A window dragged, or grown, past the edge of the screen is a window
+	-- you cannot get back.
+	if frame.SetClampedToScreen then frame:SetClampedToScreen(true) end
 
 	-- The window's own OnShow belongs to the window, and some replace it
 	-- after building themselves, so the hook lives on a child of its own:
@@ -1164,24 +1185,53 @@ function Theme:BringToFront(frame)
 	end
 end
 
+--[[ Pin a frame by its top-left corner, exactly where it is now.
+
+	After StartMoving the client re-anchors a frame by whichever corner it
+	likes -- a window in the lower half of the screen can come back anchored
+	by its bottom, which makes it grow upward, and a sized one can come back
+	with two anchors, which makes SetHeight do nothing at all. One TOPLEFT
+	anchor on UIParent's bottom-left is the one arrangement where a window
+	grows down and to the right and its height is its own.
+]]
+function Theme:AnchorTopLeft(frame)
+	local left, top = frame:GetLeft(), frame:GetTop()
+	if not left or not top then return false end
+	frame:ClearAllPoints()
+	frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", left, top)
+	return true
+end
+
 --- Persist a frame's position under `key` in the profile, as a drag callback.
+--- The relative point is kept too: a position read back against the wrong
+--- corner of the screen puts the window somewhere else entirely.
 function Theme:PositionSaver(key)
 	return function(f)
-		local point, _, _, x, y = f:GetPoint()
+		local point, _, rel, x, y = f:GetPoint()
 		local db = AegisPathfinder.db and AegisPathfinder.db.profile
 		if not db then return end
-		db[key .. "point"], db[key .. "x"], db[key .. "y"] = point, x, y
+		db[key .. "point"], db[key .. "rel"] = point, rel
+		db[key .. "x"], db[key .. "y"] = x, y
 	end
 end
 
 --- Restore what PositionSaver stored. No saved position leaves the frame's
---- own anchors alone.
+--- own anchors alone. Positions saved before the relative point was kept are
+--- read against the same point, which is what they were written as.
 function Theme:RestorePosition(frame, key)
 	local db = AegisPathfinder.db and AegisPathfinder.db.profile
 	if not db or not db[key .. "point"] then return false end
+	local point = db[key .. "point"]
 	frame:ClearAllPoints()
-	frame:SetPoint(db[key .. "point"], db[key .. "x"], db[key .. "y"])
+	frame:SetPoint(point, UIParent, db[key .. "rel"] or point, db[key .. "x"], db[key .. "y"])
 	return true
+end
+
+--- Forget a saved position, so the window opens where it does by default.
+function Theme:ForgetPosition(key)
+	local db = AegisPathfinder.db and AegisPathfinder.db.profile
+	if not db then return end
+	db[key .. "point"], db[key .. "rel"], db[key .. "x"], db[key .. "y"] = nil, nil, nil, nil
 end
 
 -- Action-type icon. Falls back to the note glyph for an unknown code so a

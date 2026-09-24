@@ -381,6 +381,18 @@ function AegisPathfinder:CreateConfigPanel()
 	note("Rescan asks the server which quests this character has completed and "
 		.. "re-marks the guide from that.")
 	frame.rescan, frame.errorlog = rescan, errors
+	y = y + SECTION_GAP
+
+	-- Last, where an about box goes: who this addon is built on.
+	table.insert(frame.sections, section("About"))
+	note("AEGIS: Pathfinder is built on other people's work -- TourGuide, "
+		.. "VanillaGuide, ClassicAPI, Joana's routes and more.")
+	y = y + 6
+	local credits = Theme:Pill(body, "Credits", 90, 26)
+	credits:SetScript("OnClick", function() AegisPathfinder:ToggleCredits() end)
+	credits:SetPoint("TOPLEFT", body, "TOPLEFT", 0, -y)
+	y = y + 26
+	frame.credits = credits
 
 	--[[ Now the body's height is known, the scroll bar can be given its range:
 		how far past the visible area the sections run. ]]
@@ -410,6 +422,8 @@ function AegisPathfinder:CreateConfigPanel()
 		this:SetScript("OnUpdate", ww.FadeIn)
 	end)
 	frame:SetScript("OnHide", function()
+		-- The credits open from here, and close with it.
+		if AegisPathfinder.creditsframe then AegisPathfinder.creditsframe:Hide() end
 		race.list:Hide()
 		server.list:Hide()
 		waypoints.list:Hide()

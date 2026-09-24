@@ -156,17 +156,17 @@ local options = {
     type = "group",
     handler = AegisPathfinder,
     args = {
-        Credits = {
-            name = "Credits",
-            desc = "Everyone whose work is in this addon",
-            type = "execute",
-            func = function() AegisPathfinder:PrintCredits() end,
-        },
         Materials = {
             name = "Materials",
             desc = "Reagents the rest of the current guide still needs",
             type = "execute",
             func = function() AegisPathfinder:ToggleMaterialsPanel() end,
+        },
+        ResetPanels = {
+            name = "Reset Panels",
+            desc = "Put every window back where it opens by default, at its default size",
+            type = "execute",
+            func = function() AegisPathfinder:ResetWindowLayout() end,
         },
         Server = {
             name = "Server",
@@ -1572,6 +1572,7 @@ end
 function AegisPathfinder:UnloadGuide()
     self.db.char.currentguide = NO_GUIDE
     self.actions, self.quests, self.tags = {}, {}, {}
+    self.turnedin = {}
     self.current = nil
     self.guidechanged = true
     if self.ClearWaypoint then self:ClearWaypoint() end
