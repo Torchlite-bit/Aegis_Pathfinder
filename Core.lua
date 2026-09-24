@@ -156,12 +156,6 @@ local options = {
     type = "group",
     handler = AegisPathfinder,
     args = {
-        Credits = {
-            name = "Credits",
-            desc = "Everyone whose work is in this addon",
-            type = "execute",
-            func = function() AegisPathfinder:PrintCredits() end,
-        },
         Materials = {
             name = "Materials",
             desc = "Reagents the rest of the current guide still needs",

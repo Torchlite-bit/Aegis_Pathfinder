@@ -71,6 +71,7 @@ AegisPathfinder.objectiveframe = CreateFrame("Frame", nil, UIParent)
 dofile("Theme.lua")
 dofile("WidgetWarlock.lua")
 dofile("Servers.lua")
+dofile("Credits.lua")
 dofile("OptionsFrame.lua")
 
 -- Fire a script the way the client does: with `this` set to its frame.
@@ -229,6 +230,57 @@ click(frame.rescan)
 check(AegisPathfinder.__rescanned, "Rescan progress asks the server")
 click(frame.errorlog)
 check(AegisPathfinder.__errorlog, "Error log opens the log")
+
+-- Credits ---------------------------------------------------------------------
+
+--[[ Credits are a button at the bottom of the panel, not a slash command that
+	printed into chat. ]]
+local last = frame.sections[table.getn(frame.sections)]
+check(last.label:GetText() == "ABOUT", "the last section is About, got %s",
+	tostring(last.label:GetText()))
+check(frame.credits ~= nil and frame.credits.label:GetText() == "CREDITS",
+	"with a Credits button in it")
+local _, _, _, _, lastY = last:GetPoint()
+local _, _, _, _, buttonY = frame.credits:GetPoint()
+check(buttonY < lastY, "under the About header, at the bottom of the panel")
+check(AegisPathfinder.PrintCredits == nil, "the chat printout is gone")
+
+check(AegisPathfinder.creditsframe == nil, "the credits window is built on first use")
+frame:ClearAllPoints()
+frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 300, -100)
+AegisPathfinder.objectiveframe:ClearAllPoints()
+AegisPathfinder.objectiveframe:SetWidth(400)
+AegisPathfinder.objectiveframe:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 704, -100)
+click(frame.credits)
+local credits = AegisPathfinder.creditsframe
+check(credits ~= nil and credits:IsShown(), "clicking the button opens the credits")
+check(AegisPathfinder.Theme:IsWindow(credits), "a stacked window like every other")
+check(credits.subhead.label:GetText() == "CREDITS", "wearing the same chrome")
+fire(credits, "OnShow")
+check(credits:GetRight() == frame:GetLeft() - 8,
+	"opening beside the options panel, away from the guide (right %s, options left %s)",
+	tostring(credits:GetRight()), tostring(frame:GetLeft()))
+
+check(table.getn(credits.sections) == table.getn(AegisPathfinder.creditsData),
+	"one section per heading in Credits.lua, got %d", table.getn(credits.sections))
+for i, section in ipairs(AegisPathfinder.creditsData) do
+	check(credits.sections[i].label:GetText() == string.upper(section[1]),
+		"section %d is %s, got %s", i, section[1], tostring(credits.sections[i].label:GetText()))
+end
+local found = false
+for _, r in ipairs(credits.body.__regions) do
+	local t = r.GetText and r:GetText()
+	if t and string.find(t, "Tekkub", 1, true) and string.find(t, "TourGuide", 1, true) then
+		found = string.find(t, "|cffffffffTekkub|r", 1, true) ~= nil
+	end
+end
+check(found, "each credit names its person in white, then what they did")
+
+click(frame.credits)
+check(not credits:IsShown(), "the button closes them again")
+click(frame.credits)
+fire(frame, "OnHide")
+check(not credits:IsShown(), "and they close with the options panel")
 
 -- Report ---------------------------------------------------------------------
 

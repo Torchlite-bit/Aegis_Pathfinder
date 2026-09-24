@@ -272,7 +272,11 @@ more windows; all of that is sections now.
 
 **Substitutions.** The concept has no home for the addon's own behaviour
 settings, the waypoint provider or the Rescan / Error log actions, so they
-follow as three more sections in the same language. The concept's route pills
+follow as three more sections in the same language. Last comes **About**, with
+a **Credits** button that opens the credits as a window of their own -- the
+same chrome and section layout as this panel, beside it on the side away from
+the guide, closing when the options panel does. Credits used to be a slash
+command that printed into chat. The concept's route pills
 include a "Zone Completion" pack that the addon does not have; the pills are
 the packs this character can actually use. The pack stored as `VanillaGuide`
 is shown as "Optimized", the concept's name for it — only the display name
