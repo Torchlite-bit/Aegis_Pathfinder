@@ -433,6 +433,17 @@ function AegisPathfinder:CreateConfigPanel()
 	table.insert(UISpecialFrames, "AegisPathfinderOptions")
 end
 
+--- Open the options panel, or close it if it is open. The header's menu chip
+--- and a right-click on the minimap button both land here.
+function AegisPathfinder:ToggleConfigPanel()
+	if not self.optionsframe then self:CreateConfigPanel() end
+	if self.optionsframe:IsShown() then
+		self.optionsframe:Hide()
+	else
+		self.optionsframe:Show()
+	end
+end
+
 --- Draw the visible slice of the route preview.
 function AegisPathfinder:DrawRoutePreview()
 	local preview = self.optionsframe and self.optionsframe.preview

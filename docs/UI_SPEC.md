@@ -185,6 +185,13 @@ An objective with nothing countable in it ("Speak to Marshal Dughan") gets no
 meter rather than an empty one. Overview mode folds the same text into the
 step's note line instead, as the concept does.
 
+**Width.** The concept's 396px (`.panel{width:396px}`). It used to open at
+630px, and every earlier version saved the width on any resize, the first
+layout included -- so a stored 630 is read as "never chosen" and dropped. Only
+the grip saves a width now. At 396 a data-source warning in the footer does
+not fit beside the step count, so it stops short of the count on one line and
+the footer's tooltip carries the whole of it.
+
 **Height follows the content.** The concept's panel is `height:auto` under
 `max-height: min(70vh, 600px)`, with `.steps-list` `flex:0 0 auto` in focus
 mode and `flex:1 1 auto` in overview. So `LayoutPanelHeight` makes the panel
@@ -347,8 +354,8 @@ opens the guide list beside the panel; at eight the `+` stops offering what it
 cannot do.
 
 The bar does not squeeze every open guide in: at five that reduced each tab to
-"Optim…". It shows as many as fit at 100px or more, four at most (four at the
-default 630px width, three at 420px), and a `‹` `›` pair appears either side
+"Optim…". It shows as many as fit at 100px or more, four at most (three at the
+concept's 396px, four once the panel is widened to about 480px), and a `‹` `›` pair appears either side
 once there are more. Each arrow, or a notch of the mouse wheel over the bar,
 moves the view one tab and dims at its end. The view follows the active tab
 when that changes — opening a guide, switching from the guide list, closing

@@ -44,7 +44,8 @@ local ICONSIZE  = 16
 	the cap, and nothing the player drags can leave the panel a size its
 	content does not fit.
 ]]
-local DEFAULT_WIDTH = 630
+local DEFAULT_WIDTH = 396                                      -- .panel{width:396px}
+local OLD_DEFAULT_WIDTH = 630
 local DEFAULT_ANCHOR = { "TOPRIGHT", "TOPRIGHT", -40, -180 }  -- top:180px; right:40px
 local MIN_WIDTH, MAX_WIDTH = 320, 1200                         -- makeResizable minWidth
 local DEFAULT_CAP, MIN_CAP = 600, 260                          -- max-height, minHeight
@@ -281,8 +282,7 @@ function AegisPathfinder:UpdateObjectivePanel()
 	menuChip:SetScript("OnClick", function()
 		-- Beside the guide, not instead of it: the concept puts #options at
 		-- right:456px and #objectives at right:40px, both on screen at once.
-		local opts = AegisPathfinder.optionsframe
-		if opts:IsVisible() then opts:Hide() else opts:Show() end
+		AegisPathfinder:ToggleConfigPanel()
 	end)
 	menuChip:SetScript("OnEnter", function()
 		this.fill:SetTint("text", 0.10)
@@ -595,17 +595,30 @@ function AegisPathfinder:UpdateObjectivePanel()
 	footerRule:SetPoint("TOPRIGHT", footer, "TOPRIGHT", 0, 0)
 	Theme:Tint(footerRule, "border")
 
-	footerQid = footer:CreateFontString(nil, "OVERLAY")
-	Theme:SetFont(footerQid, "body", 10)
-	footerQid:SetPoint("LEFT", footer, "LEFT", ROWPAD + 18, 0)
-	footerQid:SetJustifyH("LEFT")
-	Theme:TextColor(footerQid, "accent")
-
 	footerCount = footer:CreateFontString(nil, "OVERLAY")
 	Theme:SetFont(footerCount, "body", 10)
 	footerCount:SetPoint("RIGHT", footer, "RIGHT", -ROWPAD, 0)
 	footerCount:SetJustifyH("RIGHT")
 	Theme:TextColor(footerCount, "textDim")
+
+	-- Up to the count and no further, on one line: a data-source warning is
+	-- longer than a 396px footer has room for beside the count, and the
+	-- whole of it is on the footer's tooltip.
+	footerQid = footer:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(footerQid, "body", 10)
+	footerQid:SetPoint("LEFT", footer, "LEFT", ROWPAD + 18, 0)
+	footerQid:SetPoint("RIGHT", footerCount, "LEFT", -8, 0)
+	footerQid:SetHeight(12)
+	footerQid:SetJustifyH("LEFT")
+	Theme:TextColor(footerQid, "accent")
+
+	footer:EnableMouse(true)
+	footer:SetScript("OnEnter", function()
+		if not this.warning then return end
+		GameTooltip:SetOwner(this, "ANCHOR_TOP")
+		GameTooltip:SetText(this.warning, 0.91, 0.39, 0.42, 1, true)
+	end)
+	footer:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
 	local materials = Theme:GlyphButton(footer, "use", 11, 18)
 	materials:SetPoint("LEFT", footer, "LEFT", ROWPAD - 4, 0)
@@ -807,6 +820,10 @@ function AegisPathfinder:UpdateObjectivePanel()
 		profile.objframemaxheight = profile.objframemaxheight or profile.objframeheight
 		profile.objframeheight = nil
 	end
+	-- Earlier versions saved the width on every resize, the first layout
+	-- included, so the old 630px default is stored for nearly everyone
+	-- whether or not they chose it. Only a width set with the grip is kept.
+	if profile.objframewidth == OLD_DEFAULT_WIDTH then profile.objframewidth = nil end
 	if profile.objframewidth then
 		frame:SetWidth(math.max(MIN_WIDTH, math.min(MAX_WIDTH, profile.objframewidth)))
 	end
@@ -1007,7 +1024,8 @@ end
 function AegisPathfinder:OnObjectiveFrameResized()
 	-- Mid-layout the panel is already being told what size to be.
 	if frame.layoutlock then return end
-	self.db.profile.objframewidth = frame:GetWidth()
+	-- The width is saved by the grip, which is the player choosing it; a
+	-- resize for any other reason is not a choice worth remembering.
 
 	NUMROWS = self:VisibleRowCount()
 	for i, row in ipairs(rows) do
@@ -1366,6 +1384,7 @@ function AegisPathfinder:UpdateOHPanel(value)
 		waypoint points at nothing and it otherwise fails silently, so when
 		there is one it takes the slot and turns red. ]]
 	local qid, meta, isWarning = self:GetStepMeta(self.current)
+	frame.footer.warning = isWarning and meta or nil
 	if isWarning then
 		footerQid:SetText(meta)
 		Theme:TextColor(footerQid, "danger")
