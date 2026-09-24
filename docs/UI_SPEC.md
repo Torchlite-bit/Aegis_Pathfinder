@@ -371,7 +371,7 @@ Placeholder guides carry the concept's grey `TPL` badge (`Theme:Badge`). In a
 list where an unauthored guide looks exactly like an authored one, that badge
 is the only thing distinguishing them.
 
-### Materials panel -- `MaterialsFrame.lua`
+### Shopping list -- `MaterialsFrame.lua`
 
 Not in the concept, which is leveling-focused. It exists because the
 profession guides need it: the reference document prints one shopping list per
@@ -379,9 +379,60 @@ profession totalled from skill 1, which is the wrong number for anyone
 part-way through, since it counts reagents for crafts already done. The panel
 totals what the *remaining* steps call for.
 
+Opened by the **Shopping list** button at the left of the objectives panel's
+footer -- the buy glyph and the words, shown only on a guide with `|MATS|`
+tags (`GuideHasMaterials`). It used to be a bare glyph named `"use"`, which is
+not one of the theme's glyphs, so it drew nothing at all. It pops out beside
+the guide, on whichever side has room, like the options panel, until dragged;
+a dragged position is restored (it used to be saved and never read).
+
+- **Chrome**: the standard header and a `SHOPPING LIST` subhead, 280px wide.
+- **Scope tabs** (`Theme:Tab`): *This step* -- the first unfinished step from
+  the current one on that lists reagents -- and *Whole route*. Remembered in
+  `profile.shoppingscope`; the whole route by default.
+- **Summary**: the craft's title or the guide's name, then "4 of 5 still to
+  get", or "all 5 in your bags".
+- **Rows**: have/need (`display` 11, "20/40", capped at the need) then the
+  name. Gold for a line still short, the accent with a dimmed name for one
+  covered. Up to 14 rows, never fewer than 3; the window is sized to its list
+  and the theme's scroll bar takes over past 14. Sorted alphabetically: it is
+  a list you read while hunting for one item, and one sorted by what is short
+  would move lines under the cursor as you buy.
+- **Bag counts** are by name over bags 0-4. `BAG_UPDATE` only marks the list
+  stale; the window repaints from OnUpdate at most every 0.25s, and only while
+  open, so a loot or a stack split is one repaint, not one per bag.
+- **Send to Exchange** (`Theme:PanelButton`, full width at the foot). See
+  below.
+
 Nothing in it is profession-specific -- any guide carrying `|MATS|` tags gets
-a materials list. Sorted alphabetically: it is a list you read while hunting
-for one item, not a ranking.
+a shopping list.
+
+#### Aegis: Exchange
+
+Exchange builds its own shopping list from crafting projects, `{ name, itemId,
+made, want, reagents = { { name, count, itemId } } }`, priced at the auction
+house. The button writes one project per craft still ahead, in route order
+with the next craft on top: `want` is the craft count and `made` is 1, so
+Exchange's `reagent count x crafts` lands on the same totals as the list here
+(`Tools/test_materials.lua` checks this against the reference document's
+Alchemy list). The same craft on two steps is one project with both counts.
+Item ids come from the bags, then Exchange's own name map, then pfQuest's item
+database; anything unmatched is reported in chat, since Exchange's list only
+shows reagents it can resolve.
+
+Only Exchange's public calls are used -- `craft.Projects`, `AddProject`,
+`DeleteProject` and `ui.RefreshCraft` (pcall-guarded). Sent projects carry
+`pathfinder = <guide>`, which is how they are found to update or remove.
+Exchange keeps one project per name, so one of the player's own recipes that
+shares a name with a craft on the route is kept inside ours as `replaced` and
+put back when ours goes; its exact item ids are used meanwhile.
+
+It follows the guide: `UpdateStatusFrame` calls `RefreshShoppingList` when
+the step settles, which marks things stale for one OnUpdate, and
+`SyncExchange` rewrites Exchange's list only if what is left has changed.
+Finishing the route removes it. It only syncs while the guide it was sent
+from is the one loaded. Exchange's demo mode shows made-up projects in place
+of the saved list, so nothing is sent or removed while it is on.
 
 ### Scrollbar -- `Theme:ScrollBar`
 
@@ -395,7 +446,7 @@ any length) and caret step buttons. It is still a Slider, so
 The carets move by the bar's `step` -- a row by default, a column of 16 in the
 guide list, 40px in the error log -- and stop at the ends of the range. Every
 scrolling list uses it: the objectives panel, the options body, the guide
-list, the materials panel and the error log. The last three were still on
+list, the shopping list and the error log. The last three were still on
 `UIPanelScrollBarTemplate` / `UIPanelScrollFrameTemplate`, which drew
 Blizzard's gold arrows and knob; `Tools/verify.py` now fails on either.
 

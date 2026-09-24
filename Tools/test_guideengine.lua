@@ -178,6 +178,48 @@ do
 	AegisPathfinder.turnedin, AegisPathfinder.current = t, c
 end
 
+-- The shopping list follows the step ------------------------------------------
+
+--[[ The shopping list, and Aegis: Exchange once the list has been sent there,
+	are brought up to date whenever the current step settles -- which has to
+	include running off the end of the guide, or Exchange would keep asking
+	for the last craft's reagents after it was done. ]]
+do
+	local refreshed = 0
+	function AegisPathfinder:RefreshShoppingList() refreshed = refreshed + 1 end
+	function AegisPathfinder:GetObjectiveStatus(i) return self.turnedin[self.quests[i]] end
+	function AegisPathfinder:LoadNextGuide() return false end
+	function AegisPathfinder:GetLootRequirement() return nil end
+	function AegisPathfinder:TrackCurrentQuest() end
+	AegisPathfinder.__provider = nil   -- no waypoint to map
+	UnitAffectingCombat = function() return nil end
+	function AegisPathfinder:IsEventRegistered() return false end
+	function AegisPathfinder:UpdateOHPanel() end
+	function AegisPathfinder:UpdateNavCallout() end
+	function AegisPathfinder:RedriveQuestAutomation() end
+	QuestLog_Update = function() end
+	QuestWatch_Update = function() end
+	GetZoneText = function() return "Elwynn Forest" end
+	GetSubZoneText = function() return "" end
+	AegisPathfinder.turninskipwarned = {}
+	AegisPathfinder.actions = { "NOTE", "NOTE" }
+	AegisPathfinder.quests = { "Read one@1@", "Read two@2@" }
+	AegisPathfinder.tags = { "|N|one|", "|N|two|" }
+	AegisPathfinder.turnedin = { ["Read one@1@"] = true }
+	AegisPathfinder.current = 1
+
+	local ok, err = pcall(function() AegisPathfinder:UpdateStatusFrame() end)
+	check(ok, "a step update runs: %s", tostring(err))
+	check(AegisPathfinder.current == 2 and refreshed == 1,
+		"moving to a step refreshes the shopping list once, got step %s and %d refreshes",
+		tostring(AegisPathfinder.current), refreshed)
+
+	AegisPathfinder.turnedin["Read two@2@"] = true
+	ok, err = pcall(function() AegisPathfinder:UpdateStatusFrame() end)
+	check(ok, "finishing the guide runs: %s", tostring(err))
+	check(refreshed == 2, "and so does finishing the guide, got %d refreshes", refreshed)
+end
+
 -- Report ---------------------------------------------------------------------
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end

@@ -396,10 +396,16 @@ function AegisPathfinder:UpdateStatusFrame()
 	-- Chain resolved (found work, or LoadNextGuide stopped): clear the guard.
 	self.autoadvancecount = nil
 
-	if not nextstep then return end
+	-- The shopping list, and Aegis: Exchange if it was sent there, follow the
+	-- step -- including off the end of the guide, when there is nothing left.
+	if not nextstep then
+		if self.RefreshShoppingList then self:RefreshShoppingList() end
+		return
+	end
 
 	self:SetStatusText(nextstep)
 	self.current = nextstep
+	if self.RefreshShoppingList then self:RefreshShoppingList() end
 	local action, quest, fullquest = self:GetObjectiveInfo(nextstep)
 	local turnedin, logi, complete = self:GetObjectiveStatus(nextstep)
 	local note, useitem, optional, qid = self:GetObjectiveTag("N", nextstep), self:GetObjectiveTag("U", nextstep),

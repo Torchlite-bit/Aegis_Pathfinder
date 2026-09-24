@@ -45,7 +45,8 @@ too — the old `TurtleGuide` global is still an alias.
 | `/apg goto <n>` | Jump to a step |
 | `/apg reset` | Reset progress in the current guide |
 | `/apg resetpanels` | Put every window back where it opens by default |
-| `/apg materials` | Reagents the rest of this guide still needs |
+| `/apg materials` | The shopping list: reagents for this craft, or the rest of the guide |
+| `/apg exchange` | Send the guide's remaining crafts to Aegis: Exchange, or take them back out |
 | `/apg server` | Cycle which server you play on |
 | `/apg serverstatus` | Guide data provenance per server |
 
@@ -85,10 +86,24 @@ Defaults follow the route pack you chose.
 **Professions.** Ten 1–300 routes with trainers, craft counts, reagents and
 recipe sources, tracked against your actual skill level. See below.
 
-**Materials.** `/apg materials` totals the reagents the rest of the current
-guide still needs — counted from where you actually are, not from step one, so
-it is the number you want at the auction house rather than the one you needed
-when you started.
+**Shopping list.** On a guide with reagents the panel's footer carries a
+**Shopping list** button (or `/apg materials`). It pops out beside the guide
+with what you need and what your bags already hold — `12/40 Peacebloom` —
+short lines in gold, covered ones dimmed, updating as your bags change. The tab
+at the top switches between **This step** (the craft you are on or coming up
+to) and **Whole route** (everything still ahead, counted from where you
+actually are rather than from step one, so it is the number you want at the
+auction house).
+
+With [Aegis: Exchange](https://github.com/Torchlite-bit/Aegis_Exchange)
+loaded, **Send to Exchange** at the bottom of the list (or `/apg exchange`)
+puts each craft still ahead on Exchange's Crafting tab, where its shopping
+list prices every line at the auction house. It stays in step: finish a craft
+and it leaves Exchange too; finish the route and the list is gone. **Remove
+from Exchange** takes it all back out. Recipes you captured in Exchange
+yourself are never touched — if one shares a name with a craft on the route,
+it is set aside while the route's stands in for it and put back afterwards.
+Exchange's demo mode has to be off.
 
 **Automatic advancement.** Accepting, completing and turning in quests, binding
 a hearthstone, and collecting tagged items all resolve themselves. So do travel
@@ -118,8 +133,8 @@ pins either way.
 | Engineering, Herbalism, Skinning, Fishing | Placeholders — see below |
 
 Each authored guide says what to craft in each skill band and roughly how many,
-the reagents (the Materials panel totals what the rest of the route still
-needs), where the recipe comes from, and equally viable alternatives.
+the reagents (the shopping list totals what the rest of the route still
+needs, and can send it to Aegis: Exchange), where the recipe comes from, and equally viable alternatives.
 
 Every rank is a step of its own: your faction's trainers, what the rank needs
 and what it costs. Primary crafts wait for the character level a rank needs

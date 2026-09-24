@@ -158,9 +158,15 @@ local options = {
     args = {
         Materials = {
             name = "Materials",
-            desc = "Reagents the rest of the current guide still needs",
+            desc = "The shopping list: reagents for this craft and the rest of the guide",
             type = "execute",
             func = function() AegisPathfinder:ToggleMaterialsPanel() end,
+        },
+        Exchange = {
+            name = "Exchange",
+            desc = "Send the guide's remaining crafts to Aegis: Exchange's Crafting tab, or take them back out",
+            type = "execute",
+            func = function() AegisPathfinder:ToggleExchange() end,
         },
         ResetPanels = {
             name = "Reset Panels",

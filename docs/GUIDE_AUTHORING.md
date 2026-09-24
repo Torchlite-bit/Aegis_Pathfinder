@@ -148,7 +148,7 @@ that, and are handled in `Professions.lua`.
 |-----|-------------|---------|
 | `SKILL` | Profession and skill range. The step completes when the player's skill reaches the upper bound. | `\|SKILL\|Alchemy 1 63\|` |
 | `CRAFT` | What to make, and roughly how many the route expects | `\|CRAFT\|40 Minor Healing Potion\|` |
-| `MATS` | Reagents for a *single* craft; the materials view multiplies by the craft count | `\|MATS\|1x Peacebloom, 1x Silverleaf, 1x Empty Vial\|` |
+| `MATS` | Reagents for a *single* craft; the shopping list multiplies by the craft count | `\|MATS\|1x Peacebloom, 1x Silverleaf, 1x Empty Vial\|` |
 | `SRC` | Where the recipe comes from | `\|SRC\|Trainer\|` |
 | `ALT` | Equally viable recipes for the same range | `\|ALT\|Elixir of Minor Defense, Swiftness Potion\|` |
 | `RANK` | Profession and skill cap. The step completes when the cap reaches it: training a rank, reading a secondary profession's tome and its Artisan quest all raise the cap, whatever the step's action. | `\|RANK\|Alchemy 225\|` |

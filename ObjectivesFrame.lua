@@ -596,7 +596,7 @@ function AegisPathfinder:UpdateObjectivePanel()
 	-- whole of it is on the footer's tooltip.
 	footerQid = footer:CreateFontString(nil, "OVERLAY")
 	Theme:SetFont(footerQid, "body", 10)
-	footerQid:SetPoint("LEFT", footer, "LEFT", ROWPAD + 18, 0)
+	footerQid:SetPoint("LEFT", footer, "LEFT", ROWPAD, 0)
 	footerQid:SetPoint("RIGHT", footerCount, "LEFT", -8, 0)
 	footerQid:SetHeight(12)
 	footerQid:SetJustifyH("LEFT")
@@ -609,17 +609,33 @@ function AegisPathfinder:UpdateObjectivePanel()
 	end)
 	footer:SetScript("OnLeave", function() Theme:HideTip(this) end)
 
-	local materials = Theme:GlyphButton(footer, "use", 11, 18)
+	--[[ The shopping list opens from here, on a guide that has one. It says
+		so in words: a bare icon in a footer is easy to miss, and on a craft
+		step there is no quest id beside it to crowd. ]]
+	local materials = Theme:GlyphButton(footer, Theme.actionIcon.B, 11, 18)
 	materials:SetPoint("LEFT", footer, "LEFT", ROWPAD - 4, 0)
+	materials.glyph:ClearAllPoints()
+	materials.glyph:SetPoint("LEFT", materials, "LEFT", 4, 0)
+	local matsLabel = materials:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(matsLabel, "display", 10)
+	matsLabel:SetPoint("LEFT", materials.glyph, "RIGHT", 4, 0)
+	matsLabel:SetText("SHOPPING LIST")
+	Theme:TextColor(matsLabel, "textDim")
+	materials.label = matsLabel
+	materials:SetWidth(4 + 11 + 4 + math.ceil(matsLabel:GetStringWidth()) + 4)
 	materials:SetScript("OnClick", function() AegisPathfinder:ToggleMaterialsPanel() end)
 	materials:SetScript("OnEnter", function()
 		Theme:Tint(this.glyph, "accent")
-		Theme:ShowTip(this, "TOP", "Reagents the rest of this guide still needs")
+		Theme:TextColor(this.label, "accent")
+		Theme:ShowTip(this, "TOP", "Reagents for this craft and the rest of the guide")
 	end)
 	materials:SetScript("OnLeave", function()
 		Theme:Tint(this.glyph, "textDim")
+		Theme:TextColor(this.label, "textDim")
 		Theme:HideTip(this)
 	end)
+	materials:Hide()
+	footer.materials = materials
 
 	frame.footer = footer
 
@@ -944,6 +960,7 @@ function AegisPathfinder:ShowEmptyState(empty)
 		guideProgress:SetProgress(0)
 		footerQid:SetText("")
 		footerCount:SetText("")
+		frame.footer.materials:Hide()
 		frame.emptyState:Show()
 	else
 		frame.emptyState:Hide()
@@ -1084,7 +1101,7 @@ function AegisPathfinder:ResetWindowLayout()
 	end
 	if self.ResetItemButton then self:ResetItemButton() end
 	-- By name: any of these may not have been built yet.
-	for _, key in ipairs({ "materialsframe", "errorLogFrame", "startingZoneSelectorFrame", "creditsframe" }) do
+	for _, key in ipairs({ "errorLogFrame", "startingZoneSelectorFrame", "creditsframe" }) do
 		local w = self[key]
 		if w then
 			w:ClearAllPoints()
@@ -1092,7 +1109,7 @@ function AegisPathfinder:ResetWindowLayout()
 		end
 	end
 	-- These place themselves beside the guide as they open.
-	for _, key in ipairs({ "optionsframe", "guidelistframe" }) do
+	for _, key in ipairs({ "optionsframe", "guidelistframe", "materialsframe" }) do
 		local w = self[key]
 		if w and w:IsShown() then w:Hide(); w:Show() end
 	end
@@ -1373,6 +1390,17 @@ function AegisPathfinder:UpdateOHPanel(value)
 		there is one it takes the slot and turns red. ]]
 	local qid, meta, isWarning = self:GetStepMeta(self.current)
 	frame.footer.warning = isWarning and meta or nil
+
+	local materials = frame.footer.materials
+	footerQid:ClearAllPoints()
+	if self:GuideHasMaterials() then
+		materials:Show()
+		footerQid:SetPoint("LEFT", materials, "RIGHT", 6, 0)
+	else
+		materials:Hide()
+		footerQid:SetPoint("LEFT", frame.footer, "LEFT", ROWPAD, 0)
+	end
+	footerQid:SetPoint("RIGHT", footerCount, "LEFT", -8, 0)
 	if isWarning then
 		footerQid:SetText(meta)
 		Theme:TextColor(footerQid, "danger")
