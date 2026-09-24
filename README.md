@@ -121,6 +121,18 @@ database, so quest steps need pfQuest; profession steps name their trainers
 themselves. Either window can be dragged anywhere, or switched off in the
 options panel.
 
+**Macros.** A third small window, **Macros**, holds two real macros the addon
+writes into your character's macro book and keeps up to date: **AegisTarget**,
+with a `/target` line for each of the step's targets and a line that marks
+whoever it found, and **AegisItem**, which uses the quest item the step needs
+and wears that item's icon. Drag either tile onto an action bar once; from then
+on the macro follows the guide by itself, step after step. Clicking a tile does
+what its macro does. They are made the first time there is something for them
+to do, use two of your 18 character macro slots (the window says so if none are
+free), and are never rewritten while the macro window is open. The options
+panel can switch the window off, which also stops the macros being made or
+updated.
+
 **Automatic advancement.** Accepting, completing and turning in quests, binding
 a hearthstone, and collecting tagged items all resolve themselves. So do travel
 steps, once a waypoint provider is active. The checkbox wears a halo on steps

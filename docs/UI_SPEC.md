@@ -434,7 +434,7 @@ Finishing the route removes it. It only syncs while the guide it was sent
 from is the one loaded. Exchange's demo mode shows made-up projects in place
 of the saved list, so nothing is sent or removed while it is on.
 
-### Active Items and Active Targets -- `ActiveFrames.lua`
+### Active Items, Active Targets and Macros -- `ActiveFrames.lua`
 
 Not in the concept: RestedXP's two small windows, asked for by name. Each is a
 `Theme:Panel` with an 18px `Theme:Header` strip carrying its title (`ACTIVE
@@ -472,6 +472,34 @@ and `SetRaidTarget`: a star for a friend, a skull for the first kind of enemy
 and a cross for the rest, going by `UnitCanAttack` over the database. An
 existing mark is not set again (which would toggle it off). The tile of
 whoever is targeted takes the accent border, relit on `PLAYER_TARGET_CHANGED`.
+
+**Macros**, the third window, under Targets (or whichever is showing above
+it), with a tile for each of two character macros the addon writes and keeps
+current -- RestedXP's generated targeting macro, plus one for the quest item:
+
+- **AegisTarget**: `/target <name>` per target, the step's first target last
+  (`/target` keeps the last name it finds), then `/script
+  AegisPathfinder:MarkTarget()`, which marks the current target if it is one
+  of the step's. Kept to 255 letters by dropping the least wanted names. With
+  no targets it is `/apg target`, which says there is nobody. Its icon is the
+  first of Hunter's Mark's, the town watch's or a spyglass that the macro icon
+  list has.
+- **AegisItem**: `/apg useitem` (1.12 has no `/use`), wearing the first active
+  item's icon when the macro icon list has that texture, else the question
+  mark. The stock action bars repaint a button when its slot changes, not
+  when the macro in it does, so after an edit the addon repaints any stock
+  button holding it (`ActionButton_Update`); other bar addons repaint on
+  their own schedule.
+
+Both are made as character macros the first time there is something for them
+to do, and rewritten (`EditMacro`, only when the text or icon changed) on
+every repaint after that -- including a step with nothing to do, so one on a
+bar never aims at a finished step. Never while `MacroFrame` is open: the stock
+UI saves its own copy of the text over ours when it closes, so the repaint
+waits a second and tries again. With the 18 character slots full nothing is
+made; the tile's tooltip and a drag say so. A tile click does what its macro
+does (`TargetAnyActive`, `UseActiveItem`); a drag is `PickupMacro`, to drop
+on a bar. `showmacros` switches the window and the macro writing off.
 
 `/apg target` and a key binding (`Bindings.xml`) target the next of them after
 whoever is targeted, so repeated presses cycle -- RestedXP's macro, without a

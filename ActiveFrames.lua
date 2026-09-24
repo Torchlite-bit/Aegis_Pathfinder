@@ -219,6 +219,21 @@ function AegisPathfinder:UseActiveItem(n)
 	return true
 end
 
+-- Mark the current target as `entry`: a star on a friend, the entry's skull
+-- or cross on an enemy. What the client says about the unit outranks what the
+-- database did. An existing mark is left alone -- setting it again is how the
+-- stock UI takes one off.
+local function Mark(entry)
+	local mark = STAR
+	if UnitCanAttack("player", "target") then
+		mark = entry.kind == "enemy" and entry.mark or SKULL
+	end
+	if SetRaidTarget and GetRaidTargetIndex("target") ~= mark then
+		SetRaidTarget("target", mark)
+	end
+	return true
+end
+
 --- Target `entry` by name and mark it. False, and a word in chat unless
 --- `quiet`, when nobody by that name is close enough.
 function AegisPathfinder:TargetActive(entry, quiet)
@@ -228,15 +243,32 @@ function AegisPathfinder:TargetActive(entry, quiet)
 		if not quiet then self:Print(entry.name .. " isn't close enough to target.") end
 		return false
 	end
-	-- What the client says about the unit outranks what the database did.
-	local mark = STAR
-	if UnitCanAttack("player", "target") then
-		mark = entry.kind == "enemy" and entry.mark or SKULL
+	return Mark(entry)
+end
+
+--- Mark the current target, if it is one of the step's. The last line of the
+--- AegisTarget macro, after its /target lines have found someone.
+function AegisPathfinder:MarkTarget()
+	if not UnitExists("target") then return false end
+	local name = UnitName("target")
+	for _, t in ipairs(activeTargets) do
+		if t.name == name then return Mark(t) end
 	end
-	if SetRaidTarget and GetRaidTargetIndex("target") ~= mark then
-		SetRaidTarget("target", mark)
+	return false
+end
+
+--- Target the first of the step's targets that is in range -- what the
+--- AegisTarget macro does, and its button in the Macros window.
+function AegisPathfinder:TargetAnyActive()
+	if table.getn(activeTargets) == 0 then
+		self:Print("Nobody to target on this step.")
+		return false
 	end
-	return true
+	for _, t in ipairs(activeTargets) do
+		if self:TargetActive(t, true) then return true end
+	end
+	self:Print("None of this step's targets is close enough to target.")
+	return false
 end
 
 --- Target the next of the step's targets after whichever is targeted now,
@@ -259,9 +291,145 @@ function AegisPathfinder:TargetNextActive()
 	return false
 end
 
+--[[ The macros.
+
+	RestedXP keeps a targeting macro up to date for you, so it can sit on an
+	action bar. So does this: two character macros, AegisTarget and AegisItem,
+	made on first use and rewritten whenever the step changes.
+
+	AegisTarget is a /target line per target and a line to mark whoever that
+	found. /target keeps the last name it finds, so the step's first target
+	goes last. AegisItem uses the first active item -- 1.12 has no /use -- and
+	takes that item's icon when the macro icon list has it, so the button on
+	your bar shows what it will use.
+
+	1.12 gives each character 18 macros. With none free, nothing is made and
+	the window says so. A macro is never rewritten while the macro window is
+	open: the stock UI would save its own copy of the text over ours.
+]]
+
+local MACRO_SLOTS = 18         -- per character, and per account, on 1.12
+local MACRO_LETTERS = 255
+local TARGET_MACRO, ITEM_MACRO = "AegisTarget", "AegisItem"
+AegisPathfinder.MACROS = { TARGET = TARGET_MACRO, ITEM = ITEM_MACRO }
+-- Icons by name: the macro icon list is read at run time, and the first of
+-- these it has is the targeting macro's.
+local TARGET_ICONS = { "ability_hunter_snipershot", "ability_townwatch", "inv_misc_spyglass_02" }
+local QUESTION_MARK = 1        -- the first macro icon
+
+--- The macro index of `name`, among the account's and this character's.
+local function FindMacro(name)
+	local account, character = GetNumMacros()
+	for i = 1, account or 0 do
+		if GetMacroInfo(i) == name then return i end
+	end
+	for i = MACRO_SLOTS + 1, MACRO_SLOTS + (character or 0) do
+		if GetMacroInfo(i) == name then return i end
+	end
+end
+AegisPathfinder.FindMacro = FindMacro
+
+-- Macro icon indices by texture file name, lower case, built on first use.
+local iconIndex
+local function MacroIcon(file)
+	if not file then return QUESTION_MARK end
+	if not iconIndex then
+		iconIndex = {}
+		for i = 1, GetNumMacroIcons() or 0 do
+			local _, _, base = string.find(string.lower(GetMacroIconInfo(i) or ""), "([^\\]+)$")
+			if base and not iconIndex[base] then iconIndex[base] = i end
+		end
+	end
+	local _, _, base = string.find(string.lower(file), "([^\\]+)$")
+	return base and iconIndex[base] or nil
+end
+
+local function TargetIcon()
+	for _, file in ipairs(TARGET_ICONS) do
+		local i = MacroIcon(file)
+		if i then return i end
+	end
+	return QUESTION_MARK
+end
+
+--- AegisTarget's text for `targets`.
+function AegisPathfinder:TargetMacroBody(targets)
+	if table.getn(targets or {}) == 0 then return "/apg target" end
+	local mark = "/script AegisPathfinder:MarkTarget()"
+	local lines = {}
+	for i = table.getn(targets), 1, -1 do
+		table.insert(lines, "/target " .. targets[i].name)
+	end
+	-- What does not fit goes, least wanted first: those are the top lines.
+	while table.getn(lines) > 1 and string.len(table.concat(lines, "\n") .. "\n" .. mark) > MACRO_LETTERS do
+		table.remove(lines, 1)
+	end
+	table.insert(lines, mark)
+	return table.concat(lines, "\n")
+end
+
+-- The stock action bars repaint a button when its slot changes, not when the
+-- macro in it does; a new icon would wait for the next page turn otherwise.
+local BARS = { "ActionButton", "BonusActionButton", "MultiBarBottomLeftButton",
+	"MultiBarBottomRightButton", "MultiBarRightButton", "MultiBarLeftButton" }
+local function RepaintBars(name)
+	if not ActionButton_Update or not ActionButton_GetPagedID or not GetActionText then return end
+	local saved = this
+	for _, bar in ipairs(BARS) do
+		for i = 1, 12 do
+			local b = getglobal(bar .. i)
+			if b then
+				local ok, slot = pcall(ActionButton_GetPagedID, b)
+				if ok and slot and GetActionText(slot) == name then
+					this = b
+					pcall(ActionButton_Update)
+				end
+			end
+		end
+	end
+	this = saved
+end
+
+-- Rewrite one macro, or make it when `create`. Returns its index, and true
+-- when it was made; nil when there is no such macro and none was made.
+local function WriteMacro(name, icon, body, create)
+	local index = FindMacro(name)
+	if index then
+		local _, texture, old = GetMacroInfo(index)
+		if old ~= body or texture ~= GetMacroIconInfo(icon) then
+			index = EditMacro(index, name, icon, body) or index
+			RepaintBars(name)
+		end
+		return index
+	end
+	if not create then return nil end
+	local _, character = GetNumMacros()
+	if (character or 0) >= MACRO_SLOTS then return nil end
+	return CreateMacro(name, icon, body, nil, 1), true
+end
+
+--- Bring AegisTarget and AegisItem up to date -- always, so one on an action
+--- bar never aims at a step that is over -- and make them when `create`.
+--- False while the macro window is open, so the caller tries again.
+function AegisPathfinder:SyncMacros(create)
+	if MacroFrame and MacroFrame:IsVisible() then return false end
+	local item = activeItems[1]
+	local t, newT = WriteMacro(TARGET_MACRO, TargetIcon(), self:TargetMacroBody(activeTargets), create)
+	local i, newI = WriteMacro(ITEM_MACRO, item and MacroIcon(item.texture) or QUESTION_MARK, "/apg useitem", create)
+	if newT or newI then
+		local made = (newT and newI) and "macros AegisTarget and AegisItem"
+			or newT and "macro AegisTarget" or "macro AegisItem"
+		self:Print("Made the character " .. made .. ". Drag from the Macros window onto an action bar; they follow the guide from then on.")
+	end
+	-- Only a macro that should exist and does not is a full book.
+	if create then self.macroFull = not (t and i) or nil end
+	return true
+end
+
 --[[ The windows. ]]
 
-local items, targets
+local items, targets, macros
+local Request   -- ask for a repaint; defined with the driver below
 
 -- A tile: the theme's rounded square, an icon inside it, a count and a mark
 -- in its corners.
@@ -387,11 +555,124 @@ local function TargetTile(parent)
 	return b
 end
 
+-- A macro's tile: click does what the macro does, dragging it picks the
+-- macro up to drop on an action bar.
+local function MacroTile(parent, name)
+	local b = Tile(parent)
+	b.macro = name
+	b:RegisterForDrag("LeftButton")
+	b:SetScript("OnDragStart", function()
+		local index = FindMacro(this.macro)
+		if index then
+			PickupMacro(index)
+		else
+			AegisPathfinder:Print("There was no free character macro slot for " .. this.macro .. ".")
+		end
+	end)
+	b:SetScript("OnLeave", function()
+		this.border:SetTint("subtle")
+		Theme:HideTip(this)
+		GameTooltip:Hide()
+	end)
+	return b
+end
+
+local DRAG_HINT = "Drag onto an action bar: it follows the guide from then on."
+
+local function MacroTargetTile(parent)
+	local b = MacroTile(parent, TARGET_MACRO)
+	b:SetScript("OnClick", function() AegisPathfinder:TargetAnyActive() end)
+	b:SetScript("OnEnter", function()
+		this.border:SetTint("accent")
+		local lines = {}
+		for _, t in ipairs(activeTargets) do table.insert(lines, "/target " .. t.name) end
+		table.insert(lines, AegisPathfinder.macroFull and "No free character macro slot to make it in." or DRAG_HINT)
+		Theme:ShowTip(this, "TOP", TARGET_MACRO .. " -- target and mark", lines)
+	end)
+	return b
+end
+
+local function MacroItemTile(parent)
+	local b = MacroTile(parent, ITEM_MACRO)
+	b.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+	b:SetScript("OnClick", function() AegisPathfinder:UseActiveItem(1) end)
+	-- GameTooltip, because only it can show a game item.
+	b:SetScript("OnEnter", function()
+		this.border:SetTint("accent")
+		local entry = activeItems[1]
+		if not entry then return end
+		GameTooltip:SetOwner(this, "ANCHOR_LEFT")
+		GameTooltip:SetBagItem(entry.bag, entry.slot)
+		GameTooltip:AddLine(ITEM_MACRO .. ": " .. (AegisPathfinder.macroFull
+			and "no free character macro slot to make it in." or DRAG_HINT), 0.78, 0.78, 0.74, 1)
+		GameTooltip:Show()
+	end)
+	return b
+end
+
 function AegisPathfinder:CreateActiveFrames()
 	if items then return end
 	items = Window("AegisPathfinderActiveItems", "Active Items", "activeitems")
 	targets = Window("AegisPathfinderActiveTargets", "Active Targets", "activetargets")
-	self.activeitemsframe, self.activetargetsframe = items, targets
+	macros = Window("AegisPathfinderMacros", "Macros", "activemacros")
+	macros.targetTile = MacroTargetTile(macros)
+	macros.itemTile = MacroItemTile(macros)
+	self.activeitemsframe, self.activetargetsframe, self.macrosframe = items, targets, macros
+end
+
+-- The Macros window: a tile for whichever of the two has something to do.
+local function PaintMacros(self, char, under)
+	macros.targetTile:Hide()
+	macros.itemTile:Hide()
+	if char.showmacros == false then
+		macros:Hide()
+		return
+	end
+
+	local shown = {}
+	if table.getn(activeTargets) > 0 then table.insert(shown, macros.targetTile) end
+	if activeItems[1] then table.insert(shown, macros.itemTile) end
+
+	-- The macros themselves, made once there is something for them to do;
+	-- again in a moment if the macro window is open.
+	if not self:SyncMacros(table.getn(shown) > 0) then Request(1) end
+	if table.getn(shown) == 0 then
+		macros:Hide()
+		return
+	end
+
+	for i, b in ipairs(shown) do
+		b:ClearAllPoints()
+		b:SetPoint("TOPLEFT", macros, "TOPLEFT", PAD + (i - 1) * (TILE + GAP), -(HEADER_H + PAD))
+		b:Show()
+	end
+	local n = table.getn(shown)
+	macros:SetWidth(math.max(PAD * 2 + n * TILE + (n - 1) * GAP, math.ceil(macros.label:GetStringWidth()) + 24))
+
+	-- The targeting macro wears its own icon, as it will on a bar.
+	local index, texture = FindMacro(TARGET_MACRO), nil
+	if index then _, texture = GetMacroInfo(index) end
+	local t = macros.targetTile
+	if texture then
+		t.icon:SetTexture(texture)
+		t.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+		t.icon:SetVertexColor(1, 1, 1, 1)
+	else
+		t.icon:SetTexture(Theme.actionIcon.K)
+		t.icon:SetTexCoord(0, 1, 0, 1)
+		Theme:Tint(t.icon, "danger")
+	end
+	t.mark:SetTexCoord(MarkCoords(activeTargets[1] and activeTargets[1].mark or SKULL))
+	t.mark:Show()
+
+	local item = activeItems[1]
+	if item then
+		macros.itemTile.icon:SetTexture(item.texture)
+		macros.itemTile.count:SetText(item.count > 1 and tostring(item.count) or "")
+	end
+
+	Place(macros, under)
+	macros:Show()
 end
 
 --- Recount and repaint both windows.
@@ -435,6 +716,8 @@ function AegisPathfinder:PaintActiveFrames()
 		targets:Hide()
 	end
 	self:PaintTargetBorders()
+
+	PaintMacros(self, char, targets:IsShown() and targets or items:IsShown() and items or guide)
 end
 
 --- Light the tile of whoever is targeted now.
@@ -462,7 +745,7 @@ driver:SetScript("OnUpdate", function()
 end)
 AegisPathfinder.activeDriver = driver
 
-local function Request(delay)
+Request = function(delay)
 	local due = GetTime() + (delay or 0)
 	if not driver:IsShown() or due < (driver.due or 0) then driver.due = due end
 	driver:Show()
@@ -489,12 +772,14 @@ function AegisPathfinder:PositionActiveFrames()
 	if not items then self:CreateActiveFrames() end
 	Theme:RestorePosition(items, "activeitems")
 	Theme:RestorePosition(targets, "activetargets")
+	Theme:RestorePosition(macros, "activemacros")
 end
 
 --- Forget where they were dragged; they hang under the guide again.
 function AegisPathfinder:ResetActiveFrames()
 	Theme:ForgetPosition("activeitems")
 	Theme:ForgetPosition("activetargets")
+	Theme:ForgetPosition("activemacros")
 	-- The old single use-item button's spot.
 	Theme:ForgetPosition("itemframe")
 	if items then self:PaintActiveFrames() end

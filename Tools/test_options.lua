@@ -242,9 +242,9 @@ click(frame.switches.showminimapbutton)
 check(db.showminimapbutton == false and AegisPathfinder.__minimapRefreshed,
 	"which hides the button at once")
 
--- The Active Items and Active Targets windows: a switch each, on unless the
+-- The Active Items, Active Targets and Macros windows: a switch each, on unless the
 -- saved setting says otherwise, repainting as they change.
-for _, key in ipairs({ "showactiveitems", "showactivetargets" }) do
+for _, key in ipairs({ "showactiveitems", "showactivetargets", "showmacros" }) do
 	local sw = frame.switches[key]
 	check(sw ~= nil, "%s has a switch", key)
 	if sw then

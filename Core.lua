@@ -96,6 +96,7 @@ local defaults = {
     showminimapbutton = true,
     showactiveitems = true,   -- see ActiveFrames.lua
     showactivetargets = true,
+    showmacros = true,        -- the Macros window, and the AegisTarget/AegisItem macros
     server = nil,             -- see Servers.lua; nil means the default dataset
     showuseitem = true,
     showuseitemcomplete = true,
