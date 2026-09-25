@@ -42,6 +42,7 @@ GuideListFrame.lua
 MaterialsFrame.lua
 ActiveFrames.lua
 NextGuideFrame.lua
+SetupFrame.lua
 MinimapButton.lua
 
 # Routes

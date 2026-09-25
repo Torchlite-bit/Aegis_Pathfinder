@@ -394,12 +394,16 @@ function AegisPathfinder:CreateConfigPanel()
 	rescan:SetScript("OnClick", function() AegisPathfinder:QueryServerCompletedQuests(true) end)
 	local errors = Theme:Pill(body, "Error log", 100, 26)
 	errors:SetScript("OnClick", function() AegisPathfinder:ShowErrorLog() end)
+	local setup = Theme:Pill(body, "Run setup", 90, 26)
+	setup:SetScript("OnClick", function() AegisPathfinder:ShowSetup() end)
 	rescan:SetPoint("TOPLEFT", body, "TOPLEFT", 0, -y)
 	errors:SetPoint("LEFT", rescan, "RIGHT", 6, 0)
+	setup:SetPoint("LEFT", errors, "RIGHT", 6, 0)
 	y = y + 26 + 6
 	note("Rescan asks the server which quests this character has completed and "
-		.. "re-marks the guide from that.")
-	frame.rescan, frame.errorlog = rescan, errors
+		.. "re-marks the guide from that. Run setup asks the first-time questions "
+		.. "again: your guide, its features and your dungeons.")
+	frame.rescan, frame.errorlog, frame.setup = rescan, errors, setup
 	y = y + SECTION_GAP
 
 	-- Last, where an about box goes: who this addon is built on.

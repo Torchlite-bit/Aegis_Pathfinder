@@ -119,6 +119,7 @@ local defaults = {
     isbranching = false,
     branchsavedguide = nil,
     branchsavedstep = nil,
+    setupdone = false,            -- has this character been through the first-time setup?
     offercustomzones = true,      -- offer custom zones when a guide finishes (NextGuideFrame.lua)
     routepack = nil,              -- Active route pack name (e.g., "VanillaGuide", "RestedXP")
     PlayStyle = "SOLO",           -- Default playstyle ("SOLO" or "GROUP")
@@ -384,6 +385,12 @@ local options = {
             type = "execute",
             func = function() AegisPathfinder:ReturnFromBranch() end,
             order = 15,
+        },
+        Setup = {
+            name = "Setup",
+            desc = "Run the first-time setup again: your guide, its features and your dungeons",
+            type = "execute",
+            func = function() AegisPathfinder:ShowSetup() end,
         },
         CustomZones = {
             name = "Custom Zones",
@@ -699,6 +706,9 @@ function AegisPathfinder:InitializeRoute()
     -- Force waypoint creation on initial load
     self:ForceWaypointUpdate()
     self.enableDone = true
+    -- The first time the addon loads on this character: the three-step
+    -- setup (SetupFrame.lua).
+    if self.MaybeShowSetup then self:MaybeShowSetup() end
 end
 
 function AegisPathfinder:OnDisable()

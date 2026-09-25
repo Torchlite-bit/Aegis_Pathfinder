@@ -377,6 +377,40 @@ custom zone -- Scarlet Enclave and Hyjal were once missing and filed under
 Zones. `Tools/test_guidelist.lua` reads that list out of `Core.lua` and checks
 every custom-zone guide against it.
 
+### First-time setup -- `SetupFrame.lua`
+
+Not in the concept: RestedXP's first-run questions, over settings the options
+panel already has (`routepack`, `UseAH`, `PlayStyle`, `Dungeons`); nothing in
+it is a new setting. Opened once per character from the end of
+`InitializeRoute` (`MaybeShowSetup`, `db.char.setupdone`), and again from
+`/apg setup` or the options panel's **Run setup** pill.
+
+A 420px Chrome window, `SET UP YOUR GUIDE`, with `STEP n OF m` at the right of
+the subhead (two steps with dungeons off, three with them on), a display-face
+title and a line of intro per step, Back and Continue/Finish at the foot.
+
+1. **Your guide**: a card per route pack this character may use
+   (`GetAvailableRoutePacks`) that has a route for its race -- so no RestedXP
+   or Hardcore card for a High Elf or Goblin. Name in the display face over a
+   line of what it is; the chosen card takes the accent. Picking a pack
+   brings its starting features, as the pack pills do.
+2. **Features**: `Theme:Switch` rows with a line each. Under them, in gold,
+   which of the three the chosen pack's guides do not mark at all
+   (`GetPackTags` reads the route's guide text once per pack) -- the
+   Optimized guides mark none yet.
+3. **Dungeons**: the faction's dungeons (`DUNGEON_INFO`: Ragefire Chasm is
+   Horde-only, the Stockade Alliance-only) in level order, each a
+   `Theme:StepCheck`, the name, the level range (accent while it is your
+   level, gold ahead, dim once past) and how many steps it adds to the route
+   ("not in this route" for none). Recommended / All / None above. Reaching
+   the step with none ticked starts from the recommended ones: per faction,
+   the dungeons with 55 or more dungeon steps in the RestedXP guides.
+
+Finish (`ApplySetup`) switches pack only when a different one was chosen --
+`SelectRoutePack` re-routes, which would lose your place -- writes the three
+filters, re-reads the guide on screen, and prints what was set up. Closing
+the window keeps everything and marks setup done.
+
 ### Where next? -- `NextGuideFrame.lua`
 
 Not in the concept. Asked when a guide finishes, before the engine moves on:

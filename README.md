@@ -47,6 +47,7 @@ too — the old `TurtleGuide` global is still an alias.
 | `/apg resetpanels` | Put every window back where it opens by default |
 | `/apg materials` | The shopping list: reagents for this craft, or the rest of the guide |
 | `/apg exchange` | Send the guide's remaining crafts to Aegis: Exchange, or take them back out |
+| `/apg setup` | Run the first-time setup again: your guide, its features and your dungeons |
 | `/apg target` | Target and mark the step's next active target (put it in a macro) |
 | `/apg useitem` | Use the first active item |
 | `/apg server` | Cycle which server you play on |
@@ -84,6 +85,24 @@ dot marks the dungeons the guide you are currently on actually has steps for.
 
 **Filters.** Solo or group mode, and whether Auction House steps appear.
 Defaults follow the route pack you chose.
+
+**First-time setup.** The first time the addon loads on a character, a short
+setup asks three things, as RestedXP does:
+
+1. **Your guide**: Optimized (quest-optimized 1-60, every race), RestedXP
+   Speedrun, Hardcore Survival, or Kamisayo Speedrun for a Horde Warrior. Only
+   guides with a route for your race are offered.
+2. **Features**: Auction House steps, group quests, dungeons.
+3. **Dungeons** (when dungeons are on): the dungeons your faction can run, with
+   level ranges and how many steps each adds to your route, plus
+   **Recommended**, **All** and **None**. Recommended picks the dungeons whose
+   quests the guides use most.
+
+It starts from what the character already has, so an existing character can
+finish it without changing anything, and it keeps your place in your guide
+unless you pick a different one. Where the chosen guides do not mark a kind of
+step yet, it says so. Closing it keeps your current settings. Run it again with
+`/apg setup` or **Run setup** in the options panel.
 
 **Custom zones between guides.** When you finish a guide and a custom zone
 fits your level, a small **Where next?** window asks whether to carry on with
@@ -252,7 +271,7 @@ Runs everything that can be checked without a client: Lua syntax, Lua 5.0
 compatibility, `.toc` and `Guides.xml` integrity, TGA validity, that every
 texture path resolves to a real file, that no panel has drifted off the theme,
 that every window stacks rather than interleaving with the others, and
-eighteen test suites that execute the addon's own code against a stubbed 1.12 API.
+nineteen test suites that execute the addon's own code against a stubbed 1.12 API.
 
 None of it proves the UI looks right. That needs a client.
 
