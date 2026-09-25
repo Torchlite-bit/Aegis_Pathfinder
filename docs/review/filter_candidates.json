@@ -35,7 +35,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -81,7 +80,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -139,7 +137,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -197,7 +194,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -255,7 +251,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -302,7 +297,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -339,7 +333,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -451,7 +444,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -487,7 +479,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -544,7 +535,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -592,7 +582,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -650,7 +639,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -697,7 +685,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -733,7 +720,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -779,7 +765,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -815,7 +800,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -885,7 +869,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -954,7 +937,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -1000,7 +982,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -1035,7 +1016,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -1071,7 +1051,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -1117,7 +1096,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -1164,7 +1142,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -1233,7 +1210,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -1302,7 +1278,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -1372,7 +1347,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -1419,7 +1393,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -1467,7 +1440,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -1559,7 +1531,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -1570,68 +1541,6 @@
      ]
     }
    ],
-   "factions": [
-    "Alliance"
-   ],
-   "packs": [
-    "Optimized",
-    "Zone guides"
-   ]
-  },
-  {
-   "id": "q5533",
-   "qid": 5533,
-   "title": "Scholomance",
-   "steps": [
-    {
-     "guide": "Optimized/Western Plaguelands (57-58)",
-     "pack": "Optimized",
-     "faction": "Alliance",
-     "file": "Guides/Optimized/Alliance/57_58_Western_Plaguelands.lua",
-     "line": 78,
-     "action": "Accept",
-     "title": "Scholomance",
-     "note": "Commander Ashlam Valorfist (42.70, 84.06)",
-     "optional": false
-    },
-    {
-     "guide": "Optimized/Western Plaguelands (57-58)",
-     "pack": "Optimized",
-     "faction": "Alliance",
-     "file": "Guides/Optimized/Alliance/57_58_Western_Plaguelands.lua",
-     "line": 79,
-     "action": "Turn in",
-     "title": "Scholomance",
-     "note": "Alchemist Arbington in Chillwind Camp (42.67, 83.77)",
-     "optional": false
-    },
-    {
-     "guide": "Western Plaguelands (56-57)",
-     "pack": "Zone guides",
-     "faction": "Alliance",
-     "file": "Guides/Alliance/56_57_Western_Plaguelands.lua",
-     "line": 72,
-     "action": "Accept",
-     "title": "Scholomance",
-     "note": "Commander Ashlam Valorfist in Chillwind Camp (42.70, 84.06)",
-     "optional": false
-    },
-    {
-     "guide": "Western Plaguelands (56-57)",
-     "pack": "Zone guides",
-     "faction": "Alliance",
-     "file": "Guides/Alliance/56_57_Western_Plaguelands.lua",
-     "line": 73,
-     "action": "Turn in",
-     "title": "Scholomance",
-     "note": "Alchemist Arbington in Chillwind Camp (42.67, 83.77)",
-     "optional": false
-    }
-   ],
-   "unswitched": [
-    "Scholomance"
-   ],
-   "suggestions": [],
    "factions": [
     "Alliance"
    ],
@@ -1734,7 +1643,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -1825,7 +1733,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -1862,7 +1769,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -2007,7 +1913,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -2054,7 +1959,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -2101,7 +2005,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -2149,7 +2052,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -2285,7 +2187,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -2332,7 +2233,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -2379,7 +2279,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -2390,148 +2289,6 @@
      ]
     }
    ],
-   "factions": [
-    "Horde"
-   ],
-   "packs": [
-    "Optimized",
-    "Zone guides"
-   ]
-  },
-  {
-   "id": "q1170",
-   "qid": 1170,
-   "title": "The Brood of Onyxia",
-   "steps": [
-    {
-     "guide": "Optimized/Dustwallow Marsh (43-44)",
-     "pack": "Optimized",
-     "faction": "Horde",
-     "file": "Guides/Optimized/Horde/43_44_Dustwallow_Marsh.lua",
-     "line": 67,
-     "action": "Accept",
-     "title": "The Brood of Onyxia",
-     "note": "Draz'Zilb in Brackenwall Village (37.13, 33.08)",
-     "optional": false
-    },
-    {
-     "guide": "Optimized/Dustwallow Marsh (43-44)",
-     "pack": "Optimized",
-     "faction": "Horde",
-     "file": "Guides/Optimized/Horde/43_44_Dustwallow_Marsh.lua",
-     "line": 68,
-     "action": "Turn in",
-     "title": "The Brood of Onyxia",
-     "note": "Nazeer Bloodpike in Brackenwall Village -Skip follow up (36.31, 31.44)",
-     "optional": false
-    },
-    {
-     "guide": "Dustwallow Marsh (43-44)",
-     "pack": "Zone guides",
-     "faction": "Horde",
-     "file": "Guides/Horde/43_44_Dustwallow_Marsh.lua",
-     "line": 61,
-     "action": "Accept",
-     "title": "The Brood of Onyxia",
-     "note": "Draz'Zilb in Brackenwall Village (37.13, 33.08)",
-     "optional": false
-    },
-    {
-     "guide": "Dustwallow Marsh (43-44)",
-     "pack": "Zone guides",
-     "faction": "Horde",
-     "file": "Guides/Horde/43_44_Dustwallow_Marsh.lua",
-     "line": 62,
-     "action": "Turn in",
-     "title": "The Brood of Onyxia",
-     "note": "Nazeer Bloodpike in Brackenwall Village -Skip follow up (36.31, 31.44)",
-     "optional": false
-    }
-   ],
-   "unswitched": [
-    "Onyxia"
-   ],
-   "suggestions": [],
-   "factions": [
-    "Horde"
-   ],
-   "packs": [
-    "Optimized",
-    "Zone guides"
-   ]
-  },
-  {
-   "id": "q3520",
-   "qid": 3520,
-   "title": "Screecher Spirits",
-   "steps": [
-    {
-     "guide": "Optimized/Feralas (45-46)",
-     "pack": "Optimized",
-     "faction": "Horde",
-     "file": "Guides/Optimized/Horde/45_46_Feralas.lua",
-     "line": 66,
-     "action": "Complete",
-     "title": "Screecher Spirits",
-     "note": "Kill the Rogue Vale Screecher south of Dire Maul and use the Yeh'kinya's Bramble on their corpses to collect 3 Rogue Vale Screecher (60.95, 49.65) (59.11, 50.94) (56.90, 47.84)",
-     "optional": false
-    },
-    {
-     "guide": "Feralas (45-46)",
-     "pack": "Zone guides",
-     "faction": "Horde",
-     "file": "Guides/Horde/45_46_Feralas.lua",
-     "line": 60,
-     "action": "Complete",
-     "title": "Screecher Spirits",
-     "note": "Kill the Rogue Vale Screecher south of Dire Maul and use the Yeh'kinya's Bramble on their corpses to collect 3 Rogue Vale Screecher (60.95, 49.65) (59.11, 50.94) (56.90, 47.84)",
-     "optional": false
-    }
-   ],
-   "unswitched": [
-    "Dire Maul"
-   ],
-   "suggestions": [],
-   "factions": [
-    "Horde"
-   ],
-   "packs": [
-    "Optimized",
-    "Zone guides"
-   ]
-  },
-  {
-   "id": "q2980",
-   "qid": 2980,
-   "title": "The Ogres of Feralas",
-   "steps": [
-    {
-     "guide": "Optimized/Feralas (45-46)",
-     "pack": "Optimized",
-     "faction": "Horde",
-     "file": "Guides/Optimized/Horde/45_46_Feralas.lua",
-     "line": 70,
-     "action": "Complete",
-     "title": "The Ogres of Feralas (Part 2)",
-     "note": "Kill 10 Gordunni Shaman, 10 Gordunni Warlock and 5 Gordunni Mauler south of Dire Maul (59, 68)",
-     "optional": false
-    },
-    {
-     "guide": "Feralas (45-46)",
-     "pack": "Zone guides",
-     "faction": "Horde",
-     "file": "Guides/Horde/45_46_Feralas.lua",
-     "line": 64,
-     "action": "Complete",
-     "title": "The Ogres of Feralas (Part 2)",
-     "note": "Kill 10 Gordunni Shaman, 10 Gordunni Warlock and 5 Gordunni Mauler south of Dire Maul (59, 68)",
-     "optional": false
-    }
-   ],
-   "unswitched": [
-    "Dire Maul"
-   ],
-   "suggestions": [],
    "factions": [
     "Horde"
    ],
@@ -2568,7 +2325,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -2616,7 +2372,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -2663,7 +2418,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -2721,7 +2475,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -2791,7 +2544,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -2860,7 +2612,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -2909,7 +2660,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -2957,7 +2707,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -3071,7 +2820,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -3119,7 +2867,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -3188,7 +2935,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -3236,7 +2982,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -3294,7 +3039,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -3307,68 +3051,6 @@
    ],
    "factions": [
     "Alliance",
-    "Horde"
-   ],
-   "packs": [
-    "Optimized",
-    "Zone guides"
-   ]
-  },
-  {
-   "id": "q838",
-   "qid": 838,
-   "title": "Scholomance",
-   "steps": [
-    {
-     "guide": "Optimized/Western Plaguelands (57-58)",
-     "pack": "Optimized",
-     "faction": "Horde",
-     "file": "Guides/Optimized/Horde/57_58_Western_Plaguelands.lua",
-     "line": 83,
-     "action": "Accept",
-     "title": "Scholomance",
-     "note": "High Executor Derrington in The Bulwark (83.13, 68.96)",
-     "optional": false
-    },
-    {
-     "guide": "Optimized/Western Plaguelands (57-58)",
-     "pack": "Optimized",
-     "faction": "Horde",
-     "file": "Guides/Optimized/Horde/57_58_Western_Plaguelands.lua",
-     "line": 84,
-     "action": "Turn in",
-     "title": "Scholomance",
-     "note": "Apothecary Dithers in The Bulwark (83.26, 69.25)",
-     "optional": false
-    },
-    {
-     "guide": "Western Plaguelands (57-58)",
-     "pack": "Zone guides",
-     "faction": "Horde",
-     "file": "Guides/Horde/57_58_Western_Plaguelands.lua",
-     "line": 77,
-     "action": "Accept",
-     "title": "Scholomance",
-     "note": "High Executor Derrington in The Bulwark (83.13, 68.96)",
-     "optional": false
-    },
-    {
-     "guide": "Western Plaguelands (57-58)",
-     "pack": "Zone guides",
-     "faction": "Horde",
-     "file": "Guides/Horde/57_58_Western_Plaguelands.lua",
-     "line": 78,
-     "action": "Turn in",
-     "title": "Scholomance",
-     "note": "Apothecary Dithers in The Bulwark (83.26, 69.25)",
-     "optional": false
-    }
-   ],
-   "unswitched": [
-    "Scholomance"
-   ],
-   "suggestions": [],
-   "factions": [
     "Horde"
    ],
    "packs": [
@@ -3415,7 +3097,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -3461,7 +3142,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -3496,7 +3176,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -3564,7 +3243,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -3610,7 +3288,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -3645,7 +3322,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -3691,7 +3367,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -3748,7 +3423,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -3794,7 +3468,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -3829,7 +3502,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -3897,7 +3569,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -3932,7 +3603,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -3989,7 +3659,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -4025,7 +3694,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -4060,7 +3728,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -4095,7 +3762,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -4130,7 +3796,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -4165,7 +3830,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -4200,7 +3864,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -4235,7 +3898,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -4281,7 +3943,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -4316,7 +3977,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -4362,7 +4022,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -4608,7 +4267,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -4853,7 +4511,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -5098,7 +4755,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -5288,7 +4944,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -5324,7 +4979,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -5403,7 +5057,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -5438,7 +5091,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -5485,7 +5137,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -5521,7 +5172,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -5567,7 +5217,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -5613,7 +5262,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -5659,7 +5307,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -5705,7 +5352,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -5751,7 +5397,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -5797,7 +5442,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -5843,7 +5487,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -5889,7 +5532,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -5924,7 +5566,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -5935,96 +5576,6 @@
      ]
     }
    ],
-   "factions": [
-    "Alliance"
-   ],
-   "packs": [
-    "Zone guides"
-   ]
-  },
-  {
-   "id": "q5211",
-   "qid": 5211,
-   "title": "Diseased Flayer",
-   "steps": [
-    {
-     "guide": "Eastern Plaguelands (57-58)",
-     "pack": "Zone guides",
-     "faction": "Alliance",
-     "file": "Guides/Alliance/57_58_Eastern_Plaguelands.lua",
-     "line": 51,
-     "action": "Complete",
-     "title": "Diseased Flayer",
-     "note": "Make a start on this quest and kill Diseased Flayer then speak to Darrowshire Spirit that will spawn after the kill to free the spirit. NOTE: You can complete this later in Stratholme if this area is cleared already, tick this step (65.96, 39.86)",
-     "optional": false
-    },
-    {
-     "guide": "Eastern Plaguelands (57-58)",
-     "pack": "Zone guides",
-     "faction": "Alliance",
-     "file": "Guides/Alliance/57_58_Eastern_Plaguelands.lua",
-     "line": 61,
-     "action": "Complete",
-     "title": "Defenders of Darrowshire",
-     "note": "Kill Cannibal Ghoul then speak to Darrowshire Spirit that will spawn after the kill to free 15 spirits in Stratholme (35.58, 23.72) (33.81, 25.78) (30.41, 21.57) (30.00, 22.95)",
-     "optional": false
-    },
-    {
-     "guide": "Eastern Plaguelands (56-57)",
-     "pack": "Zone guides",
-     "faction": "Horde",
-     "file": "Guides/Horde/56_57_Eastern_Plaguelands.lua",
-     "line": 52,
-     "action": "Complete",
-     "title": "Diseased Flayer",
-     "note": "Make a start on this quest and kill Diseased Flayer then speak to Darrowshire Spirit that will spawn after the kill to free the spirit. NOTE: You can complete this later in Stratholme if this area is cleared already, tick this step (65.96, 39.86)",
-     "optional": false
-    },
-    {
-     "guide": "Eastern Plaguelands (56-57)",
-     "pack": "Zone guides",
-     "faction": "Horde",
-     "file": "Guides/Horde/56_57_Eastern_Plaguelands.lua",
-     "line": 65,
-     "action": "Complete",
-     "title": "Defenders of Darrowshire",
-     "note": "Kill Cannibal Ghoul then speak to Darrowshire Spirit that will spawn after the kill to free 15 spirits in Stratholme (35.58, 23.72) (33.81, 25.78) (30.41, 21.57) (30.00, 22.95)",
-     "optional": false
-    }
-   ],
-   "unswitched": [
-    "Stratholme"
-   ],
-   "suggestions": [],
-   "factions": [
-    "Alliance",
-    "Horde"
-   ],
-   "packs": [
-    "Zone guides"
-   ]
-  },
-  {
-   "id": "q5903",
-   "qid": 5903,
-   "title": "A Plague Upon Thee",
-   "steps": [
-    {
-     "guide": "Eastern Plaguelands (57-58)",
-     "pack": "Zone guides",
-     "faction": "Alliance",
-     "file": "Guides/Alliance/57_58_Eastern_Plaguelands.lua",
-     "line": 60,
-     "action": "Complete",
-     "title": "A Plague Upon Thee (Part 1)",
-     "note": "Check each waypoint and click on Termite Mound to collect 100 Plagueland Termites in Stratholme (45.83, 34.01) (42.87, 34.26) (42.17, 38.29) (40.62, 31.39) (41.28, 25.40) (43.65, 24.14) (39.72, 23.07) (35.58, 23.72) (33.81, 25.78) (30.41, 21.57) (30.00, 22.95)",
-     "optional": false
-    }
-   ],
-   "unswitched": [
-    "Stratholme"
-   ],
-   "suggestions": [],
    "factions": [
     "Alliance"
    ],
@@ -6060,7 +5611,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -6096,7 +5646,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -6131,7 +5680,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -6166,7 +5714,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -6201,7 +5748,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -6247,7 +5793,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -6282,7 +5827,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -6339,7 +5883,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -6374,7 +5917,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -6409,7 +5951,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -6455,7 +5996,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -6466,95 +6006,6 @@
      ]
     }
    ],
-   "factions": [
-    "Horde"
-   ],
-   "packs": [
-    "Zone guides"
-   ]
-  },
-  {
-   "id": "q1171",
-   "qid": 1171,
-   "title": "The Brood of Onyxia",
-   "steps": [
-    {
-     "guide": "Dustwallow Marsh (49-49)",
-     "pack": "Zone guides",
-     "faction": "Horde",
-     "file": "Guides/Horde/49_49_Dustwallow_Marsh.lua",
-     "line": 7,
-     "action": "Accept",
-     "title": "The Brood of Onyxia",
-     "note": "Overlord Mok'Morokk in Brackenwall Village (36.33, 31.48)",
-     "optional": false
-    },
-    {
-     "guide": "Dustwallow Marsh (49-49)",
-     "pack": "Zone guides",
-     "faction": "Horde",
-     "file": "Guides/Horde/49_49_Dustwallow_Marsh.lua",
-     "line": 8,
-     "action": "Turn in",
-     "title": "The Brood of Onyxia",
-     "note": "Draz'Zilb in Brackenwall Village (37.04, 32.93)",
-     "optional": false
-    }
-   ],
-   "unswitched": [
-    "Onyxia"
-   ],
-   "suggestions": [],
-   "factions": [
-    "Horde"
-   ],
-   "packs": [
-    "Zone guides"
-   ]
-  },
-  {
-   "id": "q1172",
-   "qid": 1172,
-   "title": "The Brood of Onyxia",
-   "steps": [
-    {
-     "guide": "Dustwallow Marsh (49-49)",
-     "pack": "Zone guides",
-     "faction": "Horde",
-     "file": "Guides/Horde/49_49_Dustwallow_Marsh.lua",
-     "line": 9,
-     "action": "Accept",
-     "title": "The Brood of Onyxia",
-     "note": "Draz'Zilb in Brackenwall Village (37.04, 32.93)",
-     "optional": false
-    },
-    {
-     "guide": "Dustwallow Marsh (49-49)",
-     "pack": "Zone guides",
-     "faction": "Horde",
-     "file": "Guides/Horde/49_49_Dustwallow_Marsh.lua",
-     "line": 15,
-     "action": "Complete",
-     "title": "The Brood of Onyxia",
-     "note": "Destroy 5 Egg of Onyxia in Wyrmbog (48.43, 75.91)",
-     "optional": false
-    },
-    {
-     "guide": "Dustwallow Marsh (49-49)",
-     "pack": "Zone guides",
-     "faction": "Horde",
-     "file": "Guides/Horde/49_49_Dustwallow_Marsh.lua",
-     "line": 21,
-     "action": "Turn in",
-     "title": "The Brood of Onyxia",
-     "note": "Draz'Zilb in Brackenwall Village (37.14, 33.06)",
-     "optional": false
-    }
-   ],
-   "unswitched": [
-    "Onyxia"
-   ],
-   "suggestions": [],
    "factions": [
     "Horde"
    ],
@@ -6601,7 +6052,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -6636,7 +6086,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -6647,34 +6096,6 @@
      ]
     }
    ],
-   "factions": [
-    "Horde"
-   ],
-   "packs": [
-    "Zone guides"
-   ]
-  },
-  {
-   "id": "q5901",
-   "qid": 5901,
-   "title": "A Plague Upon Thee",
-   "steps": [
-    {
-     "guide": "Eastern Plaguelands (56-57)",
-     "pack": "Zone guides",
-     "faction": "Horde",
-     "file": "Guides/Horde/56_57_Eastern_Plaguelands.lua",
-     "line": 64,
-     "action": "Complete",
-     "title": "A Plague Upon Thee (Part 1)",
-     "note": "Check each waypoint and click on Termite Mound to collect 100 Plagueland Termites in Stratholme (45.83, 34.01) (42.87, 34.26) (42.17, 38.29) (40.62, 31.39) (41.28, 25.40) (43.65, 24.14) (39.72, 23.07) (35.58, 23.72) (33.81, 25.78) (30.41, 21.57) (30.00, 22.95)",
-     "optional": false
-    }
-   ],
-   "unswitched": [
-    "Stratholme"
-   ],
-   "suggestions": [],
    "factions": [
     "Horde"
    ],
@@ -6699,7 +6120,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -6734,7 +6154,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -6769,7 +6188,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -6804,7 +6222,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -6817,45 +6234,6 @@
    ],
    "factions": [
     "Horde"
-   ],
-   "packs": [
-    "Zone guides"
-   ]
-  },
-  {
-   "id": "q41016",
-   "qid": 41016,
-   "title": "The Wildshaper",
-   "steps": [
-    {
-     "guide": "Hyjal (58-60)",
-     "pack": "Zone guides",
-     "faction": "Both",
-     "file": "Guides/Both/58_60_Hyjal.lua",
-     "line": 14,
-     "action": "Accept",
-     "title": "The Wildshaper",
-     "note": "Arch Druid Dreamwind at Nordanaar (84.8, 29.3). Kill Alzzin the Wildshaper in Dire Maul.",
-     "optional": false
-    },
-    {
-     "guide": "Hyjal (58-60)",
-     "pack": "Zone guides",
-     "faction": "Both",
-     "file": "Guides/Both/58_60_Hyjal.lua",
-     "line": 117,
-     "action": "Complete",
-     "title": "The Wildshaper",
-     "note": "Travel to Dire Maul and slay Alzzin the Wildshaper. Bring his head to Arch Druid Dreamwind.",
-     "optional": false
-    }
-   ],
-   "unswitched": [
-    "Dire Maul"
-   ],
-   "suggestions": [],
-   "factions": [
-    "Both"
    ],
    "packs": [
     "Zone guides"
@@ -6878,7 +6256,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -6913,7 +6290,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -6948,7 +6324,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -6983,7 +6358,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -7018,7 +6392,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -7053,7 +6426,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -7088,7 +6460,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -7123,7 +6494,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -7158,7 +6528,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -7201,7 +6570,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -7236,7 +6604,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -7271,7 +6638,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -7306,7 +6672,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -7341,7 +6706,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -7376,7 +6740,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -7387,34 +6750,6 @@
      ]
     }
    ],
-   "factions": [
-    "Both"
-   ],
-   "packs": [
-    "Zone guides"
-   ]
-  },
-  {
-   "id": "n-Alliance-54-60-TelAbim-169",
-   "qid": null,
-   "title": "Guide Complete",
-   "steps": [
-    {
-     "guide": "Tel'Abim (54-60)",
-     "pack": "Zone guides",
-     "faction": "Both",
-     "file": "Guides/Alliance/54_60_TelAbim.lua",
-     "line": 169,
-     "action": "Note",
-     "title": "Guide Complete",
-     "note": "You have completed the main quests in Tel'Abim. Return for repeatable banana transmutation and cooking quests. The epic gun questline continues through BRD, LBRS, and Molten Core!",
-     "optional": false
-    }
-   ],
-   "unswitched": [
-    "Molten Core"
-   ],
-   "suggestions": [],
    "factions": [
     "Both"
    ],
@@ -7439,7 +6774,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "dungeon",
@@ -7474,7 +6808,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "ah",
@@ -7509,7 +6842,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -7520,34 +6852,6 @@
      ]
     }
    ],
-   "factions": [
-    "Both"
-   ],
-   "packs": [
-    "Zone guides"
-   ]
-  },
-  {
-   "id": "n-Horde-54-60-TelAbim-169",
-   "qid": null,
-   "title": "Guide Complete",
-   "steps": [
-    {
-     "guide": "Tel'Abim (54-60)",
-     "pack": "Zone guides",
-     "faction": "Both",
-     "file": "Guides/Horde/54_60_TelAbim.lua",
-     "line": 169,
-     "action": "Note",
-     "title": "Guide Complete",
-     "note": "You have completed the main quests in Tel'Abim. Return for repeatable banana transmutation and cooking quests. The epic gun questline continues through BRD, LBRS, and Molten Core!",
-     "optional": false
-    }
-   ],
-   "unswitched": [
-    "Molten Core"
-   ],
-   "suggestions": [],
    "factions": [
     "Both"
    ],
@@ -7572,7 +6876,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -7607,7 +6910,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -7642,7 +6944,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -7677,7 +6978,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -7712,7 +7012,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -7747,7 +7046,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -7782,7 +7080,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -7817,7 +7114,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -7852,7 +7148,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -7887,7 +7182,6 @@
      "optional": false
     }
    ],
-   "unswitched": [],
    "suggestions": [
     {
      "kind": "group",
@@ -7898,34 +7192,6 @@
      ]
     }
    ],
-   "factions": [
-    "Both"
-   ],
-   "packs": [
-    "Zone guides"
-   ]
-  },
-  {
-   "id": "n-Both-58-60-Hyjal-116",
-   "qid": null,
-   "title": "Dungeon: Dire Maul",
-   "steps": [
-    {
-     "guide": "Hyjal (58-60)",
-     "pack": "Zone guides",
-     "faction": "Both",
-     "file": "Guides/Both/58_60_Hyjal.lua",
-     "line": 116,
-     "action": "Note",
-     "title": "Dungeon: Dire Maul",
-     "note": "The Wildshaper quest sends you to Dire Maul to slay Alzzin.",
-     "optional": false
-    }
-   ],
-   "unswitched": [
-    "Dire Maul"
-   ],
-   "suggestions": [],
    "factions": [
     "Both"
    ],

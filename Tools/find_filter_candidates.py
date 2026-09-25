@@ -71,9 +71,10 @@ DUNGEON_NAME = {"RFC": "Ragefire Chasm", "WC": "Wailing Caverns", "DM": "Deadmin
                 "GNOMER": "Gnomeregan", "RFK": "Razorfen Kraul", "SM": "Scarlet Monastery",
                 "RFD": "Razorfen Downs", "ULDA": "Uldaman", "ZF": "Zul'Farrak",
                 "MARA": "Maraudon", "ST": "Sunken Temple", "BRD": "Blackrock Depths"}
-# Dungeons a note can name that have no switch to put them behind.
-UNSWITCHED = ["Dire Maul", "Scholomance", "Stratholme", "Blackrock Spire", "Upper Blackrock",
-              "Lower Blackrock", "Zul'Gurub", "Molten Core", "Onyxia"]
+# Dungeons the options panel has no switch for (Dire Maul, Stratholme,
+# Scholomance, the raids) are not listed: there is no tag to give them, and
+# most notes naming them only mean a place nearby -- "the ogres south of Dire
+# Maul".
 
 GROUP_WORDS = re.compile(r"\b(group|elite|party|[2-5][ -]?man|dungeon group)\b|\[G\]", re.I)
 # "a group of", "grouped" as in spawns -- the word, not the play style.
@@ -160,10 +161,6 @@ def dungeons_named(text):
     return found
 
 
-def unswitched_named(text):
-    return [n for n in UNSWITCHED if re.search(re.escape(n), text, re.I)]
-
-
 def main():
     ev = rxp_evidence()
     quests = OrderedDict()   # qid -> item
@@ -207,28 +204,23 @@ def main():
                 for code in dungeons_named(words):
                     reasons.append(("dungeon", code, "medium",
                                     "the guide's own text names %s" % DUNGEON_NAME[code]))
-            unsw = unswitched_named(words)
-
-            if not reasons and not unsw:
+            if not reasons:
                 continue
 
             if qid:
                 item = quests.get(qid)
                 if not item:
                     item = quests[qid] = {"id": "q" + qid, "qid": int(qid), "title": re.sub(r"\s*\(Part \d+\)", "", title),
-                                          "steps": [], "reasons": [], "unswitched": []}
+                                          "steps": [], "reasons": []}
                 item["steps"].append(where)
                 for r in reasons:
                     if list(r) not in item["reasons"]:
                         item["reasons"].append(list(r))
-                for u in unsw:
-                    if u not in item["unswitched"]:
-                        item["unswitched"].append(u)
             else:
                 # Letters, digits, - and _ only: the id is a storage key.
                 nid = "n-" + re.sub(r"[^A-Za-z0-9]+", "-", path.replace("Guides/", "").replace(".lua", "")) + "-%d" % lineno
                 notes.append({"id": nid, "qid": None, "title": title, "steps": [where],
-                              "reasons": [list(r) for r in reasons], "unswitched": unsw})
+                              "reasons": [list(r) for r in reasons]})
 
     items = list(quests.values()) + notes
     # One suggestion per kind per item: the strongest.
@@ -247,7 +239,7 @@ def main():
         it["factions"] = sorted({s["faction"] for s in it["steps"]})
         it["packs"] = sorted({s["pack"] for s in it["steps"]})
 
-    items = [it for it in items if it["suggestions"] or it["unswitched"]]
+    items = [it for it in items if it["suggestions"]]
 
     summary = defaultdict(lambda: defaultdict(int))
     for it in items:
@@ -256,8 +248,7 @@ def main():
     if "--summary" in sys.argv:
         for kind in ("group", "dungeon", "ah"):
             print(kind, dict(summary[kind]))
-        print("quests", len(quests), "notes", len(notes), "items", len(items),
-              "unswitched-only", sum(1 for it in items if not it["suggestions"]))
+        print("quests", len(quests), "notes", len(notes), "items", len(items))
         return
 
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
