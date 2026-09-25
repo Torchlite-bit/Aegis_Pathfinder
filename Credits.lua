@@ -20,7 +20,7 @@ local CREDITS = {
 		"brues-code (Brues) -- VanillaGuide-Plus, ClassicAPI edition",
 		"DonutsDelivery -- VanillaGuide-Plus",
 		"brues-code -- ClassicAPI, the client DLL this addon is built on",
-		"Torchlite -- AEGIS: Pathfinder",
+		"Torchlite -- Aegis: Pathfinder",
 	} },
 	{ "Guide content", {
 		"Joana (Mancow) -- the optimized leveling routes",
@@ -108,7 +108,7 @@ function AegisPathfinder:CreateCreditsFrame()
 		return fs
 	end
 
-	text("AEGIS: Pathfinder is built on a decade of other people's work. "
+	text("Aegis: Pathfinder is built on a decade of other people's work. "
 		.. "Almost everything that makes it function was written by someone else first.", 14)
 
 	f.sections = {}

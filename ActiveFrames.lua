@@ -64,7 +64,7 @@ local function MarkCoords(index)
 	return col * 0.25, (col + 1) * 0.25, row * 0.25, (row + 1) * 0.25
 end
 
-BINDING_HEADER_AEGISPATHFINDER = "AEGIS: Pathfinder"
+BINDING_HEADER_AEGISPATHFINDER = "Aegis: Pathfinder"
 BINDING_NAME_AEGISPATHFINDER_ACTIVEITEM = "Use the first active item"
 BINDING_NAME_AEGISPATHFINDER_ACTIVETARGET = "Target and mark the next active target"
 

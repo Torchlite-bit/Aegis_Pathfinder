@@ -1,4 +1,4 @@
-# Contributing to AEGIS: Pathfinder
+# Contributing to Aegis: Pathfinder
 
 ## Getting credited
 

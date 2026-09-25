@@ -404,7 +404,7 @@ function AegisPathfinder:CreateConfigPanel()
 
 	-- Last, where an about box goes: who this addon is built on.
 	table.insert(frame.sections, section("About"))
-	note("AEGIS: Pathfinder is built on other people's work -- TourGuide, "
+	note("Aegis: Pathfinder is built on other people's work -- TourGuide, "
 		.. "VanillaGuide, ClassicAPI, Joana's routes and more.")
 	y = y + 6
 	local credits = Theme:Pill(body, "Credits", 90, 26)

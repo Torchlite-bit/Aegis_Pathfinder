@@ -4,7 +4,7 @@
 	It used to be FuBarPlugin's: Blizzard's quest-log book in the stock round
 	minimap border, with a right-click that opened a Dewdrop menu of every
 	setting -- the same settings the options panel now shows properly. This is
-	the addon's own, drawn like the rest of it: the AEGIS shield in accent on a
+	the addon's own, drawn like the rest of it: the Aegis shield in accent on a
 	dark disc with a hairline ring.
 
 	Click shows or hides the guide, right-click opens the options panel, and
@@ -89,7 +89,7 @@ button:SetScript("OnMouseUp", function() icon:SetPoint("CENTER", button, "CENTER
 button:SetScript("OnEnter", function()
 	Theme:Tint(ring, "accent")
 	Theme:Tint(icon, "accentGlow")
-	Theme:ShowTip(this, "LEFT", "AEGIS: Pathfinder", {
+	Theme:ShowTip(this, "LEFT", "Aegis: Pathfinder", {
 		"Click to show or hide the guide",
 		"Right-click for settings",
 		"Drag to move this button",

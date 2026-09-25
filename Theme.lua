@@ -1,5 +1,5 @@
 --[[
-	Theme.lua -- the shared visual language for AEGIS: Pathfinder.
+	Theme.lua -- the shared visual language for Aegis: Pathfinder.
 
 	Every colour, font and texture the UI uses is declared here and nowhere
 	else, so a palette change is one edit in one file. Values come straight

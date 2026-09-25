@@ -1,8 +1,8 @@
 ## Interface: 11200
 
-## Title: AEGIS: Pathfinder
-## Notes: Classic+ leveling guide for the Turtle WoW-lineage 1.12 client family.|nPart of the AEGIS addon suite.
-## Author: AEGIS: Pathfinder Contributors (see CONTRIBUTORS.md)
+## Title: Aegis: Pathfinder
+## Notes: Classic+ leveling guide for the Turtle WoW-lineage 1.12 client family.|nPart of the Aegis addon suite.
+## Author: Aegis: Pathfinder Contributors (see CONTRIBUTORS.md)
 ## Version: @project-version@
 ## X-Category: Quest
 

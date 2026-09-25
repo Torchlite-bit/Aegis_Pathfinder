@@ -1,6 +1,6 @@
 # Contributors
 
-AEGIS: Pathfinder stands on a decade of other people's work. This file records
+Aegis: Pathfinder stands on a decade of other people's work. This file records
 everyone whose work is in it, and is the list the in-game credits window (the
 **Credits** button at the bottom of the options panel) mirrors.
 
@@ -18,7 +18,7 @@ The code descends, oldest first, through:
 | [VanillaGuide-Plus](https://github.com/brues-code/VanillaGuide-Plus) | **brues-code** (Brues) | The ClassicAPI edition: id-keyed quest tracking, gossip automation, the branch system, RXP route packs, dungeon selection, play-style filters |
 | [ClassicAPI](https://github.com/brues-code/ClassicAPI) | **brues-code** | The client DLL that backports modern WoW API to 1.12. Without it none of the automatic step advancement in this addon would be possible |
 | Aegis_Pathfinder_Plus | **Torchlite** | The fork this project is built from |
-| AEGIS: Pathfinder | **Torchlite** | Rebrand, reskin, profession guides |
+| Aegis: Pathfinder | **Torchlite** | Rebrand, reskin, profession guides |
 
 Commit history from the upstream fork is preserved in this repository rather
 than flattened, so `git log` and `git blame` still attribute each line to
@@ -55,7 +55,7 @@ whoever wrote it. As of the port, that history carries commits from
 
 ## Not affiliated
 
-AEGIS: Pathfinder is a fan project. It is not affiliated with, endorsed by, or
+Aegis: Pathfinder is a fan project. It is not affiliated with, endorsed by, or
 connected to Blizzard Entertainment, Zygor Guides LLC, RestedXP, or any of the
 server teams named above. World of Warcraft is a trademark of Blizzard
 Entertainment.

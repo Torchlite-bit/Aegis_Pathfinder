@@ -1,4 +1,4 @@
-# AEGIS: Pathfinder - Guide Authoring Documentation
+# Aegis: Pathfinder - Guide Authoring Documentation
 
 This document explains how to create leveling guides for TurtleGuide addon.
 

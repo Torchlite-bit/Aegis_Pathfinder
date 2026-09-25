@@ -1,7 +1,7 @@
-# AEGIS: Pathfinder
+# Aegis: Pathfinder
 
 A Classic+ leveling guide for the Turtle WoW-lineage 1.12 client family —
-OctoWoW, Capybara Paradise and RavenCraft. Part of the AEGIS addon suite.
+OctoWoW, Capybara Paradise and RavenCraft. Part of the Aegis addon suite.
 
 It keeps your current objective on screen, points a waypoint at it, and
 advances itself as you accept, complete and turn in quests — the in-game
@@ -53,10 +53,10 @@ too — the old `TurtleGuide` global is still an alias.
 | `/apg serverstatus` | Guide data provenance per server |
 
 `/pathfinder` and `/vg` do the same thing. There is deliberately no `/aegis` —
-that belongs to another addon in the AEGIS suite.
+that belongs to another addon in the Aegis suite.
 
 The objectives panel is the addon's main window, so a bare `/apg` opens it, and
-it opens with the client. The AEGIS shield on the edge of the minimap does the
+it opens with the client. The Aegis shield on the edge of the minimap does the
 same on a click; right-click it for the options panel, and drag it to move it
 round the minimap. The options panel can hide it, as can `/apg minimapbutton`.
 FuBar is no longer supported: the button is the addon's own now.
@@ -129,7 +129,7 @@ collected, the trainer a profession step sends you to. Click one to target it
 and mark it for what the quest wants with them (see **Quest icons**).
 `/apg target` does the same for the next one each time you press it, so a macro
 with just that line works like RestedXP's; both also have key bindings under
-*AEGIS: Pathfinder* in the key bindings menu. Targets come from pfQuest's
+*Aegis: Pathfinder* in the key bindings menu. Targets come from pfQuest's
 database, so quest steps need pfQuest; profession steps name their trainers
 themselves. Either window can be dragged anywhere, or switched off in the
 options panel.
@@ -265,7 +265,7 @@ None of it proves the UI looks right. That needs a client.
 
 ## Credits
 
-AEGIS: Pathfinder is built on a decade of other people's work. Almost
+Aegis: Pathfinder is built on a decade of other people's work. Almost
 everything that makes it function was written by someone else first.
 
 **The addon itself** descends, oldest first, through:

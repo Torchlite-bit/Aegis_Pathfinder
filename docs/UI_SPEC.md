@@ -340,7 +340,7 @@ scan walks guides that run to hundreds of steps.
 Not in the concept, which has no minimap. It used to be FuBarPlugin's:
 Blizzard's quest-log book in the stock round minimap border, and a right-click
 that opened a Dewdrop menu of every setting in Blizzard tooltip chrome. Now it
-is drawn like the rest of the addon -- `logo.tga`, the AEGIS shield, in accent
+is drawn like the rest of the addon -- `logo.tga`, the Aegis shield, in accent
 on a `panel-2` disc (`circle-fill.tga`) with a `subtle` hairline ring
 (`circle-border.tga`) that takes the accent on hover.
 

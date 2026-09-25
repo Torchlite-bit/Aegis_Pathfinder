@@ -526,7 +526,7 @@ local options = {
     },
 }
 
-AegisPathfinder.title = "AEGIS: Pathfinder"
+AegisPathfinder.title = "Aegis: Pathfinder"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -558,7 +558,7 @@ function AegisPathfinder:OnInitialize()
     if self.db.char.UseAH == nil then
         self.db.char.UseAH = defaults.UseAH
     end
-    -- /aegis belongs to another addon in the AEGIS suite; registering it
+    -- /aegis belongs to another addon in the Aegis suite; registering it
     -- here would collide with it.
     self:RegisterChatCommand({ "/apg", "/pathfinder", "/vg" }, options, SLASH_HANDLER)
 
@@ -600,7 +600,7 @@ function AegisPathfinder:OnEnable()
     -- untagged dev builds report 99999999). Quest tracking is built on its
     -- C_QuestLog functions and QUEST_ACCEPTED / QUEST_TURNED_IN events.
     if not CLASSIC_API_VERSION or CLASSIC_API_VERSION < 10509 then
-        self:Print("|cffff3333AEGIS: Pathfinder requires ClassicAPI v1.5.9 or newer (https://github.com/brues-code/ClassicAPI). The addon will not load.|r")
+        self:Print("|cffff3333Aegis: Pathfinder requires ClassicAPI v1.5.9 or newer (https://github.com/brues-code/ClassicAPI). The addon will not load.|r")
         return
     end
 
@@ -760,7 +760,7 @@ function AegisPathfinder:PLAYER_ENTERING_WORLD()
     local function pump()
         local ok, err = coroutine.resume(co)
         if not ok then
-            self:Print("|cffff3333AEGIS: Pathfinder load error: " .. tostring(err) .. "|r")
+            self:Print("|cffff3333Aegis: Pathfinder load error: " .. tostring(err) .. "|r")
             return
         end
         if coroutine.status(co) == "dead" then
