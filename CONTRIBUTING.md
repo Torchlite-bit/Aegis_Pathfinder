@@ -77,6 +77,14 @@ document in `Tools/data/`, then regenerate:
 python3 Tools/convert_professions.py
 ```
 
+**Filter tags.** The Auction House, Group and Dungeon switches act on `|AH|`,
+`|P|GROUP|` and `|D|<code>|` tags. The RestedXP and RXP Hardcore guides carry
+them; the Optimized and zone guides mostly do not, so on those the switches
+change little. `Tools/find_filter_candidates.py` lists the steps there that
+probably should be tagged -- by quest, from the RestedXP guides' own tags and
+from the guides' notes -- into `docs/review/filter_candidates.json`, for a
+person to review before any tag is added.
+
 ## Guide data and servers
 
 Guide content in this repository was authored against **OctoWoW**. The
