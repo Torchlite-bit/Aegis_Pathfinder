@@ -32,6 +32,7 @@ local CREDITS = {
 		"The Ace Development Team -- Ace2",
 		"shagu -- pfQuest",
 		"Cladhaire, laytya and the TWOW porters -- TomTom-TWOW",
+		"Kitymeowmeow -- CraftRoute, the recipe data behind crafting routes",
 	} },
 	{ "Fonts", {
 		"Rajdhani -- (c) 2014 Indian Type Foundry, SIL OFL 1.1",

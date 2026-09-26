@@ -45,6 +45,7 @@ whoever wrote it. As of the port, that history carries commits from
 | [TomTom-TWOW](https://github.com/laytya/TomTom-TWOW) | **Cladhaire**; ported to 1.12 by Aero, Schaka, Logonz, Dyaxler, Alphaest, cralor and **laytya**. Earlier builds of this addon targeted the [sweetgiorni](https://github.com/sweetgiorni/TomTom) port |
 | MetaMap, MetaMapBWP, Cartographer | Their respective authors — supported waypoint providers |
 | [ClassicAPI](https://github.com/brues-code/ClassicAPI) | **brues-code** — required at runtime |
+| [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) | **Kitymeowmeow** — the recipe data behind the priced crafting routes (skill thresholds, reagents, learn costs, recipe sources, vendor buy and sell prices), converted by `Tools/import_recipes.py`. CraftRoute is GPLv3, which is why this addon is too; the route planner itself is written separately |
 
 ## Fonts
 
