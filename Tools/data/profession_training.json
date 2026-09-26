@@ -11,10 +11,64 @@
   "_noLevelRequirement": "The FAQ: gathering professions, Cooking and First Aid have no level requirements. Survival and Jewelcrafting are Turtle-lineage additions the FAQ predates; Jewelcrafting trains like the other primary crafts, and Survival is treated as having no requirement until a source says otherwise.",
   "noLevelRequirement": ["Mining", "Herbalism", "Skinning", "Cooking", "First Aid", "Fishing", "Survival"],
 
-  "_supplementTrainers": "Ranks the reference document lists no trainer for, filled from the FAQ.",
+  "_supplementTrainers": "Ranks the reference document lists no trainer for, filled from the FAQ. Engineering is not in the reference document at all: its trainers are every NPC whose trainer list in the CMaNGOS classic database (classic-db, npc_trainer) teaches the rank's spell -- Apprentice 4039, Journeyman 4040, Expert 4041, Artisan 12657 -- in the zone pfQuest-turtle's unit database puts them in. Every name is in both; none is from memory. Trainers the Turtle-lineage servers added in their own zones are in neither, so are not listed.",
   "supplementTrainers": {
     "Blacksmithing": {
       "Expert": { "Alliance": [ { "name": "Bengus Deepforge", "zone": "Ironforge" } ] }
+    },
+    "Engineering": {
+      "Apprentice": {
+        "Alliance": [
+          { "name": "Jemma Quikswitch", "zone": "Ironforge" },
+          { "name": "Trixie Quikswitch", "zone": "Dun Morogh" },
+          { "name": "Springspindle Fizzlegear", "zone": "Dun Morogh" },
+          { "name": "Bronk Guzzlegear", "zone": "Dun Morogh" },
+          { "name": "Lilliam Sparkspindle", "zone": "Stormwind City" },
+          { "name": "Sprite Jumpsprocket", "zone": "Stormwind City" },
+          { "name": "Deek Fizzlebizz", "zone": "Loch Modan" },
+          { "name": "Jenna Lemkenilli", "zone": "Darkshore" },
+          { "name": "Tinkerwiz", "zone": "The Barrens" },
+          { "name": "Twizwick Sprocketgrind", "zone": "The Barrens" }
+        ],
+        "Horde": [
+          { "name": "Roxxik", "zone": "Orgrimmar" },
+          { "name": "Nogg", "zone": "Orgrimmar" },
+          { "name": "Thund", "zone": "Orgrimmar" },
+          { "name": "Mukdrak", "zone": "Durotar" },
+          { "name": "Franklin Lloyd", "zone": "Undercity" },
+          { "name": "Graham Van Talen", "zone": "Undercity" },
+          { "name": "Tinkerwiz", "zone": "The Barrens" },
+          { "name": "Twizwick Sprocketgrind", "zone": "The Barrens" }
+        ]
+      },
+      "Journeyman": {
+        "Alliance": [
+          { "name": "Trixie Quikswitch", "zone": "Dun Morogh" },
+          { "name": "Springspindle Fizzlegear", "zone": "Dun Morogh" },
+          { "name": "Lilliam Sparkspindle", "zone": "Stormwind City" },
+          { "name": "Buzzek Bracketswing", "zone": "Tanaris" }
+        ],
+        "Horde": [
+          { "name": "Roxxik", "zone": "Orgrimmar" },
+          { "name": "Nogg", "zone": "Orgrimmar" },
+          { "name": "Franklin Lloyd", "zone": "Undercity" },
+          { "name": "Buzzek Bracketswing", "zone": "Tanaris" }
+        ]
+      },
+      "Expert": {
+        "Alliance": [
+          { "name": "Springspindle Fizzlegear", "zone": "Dun Morogh" },
+          { "name": "Buzzek Bracketswing", "zone": "Tanaris" }
+        ],
+        "Horde": [
+          { "name": "Roxxik", "zone": "Orgrimmar" },
+          { "name": "Buzzek Bracketswing", "zone": "Tanaris" }
+        ]
+      },
+      "Artisan": {
+        "Alliance": [ { "name": "Buzzek Bracketswing", "zone": "Tanaris" } ],
+        "Horde": [ { "name": "Buzzek Bracketswing", "zone": "Tanaris" } ]
+      }
     }
   },
 

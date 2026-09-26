@@ -20,6 +20,11 @@ holding pfQuest's db/enUS/items.lua (and pfQuest-turtle's items-turtle.lua) to
 refresh them. The names found are cached in Tools/data/recipe_item_names.json,
 so later runs need no pfQuest at all.
 
+It also exports CraftRoute's fixed leveling routes -- which recipe, over
+which skill range, how many crafts -- to Tools/data/craftroute_routes.json.
+Tools/convert_professions.py authors a profession guide from one where the
+reference document has none (Engineering).
+
 With --check it converts and validates but writes nothing.
 """
 
@@ -32,6 +37,9 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUTDIR = os.path.join(ROOT, "Crafting")
 NAME_CACHE = os.path.join(ROOT, "Tools", "data", "recipe_item_names.json")
+# CraftRoute's fixed leveling routes, for professions the reference document
+# behind Guides/Professions/ has no route for (Tools/convert_professions.py).
+ROUTES = os.path.join(ROOT, "Tools", "data", "craftroute_routes.json")
 
 # CraftRoute's file key -> the profession's name in game.
 PROFESSIONS = [
@@ -352,6 +360,39 @@ def write_xml(files, check):
     return path
 
 
+def read_routes(src_dir, books):
+    """CraftRoute's fixed routes, as { "Engineering": [ { recipe, from, to,
+    crafts } ] }. Every recipe named must be in that profession's data."""
+    with open(os.path.join(src_dir, "data_guide_wowprofessions.lua"), encoding="utf-8") as f:
+        guides = read_table_after(f.read(), 'CraftRoute_GuideSteps["wowprofessions"] =')
+    titles = dict(PROFESSIONS)
+    out = {}
+    for key, steps in sorted(guides.items()):
+        names = {r["name"] for r in books.get(key, [])}
+        route = []
+        for st in steps:
+            if st["name"] not in names:
+                raise ValueError("%s route: %s is not in its recipe data" % (key, st["name"]))
+            route.append({"recipe": st["name"], "from": int(st["fromSkill"]),
+                          "to": int(st["toSkill"]), "crafts": int(st["crafts"])})
+        out[titles[key]] = route
+    return out
+
+
+def write_routes(routes, check):
+    if check:
+        return
+    with open(ROUTES, "w", encoding="utf-8") as f:
+        json.dump({
+            "_about": "CraftRoute's fixed leveling routes (data_guide_wowprofessions.lua, GPLv3, by "
+                      "Kitymeowmeow; sourced from wow-professions.com and cross-checked against its "
+                      "recipe data). Written by Tools/import_recipes.py; read by "
+                      "Tools/convert_professions.py for professions the reference document lacks.",
+            "routes": routes,
+        }, f, indent=1, ensure_ascii=False)
+        f.write("\n")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("craftroute", help="path to a CraftRoute checkout")
@@ -423,6 +464,9 @@ def main():
             "s" if len(missing) > 1 else "", ", ".join(str(i) for i in sorted(missing))))
 
     written.append(write_prices(buy, sell, args.check))
+    routes = read_routes(src_dir, books)
+    write_routes(routes, args.check)
+    print("fixed routes: " + ", ".join("%s (%d steps)" % (k, len(v)) for k, v in sorted(routes.items())))
     write_xml(written, args.check)
     unspelled = [n for n in list(buy) + list(sell) if n == n.lower() and n.upper() != n]
     print("%d recipes, %d merchant buy prices, %d sell prices (%d left in lower case)" % (

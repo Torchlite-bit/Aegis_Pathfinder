@@ -33,6 +33,7 @@ local CREDITS = {
 		"shagu -- pfQuest",
 		"Cladhaire, laytya and the TWOW porters -- TomTom-TWOW",
 		"Kitymeowmeow -- CraftRoute, the recipe data behind crafting routes",
+		"The CMaNGOS team -- classic-db, Engineering's trainers",
 	} },
 	{ "Fonts", {
 		"Rajdhani -- (c) 2014 Indian Type Foundry, SIL OFL 1.1",

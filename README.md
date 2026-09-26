@@ -238,8 +238,8 @@ pins either way.
 
 | Authored | |
 |---|---|
-| Alchemy, Blacksmithing, Cooking, Enchanting, First Aid, Jewelcrafting, Leatherworking, Mining, Survival, Tailoring | Full 1–300 routes |
-| Engineering, Herbalism, Skinning, Fishing | Placeholders — see below |
+| Alchemy, Blacksmithing, Cooking, Enchanting, Engineering, First Aid, Jewelcrafting, Leatherworking, Mining, Survival, Tailoring | Full 1–300 routes |
+| Herbalism, Skinning, Fishing | Placeholders — see below |
 
 Each authored guide is a fixed route, chosen once. For one planned from today's
 prices instead, see **Cheapest crafting route** above — it keeps the authored
@@ -258,17 +258,26 @@ train Expert or Artisan: the guide sends you to buy the Expert tome, and at
 skill 225 — the point the route cannot pass without it — walks you through
 the Artisan quest, level 40 and what to bring included.
 
+Engineering is not in the reference the other guides were converted from. Its
+route is CraftRoute's (a craft-by-craft 1–300 route checked against its recipe
+data), with reagents and recipe sources from the same recipe data the cheapest
+route uses. Its trainers come from the CMaNGOS 1.12 database: every NPC whose
+trainer list teaches that rank, in the zone pfQuest puts them in. Artisan is
+Buzzek Bracketswing in Gadgetzan (Tanaris) for both factions. Trainers the
+Turtle-lineage servers added in their own new zones are not in those databases,
+so are not listed.
+
 Steps complete themselves on the numbers the game reports: a craft or
 gathering step when your skill reaches its target, a rank when your skill cap
 does. Open a guide part-way through and it goes straight to where you are.
 
-The four placeholders are listed but unauthored, and carry a grey `TPL` badge
+The three placeholders are listed but unauthored, and carry a grey `TPL` badge
 in the guide list: the reference these guides were converted from does not
 cover them. They appear in the list so the
 Professions tab matches the design, and are labelled so an unauthored guide is
-obviously unauthored rather than silently missing. Three of them — Herbalism,
-Skinning and Fishing — are gathering professions and need a different kind of
-guide anyway: where to gather at each skill band, not what to craft.
+obviously unauthored rather than silently missing. Herbalism, Skinning and
+Fishing are gathering professions and need a different kind of guide anyway:
+where to gather at each skill band, not what to craft.
 
 Where the reference had no recipe for a skill range, the guide says so rather
 than inventing one. Mining's mid-range gaps are real, and it tells you to go
@@ -353,7 +362,8 @@ so `git log` and `git blame` still attribute each line to whoever wrote it.
 | **shagu** | [pfQuest](https://github.com/shagu/pfQuest), pfQuest-turtle, pfQuest-octo |
 | **Cladhaire**; the TWOW port by **laytya** and others | [TomTom-TWOW](https://github.com/laytya/TomTom-TWOW) |
 | The authors of MetaMap, MetaMapBWP and Cartographer | Supported waypoint providers |
-| **Kitymeowmeow** | [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) — the recipe data behind the priced crafting routes: skill thresholds, reagents, learn costs, recipe sources, vendor prices |
+| **Kitymeowmeow** | [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) — the recipe data behind the priced crafting routes: skill thresholds, reagents, learn costs, recipe sources, vendor prices; and the Engineering route |
+| **The CMaNGOS team** | [classic-db](https://github.com/cmangos/classic-db) — which trainers teach each Engineering rank |
 | **Indian Type Foundry** | Rajdhani (SIL OFL 1.1) |
 | **The Inter Project Authors** | Inter (SIL OFL 1.1) |
 

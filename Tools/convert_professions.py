@@ -6,6 +6,12 @@
 Reads Tools/data/Professions_Reference.docx and writes Guides/Professions/.
 With --check it parses and validates but writes nothing.
 
+Engineering is not in the document. Its guide is authored from CraftRoute's
+fixed Engineering route (Tools/data/craftroute_routes.json, exported by
+Tools/import_recipes.py), with each recipe's reagents and source from the
+recipe data in Crafting/ and its trainers from profession_training.json --
+the same step shapes as every other guide here.
+
 Output is QuestShell+ (structured Lua tables), not the pipe-delimited DSL:
 these guides are generated, and a generated corpus wants a format that diffs
 and validates cleanly. QuestShellPlusParser turns the tables into the tag
@@ -29,12 +35,16 @@ DOCX = os.path.join(ROOT, "Tools", "data", "Professions_Reference.docx")
 # FAQ in Tools/data/Profession_FAQ.md.
 TRAINING = os.path.join(ROOT, "Tools", "data", "profession_training.json")
 OUTDIR = os.path.join(ROOT, "Guides", "Professions")
+# CraftRoute's fixed routes and the recipe data, for professions the document
+# has no route for.
+ROUTES = os.path.join(ROOT, "Tools", "data", "craftroute_routes.json")
+RECIPES = os.path.join(ROOT, "Crafting")
+FROM_CRAFTROUTE = ["Engineering"]
 
 # Professions the concept's Professions tab lists but the document has no route
 # for. They ship as visibly-unauthored templates rather than being dropped, so
 # the tab matches the concept and nobody mistakes an empty guide for a real one.
 UNSOURCED = [
-    ("Engineering", "crafting"),
     ("Herbalism", "gathering"),
     ("Skinning", "gathering"),
     ("Fishing", "gathering"),
@@ -483,7 +493,7 @@ def emit_steps(p, training=None):
     sec = training["secondary"].get(name)
     out = []
 
-    intro = ("A low-cost 1-300 route. Craft counts are estimates"
+    intro = p.get("intro") or ("A low-cost 1-300 route. Craft counts are estimates"
              + (" (about %d crafts in total)." % p["crafts"] if p["crafts"] else "."))
     out.append({"type": "NOTE", "title": "%s (1-300)" % name, "note": intro})
 
@@ -570,9 +580,23 @@ HEADER = """-- %(name)s (1-300)
 """
 
 
+ROUTED_HEADER = """-- %(name)s (1-300)
+--
+-- GENERATED FILE -- do not edit by hand.
+-- Source:    CraftRoute's fixed %(name)s route (GPLv3, Kitymeowmeow), via
+--            Tools/data/craftroute_routes.json; reagents and recipe sources
+--            from Crafting/%(name)s.lua; trainers from
+--            Tools/data/profession_training.json
+-- Generator: Tools/convert_professions.py
+--
+-- Regenerate with:  python3 Tools/convert_professions.py
+"""
+
+
 def emit_guide(p):
     steps = emit_steps(p)
-    lua = [HEADER % {"name": p["name"]}, ""]
+    header = ROUTED_HEADER if p.get("routed") else HEADER
+    lua = [header % {"name": p["name"]}, ""]
     lua.append('AegisPathfinder:RegisterQuestShellPlusGuide("%s (1-300)", {' % p["name"])
     lua.append('\tfaction = "Both",')
     lua.append('\tcategory = "Profession",')
@@ -606,6 +630,111 @@ SHAPE = {
                   "It needs a different step shape from the generated guides here: "
                   "where to gather at each skill band, not what to craft."),
 }
+
+
+# --------------------------------------------------------------------------
+# Professions authored from CraftRoute's routes
+# --------------------------------------------------------------------------
+
+def read_recipes(name):
+    """Crafting/<name>.lua, as { recipe: { reagents, source, orange, grey } }.
+    The line format is documented at the top of that file."""
+    out = {}
+    with open(os.path.join(RECIPES, name + ".lua"), encoding="utf-8") as fh:
+        body = fh.read()
+    for lit in re.findall(r'^\t"((?:\\.|[^"\\])*)",$', body, re.M):
+        line = re.sub(r"\\(.)", r"\1", lit)
+        m = re.match(r"^(.*?) = (.*?) @ (\d+)-(\d+)-(\d+)-(\d+) \| (.*)$", line)
+        if not m:
+            continue
+        reagents = []
+        for part in m.group(2).split(" + "):
+            q = re.match(r"^(\d+) (.+)$", part)
+            reagents.append({"item": q.group(2), "qty": int(q.group(1))} if q else {"item": part, "qty": 1})
+        learn = m.group(7).split(" | ")[0]
+        book = re.match(r"^book (.+?) (?:~?\d+|\?)$", learn)
+        if learn.startswith("trainer"):
+            source = "Trainer"
+        elif book:
+            source = book.group(1)
+        elif learn == "quest":
+            source = "Quest reward"
+        else:
+            source = None
+        out[m.group(1)] = {"reagents": reagents, "source": source,
+                           "orange": int(m.group(3)), "grey": int(m.group(6))}
+    return out
+
+
+def routed_profession(name, training):
+    """A profession parsed the way the document's are, from CraftRoute's
+    route. Each rank goes where it can first be trained -- the skill it
+    needs -- splitting a step that runs across that point."""
+    import json
+    with open(ROUTES, encoding="utf-8") as fh:
+        route = json.load(fh)["routes"][name]
+    recipes = read_recipes(name)
+
+    crafts = []
+    for st in route:
+        r = recipes[st["recipe"]]
+        crafts.append({"kind": "craft", "from": st["from"], "to": st["to"],
+                       "count": st["crafts"], "item": st["recipe"],
+                       "reagents": r["reagents"], "alternatives": [], "note": None,
+                       "source": r["source"], "method": None})
+
+    steps = [{"kind": "train", "at": "1", "label": "Learn %s (Apprentice)" % name}]
+    gates = []
+    for rank in RANKS[1:]:
+        info = training["ranks"][rank]
+        gates.append((info["skill"], "Train %s %s (Cap %d)" % (rank, name, info["cap"])))
+    queue = list(crafts)
+    while queue:
+        s = queue.pop(0)
+        if gates and s["from"] < gates[0][0] < s["to"]:
+            first, second = split_at(s, gates[0][0])
+            steps.append(first)
+            queue.insert(0, second)
+            continue
+        while gates and s["from"] >= gates[0][0]:
+            steps.append({"kind": "train", "at": str(gates[0][0]), "label": gates[0][1]})
+            gates.pop(0)
+        steps.append(s)
+
+    total = sum(c["count"] for c in crafts)
+    return {
+        "name": name, "crafts": total, "shopping": [], "shoppingNote": None,
+        "trainers": {"Alliance": [], "Horde": []}, "steps": steps, "routed": True,
+        "intro": ("A 1-300 route from CraftRoute's %s data. Craft counts are estimates "
+                  "(about %d crafts in total). For one planned from today's prices, open "
+                  "Cheapest route on the shopping list." % (name, total)),
+    }
+
+
+def validate_routed(p, training):
+    """What the document's validation checks, for a routed profession: the
+    ranges tile 1-300, each recipe is craftable across its range, and each
+    rank comes after the skill it needs and before the old cap stops you."""
+    name, problems, cursor, skill = p["name"], [], 1, 1
+    recipes = read_recipes(name)
+    caps = {rank: training["ranks"][rank] for rank in RANKS}
+    for s in p["steps"]:
+        if s["kind"] == "train":
+            rank = rank_of(s["label"])
+            info = caps[rank]
+            if rank != "Apprentice" and (skill < info["skill"] or skill > info["cap"] - 75):
+                problems.append("%s: %s at skill %d" % (name, s["label"], skill))
+            continue
+        r = recipes[s["item"]]
+        if s["from"] != cursor:
+            problems.append("%s: gap/overlap at %d-%d" % (name, s["from"], s["to"]))
+        if s["from"] < r["orange"] or s["to"] > r["grey"]:
+            problems.append("%s: %s used %d-%d but is orange at %d and grey at %d"
+                            % (name, s["item"], s["from"], s["to"], r["orange"], r["grey"]))
+        cursor = skill = s["to"]
+    if cursor != MAX_SKILL:
+        problems.append("%s: route ends at %d, not %d" % (name, cursor, MAX_SKILL))
+    return problems
 
 
 def emit_template(name, kind):
@@ -653,6 +782,13 @@ def main():
                  p["crafts"] if p["crafts"] else "?"))
 
     problems = validate(professions)
+    training = load_training()
+    routed = [routed_profession(name, training) for name in FROM_CRAFTROUTE]
+    for p in routed:
+        ranges = [s for s in p["steps"] if s["kind"] == "craft"]
+        print("  %-16s %2d ranges  from CraftRoute's route                   ~%d crafts"
+              % (p["name"], len(ranges), p["crafts"]))
+        problems += validate_routed(p, training)
     print("")
     if problems:
         print("%d consistency issue(s) in the source document:" % len(problems))
@@ -663,9 +799,8 @@ def main():
         print("Source document is internally consistent.")
 
     # Every rank a player trains at a trainer has somewhere to go.
-    training = load_training()
     gaps = []
-    for p in professions:
+    for p in professions + routed:
         sec = training["secondary"].get(p["name"])
         for s in p["steps"]:
             if s["kind"] != "train":
@@ -686,7 +821,7 @@ def main():
         # generator writes, or a hand edit -- or a forgotten regeneration --
         # ships unnoticed.
         stale = []
-        for p in professions:
+        for p in professions + routed:
             fn = re.sub(r"[^A-Za-z0-9]+", "_", p["name"]) + ".lua"
             path = os.path.join(OUTDIR, fn)
             on_disk = open(path, encoding="utf-8").read() if os.path.exists(path) else None
@@ -702,7 +837,7 @@ def main():
 
     os.makedirs(OUTDIR, exist_ok=True)
     written = []
-    for p in professions:
+    for p in professions + routed:
         fn = re.sub(r"[^A-Za-z0-9]+", "_", p["name"]) + ".lua"
         with open(os.path.join(OUTDIR, fn), "w", encoding="utf-8") as fh:
             fh.write(emit_guide(p))
@@ -722,7 +857,8 @@ def main():
 
     print("\nWrote %d guides (+ Guides.xml) to %s"
           % (len(written), os.path.relpath(OUTDIR, ROOT)))
-    print("  authored: %d    templates: %d" % (len(professions), len(UNSOURCED)))
+    print("  authored: %d (%d from CraftRoute's routes)    templates: %d"
+          % (len(professions) + len(routed), len(routed), len(UNSOURCED)))
     return 0
 
 

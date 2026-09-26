@@ -82,7 +82,10 @@ diffs and validates far better that way.
 
 **Profession guides in `Guides/Professions/` are generated.** Editing them by
 hand will be overwritten. Change `Tools/convert_professions.py` or the source
-document in `Tools/data/`, then regenerate:
+document in `Tools/data/`, then regenerate. Engineering, which the document
+does not cover, comes from CraftRoute's fixed route
+(`Tools/data/craftroute_routes.json`, exported by `Tools/import_recipes.py`)
+with its trainers in `Tools/data/profession_training.json`:
 
 ```sh
 python3 Tools/convert_professions.py
