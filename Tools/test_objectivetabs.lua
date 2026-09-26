@@ -59,6 +59,7 @@ function AegisPathfinder:UpdateGuideListPanel() end
 function AegisPathfinder:GetGuideCategory() return "zone" end
 function AegisPathfinder:GetOptimizedGuideForLevel() return nil end
 function AegisPathfinder:ToggleMaterialsPanel() end
+function AegisPathfinder:GuideHasMaterials() return false end
 function AegisPathfinder:GoToObjective() end
 function AegisPathfinder:GoToPreviousObjective() end
 function AegisPathfinder:SkipToNextObjective() end

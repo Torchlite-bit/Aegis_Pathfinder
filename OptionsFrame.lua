@@ -342,15 +342,23 @@ function AegisPathfinder:CreateConfigPanel()
 		{ key = "autoquest",     label = "Accept and turn in quests automatically" },
 		{ key = "trackquests",   label = "Track quests automatically" },
 		{ key = "skipfollowups", label = "Skip suggested follow-ups" },
-		{ key = "autobranch",    label = "Open custom-zone guides automatically" },
+		{ key = "offercustomzones", label = "Offer custom zones between guides" },
 		{ key = "showminimapbutton", label = "Minimap button" },
+		{ key = "showactiveitems", label = "Active items window" },
+		{ key = "showactivetargets", label = "Active targets window" },
+		{ key = "showmacros", label = "Macros window (AegisTarget, AegisItem)" },
+		{ key = "questicons", label = "Quest icons: mark quest NPCs as you mouse over them" },
 	}
 	for _, def in ipairs(BEHAVIOUR) do
 		local key = def.key
 		local sw = Theme:Switch(body, def.label, function(on)
 			AegisPathfinder.db.char[key] = on
-			-- The one setting with something on screen to update.
+			-- The settings with something on screen to update.
 			if key == "showminimapbutton" then AegisPathfinder:UpdateMinimapButton() end
+			if key == "showactiveitems" or key == "showactivetargets" or key == "showmacros"
+				or key == "questicons" then
+				AegisPathfinder:RefreshActiveFrames()
+			end
 		end)
 		sw:SetWidth(BODY_W)
 		sw.settingKey = key
@@ -386,17 +394,21 @@ function AegisPathfinder:CreateConfigPanel()
 	rescan:SetScript("OnClick", function() AegisPathfinder:QueryServerCompletedQuests(true) end)
 	local errors = Theme:Pill(body, "Error log", 100, 26)
 	errors:SetScript("OnClick", function() AegisPathfinder:ShowErrorLog() end)
+	local setup = Theme:Pill(body, "Run setup", 90, 26)
+	setup:SetScript("OnClick", function() AegisPathfinder:ShowSetup() end)
 	rescan:SetPoint("TOPLEFT", body, "TOPLEFT", 0, -y)
 	errors:SetPoint("LEFT", rescan, "RIGHT", 6, 0)
+	setup:SetPoint("LEFT", errors, "RIGHT", 6, 0)
 	y = y + 26 + 6
 	note("Rescan asks the server which quests this character has completed and "
-		.. "re-marks the guide from that.")
-	frame.rescan, frame.errorlog = rescan, errors
+		.. "re-marks the guide from that. Run setup asks the first-time questions "
+		.. "again: your guide, its features and your dungeons.")
+	frame.rescan, frame.errorlog, frame.setup = rescan, errors, setup
 	y = y + SECTION_GAP
 
 	-- Last, where an about box goes: who this addon is built on.
 	table.insert(frame.sections, section("About"))
-	note("AEGIS: Pathfinder is built on other people's work -- TourGuide, "
+	note("Aegis: Pathfinder is built on other people's work -- TourGuide, "
 		.. "VanillaGuide, ClassicAPI, Joana's routes and more.")
 	y = y + 6
 	local credits = Theme:Pill(body, "Credits", 90, 26)

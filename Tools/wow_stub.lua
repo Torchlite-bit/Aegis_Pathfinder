@@ -28,6 +28,8 @@ local VALID_LAYERS = {
 stub.errors = {}
 stub.cursor = { 0, 0 }
 stub.mouseDown = false
+-- The bags: stub.bags[bag][slot] = { id = n, name = "...", count = n }.
+stub.bags = {}
 
 local function complain(fmt, ...)
 	local msg = string.format(fmt, ...)
@@ -278,7 +280,7 @@ local function newFrame(frameType, name, parent)
 	end
 	function f:GetScript(event) return self.__scripts[event] end
 	function f:HookScript(event, fn) self.__scripts[event] = fn end
-	function f:RegisterEvent() end
+	function f:RegisterEvent(e) self.__events = self.__events or {}; self.__events[e] = true end
 	function f:UnregisterEvent() end
 	function f:EnableMouse() end
 	function f:RegisterForClicks(...) self.__clicks = { ... } end
@@ -430,6 +432,18 @@ function stub.install(env)
 	env.GetLocale = function() return "enUS" end
 	env.GetTime = function() return os.clock() end
 	env.date = os.date
+	-- Bags 0-4, sixteen slots each, filled from stub.bags.
+	local function bagItem(bag, slot) return stub.bags[bag] and stub.bags[bag][slot] end
+	env.GetContainerNumSlots = function(bag) return 16 end
+	env.GetContainerItemLink = function(bag, slot)
+		local it = bagItem(bag, slot)
+		return it and string.format("|cffffffff|Hitem:%d:0:0:0|h[%s]|h|r", it.id, it.name) or nil
+	end
+	env.GetContainerItemInfo = function(bag, slot)
+		local it = bagItem(bag, slot)
+		if not it then return nil end
+		return it.texture or "Interface\\Icons\\INV_Misc_QuestionMark", it.count or 1, nil, 1, nil
+	end
 	return env
 end
 

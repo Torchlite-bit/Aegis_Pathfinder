@@ -1,4 +1,4 @@
-# Contributing to AEGIS: Pathfinder
+# Contributing to Aegis: Pathfinder
 
 ## Getting credited
 
@@ -35,7 +35,10 @@ That runs everything that can run without a WoW client:
 | `Tools/test_servers.lua` | Guide data provenance and mismatch detection |
 | `Tools/test_dungeons.lua` | Dungeon chips and the guide-reference scan |
 | `Tools/test_guidelist.lua` | Guide categorisation, tabs and badges |
-| `Tools/test_materials.lua` | Materials arithmetic, checked against the source document's own shopping list |
+| `Tools/test_activeframes.lua` | Active Items, Active Targets and Macros: which items and targets each step offers, targeting and raid marks, the generated AegisTarget/AegisItem macros, placement, the key bindings |
+| `Tools/test_setup.lua` | First-time setup: when it opens, which guides and dungeons it offers, and what Finish writes |
+| `Tools/test_nextguide.lua` | Where next?: which custom zones fit a level, and the walk from a route guide to a custom zone and back to the route |
+| `Tools/test_materials.lua` | Shopping list arithmetic, checked against the source document's own shopping list; bag counts, the scope tabs, and sending to Aegis: Exchange |
 | `Tools/test_objectivetabs.lua` | The objectives tab bar and branch state |
 
 Everything must pass before you open a PR. **None of it proves the UI looks
@@ -74,6 +77,14 @@ document in `Tools/data/`, then regenerate:
 ```sh
 python3 Tools/convert_professions.py
 ```
+
+**Filter tags.** The Auction House, Group and Dungeon switches act on `|AH|`,
+`|P|GROUP|` and `|D|<code>|` tags. The RestedXP and RXP Hardcore guides carry
+them; the Optimized and zone guides mostly do not, so on those the switches
+change little. `Tools/find_filter_candidates.py` lists the steps there that
+probably should be tagged -- by quest, from the RestedXP guides' own tags and
+from the guides' notes -- into `docs/review/filter_candidates.json`, for a
+person to review before any tag is added.
 
 ## Guide data and servers
 

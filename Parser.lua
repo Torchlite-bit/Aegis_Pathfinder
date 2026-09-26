@@ -46,6 +46,19 @@ function AegisPathfinder:GetObjectiveTag(tag, i)
 		if not profession then return end
 
 		return profession, tonumber(from), tonumber(to)
+	elseif tag == "RANK" then
+		-- |RANK|<profession> <cap>| -- the name can have a space in it.
+		local _, _, profession, cap = string.find(tags, "|RANK|(.-)%s+(%d+)|")
+		if not profession then return end
+
+		return profession, tonumber(cap)
+	elseif tag == "NPC" then
+		-- |NPC|<name>;<name>| as a list.
+		local _, _, list = string.find(tags, "|NPC|([^|]*)|")
+		if not list then return end
+		local names = {}
+		for name in string.gfind(list, "[^;]+") do table.insert(names, name) end
+		return names
 	elseif tag == "CRAFT" then
 		local _, _, count, item = string.find(tags, "|CRAFT|(%d+)%s+([^|]*)|")
 		if not count then return end

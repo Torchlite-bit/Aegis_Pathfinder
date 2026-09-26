@@ -74,11 +74,11 @@ client's equivalent, `GameTooltip`, is Blizzard's bevelled card in FrizQuadrata
 addon's tooltips too. `Theme:ShowTip(owner, side, text, detail, color)` is the
 addon's own: a `panel-2` card in the body face, the hint in `--text` over dimmer
 detail lines, as wide as its longest line up to 260px, in the `TOOLTIP` strata,
-hiding itself if its owner disappears under the cursor. Only the use-item
-button still opens `GameTooltip`, since only it can show a game item, and
-`Tools/verify.py` fails any other file that does. The use-item button itself
-is the theme's rounded tile around the item's icon now, not
-`ItemButtonTemplate`'s square action-button border.
+hiding itself if its owner disappears under the cursor. Only the Active Items
+buttons still open `GameTooltip`, since only it can show a game item, and
+`Tools/verify.py` fails any other file that does. Those buttons are the theme's
+rounded tile around the item's icon, not `ItemButtonTemplate`'s square
+action-button border.
 
 **Gradients.** Baked into the texture (`progress-fill.tga`) — there is no
 runtime gradient.
@@ -111,8 +111,16 @@ percentages into yards; Astrolabe ships with both TomTom and pfQuest, so in
 practice it is there whenever a provider is. When it is not, the arrow still
 points and the distance stays blank -- an invented number would be worse.
 
-With no provider, no waypoint, or the waypoint in another zone, the callout
-hides. An arrow that is confidently wrong is worse than no arrow.
+With Astrolabe loaded -- TomTom-TWOW and pfQuest both bring it -- the bearing
+and distance come from it: it measures in yards across the zones of a
+continent, as TomTom's own arrow does, and copes with the hidden world map
+being left on the continent view. Astrolabe does that itself when it cannot
+place the player in a zone, and the same-zone path used to read it as "not in
+the waypoint's zone" and hide, while TomTom's arrow kept pointing. Without
+Astrolabe it falls back to that path (re-centring a continent-view map first).
+With no provider, no waypoint, or no way to measure, the callout hides; an
+arrow that is confidently wrong is worse than no arrow. `/apg diagnav` says
+which of those it is.
 
 **Whose arrow.** Out of the box there were two: ours, and the waypoint addon's,
 aimed at the same waypoint. Ours reads the waypoint the addon records for
@@ -122,7 +130,12 @@ none (`GetArrowMode` / `SetArrowMode` in `Navigation.lua`). The default is
 ours alone; a character who had turned ours off keeps the waypoint addon's.
 TomTom is told `crazy = false` outright -- TomTom-TWOW fills a nil `crazy`
 from its own autoqueue setting, which is on -- and pfQuest's route target is
-simply not set. Cartographer and MetaMap BWP have no waypoint but their arrow,
+simply not set. That is not enough for TomTom on its own: its
+`GoToNextWayPoint`, run when its arrow's target is reached or cleared, hands
+the arrow to the last waypoint in its list, usually ours. So the arrow's
+driver takes TomTom's arrow back off any of *our* waypoints each tick while
+the setting says so (`EnforceArrowMode`); the player's own TomTom waypoints
+are never touched. Cartographer and MetaMap BWP have no waypoint but their arrow,
 so they point whatever is picked, and the setting's note says so.
 
 ### The status card -- deleted
@@ -134,9 +147,9 @@ went with it.
 Almost nothing in that file was the card, though. `UpdateStatusFrame` is the
 scan that walks the step list, decides which step you are on, auto-completes
 what ClassicAPI can resolve, drives the waypoint and loads the next guide when
-one runs out. That is now `GuideEngine.lua`, along with the use-item button --
-a surface of its own, for `|U|` steps, which the concept does not show and
-which had no business being deleted with the card.
+one runs out. That is now `GuideEngine.lua`. The use-item button for `|U|`
+steps lived there too until it became the Active Items window
+(`ActiveFrames.lua`, below).
 
 What the card's meta row used to paint is now `GetStepMeta`, which returns the
 quest id, a profession step's live skill range, coordinates buried in the note,
@@ -327,7 +340,7 @@ scan walks guides that run to hundreds of steps.
 Not in the concept, which has no minimap. It used to be FuBarPlugin's:
 Blizzard's quest-log book in the stock round minimap border, and a right-click
 that opened a Dewdrop menu of every setting in Blizzard tooltip chrome. Now it
-is drawn like the rest of the addon -- `logo.tga`, the AEGIS shield, in accent
+is drawn like the rest of the addon -- `logo.tga`, the Aegis shield, in accent
 on a `panel-2` disc (`circle-fill.tga`) with a `subtle` hairline ring
 (`circle-border.tga`) that takes the accent on hover.
 
@@ -358,7 +371,76 @@ Placeholder guides carry the concept's grey `TPL` badge (`Theme:Badge`). In a
 list where an unauthored guide looks exactly like an authored one, that badge
 is the only thing distinguishing them.
 
-### Materials panel -- `MaterialsFrame.lua`
+Custom-zone guides are the **Custom** tab: `GetGuideCategory` matches a
+guide's name against `TURTLE_ZONES` in `Core.lua`, which has to name every
+custom zone -- Scarlet Enclave and Hyjal were once missing and filed under
+Zones. `Tools/test_guidelist.lua` reads that list out of `Core.lua` and checks
+every custom-zone guide against it.
+
+### First-time setup -- `SetupFrame.lua`
+
+Not in the concept: RestedXP's first-run questions, over settings the options
+panel already has (`routepack`, `UseAH`, `PlayStyle`, `Dungeons`); nothing in
+it is a new setting. Opened once per character from the end of
+`InitializeRoute` (`MaybeShowSetup`, `db.char.setupdone`), and again from
+`/apg setup` or the options panel's **Run setup** pill.
+
+A 420px Chrome window, `SET UP YOUR GUIDE`, with `STEP n OF m` at the right of
+the subhead (two steps with dungeons off, three with them on), a display-face
+title and a line of intro per step, Back and Continue/Finish at the foot.
+
+1. **Your guide**: a card per route pack this character may use
+   (`GetAvailableRoutePacks`) that has a route for its race -- so no RestedXP
+   or Hardcore card for a High Elf or Goblin. Name in the display face over a
+   line of what it is; the chosen card takes the accent. Picking a pack
+   brings its starting features, as the pack pills do.
+2. **Features**: `Theme:Switch` rows with a line each. Under them, in gold,
+   which of the three the chosen pack's guides do not mark at all
+   (`GetPackTags` reads the route's guide text once per pack) -- the
+   Optimized guides mark none yet.
+3. **Dungeons**: the faction's dungeons (`DUNGEON_INFO`: Ragefire Chasm is
+   Horde-only, the Stockade Alliance-only) in level order, each a
+   `Theme:StepCheck`, the name, the level range (accent while it is your
+   level, gold ahead, dim once past) and how many steps it adds to the route
+   ("not in this route" for none). Recommended / All / None above. Reaching
+   the step with none ticked starts from the recommended ones: per faction,
+   the dungeons with 55 or more dungeon steps in the RestedXP guides.
+
+Finish (`ApplySetup`) switches pack only when a different one was chosen --
+`SelectRoutePack` re-routes, which would lose your place -- writes the three
+filters, re-reads the guide on screen, and prints what was set up. Closing
+the window keeps everything and marks setup done.
+
+### Where next? -- `NextGuideFrame.lua`
+
+Not in the concept. Asked when a guide finishes, before the engine moves on:
+`UpdateStatusFrame` calls `OfferNextGuide` first, and when it returns true the
+guide waits for the answer instead of `LoadNextGuide` or `ReturnFromBranch`.
+
+It is asked only when a custom zone fits (`GetCustomZoneChoices`): a guide in
+the `turtle` category, not the one just finished, not finished before
+(`db.char.completion`), with the player at least one level short of its bottom
+and below its top. Up to five, lowest first. Nothing fits, nothing is asked,
+and the old path runs. Each finished guide is asked about once a session.
+
+Chrome with a `WHERE NEXT?` subhead, a line naming what was finished, then:
+
+- **The route** (`Theme:SectionHeader` over a full-width `Theme:PanelButton`):
+  "Continue to" the route's next guide (`nextzones`), or, finishing a custom
+  zone, "Back to" the route guide for the player's level now
+  (`GetOptimizedGuideForLevel`). Hidden at the end of the route.
+- **Custom zones**: a button each.
+
+Taking a custom zone from the route opens it in a tab (`OpenGuideTab`) and
+points tab 1 at the route's next guide, so returning resumes the route rather
+than the guide just finished. Taking one from a custom zone replaces that tab
+(`LoadGuideInTab`). Going back is `ReturnFromBranch`. Either way the finished
+guide is recorded as done. Closing the window (its close chip, Escape) is
+"carry on with the route" -- what finishing a guide always did.
+`offercustomzones`, on by default, switches it off; it replaced
+`autobranch`, a switch that nothing read.
+
+### Shopping list -- `MaterialsFrame.lua`
 
 Not in the concept, which is leveling-focused. It exists because the
 profession guides need it: the reference document prints one shopping list per
@@ -366,9 +448,150 @@ profession totalled from skill 1, which is the wrong number for anyone
 part-way through, since it counts reagents for crafts already done. The panel
 totals what the *remaining* steps call for.
 
+Opened by the **Shopping list** button at the left of the objectives panel's
+footer -- the buy glyph and the words, shown only on a guide with `|MATS|`
+tags (`GuideHasMaterials`). It used to be a bare glyph named `"use"`, which is
+not one of the theme's glyphs, so it drew nothing at all. It pops out beside
+the guide, on whichever side has room, like the options panel, until dragged;
+a dragged position is restored (it used to be saved and never read).
+
+- **Chrome**: the standard header and a `SHOPPING LIST` subhead, 280px wide.
+- **Scope tabs** (`Theme:Tab`): *This step* -- the first unfinished step from
+  the current one on that lists reagents -- and *Whole route*. Remembered in
+  `profile.shoppingscope`; the whole route by default.
+- **Summary**: the craft's title or the guide's name, then "4 of 5 still to
+  get", or "all 5 in your bags".
+- **Rows**: have/need (`display` 11, "20/40", capped at the need) then the
+  name. Gold for a line still short, the accent with a dimmed name for one
+  covered. Up to 14 rows, never fewer than 3; the window is sized to its list
+  and the theme's scroll bar takes over past 14. Sorted alphabetically: it is
+  a list you read while hunting for one item, and one sorted by what is short
+  would move lines under the cursor as you buy.
+- **Bag counts** are by name over bags 0-4. `BAG_UPDATE` only marks the list
+  stale; the window repaints from OnUpdate at most every 0.25s, and only while
+  open, so a loot or a stack split is one repaint, not one per bag.
+- **Send to Exchange** (`Theme:PanelButton`, full width at the foot). See
+  below.
+
 Nothing in it is profession-specific -- any guide carrying `|MATS|` tags gets
-a materials list. Sorted alphabetically: it is a list you read while hunting
-for one item, not a ranking.
+a shopping list.
+
+#### Aegis: Exchange
+
+Exchange builds its own shopping list from crafting projects, `{ name, itemId,
+made, want, reagents = { { name, count, itemId } } }`, priced at the auction
+house. The button writes one project per craft still ahead, in route order
+with the next craft on top: `want` is the craft count and `made` is 1, so
+Exchange's `reagent count x crafts` lands on the same totals as the list here
+(`Tools/test_materials.lua` checks this against the reference document's
+Alchemy list). The same craft on two steps is one project with both counts.
+Item ids come from the bags, then Exchange's own name map, then pfQuest's item
+database; anything unmatched is reported in chat, since Exchange's list only
+shows reagents it can resolve.
+
+Only Exchange's public calls are used -- `craft.Projects`, `AddProject`,
+`DeleteProject` and `ui.RefreshCraft` (pcall-guarded). Sent projects carry
+`pathfinder = <guide>`, which is how they are found to update or remove.
+Exchange keeps one project per name, so one of the player's own recipes that
+shares a name with a craft on the route is kept inside ours as `replaced` and
+put back when ours goes; its exact item ids are used meanwhile.
+
+It follows the guide: `UpdateStatusFrame` calls `RefreshShoppingList` when
+the step settles, which marks things stale for one OnUpdate, and
+`SyncExchange` rewrites Exchange's list only if what is left has changed.
+Finishing the route removes it. It only syncs while the guide it was sent
+from is the one loaded. Exchange's demo mode shows made-up projects in place
+of the saved list, so nothing is sent or removed while it is on.
+
+### Active Items, Active Targets and Macros -- `ActiveFrames.lua`
+
+Not in the concept: RestedXP's two small windows, asked for by name. Each is a
+`Theme:Panel` with an 18px `Theme:Header` strip carrying its title (`ACTIVE
+ITEMS`, `ACTIVE TARGETS`, `display` 11) in place of the wordmark, and a row of
+32px tiles -- the theme's rounded square, `panel-2` fill, a hairline border
+that takes the accent on hover. The width fits the tiles or the title,
+whichever is wider. `MEDIUM` strata, not `DIALOG`: they are part of the HUD,
+not windows that stack.
+
+Until dragged, Items hangs under the guide (`TOPRIGHT` to its `BOTTOMRIGHT`,
+6px down) and Targets under Items -- or under the guide while Items has
+nothing to show. Dragged by the title, each is saved (`activeitems`,
+`activetargets`) and stays; Reset Panels forgets both. A window mid-drag is
+not re-anchored by a repaint. Each hides when it has nothing to show, and the
+options panel can switch either off (`showactiveitems`, `showactivetargets`).
+
+**Items** replaced the single floating use-item button. A tile per item the
+guide wants used, up to six, one per item however many steps want it: the
+current step's `|U|` item first, then any other step's whose quest is in the
+log and not complete. Only what is in the bags -- a tile for an item you do
+not carry is a dead button. The icon is the bag's, cropped of its bevel; a
+stack shows its count in the corner; hover is `GameTooltip:SetBagItem`. A
+click uses it from wherever it is now, and ticks the current step if that is
+a USE step for this item.
+
+**Targets**: a tile per NPC or enemy the current step wants found, up to four.
+From the step's `|NPC|` tag, and from pfQuest's database by the step's quest
+id: an ACCEPT's starters, a TURNIN's enders, a COMPLETE's objective units then
+the units that drop its objective items, likeliest drop first. pfQuest's
+`fac` string says who is friendly to the player's faction. The tile shows the
+step's action glyph (the kill glyph in `danger` for an enemy) and, in its
+corner, the raid mark it will apply -- the one piece of Blizzard art here,
+because it is the in-game marker itself. A click is `TargetByName(name, true)`
+and `SetRaidTarget` with the entry's context mark (quest icons, below). An
+existing mark is not set again (which would toggle it off). The tile of
+whoever is targeted takes the accent border, relit on `PLAYER_TARGET_CHANGED`.
+
+**Quest icons.** Each target carries a context and the mark that says it,
+as RestedXP's Quest Icons do: `talk` star (an ACCEPT's starters, a TURNIN's
+enders, `|NPC|` names), `interact` square (a friendly objective unit), `kill`
+skull (a hostile objective unit), `loot` cross (a unit that drops an
+objective item). pfQuest's `fac` decides friend from enemy; at marking time a
+`kill` or `loot` unit that `UnitCanAttack` says cannot be attacked gets the
+square. On `UPDATE_MOUSEOVER_UNIT` and `PLAYER_TARGET_CHANGED` the unit
+(`mouseover`, `target`) is marked if its name is wanted: the current step's
+targets first, then, for each quest in the log (ids from ClassicAPI's
+`C_QuestLog.GetQuestIDForLogIndex`, headers skipped), an unfinished quest's
+COMPLETE targets or a finished one's TURNIN targets, up to 40 names, rebuilt
+on every repaint. Never over an existing mark, on a player or a corpse, or in
+a raid. `questicons` switches it off. The step's targets are worked out
+whether or not the Targets window is showing: the icons and the macro use
+them too.
+
+**Macros**, the third window, under Targets (or whichever is showing above
+it), with a tile for each of two character macros the addon writes and keeps
+current -- RestedXP's generated targeting macro, plus one for the quest item:
+
+- **AegisTarget**: `/target <name>` per target, the step's first target last
+  (`/target` keeps the last name it finds), then `/script
+  AegisPathfinder:MarkTarget()`, which marks the current target if it is one
+  of the step's. Kept to 255 letters by dropping the least wanted names. With
+  no targets it is `/apg target`, which says there is nobody. Its icon is the
+  first of Hunter's Mark's, the town watch's or a spyglass that the macro icon
+  list has.
+- **AegisItem**: `/apg useitem` (1.12 has no `/use`), wearing the first active
+  item's icon when the macro icon list has that texture, else the question
+  mark. The stock action bars repaint a button when its slot changes, not
+  when the macro in it does, so after an edit the addon repaints any stock
+  button holding it (`ActionButton_Update`); other bar addons repaint on
+  their own schedule.
+
+Both are made as character macros the first time there is something for them
+to do, and rewritten (`EditMacro`, only when the text or icon changed) on
+every repaint after that -- including a step with nothing to do, so one on a
+bar never aims at a finished step. Never while `MacroFrame` is open: the stock
+UI saves its own copy of the text over ours when it closes, so the repaint
+waits a second and tries again. With the 18 character slots full nothing is
+made; the tile's tooltip and a drag say so. A tile click does what its macro
+does (`TargetAnyActive`, `UseActiveItem`); a drag is `PickupMacro`, to drop
+on a bar. `showmacros` switches the window and the macro writing off.
+
+`/apg target` and a key binding (`Bindings.xml`) target the next of them after
+whoever is targeted, so repeated presses cycle -- RestedXP's macro, without a
+macro. `/apg useitem` and a second binding use the first item.
+
+Step changes repaint on the next frame (`UpdateStatusFrame` calls
+`RefreshActiveFrames`); `BAG_UPDATE` bursts coalesce into one repaint 0.25s
+later.
 
 ### Scrollbar -- `Theme:ScrollBar`
 
@@ -382,7 +605,7 @@ any length) and caret step buttons. It is still a Slider, so
 The carets move by the bar's `step` -- a row by default, a column of 16 in the
 guide list, 40px in the error log -- and stop at the ends of the range. Every
 scrolling list uses it: the objectives panel, the options body, the guide
-list, the materials panel and the error log. The last three were still on
+list, the shopping list and the error log. The last three were still on
 `UIPanelScrollBarTemplate` / `UIPanelScrollFrameTemplate`, which drew
 Blizzard's gold arrows and knob; `Tools/verify.py` now fails on either.
 

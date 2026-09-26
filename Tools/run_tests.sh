@@ -25,6 +25,9 @@ lua5.1 Tools/test_servers.lua
 lua5.1 Tools/test_dungeons.lua
 lua5.1 Tools/test_guidelist.lua
 lua5.1 Tools/test_materials.lua
+lua5.1 Tools/test_activeframes.lua
+lua5.1 Tools/test_nextguide.lua
+lua5.1 Tools/test_setup.lua
 lua5.1 Tools/test_objectivetabs.lua
 lua5.1 Tools/test_objectivepanel.lua
 lua5.1 Tools/test_options.lua
@@ -32,6 +35,7 @@ lua5.1 Tools/test_stacking.lua
 lua5.1 Tools/test_scrolling.lua
 lua5.1 Tools/test_minimap.lua
 lua5.1 Tools/test_navigation.lua
+lua5.1 Tools/test_professionsteps.lua
 
 echo
 echo "All offline checks passed."

@@ -1,4 +1,4 @@
-# AEGIS: Pathfinder - Guide Authoring Documentation
+# Aegis: Pathfinder - Guide Authoring Documentation
 
 This document explains how to create leveling guides for TurtleGuide addon.
 
@@ -148,20 +148,32 @@ that, and are handled in `Professions.lua`.
 |-----|-------------|---------|
 | `SKILL` | Profession and skill range. The step completes when the player's skill reaches the upper bound. | `\|SKILL\|Alchemy 1 63\|` |
 | `CRAFT` | What to make, and roughly how many the route expects | `\|CRAFT\|40 Minor Healing Potion\|` |
-| `MATS` | Reagents for a *single* craft; the materials view multiplies by the craft count | `\|MATS\|1x Peacebloom, 1x Silverleaf, 1x Empty Vial\|` |
+| `MATS` | Reagents for a *single* craft; the shopping list multiplies by the craft count | `\|MATS\|1x Peacebloom, 1x Silverleaf, 1x Empty Vial\|` |
 | `SRC` | Where the recipe comes from | `\|SRC\|Trainer\|` |
 | `ALT` | Equally viable recipes for the same range | `\|ALT\|Elixir of Minor Defense, Swiftness Potion\|` |
+| `RANK` | Profession and skill cap. The step completes when the cap reaches it: training a rank, reading a secondary profession's tome and its Artisan quest all raise the cap, whatever the step's action. | `\|RANK\|Alchemy 225\|` |
+| `NPC` | Whom the step sends you to, `;`-separated. With no coordinates in the note, the waypoint goes to the nearest of them, looked up by name in pfQuest's unit database; spots the world map cannot show (inside a dungeon) are skipped. | `\|NPC\|Ainethil;Kylanna Windwhisper\|` |
 
 A profession name may contain a space, so `SKILL` is parsed by matching the two
 trailing numbers and taking everything before them as the name --
 `\|SKILL\|First Aid 1 45\|` works.
 
 A range with no craftable recipe (open-world gathering, for instance) uses a
-`G` step with a `SKILL` tag and no `CRAFT`.
+`G` step with a `SKILL` tag and no `CRAFT`; it waits for the skill. A `G` step
+with an `LV` tag and no `SKILL` is a level gate: it holds the guide until the
+character reaches that level, and clears itself at once for anyone already
+there. Every step with a `SKILL` or `RANK` completes as soon as the player's
+skill or cap is there, so someone opening a guide part-way through moves
+straight to where they are.
 
 **Profession guides in `Guides/Professions/` are generated** from
-`Tools/data/Professions_Reference.docx` by `Tools/convert_professions.py`.
-Editing them by hand will be overwritten. They are written in QuestShell+
+`Tools/data/Professions_Reference.docx` (routes, trainers) and
+`Tools/data/profession_training.json` (rank levels and costs, the secondary
+professions' tomes and Artisan quests, trainers the reference lacks -- taken
+from the owner-supplied FAQ in `Tools/data/Profession_FAQ.md`) by
+`Tools/convert_professions.py`. Editing them by hand will be overwritten, and
+`python3 Tools/convert_professions.py --check` -- part of `Tools/run_tests.sh`
+-- fails when the committed guides differ from what it would write. They are written in QuestShell+
 structured tables rather than this DSL -- see `Tools/QuestShellPlus.md` -- and
 the converter emits these tags through `QuestShellPlusParser.lua`.
 

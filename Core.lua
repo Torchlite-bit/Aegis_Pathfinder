@@ -94,6 +94,10 @@ local defaults = {
     overviewmode = false,
     shownavcallout = true,
     showminimapbutton = true,
+    showactiveitems = true,   -- see ActiveFrames.lua
+    showactivetargets = true,
+    questicons = true,        -- mark quest NPCs and mobs on mouseover/target
+    showmacros = true,        -- the Macros window, and the AegisTarget/AegisItem macros
     server = nil,             -- see Servers.lua; nil means the default dataset
     showuseitem = true,
     showuseitemcomplete = true,
@@ -115,7 +119,8 @@ local defaults = {
     isbranching = false,
     branchsavedguide = nil,
     branchsavedstep = nil,
-    autobranch = false,           -- auto-branch to Turtle WoW zones
+    setupdone = false,            -- has this character been through the first-time setup?
+    offercustomzones = true,      -- offer custom zones when a guide finishes (NextGuideFrame.lua)
     routepack = nil,              -- Active route pack name (e.g., "VanillaGuide", "RestedXP")
     PlayStyle = "SOLO",           -- Default playstyle ("SOLO" or "GROUP")
     UseAH = false,                -- Default Auction House setting (true/false)
@@ -158,9 +163,27 @@ local options = {
     args = {
         Materials = {
             name = "Materials",
-            desc = "Reagents the rest of the current guide still needs",
+            desc = "The shopping list: reagents for this craft and the rest of the guide",
             type = "execute",
             func = function() AegisPathfinder:ToggleMaterialsPanel() end,
+        },
+        Target = {
+            name = "Target",
+            desc = "Target and mark the current step's next active target -- put /apg target in a macro",
+            type = "execute",
+            func = function() AegisPathfinder:TargetNextActive() end,
+        },
+        UseItem = {
+            name = "Use Item",
+            desc = "Use the first active item",
+            type = "execute",
+            func = function() AegisPathfinder:UseActiveItem(1) end,
+        },
+        Exchange = {
+            name = "Exchange",
+            desc = "Send the guide's remaining crafts to Aegis: Exchange's Crafting tab, or take them back out",
+            type = "execute",
+            func = function() AegisPathfinder:ToggleExchange() end,
         },
         ResetPanels = {
             name = "Reset Panels",
@@ -188,6 +211,18 @@ local options = {
                 AegisPathfinder:Print("--- Navigation Status ---")
                 AegisPathfinder:Print("Setting: " .. (AegisPathfinder.db.char.waypointprovider or "auto"))
                 AegisPathfinder:Print("Active: " .. AegisPathfinder:GetWaypointProviderLabel())
+                AegisPathfinder:Print("Arrow: " .. AegisPathfinder:GetArrowMode())
+                local wp = AegisPathfinder.waypointtarget
+                AegisPathfinder:Print(wp and string.format("Waypoint: continent %d zone %d at %.1f, %.1f",
+                    wp.continent, wp.zoneindex, wp.x, wp.y) or "Waypoint: none")
+                local bearing, yards, why = AegisPathfinder:GetWaypointBearing()
+                if bearing then
+                    AegisPathfinder:Print(string.format("Pathfinder's arrow: pointing, %s",
+                        yards and string.format("%d yd", math.floor(yards + 0.5)) or "no distance"))
+                else
+                    AegisPathfinder:Print("Pathfinder's arrow: hidden -- " .. tostring(why))
+                end
+                AegisPathfinder:Print("Astrolabe: " .. ((Astrolabe and Astrolabe.ComputeDistance) and "loaded" or "not loaded"))
 
                 local available = AegisPathfinder:GetWaypointProviders()
                 if table.getn(available) == 0 then
@@ -351,12 +386,18 @@ local options = {
             func = function() AegisPathfinder:ReturnFromBranch() end,
             order = 15,
         },
-        AutoBranch = {
-            name = "Auto Branch",
-            desc = "Automatically branch to Turtle-lineage custom zones when available",
+        Setup = {
+            name = "Setup",
+            desc = "Run the first-time setup again: your guide, its features and your dungeons",
+            type = "execute",
+            func = function() AegisPathfinder:ShowSetup() end,
+        },
+        CustomZones = {
+            name = "Custom Zones",
+            desc = "When a guide finishes, offer the custom zones that fit your level before moving on",
             type = "toggle",
-            get = function() return AegisPathfinder.db.char.autobranch end,
-            set = function(v) AegisPathfinder.db.char.autobranch = v end,
+            get = function() return AegisPathfinder.db.char.offercustomzones ~= false end,
+            set = function(v) AegisPathfinder.db.char.offercustomzones = v end,
             order = 16,
         },
         DebugRoute = {
@@ -492,7 +533,7 @@ local options = {
     },
 }
 
-AegisPathfinder.title = "AEGIS: Pathfinder"
+AegisPathfinder.title = "Aegis: Pathfinder"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -524,7 +565,7 @@ function AegisPathfinder:OnInitialize()
     if self.db.char.UseAH == nil then
         self.db.char.UseAH = defaults.UseAH
     end
-    -- /aegis belongs to another addon in the AEGIS suite; registering it
+    -- /aegis belongs to another addon in the Aegis suite; registering it
     -- here would collide with it.
     self:RegisterChatCommand({ "/apg", "/pathfinder", "/vg" }, options, SLASH_HANDLER)
 
@@ -548,7 +589,7 @@ function AegisPathfinder:OnInitialize()
     if self.myfaction == nil then
         self:RegisterEvent("PLAYER_ENTERING_WORLD")
     end
-    self:PositionItemButton()
+    self:PositionActiveFrames()
     -- The panel is the addon's only window and the concept has it open, so it
     -- opens with the client unless the player closed it last session.
     if self.db.char.panelopen ~= false then
@@ -566,7 +607,7 @@ function AegisPathfinder:OnEnable()
     -- untagged dev builds report 99999999). Quest tracking is built on its
     -- C_QuestLog functions and QUEST_ACCEPTED / QUEST_TURNED_IN events.
     if not CLASSIC_API_VERSION or CLASSIC_API_VERSION < 10509 then
-        self:Print("|cffff3333AEGIS: Pathfinder requires ClassicAPI v1.5.9 or newer (https://github.com/brues-code/ClassicAPI). The addon will not load.|r")
+        self:Print("|cffff3333Aegis: Pathfinder requires ClassicAPI v1.5.9 or newer (https://github.com/brues-code/ClassicAPI). The addon will not load.|r")
         return
     end
 
@@ -665,6 +706,9 @@ function AegisPathfinder:InitializeRoute()
     -- Force waypoint creation on initial load
     self:ForceWaypointUpdate()
     self.enableDone = true
+    -- The first time the addon loads on this character: the three-step
+    -- setup (SetupFrame.lua).
+    if self.MaybeShowSetup then self:MaybeShowSetup() end
 end
 
 function AegisPathfinder:OnDisable()
@@ -726,7 +770,7 @@ function AegisPathfinder:PLAYER_ENTERING_WORLD()
     local function pump()
         local ok, err = coroutine.resume(co)
         if not ok then
-            self:Print("|cffff3333AEGIS: Pathfinder load error: " .. tostring(err) .. "|r")
+            self:Print("|cffff3333Aegis: Pathfinder load error: " .. tostring(err) .. "|r")
             return
         end
         if coroutine.status(co) == "dead" then
@@ -1823,6 +1867,8 @@ local TURTLE_ZONES = {
     ["Gillijims Isle"] = true,
     ["Thalassian Highlands"] = true,
     ["Blackstone Island"] = true,
+    ["Scarlet Enclave"] = true,
+    ["Hyjal"] = true,
 }
 
 -- Categorize a guide by its name

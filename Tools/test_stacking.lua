@@ -68,6 +68,7 @@ function AegisPathfinder:SkipToNextObjective() end
 function AegisPathfinder:SetTurnedIn() end
 function AegisPathfinder:UpdateStatusFrame() end
 function AegisPathfinder:ToggleMaterialsPanel() end
+function AegisPathfinder:GuideHasMaterials() return false end
 function AegisPathfinder:IsAutoDetectable() return false end
 function AegisPathfinder:GetObjectiveInfo(i) return self.actions[i], self.quests[i], self.quests[i] end
 function AegisPathfinder:GetObjectiveStatus() return nil end

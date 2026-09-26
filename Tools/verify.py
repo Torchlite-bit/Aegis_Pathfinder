@@ -226,6 +226,10 @@ def check_toc(rep):
 def check_xml(rep):
     n = 0
     for xml in sorted(walk({".xml"})):
+        # Key bindings, not a file list: the client reads it by name.
+        if os.path.basename(xml) == "Bindings.xml":
+            check_bindings(rep, xml)
+            continue
         body = open(xml, encoding="utf-8", errors="replace").read()
         listed = set(re.findall(r'<Script\s+file="([^"]+)"', body))
         folder = os.path.dirname(xml)
@@ -238,6 +242,19 @@ def check_xml(rep):
         for orphan in sorted(on_disk - listed):
             rep.fail("xml", xml, "file on disk is not listed: %s" % orphan)
     rep.ok("xml", n)
+
+
+def check_bindings(rep, path):
+    body = open(path, encoding="utf-8", errors="replace").read()
+    names = re.findall(r'<Binding\s+name="([^"]+)"', body)
+    if not names:
+        rep.fail("xml", path, "declares no bindings")
+    # Each binding needs a label, or the key bindings list shows a blank row.
+    code = "\n".join(open(p, encoding="utf-8", errors="replace").read()
+                     for p in walk({".lua"}) if is_shipped(p))
+    for name in names:
+        if not re.search(r"\bBINDING_NAME_%s\s*=" % re.escape(name), code):
+            rep.fail("xml", path, "binding %s has no BINDING_NAME_%s" % (name, name))
 
 
 # Blizzard chrome the reskin replaced. Any of these creeping back means a panel
@@ -405,9 +422,10 @@ def check_texture_paths(rep):
 
 # GameTooltip is shared with the whole UI -- restyling it restyles every other
 # addon's tooltips -- so the addon's hints use Theme:ShowTip, its own card.
-# Only the use-item button may reach for GameTooltip: only it can show an item.
+# Only the Active Items buttons may reach for GameTooltip: only it can show an
+# item.
 GAMETOOLTIP = re.compile(r"\bGameTooltip\s*:\s*SetOwner\b")
-GAMETOOLTIP_ALLOWED = {"GuideEngine.lua"}
+GAMETOOLTIP_ALLOWED = {"ActiveFrames.lua"}
 
 
 def check_tooltips(rep):

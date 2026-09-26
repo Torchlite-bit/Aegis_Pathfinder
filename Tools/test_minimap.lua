@@ -43,7 +43,7 @@ local button = AegisPathfinder.minimapbutton
 
 check(button:GetParent() == Minimap, "the button lives on the minimap")
 check(button.icon:GetTexture() == Theme.texture.logo,
-	"it carries the AEGIS shield, not Blizzard's quest-log book, got %s",
+	"it carries the Aegis shield, not Blizzard's quest-log book, got %s",
 	tostring(button.icon:GetTexture()))
 check(button.disc:GetTexture() == Theme.texture.circleFill
 	and button.ring:GetTexture() == Theme.texture.circleBorder,

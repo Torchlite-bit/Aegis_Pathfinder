@@ -1,7 +1,7 @@
-# AEGIS: Pathfinder
+# Aegis: Pathfinder
 
 A Classic+ leveling guide for the Turtle WoW-lineage 1.12 client family —
-OctoWoW, Capybara Paradise and RavenCraft. Part of the AEGIS addon suite.
+OctoWoW, Capybara Paradise and RavenCraft. Part of the Aegis addon suite.
 
 It keeps your current objective on screen, points a waypoint at it, and
 advances itself as you accept, complete and turn in quests — the in-game
@@ -45,15 +45,19 @@ too — the old `TurtleGuide` global is still an alias.
 | `/apg goto <n>` | Jump to a step |
 | `/apg reset` | Reset progress in the current guide |
 | `/apg resetpanels` | Put every window back where it opens by default |
-| `/apg materials` | Reagents the rest of this guide still needs |
+| `/apg materials` | The shopping list: reagents for this craft, or the rest of the guide |
+| `/apg exchange` | Send the guide's remaining crafts to Aegis: Exchange, or take them back out |
+| `/apg setup` | Run the first-time setup again: your guide, its features and your dungeons |
+| `/apg target` | Target and mark the step's next active target (put it in a macro) |
+| `/apg useitem` | Use the first active item |
 | `/apg server` | Cycle which server you play on |
 | `/apg serverstatus` | Guide data provenance per server |
 
 `/pathfinder` and `/vg` do the same thing. There is deliberately no `/aegis` —
-that belongs to another addon in the AEGIS suite.
+that belongs to another addon in the Aegis suite.
 
 The objectives panel is the addon's main window, so a bare `/apg` opens it, and
-it opens with the client. The AEGIS shield on the edge of the minimap does the
+it opens with the client. The Aegis shield on the edge of the minimap does the
 same on a click; right-click it for the options panel, and drag it to move it
 round the minimap. The options panel can hide it, as can `/apg minimapbutton`.
 FuBar is no longer supported: the button is the addon's own now.
@@ -82,13 +86,103 @@ dot marks the dungeons the guide you are currently on actually has steps for.
 **Filters.** Solo or group mode, and whether Auction House steps appear.
 Defaults follow the route pack you chose.
 
+**First-time setup.** The first time the addon loads on a character, a short
+setup asks three things, as RestedXP does:
+
+1. **Your guide**: Optimized (quest-optimized 1-60, every race), RestedXP
+   Speedrun, Hardcore Survival, or Kamisayo Speedrun for a Horde Warrior. Only
+   guides with a route for your race are offered.
+2. **Features**: Auction House steps, group quests, dungeons.
+3. **Dungeons** (when dungeons are on): the dungeons your faction can run, with
+   level ranges and how many steps each adds to your route, plus
+   **Recommended**, **All** and **None**. Recommended picks the dungeons whose
+   quests the guides use most.
+
+It starts from what the character already has, so an existing character can
+finish it without changing anything, and it keeps your place in your guide
+unless you pick a different one. Where the chosen guides do not mark a kind of
+step yet, it says so. Closing it keeps your current settings. Run it again with
+`/apg setup` or **Run setup** in the options panel.
+
+**Custom zones between guides.** When you finish a guide and a custom zone
+fits your level, a small **Where next?** window asks whether to carry on with
+the route or take the custom zone. Finish Redridge Mountains (27-28) at 28, for
+example, and it offers the next Optimized guide or Northwind (28-34). A custom
+zone opens in a tab beside the route, with the route's next guide waiting in the
+first tab. Finish the custom zone and it asks again: back to the route, at the
+guide for the level you are by then, or on to the next custom zone that fits. A
+zone fits when you are inside its level range or one short of it, below its top,
+and have not finished it; with none that fit, nothing is asked. Closing the
+window carries on with the route. The options panel can switch it off (*Offer
+custom zones between guides*). The custom zones are also under the guide
+list's **Custom** tab at any time.
+
 **Professions.** Ten 1–300 routes with trainers, craft counts, reagents and
 recipe sources, tracked against your actual skill level. See below.
 
-**Materials.** `/apg materials` totals the reagents the rest of the current
-guide still needs — counted from where you actually are, not from step one, so
-it is the number you want at the auction house rather than the one you needed
-when you started.
+**Shopping list.** On a guide with reagents the panel's footer carries a
+**Shopping list** button (or `/apg materials`). It pops out beside the guide
+with what you need and what your bags already hold — `12/40 Peacebloom` —
+short lines in gold, covered ones dimmed, updating as your bags change. The tab
+at the top switches between **This step** (the craft you are on or coming up
+to) and **Whole route** (everything still ahead, counted from where you
+actually are rather than from step one, so it is the number you want at the
+auction house).
+
+With [Aegis: Exchange](https://github.com/Torchlite-bit/Aegis_Exchange)
+loaded, **Send to Exchange** at the bottom of the list (or `/apg exchange`)
+puts each craft still ahead on Exchange's Crafting tab, where its shopping
+list prices every line at the auction house. It stays in step: finish a craft
+and it leaves Exchange too; finish the route and the list is gone. **Remove
+from Exchange** takes it all back out. Recipes you captured in Exchange
+yourself are never touched — if one shares a name with a craft on the route,
+it is set aside while the route's stands in for it and put back afterwards.
+Exchange's demo mode has to be off.
+
+**Active items and targets.** Two small windows, as RestedXP has, hang under
+the guide. **Active Items** has a button for every item the guide wants you to
+use — the current step's, and those for any quest in your log that is not done
+yet. **Active Targets** has a button for whoever the step wants you to find: the
+quest's giver or hand-in, what it wants killed, what drops what it wants
+collected, the trainer a profession step sends you to. Click one to target it
+and mark it for what the quest wants with them (see **Quest icons**).
+`/apg target` does the same for the next one each time you press it, so a macro
+with just that line works like RestedXP's; both also have key bindings under
+*Aegis: Pathfinder* in the key bindings menu. Targets come from pfQuest's
+database, so quest steps need pfQuest; profession steps name their trainers
+themselves. Either window can be dragged anywhere, or switched off in the
+options panel.
+
+**Quest icons.** Mouse over or target anyone a quest wants and the right raid
+marker goes on them by itself, as RestedXP's Quest Icons do:
+
+| Marker | Means | Who |
+|---|---|---|
+| Star | Talk | Gives or takes the quest; the trainer or vendor a profession step names |
+| Square | Interact | A friendly NPC the quest's objectives involve |
+| Skull | Kill | An enemy the quest wants killed |
+| Cross | Loot | An enemy that drops what the quest wants collected |
+
+It covers the current step and every quest in your log: what an unfinished
+quest wants killed or looted, and who takes a finished one. It never replaces a
+marker already there (a party member's, say), skips players and corpses, and
+stays out of raids, where markers belong to the leaders. Someone marked for
+killing who turns out not to be attackable gets a square instead. Quest-log
+marks need pfQuest and ClassicAPI (which gives the log's quest ids); without
+ClassicAPI only the current step is marked. The options panel can switch it
+off.
+
+**Macros.** A third small window, **Macros**, holds two real macros the addon
+writes into your character's macro book and keeps up to date: **AegisTarget**,
+with a `/target` line for each of the step's targets and a line that marks
+whoever it found, and **AegisItem**, which uses the quest item the step needs
+and wears that item's icon. Drag either tile onto an action bar once; from then
+on the macro follows the guide by itself, step after step. Clicking a tile does
+what its macro does. They are made the first time there is something for them
+to do, use two of your 18 character macro slots (the window says so if none are
+free), and are never rewritten while the macro window is open. The options
+panel can switch the window off, which also stops the macros being made or
+updated.
 
 **Automatic advancement.** Accepting, completing and turning in quests, binding
 a hearthstone, and collecting tagged items all resolve themselves. So do travel
@@ -117,10 +211,22 @@ pins either way.
 | Alchemy, Blacksmithing, Cooking, Enchanting, First Aid, Jewelcrafting, Leatherworking, Mining, Survival, Tailoring | Full 1–300 routes |
 | Engineering, Herbalism, Skinning, Fishing | Placeholders — see below |
 
-Each authored guide carries the trainer for each tier (yours only — Alliance
-players are not shown Horde trainers), what to craft in each skill band, the
-reagents, where the recipe comes from, and equally viable alternatives. Steps
-complete themselves as your skill climbs.
+Each authored guide says what to craft in each skill band and roughly how many,
+the reagents (the shopping list totals what the rest of the route still
+needs, and can send it to Aegis: Exchange), where the recipe comes from, and equally viable alternatives.
+
+Every rank is a step of its own: your faction's trainers, what the rank needs
+and what it costs. Primary crafts wait for the character level a rank needs
+(Apprentice 5, Journeyman 10, Expert 20, Artisan 35) with a "Reach level N"
+step that clears itself once you are there. With pfQuest installed the step
+points the arrow at the nearest of its trainers. Cooking and First Aid do not
+train Expert or Artisan: the guide sends you to buy the Expert tome, and at
+skill 225 — the point the route cannot pass without it — walks you through
+the Artisan quest, level 40 and what to bring included.
+
+Steps complete themselves on the numbers the game reports: a craft or
+gathering step when your skill reaches its target, a rank when your skill cap
+does. Open a guide part-way through and it goes straight to where you are.
 
 The four placeholders are listed but unauthored, and carry a grey `TPL` badge
 in the guide list: the reference these guides were converted from does not
@@ -165,7 +271,7 @@ Runs everything that can be checked without a client: Lua syntax, Lua 5.0
 compatibility, `.toc` and `Guides.xml` integrity, TGA validity, that every
 texture path resolves to a real file, that no panel has drifted off the theme,
 that every window stacks rather than interleaving with the others, and
-fifteen test suites that execute the addon's own code against a stubbed 1.12 API.
+nineteen test suites that execute the addon's own code against a stubbed 1.12 API.
 
 None of it proves the UI looks right. That needs a client.
 
@@ -178,7 +284,7 @@ None of it proves the UI looks right. That needs a client.
 
 ## Credits
 
-AEGIS: Pathfinder is built on a decade of other people's work. Almost
+Aegis: Pathfinder is built on a decade of other people's work. Almost
 everything that makes it function was written by someone else first.
 
 **The addon itself** descends, oldest first, through:

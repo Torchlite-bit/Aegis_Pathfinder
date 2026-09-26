@@ -46,7 +46,8 @@ function AegisPathfinder:GoToPreviousObjective() end
 function AegisPathfinder:SkipToNextObjective() end
 function AegisPathfinder:SetTurnedIn() end
 function AegisPathfinder:UpdateStatusFrame() end
-function AegisPathfinder:ToggleMaterialsPanel() end
+function AegisPathfinder:ToggleMaterialsPanel() self.__matsOpened = (self.__matsOpened or 0) + 1 end
+function AegisPathfinder:GuideHasMaterials() return self.__hasMats end
 function AegisPathfinder:OnObjectiveFrameResized2() end
 function AegisPathfinder:IsAutoDetectable() return false end
 function AegisPathfinder:GetObjectiveInfo(i)
@@ -587,6 +588,44 @@ check(frame.footer.warning == "Guide data authored for OctoWoW",
 AegisPathfinder.__dataWarning = nil
 AegisPathfinder:UpdateOHPanel()
 check(frame.footer.warning == nil, "which goes when the warning does")
+
+--[[ The shopping list's button. It used to be an 18px glyph pointing at a
+	texture that did not exist -- "use" is not one of the theme's glyphs -- so
+	it drew nothing. It carries the buy icon and says what it is now, and only
+	on a guide that has a shopping list. ]]
+local mats = frame.footer.materials
+check(mats ~= nil, "the footer has a shopping list button")
+local tex = mats.glyph:GetTexture()
+check(tex == Theme.actionIcon.B,
+	"its icon is the theme's buy glyph, got '%s'", tostring(tex))
+check(string.find(tex or "", "Interface\\AddOns\\", 1, true) == 1,
+	"which is a real texture path, not a bare glyph name, got '%s'", tostring(tex))
+check(mats.label and mats.label:GetText() == "SHOPPING LIST", "and it says what it opens")
+
+AegisPathfinder.__hasMats = false
+AegisPathfinder:UpdateOHPanel()
+check(not mats:IsShown(), "a quest guide has no shopping list, so no button")
+local function qidString()
+	for _, fs in ipairs(footerStrings) do
+		for _, pt in ipairs(fs.__points) do if pt[1] == "LEFT" then return fs, pt end end
+	end
+end
+local _, qpt = qidString()
+check(qpt and qpt[2] == frame.footer, "and the quest id starts at the footer's edge")
+
+AegisPathfinder.__hasMats = true
+AegisPathfinder:UpdateOHPanel()
+check(mats:IsShown(), "a craft guide shows it")
+_, qpt = qidString()
+check(qpt and qpt[2] == mats, "with the quest id moved along beside it")
+this = mats
+mats:GetScript("OnClick")()
+check(AegisPathfinder.__matsOpened == 1, "clicking it opens the shopping list")
+mats:GetScript("OnEnter")()
+check(Theme.tip and Theme.tip:IsShown(), "and hovering it says what it is")
+mats:GetScript("OnLeave")()
+AegisPathfinder.__hasMats = false
+AegisPathfinder:UpdateOHPanel()
 
 -- Report ---------------------------------------------------------------------
 
