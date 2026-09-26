@@ -121,6 +121,7 @@ local defaults = {
     branchsavedstep = nil,
     setupdone = false,            -- has this character been through the first-time setup?
     offercustomzones = true,      -- offer custom zones when a guide finishes (NextGuideFrame.lua)
+    craftsellback = true,         -- crafting routes sell what is left over to a merchant (CraftPlanner.lua)
     routepack = nil,              -- Active route pack name (e.g., "VanillaGuide", "RestedXP")
     PlayStyle = "SOLO",           -- Default playstyle ("SOLO" or "GROUP")
     UseAH = false,                -- Default Auction House setting (true/false)
@@ -178,6 +179,12 @@ local options = {
             desc = "Use the first active item",
             type = "execute",
             func = function() AegisPathfinder:UseActiveItem(1) end,
+        },
+        Craft = {
+            name = "Craft",
+            desc = "The crafting route window: the cheapest way to level a profession at today's prices",
+            type = "execute",
+            func = function() AegisPathfinder:ToggleCraftRoutePanel() end,
         },
         Exchange = {
             name = "Exchange",
@@ -586,6 +593,9 @@ function AegisPathfinder:OnInitialize()
     end
     self:SetupErrorCapture()
     self.cachedturnins = self.db.char.cachedturnins
+    -- Crafting routes loaded as guides in earlier sessions (CraftRouteFrame.lua),
+    -- registered with the rest so the one you were on reopens.
+    if self.RestoreCraftGuides then self:RestoreCraftGuides() end
     if self.myfaction == nil then
         self:RegisterEvent("PLAYER_ENTERING_WORLD")
     end

@@ -32,6 +32,8 @@ QuestShellPlusParser.lua
 Navigation.lua
 QuestTracker.lua
 Professions.lua
+CraftPlanner.lua
+CraftScan.lua
 GuideEngine.lua
 NavCallout.lua
 # The objectives panel is the addon's only window, and the other panels anchor
@@ -40,6 +42,7 @@ ObjectivesFrame.lua
 OptionsFrame.lua
 GuideListFrame.lua
 MaterialsFrame.lua
+CraftRouteFrame.lua
 ActiveFrames.lua
 NextGuideFrame.lua
 SetupFrame.lua
@@ -47,6 +50,10 @@ MinimapButton.lua
 
 # Routes
 Routes\Routes.lua
+
+# Recipe and merchant-price data for the crafting route planner
+# (converted from CraftRoute by Tools/import_recipes.py)
+Crafting\Crafting.xml
 
 # Optimized Guides (VanillaGuide quest order)
 Guides\Optimized\Alliance\Guides.xml

@@ -47,6 +47,7 @@ too — the old `TurtleGuide` global is still an alias.
 | `/apg resetpanels` | Put every window back where it opens by default |
 | `/apg materials` | The shopping list: reagents for this craft, or the rest of the guide |
 | `/apg exchange` | Send the guide's remaining crafts to Aegis: Exchange, or take them back out |
+| `/apg craft` | The crafting route window: the cheapest way to level a profession at today's prices |
 | `/apg setup` | Run the first-time setup again: your guide, its features and your dungeons |
 | `/apg target` | Target and mark the step's next active target (put it in a macro) |
 | `/apg useitem` | Use the first active item |
@@ -139,6 +140,35 @@ yourself are never touched — if one shares a name with a craft on the route,
 it is set aside while the route's stands in for it and put back afterwards.
 Exchange's demo mode has to be off.
 
+**Cheapest crafting route.** **Cheapest route** on the shopping list (or
+`/apg craft`) opens a window that works out the cheapest way from your skill to
+300 in a profession at today's prices, as
+[CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) does — without
+needing CraftRoute. It shows the total, what it is made of (reagents, recipes,
+what you get back selling leftovers to a merchant), and a row per recipe: the
+skill band, how many crafts, the reagents and what the step costs. Hover a row
+for how the recipe is learned, what to buy and what gets made first.
+
+- **Prices** come from merchants (built in) and the auction house: press **Scan
+  prices** with the auction house open and it searches for each reagent and
+  recipe the profession could use, the route's own first, keeping every
+  listing so forty of something is priced as forty. With Aegis: Exchange
+  loaded its prices are used too. A reagent nobody has a price for is never
+  counted as free: the route avoids it, or says it has no price.
+- **Your recipes**: open your profession window once and the recipes you know
+  cost nothing to learn; drop and reputation recipes are only used once you
+  know them.
+- **Load as guide** turns the route into a guide, *Alchemy (cheapest route)*
+  and so on, in the Professions list: the authored guide's trainers, level and
+  rank steps (and the Expert cookbook and Artisan quest for Cooking) placed
+  where your skill cap runs out, with the planned crafts in between. It is kept
+  between sessions and replaced when you plan again.
+
+It plans Alchemy, Blacksmithing, Cooking, Enchanting, Engineering,
+Jewelcrafting, Leatherworking, Survival and Tailoring, from 1,095 recipes whose
+thresholds, reagents and sources come from CraftRoute's data (with its
+author's permission); the planner itself is this addon's own.
+
 **Active items and targets.** Two small windows, as RestedXP has, hang under
 the guide. **Active Items** has a button for every item the guide wants you to
 use — the current step's, and those for any quest in your log that is not done
@@ -211,6 +241,10 @@ pins either way.
 | Alchemy, Blacksmithing, Cooking, Enchanting, First Aid, Jewelcrafting, Leatherworking, Mining, Survival, Tailoring | Full 1–300 routes |
 | Engineering, Herbalism, Skinning, Fishing | Placeholders — see below |
 
+Each authored guide is a fixed route, chosen once. For one planned from today's
+prices instead, see **Cheapest crafting route** above — it keeps the authored
+guide's trainer and rank steps and replaces only the crafts.
+
 Each authored guide says what to craft in each skill band and roughly how many,
 the reagents (the shopping list totals what the rest of the route still
 needs, and can send it to Aegis: Exchange), where the recipe comes from, and equally viable alternatives.
@@ -271,7 +305,8 @@ Runs everything that can be checked without a client: Lua syntax, Lua 5.0
 compatibility, `.toc` and `Guides.xml` integrity, TGA validity, that every
 texture path resolves to a real file, that no panel has drifted off the theme,
 that every window stacks rather than interleaving with the others, and
-nineteen test suites that execute the addon's own code against a stubbed 1.12 API.
+that no function passes Lua 5.0's upvalue limit, and twenty-one test suites
+that execute the addon's own code against a stubbed 1.12 API.
 
 None of it proves the UI looks right. That needs a client.
 

@@ -1080,7 +1080,7 @@ end
 	panels that snap beside the guide do so again when next opened.
 ]]
 local WINDOW_KEYS = {
-	"objframe", "optionsframe", "guidelistframe", "materialsframe",
+	"objframe", "optionsframe", "guidelistframe", "materialsframe", "craftframe",
 	"errorlogframe", "startzoneframe", "navcallout", "creditsframe",
 }
 
@@ -1109,7 +1109,7 @@ function AegisPathfinder:ResetWindowLayout()
 		end
 	end
 	-- These place themselves beside the guide as they open.
-	for _, key in ipairs({ "optionsframe", "guidelistframe", "materialsframe" }) do
+	for _, key in ipairs({ "optionsframe", "guidelistframe", "materialsframe", "craftframe" }) do
 		local w = self[key]
 		if w and w:IsShown() then w:Hide(); w:Show() end
 	end
