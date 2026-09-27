@@ -115,8 +115,8 @@ on a `C` step instead, or an `\|L\|itemid qty\|` tag for item collects.
 
 | Tag | Description | Example |
 |-----|-------------|---------|
-| `C` | Class restriction | `\|C\|Warrior\|` or `\|C\|Mage,Warlock\|` |
-| `R` | Race restriction | `\|R\|Human\|` or `\|R\|Dwarf,Gnome\|` |
+| `C` | Class restriction | `\|C\|Warrior\|` or `\|C\|Mage/Warlock\|` |
+| `R` | Race restriction, as `UnitRace` names it (`Night Elf`, `High Elf`); `!` for "not" | `\|R\|Human\|`, `\|R\|Dwarf/Gnome\|` or `\|R\|!Undead\|` |
 | `O` | Optional quest | `\|O\|` |
 | `T` | In-town objective | `\|T\|` |
 | `P` | Play style: shown only in that mode | `\|P\|GROUP\|` |
@@ -264,6 +264,30 @@ N Guide Complete |N|Continue to Darkshore (12-17).|
 ]]
 end)
 ```
+
+## Generated Zone Guides
+
+A custom zone whose quests are in a pfQuest-turtle checkout can be written
+from that data instead of by hand. `Tools/build_zone_guide.py` reads the
+zone's quests -- givers, takers, objectives and where they are, the quests
+before each, levels and races -- and orders them by the rules above:
+prerequisites first, then level, then the nearest thing to do next, picking up
+and handing in everything at a quest giver before moving on, with trips out of
+the zone only where a chain goes out and comes back. It writes one guide per
+side.
+
+```sh
+python3 Tools/build_zone_guide.py --pfquest-turtle ../pfQuest-turtle --pfquest ../pfQuest
+```
+
+What the data cannot give -- the names of places, a quest chain it has no
+`["pre"]` for, objectives it has no spawns for, which quests want a group --
+goes in the zone's entry in `ZONES` at the top of the script, never into the
+guide, so running it again over a newer checkout keeps it. Anything it still
+cannot place is printed as it writes. Moonwhisper Coast is written this way,
+from [ryanmr82's fork](https://github.com/ryanmr82/pfQuest-turtle); its data
+grows as players send in captures, so run it again now and then.
+`Tools/test_zoneguide.lua` checks what it writes.
 
 ## Registering Your Guide
 

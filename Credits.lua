@@ -27,6 +27,8 @@ local CREDITS = {
 		"mrmr -- optimized quest ordering",
 		"RestedXP Guides (Tactics, Zeroji) -- RXP speedrun routes",
 		"The Turtle WoW team and the servers continuing it",
+		"ryanmr82 and the Hydra guild -- the Moonwhisper Coast quest data",
+		"rivi-s -- pfQuest-turtle-HDB, filling its gaps",
 	} },
 	{ "Libraries and data", {
 		"The Ace Development Team -- Ace2",
