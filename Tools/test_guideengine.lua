@@ -49,7 +49,6 @@ end
 dofile("WidgetWarlock.lua")
 dofile("Theme.lua")
 dofile("Parser.lua")      -- provides GetObjectiveTag
-dofile("Servers.lua")     -- provides GetDataSourceWarning
 dofile("GuideEngine.lua")
 
 local failures, checks = {}, 0
@@ -113,12 +112,11 @@ check(not AegisPathfinder:IsAutoDetectable("USE", 1),
 -- Step metadata --------------------------------------------------------------
 
 -- What the card's meta row used to paint is now data the panel renders.
-AegisPathfinder.db.profile.server = "octowow"
 AegisPathfinder.tags = { [1] = "|QID|41187| |N|Aerthand Skyshield in Brinthilien (48.3, 84.3)|" }
 
 local qid, meta, warn = AegisPathfinder:GetStepMeta(1)
 check(qid == "41187", "the quest id should come back on its own, got '%s'", tostring(qid))
-check(not warn, "no warning on the native server")
+check(not warn, "a step's metadata is never a warning")
 check(string.find(meta, "QID 41187", 1, true) ~= nil,
 	"the meta string should carry the quest id, got '%s'", tostring(meta))
 check(string.find(meta, "48.3, 84.3", 1, true) ~= nil,
@@ -150,14 +148,14 @@ local noQid, noMeta = AegisPathfinder:GetStepMeta(1)
 check(noQid == nil and noMeta == nil,
 	"a step with no id, skill or coordinates reports nothing rather than an empty string")
 
--- A data-source mismatch outranks everything else the row could carry.
+-- A player once told to expect another server's data is not warned: the
+-- servers share these quests and places.
 AegisPathfinder.db.profile.server = "ravencraft"
 AegisPathfinder.tags = { [1] = "|QID|41187| |N|Aerthand Skyshield (48.3, 84.3)|" }
-local _, warnMeta, isWarn = AegisPathfinder:GetStepMeta(1)
-check(isWarn == true, "a data mismatch must be flagged as a warning, not as metadata")
-check(string.find(warnMeta, "RavenCraft", 1, true) ~= nil,
-	"the warning should name the player's server, got '%s'", tostring(warnMeta))
-AegisPathfinder.db.profile.server = "octowow"
+local wQid, warnMeta, isWarn = AegisPathfinder:GetStepMeta(1)
+check(not isWarn and wQid == "41187" and string.find(warnMeta, "QID 41187", 1, true) ~= nil,
+	"a server saved by an older version raises no warning, got '%s'", tostring(warnMeta))
+AegisPathfinder.db.profile.server = nil
 
 -- Before any guide is loaded ------------------------------------------------
 

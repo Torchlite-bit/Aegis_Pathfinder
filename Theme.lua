@@ -55,14 +55,12 @@ Theme.color = {
 	colour of their own, so the accent can follow the server you play on. A
 	theme names only the colours it changes -- the accent family, and for Day
 	and Night the panel shades as well. Text, gold, danger and the satisfied
-	and outstanding step bands keep their meaning in every theme.
+	and outstanding step bands keep their meaning in every theme. A theme is
+	colours only: the guides are the same on every server.
 
 	Colours are changed in place, so anything holding a colour table sees the
 	new one, and everything already drawn is re-tinted from the record Tint
 	and TextColor keep (below): a theme applies at once, without a reload.
-
-	`server`, where set, is the server the theme is named for: picking the
-	theme also tells Servers.lua that is where you play.
 ]]
 Theme.THEMES = {
 	{ key = "day", label = "Day", note = "Warm amber on lighter panels.",
@@ -74,13 +72,13 @@ Theme.THEMES = {
 			panel = "171b25", panel2 = "0c0f16", panel3 = "12151e", tabbg = "2b3242",
 			bg1 = "0e1119", bg2 = "080a10" } },
 	{ key = "turtle", label = "Turtle WoW", note = "The original green.", colors = {} },
-	{ key = "octowow", label = "OctoWoW", server = "octowow", note = "OctoWoW's purple.",
+	{ key = "octowow", label = "OctoWoW", note = "OctoWoW's purple.",
 		colors = { accent = "a970ff", accentDeep = "6526c4", accentGlow = "cfb0ff" } },
-	{ key = "ravencraft", label = "RavenCraft", server = "ravencraft",
+	{ key = "ravencraft", label = "RavenCraft",
 		note = "RavenCraft's dark grey, with a lighter grey where the green was so it stays readable.",
 		colors = { accent = "a3aab3", accentDeep = "474d55", accentGlow = "d2d6db",
 			panel = "1a1a1c", panel2 = "0d0d0f", panel3 = "151517", tabbg = "323235" } },
-	{ key = "capybara", label = "Capybara Paradise", server = "capybara", note = "Capybara Paradise's tan.",
+	{ key = "capybara", label = "Capybara Paradise", note = "Capybara Paradise's tan.",
 		colors = { accent = "cfa77c", accentDeep = "8b5a2b", accentGlow = "ead0b0" } },
 	{ key = "aegis", label = "Aegis", note = "The Aegis suite's red.",
 		colors = { accent = "ea5f56", accentDeep = "9e2a22", accentGlow = "f4958e" } },
@@ -1486,11 +1484,6 @@ end
 function AegisPathfinder:SetTheme(key)
 	local def = Theme:ApplyTheme(key)
 	self.db.profile.theme = def.key
-	-- A server's own theme says which server this is (Servers.lua), which is
-	-- what the guide-data warnings go by.
-	if def.server and self.GetServerInfo and self:GetServerInfo(def.server) then
-		self.db.profile.server = def.server
-	end
 	if self.UpdateStatusFrame then self:UpdateStatusFrame() end
 	for _, refresh in ipairs({ "RefreshConfigPanel", "UpdateGuideListPanel", "UpdateMaterialsPanel",
 		"UpdateCraftRoutePanel", "RefreshActiveFrames", "UpdateMinimapButton" }) do

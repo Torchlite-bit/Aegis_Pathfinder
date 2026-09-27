@@ -32,7 +32,6 @@ That runs everything that can run without a WoW client:
 | `Tools/test_theme.lua` | The theme layer against a stubbed 1.12 API |
 | `Tools/test_professions.lua` | Generated guides through the real parsers |
 | `Tools/test_statusframe.lua` | The status card's layout and population |
-| `Tools/test_servers.lua` | Guide data provenance and mismatch detection |
 | `Tools/test_dungeons.lua` | Dungeon chips and the guide-reference scan |
 | `Tools/test_guidelist.lua` | Guide categorisation, tabs and badges |
 | `Tools/test_activeframes.lua` | Active Items, Active Targets and Macros: which items and targets each step offers, targeting and raid marks, the generated AegisTarget/AegisItem macros, placement, the key bindings |
@@ -116,11 +115,7 @@ person to review before any tag is added.
 
 ## Guide data and servers
 
-Guide content in this repository was authored against **OctoWoW**. The
-Turtle WoW-lineage servers each reconstructed content past roughly patch 1.17
-independently, so quest ids and coordinates are not guaranteed to match on
-Capybara Paradise or RavenCraft.
-
-If you author or verify guide data, say which server you checked it against.
-Guides that silently assume one server's data is the most likely source of
-wrong waypoints in this addon.
+Turtle WoW, OctoWoW, Capybara Paradise and RavenCraft share the quests and
+places these guides use, so one set of guides serves all of them. If you find a
+quest id or a location that differs on one server, report it with the server
+and the step.

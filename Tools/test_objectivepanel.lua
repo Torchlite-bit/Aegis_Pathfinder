@@ -566,8 +566,8 @@ check(qidText == "QID 26", "the footer names the current step's quest id, got '%
 check(countText == "1 of 5 steps completed",
 	"the footer counts the guide, got '%s'", tostring(countText))
 
--- A data-source mismatch outranks the quest id: it is the reason a waypoint
--- points at nothing, and it otherwise fails silently.
+-- A warning from GetStepMeta outranks the quest id. Nothing raises one at
+-- present, but the footer keeps the slot for one.
 AegisPathfinder.__dataWarning = "Guide data authored for OctoWoW"
 AegisPathfinder:UpdateOHPanel()
 local warned = false

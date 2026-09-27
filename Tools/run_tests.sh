@@ -22,7 +22,6 @@ lua5.1 Tools/test_theme.lua
 lua5.1 Tools/test_professions.lua
 lua5.1 Tools/test_guideengine.lua
 lua5.1 Tools/test_navcallout.lua
-lua5.1 Tools/test_servers.lua
 lua5.1 Tools/test_dungeons.lua
 lua5.1 Tools/test_guidelist.lua
 lua5.1 Tools/test_materials.lua

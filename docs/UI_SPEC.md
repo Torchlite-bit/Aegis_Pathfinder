@@ -153,7 +153,7 @@ steps lived there too until it became the Active Items window
 
 What the card's meta row used to paint is now `GetStepMeta`, which returns the
 quest id, a profession step's live skill range, coordinates buried in the note,
-and any data-source warning, and lets the caller decide how to show them.
+and any warning, and lets the caller decide how to show them.
 
 ### Window chrome -- `Theme:Chrome`
 
@@ -224,7 +224,7 @@ step's note line instead, as the concept does.
 **Width.** The concept's 396px (`.panel{width:396px}`). It used to open at
 630px, and every earlier version saved the width on any resize, the first
 layout included -- so a stored 630 is read as "never chosen" and dropped. Only
-the grip saves a width now. At 396 a data-source warning in the footer does
+the grip saves a width now. At 396 a warning in the footer does
 not fit beside the step count, so it stops short of the count on one line and
 the footer's tooltip carries the whole of it.
 
@@ -251,9 +251,9 @@ relative point as well as the offsets. Windows are clamped to the screen.
 
 **The footer** carries live state rather than the slash-command hint it used
 to: the current step's quest id on the left in accent, how far through the
-guide you are on the right. A data-source warning outranks the id and turns the
-slot red -- it is the most likely reason a waypoint points at nothing, and it
-otherwise fails silently.
+guide you are on the right. A warning from `GetStepMeta` outranks the id and
+turns the slot red; nothing raises one at present (the per-server guide-data
+warning is gone).
 
 Rows are 44px slots holding either of the concept's two row models:
 
@@ -389,10 +389,10 @@ Text, gold, danger and the green/red step bands keep their meaning everywhere.
   4.5:1 for the accent on the panel and for dark text on an accent pill, and
   7:1 for dim text on the panel. RavenCraft's "dark grey" is its panels; its
   accent is a lighter grey, since dark grey on a dark panel cannot be read.
-- **Servers**: a server's theme (OctoWoW, RavenCraft, Capybara Paradise) also
-  sets `profile.server`, which the guide-data provenance warnings read
-  (`Servers.lua`); the note under the dropdown carries what the Server section
-  used to say about that server's data. `/apg server` still sets it alone.
+- **Colours only**: a theme says nothing about which server you play on. The
+  servers share the quests and places the guides use, so the old per-server
+  guide-data warnings (`Servers.lua`, `/apg server`) are gone; the note under
+  the dropdown says what the theme looks like.
 
 ### Minimap button -- `MinimapButton.lua`
 

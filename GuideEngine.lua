@@ -85,16 +85,12 @@ end
 	to show them -- the objectives panel puts the id in its footer.
 
 	Returns: qid, meta string (nil if there is nothing to say), and whether that
-	string is a data-source warning rather than ordinary metadata.
+	string is a warning rather than ordinary metadata. Nothing raises one at
+	present: the guide-data-by-server warning went when it was clear the
+	servers share these quests and places.
 ]]
 function AegisPathfinder:GetStepMeta(i, note)
 	note = note or self:GetObjectiveTag("N", i)
-
-	-- A guide whose data was authored for another server is the most likely
-	-- cause of a waypoint pointing at nothing, and it fails silently
-	-- otherwise. It outranks anything else this row could carry.
-	local warning = self:GetDataSourceWarning()
-	if warning then return nil, warning, true end
 
 	local bits = {}
 	local qid = self:GetObjectiveTag("QID", i)

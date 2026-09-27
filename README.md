@@ -52,8 +52,6 @@ too — the old `TurtleGuide` global is still an alias.
 | `/apg setup` | Run the first-time setup again: your guide, its features and your dungeons |
 | `/apg target` | Target and mark the step's next active target (put it in a macro) |
 | `/apg useitem` | Use the first active item |
-| `/apg server` | Cycle which server you play on |
-| `/apg serverstatus` | Guide data provenance per server |
 
 `/pathfinder` and `/vg` do the same thing. There is deliberately no `/aegis` —
 that belongs to another addon in the Aegis suite.
@@ -238,8 +236,7 @@ confirmation has a "Don't warn me again" box.
 Turtle WoW is the original green, OctoWoW purple, RavenCraft grey, Capybara
 Paradise tan, Aegis red, and Day (amber, lighter panels) and Night (moonlight
 blue, deeper panels). It applies at once, arrow and progress bars included, with
-no reload. A server's own theme also tells the addon that is your server, which
-is what its guide-data warnings go by. Every theme is checked for readability:
+no reload. Themes are colours only. Every theme is checked for readability:
 accents and text keep a WCAG contrast of at least 4.5:1 against the panels.
 
 **Automatic advancement.** Accepting, completing and turning in quests, binding
@@ -311,25 +308,13 @@ Where the reference had no recipe for a skill range, the guide says so rather
 than inventing one. Mining's mid-range gaps are real, and it tells you to go
 mine nodes.
 
-## Servers and guide data
+## Servers
 
-Turtle WoW itself is offline. The successor servers each reconstructed content
-past roughly patch 1.17 independently, so **quest ids and coordinates are not
-guaranteed to be identical between them**.
-
-Guide content here was authored against **OctoWoW**. It is likely but not
-guaranteed to be correct on Capybara Paradise or RavenCraft (which launched in
-August 2026).
-
-Tell the addon which server you are on by picking its **server theme** in the
-options panel, or with `/apg server`. It does not swap
-in a per-server dataset — only one exists — but it will say so on the status
-panel's footer when the loaded guide's data was authored somewhere else, which
-is the most likely reason a waypoint points at nothing.
-
-`/apg serverstatus` shows what is known per server, including which pfQuest
-pack to use: `pfQuest-octo` for OctoWoW, the original `pfQuest-turtle` for
-Capybara Paradise, and none confirmed for RavenCraft.
+Turtle WoW, OctoWoW, Capybara Paradise and RavenCraft share the quests and
+places these guides use, so the same guides work on all of them. The options
+panel's **Server theme** is colours only. For quest-giver lookups, use the
+pfQuest pack for your server: `pfQuest-octo` on OctoWoW, `pfQuest-turtle`
+elsewhere.
 
 Reports welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
@@ -343,7 +328,7 @@ Runs everything that can be checked without a client: Lua syntax, Lua 5.0
 compatibility, `.toc` and `Guides.xml` integrity, TGA validity, that every
 texture path resolves to a real file, that no panel has drifted off the theme,
 that every window stacks rather than interleaving with the others, and
-that no function passes Lua 5.0's upvalue limit, and twenty-two test suites
+that no function passes Lua 5.0's upvalue limit, and twenty-one test suites
 that execute the addon's own code against a stubbed 1.12 API.
 
 None of it proves the UI looks right. That needs a client.

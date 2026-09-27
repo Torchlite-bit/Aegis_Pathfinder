@@ -86,7 +86,6 @@ function AegisPathfinder:ForceWaypointUpdate() self.__resent = true end
 
 dofile("Theme.lua")
 dofile("WidgetWarlock.lua")
-dofile("Servers.lua")
 dofile("Credits.lua")
 dofile("OptionsFrame.lua")
 
@@ -236,16 +235,14 @@ local green = { Theme.color.accent[1], Theme.color.accent[2], Theme.color.accent
 pickTheme("OctoWoW")
 check(AegisPathfinder.db.profile.theme == "octowow", "picking a theme saves it")
 check(Theme.color.accent[1] > green[1] and Theme.color.accent[3] > green[3], "and the accent turns purple")
-check(AegisPathfinder.db.profile.server == "octowow", "a server's theme says which server this is")
-check(string.find(frame.themeNote:GetText(), "authored against OctoWoW", 1, true) ~= nil,
-	"on the native server the note says so, got '%s'", tostring(frame.themeNote:GetText()))
+check(frame.themeNote:GetText() == "OctoWoW's purple.", "the note says what it looks like, got '%s'",
+	tostring(frame.themeNote:GetText()))
+check(AegisPathfinder.db.profile.server == nil, "a theme is colours only: it says nothing about your server")
 pickTheme("RavenCraft")
-check(AegisPathfinder.db.profile.server == "ravencraft", "RavenCraft's theme sets RavenCraft")
-check(string.find(frame.themeNote:GetText(), "not been checked on RavenCraft", 1, true) ~= nil,
-	"and the note warns that the data is unverified there, got '%s'", tostring(frame.themeNote:GetText()))
+check(string.find(frame.themeNote:GetText(), "RavenCraft's dark grey", 1, true) == 1
+	and not string.find(frame.themeNote:GetText(), "guide data", 1, true), "and nothing about guide data")
 pickTheme("Night")
-check(AegisPathfinder.db.profile.server == "ravencraft", "a theme with no server leaves the server alone")
-check(frame.themeNote:GetText() == "Moonlight blue on deeper panels.", "and says only what it looks like")
+check(frame.themeNote:GetText() == "Moonlight blue on deeper panels.", "Night says only what it looks like")
 pickTheme("Turtle WoW")
 check(Theme.color.accent[1] == green[1] and Theme.color.accent[2] == green[2], "and Turtle WoW is green again")
 
