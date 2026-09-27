@@ -53,14 +53,13 @@ end
 
 local AUTHORED = {
 	"Alchemy", "Blacksmithing", "Cooking", "Enchanting", "Engineering", "First_Aid",
-	"Jewelcrafting", "Leatherworking", "Mining", "Survival", "Tailoring",
+	"Fishing", "Herbalism", "Jewelcrafting", "Leatherworking", "Mining", "Skinning",
+	"Survival", "Tailoring",
 }
-local TEMPLATES = { "Fishing", "Herbalism", "Skinning" }
+local GATHERED = { "Herbalism", "Skinning", "Fishing" }
+local FACTIONS = { "Alliance", "Horde" }
 
 for _, name in ipairs(AUTHORED) do
-	dofile("Guides/Professions/" .. name .. ".lua")
-end
-for _, name in ipairs(TEMPLATES) do
 	dofile("Guides/Professions/" .. name .. ".lua")
 end
 
@@ -80,23 +79,25 @@ for _, key in ipairs(AegisPathfinder.guidelist) do
 	end
 end
 
--- Skill ranges must tile 1..300 without gaps, in every authored guide.
+-- Skill ranges must tile 1..300 without gaps, in every authored guide, as
+-- each faction sees it: a gathering guide's bands are one per faction.
 for _, name in ipairs(AUTHORED) do
 	local display = string.gsub(name, "_", " ") .. " (1-300)"
 	local guide = AegisPathfinder.qsplusguides[display]
 	check(guide ~= nil, "no guide registered as '%s'", display)
-	if guide then
+	check(guide and not guide.template, "%s is authored, not a placeholder", display)
+	for _, fac in ipairs(FACTIONS) do
 		local cursor, seen = nil, 0
-		for _, step in ipairs(guide.steps) do
-			if step.skill then
+		for _, step in ipairs(guide and guide.steps or {}) do
+			if step.skill and (not step.faction or step.faction == fac) then
 				seen = seen + 1
 				if cursor == nil then
-					check(step.skill.from == 1, "%s: first range starts at %d, not 1",
-						display, step.skill.from)
+					check(step.skill.from == 1, "%s (%s): first range starts at %d, not 1",
+						display, fac, step.skill.from)
 				else
 					check(step.skill.from == cursor,
-						"%s: range starts at %d but previous ended at %d",
-						display, step.skill.from, cursor)
+						"%s (%s): range starts at %d but previous ended at %d",
+						display, fac, step.skill.from, cursor)
 				end
 				check(step.skill.to > step.skill.from,
 					"%s: range %d-%d does not advance",
@@ -104,24 +105,56 @@ for _, name in ipairs(AUTHORED) do
 				cursor = step.skill.to
 			end
 		end
-		check(seen > 0, "%s has no skill steps", display)
-		check(cursor == 300, "%s: route ends at %s, not 300", display, tostring(cursor))
+		check(seen > 0, "%s has no skill steps for %s", display, fac)
+		check(cursor == 300, "%s (%s): route ends at %s, not 300", display, fac, tostring(cursor))
 	end
 end
 
--- Templates must be obviously unauthored, not silently empty.
-for _, name in ipairs(TEMPLATES) do
+-- Gathering guides ------------------------------------------------------------
+
+-- Each band says where to go, and each faction is sent only to its own side
+-- of the map: no Horde starting zone or capital for an Alliance player, and
+-- the reverse.
+local OTHER_SIDE = {
+	Alliance = { "Durotar", "Mulgore", "Tirisfal Glades", "Orgrimmar", "Thunder Bluff", "Undercity" },
+	Horde = { "Elwynn Forest", "Dun Morogh", "Teldrassil", "Stormwind City", "Ironforge", "Darnassus" },
+}
+for _, name in ipairs(GATHERED) do
 	local guide = AegisPathfinder.qsplusguides[name .. " (1-300)"]
-	check(guide and guide.template == true,
-		"%s should be flagged template = true", name)
-	if guide then
-		local hasSkill = false
+	for _, fac in ipairs(FACTIONS) do
+		local caps, bands = {}, 0
 		for _, s in ipairs(guide.steps) do
-			if s.skill then hasSkill = true end
+			if not s.faction or s.faction == fac then
+				if s.skill then
+					bands = bands + 1
+					check(string.find(s.note, "Best: ", 1, true) or string.find(s.note, "Fish anywhere", 1, true),
+						"%s (%s): %d-%d names no place", name, fac, s.skill.from, s.skill.to)
+				end
+				if s.rank then caps[s.rank.cap] = (caps[s.rank.cap] or 0) + 1 end
+				for _, zone in ipairs(OTHER_SIDE[fac]) do
+					check(not string.find(s.note or "", zone, 1, true),
+						"%s: %s is sent to %s (%s)", name, fac, zone, s.title)
+				end
+			end
 		end
-		check(not hasSkill, "%s is a template but carries skill steps", name)
+		check(bands >= 4, "%s (%s): only %d bands", name, fac, bands)
+		-- Every rank is reached, once each for this faction -- Fishing's
+		-- Artisan by trainer or Nat Pagle's quest, whichever the side has.
+		for _, cap in ipairs({ 75, 150, 225 }) do
+			check(caps[cap] == 1, "%s (%s): the rank to %d is reached %s time(s)", name, fac, cap, tostring(caps[cap]))
+		end
+		check(caps[300] and caps[300] >= 1, "%s (%s): nothing reaches 300", name, fac)
 	end
 end
+
+local fishing = AegisPathfinder.qsplusguides["Fishing (1-300)"]
+local book, pagle
+for _, s in ipairs(fishing.steps) do
+	if s.type == "BUY" and s.rank and s.rank.cap == 225 then book = s end
+	if s.rank and s.rank.cap == 300 and s.npcs and s.npcs[1] == "Nat Pagle" then pagle = s end
+end
+check(book and string.find(book.title, "Expert Fishing", 1, true), "Expert Fishing is a book you buy")
+check(pagle and not pagle.faction, "Nat Pagle's hand-in raises the cap to 300 for either side")
 
 -- Engineering, authored from CraftRoute's route --------------------------------
 

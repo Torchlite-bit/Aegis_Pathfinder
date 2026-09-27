@@ -28,9 +28,9 @@ That runs everything that can run without a WoW client:
 | Check | What it covers |
 |---|---|
 | `Tools/verify.py` | Lua syntax, Lua 5.0 compatibility for shipped files, `.toc` paths, `Guides.xml` completeness, TGA validity, no Blizzard chrome, the 32-upvalue ceiling |
-| `Tools/convert_professions.py --check` | The profession source document still parses and is internally consistent |
+| `Tools/convert_professions.py --check` | The profession source document still parses and is internally consistent; the gathering guides cover 1–300 for each faction with somewhere named in every band; the committed guides are what the generator writes |
 | `Tools/test_theme.lua` | The theme layer against a stubbed 1.12 API |
-| `Tools/test_professions.lua` | Generated guides through the real parsers |
+| `Tools/test_professions.lua` | Generated guides through the real parsers: skill bands tile 1–300 for each faction, every rank is reached, and a gathering guide never sends a faction into the other side's starting zones or capitals |
 | `Tools/test_statusframe.lua` | The status card's layout and population |
 | `Tools/test_dungeons.lua` | Dungeon chips and the guide-reference scan |
 | `Tools/test_guidelist.lua` | Guide categorisation, tabs and badges |
@@ -46,6 +46,25 @@ That runs everything that can run without a WoW client:
 Everything must pass before you open a PR. **None of it proves the UI looks
 right** — that still needs someone to load the addon on a 1.12 client and look
 at it. Say in your PR whether you did.
+
+## Versions
+
+Numbered as every Aegis addon is: `MAJOR.MINOR.PATCH`, and `0.x` until the
+public release, when MAJOR becomes 1.
+
+- **MINOR** for a new capability — something the addon could not do before.
+  **PATCH** for a fix, wording, colour, layout, or a corrected calculation.
+  **MAJOR** only for a change that breaks an existing setup with no migration.
+- **One push, one MINOR**: a body of work that lands in one merge takes a single
+  MINOR bump, and each change inside it is a PATCH under that.
+- A bump touches **five places**: `Core.lua` (`AegisPathfinder.version`), the
+  `.toc`'s `## Version`, the README's H1 and its "Something broken?" line, and a
+  new [`CHANGELOG.md`](CHANGELOG.md) entry with its link reference at the
+  bottom. `Tools/verify.py` checks they agree.
+- Mark a release **restart** in the changelog when it adds or removes a `.lua`
+  file in the `.toc`.
+- Nothing under `Tools/` or `docs/` ships, so a change there alone is not a
+  release and takes no bump.
 
 ## Code rules
 
@@ -84,10 +103,22 @@ hand will be overwritten. Change `Tools/convert_professions.py` or the source
 document in `Tools/data/`, then regenerate. Engineering, which the document
 does not cover, comes from CraftRoute's fixed route
 (`Tools/data/craftroute_routes.json`, exported by `Tools/import_recipes.py`)
-with its trainers in `Tools/data/profession_training.json`:
+with its trainers in `Tools/data/profession_training.json`. Herbalism, Skinning
+and Fishing are built by `Tools/gathering_guides.py` from
+`Tools/data/gathering.json`, and only send players to zones this addon has a
+zone guide for:
 
 ```sh
 python3 Tools/convert_professions.py
+```
+
+`Tools/data/gathering.json` is extracted from pfQuest (herb nodes, spawn
+points, zone names) and the CMaNGOS classic-db dump (skinnable creatures,
+fishing skill by zone, trainers, the Expert fishing book, Nat Pagle's quest).
+To refresh it, check both out and run:
+
+```sh
+python3 Tools/build_gathering.py --pfquest <pfQuest> <pfQuest-turtle> --cmangos <classic-db full dump .sql[.gz]>
 ```
 
 **Recipe data in `Crafting/` is generated** from

@@ -535,6 +535,11 @@ local options = {
 }
 
 AegisPathfinder.title = "Aegis: Pathfinder"
+-- The version, as the Aegis suite numbers them: MAJOR.MINOR.PATCH, 0.x until
+-- the public release. It is written in five places that must agree -- here,
+-- the .toc, the README's H1 and its "Something broken?" line, and the newest
+-- CHANGELOG.md entry -- and Tools/verify.py checks they do.
+AegisPathfinder.version = "0.2.0"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -606,6 +611,10 @@ function AegisPathfinder:OnInitialize()
 
     if migratedLegacyDB then
         self:Print(L["Imported your saved progress from TurtleGuide."])
+    end
+    -- As every Aegis addon says it: the version to quote in a bug report.
+    if DEFAULT_CHAT_FRAME then
+        DEFAULT_CHAT_FRAME:AddMessage(self.title .. " v" .. self.version .. " loaded \226\128\148 /apg")
     end
 end
 

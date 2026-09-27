@@ -409,6 +409,8 @@ function AegisPathfinder:CreateConfigPanel()
 
 	-- Last, where an about box goes: who this addon is built on.
 	table.insert(frame.sections, section("About"))
+	frame.version = note("Version v" .. (AegisPathfinder.version or "?") .. " -- quote it in bug reports.")
+	y = y + 4
 	note("Aegis: Pathfinder is built on other people's work -- TourGuide, "
 		.. "VanillaGuide, ClassicAPI, Joana's routes and more.")
 	y = y + 6

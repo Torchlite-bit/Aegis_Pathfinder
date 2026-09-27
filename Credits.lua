@@ -30,10 +30,10 @@ local CREDITS = {
 	} },
 	{ "Libraries and data", {
 		"The Ace Development Team -- Ace2",
-		"shagu -- pfQuest",
+		"shagu -- pfQuest, and the herb nodes behind Herbalism",
 		"Cladhaire, laytya and the TWOW porters -- TomTom-TWOW",
 		"Kitymeowmeow -- CraftRoute, the recipe data behind crafting routes",
-		"The CMaNGOS team -- classic-db, Engineering's trainers",
+		"The CMaNGOS team -- classic-db, trainers and gathering data",
 	} },
 	{ "Fonts", {
 		"Rajdhani -- (c) 2014 Indian Type Foundry, SIL OFL 1.1",
