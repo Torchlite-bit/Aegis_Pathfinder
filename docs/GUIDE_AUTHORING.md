@@ -119,6 +119,10 @@ on a `C` step instead, or an `\|L\|itemid qty\|` tag for item collects.
 | `R` | Race restriction | `\|R\|Human\|` or `\|R\|Dwarf,Gnome\|` |
 | `O` | Optional quest | `\|O\|` |
 | `T` | In-town objective | `\|T\|` |
+| `P` | Play style: shown only in that mode | `\|P\|GROUP\|` |
+| `D` | Dungeon: shown only while that dungeon is ticked (`!` for "not ticked", `/` for either) | `\|D\|DM\|`, `\|D\|!WC\|` |
+| `AH` | Auction House step: shown only with Auction House steps on and Solo Self-Found off | `\|AH\|` |
+| `TRADE` | Needs another player (a trade, a mage's water, a crafter): hidden in Solo Self-Found | `\|TRADE\|` |
 
 ### Item Tags
 

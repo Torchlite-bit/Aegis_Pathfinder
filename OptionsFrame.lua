@@ -5,16 +5,16 @@
 	  Race          a dropdown of your faction's races
 	  Route pack    pills, with a preview of the route underneath
 	  Dungeons      the chip grid
-	  Filters       group mode and Auction House steps, as sliding switches
+	  Filters       group mode, Auction House steps and Solo Self-Found
 	  Server theme  a dropdown: the colours of your server, or Day or Night
 
 	That is the concept. It used to be a menu of buttons that opened the
 	dungeons, the filters and the route picker as three more windows; all of
 	that lives here now, in the concept's language.
 
-	The concept has no home for the addon's own behaviour settings, the
-	waypoint provider or the maintenance actions, so they follow as three more
-	sections in the same style -- the substitution is the extra sections, not
+	The concept has no home for the addon's own behaviour settings, the item
+	score, the waypoint provider or the maintenance actions, so they follow as
+	more sections in the same style -- the substitution is the extra sections, not
 	a different look.
 ]]
 
@@ -315,9 +315,21 @@ function AegisPathfinder:CreateConfigPanel()
 	end)
 	ah:SetWidth(BODY_W)
 	place(ah, 22, 6)
+	-- RestedXP's Solo Self-Found mode: no trading, no Auction House. It
+	-- holds the Auction House switch off while it is on.
+	local ssf = Theme:Switch(body, "Solo Self-Found", function(on)
+		AegisPathfinder:SetSelfFound(on)
+	end)
+	ssf:SetWidth(BODY_W)
+	ssf:SetScript("OnEnter", function()
+		Theme:ShowTip(this, "RIGHT", "Solo Self-Found",
+			"Hides every step that trades with other players or uses the Auction House.")
+	end)
+	ssf:SetScript("OnLeave", function() Theme:HideTip(this) end)
+	place(ssf, 22, 6)
 	local filterNote = Theme:FinePrint(body, BODY_W)
 	place(filterNote, 16, SECTION_GAP)
-	frame.groupSwitch, frame.ahSwitch, frame.filterNote = group, ah, filterNote
+	frame.groupSwitch, frame.ahSwitch, frame.ssfSwitch, frame.filterNote = group, ah, ssf, filterNote
 
 	--[[ Server theme: the colours of your server, or Day or Night. Colours
 		only -- the guides are the same on every server. It took the place of
@@ -335,6 +347,73 @@ function AegisPathfinder:CreateConfigPanel()
 	local themeNote = Theme:FinePrint(body, BODY_W)
 	place(themeNote, 44, SECTION_GAP)
 	frame.theme, frame.themeNote = theme, themeNote
+
+	--[[ Gear: the item score on tooltips, and the window with its weights. ]]
+	table.insert(frame.sections, section("Gear"))
+	local scoreTips = Theme:Switch(body, "Item score on tooltips", function(on)
+		AegisPathfinder.ItemScore.Settings().tooltips = on
+	end)
+	scoreTips:SetWidth(BODY_W)
+	place(scoreTips, 22, 6)
+	local weights = Theme:Pill(body, "Stat weights", 120, 26)
+	weights:SetScript("OnClick", function() AegisPathfinder:ToggleGearPanel() end)
+	place(weights, 26, 6)
+	note("Each item's tooltip shows what it is worth to your spec and how it "
+		.. "compares with what you wear. The weights come from OctoPawn; change "
+		.. "them, or pick another spec, under Stat weights.")
+	y = y + 10
+	-- The Gear Advisor's switches (GearAdvisor.lua), Zygor's in this style.
+	frame.advisor = {}
+	local ADVISOR = {
+		{ key = "enabled",   label = "Gear Advisor: tell me about upgrades" },
+		{ key = "maxlevel",  label = "Turn it off at level 60" },
+		{ key = "popups",    label = "Pop up new upgrades as I pick them up" },
+		{ key = "autoequip", label = "Equip upgrades for me (never one that binds)" },
+		{ key = "questmark", label = "Mark the best quest reward" },
+		{ key = "questpick", label = "Pick it for me when quests turn in by themselves" },
+		{ key = "bagmark",   label = "Border upgrades in my bags" },
+	}
+	for _, def in ipairs(ADVISOR) do
+		local key = def.key
+		local sw = Theme:Switch(body, def.label, function(on)
+			AegisPathfinder.GearAdvisor.Settings()[key] = on
+			AegisPathfinder.GearAdvisor:Dirty()
+			AegisPathfinder:RefreshConfigPanel()
+		end)
+		sw:SetWidth(BODY_W)
+		place(sw, 22, 6)
+		frame.advisor[key] = sw
+	end
+	local clearDeclined = Theme:Pill(body, "Clear declined items", 150, 26)
+	clearDeclined:SetScript("OnClick", function()
+		AegisPathfinder.GearAdvisor:ClearDeclined()
+		AegisPathfinder:Print("Declined upgrades cleared: they will be offered again.")
+	end)
+	place(clearDeclined, 26, 10)
+	-- The Gear Finder (GearFinder.lua): upgrades in the dungeons you run.
+	frame.finder = {}
+	for _, def in ipairs({
+		{ key = "enabled",  label = "Gear finder: upgrades from the dungeons I run" },
+		{ key = "announce", label = "Name the upgrades when I walk into a dungeon" },
+	}) do
+		local key = def.key
+		local sw = Theme:Switch(body, def.label, function(on)
+			AegisPathfinder.GearFinder.Settings()[key] = on
+			AegisPathfinder:RefreshConfigPanel()
+		end)
+		sw:SetWidth(BODY_W)
+		place(sw, 22, 6)
+		frame.finder[key] = sw
+	end
+	local openFinder = Theme:Pill(body, "Gear finder", 110, 26)
+	openFinder:SetScript("OnClick", function() AegisPathfinder:ToggleGearFinder() end)
+	place(openFinder, 26, 6)
+	note("It looks in the dungeons at or a little above your level that are "
+		.. "ticked under Dungeons, and in raids if you ask it to. Turtle WoW's own "
+		.. "dungeons are not in its data yet.")
+	y = y + SECTION_GAP
+	frame.scoreTips, frame.weightsButton, frame.clearDeclined = scoreTips, weights, clearDeclined
+	frame.openFinder = openFinder
 
 	-- Beyond the concept: the addon's own settings, in the same language. -------
 	table.insert(frame.sections, section("Guide behaviour"))
@@ -520,9 +599,24 @@ function AegisPathfinder:RefreshConfigPanel()
 	-- Filters, and the one-line summary the concept prints under them.
 	local grouped = (db.PlayStyle or "SOLO") == "GROUP"
 	frame.groupSwitch:SetOn(grouped)
-	frame.ahSwitch:SetOn(db.UseAH)
-	frame.filterNote:SetText((grouped and "Group mode" or "Solo mode")
-		.. " \194\183 Auction House steps " .. (db.UseAH and "shown" or "hidden"))
+	frame.ahSwitch:SetOn(db.UseAH and not db.SelfFound)
+	frame.ahSwitch:SetLocked(db.SelfFound)
+	frame.ssfSwitch:SetOn(db.SelfFound)
+	frame.scoreTips:SetOn(self.ItemScore.Settings().tooltips)
+	local finder = self.GearFinder.Settings()
+	for key, sw in pairs(frame.finder) do
+		sw:SetOn(finder[key])
+		sw:SetLocked(key ~= "enabled" and not finder.enabled)
+	end
+	local advisor = self.GearAdvisor.Settings()
+	for key, sw in pairs(frame.advisor) do
+		sw:SetOn(advisor[key])
+		-- The rest of the advisor's switches mean nothing with it off.
+		sw:SetLocked(key ~= "enabled" and not advisor.enabled)
+	end
+	frame.filterNote:SetText((grouped and "Group mode" or "Solo mode") .. " \194\183 "
+		.. (db.SelfFound and "Self-Found: no trading or Auction House steps"
+			or ("Auction House steps " .. (db.UseAH and "shown" or "hidden"))))
 
 	-- The theme, and what it looks like.
 	local def = Theme.themeByKey[self:GetTheme()]

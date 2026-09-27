@@ -60,6 +60,10 @@ end
 function AegisPathfinder:SetWaypointProvider(n) self.db.char.waypointprovider = n end
 function AegisPathfinder:GetGuideDungeons() return { DM = true } end
 function AegisPathfinder:HasNoGuide() return false end
+function AegisPathfinder:SetSelfFound(on)
+	self.db.char.SelfFound = on and true or false
+	self:RefreshConfigPanel()
+end
 function AegisPathfinder:LoadGuide() self.__reloaded = (self.__reloaded or 0) + 1 end
 function AegisPathfinder:UpdateStatusFrame() end
 function AegisPathfinder:UpdateNavCallout() self.__arrowRefreshed = true end
@@ -83,6 +87,20 @@ AegisPathfinder.__provider = { label = "TomTom" }
 function AegisPathfinder:GetWaypointProvider() return self.__provider end
 function AegisPathfinder:ClearWaypoint() self.__cleared = true end
 function AegisPathfinder:ForceWaypointUpdate() self.__resent = true end
+
+-- The item score's settings, as ItemScore.lua keeps them.
+local scoreSettings = { tooltips = true }
+AegisPathfinder.ItemScore = { Settings = function() return scoreSettings end }
+local advisorSettings = { enabled = true, popups = true, questmark = true, bagmark = true }
+local finderSettings = { enabled = true, announce = true, raids = false }
+AegisPathfinder.GearFinder = { Settings = function() return finderSettings end }
+function AegisPathfinder:ToggleGearFinder() self.__finder = (self.__finder or 0) + 1 end
+AegisPathfinder.GearAdvisor = {
+	Settings = function() return advisorSettings end,
+	Dirty = function() end,
+	ClearDeclined = function() AegisPathfinder.__declinedCleared = true end,
+}
+function AegisPathfinder:ToggleGearPanel() self.__gear = (self.__gear or 0) + 1 end
 
 dofile("Theme.lua")
 dofile("WidgetWarlock.lua")
@@ -208,6 +226,45 @@ click(frame.ahSwitch)
 check(db.UseAH == true, "the Auction House switch turns those steps on")
 check(frame.filterNote:GetText() == "Group mode \194\183 Auction House steps shown",
 	"and the summary follows, got '%s'", tostring(frame.filterNote:GetText()))
+
+-- Gear: the score on tooltips, and the weights window.
+check(frame.scoreTips:IsOn(), "the item score is on tooltips by default")
+click(frame.scoreTips)
+check(scoreSettings.tooltips == false, "and the switch takes it off")
+click(frame.scoreTips)
+click(frame.weightsButton)
+check(AegisPathfinder.__gear == 1, "Stat weights opens the Gear window")
+check(frame.advisor.enabled:IsOn() and frame.advisor.popups:IsOn(), "the Gear Advisor is on, with pop-ups")
+check(not frame.advisor.autoequip:IsOn() and not frame.advisor.questpick:IsOn(),
+	"nothing is equipped or picked for you until you ask")
+click(frame.advisor.autoequip)
+check(advisorSettings.autoequip == true, "the switch asks for it")
+click(frame.advisor.enabled)
+check(advisorSettings.enabled == false and not frame.advisor.popups:IsEnabled(),
+	"with the advisor off its other switches are held")
+click(frame.advisor.enabled)
+check(frame.advisor.popups:IsEnabled(), "and let go when it is back on")
+click(frame.clearDeclined)
+check(AegisPathfinder.__declinedCleared, "Clear declined items clears them")
+check(frame.finder.enabled:IsOn() and frame.finder.announce:IsOn(), "the gear finder is on, and names upgrades")
+click(frame.finder.enabled)
+check(finderSettings.enabled == false and not frame.finder.announce:IsEnabled(), "off, its other switch is held")
+click(frame.finder.enabled)
+click(frame.openFinder)
+check(AegisPathfinder.__finder == 1, "the Gear finder button opens it")
+
+-- Solo Self-Found holds the Auction House switch off, and lets it go again.
+check(not frame.ssfSwitch:IsOn(), "Solo Self-Found is off by default")
+click(frame.ssfSwitch)
+check(db.SelfFound == true, "the Self-Found switch turns it on")
+check(not frame.ahSwitch:IsOn(), "with Self-Found on, the Auction House switch reads off")
+check(not frame.ahSwitch:IsEnabled(), "and cannot be clicked")
+check(frame.filterNote:GetText() == "Group mode \194\183 Self-Found: no trading or Auction House steps",
+	"the summary says so, got '%s'", tostring(frame.filterNote:GetText()))
+check(db.UseAH == true, "Self-Found does not forget the Auction House choice underneath")
+click(frame.ssfSwitch)
+check(db.SelfFound == false and frame.ahSwitch:IsOn() and frame.ahSwitch:IsEnabled(),
+	"turning Self-Found off gives the Auction House switch back as it was")
 
 -- The knob slides: left when off, right when on.
 local _, _, _, onX = frame.groupSwitch.knob:GetPoint()

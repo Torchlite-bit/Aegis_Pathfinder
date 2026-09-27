@@ -9,7 +9,8 @@
 	  1. Your guide     the route pack: Optimized, RestedXP Speedrun, Hardcore
 	                    Survival (and Kamisayo for a Horde Warrior). Packs with
 	                    no route for your race are not offered.
-	  2. Features       Auction House steps, group quests, dungeons.
+	  2. Features       Auction House steps, Solo Self-Found, group quests,
+	                    dungeons.
 	  3. Dungeons       which ones, with their level ranges, and quick picks
 	                    for the recommended ones, all, or none. Only asked when
 	                    dungeons are on.
@@ -164,6 +165,7 @@ function AegisPathfinder:CurrentSetupChoice()
 	return {
 		pack = pack,
 		ah = db.UseAH and true or false,
+		ssf = db.SelfFound and true or false,
 		group = db.PlayStyle == "GROUP",
 		dungeons = any,
 		picked = picked,
@@ -178,6 +180,7 @@ function AegisPathfinder:ApplySetup(c)
 		self:SelectRoutePack(c.pack)
 	end
 	db.UseAH = c.ah and true or false
+	db.SelfFound = c.ssf and true or false
 	db.PlayStyle = c.group and "GROUP" or "SOLO"
 	db.Dungeons = db.Dungeons or {}
 	for _, d in ipairs(DUNGEONS) do
@@ -198,7 +201,7 @@ function AegisPathfinder:ApplySetup(c)
 	self:Print(string.format("Set up: %s, %s, Auction House steps %s, %s.",
 		PACK_TEXT[c.pack] and PACK_TEXT[c.pack].title or (pack and pack.displayName) or tostring(c.pack),
 		c.group and "group quests" or "solo",
-		c.ah and "on" or "off",
+		c.ssf and "off (Solo Self-Found)" or (c.ah and "on" or "off"),
 		n == 0 and "no dungeons" or (n .. " dungeon" .. (n == 1 and "" or "s"))))
 end
 
@@ -321,6 +324,8 @@ local function Build()
 	local function feature(key, label, text)
 		local sw = Theme:Switch(frame, label, function(on)
 			choice[key] = on
+			-- Self-Found means no Auction House: its switch goes off with it.
+			if key == "ssf" and on then choice.ah = false end
 			AegisPathfinder:PaintSetup()
 		end)
 		sw:SetWidth(WIDTH - PAD * 2)
@@ -331,6 +336,7 @@ local function Build()
 		return sw
 	end
 	feature("ah", "Auction House", "Includes steps that buy what a quest needs from the auction house instead of farming it.")
+	feature("ssf", "Solo Self-Found", "No trading and no Auction House: leaves out every step that needs either.")
 	feature("group", "Group quests", "Includes elite and group quests, which are hard alone. Leave off to level solo.")
 	feature("dungeons", "Dungeons", "Adds dungeon quests to your route. Choose which on the next step.")
 	frame.featureNote = Body(frame, WIDTH - PAD * 2)
@@ -460,9 +466,10 @@ function AegisPathfinder:PaintSetup()
 	elseif page == 2 then
 		intro("Choose your features", "Turn on what you want the guide to include.")
 		local tags = self:GetPackTags(choice.pack)
-		for _, key in ipairs({ "ah", "group", "dungeons" }) do
+		for _, key in ipairs({ "ah", "ssf", "group", "dungeons" }) do
 			local sw = frame.features[key]
-			sw:SetOn(choice[key])
+			sw:SetOn(choice[key] and not (key == "ah" and choice.ssf))
+			sw:SetLocked(key == "ah" and choice.ssf)
 			sw:ClearAllPoints()
 			sw:SetPoint("TOPLEFT", frame, "TOPLEFT", PAD, -y)
 			sw:Show()

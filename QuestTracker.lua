@@ -391,13 +391,16 @@ function AegisPathfinder:QUEST_PROGRESS()
 	end
 end
 
--- Claim the reward only when there is no choice to make
+-- Claim the reward when there is no choice to make; with a choice, the Gear
+-- Advisor takes the best one if it has been asked to (GearAdvisor.lua).
 function AegisPathfinder:QUEST_COMPLETE()
 	if not AutomationSuspended() then
 		local name = CurrentStepName("TURNIN")
 		if name and QuestFrameTitle() == name and GetNumQuestChoices() <= 1 then
 			self:Debug(string.format("Auto-claiming reward for %q", name))
 			GetQuestReward(GetNumQuestChoices())
+		elseif name and QuestFrameTitle() == name and self.GearAdvisor then
+			self.GearAdvisor:MarkReward(true)
 		end
 	end
 	self:UpdateStatusFrame()

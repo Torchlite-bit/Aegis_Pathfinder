@@ -24,6 +24,10 @@ lua5.1 Tools/test_guideengine.lua
 lua5.1 Tools/test_navcallout.lua
 lua5.1 Tools/test_dungeons.lua
 lua5.1 Tools/test_filtertags.lua
+lua5.1 Tools/test_itemscore.lua
+lua5.1 Tools/test_gearframe.lua
+lua5.1 Tools/test_gearadvisor.lua
+lua5.1 Tools/test_gearfinder.lua
 lua5.1 Tools/test_guidelist.lua
 lua5.1 Tools/test_materials.lua
 lua5.1 Tools/test_craftplanner.lua

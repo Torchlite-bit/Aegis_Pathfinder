@@ -1046,6 +1046,11 @@ function Theme:Switch(parent, label, onChange)
 		end
 	end
 	function row:IsOn() return self.__on end
+	-- Held by another setting: shown, dimmed, and not clickable.
+	function row:SetLocked(locked)
+		if locked then self:Disable() else self:Enable() end
+		self:SetAlpha(locked and 0.45 or 1)
+	end
 
 	row:SetScript("OnClick", function()
 		this:SetOn(not this.__on)

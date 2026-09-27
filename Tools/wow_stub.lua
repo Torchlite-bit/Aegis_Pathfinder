@@ -374,6 +374,17 @@ local function newFrame(frameType, name, parent)
 	function f:SetMultiLine(v) self.__multiline = v and true or false end
 	function f:SetAutoFocus() end
 	function f:SetFontObject() end
+	function f:SetID(id) self.__id = id end
+	function f:GetName() return self.__name end
+	function f:GetID() return self.__id or 0 end
+	function f:SetFont() return true end
+	function f:SetTextColor(r, g, b, a) checkColor("EditBox:SetTextColor", r, g, b, a) end
+	function f:SetJustifyH() end
+	function f:SetMaxLetters() end
+	function f:SetTextInsets() end
+	function f:SetFocus() self.__focus = true end
+	function f:ClearFocus() self.__focus = false end
+	function f:HasFocus() return self.__focus end
 	function f:HighlightText() end
 	function f:SetCursorPosition(p) self.__cursor = p end
 	function f:SetValueStep() end

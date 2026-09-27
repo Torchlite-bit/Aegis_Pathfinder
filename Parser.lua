@@ -222,9 +222,13 @@ local function StepParse(guide)
 		return string.upper(playstyle) == string.upper(setting)
 	end
 
-	local function matchAHFilter(ah)
+	-- An |AH| step needs Auction House steps on and Solo Self-Found off; a
+	-- |TRADE| step -- one that needs another player -- needs Self-Found off.
+	local function matchAHFilter(ah, trade)
+		local db = AegisPathfinder.db and AegisPathfinder.db.char
+		if trade and db and db.SelfFound then return false end
 		if not ah then return true end
-		return AegisPathfinder.db and AegisPathfinder.db.char and not not AegisPathfinder.db.char.UseAH
+		return db and not not db.UseAH and not db.SelfFound
 	end
 
 	for _, text in pairs(guidet) do
@@ -233,9 +237,10 @@ local function StepParse(guide)
 		local _, _, dungeon = string.find(text, "|D|([^|]+)|")
 		local _, _, playstyle = string.find(text, "|P|([^|]+)|")
 		local hasAH = not not string.find(text, "|AH|", 1, true)
+		local hasTrade = not not string.find(text, "|TRADE|", 1, true)
 		if text ~= "" and matchFilter(class, myclass) and matchFilter(race, myrace)
 			and matchDungeonFilter(dungeon) and matchPlayStyleFilter(playstyle)
-			and matchAHFilter(hasAH) then
+			and matchAHFilter(hasAH, hasTrade) then
 			local _, _, action, quest, tag = string.find(text, "^(%a) ([^|]*)(.*)")
 			if action and actiontypes[action] then
 				quest = AegisPathfinder.trim(quest)

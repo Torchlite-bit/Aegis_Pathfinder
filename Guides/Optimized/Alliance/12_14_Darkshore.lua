@@ -23,10 +23,10 @@ A For Love Eternal |QID|963| |N|Cerellean Whiteclaw in Auberdine (35.76, 43.68)|
 A Buzzbox 827 |QID|983| |N|Wizbang Cranktoggle in Auberdine (36.98, 44.10)|
 A The Red Crystal |QID|4811| |N|Sentinel Glynda Nal'Shea in Auberdine (37.64, 43.36)|
 A Cave Mushrooms |QID|947| |N|Barithras Moonshade in Auberdine (37.32, 43.66)|
-A The Family and the Fishing Pole |QID|1141| |N|Gubber Blump in Auberdine (36.10, 44.96)| |O| |AH|
-B Fishing Pole |QID|1141| |N|Train Fishing and buy a Fishing Pole from Gubber Blump. Buy a Shiny Bauble if you can afford it (36.10, 44.96)| |L|6256| |O| |AH|
-C The Family and the Fishing Pole |QID|1141| |N|Catch 6 Darkshore Grouper. Equip the Fishing Pole, apply Shiny Bauble, cast near water and click the bobber when it moves (35.91, 44.98)| |O| |AH|
-T The Family and the Fishing Pole |QID|1141| |N|Gubber Blump in Auberdine (36.07, 44.94)| |O| |AH|
+A The Family and the Fishing Pole |QID|1141| |N|Gubber Blump in Auberdine (36.10, 44.96)| |O|
+B Fishing Pole |QID|1141| |N|Train Fishing and buy a Fishing Pole from Gubber Blump. Buy a Shiny Bauble if you can afford it (36.10, 44.96)| |L|6256| |O|
+C The Family and the Fishing Pole |QID|1141| |N|Catch 6 Darkshore Grouper. Equip the Fishing Pole, apply Shiny Bauble, cast near water and click the bobber when it moves (35.91, 44.98)| |O|
+T The Family and the Fishing Pole |QID|1141| |N|Gubber Blump in Auberdine (36.07, 44.94)| |O|
 h Auberdine |QID|963| |N|Set hearth at Innkeeper Shaussiy (37, 44.1)|
 
 A Bashal'Aran (Part 1) |QID|954| |N|Thundris Windweaver in Auberdine (37.41, 40.16)|

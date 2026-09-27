@@ -8,7 +8,7 @@ return [[
 
 N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Searing Gorge 50-51|
 
-N 15 Silk Cloth |N|Make sure you collect at least 15 Silk Cloth for the quest 'Caught!' later in this guide - purchase from the Auction House or farm Shadowforge Tunneler in Badlands| |L|4306 15| |AH|
+N 15 Silk Cloth |N|Make sure you collect at least 15 Silk Cloth for the quest 'Caught!' later in this guide - purchase from the Auction House or farm Shadowforge Tunneler in Badlands| |L|4306 15|
 
 R Burning Steppes |QID|4449| |N|Travel to Burning Steppes from North of Redridge Mountains (47.23, 25.80)| |Z|Redridge Mountains|
 R Morgan's Vigil |QID|4449| |N|Travel to Morgan's Vigil (82.70, 63.31)| |Z|Burning Steppes|

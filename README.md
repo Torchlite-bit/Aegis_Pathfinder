@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.3.0)
+# Aegis: Pathfinder (v0.4.2)
 
 A Classic+ leveling guide for the Turtle WoW-lineage 1.12 client family —
 OctoWoW, Capybara Paradise and RavenCraft. Part of the Aegis addon suite.
@@ -49,6 +49,9 @@ too — the old `TurtleGuide` global is still an alias.
 | `/apg exchange` | Send the guide's remaining crafts to Aegis: Exchange, or take them back out |
 | `/apg craft` | The crafting route window: the cheapest way to level a profession at today's prices |
 | `/apg share` | Share the guide you are on with your party, or stop sharing (beta) |
+| `/apg gear` | The Gear window: the stat weights behind the item score |
+| `/apg finder` | The Gear finder: upgrades that drop in the dungeons you run |
+| `/apg ssf` | Solo Self-Found on or off |
 | `/apg setup` | Run the first-time setup again: your guide, its features and your dungeons |
 | `/apg target` | Target and mark the step's next active target (put it in a macro) |
 | `/apg useitem` | Use the first active item |
@@ -89,13 +92,18 @@ Solo mode the Optimized and zone guides leave out elite and group quests, and
 the quests that follow on from them; with Auction House steps off they leave
 out quests that need an item most players buy there.
 
+**Solo Self-Found.** For a character that never trades and never uses the
+Auction House: every step that needs either is left out, and the Auction House
+switch is held off while it is on. It is a switch under **Filters**, a choice
+in the first-time setup, and `/apg ssf`.
+
 **First-time setup.** The first time the addon loads on a character, a short
 setup asks three things, as RestedXP does:
 
 1. **Your guide**: Optimized (quest-optimized 1-60, every race), RestedXP
    Speedrun, Hardcore Survival, or Kamisayo Speedrun for a Horde Warrior. Only
    guides with a route for your race are offered.
-2. **Features**: Auction House steps, group quests, dungeons.
+2. **Features**: Auction House steps, Solo Self-Found, group quests, dungeons.
 3. **Dungeons** (when dungeons are on): the dungeons your faction can run, with
    level ranges and how many steps each adds to your route, plus
    **Recommended**, **All** and **None**. Recommended picks the dungeons whose
@@ -262,6 +270,55 @@ the step: this one, the waypoint addon's (TomTom's, pfQuest's), both, or
 neither. By default it is this one alone, and the waypoint addon keeps its map
 pins either way.
 
+## Gear
+
+**Item score.** Every item's tooltip gets a line: what the item is worth to
+your spec, and how it compares with what you wear in that slot — green and
+`+12%` for an upgrade, red for worse, *empty slot* where you wear nothing, *not
+for you* for armour, weapons or classes you cannot use. An item you are too
+low for says the level it becomes an upgrade at.
+
+- **The score** is the item's stats — read off its tooltip, as a 1.12 client
+  gives nothing else — weighted for your class and spec, with soft caps on hit,
+  crit, defence and the like so that stacking one stat does not run away.
+- **Your spec** is the talent tree you have put most points into, or the one
+  you pick; with no talents yet, your class's usual levelling spec.
+- **Comparing:** a ring or trinket is weighed against the weaker of the two you
+  wear, a one-hander against either hand once you can dual wield, a two-hander
+  against both hands together. Enchants are left out on both sides.
+- **The weights** are OctoPawn's defaults for every class and spec. The **Gear**
+  window (`/apg gear`, or **Stat weights** in the options) lists them, lets you
+  change any of them, pick another spec, reset, and export or import them as a
+  string OctoPawn reads too.
+
+**Gear Advisor.** It watches for upgrades, as Zygor's does, and is switched
+under **Gear** in the options:
+
+- **Upgrades as you pick them up.** When something in your bags beats what you
+  wear and you can wear it now, a window says so: the item, how much better,
+  what it replaces, and **Equip** or **Decline**. Declined items are not offered
+  again until you **Clear declined items**. In a fight, Equip waits for the
+  fight to end.
+- **Equip upgrades for me** puts them on without asking — never one that binds
+  when equipped; that one still asks. Off until you turn it on.
+- **Quest rewards.** When a quest offers a choice, the best one is marked: the
+  biggest upgrade, or, with none, the one a vendor pays most for. With **pick it
+  for me** on, and quests turning in by themselves, it is taken.
+- **Your bags.** Upgrades get a border in the default bag frames.
+- It can be switched off, or off at level 60.
+
+**Gear finder.** Upgrades waiting in the dungeons you run (`/apg finder`, or
+**Gear finder** in the options): for each slot, the best few drops that beat
+what you wear, with who drops them, where, and how often.
+
+- It looks in the dungeons that start no more than three levels above you, on
+  your side, and ticked under **Dungeons** — and in raids, at 60, if you switch
+  them on. Items up to three levels above you count, marked with their level.
+- Each drop is weighed with the item score, for your spec, as tooltips are.
+- Walking into a dungeon names its upgrades in chat.
+- The loot tables are the CMaNGOS database's: every vanilla dungeon and raid.
+  Turtle WoW's own dungeons are not in them yet.
+
 ## Professions
 
 | Authored | |
@@ -341,7 +398,7 @@ Reports welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options panel's About section (`v0.3.0`) — quote it.
+1. Check the **version** in the load message or the options panel's About section (`v0.4.2`) — quote it.
 2. Open the **Error log** (options panel → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 
@@ -406,7 +463,8 @@ so `git log` and `git blame` still attribute each line to whoever wrote it.
 | **Cladhaire**; the TWOW port by **laytya** and others | [TomTom-TWOW](https://github.com/laytya/TomTom-TWOW) |
 | The authors of MetaMap, MetaMapBWP and Cartographer | Supported waypoint providers |
 | **Kitymeowmeow** | [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) — the recipe data behind the priced crafting routes: skill thresholds, reagents, learn costs, recipe sources, vendor prices; and the Engineering route |
-| **The CMaNGOS team** | [classic-db](https://github.com/cmangos/classic-db) — which trainers teach each Engineering, Herbalism, Skinning and Fishing rank; the ore each vein yields, the skinnable beasts, each zone's fishing skill, the Expert fishing book and Nat Pagle's quest |
+| **iGreed** | [OctoPawn](https://github.com/iGreed1993/OctoPawn) (MIT) — the stat weights for every class and spec, the tooltip stat patterns and soft caps behind the item score |
+| **The CMaNGOS team** | [classic-db](https://github.com/cmangos/classic-db) — which trainers teach each Engineering, Herbalism, Skinning and Fishing rank; the ore each vein yields, what quest rewards sell for, what drops in each dungeon and raid, the skinnable beasts, each zone's fishing skill, the Expert fishing book and Nat Pagle's quest |
 | **Indian Type Foundry** | Rajdhani (SIL OFL 1.1) |
 | **The Inter Project Authors** | Inter (SIL OFL 1.1) |
 
@@ -423,5 +481,7 @@ used — every texture in `media/` is generated by `Tools/make_assets.py`.
 
 GNU General Public License v3.0 — see [LICENSE](LICENSE). The crafting routes
 are planned from recipe data converted from CraftRoute, which is GPLv3, so the
-addon is too. The bundled Ace2 libraries keep their own licence, and the fonts
-the SIL Open Font License (see [media/README.md](media/README.md)).
+addon is too. The item score's weights and stat patterns come from OctoPawn,
+under its MIT licence, which `ItemScoreData.lua` carries. The bundled Ace2
+libraries keep their own licence, and the fonts the SIL Open Font License (see
+[media/README.md](media/README.md)).

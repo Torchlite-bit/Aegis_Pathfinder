@@ -18,6 +18,90 @@ reports.
 
 ---
 
+## [0.4.2] — restart
+
+### Added
+- **Gear finder**, the third part of Gear (`/apg finder`, or **Gear finder**
+  in the options): for each slot, the best few upgrades that drop in the
+  dungeons you run, with who drops them, where, and how often. It looks in
+  the dungeons starting no more than three levels above you, on your side,
+  ticked under **Dungeons** — and in raids if you ask. Walking into a dungeon
+  names its upgrades in chat. The loot is the CMaNGOS database's, for every
+  vanilla dungeon and raid — bosses a script summons (Ragnaros, Nefarian,
+  Darkmaster Gandling, the Edge of Madness) included; Turtle WoW's own
+  dungeons are not in it yet.
+
+### Changed
+- **Weapon skills are out of the item score** (+Swords, +Daggers and the
+  rest): the Gear window lists the stats Zygor's does.
+
+---
+
+## [0.4.1] — restart
+
+### Added
+- **Gear Advisor**, the second part of Gear, switched under **Gear** in the
+  options:
+  - Upgrades you pick up pop up with **Equip** or **Decline**; declined items
+    are not offered again until you clear the list. In a fight, Equip waits.
+  - **Equip upgrades for me** (off until you turn it on) never equips an item
+    that would bind to you; that one still asks.
+  - The best quest reward is marked — the biggest upgrade, or the one a vendor
+    pays most for — and, with **pick it for me** on and quests turning in by
+    themselves, taken. Sell prices come from the CMaNGOS database.
+  - Upgrades are bordered in the default bags.
+  - Off, or off at level 60, when you want.
+
+### Changed
+- **Auction House tags go on the step that sends you there, not on the
+  quest.** A quest you can do by fishing, farming a drop or finding a vendor
+  now stays with Auction House steps off: *The Family and the Fishing Pole*,
+  *Catch of the Day*, *Fish in a Bucket*, *Look To The Stars*. Notes about
+  farming (Green Hills pages to keep, the Treasure Map, Morrowgrain, Silk
+  Cloth) are no longer hidden either. Quests that need a crafted item —
+  *Ineptitude + Chemicals = Fun*, *Chasing A-Me 01*, *The Blazno Touch* and the
+  Tel'Abim alchemy, engineering and enchanting quests — still are.
+
+---
+
+## [0.4.0] — restart
+
+### Added
+- **Item score**, the first part of Gear. Every item's tooltip says what it
+  is worth to your spec and how it compares with what you wear: green `+12%`
+  for an upgrade, red for worse, *empty slot*, or *not for you* for what you
+  cannot use; an item you are too low for says the level it becomes one at.
+  - Stats are read off the tooltip, weighted for your class and spec, with
+    soft caps. Rings, trinkets and one-handers are weighed against the slot
+    they would replace, two-handers against both hands; enchants are left out.
+  - Your spec follows your talents, or the one you pick; the levelling spec
+    until you have talents.
+  - The weights are OctoPawn's (MIT) for every class and spec. The **Gear**
+    window (`/apg gear`, or **Stat weights** in the options) lets you change
+    any of them, reset them, and export or import them in OctoPawn's format.
+  - A switch in the options takes the line off tooltips.
+
+---
+
+## [0.3.1]
+
+### Added
+- **Solo Self-Found mode**, as RestedXP has: for a character that never
+  trades and never uses the Auction House, every step that needs either is
+  left out, and the Auction House switch is held off while it is on. A switch
+  under **Filters**, a choice in the first-time setup, and `/apg ssf`. Guide
+  authors can mark a step that needs another player with `|TRADE|`.
+
+### Changed
+- **Some filter tags come off again, on a second look:**
+  - The paladin *Tome of Divinity* and the druid *Gathering the Cure* chains
+    no longer count as Auction House quests. Linen Cloth drops from
+    humanoids; Earthroot, Lunar Fungus and Kodo Horns are gathered or drop.
+  - Westfall's trip to Stormwind for *Shipment to Stormwind* is no longer a
+    group step. Its note mentions Hogger, but the step isn't his.
+
+---
+
 ## [0.3.0]
 
 ### Added
@@ -81,6 +165,10 @@ on, each change gets its own entry.
 
 ---
 
+[0.4.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.4.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.4.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.3.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.3.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.2.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.1.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

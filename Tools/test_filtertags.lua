@@ -43,6 +43,8 @@ function AegisPathfinder:RegisterGuide(name, nextzone, faction, loader)
 	table.insert(self.guidelist, name)
 end
 
+-- A Human Paladin, so the Tome of Divinity steps are on the route at all.
+UnitClass = function() return "Paladin", "PALADIN" end
 dofile("Parser.lua")
 function AegisPathfinder:SmartSkipToStep() end
 function AegisPathfinder:WarmCaches() end
@@ -56,6 +58,8 @@ end
 dofile("Guides/Optimized/Alliance/01_10_Elwynn_Forest.lua")
 dofile("Guides/Alliance/12_17_Westfall.lua")
 dofile("Guides/Alliance/28_29_Duskwood.lua")
+dofile("Guides/Optimized/Alliance/10_12_Westfall.lua")
+dofile("Guides/Alliance/12_17_Darkshore.lua")
 
 local char = AegisPathfinder.db.char
 
@@ -83,11 +87,38 @@ check(count(ELWYNN, "Report to Thomas", "GROUP", false) > 0,
 check(count(ELWYNN, "Shipment to Stormwind", "SOLO", false) > 0,
 	"a quest whose id only sat on a tagged travel step is untouched")
 
+-- Answers changed after the review: these can be done without the Auction
+-- House, and the travel step is not Hogger's.
+check(count("Westfall (12-17)", "The Tome of Divinity (Part 5)", "SOLO", false) == 3,
+	"the Tome of Divinity needs only Linen Cloth, which drops -- it stays with Auction House steps off")
+check(count("Optimized/Westfall (10-12)", "Stormwind City@", "SOLO", false) > 0,
+	"the trip to Stormwind for Shipment to Stormwind stays in Solo mode")
+
+-- The Auction House tag is for the step that sends you there, not for a
+-- quest you can do another way: fish, farm the drop, find the vendor.
+check(count("Darkshore (12-17)", "The Family and the Fishing Pole", "SOLO", false) == 3,
+	"a fishing quest stays with Auction House steps off: you can catch the fish")
+check(count("Duskwood (28-29)", "Look To The Stars (Part 1)", "SOLO", false) == 3,
+	"a quest whose item drops stays with Auction House steps off")
+
 local DUSKWOOD = "Duskwood (28-29)"
 check(count(DUSKWOOD, "[Bronze Tube]", "SOLO", false) == 0,
 	"an Auction House buy step should be hidden with Auction House steps off")
 check(count(DUSKWOOD, "[Bronze Tube]", "SOLO", true) == 1,
 	"an Auction House buy step should show with Auction House steps on")
+
+-- Solo Self-Found: no Auction House whatever its switch says, and no step
+-- that needs another player.
+char.SelfFound = true
+check(count(DUSKWOOD, "[Bronze Tube]", "SOLO", true) == 0,
+	"Solo Self-Found hides Auction House steps even with them switched on")
+AegisPathfinder:RegisterGuide("Trade Test (1-2)", nil, "Alliance", function()
+	return "N Ask a mage for water |N|Trade for it| |TRADE|\nN Drink |N|Sit down|\n"
+end)
+check(count("Trade Test (1-2)", "Ask a mage", "SOLO", true) == 0, "Solo Self-Found hides a |TRADE| step")
+check(count("Trade Test (1-2)", "Drink", "SOLO", true) == 1, "and keeps the rest")
+char.SelfFound = false
+check(count("Trade Test (1-2)", "Ask a mage", "SOLO", false) == 1, "a |TRADE| step shows otherwise")
 
 local WESTFALL = "Westfall (12-17)"
 check(count(WESTFALL, "The Defias Brotherhood (Part 2)", "SOLO", false, {}) == 0,

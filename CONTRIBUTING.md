@@ -40,6 +40,10 @@ That runs everything that can run without a WoW client:
 | `Tools/test_nextguide.lua` | Where next?: which custom zones fit a level, and the walk from a route guide to a custom zone and back to the route |
 | `Tools/test_materials.lua` | Shopping list arithmetic, checked against the source document's own shopping list; bag counts, the scope tabs, and sending to Aegis: Exchange |
 | `Tools/test_craftplanner.lua` | The crafting route planner: reading the recipe data, the skill-up chance, the route against brute force, learning fees, make-or-buy, pricing at depth, stock carried between steps, selling back, unpriced reagents; the auction scan against the suite's auction house rules; every profession planned from the real data |
+| `Tools/test_itemscore.lua` | The item score: reading 1.12 tooltips (stats, weapon DPS, school spell damage, set bonuses and procs ignored, red lines meaning unusable or later), soft caps, the spec from your talents, your own weights and sharing them in OctoPawn's string, comparing by slot (rings, two-handers, dual wield), and the tooltip line |
+| `Tools/test_gearadvisor.lua` | The Gear Advisor: upgrades found in the bags, offered biggest first and once a session, Equip into the right slot (waiting out a fight, finding an item that moved), Decline remembered across reloads, equip-for-me never binding an item, off at 60; the best quest reward (upgrade, else sell price, waiting for items to load) marked and picked; upgrades bordered in the bags |
+| `Tools/test_gearfinder.lua` | The Gear finder: the dungeons it looks in (level, side, your ticks, raids), the drops it weighs (level, class), loading the ones not cached, the best three a slot in the character sheet's order, the window, and naming upgrades on walking into a dungeon; and that the real loot data is there |
+| `Tools/test_gearframe.lua` | The Gear window: the spec picker, the weights listed and edited, show all, export, import and reset |
 | `Tools/test_craftroute.lua` | The crafting route window and planned guides: rank steps placed where the skill cap runs out, crafts contiguous and parsed as skill steps, saving and restoring, the window's totals, rows, status line, re-planning only on change, and the scan button |
 | `Tools/test_partysync.lua` | Sharing a guide with the party: step names that survive different step numbering, holding a finished step for the slowest partner without pulling anyone back, skipping out of a hold, the messages both ways, the throttle and heartbeat, the popups, the members under the step, and the group changing |
 | `Tools/test_objectivetabs.lua` | The objectives tab bar and branch state |
@@ -124,6 +128,21 @@ To refresh it, check both out and run:
 python3 Tools/build_gathering.py --pfquest <pfQuest> <pfQuest-turtle> --cmangos <classic-db full dump .sql[.gz]>
 ```
 
+**`ItemScoreData.lua` is generated** from
+[OctoPawn](https://github.com/iGreed1993/OctoPawn)'s defaults (MIT; its notice
+is carried in the file) by `Tools/import_octopawn.py`: the stat weights for every
+class and spec, the tooltip patterns, the soft caps. To pick up a newer OctoPawn,
+check it out and run:
+
+```sh
+python3 Tools/import_octopawn.py <path to OctoPawn>
+```
+
+**`GearData.lua` is generated** from the CMaNGOS classic-db dump by
+`Tools/build_gear_data.py --cmangos <dump>`: what each quest reward sells for,
+which the Gear Advisor falls back on when no reward is an upgrade, and what
+drops in each dungeon and raid, for the Gear finder.
+
 **Recipe data in `Crafting/` is generated** from
 [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute)'s data files, with
 its author's permission, by `Tools/import_recipes.py`. To pick up a newer
@@ -146,7 +165,12 @@ carried them. The Optimized and zone guides carry the ones the owner approved:
 (`docs/review/filter_candidates.json`), the answers are in
 `docs/review/filter_decisions.json`, and `Tools/apply_filter_tags.py` applies
 them. A "yes" on a quest's own step tags every step of that quest; a "yes" on
-a note or buy step that merely carries a quest id tags only that step. Quests
+a note or buy step that merely carries a quest id tags only that step; an
+answer changed to "no" takes the tag off again. An Auction House tag belongs on
+the step that sends you to the Auction House, not on a quest you can also do by
+fishing, farming a drop or finding a vendor -- those are answered "steps", which
+tags only the buy steps. Only a quest that needs an item a crafting profession
+makes keeps the tag on the quest itself. Quests
 you can only reach through a tagged one inherit its tag (worked out from
 pfQuest's prerequisites with `--pfquest`, and kept in the decisions file).
 When you add a step for a tagged quest, give it the same tag --
