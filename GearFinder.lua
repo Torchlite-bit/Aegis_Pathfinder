@@ -32,6 +32,7 @@ local L = {
 	CHROME_TOP = 30 + 18, PER_SLOT = 3,
 	AHEAD = 3,              -- dungeons and items up to this many levels above you
 	LOAD_BATCH = 5, LOAD_EVERY = 0.1, REFRESH_EVERY = 0.5,
+	NAMED = 4,              -- the note names this many places it looked, then counts
 	LOAD_GIVE_UP = 10,      -- seconds after the last request: an item never sent is not waited for
 }
 L.NOTE_TOP = L.CHROME_TOP + 8
@@ -363,8 +364,16 @@ function GF:Paint()
 		end
 	end
 	local dungeons = self:Dungeons()
-	local names = {}
-	for _, d in ipairs(dungeons) do table.insert(names, d.name) end
+	-- Where it looked: named, if a few; counted, if many -- at 60 it is
+	-- every dungeon there is, too many names for the note.
+	local names, nd, nr = {}, 0, 0
+	for _, d in ipairs(dungeons) do
+		table.insert(names, d.name)
+		if d.kind == "raid" then nr = nr + 1 else nd = nd + 1 end
+	end
+	local function count(n, one) return n .. " " .. one .. (n == 1 and "" or "s") end
+	local where = table.getn(names) <= L.NAMED and table.concat(names, ", ")
+		or (count(nd, "dungeon") .. (nr > 0 and (" and " .. count(nr, "raid")) or ""))
 	local text
 	if not settings().enabled then
 		text = "The gear finder is switched off in the options."
@@ -373,10 +382,9 @@ function GF:Paint()
 			and "Solo Self-Found is on, so it looks in no dungeons."
 			or "No dungeon at your level is ticked in the options."
 	elseif table.getn(lines) == 0 and missing == 0 then
-		text = "Nothing in " .. table.getn(dungeons) .. " dungeons at your level beats what you wear for "
-			.. IS:SpecLabel((IS:Spec())) .. "."
+		text = "Nothing in " .. where .. " beats what you wear for " .. IS:SpecLabel((IS:Spec())) .. "."
 	else
-		text = "Upgrades for " .. IS:SpecLabel((IS:Spec())) .. " from " .. table.concat(names, ", ") .. "."
+		text = "Upgrades for " .. IS:SpecLabel((IS:Spec())) .. " from " .. where .. "."
 	end
 	if missing > 0 then text = text .. string.format(" Loading %d more items...", missing) end
 	frame.note:SetText(text)

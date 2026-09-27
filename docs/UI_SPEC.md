@@ -321,6 +321,9 @@ for its width once, and each widget that spans it -- section rules, switches,
 fine print, dropdowns and their lists, the route preview, the Item Score
 page's share column -- is registered with how to take a new width, so a wider
 window reflows them; a taller one shows more of the page before it scrolls.
+Every row on a page is placed through one helper that remembers it, so a new
+width lays the page out again: a label that no longer wraps gives its line
+back, and the rows under it move up.
 
 A switch's label wraps under itself when it is too long for the row, and the
 row grows to hold it (`Switch:Fit`): the lines are counted from the label's

@@ -18,6 +18,25 @@ reports.
 
 ---
 
+## [0.9.0]
+
+### Fixed
+- **Uneven gaps in the options** around labels that only just fit, such as
+  "Pick it for me when quests turn in by themselves": they were counted as
+  two lines and drawn on one. A label that fits is one line now.
+- **Resizing the options window lays each page out again**: a label that
+  stops wrapping gives its line back and the rows under it move up, instead
+  of leaving a gap.
+- **The Gear finder's note at 60** named every dungeon it looked in — all of
+  them, at 60 — and ran over the list. It names up to four and counts the
+  rest ("from 26 dungeons and 9 raids").
+
+### Changed
+- **The README shows Pathfinder in game**, and the options window's Route,
+  Dungeons, Behaviour and Gear pages.
+
+---
+
 ## [0.8.0]
 
 ### Changed
@@ -279,6 +298,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.9.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.8.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.7.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.6.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

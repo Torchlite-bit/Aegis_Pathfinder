@@ -561,6 +561,36 @@ check(frame:GetWidth() == 1024 - 40 and frame:GetHeight() == 768 - 40, "nor bigg
 AegisPathfinder:SizeConfigWindow()
 check(frame:GetWidth() == 546 and frame:GetHeight() == 560 and frame.bodyW == 396 - 28 - 10 - 4,
 	"and back to its first size")
+
+-- A label that wraps at one width and not at another: the rows under it
+-- follow, rather than leaving a gap.
+local pick, border = frame.advisor.questpick, frame.advisor.bagmark
+local stringWidth = pick.label.GetStringWidth
+pick.label.GetStringWidth = function() return frame.bodyW - 45 - 4 end   -- just fits
+check(pick:Fit(frame.bodyW) == 22, "a label that just fits is one line, not counted as two")
+pick.label.GetStringWidth = function() return 400 end   -- too long for the first width
+AegisPathfinder:SizeConfigWindow(546, 560)
+AegisPathfinder:SizeConfigWindow(547, 560)             -- a new width: laid out again
+local _, _, _, _, pickY = pick:GetPoint()
+local _, _, _, _, borderY = border:GetPoint()
+check(pick:GetHeight() > 22 and borderY == pickY - pick:GetHeight() - 6,
+	"wrapped, it is taller and the next row sits under it (%s, %s, %s)", pickY, pick:GetHeight(), borderY)
+AegisPathfinder:SizeConfigWindow(546 + 200, 560)
+local _, _, _, _, pickY2 = pick:GetPoint()
+local _, _, _, _, borderY2 = border:GetPoint()
+check(pick:GetHeight() == 22 and borderY2 == pickY2 - 22 - 6,
+	"wider, it is one line and the next row moves up to it (%s, %s)", pickY2, borderY2)
+local gearPage = frame.pages[5]
+local lowest = 0
+for _, e in ipairs(gearPage.flow) do
+	if e.region then
+		local _, _, _, _, ry = e.region:GetPoint()
+		if ry < lowest then lowest = ry end
+	end
+end
+check(gearPage.contentHeight > -lowest, "the page's height follows")
+pick.label.GetStringWidth = stringWidth
+AegisPathfinder:SizeConfigWindow()
 click(frame.navButtons[1])
 
 -- Credits ---------------------------------------------------------------------

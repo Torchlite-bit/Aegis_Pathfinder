@@ -95,6 +95,34 @@ local RACES = {
 	},
 }
 
+--- How tall fine print is at `width`: what the client says, or, where it says
+--- less, the lines its unwrapped width needs -- a wrapped font string's own
+--- height is not to be trusted on 1.12. Slack for where the words break.
+local function TextHeight(fs, width)
+	local sw = fs:GetStringWidth() or 0
+	local lines = sw <= width and 1 or math.ceil(sw / (width * 0.9))
+	return math.max(fs:GetHeight() or 0, lines * 13)
+end
+
+--- Lay a page out again at `width`, from what `place` remembered: what wraps
+--- takes its new height and everything under it moves up or down to suit.
+local function Reflow(p, width)
+	local y = 0
+	for _, e in ipairs(p.flow) do
+		if e.region then
+			e.region:ClearAllPoints()
+			e.region:SetPoint("TOPLEFT", p, "TOPLEFT", 0, -y)
+			y = y + (type(e.height) == "function" and e.height(width) or e.height)
+		end
+		y = y + e.gap
+	end
+	-- The Item Score page's list sets its own height.
+	if not p.ownHeight then
+		p.contentHeight = y + PAD_BOTTOM
+		p:SetHeight(p.contentHeight)
+	end
+end
+
 --- Reload whichever guide is on screen so a filter change takes effect.
 local function ReloadCurrentGuide()
 	local self = AegisPathfinder
@@ -187,16 +215,25 @@ function AegisPathfinder:CreateConfigPanel()
 		body:SetPoint("TOPLEFT", holder, "TOPLEFT", 0, 0)
 		body:Hide()
 		body.pageName, body.sub = name, sub
+		body.flow = {}
 		table.insert(frame.pages, body)
 		y = 0
 	end
 	-- What widens with the window, each with how to set it to a width.
 	frame.stretch = {}
 	local function stretchy(fit) table.insert(frame.stretch, fit) end
+	--[[ Lay a region out under the last, and remember it, so the page can be
+		laid out again at another width (Reflow). `height` is a number, or a
+		function of the width for what wraps. ]]
 	local function place(region, height, gap)
+		table.insert(body.flow, { region = region, height = height, gap = gap or 0 })
 		region:ClearAllPoints()
 		region:SetPoint("TOPLEFT", body, "TOPLEFT", 0, -y)
-		y = y + height + (gap or 0)
+		y = y + (type(height) == "function" and height(BODY_W) or height) + (gap or 0)
+	end
+	local function space(n)
+		table.insert(body.flow, { gap = n })
+		y = y + n
 	end
 	local function section(title)
 		local h = Theme:SectionHeader(body, title, BODY_W)
@@ -211,7 +248,7 @@ function AegisPathfinder:CreateConfigPanel()
 	local function note(text)
 		local fs = fine(Theme:FinePrint(body, BODY_W))
 		fs:SetText(text or "")
-		place(fs, fs:GetHeight(), 0)
+		place(fs, function(w) return TextHeight(fs, w) end, 0)
 		return fs
 	end
 	local function wide(dropdown)
@@ -358,15 +395,13 @@ function AegisPathfinder:CreateConfigPanel()
 		ReloadCurrentGuide()
 		AegisPathfinder:RefreshConfigPanel()
 	end)
-	place(group, group:Fit(BODY_W), 8)
-	stretchy(function(w) group:Fit(w) end)
+	place(group, function(w) return group:Fit(w) end, 8)
 	local ah = Theme:Switch(body, "Auction House steps", function(on)
 		AegisPathfinder.db.char.UseAH = on
 		ReloadCurrentGuide()
 		AegisPathfinder:RefreshConfigPanel()
 	end)
-	place(ah, ah:Fit(BODY_W), 6)
-	stretchy(function(w) ah:Fit(w) end)
+	place(ah, function(w) return ah:Fit(w) end, 6)
 	-- RestedXP's Solo Self-Found mode: alone, no trading, no Auction House.
 	-- It holds group mode, the Auction House and the dungeons off while it is
 	-- on, and gives them back as they were.
@@ -378,8 +413,7 @@ function AegisPathfinder:CreateConfigPanel()
 			{ "Play alone: hides group quests, dungeons, and every step that trades with other players or uses the Auction House. Their switches are held off until you turn this off." })
 	end)
 	ssf:SetScript("OnLeave", function() Theme:HideTip(this) end)
-	place(ssf, ssf:Fit(BODY_W), 6)
-	stretchy(function(w) ssf:Fit(w) end)
+	place(ssf, function(w) return ssf:Fit(w) end, 6)
 	local filterNote = fine(Theme:FinePrint(body, BODY_W))
 	place(filterNote, 30, SECTION_GAP)
 	frame.groupSwitch, frame.ahSwitch, frame.ssfSwitch, frame.filterNote = group, ah, ssf, filterNote
@@ -409,8 +443,7 @@ function AegisPathfinder:CreateConfigPanel()
 	local scoreTips = Theme:Switch(body, "Item score on tooltips", function(on)
 		AegisPathfinder.ItemScore.Settings().tooltips = on
 	end)
-	place(scoreTips, scoreTips:Fit(BODY_W), 6)
-	stretchy(function(w) scoreTips:Fit(w) end)
+	place(scoreTips, function(w) return scoreTips:Fit(w) end, 6)
 	local weights = Theme:Pill(body, "Stat weights", 120, 26)
 	weights:SetScript("OnClick", function()
 		AegisPathfinder:ShowConfigPage(AegisPathfinder.ITEM_SCORE_PAGE)
@@ -419,7 +452,7 @@ function AegisPathfinder:CreateConfigPanel()
 	note("Each item's tooltip shows what it is worth to your spec and how it "
 		.. "compares with what you wear. The weights come from OctoPawn; change "
 		.. "them, or pick another spec, under Item Score.")
-	y = y + 10
+	space(10)
 	-- The Gear Advisor's switches (GearAdvisor.lua), Zygor's in this style.
 	frame.advisor = {}
 	local ADVISOR = {
@@ -438,8 +471,7 @@ function AegisPathfinder:CreateConfigPanel()
 			AegisPathfinder.GearAdvisor:Dirty()
 			AegisPathfinder:RefreshConfigPanel()
 		end)
-		place(sw, sw:Fit(BODY_W), 6)
-		stretchy(function(w) sw:Fit(w) end)
+		place(sw, function(w) return sw:Fit(w) end, 6)
 		frame.advisor[key] = sw
 	end
 	local clearDeclined = Theme:Pill(body, "Clear declined items", 150, 26)
@@ -459,8 +491,7 @@ function AegisPathfinder:CreateConfigPanel()
 			AegisPathfinder.GearFinder.Settings()[key] = on
 			AegisPathfinder:RefreshConfigPanel()
 		end)
-		place(sw, sw:Fit(BODY_W), 6)
-		stretchy(function(w) sw:Fit(w) end)
+		place(sw, function(w) return sw:Fit(w) end, 6)
 		frame.finder[key] = sw
 	end
 	local openFinder = Theme:Pill(body, "Gear finder", 110, 26)
@@ -469,7 +500,7 @@ function AegisPathfinder:CreateConfigPanel()
 	note("It looks in the dungeons at or a little above your level that are "
 		.. "ticked under Dungeons, Turtle WoW's own included, and in raids if you "
 		.. "ask it to.")
-	y = y + SECTION_GAP
+	space(SECTION_GAP)
 	frame.scoreTips, frame.weightsButton, frame.clearDeclined = scoreTips, weights, clearDeclined
 	frame.openFinder = openFinder
 
@@ -478,6 +509,7 @@ function AegisPathfinder:CreateConfigPanel()
 	page(AegisPathfinder.ITEM_SCORE_PAGE, true)
 	table.insert(frame.sections, section("Item score"))
 	local scorePage = AegisPathfinder:CreateItemScorePage(body, BODY_W, y, PAD_BOTTOM)
+	body.ownHeight = true
 	stretchy(function(w) scorePage:Resize(w) end)
 
 	-- Beyond the concept: the addon's own settings, in the same language. -------
@@ -507,11 +539,10 @@ function AegisPathfinder:CreateConfigPanel()
 			end
 		end)
 		sw.settingKey = key
-		place(sw, sw:Fit(BODY_W), 8)
-		stretchy(function(w) sw:Fit(w) end)
+		place(sw, function(w) return sw:Fit(w) end, 8)
 		frame.switches[key] = sw
 	end
-	y = y + SECTION_GAP - 8
+	space(SECTION_GAP - 8)
 
 	page("Navigation")
 	table.insert(frame.sections, section("Waypoints"))
@@ -546,28 +577,26 @@ function AegisPathfinder:CreateConfigPanel()
 	errors:SetScript("OnClick", function() AegisPathfinder:ShowErrorLog() end)
 	local setup = Theme:Pill(body, "Run setup", 90, 26)
 	setup:SetScript("OnClick", function() AegisPathfinder:ShowSetup() end)
-	rescan:SetPoint("TOPLEFT", body, "TOPLEFT", 0, -y)
+	place(rescan, 26, 6)
 	errors:SetPoint("LEFT", rescan, "RIGHT", 6, 0)
 	setup:SetPoint("LEFT", errors, "RIGHT", 6, 0)
-	y = y + 26 + 6
 	note("Rescan asks the server which quests this character has completed and "
 		.. "re-marks the guide from that. Run setup asks the first-time questions "
 		.. "again: your guide, its features and your dungeons.")
 	frame.rescan, frame.errorlog, frame.setup = rescan, errors, setup
-	y = y + SECTION_GAP
+	space(SECTION_GAP)
 
 	-- Last, where an about box goes: who this addon is built on.
 	page("About")
 	table.insert(frame.sections, section("About"))
 	frame.version = note("Version v" .. (AegisPathfinder.version or "?") .. " -- quote it in bug reports.")
-	y = y + 4
+	space(4)
 	note("Aegis: Pathfinder is built on other people's work -- TourGuide, "
 		.. "VanillaGuide, ClassicAPI, Joana's routes and more.")
-	y = y + 6
+	space(6)
 	local credits = Theme:Pill(body, "Credits", 90, 26)
 	credits:SetScript("OnClick", function() AegisPathfinder:ToggleCredits() end)
-	credits:SetPoint("TOPLEFT", body, "TOPLEFT", 0, -y)
-	y = y + 26
+	place(credits, 26, 0)
 	frame.credits = credits
 
 	-- Each page's height is known now: what the scroll bar ranges over.
@@ -732,6 +761,7 @@ function AegisPathfinder:SizeConfigWindow(w, h, save)
 		frame.holder:SetWidth(bodyW)
 		for _, p in ipairs(frame.pages) do p:SetWidth(bodyW) end
 		for _, fit in ipairs(frame.stretch) do fit(bodyW) end
+		for _, p in ipairs(frame.pages) do Reflow(p, bodyW) end
 	end
 	frame.visible = h - CHROME_TOP - PAD_TOP - PAD_BOTTOM
 	self:SizeConfigPage(true)

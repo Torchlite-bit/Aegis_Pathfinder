@@ -269,6 +269,16 @@ check(row.where:GetText() == "Lady Anacondra, Wailing Caverns \194\183 20%", "an
 	tostring(row.where:GetText()))
 check(frame.rows[2].slot:GetText() == "", "the slot is named once")
 check(string.find(frame.note:GetText(), "The Deadmines", 1, true), "the note names where it looked")
+-- At 60 it is every dungeon there is, and the raids when asked: counted, not named.
+level = 60
+GF.Settings().raids = true
+check(table.getn(GF:Dungeons()) == 5, "at 60 it looks in every dungeon, and the raid, got %d", table.getn(GF:Dungeons()))
+GF:Refresh()
+check(string.find(frame.note:GetText(), "4 dungeons and 1 raid", 1, true) and not string.find(frame.note:GetText(), "The Deadmines", 1, true),
+	"too many to name, so counted, got %s", tostring(frame.note:GetText()))
+level = 20
+GF.Settings().raids = false
+GF:Refresh()
 A.db.char.SelfFound = true
 GF:Refresh()
 check(frame.note:GetText() == "Solo Self-Found is on, so it looks in no dungeons.", "with Self-Found on it says why it is empty, got %s",
