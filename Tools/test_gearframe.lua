@@ -113,6 +113,7 @@ check(body.contentHeight == shortH, "and shrinks back")
 -- Editing a weight.
 local str = A:ItemScoreCell("STRENGTH")
 check(str.label:GetText() == "Strength", "stats named for people, got %s", tostring(str.label:GetText()))
+check(str.label:GetWidth() >= 130, "the name column holds the long names on a line, got %s", tostring(str.label:GetWidth()))
 check(A:ItemScoreCell("DPS").label:GetText() == "Weapon DPS", "DPS stays DPS")
 check(str.box:GetText() == "1.2", "the box shows the weight, got %s", tostring(str.box:GetText()))
 str.box:SetText("3.5")

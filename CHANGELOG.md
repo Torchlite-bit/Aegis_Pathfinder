@@ -18,6 +18,19 @@ reports.
 
 ---
 
+## [0.10.0]
+
+### Fixed
+- **Stat names wrapped on the Item Score page**: "Armor Penetration",
+  "Casting Regen %" and the like broke onto two cramped lines. The name
+  column is wider and the weight's field narrower, so every name stays on
+  one line.
+
+### Added
+- **[docs/TESTING.md](docs/TESTING.md)**: the in-game test pass, what only a
+  real client can check, section by section. Copy it into an issue and tick
+  it off before a release.
+
 ## [0.9.1]
 
 ### Added
@@ -319,6 +332,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.10.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.9.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.9.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.8.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

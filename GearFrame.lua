@@ -20,7 +20,9 @@ AegisPathfinder.ITEM_SCORE_PAGE = "Item Score"
 
 -- Layout, in one table: see the 32-upvalue note in CONTRIBUTING.md.
 local L = {
-	ROW_H = 26, BOX_W = 72, BOX_H = 20, LIST_W = 186, GAP = 16, BUTTON_H = 22,
+	-- The name column fits "Armor Penetration" and "Casting Regen %" on a line:
+	-- at 100px they wrapped, two cramped lines in a 26px row (seen in game).
+	ROW_H = 26, BOX_W = 58, BOX_H = 20, LIST_W = 206, GAP = 16, BUTTON_H = 22,
 	SPEC_W = 200, NOTE_H = 44, LABEL_X = 8, RESET_W = 120, STATUS_H = 44,
 }
 
