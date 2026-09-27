@@ -448,8 +448,8 @@ function AegisPathfinder:CreateConfigPanel()
 	openFinder:SetScript("OnClick", function() AegisPathfinder:ToggleGearFinder() end)
 	place(openFinder, 26, 6)
 	note("It looks in the dungeons at or a little above your level that are "
-		.. "ticked under Dungeons, and in raids if you ask it to. Turtle WoW's own "
-		.. "dungeons are not in its data yet.")
+		.. "ticked under Dungeons, Turtle WoW's own included, and in raids if you "
+		.. "ask it to.")
 	y = y + SECTION_GAP
 	frame.scoreTips, frame.weightsButton, frame.clearDeclined = scoreTips, weights, clearDeclined
 	frame.openFinder = openFinder

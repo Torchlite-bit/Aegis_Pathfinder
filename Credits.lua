@@ -30,7 +30,7 @@ local CREDITS = {
 	} },
 	{ "Libraries and data", {
 		"The Ace Development Team -- Ace2",
-		"shagu -- pfQuest, and the herb and ore nodes",
+		"shagu -- pfQuest, the herb and ore nodes, and Turtle dungeon loot",
 		"Cladhaire, laytya and the TWOW porters -- TomTom-TWOW",
 		"Kitymeowmeow -- CraftRoute, the recipe data behind crafting routes",
 		"iGreed -- OctoPawn, the stat weights behind the item score (MIT)",

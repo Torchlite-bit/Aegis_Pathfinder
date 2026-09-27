@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.6.1)
+# Aegis: Pathfinder (v0.6.2)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -153,7 +153,7 @@ The logo on the minimap's edge: **click** to show or hide the guide,
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.6.1`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.6.2`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/hsgPTNkSX)** or open an

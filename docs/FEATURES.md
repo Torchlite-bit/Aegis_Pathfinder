@@ -291,8 +291,15 @@ what you wear, with who drops them, where, and how often.
   them on. Items up to three levels above you count, marked with their level.
 - Each drop is weighed with the item score, for your spec, as tooltips are.
 - Walking into a dungeon names its upgrades in chat.
-- The loot tables are the CMaNGOS database's: every vanilla dungeon and raid.
-  Turtle WoW's own dungeons are not in them yet.
+- The loot tables are the CMaNGOS database's for every vanilla dungeon and
+  raid, and pfQuest-turtle's for Turtle WoW's own: Dragonmaw Retreat,
+  Crescent Grove, Stormwrought Ruins, Gilneas City, Hateforge Quarry, Karazhan
+  Crypt, The Black Morass, Stormwind Vault, and the Emerald Sanctum and Tower
+  of Karazhan raids. Their levels are read off their creatures. pfQuest-turtle
+  does not say what Turtle's own items are, so the game is asked the first
+  time -- a list may fill in over a few seconds, once.
+- Vanilla dungeons are as the CMaNGOS database has them; where Turtle WoW has
+  changed their loot, the finder does not know.
 
 ## Professions
 

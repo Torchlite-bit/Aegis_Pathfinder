@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Extract the data behind the Gear Advisor and Gear Finder into GearData.lua.
 
-    python3 Tools/build_gear_data.py --cmangos FILE
+    python3 Tools/build_gear_data.py --cmangos FILE --pfquest-turtle DIR
 
 Both need facts a 1.12 client will not give an addon, taken from the CMaNGOS
-classic-db dump (FILE, .sql or .sql.gz) and committed, so the addon reads them
-with no database:
+classic-db dump (FILE, .sql or .sql.gz) and pfQuest-turtle (DIR, a checkout)
+and committed, so the addon reads them with no database:
 
   Sell prices   When no quest reward is an upgrade, the Gear Advisor picks
                 the one worth most at a vendor, as Zygor's does. Every item a
@@ -25,17 +25,29 @@ first-time setup uses (SetupFrame.lua), and the usual ones for the rest. A
 few bosses are summoned by a script rather than spawned, so appear on no map;
 SUMMONED names them, and their loot is looked up like any other.
 
-Turtle WoW's own quests and dungeons are not in that database. Their rewards
-have no price and their loot is not in the finder, and both say so rather
-than guess.
+Turtle WoW's own dungeons and raids are not in that database; pfQuest-turtle
+has them. TURTLE_INSTANCES names the zones it places their creatures in, and
+what those creatures drop comes from its item data, with the chance. Their
+levels are read off the creatures: the tenth percentile of the elites'
+levels, to the highest, both held at 60 -- a creature above 60 is level-60
+content. pfQuest-turtle knows an item's name and where it drops but not its
+slot or quality, so Turtle's own items go in with no entry under `items`: the
+finder asks the client what they are, as it asks for any item it has not
+seen. Items the CMaNGOS database knows are filtered here as for any dungeon.
+Only direct drops are taken: the shared tables Turtle's dungeons use are the
+world's random drops, or pools of trash drops far under MIN_CHANCE.
+
+Turtle's own quests are not in either. Their rewards have no price, and the
+Gear Advisor says so rather than guess.
 """
 
 import argparse
 import os
+import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from build_gathering import Dump, num  # noqa: E402
+from build_gathering import Dump, lua_names, num  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "GearData.lua")
@@ -79,6 +91,22 @@ SUMMONED = {
     "SCHOLO": ["Darkmaster Gandling"],
     "ZG": ["Gahz'ranka", "Gri'lek", "Hazza'rah", "Renataki", "Wushoolay"],
 }
+
+# Turtle WoW's own instances: the zone pfQuest-turtle places their creatures
+# in, a code, and dungeon or raid. Names are pfQuest-turtle's, which are the
+# client's -- what the Gear Finder hears on walking in.
+TURTLE_INSTANCES = [
+    (5601, "DMR", "dungeon"),     # Dragonmaw Retreat
+    (5077, "CG", "dungeon"),      # Crescent Grove
+    (5628, "SWR", "dungeon"),     # Stormwrought Ruins
+    (5208, "GC", "dungeon"),      # Gilneas City
+    (5103, "HQ", "dungeon"),      # Hateforge Quarry
+    (5086, "KC", "dungeon"),      # Karazhan Crypt
+    (5204, "BM", "dungeon"),      # The Black Morass
+    (5087, "SWV", "dungeon"),     # Stormwind Vault
+    (5097, "ES", "raid"),         # Emerald Sanctum
+    (3457, "KARA", "raid"),       # Tower of Karazhan (Lower Karazhan Halls)
+]
 
 INVTYPE = {
     1: "INVTYPE_HEAD", 2: "INVTYPE_NECK", 3: "INVTYPE_SHOULDER", 5: "INVTYPE_CHEST",
@@ -218,13 +246,109 @@ def dungeon_loot(db):
     return dungeons, gear
 
 
+# --------------------------------------------------------------------------
+# pfQuest-turtle
+# --------------------------------------------------------------------------
+
+def lua_entries(path):
+    """id -> body of each top-level entry of a pfQuest data table, read line by
+    line: entries such as `[2] = {},` and `[19] = "_",` (removed by Turtle) sit
+    on one line, which a pattern over the whole file would run together with
+    the next entry."""
+    out, cur, body = {}, None, []
+    with open(path, encoding="utf-8", errors="replace") as fh:
+        for line in fh:
+            line = line.rstrip("\n")
+            if cur is None:
+                m = re.match(r"  \[(\d+)\] = (.*)$", line)
+                if not m:
+                    continue
+                if m.group(2) == "{":
+                    cur, body = int(m.group(1)), []
+                elif m.group(2) == "{},":
+                    out[int(m.group(1))] = ""
+            elif line == "  },":
+                out[cur] = "\n".join(body)
+                cur = None
+            else:
+                body.append(line)
+    return out
+
+
+def lua_sub(body, key):
+    """One keyed sub-table of an entry: id -> number."""
+    m = re.search(r'\n?    \["%s"\] = \{\n(.*?)\n    \},' % key, body, re.S)
+    if not m:
+        return {}
+    return {int(a): float(b) for a, b in re.findall(r"\[(\d+)\] = ([\d.]+),", m.group(1))}
+
+
+def turtle_loot(pf, db):
+    """Turtle's own instances, from pfQuest-turtle, shaped as dungeon_loot's."""
+    def path(*parts):
+        p = os.path.join(pf, "db", *parts)
+        if not os.path.exists(p):
+            sys.exit("missing pfQuest-turtle file: %s" % p)
+        return p
+    zone_names = lua_names(path("enUS", "zones-turtle.lua"))
+    unit_names = lua_names(path("enUS", "units-turtle.lua"))
+    known = {num(r["entry"]): r for r in db.rows("item_template")}
+    in_zone, levels = {}, {}
+    wanted = set(z for z, _, _ in TURTLE_INSTANCES)
+    for uid, body in lua_entries(path("units-turtle.lua")).items():
+        zones = [int(z) for z in re.findall(r"\{ [\d.]+, [\d.]+, (\d+), \d+ \}", body)]
+        lvl = re.search(r'\["lvl"\] = "(\d+)(?:-(\d+))?"', body)
+        elite = re.search(r'\["rnk"\] = "[1-9]"', body)
+        for z in zones:
+            if z in wanted:
+                in_zone.setdefault(z, set()).add(uid)
+                if lvl and elite:
+                    levels.setdefault(z, []).append(int(lvl.group(2) or lvl.group(1)))
+    drops = {}
+    for iid, body in lua_entries(path("items-turtle.lua")).items():
+        for uid, c in lua_sub(body, "U").items():
+            drops.setdefault(uid, []).append((iid, c))
+    dungeons, gear = [], {}
+    for zone, code, kind in TURTLE_INSTANCES:
+        name = zone_names.get(zone)
+        lv = sorted(levels.get(zone, []))
+        if not name or not lv:
+            sys.exit("TURTLE_INSTANCES names zone %d, where pfQuest-turtle places no elites" % zone)
+        lo = min(60, lv[len(lv) // 10])
+        hi = min(60, lv[-1])
+        best = {}
+        for uid in sorted(in_zone[zone]):
+            for item, c in drops.get(uid, []):
+                if c < MIN_CHANCE:
+                    continue
+                it = known.get(item)
+                if it:
+                    slot = INVTYPE.get(num(it["InventoryType"]))
+                    if not slot or num(it["Quality"]) < 2:
+                        continue
+                    mask = num(it["AllowableClass"])
+                    gear[item] = (slot, num(it["Quality"]), num(it["RequiredLevel"]),
+                                  0 if mask <= 0 or (mask & ALL_CLASSES) == ALL_CLASSES else mask)
+                if item not in best or c > best[item][1]:
+                    best[item] = (unit_names.get(uid, "?"), c)
+        loot = sorted(((item, src, round(c, 1)) for item, (src, c) in best.items()),
+                      key=lambda x: (x[1], -x[2], x[0]))
+        dungeons.append({"code": code, "name": name, "lo": lo, "hi": hi, "kind": kind,
+                         "faction": None, "loot": loot, "turtle": True})
+    return dungeons, gear
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--cmangos", required=True, help="CMaNGOS classic-db full dump (.sql or .sql.gz)")
+    ap.add_argument("--pfquest-turtle", required=True, help="pfQuest-turtle checkout")
     args = ap.parse_args()
     db = Dump(args.cmangos)
     sell = reward_prices(db)
     dungeons, gear = dungeon_loot(db)
+    turtle, turtle_gear = turtle_loot(args.pfquest_turtle, db)
+    dungeons += turtle
+    gear.update(turtle_gear)
 
     lua = [
         "-- GearData.lua",
@@ -232,7 +356,10 @@ def main():
         "-- GENERATED FILE -- do not edit by hand.",
         "-- Source:    CMaNGOS classic-db (https://github.com/cmangos/classic-db):",
         "--            quest_template, item_template, creature, creature_spawn_entry,",
-        "--            creature_template, creature_loot_template, reference_loot_template",
+        "--            creature_template, creature_loot_template, reference_loot_template;",
+        "--            and for Turtle WoW's own dungeons, pfQuest-turtle",
+        "--            (https://github.com/shagu/pfQuest-turtle): db/units-turtle.lua,",
+        "--            db/items-turtle.lua, db/enUS/units-turtle.lua, db/enUS/zones-turtle.lua",
         "-- Generator: Tools/build_gear_data.py",
         "",
         "AegisPathfinder.GearData = {",
@@ -244,12 +371,14 @@ def main():
         lua.append("\t\t" + " ".join("[%d] = %d," % (k, sell[k]) for k in ids[i:i + 8]))
     lua.append("\t},")
     lua.append("\t-- Each dungeon and raid: its levels, and what drops there --")
-    lua.append("\t-- { item, who drops it (the likeliest), percent chance }.")
+    lua.append("\t-- { item, who drops it (the likeliest), percent chance }. Turtle WoW's own")
+    lua.append("\t-- (turtle = true) list items with no entry under items: the client says what they are.")
     lua.append("\tdungeons = {")
     for d in dungeons:
-        lua.append("\t\t{ code = %s, name = %s, lo = %d, hi = %d, kind = %s%s, loot = {"
+        lua.append("\t\t{ code = %s, name = %s, lo = %d, hi = %d, kind = %s%s%s, loot = {"
                    % (lua_str(d["code"]), lua_str(d["name"]), d["lo"], d["hi"], lua_str(d["kind"]),
-                      (", faction = %s" % lua_str(d["faction"])) if d["faction"] else ""))
+                      (", faction = %s" % lua_str(d["faction"])) if d["faction"] else "",
+                      ", turtle = true" if d.get("turtle") else ""))
         for item, src, c in d["loot"]:
             lua.append("\t\t\t{ %d, %s, %s }," % (item, lua_str(src), "%g" % c))
         lua.append("\t\t} },")

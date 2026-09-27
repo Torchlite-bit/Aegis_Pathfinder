@@ -18,6 +18,19 @@ reports.
 
 ---
 
+## [0.6.2]
+
+### Added
+- **The Gear finder looks in Turtle WoW's own dungeons and raids**: Dragonmaw
+  Retreat, Crescent Grove, Stormwrought Ruins, Gilneas City, Hateforge Quarry,
+  Karazhan Crypt, The Black Morass, Stormwind Vault, and the Emerald Sanctum
+  and Tower of Karazhan raids — their bosses' drops and how often, from
+  pfQuest-turtle, at the levels their creatures are. The game is asked what
+  Turtle's own items are the first time, so the list can take a few seconds
+  to fill in, once. Walking into one names its upgrades, as for any dungeon.
+
+---
+
 ## [0.6.1] — restart
 
 ### Changed
@@ -216,6 +229,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.6.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.6.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.6.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.5.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
