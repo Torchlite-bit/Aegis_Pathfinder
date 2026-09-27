@@ -40,6 +40,8 @@ That runs everything that can run without a WoW client:
 | `Tools/test_nextguide.lua` | Where next?: which custom zones fit a level, and the walk from a route guide to a custom zone and back to the route |
 | `Tools/test_materials.lua` | Shopping list arithmetic, checked against the source document's own shopping list; bag counts, the scope tabs, and sending to Aegis: Exchange |
 | `Tools/test_craftplanner.lua` | The crafting route planner: reading the recipe data, the skill-up chance, the route against brute force, learning fees, make-or-buy, pricing at depth, stock carried between steps, selling back, unpriced reagents; the auction scan against the suite's auction house rules; every profession planned from the real data |
+| `Tools/test_itemscore.lua` | The item score: reading 1.12 tooltips (stats, weapon DPS, school spell damage, set bonuses and procs ignored, red lines meaning unusable or later), soft caps, the spec from your talents, your own weights and sharing them in OctoPawn's string, comparing by slot (rings, two-handers, dual wield), and the tooltip line |
+| `Tools/test_gearframe.lua` | The Gear window: the spec picker, the weights listed and edited, show all, export, import and reset |
 | `Tools/test_craftroute.lua` | The crafting route window and planned guides: rank steps placed where the skill cap runs out, crafts contiguous and parsed as skill steps, saving and restoring, the window's totals, rows, status line, re-planning only on change, and the scan button |
 | `Tools/test_partysync.lua` | Sharing a guide with the party: step names that survive different step numbering, holding a finished step for the slowest partner without pulling anyone back, skipping out of a hold, the messages both ways, the throttle and heartbeat, the popups, the members under the step, and the group changing |
 | `Tools/test_objectivetabs.lua` | The objectives tab bar and branch state |
@@ -122,6 +124,16 @@ To refresh it, check both out and run:
 
 ```sh
 python3 Tools/build_gathering.py --pfquest <pfQuest> <pfQuest-turtle> --cmangos <classic-db full dump .sql[.gz]>
+```
+
+**`ItemScoreData.lua` is generated** from
+[OctoPawn](https://github.com/iGreed1993/OctoPawn)'s defaults (MIT; its notice
+is carried in the file) by `Tools/import_octopawn.py`: the stat weights for every
+class and spec, the tooltip patterns, the soft caps. To pick up a newer OctoPawn,
+check it out and run:
+
+```sh
+python3 Tools/import_octopawn.py <path to OctoPawn>
 ```
 
 **Recipe data in `Crafting/` is generated** from

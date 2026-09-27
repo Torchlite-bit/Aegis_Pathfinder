@@ -18,6 +18,25 @@ reports.
 
 ---
 
+## [0.4.0] — restart
+
+### Added
+- **Item score**, the first part of Gear. Every item's tooltip says what it
+  is worth to your spec and how it compares with what you wear: green `+12%`
+  for an upgrade, red for worse, *empty slot*, or *not for you* for what you
+  cannot use; an item you are too low for says the level it becomes one at.
+  - Stats are read off the tooltip, weighted for your class and spec, with
+    soft caps. Rings, trinkets and one-handers are weighed against the slot
+    they would replace, two-handers against both hands; enchants are left out.
+  - Your spec follows your talents, or the one you pick; the levelling spec
+    until you have talents.
+  - The weights are OctoPawn's (MIT) for every class and spec. The **Gear**
+    window (`/apg gear`, or **Stat weights** in the options) lets you change
+    any of them, reset them, and export or import them in OctoPawn's format.
+  - A switch in the options takes the line off tooltips.
+
+---
+
 ## [0.3.1]
 
 ### Added
@@ -100,6 +119,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.4.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.3.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.3.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.2.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

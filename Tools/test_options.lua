@@ -88,6 +88,11 @@ function AegisPathfinder:GetWaypointProvider() return self.__provider end
 function AegisPathfinder:ClearWaypoint() self.__cleared = true end
 function AegisPathfinder:ForceWaypointUpdate() self.__resent = true end
 
+-- The item score's settings, as ItemScore.lua keeps them.
+local scoreSettings = { tooltips = true }
+AegisPathfinder.ItemScore = { Settings = function() return scoreSettings end }
+function AegisPathfinder:ToggleGearPanel() self.__gear = (self.__gear or 0) + 1 end
+
 dofile("Theme.lua")
 dofile("WidgetWarlock.lua")
 dofile("Credits.lua")
@@ -212,6 +217,14 @@ click(frame.ahSwitch)
 check(db.UseAH == true, "the Auction House switch turns those steps on")
 check(frame.filterNote:GetText() == "Group mode \194\183 Auction House steps shown",
 	"and the summary follows, got '%s'", tostring(frame.filterNote:GetText()))
+
+-- Gear: the score on tooltips, and the weights window.
+check(frame.scoreTips:IsOn(), "the item score is on tooltips by default")
+click(frame.scoreTips)
+check(scoreSettings.tooltips == false, "and the switch takes it off")
+click(frame.scoreTips)
+click(frame.weightsButton)
+check(AegisPathfinder.__gear == 1, "Stat weights opens the Gear window")
 
 -- Solo Self-Found holds the Auction House switch off, and lets it go again.
 check(not frame.ssfSwitch:IsOn(), "Solo Self-Found is off by default")

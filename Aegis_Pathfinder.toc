@@ -3,7 +3,7 @@
 ## Title: Aegis: Pathfinder
 ## Notes: Classic+ leveling guide for the Turtle WoW-lineage 1.12 client family.|nPart of the Aegis addon suite.
 ## Author: Aegis: Pathfinder Contributors (see CONTRIBUTORS.md)
-## Version: 0.3.1
+## Version: 0.4.0
 ## X-Category: Quest
 
 ## SavedVariables: AegisPathfinderDB, TurtleGuideDB
@@ -33,6 +33,9 @@ QuestTracker.lua
 Professions.lua
 CraftPlanner.lua
 CraftScan.lua
+# Item score: OctoPawn's weights and stat patterns (MIT), and the scorer
+ItemScoreData.lua
+ItemScore.lua
 GuideEngine.lua
 NavCallout.lua
 # The objectives panel is the addon's only window, and the other panels anchor
@@ -42,6 +45,7 @@ OptionsFrame.lua
 GuideListFrame.lua
 MaterialsFrame.lua
 CraftRouteFrame.lua
+GearFrame.lua
 ActiveFrames.lua
 NextGuideFrame.lua
 SetupFrame.lua

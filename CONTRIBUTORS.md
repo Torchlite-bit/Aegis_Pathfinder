@@ -46,6 +46,7 @@ whoever wrote it. As of the port, that history carries commits from
 | MetaMap, MetaMapBWP, Cartographer | Their respective authors — supported waypoint providers |
 | [ClassicAPI](https://github.com/brues-code/ClassicAPI) | **brues-code** — required at runtime |
 | [CMaNGOS classic-db](https://github.com/cmangos/classic-db) | The **CMaNGOS** team — which trainers teach each Engineering, Herbalism, Skinning and Fishing rank, from its trainer lists; the ore each vein yields, the skinnable beasts, each zone's fishing skill, the Expert fishing book and Nat Pagle's quest, extracted by `Tools/build_gathering.py` |
+| [OctoPawn](https://github.com/iGreed1993/OctoPawn) | **iGreed** — the item score's stat weights for every class and spec, its tooltip stat patterns and soft caps, converted by `Tools/import_octopawn.py`. MIT: its notice is carried in `ItemScoreData.lua` |
 | [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) | **Kitymeowmeow** — the recipe data behind the priced crafting routes (skill thresholds, reagents, learn costs, recipe sources, vendor buy and sell prices), converted by `Tools/import_recipes.py`. CraftRoute is GPLv3, which is why this addon is too; the route planner itself is written separately |
 
 ## Fonts

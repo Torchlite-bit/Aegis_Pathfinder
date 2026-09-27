@@ -5,16 +5,16 @@
 	  Race          a dropdown of your faction's races
 	  Route pack    pills, with a preview of the route underneath
 	  Dungeons      the chip grid
-	  Filters       group mode and Auction House steps, as sliding switches
+	  Filters       group mode, Auction House steps and Solo Self-Found
 	  Server theme  a dropdown: the colours of your server, or Day or Night
 
 	That is the concept. It used to be a menu of buttons that opened the
 	dungeons, the filters and the route picker as three more windows; all of
 	that lives here now, in the concept's language.
 
-	The concept has no home for the addon's own behaviour settings, the
-	waypoint provider or the maintenance actions, so they follow as three more
-	sections in the same style -- the substitution is the extra sections, not
+	The concept has no home for the addon's own behaviour settings, the item
+	score, the waypoint provider or the maintenance actions, so they follow as
+	more sections in the same style -- the substitution is the extra sections, not
 	a different look.
 ]]
 
@@ -348,6 +348,22 @@ function AegisPathfinder:CreateConfigPanel()
 	place(themeNote, 44, SECTION_GAP)
 	frame.theme, frame.themeNote = theme, themeNote
 
+	--[[ Gear: the item score on tooltips, and the window with its weights. ]]
+	table.insert(frame.sections, section("Gear"))
+	local scoreTips = Theme:Switch(body, "Item score on tooltips", function(on)
+		AegisPathfinder.ItemScore.Settings().tooltips = on
+	end)
+	scoreTips:SetWidth(BODY_W)
+	place(scoreTips, 22, 6)
+	local weights = Theme:Pill(body, "Stat weights", 120, 26)
+	weights:SetScript("OnClick", function() AegisPathfinder:ToggleGearPanel() end)
+	place(weights, 26, 6)
+	note("Each item's tooltip shows what it is worth to your spec and how it "
+		.. "compares with what you wear. The weights come from OctoPawn; change "
+		.. "them, or pick another spec, under Stat weights.")
+	y = y + SECTION_GAP
+	frame.scoreTips, frame.weightsButton = scoreTips, weights
+
 	-- Beyond the concept: the addon's own settings, in the same language. -------
 	table.insert(frame.sections, section("Guide behaviour"))
 	frame.switches = {}
@@ -535,6 +551,7 @@ function AegisPathfinder:RefreshConfigPanel()
 	frame.ahSwitch:SetOn(db.UseAH and not db.SelfFound)
 	frame.ahSwitch:SetLocked(db.SelfFound)
 	frame.ssfSwitch:SetOn(db.SelfFound)
+	frame.scoreTips:SetOn(self.ItemScore.Settings().tooltips)
 	frame.filterNote:SetText((grouped and "Group mode" or "Solo mode") .. " \194\183 "
 		.. (db.SelfFound and "Self-Found: no trading or Auction House steps"
 			or ("Auction House steps " .. (db.UseAH and "shown" or "hidden"))))

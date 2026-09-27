@@ -33,6 +33,7 @@ local CREDITS = {
 		"shagu -- pfQuest, and the herb and ore nodes",
 		"Cladhaire, laytya and the TWOW porters -- TomTom-TWOW",
 		"Kitymeowmeow -- CraftRoute, the recipe data behind crafting routes",
+		"iGreed -- OctoPawn, the stat weights behind the item score (MIT)",
 		"The CMaNGOS team -- classic-db, trainers and gathering data",
 	} },
 	{ "Fonts", {
