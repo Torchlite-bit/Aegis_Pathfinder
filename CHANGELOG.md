@@ -27,6 +27,8 @@ reports.
   until it is off again — in the options and in the first-time setup, which
   skips its dungeons step. The Gear finder looks in no dungeons. What they
   were set to is kept, and comes back when Self-Found goes off.
+- **The README has screenshots**: the guide in the world, a quest target and
+  the macros, and sharing a guide with your party.
 
 ### Added
 - **The options window resizes** from a grip in its bottom-right corner:

@@ -39,20 +39,20 @@ and feature ideas.
 
 ---
 
-<!-- Screenshots: put them in docs/images/ with these names and uncomment.
-
 ### 📷 Interface Overview
 
-| The guide & arrow | Options |
-| :---: | :---: |
-| <img src="docs/images/screenshot-guide.png" width="400"> | <img src="docs/images/screenshot-options.png" width="400"> |
+<p align="center">
+  <img src="docs/images/screenshot-world.jpg" width="720" alt="The guide on screen while questing, with a party member on the same step">
+</p>
 
-| Item score | Gear Advisor | Gear finder |
+| Quest targets & macros | Share a guide with your party | Your party's progress on the step |
 | :---: | :---: | :---: |
-| <img src="docs/images/screenshot-itemscore.png" width="280"> | <img src="docs/images/screenshot-advisor.png" width="280"> | <img src="docs/images/screenshot-finder.png" width="280"> |
+| <img src="docs/images/screenshot-guide.jpg" width="280" alt="The guide, a quest target button with its tooltip, and the macros"> | <img src="docs/images/screenshot-share.png" width="280" alt="The prompt to share the guide with your party"> | <img src="docs/images/screenshot-party.png" width="280" alt="A party member listed under the step"> |
+
+<!-- More to come: the options window, the Item Score page, the Gear Advisor
+     pop-up and the Gear finder. Put them in docs/images/ and add a row. -->
 
 ---
--->
 
 ## Contents
 
