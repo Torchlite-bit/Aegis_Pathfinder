@@ -1,31 +1,28 @@
---[[ GearFrame.lua -- the Gear window: the stat weights behind the item score.
+--[[ GearFrame.lua -- the Item Score page: the stat weights behind the item
+	score, in the options window under Gear.
 
 	Zygor's Item Score page, in this addon's language: the spec you are
 	scored as (Auto follows your talents), a line saying where that came from
-	and whether the weights are the defaults or yours, and every weight, two
-	columns of them, each one editable. Only the stats your spec weighs are
-	listed until "Show all stats" is on. Under them, the weights as a string,
-	in OctoPawn's format, to export or import, and a reset.
+	and whether the weights are the defaults or yours, "Show all stats", and
+	every weight down the left, a box each. Only the stats your spec weighs
+	are listed until "Show all stats" is on. Beside them, the weights as a
+	string in OctoPawn's format, to import or export; under them, Reset.
+
+	It used to be a window of its own. The page grows with the list, and the
+	options window scrolls it.
 ]]
 
 local AegisPathfinder = AegisPathfinder
 local Theme = AegisPathfinder.Theme
 
+-- The page's name in the options window's list.
+AegisPathfinder.ITEM_SCORE_PAGE = "Item Score"
+
 -- Layout, in one table: see the 32-upvalue note in CONTRIBUTING.md.
 local L = {
-	WIDTH = 380, PAD = 12, ROW_H = 24, BOX_W = 52, COL_GAP = 14, ROWS = 12,
-	BUTTON_H = 22, SCROLL_W = 10, CHROME_TOP = 30 + 18,
+	ROW_H = 26, BOX_W = 72, BOX_H = 20, LIST_W = 186, GAP = 16, BUTTON_H = 22,
+	SPEC_W = 200, NOTE_H = 44, LABEL_X = 8, RESET_W = 120, STATUS_H = 44,
 }
-L.SPEC_TOP = L.CHROME_TOP + 10
-L.NOTE_TOP = L.SPEC_TOP + 30 + 6
-L.SWITCH_TOP = L.NOTE_TOP + 30
-L.LIST_TOP = L.SWITCH_TOP + 22 + 10
-L.LIST_H = L.ROWS * L.ROW_H
-L.SHARE_TOP = L.LIST_TOP + L.LIST_H + 12
-L.FOOT_TOP = L.SHARE_TOP + 24 + 8
-L.HEIGHT = L.FOOT_TOP + L.BUTTON_H + L.PAD
-L.BODY_W = L.WIDTH - L.PAD * 2 - L.SCROLL_W - 6
-L.COL_W = math.floor((L.BODY_W - L.COL_GAP) / 2)
 
 --- "SPELL POWER" -> "Spell Power", "WEAPON DPS" -> "Weapon DPS".
 function AegisPathfinder.StatLabel(stat)
@@ -42,22 +39,28 @@ local function trimNum(v)
 	return (string.gsub(s, "%.$", ""))
 end
 
---- A box for one number, in the theme: dark field, light text.
-local function NumberBox(parent, width)
+--- A box to type into, in the theme: a dark field with a hairline edge.
+local function Field(parent, width, height)
 	local box = CreateFrame("EditBox", nil, parent)
 	box:SetWidth(width)
-	box:SetHeight(20)
+	box:SetHeight(height)
 	box:SetAutoFocus(false)
-	box:SetMaxLetters(8)
-	box:SetJustifyH("RIGHT")
-	box:SetTextInsets(4, 6, 0, 0)
+	box:SetTextInsets(6, 6, 0, 0)
 	Theme:SetFont(box, "body", 12)
 	box:SetTextColor(1, 1, 1)
-	local bg = box:CreateTexture(nil, "BACKGROUND")
+	local edge = box:CreateTexture(nil, "BACKGROUND")
+	edge:SetTexture(Theme.texture.solid)
+	edge:SetAllPoints(box)
+	Theme:Tint(edge, "text", 0.22)
+	local bg = box:CreateTexture(nil, "BORDER")
 	bg:SetTexture(Theme.texture.solid)
-	bg:SetAllPoints(box)
-	bg:SetVertexColor(0, 0, 0, 0.55)
-	box.bg = bg
+	bg:SetPoint("TOPLEFT", box, "TOPLEFT", 1, -1)
+	bg:SetPoint("BOTTOMRIGHT", box, "BOTTOMRIGHT", -1, 1)
+	bg:SetVertexColor(0, 0, 0, 0.85)
+	box.bg, box.edge = bg, edge
+	box:SetScript("OnEscapePressed", function() this:ClearFocus() end)
+	-- A page changing or the window closing takes the keyboard back.
+	box:SetScript("OnHide", function() this:ClearFocus() end)
 	return box
 end
 
@@ -71,159 +74,114 @@ local function Commit(box)
 	end
 end
 
-function AegisPathfinder:CreateGearPanel()
-	local frame = CreateFrame("Frame", "AegisPathfinderGear", UIParent)
-	self.gearframe = frame
-	frame:SetFrameStrata("DIALOG")
-	frame:SetWidth(L.WIDTH)
-	frame:SetHeight(L.HEIGHT)
-	frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
-	Theme:Panel(frame, "panel")
-	frame:Hide()
-	Theme:Chrome(frame, "Gear: item score", Theme:PositionSaver("gearframe"))
+--[[ Build the page into the options window's `body`, from `top` down.
+	`bottom` is the space the window leaves under a page. The list's length
+	changes with the spec and "Show all stats", so the page's height is set
+	each time it is drawn (UpdateItemScorePage), not here. ]]
+function AegisPathfinder:CreateItemScorePage(body, width, top, bottom)
+	local page = { body = body, width = width, cells = {}, bottom = bottom or 0 }
+	self.itemscorepage = page
+	local y = top
 
-	local spec = Theme:Dropdown(frame, 200, function(value)
+	local spec = Theme:Dropdown(body, L.SPEC_W, function(value)
 		AegisPathfinder.ItemScore:SetSpec(value ~= "auto" and value or nil)
 	end)
-	spec:SetPoint("TOPLEFT", frame, "TOPLEFT", L.PAD, -L.SPEC_TOP)
-	frame.spec = spec
-
-	local class = frame:CreateFontString(nil, "OVERLAY")
+	spec:SetPoint("TOPLEFT", body, "TOPLEFT", 0, -y)
+	local class = body:CreateFontString(nil, "OVERLAY")
 	Theme:SetFont(class, "display", 12)
 	class:SetPoint("LEFT", spec, "RIGHT", 10, 0)
-	class:SetPoint("RIGHT", frame, "RIGHT", -L.PAD, 0)
+	class:SetPoint("RIGHT", body, "RIGHT", 0, 0)
 	class:SetJustifyH("RIGHT")
 	Theme:TextColor(class, "textDim")
-	frame.class = class
+	y = y + 30 + 6
 
-	local note = Theme:FinePrint(frame, L.WIDTH - L.PAD * 2)
-	note:SetPoint("TOPLEFT", frame, "TOPLEFT", L.PAD, -L.NOTE_TOP)
-	frame.note = note
+	local note = Theme:FinePrint(body, width)
+	note:SetPoint("TOPLEFT", body, "TOPLEFT", 0, -y)
+	y = y + L.NOTE_H
 
-	local showAll = Theme:Switch(frame, "Show all stats", function(on)
+	local showAll = Theme:Switch(body, "Show all stats", function(on)
 		AegisPathfinder.ItemScore.Settings().showall = on
-		frame.offset = 0
-		AegisPathfinder:UpdateGearPanel()
+		AegisPathfinder:UpdateItemScorePage()
 	end)
-	showAll:SetWidth(L.WIDTH - L.PAD * 2)
-	showAll:SetPoint("TOPLEFT", frame, "TOPLEFT", L.PAD, -L.SWITCH_TOP)
-	frame.showAll = showAll
+	showAll:SetWidth(width)
+	showAll:SetPoint("TOPLEFT", body, "TOPLEFT", 0, -y)
+	y = y + 22 + 12
+	page.listTop = y
 
-	-- The weights: a scrolling body, two columns of label and box.
-	local scroll = CreateFrame("ScrollFrame", "AegisPathfinderGearScroll", frame)
-	scroll:SetPoint("TOPLEFT", frame, "TOPLEFT", L.PAD, -L.LIST_TOP)
-	scroll:SetWidth(L.BODY_W)
-	scroll:SetHeight(L.LIST_H)
-	local body = CreateFrame("Frame", nil, scroll)
-	body:SetWidth(L.BODY_W)
-	body:SetHeight(1)
-	scroll:SetScrollChild(body)
-	local bar = Theme:ScrollBar(frame, L.SCROLL_W)
-	bar:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -L.PAD + 2, -(L.LIST_TOP + L.SCROLL_W))
-	bar:SetHeight(L.LIST_H - L.SCROLL_W * 2)
-	bar:SetMinMaxValues(0, 0)
-	bar:SetValue(0)
-	bar:SetScript("OnValueChanged", function() scroll:SetVerticalScroll(arg1 or 0) end)
-	bar.up:SetScript("OnClick", function() bar:SetValue(math.max(0, bar:GetValue() - L.ROW_H)) end)
-	bar.down:SetScript("OnClick", function()
-		local _, hi = bar:GetMinMaxValues()
-		bar:SetValue(math.min(hi, bar:GetValue() + L.ROW_H))
-	end)
-	frame:EnableMouseWheel(true)
-	frame:SetScript("OnMouseWheel", function()
-		local _, hi = bar:GetMinMaxValues()
-		local v = bar:GetValue() - (arg1 or 0) * L.ROW_H * 2
-		if v < 0 then v = 0 elseif v > hi then v = hi end
-		bar:SetValue(v)
-	end)
-	frame.scroll, frame.body, frame.bar = scroll, body, bar
-	frame.cells = {}
-
-	-- The weights as a string, and what to do with it.
-	local share = CreateFrame("EditBox", nil, frame)
-	share:SetPoint("TOPLEFT", frame, "TOPLEFT", L.PAD, -L.SHARE_TOP)
-	share:SetWidth(L.WIDTH - L.PAD * 2)
-	share:SetHeight(24)
-	share:SetAutoFocus(false)
+	-- Beside the weights: the weights as a string, to import or export.
+	local rx = L.LIST_W + L.GAP
+	local rw = width - rx
+	local caption = body:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(caption, "display", 11)
+	caption:SetPoint("TOPLEFT", body, "TOPLEFT", rx, -y)
+	caption:SetText("SHARE WEIGHTS")
+	Theme:TextColor(caption, "accent")
+	local share = Field(body, rw, L.BUTTON_H + 2)
+	share:SetPoint("TOPLEFT", body, "TOPLEFT", rx, -(y + 16))
 	share:SetMaxLetters(2000)
-	share:SetTextInsets(6, 6, 0, 0)
 	Theme:SetFont(share, "body", 11)
-	share:SetTextColor(1, 1, 1)
-	local shareBg = share:CreateTexture(nil, "BACKGROUND")
-	shareBg:SetTexture(Theme.texture.solid)
-	shareBg:SetAllPoints(share)
-	shareBg:SetVertexColor(0, 0, 0, 0.55)
-	share:SetScript("OnEscapePressed", function() this:ClearFocus() end)
 	share:SetScript("OnEnterPressed", function() this:ClearFocus() end)
-	frame.share = share
-
-	local third = math.floor((L.WIDTH - L.PAD * 2 - 12) / 3)
-	local reset = Theme:PanelButton(frame, "Reset", third, L.BUTTON_H)
-	reset:SetPoint("TOPLEFT", frame, "TOPLEFT", L.PAD, -L.FOOT_TOP)
-	reset:SetScript("OnClick", function()
-		AegisPathfinder.ItemScore:ResetWeights()
-		frame.message = "Back to the defaults."
-		AegisPathfinder:UpdateGearPanel()
+	local import = Theme:PanelButton(body, "Import", rw, L.BUTTON_H)
+	import:SetPoint("TOPLEFT", share, "BOTTOMLEFT", 0, -6)
+	import:SetScript("OnClick", function()
+		local ok, why = AegisPathfinder.ItemScore:Import(share:GetText())
+		page.said = ok and "Imported." or why
+		share:ClearFocus()
+		AegisPathfinder:UpdateItemScorePage()
 	end)
-	local export = Theme:PanelButton(frame, "Export", third, L.BUTTON_H)
-	export:SetPoint("LEFT", reset, "RIGHT", 6, 0)
+	local export = Theme:PanelButton(body, "Export", rw, L.BUTTON_H)
+	export:SetPoint("TOPLEFT", import, "BOTTOMLEFT", 0, -6)
 	export:SetScript("OnClick", function()
 		share:SetText(AegisPathfinder.ItemScore:Export())
 		share:SetFocus()
 		share:HighlightText()
-		frame.message = "Copy it with Ctrl+C. OctoPawn reads it too."
-		AegisPathfinder:UpdateGearPanel()
+		page.said = "Copy it with Ctrl+C. OctoPawn reads it too."
+		AegisPathfinder:UpdateItemScorePage()
 	end)
-	local import = Theme:PanelButton(frame, "Import", third, L.BUTTON_H)
-	import:SetPoint("LEFT", export, "RIGHT", 6, 0)
-	import:SetScript("OnClick", function()
-		local ok, why = AegisPathfinder.ItemScore:Import(share:GetText())
-		frame.message = ok and "Imported." or why
-		share:ClearFocus()
-		AegisPathfinder:UpdateGearPanel()
-	end)
-	frame.reset, frame.export, frame.import = reset, export, import
+	local status = Theme:FinePrint(body, rw)
+	status:SetPoint("TOPLEFT", export, "BOTTOMLEFT", 0, -8)
+	page.shareH = 16 + (L.BUTTON_H + 2) + 6 + L.BUTTON_H + 6 + L.BUTTON_H + 8 + L.STATUS_H
 
-	frame:SetScript("OnShow", function()
-		this.offset = 0
-		this.message = nil
-		local guide = AegisPathfinder.objectiveframe
-		if not Theme:RestorePosition(this, "gearframe") and guide and AegisPathfinder.GetQuadrant then
-			local _, _, hhalf = AegisPathfinder.GetQuadrant(guide)
-			this:ClearAllPoints()
-			if hhalf == "LEFT" then
-				this:SetPoint("TOPLEFT", guide, "TOPRIGHT", 8, 0)
-			else
-				this:SetPoint("TOPRIGHT", guide, "TOPLEFT", -8, 0)
-			end
-		end
-		AegisPathfinder:UpdateGearPanel()
+	-- Under the weights: back to the defaults. Placed as the list is drawn.
+	local reset = Theme:PanelButton(body, "Reset", L.RESET_W, L.BUTTON_H)
+	reset:SetScript("OnClick", function()
+		AegisPathfinder.ItemScore:ResetWeights()
+		page.said = "Back to the defaults."
+		AegisPathfinder:UpdateItemScorePage()
 	end)
-	frame:SetScript("OnHide", function() spec.list:Hide() end)
+
+	page.spec, page.class, page.note, page.showAll = spec, class, note, showAll
+	page.share, page.import, page.export, page.status, page.reset = share, import, export, status, reset
+	-- Drawn afresh whenever the page is turned to, last time's word gone.
+	body.refresh = function()
+		page.said = nil
+		AegisPathfinder:UpdateItemScorePage()
+	end
 
 	AegisPathfinder.ItemScore:OnChange(function()
-		if frame:IsShown() then AegisPathfinder:UpdateGearPanel() end
+		if body:IsVisible() then AegisPathfinder:UpdateItemScorePage() end
 	end)
-	table.insert(UISpecialFrames, "AegisPathfinderGear")
+	return page
 end
 
 --- One stat's label and box, made the first time it is needed.
-function AegisPathfinder:GearCell(stat)
-	local frame = self.gearframe
-	local cell = frame.cells[stat]
+function AegisPathfinder:ItemScoreCell(stat)
+	local page = self.itemscorepage
+	local cell = page.cells[stat]
 	if cell then return cell end
-	cell = CreateFrame("Frame", nil, frame.body)
-	cell:SetWidth(L.COL_W)
+	cell = CreateFrame("Frame", nil, page.body)
+	cell:SetWidth(L.LIST_W)
 	cell:SetHeight(L.ROW_H)
 	local label = cell:CreateFontString(nil, "OVERLAY")
 	Theme:SetFont(label, "body", 12)
-	label:SetPoint("LEFT", cell, "LEFT", 0, 0)
-	label:SetWidth(L.COL_W - L.BOX_W - 4)
+	label:SetPoint("LEFT", cell, "LEFT", L.LABEL_X, 0)
+	label:SetWidth(L.LIST_W - L.BOX_W - L.LABEL_X - 6)
 	label:SetJustifyH("LEFT")
 	Theme:TextColor(label, "text")
 	label:SetText(AegisPathfinder.StatLabel(stat))
-	local box = NumberBox(cell, L.BOX_W)
+	local box = Field(cell, L.BOX_W, L.BOX_H)
 	box:SetPoint("RIGHT", cell, "RIGHT", 0, 0)
+	box:SetMaxLetters(8)
 	box.stat = stat
 	box:SetScript("OnEnterPressed", function() Commit(this); this:ClearFocus() end)
 	box:SetScript("OnEditFocusLost", function() Commit(this) end)
@@ -232,12 +190,12 @@ function AegisPathfinder:GearCell(stat)
 		this:ClearFocus()
 	end)
 	cell.label, cell.box = label, box
-	frame.cells[stat] = cell
+	page.cells[stat] = cell
 	return cell
 end
 
 --- The stats listed: those the spec weighs, or all of them.
-function AegisPathfinder:GearStats(weights)
+function AegisPathfinder:ItemScoreStats(weights)
 	local IS, Data = self.ItemScore, self.ItemScoreData
 	local out = {}
 	for _, stat in ipairs(Data.stats) do
@@ -246,9 +204,9 @@ function AegisPathfinder:GearStats(weights)
 	return out
 end
 
-function AegisPathfinder:UpdateGearPanel()
-	local frame = self.gearframe
-	if not frame then return end
+function AegisPathfinder:UpdateItemScorePage()
+	local page = self.itemscorepage
+	if not page then return end
 	local IS = self.ItemScore
 	local class = IS:Class()
 	local spec, why = IS:Spec()
@@ -258,44 +216,48 @@ function AegisPathfinder:UpdateGearPanel()
 	local detected = IS:DetectSpec(class)
 	local items = { { value = "auto", label = "Auto (" .. IS:SpecLabel(detected or spec) .. ")" } }
 	for _, s in ipairs(IS:Specs(class)) do table.insert(items, { value = s, label = IS:SpecLabel(s) }) end
-	frame.spec:SetItems(items)
-	frame.spec:SetValue(IS.Settings().spec or "auto")
-	local className = UnitClass("player")
-	frame.class:SetText(className or class)
+	page.spec:SetItems(items)
+	page.spec:SetValue(IS.Settings().spec or "auto")
+	page.class:SetText(UnitClass("player") or class)
 
 	local whence = (why == "picked" and "the spec you picked")
 		or (why == "talents" and "your talents")
 		or "your class's usual levelling spec, until you have talents"
-	local text = "Scoring as " .. IS:SpecLabel(spec) .. ", from " .. whence .. ". "
-		.. (IS:IsCustom(class, spec) and "You are using your own weights." or "These are the default weights.")
-	if frame.message then text = text .. "\n" .. frame.message end
-	frame.note:SetText(text)
-	frame.showAll:SetOn(IS.Settings().showall)
+	page.note:SetText("Scoring as " .. IS:SpecLabel(spec) .. ", from " .. whence .. ".\n"
+		.. (IS:IsCustom(class, spec) and "You are using your own weights." or "These are the default weights."))
+	page.status:SetText(page.said or "")
+	page.showAll:SetOn(IS.Settings().showall)
 
-	-- The weights, two columns.
-	for _, cell in pairs(frame.cells) do cell:Hide() end
-	local stats = self:GearStats(weights)
+	-- The weights, one to a row down the left.
+	for _, cell in pairs(page.cells) do cell:Hide() end
+	local stats = self:ItemScoreStats(weights)
 	for i, stat in ipairs(stats) do
-		local cell = self:GearCell(stat)
-		local col, row = math.mod(i - 1, 2), math.floor((i - 1) / 2)
+		local cell = self:ItemScoreCell(stat)
 		cell:ClearAllPoints()
-		cell:SetPoint("TOPLEFT", frame.body, "TOPLEFT", col * (L.COL_W + L.COL_GAP), -row * L.ROW_H)
+		cell:SetPoint("TOPLEFT", page.body, "TOPLEFT", 0, -(page.listTop + (i - 1) * L.ROW_H))
 		cell.box.shown = weights[stat] or 0
 		cell.box:SetText(trimNum(cell.box.shown))
 		cell:Show()
 	end
-	local rows = math.ceil(table.getn(stats) / 2)
-	frame.body:SetHeight(math.max(1, rows * L.ROW_H))
-	local over = math.max(0, rows * L.ROW_H - L.LIST_H)
-	frame.bar:SetMinMaxValues(0, over)
-	if frame.bar:GetValue() > over then frame.bar:SetValue(over) end
+
+	-- Reset under whichever column is longer, and the page as tall as that.
+	local listH = table.getn(stats) * L.ROW_H
+	local resetTop = page.listTop + math.max(listH, page.shareH) + 10
+	page.reset:ClearAllPoints()
+	page.reset:SetPoint("TOPLEFT", page.body, "TOPLEFT", 0, -resetTop)
+	page.body.contentHeight = resetTop + L.BUTTON_H + page.bottom
+	page.body:SetHeight(page.body.contentHeight)
+	if self.SizeConfigPage then self:SizeConfigPage(true) end
 end
 
-function AegisPathfinder:ToggleGearPanel()
-	if not self.gearframe then self:CreateGearPanel() end
-	if self.gearframe:IsShown() then
-		self.gearframe:Hide()
-	else
-		self.gearframe:Show()
+--- /apg gear: the options window at this page, or closed if it is on it.
+function AegisPathfinder:ToggleItemScorePage()
+	if not self.optionsframe then self:CreateConfigPanel() end
+	local frame = self.optionsframe
+	if frame:IsShown() and frame.page == self.ITEM_SCORE_PAGE then
+		frame:Hide()
+		return
 	end
+	frame:Show()
+	self:ShowConfigPage(self.ITEM_SCORE_PAGE)
 end

@@ -16,7 +16,7 @@ version.
 | `/apg exchange` | Send the guide's remaining crafts to Aegis: Exchange, or take them back out |
 | `/apg craft` | The crafting route window: the cheapest way to level a profession at today's prices |
 | `/apg share` | Share the guide you are on with your party, or stop sharing (beta) |
-| `/apg gear` | The Gear window: the stat weights behind the item score |
+| `/apg gear` | The options at **Item Score**: the stat weights behind the item score |
 | `/apg finder` | The Gear finder: upgrades that drop in the dungeons you run |
 | `/apg ssf` | Solo Self-Found on or off |
 | `/apg setup` | Run the first-time setup again: your guide, its features and your dungeons |
@@ -34,8 +34,8 @@ round the minimap. The options window's **Behaviour** page can hide it, as can
 FuBar is no longer supported: the button is the addon's own now.
 
 The options window lists its pages down the left: **Route** (race and route
-pack), **Dungeons**, **Filters**, **Appearance** (server theme), **Gear**,
-**Behaviour**, **Navigation** (waypoints and arrow), **Maintenance** (rescan,
+pack), **Dungeons**, **Filters**, **Appearance** (server theme), **Gear** and
+under it **Item Score** (the stat weights), **Behaviour**, **Navigation** (waypoints and arrow), **Maintenance** (rescan,
 error log, setup) and **About** (version and credits).
 
 ## What it does
@@ -236,6 +236,15 @@ that for the whole guide when you want to look ahead. The panel sizes itself
 to what it shows; the grip in its corner sets the width, and how tall it may
 grow.
 
+**Your place in the guide.** The arrows beside the step number move a step
+back or skip one, and they change what is ticked as they go. Right-click them
+to get back: after clicking round, a right-click on the arrow that points at
+where you were takes you there and puts back every tick (and quest completion)
+the arrows changed on the way -- a quest you finished in the meantime stays
+finished. Without clicking round, a right-click takes you to where the guide
+would open: the quest your log shows work at, else the first step not done.
+If your place is the other way, it says which arrow to right-click.
+
 **A navigation arrow.** It points at the current objective and says how far and
 how long, floating on the world with no window around it. It needs a waypoint
 provider; with none, or with no waypoint for this step, it hides rather than
@@ -260,10 +269,11 @@ low for says the level it becomes an upgrade at.
 - **Comparing:** a ring or trinket is weighed against the weaker of the two you
   wear, a one-hander against either hand once you can dual wield, a two-hander
   against both hands together. Enchants are left out on both sides.
-- **The weights** are OctoPawn's defaults for every class and spec. The **Gear**
-  window (`/apg gear`, or **Stat weights** in the options) lists them, lets you
-  change any of them, pick another spec, reset, and export or import them as a
-  string OctoPawn reads too.
+- **The weights** are OctoPawn's defaults for every class and spec. The
+  options window's **Item Score** page, under **Gear** (`/apg gear`, or **Stat
+  weights** on the Gear page), lists them down the left with a box each, as
+  Zygor's does. Change any of them, pick another spec, reset, or import and
+  export them as a string OctoPawn reads too.
 
 **Gear Advisor.** It watches for upgrades, as Zygor's does, and is switched
 under **Gear** in the options:
@@ -290,8 +300,15 @@ what you wear, with who drops them, where, and how often.
   them on. Items up to three levels above you count, marked with their level.
 - Each drop is weighed with the item score, for your spec, as tooltips are.
 - Walking into a dungeon names its upgrades in chat.
-- The loot tables are the CMaNGOS database's: every vanilla dungeon and raid.
-  Turtle WoW's own dungeons are not in them yet.
+- The loot tables are the CMaNGOS database's for every vanilla dungeon and
+  raid, and pfQuest-turtle's for Turtle WoW's own: Dragonmaw Retreat,
+  Crescent Grove, Stormwrought Ruins, Gilneas City, Hateforge Quarry, Karazhan
+  Crypt, The Black Morass, Stormwind Vault, and the Emerald Sanctum and Tower
+  of Karazhan raids. Their levels are read off their creatures. pfQuest-turtle
+  does not say what Turtle's own items are, so the game is asked the first
+  time -- a list may fill in over a few seconds, once.
+- Vanilla dungeons are as the CMaNGOS database has them; where Turtle WoW has
+  changed their loot, the finder does not know.
 
 ## Professions
 

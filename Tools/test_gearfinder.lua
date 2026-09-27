@@ -32,14 +32,15 @@ GameTooltip.Hide = function() end
 -- Items the client has; the rest it is asked for.
 local ITEMS, asked = {}, {}
 C_Item = { RequestLoadItemDataByID = function(id) table.insert(asked, id) end }
-local function item(id, loc, str)
-	ITEMS[id] = { loc = loc, lines = { "Item " .. id, "+" .. str .. " Strength" } }
+local function item(id, loc, str, quality, level)
+	ITEMS[id] = { loc = loc, quality = quality, level = level,
+		lines = { "Item " .. id, "+" .. str .. " Strength" } }
 end
 GetItemInfo = function(it)
 	local _, _, id = string.find(it, "item:(%d+)")
 	local def = ITEMS[tonumber(id)]
 	if not def then return nil end
-	return "Item " .. id, it, 3, 20, "Armor", "Plate", 1, def.loc, "icon"
+	return "Item " .. id, it, def.quality or 3, def.level or 20, "Armor", "Plate", 1, def.loc, "icon"
 end
 local worn = {}
 GetInventoryItemLink = function(unit, slot)
@@ -90,6 +91,26 @@ for _, d in ipairs(real.dungeons) do
 end
 check(sources["Ragnaros @ MC"] and sources["Nefarian @ BWL"] and sources["Darkmaster Gandling @ SCHOLO"],
 	"summoned bosses' loot is there, in their instances")
+-- Turtle WoW's own dungeons, from pfQuest-turtle.
+local turtle = {}
+for _, d in ipairs(real.dungeons) do if d.turtle then turtle[d.name] = d end end
+local cg = turtle["Crescent Grove"]
+check(cg and cg.kind == "dungeon" and cg.lo >= 30 and cg.hi <= 40 and cg.lo <= cg.hi,
+	"Crescent Grove, at the levels its creatures are, got %s-%s", tostring(cg and cg.lo), tostring(cg and cg.hi))
+check(sources["Grovetender Engryss @ CG"] and sources["High Priestess A'lathea @ CG"], "with its bosses' drops")
+local unknown = 0
+for _, drop in ipairs(cg.loot) do if not real.items[drop[1]] then unknown = unknown + 1 end end
+check(unknown > 0, "Turtle's own items, which the client describes, not the data")
+for _, name in ipairs({ "Dragonmaw Retreat", "Stormwrought Ruins", "Gilneas City", "Hateforge Quarry",
+	"Karazhan Crypt", "The Black Morass", "Stormwind Vault" }) do
+	check(turtle[name] and turtle[name].kind == "dungeon" and table.getn(turtle[name].loot) > 10,
+		"%s is there, with its loot", name)
+end
+check(turtle["Emerald Sanctum"] and turtle["Emerald Sanctum"].kind == "raid"
+	and turtle["Tower of Karazhan"] and turtle["Tower of Karazhan"].kind == "raid", "and Turtle's raids, as raids")
+for name, d in pairs(turtle) do
+	check(d.hi <= 60, "%s's levels are ones a player can be, got %s", name, tostring(d.hi))
+end
 
 -- A small world to look in.
 AegisPathfinder.GearData = {
@@ -112,6 +133,11 @@ AegisPathfinder.GearData = {
 		{ code = "ZG", name = "Zul'Gurub", lo = 60, hi = 60, kind = "raid", loot = {
 			{ 141, "Hakkar", 10 },
 		} },
+		-- One of Turtle's own: its items have no entry below.
+		{ code = "CG", name = "Crescent Grove", lo = 18, hi = 25, kind = "dungeon", turtle = true, loot = {
+			{ 201, "Grovetender", 25 }, { 202, "Elder", 100 }, { 203, "Warden", 30 },
+			{ 204, "Keeper", 20 }, { 205, "Raxxieth", 25 },
+		} },
 	},
 	items = {
 		[101] = { "INVTYPE_CHEST", 3, 20, 0 }, [102] = { "INVTYPE_HEAD", 2, 19, 0 },
@@ -130,6 +156,10 @@ item(104, "INVTYPE_HEAD", 11); item(105, "INVTYPE_HEAD", 30); item(111, "INVTYPE
 item(112, "INVTYPE_HEAD", 14); item(113, "INVTYPE_HEAD", 40); item(121, "INVTYPE_HEAD", 50)
 item(131, "INVTYPE_HEAD", 13); item(141, "INVTYPE_HEAD", 99); item(115, "INVTYPE_HEAD", 12)
 item(900, "INVTYPE_HEAD", 10)
+item(201, "INVTYPE_FEET", 7)                -- Turtle's own boots
+item(202, "", 99)                           -- a badge: not gear
+item(203, "INVTYPE_FEET", 50, 0)            -- grey
+item(205, "INVTYPE_FEET", 60, 3, 30)        -- too high for now; 204 not loaded yet
 worn[1] = 900
 A.db.char.Dungeons = { DM = true, WC = true, SFK = true }
 
@@ -156,7 +186,15 @@ check(GF.ForClass(128, "MAGE") and not GF.ForClass(128, "WARRIOR") and GF.ForCla
 
 -- What it finds -----------------------------------------------------------------------
 
+local weighed = {}
+local compare = IS.Compare
+function IS:Compare(it, w)
+	local _, _, id = string.find(it, "item:(%d+)")
+	weighed[tonumber(id)] = true
+	return compare(self, it, w)
+end
 local results, missing = GF:Find()
+check(not weighed[202] and not weighed[203], "a badge or a grey item is never even weighed")
 local slots = {}
 for _, g in ipairs(results) do slots[g.slot] = g.entries end
 check(slots.Head and slots.Head[1].id == 112, "the best head first (+14 over +10), got %s",
@@ -171,17 +209,25 @@ end
 check(slots.Chest and slots.Chest[1].compare.emptySlot, "a slot you have nothing in")
 check(slots.Weapon and slots.Weapon[1].id == 103 and slots.Weapon[1].source == "Mr. Smite",
 	"weapons, with who drops them")
-check(missing == 1 and not slots.Wrist, "an item not loaded yet is counted, not guessed at")
+check(missing == 2 and not slots.Wrist, "items not loaded yet are counted, not guessed at")
+check(slots.Feet and slots.Feet[1].id == 201 and slots.Feet[1].dungeon == "Crescent Grove"
+	and slots.Feet[1].source == "Grovetender", "a Turtle dungeon's own item, described by the client")
+check(table.getn(slots.Feet) == 1, "not its badge, its grey, or one above your level (%d listed)", table.getn(slots.Feet))
+check(slots.Feet[1].level == 20, "at the level the client gives it")
 check(results[1].slot == "Head", "slots in the character sheet's order, got %s", results[1].slot)
 
 -- Loading what the client has not seen.
-check(GF:Pending() == 1, "it is queued to load")
+check(GF:Pending() == 2, "they are queued to load")
 now = now + 1
 run(GF.events, "OnUpdate")
-check(asked[1] == 114, "and asked for the safe way")
+check(asked[1] == 114 and asked[2] == 204, "and asked for the safe way, Turtle's own too")
 item(114, "INVTYPE_WRIST", 4)
+item(204, "INVTYPE_FINGER", 5)
 results, missing = GF:Find()
-check(missing == 0, "once it has come, nothing is missing")
+check(missing == 0, "once they have come, nothing is missing")
+slots = {}
+for _, g in ipairs(results) do slots[g.slot] = g.entries end
+check(slots.Finger and slots.Finger[1].id == 204, "and the Turtle item that came is weighed")
 
 -- The window --------------------------------------------------------------------------
 

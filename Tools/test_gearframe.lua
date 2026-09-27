@@ -1,6 +1,8 @@
 --[[
-	Tests for the Gear window (GearFrame.lua): the stat weights behind the
-	item score, through the real scorer (ItemScore.lua) and its data.
+	Tests for the Item Score page (GearFrame.lua): the stat weights behind the
+	item score, through the real scorer (ItemScore.lua) and its data. The page
+	is built here into a bare frame, as the options window would build it;
+	test_options.lua checks it in the window.
 
 	Run:  lua5.1 Tools/test_gearframe.lua
 ]]
@@ -36,87 +38,140 @@ local function run(f, script)
 	this = old
 end
 
-A:ToggleGearPanel()
-local frame = A.gearframe
-run(frame, "OnShow")
-check(frame:IsShown(), "the toggle opens the window")
+-- The options window's page: 354 wide, the section header above it, 16 under it.
+local WIDTH, TOP, BOTTOM = 354, 27, 16
+local body = CreateFrame("Frame", nil, UIParent)
+body:SetWidth(WIDTH)
+local sized = 0
+function A:SizeConfigPage(keep) sized = sized + 1; self.__keep = keep end
+local page = A:CreateItemScorePage(body, WIDTH, TOP, BOTTOM)
+check(A.gearframe == nil and A.ToggleGearPanel == nil and A.CreateGearPanel == nil,
+	"there is no Gear window any more")
+check(page == A.itemscorepage and A.ITEM_SCORE_PAGE == "Item Score", "the page, and its name in the list")
+check(type(body.refresh) == "function", "the window can ask it to draw itself")
+body:Show()
+body.refresh()
 
 -- The spec picker: Auto, naming what it is now, then every spec.
-local items = frame.spec.items
+local items = page.spec.items
 check(items[1].value == "auto" and items[1].label == "Auto (Retribution)",
 	"Auto first, naming the levelling spec, got %s", tostring(items[1].label))
 check(table.getn(items) == 4, "then the three Paladin specs, got %d", table.getn(items))
-check(frame.spec:GetValue() == "auto", "Auto chosen until you pick")
-check(string.find(frame.note:GetText(), "levelling spec", 1, true), "the note says where the spec came from")
-check(string.find(frame.note:GetText(), "default weights", 1, true), "and that the weights are the defaults")
+check(page.spec:GetValue() == "auto", "Auto chosen until you pick")
+check(page.class:GetText() == "Paladin", "the class beside it")
+local _, _, _, _, specY = page.spec:GetPoint()
+check(specY == -TOP, "under the section header, got %s", tostring(specY))
+check(string.find(page.note:GetText(), "levelling spec", 1, true), "the note says where the spec came from")
+check(string.find(page.note:GetText(), "default weights", 1, true), "and that the weights are the defaults")
 
--- The weights listed: the spec's, then all of them.
-local function shown()
-	local n = 0
-	for _, cell in pairs(frame.cells) do if cell:IsShown() then n = n + 1 end end
-	return n
+-- The weights listed, one to a row down the left: the spec's, then all of them.
+local function listed()
+	local out = {}
+	for stat, cell in pairs(page.cells) do if cell:IsShown() then out[stat] = cell end end
+	return out
 end
+local function count(t) local n = 0 for _ in pairs(t) do n = n + 1 end return n end
 local weighted = 0
 for _, w in pairs(Data.weights.PALADIN.Retribution) do if w ~= 0 then weighted = weighted + 1 end end
-check(shown() == weighted, "the stats Retribution weighs are listed (%d of %d)", shown(), weighted)
-run(frame.showAll, "OnClick")
-check(shown() == table.getn(Data.stats), "Show all stats lists every one, got %d", shown())
-local _, over = frame.bar:GetMinMaxValues()
-check(over > 0, "and the list scrolls")
-run(frame.showAll, "OnClick")
+check(count(listed()) == weighted, "the stats Retribution weighs are listed (%d of %d)", count(listed()), weighted)
+local xs, ys = {}, {}
+for _, cell in pairs(listed()) do
+	local _, _, _, x, y = cell:GetPoint()
+	xs[x] = true
+	ys[y] = true
+end
+check(count(xs) == 1 and xs[0], "in one column, at the left")
+check(count(ys) == weighted, "a row each")
+local _, _, _, shareX = page.share:GetPoint()
+local cellW = page.cells.STRENGTH:GetWidth()
+check(shareX > cellW and shareX + page.share:GetWidth() == WIDTH,
+	"the import box beside the list, to the right edge (x %s, list %s wide)", tostring(shareX), tostring(cellW))
+local _, rel = page.import:GetPoint()
+local _, rel2 = page.export:GetPoint()
+check(rel == page.share and rel2 == page.import, "Import under the box, Export under Import")
+
+local shortH = body.contentHeight
+local _, _, _, _, resetY = page.reset:GetPoint()
+check(shortH == -resetY + page.reset:GetHeight() + BOTTOM, "the page ends under Reset, got %s", tostring(shortH))
+check(sized > 0 and A.__keep == true, "and the window is told its height, keeping its place")
+
+run(page.showAll, "OnClick")
+check(count(listed()) == table.getn(Data.stats), "Show all stats lists every one, got %d", count(listed()))
+local _, _, _, _, resetY2 = page.reset:GetPoint()
+local lowest = 0
+for _, cell in pairs(listed()) do
+	local _, _, _, _, y = cell:GetPoint()
+	if y < lowest then lowest = y end
+end
+check(resetY2 < lowest, "Reset under the last row")
+local more = (table.getn(Data.stats) - weighted) * page.cells.STRENGTH:GetHeight()
+check(more > 0 and body.contentHeight == shortH + more,
+	"and the page grows a row a stat, so the window scrolls it (%s from %s)", tostring(body.contentHeight), tostring(shortH))
+run(page.showAll, "OnClick")
+check(body.contentHeight == shortH, "and shrinks back")
 
 -- Editing a weight.
-local str = A:GearCell("STRENGTH")
+local str = A:ItemScoreCell("STRENGTH")
 check(str.label:GetText() == "Strength", "stats named for people, got %s", tostring(str.label:GetText()))
-check(A:GearCell("DPS").label:GetText() == "Weapon DPS", "DPS stays DPS")
+check(A:ItemScoreCell("DPS").label:GetText() == "Weapon DPS", "DPS stays DPS")
 check(str.box:GetText() == "1.2", "the box shows the weight, got %s", tostring(str.box:GetText()))
 str.box:SetText("3.5")
 run(str.box, "OnEnterPressed")
 check(IS:Weights().STRENGTH == 3.5, "Enter puts the new weight into effect")
-check(string.find(frame.note:GetText(), "your own weights", 1, true), "and the note says they are yours now")
+check(string.find(page.note:GetText(), "your own weights", 1, true), "and the note says they are yours now")
 str.box:SetText("lots")
 run(str.box, "OnEditFocusLost")
 check(IS:Weights().STRENGTH == 3.5 and str.box:GetText() == "3.5", "text that is not a number is put back")
 str.box:SetText("9")
 run(str.box, "OnEscapePressed")
 check(IS:Weights().STRENGTH == 3.5 and str.box:GetText() == "3.5", "Escape puts back the weight it had")
+str.box:SetFocus()
+run(str.box, "OnHide")
+check(not str.box:HasFocus(), "a box hidden with the page lets go of the keyboard")
 
 -- Export, import, reset.
-run(frame.export, "OnClick")
-check(frame.share:GetText() == "OPW1:PALADIN:Retribution:*STRENGTH:3.5", "export fills the box, got %s",
-	tostring(frame.share:GetText()))
-check(string.find(frame.note:GetText(), "Ctrl+C", 1, true), "and says how to copy it")
-run(frame.reset, "OnClick")
+run(page.export, "OnClick")
+check(page.share:GetText() == "OPW1:PALADIN:Retribution:*STRENGTH:3.5", "export fills the box, got %s",
+	tostring(page.share:GetText()))
+check(string.find(page.status:GetText(), "Ctrl+C", 1, true), "and says how to copy it, under the buttons")
+run(page.reset, "OnClick")
 check(IS:Weights().STRENGTH == 1.2 and str.box:GetText() == "1.2", "reset goes back to the defaults")
-run(frame.import, "OnClick")
+check(page.status:GetText() == "Back to the defaults.", "and says so")
+run(page.import, "OnClick")
 check(IS:Weights().STRENGTH == 3.5, "import brings the exported weights back")
-frame.share:SetText("OPW1:MAGE:Frost:*")
-run(frame.import, "OnClick")
-check(string.find(frame.note:GetText(), "MAGE", 1, true), "a refused import says why, got %s", frame.note:GetText())
+check(page.status:GetText() == "Imported.", "and says so")
+page.share:SetText("OPW1:MAGE:Frost:*")
+run(page.import, "OnClick")
+check(string.find(page.status:GetText(), "MAGE", 1, true), "a refused import says why, got %s", page.status:GetText())
+body.refresh()
+check(page.status:GetText() == "", "turning back to the page clears what it last said")
 
 -- Picking a spec.
 local protRow
-for _, row in ipairs(frame.spec.rows) do if row.value == "Protection" then protRow = row end end
+for _, row in ipairs(page.spec.rows) do if row.value == "Protection" then protRow = row end end
 run(protRow, "OnClick")
 check(IS:Spec() == "Protection", "picking a spec scores as it")
-check(frame.spec:GetValue() == "Protection", "and the picker shows it")
-check(string.find(frame.note:GetText(), "the spec you picked", 1, true), "and the note says you picked it")
+check(page.spec:GetValue() == "Protection", "and the picker shows it")
+check(string.find(page.note:GetText(), "the spec you picked", 1, true), "and the note says you picked it")
 check(str.box:GetText() == "0.9", "the boxes show that spec's weights, got %s", tostring(str.box:GetText()))
 
--- Talents change what Auto means.
+-- Talents change what Auto means; the page follows while it is on screen.
 IS:SetSpec(nil)
 talents[1][2] = 21
 IS:Changed()
-check(frame.spec.items[1].label == "Auto (Holy)", "Auto follows your talents, got %s", frame.spec.items[1].label)
-
-run(frame, "OnHide")
-A:ToggleGearPanel()
-check(not frame:IsShown(), "the toggle closes it again")
+check(page.spec.items[1].label == "Auto (Holy)", "Auto follows your talents, got %s", page.spec.items[1].label)
+body:Hide()
+talents[1][2], talents[2][2] = 0, 21
+IS:Changed()
+check(page.spec.items[1].label == "Auto (Holy)", "not while another page is shown")
+body:Show()
+body.refresh()
+check(page.spec.items[1].label == "Auto (Protection)", "until it is turned to")
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end
-print(string.format("GearFrame: %d checks", checks))
+print(string.format("ItemScorePage: %d checks", checks))
 if table.getn(failures) == 0 then
-	print("All gear window checks passed.")
+	print("All item score page checks passed.")
 	os.exit(0)
 end
 print(string.format("\n%d failure(s):", table.getn(failures)))

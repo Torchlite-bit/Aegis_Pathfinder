@@ -31,6 +31,7 @@ That runs everything that can run without a WoW client:
 | `Tools/convert_professions.py --check` | The profession source document still parses and is internally consistent; the gathering guides cover 1–300 for each faction with somewhere named in every band; the committed guides are what the generator writes |
 | `Tools/test_theme.lua` | The theme layer against a stubbed 1.12 API |
 | `Tools/test_smartskip.lua` | Where a guide opens: a new character at the top, a quest in progress or ready to hand in at its step, otherwise the first step not done |
+| `Tools/test_yourplace.lua` | Right-clicking the step arrows: back or on to your place after clicking round, every mark and completion the arrows changed put back (a completion earned meanwhile kept), only in the arrow's direction, and with no clicking round, to where the guide would open |
 | `Tools/test_filtertags.lua` | The filter tags in the Optimized and zone guides through the real parser: group quests and their follow-ups hide in Solo mode, Auction House steps with Auction House steps off, dungeon quests with the dungeon unticked; and every approved tag is still in place |
 | `Tools/test_professions.lua` | Generated guides through the real parsers: skill bands tile 1–300 for each faction, every rank is reached, and a gathering guide never sends a faction into the other side's starting zones or capitals |
 | `Tools/test_statusframe.lua` | The status card's layout and population |
@@ -43,8 +44,8 @@ That runs everything that can run without a WoW client:
 | `Tools/test_craftplanner.lua` | The crafting route planner: reading the recipe data, the skill-up chance, the route against brute force, learning fees, make-or-buy, pricing at depth, stock carried between steps, selling back, unpriced reagents; the auction scan against the suite's auction house rules; every profession planned from the real data |
 | `Tools/test_itemscore.lua` | The item score: reading 1.12 tooltips (stats, weapon DPS, school spell damage, set bonuses and procs ignored, red lines meaning unusable or later), soft caps, the spec from your talents, your own weights and sharing them in OctoPawn's string, comparing by slot (rings, two-handers, dual wield), and the tooltip line |
 | `Tools/test_gearadvisor.lua` | The Gear Advisor: upgrades found in the bags, offered biggest first and once a session, Equip into the right slot (waiting out a fight, finding an item that moved), Decline remembered across reloads, equip-for-me never binding an item, off at 60; the best quest reward (upgrade, else sell price, waiting for items to load) marked and picked; upgrades bordered in the bags |
-| `Tools/test_gearfinder.lua` | The Gear finder: the dungeons it looks in (level, side, your ticks, raids), the drops it weighs (level, class), loading the ones not cached, the best three a slot in the character sheet's order, the window, and naming upgrades on walking into a dungeon; and that the real loot data is there |
-| `Tools/test_gearframe.lua` | The Gear window: the spec picker, the weights listed and edited, show all, export, import and reset |
+| `Tools/test_gearfinder.lua` | The Gear finder: the dungeons it looks in (level, side, your ticks, raids), the drops it weighs (level, class), Turtle WoW's own items described by the client (and badges, greys and items above you never weighed), loading the ones not cached, the best three a slot in the character sheet's order, the window, and naming upgrades on walking into a dungeon; and that the real loot data is there |
+| `Tools/test_gearframe.lua` | The Item Score page: the spec picker, the weights listed down the left and edited, show all growing the page, export, import and reset beside and under them |
 | `Tools/test_craftroute.lua` | The crafting route window and planned guides: rank steps placed where the skill cap runs out, crafts contiguous and parsed as skill steps, saving and restoring, the window's totals, rows, status line, re-planning only on change, and the scan button |
 | `Tools/test_partysync.lua` | Sharing a guide with the party: step names that survive different step numbering, holding a finished step for the slowest partner without pulling anyone back, skipping out of a hold, the messages both ways, the throttle and heartbeat, the popups, the members under the step, and the group changing |
 | `Tools/test_objectivetabs.lua` | The objectives tab bar and branch state |
@@ -68,7 +69,7 @@ public release, when MAJOR becomes 1.
   new [`CHANGELOG.md`](CHANGELOG.md) entry with its link reference at the
   bottom. `Tools/verify.py` checks they agree.
 - Mark a release **restart** in the changelog when it adds or removes a `.lua`
-  file in the `.toc`.
+  file in the `.toc`, or a texture in `media/`.
 - Nothing under `Tools/` or `docs/` ships, so a change there alone is not a
   release and takes no bump.
 
@@ -139,10 +140,13 @@ check it out and run:
 python3 Tools/import_octopawn.py <path to OctoPawn>
 ```
 
-**`GearData.lua` is generated** from the CMaNGOS classic-db dump by
-`Tools/build_gear_data.py --cmangos <dump>`: what each quest reward sells for,
-which the Gear Advisor falls back on when no reward is an upgrade, and what
-drops in each dungeon and raid, for the Gear finder.
+**`GearData.lua` is generated** from the CMaNGOS classic-db dump and a
+pfQuest-turtle checkout by
+`Tools/build_gear_data.py --cmangos <dump> --pfquest-turtle <pfQuest-turtle>`:
+what each quest reward sells for, which the Gear Advisor falls back on when no
+reward is an upgrade, and what drops in each dungeon and raid, for the Gear
+finder -- Turtle WoW's own from pfQuest-turtle, whose zones for them are listed
+in `TURTLE_INSTANCES`.
 
 **Recipe data in `Crafting/` is generated** from
 [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute)'s data files, with

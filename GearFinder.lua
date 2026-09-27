@@ -1,9 +1,12 @@
 --[[ GearFinder.lua -- upgrades waiting in the dungeons you run, as Zygor's Gear
 	Finder has.
 
-	GearData.lua lists what drops in each dungeon and raid (from CMaNGOS):
-	the item, who drops it and how often, and the item's slot, quality,
-	required level and classes. The finder takes the dungeons you can go to
+	GearData.lua lists what drops in each dungeon and raid (from CMaNGOS, and
+	for Turtle WoW's own from pfQuest-turtle): the item, who drops it and how
+	often, and the item's slot, quality, required level and classes. Turtle's
+	own items come with none of that; the client says what they are once it
+	has loaded them -- slot, quality and level from GetItemInfo, and whether
+	your class can use one from the red lines on its tooltip, as for any item. The finder takes the dungeons you can go to
 	-- those starting no more than a few levels above you, on your side, not
 	unticked among the options' dungeons; raids only when you ask -- and
 	weighs each of their items for your spec against what you wear, with the
@@ -124,6 +127,18 @@ end
 
 --[[ Finding upgrades ]]
 
+--- What the data says about an item -- { slot, quality, required level,
+--- class mask } -- or, for Turtle's own items, what the client does once it
+--- has the item: nil until then, false if it is not gear worth weighing.
+local function describe(items, id, it)
+	local meta = items[id]
+	if meta then return meta end
+	local _, _, quality, minLevel, _, _, _, loc = GetItemInfo(it)
+	if not quality then return nil end
+	if quality < 2 or not loc or loc == "" or not AegisPathfinder.ItemScore.SLOTS[loc] then return false end
+	return { loc, quality, minLevel or 0, 0 }
+end
+
 local results, missing = {}, 0
 
 --- Every upgrade in the dungeons you run: by slot, best first, at most a
@@ -139,10 +154,15 @@ function GF:Find()
 	for _, d in ipairs(self:Dungeons()) do
 		for _, drop in ipairs(d.loot) do
 			local id = drop[1]
-			local meta = items[id]
-			if meta and not seen[id] and meta[3] <= level + L.AHEAD and GF.ForClass(meta[4], class) then
+			local it = "item:" .. id .. ":0:0:0"
+			local meta = not seen[id] and describe(items, id, it)
+			if meta == nil and not seen[id] then
+				-- One of Turtle's own, not loaded yet: nothing to go on until it is.
 				seen[id] = true
-				local it = "item:" .. id .. ":0:0:0"
+				wantLoaded(id)
+				missing = missing + 1
+			elseif meta and meta[3] <= level + L.AHEAD and GF.ForClass(meta[4], class) then
+				seen[id] = true
 				if not GetItemInfo(it) then
 					wantLoaded(id)
 					missing = missing + 1

@@ -7,14 +7,62 @@ The version here matches `## Version` in `Aegis_Pathfinder.toc` and the number
 in the load message and the options window's About page — quote it in bug
 reports.
 
-> ⚠️ Releases marked **restart** add or remove a `.lua` file. WoW 1.12 reads the
-> file list at startup, so `/reload` won't pick them up — you need to fully
-> restart the client. Everything else is `/reload`-safe.
+> ⚠️ Releases marked **restart** add or remove a `.lua` file or a texture. WoW
+> 1.12 reads the file list at startup, so `/reload` won't pick them up — you
+> need to fully restart the client. Everything else is `/reload`-safe.
 
 > **One push, one MINOR.** A body of work that lands in one merge takes a
 > single MINOR bump, and every change inside it — each phase, each fix found
 > along the way — is a PATCH under it. The MINOR moves again at the next body
 > of work, not at the next feature within this one.
+
+---
+
+## [0.6.3]
+
+### Added
+- **Right-click the step arrows to jump to your place.** Clicked round the
+  guide to look back or ahead? Right-click the arrow pointing where you were
+  and you're there, with every tick the arrows changed on the way put back
+  (and any quest you finished meanwhile kept). Without clicking round, a
+  right-click goes to where the guide would open — the quest your log shows
+  work at, else the first step not done. The arrows' tooltips say so.
+
+---
+
+## [0.6.2]
+
+### Added
+- **The Gear finder looks in Turtle WoW's own dungeons and raids**: Dragonmaw
+  Retreat, Crescent Grove, Stormwrought Ruins, Gilneas City, Hateforge Quarry,
+  Karazhan Crypt, The Black Morass, Stormwind Vault, and the Emerald Sanctum
+  and Tower of Karazhan raids — their bosses' drops and how often, from
+  pfQuest-turtle, at the levels their creatures are. The game is asked what
+  Turtle's own items are the first time, so the list can take a few seconds
+  to fill in, once. Walking into one names its upgrades, as for any dungeon.
+
+---
+
+## [0.6.1] — restart
+
+### Changed
+- **The minimap button is the Aegis: Pathfinder logo**, in its own colours,
+  at the stock minimap buttons' size, with the theme's accent ring round it on
+  hover. It replaces the green shield. The logo is a new texture file, so
+  restart the client rather than `/reload`.
+- **The README matches the rest of the Aegis series**: badges for the servers
+  and what the addon needs, the logo, a Discord link, and a section a feature.
+
+---
+
+## [0.6.0]
+
+### Changed
+- **The stat weights are a page of the options now, not a window of their
+  own**: **Item Score**, listed under **Gear**, laid out as Zygor's is. Your
+  spec, *Show all stats*, and every weight down the left with a box each;
+  beside them the OctoPawn string with **Import** and **Export**; **Reset**
+  under them. `/apg gear` and **Stat weights** on the Gear page turn to it.
 
 ---
 
@@ -193,6 +241,10 @@ on, each change gets its own entry.
 
 ---
 
+[0.6.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.6.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.6.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.6.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.5.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.4.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.4.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

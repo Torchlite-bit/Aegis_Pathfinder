@@ -42,13 +42,15 @@ local button = AegisPathfinder.minimapbutton
 -- Drawn from the theme ------------------------------------------------------------
 
 check(button:GetParent() == Minimap, "the button lives on the minimap")
-check(button.icon:GetTexture() == Theme.texture.logo,
-	"it carries the Aegis shield, not Blizzard's quest-log book, got %s",
+check(button.icon:GetTexture() == Theme.texture.minimapLogo,
+	"it carries the Aegis: Pathfinder logo, not Blizzard's quest-log book, got %s",
 	tostring(button.icon:GetTexture()))
-check(button.disc:GetTexture() == Theme.texture.circleFill
-	and button.ring:GetTexture() == Theme.texture.circleBorder,
-	"on the theme's own disc and ring, not the stock minimap border")
-check(button.icon.__color[2] > 0.7, "the shield is in the accent")
+check(button.icon:GetWidth() == button:GetWidth() and button:GetWidth() == 32,
+	"filling a button the stock minimap buttons' size, got %s", tostring(button:GetWidth()))
+check(button.icon.__color == nil or (button.icon.__color[1] == 1 and button.icon.__color[2] == 1
+	and button.icon.__color[3] == 1), "in its own colours, not tinted")
+check(button.ring:GetTexture() == Theme.texture.circleBorder and not button.ring:IsShown(),
+	"the logo is its own disc and ring: ours waits for a hover")
 check(not button:IsShown(), "and it waits for the saved settings before showing")
 
 -- Placement ------------------------------------------------------------------------
@@ -109,9 +111,9 @@ check(tip:IsShown() and tip.owner == button, "hovering shows the addon's own too
 check(string.find(said, "Click", 1, true) and string.find(said, "Right-click", 1, true)
 	and string.find(said, "Drag", 1, true),
 	"the tooltip explains click, right-click and drag, got '%s'", said)
-check(button.ring.__color[2] > 0.7, "and the ring lights on hover")
+check(button.ring:IsShown() and button.ring.__color[2] > 0.7, "and the accent ring comes up on hover")
 fire(button, "OnLeave")
-check(button.ring.__color[2] < 0.4, "and dims again")
+check(not button.ring:IsShown(), "and goes again")
 check(not tip:IsShown(), "and the tooltip goes")
 
 -- Hiding it --------------------------------------------------------------------------------

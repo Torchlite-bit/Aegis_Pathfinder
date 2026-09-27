@@ -613,20 +613,26 @@ def grip(size=16):
 # Branding
 # --------------------------------------------------------------------------
 
-def _shield(d, s, fill=W):
-    d.polygon([(s * .50, s * .06), (s * .90, s * .22), (s * .90, s * .52),
-               (s * .50, s * .94), (s * .10, s * .52), (s * .10, s * .22)], fill=fill)
+# The Aegis: Pathfinder logo, drawn by the owner. The source art lives in
+# Tools/data (it does not ship); only the textures made from it do.
+LOGO_SOURCE = os.path.join(ROOT, "Tools", "data", "aegis-pathfinder-logo.webp")
 
 
-def logo(size=64):
-    """Minimap / FuBar icon: shield with the navigation arrow cut out."""
-    img = canvas(size)
-    d = ImageDraw.Draw(img)
-    s = size * SS
-    _shield(d, s)
-    d.polygon([(s * .50, s * .24), (s * .74, s * .64), (s * .50, s * .55), (s * .26, s * .64)],
-              fill=(0, 0, 0, 0))
-    return finish(img, size, "logo.tga")
+def minimap_logo(size=64):
+    """Minimap button: the full-colour logo, a disc with its own ring.
+
+    Colour is baked in -- it is the owner's art, not a mask the theme tints.
+    Halved step by step rather than in one go, so the fine detail (the runes,
+    the wing feathers) averages out instead of aliasing at 64px.
+    """
+    img = Image.open(LOGO_SOURCE).convert("RGBA")
+    side = min(img.size)
+    img = img.crop(((img.size[0] - side) // 2, (img.size[1] - side) // 2,
+                    (img.size[0] + side) // 2, (img.size[1] + side) // 2))
+    while img.size[0] >= size * 4:
+        img = img.resize((img.size[0] // 2, img.size[1] // 2), Image.LANCZOS)
+    img = img.resize((size, size), Image.LANCZOS)
+    return write_tga(img, os.path.join(MEDIA, "minimap-logo.tga"))
 
 
 def wordmark(w=256, h=32):
@@ -682,7 +688,7 @@ def main():
     record("shadow.tga", shadow())
     record("progress-fill.tga", progress_fill())
     record("progress-mask.tga", progress_mask())
-    record("logo.tga", logo())
+    record("minimap-logo.tga", minimap_logo())
     record("wordmark.tga", wordmark())
     record("scroll-thumb.tga", scroll_thumb())
     record("switch-track.tga", switch_track())

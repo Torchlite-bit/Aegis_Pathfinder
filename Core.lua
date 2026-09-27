@@ -190,9 +190,9 @@ local options = {
         },
         Gear = {
             name = "Gear",
-            desc = "The Gear window: the stat weights behind the item score on tooltips",
+            desc = "The stat weights behind the item score on tooltips (options, Item Score)",
             type = "execute",
-            func = function() AegisPathfinder:ToggleGearPanel() end,
+            func = function() AegisPathfinder:ToggleItemScorePage() end,
         },
         Finder = {
             name = "Finder",
@@ -559,7 +559,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.5.0"
+AegisPathfinder.version = "0.6.3"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -1554,6 +1554,97 @@ function AegisPathfinder:GoToPreviousObjective()
 
     -- Flag to re-check completion conditions after rewind
     self.recheckCompletion = true
+end
+
+--[[ Your place in the guide, and the right-click back to it.
+
+    The arrows edit progress as they go: the forward arrow marks the steps it
+    passes as done, the back arrow unmarks the ones it goes back over (and
+    their quests' completion). So once you start clicking round, what is saved
+    no longer says where you were. The first arrow click takes a snapshot --
+    the step you were on, each step's mark, the completions -- and a
+    right-click on the arrow pointing at that step puts it all back, for the
+    steps the arrows moved over, and takes you there.
+
+    With no snapshot -- you have not been clicking round -- your place is
+    where the guide would open: the step your quest log shows work at, else
+    the first step not done. The right-click takes you there if it is that
+    way, and changes no marks. ]]
+
+local function ForGuide(self, fn)
+    for i, quest in ipairs(self.quests or {}) do
+        local qid = tonumber((self:GetObjectiveTag("QID", i)))
+        local name = string.gsub(string.gsub(quest, "@.*@", ""), AegisPathfinder.Locale.PART_GSUB, "")
+        fn(i, quest, qid, name)
+    end
+end
+
+--- Before an arrow moves you: remember where you were, once.
+function AegisPathfinder:RememberPlace()
+    if not self.current or not self.quests then return end
+    local place = self.place
+    if not place then
+        local db = self.db.char
+        place = { step = self.current, lo = self.current, hi = self.current,
+            marks = {}, unchecked = {}, byid = {}, byname = {} }
+        ForGuide(self, function(i, quest, qid, name)
+            place.marks[i] = self.turnedin[quest]
+            place.unchecked[i] = self.manuallyUnchecked and self.manuallyUnchecked[quest]
+            if qid and db.completedquestsbyid[qid] then place.byid[qid] = true end
+            if db.completedquests[name] then place.byname[name] = true end
+        end)
+        self.place = place
+    end
+    if self.current < place.lo then place.lo = self.current end
+    if self.current > place.hi then place.hi = self.current end
+end
+
+--- Where the guide would open, without going there.
+function AegisPathfinder:FindPlace()
+    local was = self.current
+    self:SmartSkipToStep()
+    local found = self.current
+    self.current = was
+    return found
+end
+
+--- Right-click on an arrow: to your place, if it is that way (`direction`
+--- -1 for the back arrow, 1 for the forward one).
+function AegisPathfinder:ReturnToPlace(direction)
+    if not self.current or not self.quests then return end
+    local place = self.place
+    local target = place and place.step or self:FindPlace()
+    if not target or target == self.current then
+        self.place = nil
+        self:Print("You are at your place in the guide.")
+        return
+    end
+    if (target - self.current) * direction < 0 then
+        self:Print(target > self.current
+            and "Your place is further on: right-click the forward arrow."
+            or "Your place is behind you: right-click the back arrow.")
+        return
+    end
+    if place then
+        local db = self.db.char
+        local lo = math.min(place.lo, self.current, target)
+        local hi = math.max(place.hi, self.current, target)
+        for i = lo, hi do
+            local quest = self.quests[i]
+            if quest then
+                self.turnedin[quest] = place.marks[i]
+                if self.manuallyUnchecked then self.manuallyUnchecked[quest] = place.unchecked[i] end
+            end
+        end
+        -- Completions only come back: one earned while you looked round stays.
+        for qid in pairs(place.byid) do db.completedquestsbyid[qid] = true end
+        for name in pairs(place.byname) do db.completedquests[name] = true end
+        self.place = nil
+    end
+    self.current = target
+    self:ForceWaypointUpdate()
+    self:SetStatusText(self.current)
+    self:UpdateOHPanel()
 end
 
 function AegisPathfinder:GoToObjective(stepNum)

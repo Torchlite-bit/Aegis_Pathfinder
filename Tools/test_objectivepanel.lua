@@ -652,6 +652,41 @@ do
 	check(not frame.partyblock:IsShown() and AegisPathfinder:PanelContentHeight() == before, "and they go when sharing stops")
 end
 
+-- The step arrows: a click moves a step, remembering your place first; a
+-- right-click goes back or on to it. ------------------------------------------
+
+do
+	local calls = {}
+	local A = AegisPathfinder
+	local keep = { A.GoToPreviousObjective, A.SkipToNextObjective, A.RememberPlace, A.ReturnToPlace }
+	function A:GoToPreviousObjective() table.insert(calls, "back") end
+	function A:SkipToNextObjective() table.insert(calls, "on") end
+	function A:RememberPlace() table.insert(calls, "remember") end
+	function A:ReturnToPlace(d) table.insert(calls, "place " .. d) end
+	local prev, nextArrow = frame.navrow.stepControls[1], frame.navrow.stepControls[2]
+	local function press(b, button)
+		local oldThis, oldArg = this, arg1
+		this, arg1 = b, button
+		b:GetScript("OnClick")()
+		this, arg1 = oldThis, oldArg
+	end
+	check(prev.__clicks and prev.__clicks[2] == "RightButtonUp" and nextArrow.__clicks[2] == "RightButtonUp",
+		"the step arrows hear a right-click")
+	press(prev, "LeftButton"); press(nextArrow, "LeftButton")
+	press(prev, "RightButton"); press(nextArrow, "RightButton")
+	check(table.concat(calls, ", ") == "remember, back, remember, on, place -1, place 1",
+		"a click remembers your place and moves; a right-click goes to it, got %s", table.concat(calls, ", "))
+	local oldThis = this
+	this = prev
+	prev:GetScript("OnEnter")()
+	this = oldThis
+	local tip = {}
+	for _, fs in ipairs(Theme.tip.lines) do if fs:IsShown() then table.insert(tip, fs:GetText()) end end
+	check(string.find(table.concat(tip, " / "), "Right-click: back to your place", 1, true),
+		"its tooltip says so, got %s", table.concat(tip, " / "))
+	A.GoToPreviousObjective, A.SkipToNextObjective, A.RememberPlace, A.ReturnToPlace = keep[1], keep[2], keep[3], keep[4]
+end
+
 -- Report ---------------------------------------------------------------------
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end
