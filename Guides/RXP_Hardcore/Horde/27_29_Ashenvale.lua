@@ -98,7 +98,6 @@ T Troll Charm |QID|6462| |N|Mitsuwa - (11.7, 34.9)| |Z|Ashenvale|
 T Je'neu of the Earthen Ring |QID|824| |N|Je'neu Sancrea - (11.6, 34.3) (BFD Dungeon Quest)| |D|BFD| |Z|Ashenvale|
 A The Essence of Aku'Mai |QID|6563| |N|Je'neu Sancrea - (11.6, 34.3) (BFD Dungeon Quest)| |D|BFD| |Z|Ashenvale|
 A Amongst The Ruins |QID|6921| |N|Je'neu Sancrea - (11.6, 34.3) (BFD Dungeon Quest)| |D|BFD| |Z|Ashenvale|
-A Allegiance to the Old Gods |QID|6565| |N|Je'neu Sancrea - (11.6, 34.3) (BFD Dungeon Quest)| |D|BFD| |Z|Ashenvale|
 T Je'neu of the Earthen Ring |QID|824| |N|Je'neu Sancrea - (11.6, 34.3) (BFD Dungeon Quest)| |D|BFD| |Z|Ashenvale|
 A The Essence of Aku'Mai |QID|6563| |N|Je'neu Sancrea - (11.6, 34.3) (BFD Dungeon Quest)| |D|BFD| |Z|Ashenvale|
 A Amongst The Ruins |QID|6921| |N|Je'neu Sancrea - (11.6, 34.3) (BFD Dungeon Quest)| |D|BFD| |Z|Ashenvale|
@@ -110,12 +109,15 @@ R the entrance of Blackfathom Deeps |N|(43.9, 35.2) (BFD Dungeon Quest)| |D|BFD|
 C The Essence of Aku'Mai |QID|6563| |OIDX|1| |N|Loot Sapphire of Aku'Mai from the wall (BFD Dungeon Quest)| |D|BFD| |Z|Kalimdor|
 C Collect Damp Note (x1) |QID|6564| |L|16790 1| |N|Blackfathom Tide Priestesses. Loot them for a [Damp Note] and use it to start the quest (44.5, 34.9) (BFD Dungeon Quest)| |D|BFD| |Z|Kalimdor|
 A Allegiance to the Old Gods |QID|6564| |N|Blackfathom Tide Priestesses. Loot them for a [Damp Note] and use it to start the quest - (44.5, 34.9) (BFD Dungeon Quest)| |D|BFD| |Z|Kalimdor|
+T Allegiance to the Old Gods |QID|6564| |N|Je'neu Sancrea at Zoram'gar - (11.6, 34.3). Run out and hand the note in: the next quest is Lorguss Jett, near the entrance (BFD Dungeon Quest)| |D|BFD| |Z|Ashenvale|
+A Allegiance to the Old Gods |QID|6565| |N|Je'neu Sancrea at Zoram'gar - (11.6, 34.3) (BFD Dungeon Quest)| |D|BFD| |Z|Ashenvale|
 C The Essence of Aku'Mai |QID|6563| |OIDX|1| |N|Sapphire of Aku'Mai from the wall (44.3, 35.1) (BFD Dungeon Quest)| |D|BFD| |Z|Kalimdor|
 A Blackfathom Villainy |QID|6561| |N|Argent Guard Thaelrid (BFD Dungeon Quest)| |D|BFD| |Z|Kalimdor|
 C Allegiance to the Old Gods |QID|6565| |OIDX|1| |N|Kill Lorguss Jett (BFD Dungeon Quest)| |D|BFD| |Z|Kalimdor|
 N Looting this will spawn Baron Aquanis |N|(BFD Dungeon Quest)| |D|BFD| |Z|Kalimdor|
 C Amongst The Ruins |QID|6921| |OIDX|1| |N|Loot the Fathom Stone in the water on the ground for the Fathom Core (BFD Dungeon Quest)| |D|BFD| |Z|Kalimdor|
-C Collect Strange Water Globe (x1) |QID|6782| |L|16782 1| |N|Kill Baron Aquanis. Loot him for a [Strange Water Globe]. Use it to accept the quest (BFD Dungeon Quest)| |D|BFD| |Z|Kalimdor|
+C Collect Strange Water Globe (x1) |QID|6922| |L|16782 1| |N|Kill Baron Aquanis. Loot him for a [Strange Water Globe]. Use it to accept the quest (BFD Dungeon Quest)| |D|BFD| |Z|Kalimdor|
+A Baron Aquanis |QID|6922| |U|16782| |N|Use the [Strange Water Globe] to start the quest (BFD Dungeon Quest)| |D|BFD| |Z|Ashenvale|
 A Baron Aquanis |QID|6922| |N|Kill Baron Aquanis. Loot him for a [Strange Water Globe]. Use it to accept the quest (BFD Dungeon Quest)| |D|BFD| |Z|Kalimdor|
 C Amongst The Ruins |QID|6921| |OIDX|1| |N|Loot the Fathom Stone in the water on the ground for the Fathom Core (BFD Dungeon Quest)| |D|BFD| |Z|Kalimdor|
 C Blackfathom Villainy |QID|6561| |OIDX|1| |N|Kill Twilight Lord Kelris. Loot him for his Head (BFD Dungeon Quest)| |D|BFD| |Z|Kalimdor|
@@ -124,9 +126,10 @@ N Kill Aku'mai first if you wish. This is the last boss of the dungeon |N|(BFD D
 N Copy paste this macro inside Blackfathrom Deeps to ghetto Hearth back to Splintertree Post |N|(BFD Dungeon Quest)| |D|BFD| |Z|Kalimdor|
 F Fly to Zoram'gar Outpost |N|Vhulgra - (73.2, 61.6) (BFD Dungeon Quest)| |D|BFD| |Z|Ashenvale|
 T Vorsha the Lasher |QID|6641| |N|Warsong Runner - (12.2, 34.2)| |Z|Ashenvale|
-T Allegiance to the Old Gods |QID|6564| |N|Je'neu Sancrea - (11.6, 34.3) (BFD Dungeon Quest)| |D|BFD| |Z|Ashenvale|
+T Allegiance to the Old Gods |QID|6565| |N|Je'neu Sancrea - (11.6, 34.3) (BFD Dungeon Quest)| |D|BFD| |Z|Ashenvale|
 T The Essence of Aku'Mai |QID|6563| |N|Je'neu Sancrea - (11.6, 34.3) (BFD Dungeon Quest)| |D|BFD| |Z|Ashenvale|
 T Amongst The Ruins |QID|6921| |N|Je'neu Sancrea - (11.6, 34.3) (BFD Dungeon Quest)| |D|BFD| |Z|Ashenvale|
+T Baron Aquanis |QID|6922| |N|Je'neu Sancrea - (11.6, 34.3) (BFD Dungeon Quest)| |D|BFD| |Z|Ashenvale|
 T Baron Aquanis |QID|6922| |N|Je'neu Sancrea - (11.6, 34.3) (BFD Dungeon Quest)| |D|BFD| |Z|Ashenvale|
 H Splintertree Post |N|Hearth to Splintertree Post| |O| |Z|Ashenvale|
 F Fly to Thunder Bluff |N|Vhulgra - (73.2, 61.6)| |Z|Ashenvale|

@@ -30,7 +30,13 @@ are only found at startup.
       and Dungeons, and they can't be clicked; off again, they come back as they
       were.
 - [ ] With Dungeons on (and Self-Found off) there is a step 3; the list shows
-      levels and steps each adds; Recommended / All / None work.
+      levels and the quests each adds; Recommended / All / None work, and
+      Recommended changes with the guide picked in step 1 (RestedXP ticks
+      many, Optimized few). Untick the Deadmines: the Stockade says "(+4 with
+      Deadmines)"; tick it again and the count goes back up.
+- [ ] Finishing a guide on RestedXP as a Human at 19 goes on to Redridge; as a
+      Night Elf, to Darkshore/Ashenvale. On Optimized, finishing the 30 guide
+      goes on to 30-31, and the 40 one to 40-41.
 - [ ] Finish: the chat line says what was set up, and the guide reloads.
 
 ## 3. The guide

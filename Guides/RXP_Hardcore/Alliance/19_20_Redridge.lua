@@ -128,8 +128,6 @@ R Exit Stormwind. Travel to Goldshire |N|(32.2, 49.7) (DM Dungeon Quest)| |D|DM|
 T The Price of Shoes |QID|118| |N|Smith Argus - (41.7, 65.5) (DM Dungeon Quest)| |D|DM| |Z|Elwynn Forest|
 A Return to Verner |QID|119| |N|Smith Argus - (41.7, 65.5) (DM Dungeon Quest)| |D|DM| |Z|Elwynn Forest|
 R the Northshire Abbey |N|(48.6, 41.8) (DM Dungeon Quest)| |D|DM| |Z|Elwynn Forest|
-T Brother Paxton |QID|344| |N|Brother Paxton - (49.6, 40.4) (DM Dungeon Quest)| |D|DM| |Z|Elwynn Forest|
-A Ink Supplies |QID|345| |N|Brother Paxton - (49.6, 40.4) (DM Dungeon Quest)| |D|DM| |Z|Elwynn Forest|
 R the Tower of Azora. Ascend the tower. Follow the arrow for a shortcut through the mountains |N|(65.2, 69.8) (DM Dungeon Quest)| |D|DM| |Z|Elwynn Forest|
 A A Watchful Eye |QID|94| |N|Theocritus at the top - (65.2, 69.7) (DM Dungeon Quest)| |D|DM| |Z|Elwynn Forest|
 B Dawn Brightstar has has limited supply items such as [Scrolls] and [Potions] as well, which you should buy if available |N|Dawn Brightstar - (64.9, 69.2) (DM Dungeon Quest)| |C|!Warrior/!Rogue| |D|DM| |Z|Elwynn Forest|

@@ -60,15 +60,16 @@ function AegisPathfinder:GetCustomZoneChoices(level, except)
 	return out
 end
 
---- Where the route goes after `finished`: the next guide in its chain, or,
---- coming back from a custom zone, the route's guide for your level now.
+--- Where the route goes after `finished`: the next leg of your route (or,
+--- off it, the guide's own next link), or, coming back from a custom zone,
+--- the route's guide for your level now.
 function AegisPathfinder:GetRouteContinuation(finished)
 	if self.db.char.isbranching then
 		local tabs = self:EnsureTabs()
 		local guide = self:GetOptimizedGuideForLevel(UnitLevel("player")) or (tabs[1] and tabs[1].guide)
 		return self.guides[guide] and guide or nil
 	end
-	local nextname = self.nextzones and self.nextzones[finished]
+	local nextname = self:GetRouteSuccessor(finished) or (self.nextzones and self.nextzones[finished])
 	return self.guides[nextname] and nextname or nil
 end
 

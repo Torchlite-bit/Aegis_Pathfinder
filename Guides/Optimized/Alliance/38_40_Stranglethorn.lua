@@ -2,7 +2,7 @@
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
-AegisPathfinder:RegisterGuide("Optimized/Stranglethorn (38-40)", nil, "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Stranglethorn (38-40)", "Optimized/Badlands (40-41)", "Alliance", function()
 
 return [[
 

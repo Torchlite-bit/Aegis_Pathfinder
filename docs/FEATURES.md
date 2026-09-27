@@ -84,15 +84,28 @@ setup asks three things, as RestedXP does:
    guides with a route for your race are offered.
 2. **Features**: Auction House steps, Solo Self-Found, group quests, dungeons.
 3. **Dungeons** (when dungeons are on): the dungeons your faction can run, with
-   level ranges and how many steps each adds to your route, plus
-   **Recommended**, **All** and **None**. Recommended picks the dungeons whose
-   quests the guides use most.
+   level ranges and how many quests each adds to your route, plus
+   **Recommended**, **All** and **None**. A quest counts only if the guide you
+   picked takes you all the way through it on your race's route: sends you to
+   pick it up, has you do first whatever the server wants done before it, and
+   sends you to hand it in. A quest whose chain runs through another dungeon
+   counts once that one is ticked too -- "1 quest (+4 with Deadmines)" for the
+   Stockade until the Deadmines is. **Recommended** picks the dungeons that add
+   five quests or more, for the guide you picked: RestedXP and RXP Hardcore
+   take you through many, the Optimized guides through few, so each has its
+   own.
 
 It starts from what the character already has, so an existing character can
 finish it without changing anything, and it keeps your place in your guide
 unless you pick a different one. Where the chosen guides do not mark a kind of
 step yet, it says so. Closing it keeps your current settings. Run it again with
 `/apg setup` or **Run setup** on the options window's **Maintenance** page.
+
+**Your route decides what comes next.** Finish a guide on your route and the
+next is the route's next leg for your guide pack and race -- RestedXP, for
+one, sends the Eastern Kingdoms races through Redridge at 19 and Night Elves
+through Darkshore. A guide you picked off the route goes on where its own
+next guide says.
 
 **Custom zones between guides.** When you finish a guide and a custom zone
 fits your level, a small **Where next?** window asks whether to carry on with

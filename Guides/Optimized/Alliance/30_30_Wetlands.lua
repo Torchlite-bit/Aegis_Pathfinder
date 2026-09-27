@@ -2,7 +2,7 @@
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
-AegisPathfinder:RegisterGuide("Optimized/Wetlands (30-30)", nil, "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Wetlands (30-30)", "Optimized/Hillsbrad (30-31)", "Alliance", function()
 
 return [[
 

@@ -18,6 +18,60 @@ reports.
 
 ---
 
+## [0.12.0] — restart
+
+### Changed
+- **The dungeon step of the setup counts quests, and recommends for the guide
+  you picked.** Each dungeon says how many quests it adds to your route, and
+  a quest counts only if your guide takes you all the way through it on your
+  race's route: sends you to pick it up, has you do first whatever the server
+  wants done before it, and sends you to hand it in. A quest whose chain runs
+  through another dungeon counts once that one is ticked too ("1 quest (+4
+  with Deadmines)"). **Recommended** is now per guide pack and race: the
+  dungeons that add five quests or more. It was one list per faction, from
+  counting the RestedXP guides' steps.
+  - RestedXP recommends 6 to 9 dungeons by race, RXP Hardcore 9 to 11; the
+    Optimized guides take you through few dungeon quests, so they recommend
+    the Sunken Temple for the Alliance and none for the Horde.
+- **Your route decides what comes next.** Finishing a guide on your route
+  goes on to the route's next leg for your guide pack and race; a guide's own
+  next guide is the way on only off the route. RestedXP's paths part at 19 --
+  the Eastern Kingdoms races through Redridge and the Deadmines, Night Elves
+  through Darkshore -- and a guide can name only one next.
+
+### Fixed
+- **The Optimized guides stopped at 30 and again at 40** (and the Alliance's
+  at 50): those guides named no next guide. The High Elf and Goblin starting
+  zones handed you to the older zone guides instead of the Optimized ones.
+- **Routes that named guides that do not exist**: the Horde's Optimized
+  Stonetalon Mountains legs, RestedXP's Wetlands and Southern Barrens, and
+  from 42 the Alliance's RXP Hardcore route, which named the Horde's guides;
+  the Horde's has no 41-42 Badlands or 45-46 Feralas, and now skips them.
+  RestedXP's routes follow its guides again, with the Alliance's 29-30
+  Ashenvale, 35-37 Desolace, 40-40 Dustwallow Marsh, 40-41 Desolace, 43-44
+  Tanaris/Dustwallow, 50-50 Stranglethorn, 51-51 Blasted Lands and 59-59
+  Winterspring/Silithus, and the Horde's 41-41 Desolace, that it skipped.
+- **Next guides that did not exist**: the RestedXP converter had left its
+  folder names in them ("RestedXP Horde 22-30\22-24 Hillsbrad").
+- **Dungeon quests the guides never finished**:
+  - Gnomeregan's four quests were never handed in (RestedXP and RXP
+    Hardcore, Alliance), nor Red Silk Bandanas (RestedXP).
+  - Blackfathom Deeps, Horde: Allegiance to the Old Gods' second part was
+    picked up before the first was handed in, and never handed in; Baron
+    Aquanis had another quest's id, and no pick-up or hand-in.
+  - In Search of Thaelrid was never handed in (RXP Hardcore, Alliance).
+  - Brother Paxton was handed in before it was picked up, with the
+    Deadmines ticked, and Ink Supplies with it (RXP Hardcore).
+  - An Unholy Alliance was handed in only with Scarlet Monastery ticked, not
+    Razorfen Downs, where it is done.
+
+### Added
+- **`Tools/build_dungeon_quests.py`** checks every dungeon quest along every
+  route against the server's quest rules (CMaNGOS classic-db's, and
+  pfQuest-turtle's for Turtle WoW's own quests), writes `DungeonQuests.lua`,
+  and with `--report` says which do not count and why.
+- **`Tools/test_routes.lua`**: every route leg and next guide exists.
+
 ## [0.11.1]
 
 ### Changed
@@ -365,6 +419,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.12.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.11.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.11.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.10.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

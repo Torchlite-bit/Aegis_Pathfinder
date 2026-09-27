@@ -503,10 +503,15 @@ title and a line of intro per step, Back and Continue/Finish at the foot.
 3. **Dungeons**: the faction's dungeons (`DUNGEON_INFO`: Ragefire Chasm is
    Horde-only, the Stockade Alliance-only) in level order, each a
    `Theme:StepCheck`, the name, the level range (accent while it is your
-   level, gold ahead, dim once past) and how many steps it adds to the route
-   ("not in this route" for none). Recommended / All / None above. Reaching
-   the step with none ticked starts from the recommended ones: per faction,
-   the dungeons with 55 or more dungeon steps in the RestedXP guides.
+   level, gold ahead, dim once past) and how many quests it adds to the route
+   (`GetDungeonQuestCount`, from DungeonQuests.lua: "12 quests", "1 quest (+4
+   with Deadmines)" while a quest's chain waits on another dungeon, "none in
+   this route"), in the accent colour when recommended. Recommended / All /
+   None above. Reaching the step with none ticked starts from the recommended
+   ones (`GetRecommendedDungeons`): for the pack picked and your race, each
+   that adds five quests or more, counting the ones it shares with the others
+   recommended. With no quests for any dungeon, a note says the guides take
+   you through none yet.
 
 Finish (`ApplySetup`) switches pack only when a different one was chosen --
 `SelectRoutePack` re-routes, which would lose your place -- writes the three

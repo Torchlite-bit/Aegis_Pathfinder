@@ -70,6 +70,20 @@ AegisPathfinder.routepacks = {
 		factionRestriction = "Horde", classRestriction = "WARRIOR", routes = { Orc = { { guide = "RXP/Northshire (1-6)" } } } },
 }
 
+-- What each pack's route takes you through, as DungeonQuests.lua says:
+-- five Deadmines quests and six in Blackrock Depths for the RestedXP Human,
+-- two in Wailing Caverns; the Stockade's, one alone and four more that run
+-- through the Deadmines. None at all for the Optimized guides.
+AegisPathfinder.DUNGEON_QUESTS = {
+	RestedXP = {
+		Human = { DM = { 166, 168, 214, 373, 389 }, WC = { 959, 1486 },
+			STOCKADES = { 386, { 391, "DM" }, { 392, "DM" }, { 393, "DM" }, { 350, "DM" } },
+			BRD = { 4081, 4082, 4083, 4122, 4123, 4126 } },
+		Orc = { RFC = { 5722, 5723, 5724, 5725, 5726 }, BFD = { 6562, 6563, 6564, 6565, 6921 }, DM = { 103 } },
+	},
+}
+AegisPathfinder.DUNGEON_RECOMMEND = 5
+
 dofile("Theme.lua")
 dofile("WidgetWarlock.lua")
 dofile("SetupFrame.lua")
@@ -175,10 +189,17 @@ local names = {}
 for _, r in ipairs(rows) do names[r.code] = r end
 check(names.STOCKADES and not names.RFC, "Alliance gets the Stockade and not Ragefire Chasm")
 check(table.getn(rows) == 14, "14 dungeons for the Alliance, got %d", table.getn(rows))
-check(names.DM.steps:GetText() == "2 steps", "a dungeon says how much of the route it adds, got %s", names.DM.steps:GetText())
-check(names.SM.steps:GetText() == "not in this route", "and says so when it adds nothing")
-check(names.DM.check:GetChecked() and names.BRD.check:GetChecked() and not names.SFK.check:GetChecked(),
-	"with none picked, it starts from the recommended ones")
+check(names.DM.steps:GetText() == "5 quests", "a dungeon says how many quests it adds, got %s", names.DM.steps:GetText())
+check(names.WC.steps:GetText() == "2 quests", "counted for this pack and race, got %s", names.WC.steps:GetText())
+check(names.SM.steps:GetText() == "none in this route", "and says so when it adds none, got %s", names.SM.steps:GetText())
+check(names.DM.check:GetChecked() and names.BRD.check:GetChecked() and not names.WC.check:GetChecked()
+	and not names.SFK.check:GetChecked(),
+	"with none picked, it starts from the recommended ones: five quests or more")
+check(names.STOCKADES.check:GetChecked(),
+	"a dungeon whose quests run through a recommended one counts them too: the Stockade, with the Deadmines")
+check(names.STOCKADES.steps:GetText() == "5 quests", "all five, with the Deadmines ticked, got %s", names.STOCKADES.steps:GetText())
+check(names.DM.steps.__color[1] == Theme.color.accent[1] and names.WC.steps.__color[1] == Theme.color.textDim[1],
+	"the recommended say so in the accent colour")
 
 click(f.quick[2])   -- All
 local all = true
@@ -186,6 +207,11 @@ for _, r in ipairs(shown(f.rows)) do if not r.check:GetChecked() then all = fals
 check(all, "All picks every one")
 click(f.quick[3])   -- None
 check(not names.DM.check:GetChecked(), "None clears them")
+check(names.STOCKADES.steps:GetText() == "1 quest (+4 with Deadmines)",
+	"with the Deadmines not ticked, the Stockade counts what it adds alone, got %s", names.STOCKADES.steps:GetText())
+click(names.DM)
+check(names.STOCKADES.steps:GetText() == "5 quests", "and the rest once it is, got %s", names.STOCKADES.steps:GetText())
+click(names.DM)
 click(names.WC)
 check(names.WC.check:GetChecked(), "a row toggles its dungeon")
 click(names.SFK); click(names.SFK)
@@ -266,6 +292,25 @@ for _, r in ipairs(shown(f.rows)) do names[r.code] = r end
 check(names.RFC and not names.STOCKADES, "the Horde gets Ragefire Chasm and not the Stockade")
 check(names.RFC.check:GetChecked() and names.BFD.check:GetChecked() and not names.DM.check:GetChecked(),
 	"and its own recommended ones")
+check(names.DM.steps:GetText() == "1 quest", "and its own counts, got %s", names.DM.steps:GetText())
+check(not f.dungeonNote:IsShown(), "with quests to count, no note")
+
+-- A pack whose guides take you through no dungeon's quests says so, and
+-- recommends none.
+click(f.back); click(f.back)
+click(shown(f.cards)[1])                                  -- Optimized
+click(f.next)
+if not f.features.dungeons:IsOn() then toggleDungeons() end
+click(f.next)
+AegisPathfinder:PickSetupDungeons("recommended")
+local none = true
+for _, r in ipairs(shown(f.rows)) do
+	if r.check:GetChecked() then none = false end
+	if r.steps:GetText() ~= "none in this route" then none = false end
+end
+check(none, "the Optimized guides here have no dungeon quests: none recommended, none counted")
+check(f.dungeonNote:IsShown() and string.find(f.dungeonNote:GetText(), "no dungeon's quests", 1, true),
+	"and a note says why, got '%s'", tostring(f.dungeonNote:GetText()))
 f:Hide()
 
 -- Report --------------------------------------------------------------------------------------

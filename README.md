@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.11.1)
+# Aegis: Pathfinder (v0.12.0)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -69,7 +69,9 @@ the next — or one of your server's custom zones, if one fits your level:
 Moonwhisper Coast, new in 1.18.1, included.
 
 **First-time setup.** The first time you log in, three quick steps pick your
-guide, what it includes, and the dungeons you mean to run. Run it again any
+guide, what it includes, and the dungeons you mean to run -- each with how
+many quests your guide takes you through there, and the ones worth running
+for that guide recommended. Run it again any
 time with `/apg setup`.
 
 <p align="center">
@@ -78,7 +80,7 @@ time with `/apg setup`.
 
 | Choose your features | Choose your dungeons |
 | :---: | :---: |
-| <img src="docs/images/setup-features.png" width="380" alt="Setup step 2: Auction House, Solo Self-Found, group quests and dungeons"> | <img src="docs/images/setup-dungeons.png" width="380" alt="Setup step 3: the dungeons, with their levels and how many steps each adds"> |
+| <img src="docs/images/setup-features.png" width="380" alt="Setup step 2: Auction House, Solo Self-Found, group quests and dungeons"> | <img src="docs/images/setup-dungeons.png" width="380" alt="Setup step 3: the dungeons, with their levels and how many quests each adds"> |
 
 ### 🎯 An arrow to every objective
 
@@ -191,7 +193,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.11.1`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.12.0`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)** or open an

@@ -92,6 +92,7 @@ C The Defias Brotherhood |QID|166| |OIDX|1| |N|Use [An Unsent Letter] to start t
 A The Unsent Letter |QID|373| |N|Use [An Unsent Letter] to start the quest (DM Dungeon Quest)| |D|DM| |Z|Westfall|
 R Sentinel Hill |N|(56.3, 47.5) (DM Dungeon Quest)| |D|DM| |Z|Westfall|
 T The Defias Brotherhood |QID|166| |N|(56.3, 47.5) (DM Dungeon Quest)| |D|DM| |Z|Westfall|
+T Red Silk Bandanas |QID|214| |N|Scout Riell, atop the tower - (56.7, 47.4) (DM Dungeon Quest)| |D|DM| |Z|Westfall|
 F Fly to Stormwind |N|Thor - (56.5, 52.6) (DM Dungeon Quest)| |D|DM| |Z|Westfall|
 T Messenger to Stormwind |QID|120| |N|General Marcus Jonathan - (64.0, 75.3) (DM Dungeon Quest)| |D|DM| |Z|Stormwind City|
 A Messenger to Stormwind |QID|121| |N|General Marcus Jonathan - (64.0, 75.3) (DM Dungeon Quest)| |D|DM| |Z|Stormwind City|

@@ -2,7 +2,7 @@
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
-AegisPathfinder:RegisterGuide("Optimized/Hillsbrad Foothills (29-30)", nil, "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Hillsbrad Foothills (29-30)", "Optimized/Alterac Mountains (30-30)", "Horde", function()
 
 return [[
 

@@ -2,7 +2,7 @@
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
-AegisPathfinder:RegisterGuide("Optimized/The Barrens (18-20)", "Optimized/Stonetalon (20-22)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/The Barrens (18-20)", "Optimized/Stonetalon (20-21)", "Horde", function()
 
 return [[
 

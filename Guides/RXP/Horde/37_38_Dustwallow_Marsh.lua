@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 37-38 Dustwallow Marsh
-AegisPathfinder:RegisterGuide("RXP/37-38 Dustwallow Marsh", "RXP/RestedXP Horde 30-40\38-39 Alterac/Arathi", "Horde", function()
+AegisPathfinder:RegisterGuide("RXP/37-38 Dustwallow Marsh", "RXP/38-39 Alterac/Arathi", "Horde", function()
 return [[
 
 N 37-38 Dustwallow Marsh |N|Converted from RestedXP guide|
@@ -130,7 +130,7 @@ T Bring the End |QID|3341| |N|Andrew - (74.0, 33.3) (RFD Dungeon Quest)| |C|Mage
 N Buy two or more [Rune of Teleportation] from him |N|(82.8, 15.8)| |C|Mage| |Z|Undercity|
 B Buy Rune of Teleportation (x2) |L|17031 2| |N|Hannah - (82.8, 15.8)| |C|Mage| |Z|Undercity|
 R Travel toward Varimathras |N|(51.9, 64.7) (SM Dungeon Quest)| |D|SM| |Z|Undercity|
-T An Unholy Alliance |QID|6521| |N|Varimathras - (56.2, 92.2) (SM Dungeon Quest)| |D|SM| |Z|Undercity|
+T An Unholy Alliance |QID|6521| |N|Varimathras - (56.2, 92.2) (RFD Dungeon Quest)| |D|RFD| |Z|Undercity|
 A Into The Scarlet Monastery |QID|1048| |N|Varimathras - (56.2, 92.2) (SM Dungeon Quest)| |D|SM| |Z|Undercity|
 R Travel toward Faranell |N|(45.2, 71.7) (SM Dungeon Quest)| |D|SM| |Z|Undercity|
 A Hearts of Zeal |QID|1113| |N|Faranell - (48.8, 69.3) (SM Dungeon Quest)| |D|SM| |Z|Undercity|

@@ -77,6 +77,10 @@ H Ironforge |N|Hearth to Ironforge (Gnomer Dungeon Quest)| |D|Gnomer| |Z|Westfal
 R Travel to Dun Morogh |N|(53.5, 34.9) (Gnomer Dungeon Quest)| |D|Gnomer| |Z|Dun Morogh|
 T The Only Cure is More Green Glow |QID|2962| |N|Ozzie Togglevolt - (45.9, 49.4) (Gnomer Dungeon Quest)| |D|Gnomer| |Z|Dun Morogh|
 R Travel to Ironforge |N|(14.9, 87.1) (Gnomer Dungeon Quest)| |D|Gnomer| |Z|Ironforge|
+T Save Techbot's Brain! |QID|2922| |N|Tinkmaster Overspark - (69.2, 50.6) (Gnomer Dungeon Quest)| |D|Gnomer| |Z|Ironforge|
+T The Grand Betrayal |QID|2929| |N|High Tinker Mekkatorque - (69.5, 50.3) (Gnomer Dungeon Quest)| |D|Gnomer| |Z|Ironforge|
+T Data Rescue |QID|2930| |N|Master Mechanic Castpipe - (68.7, 49.0) (Gnomer Dungeon Quest)| |D|Gnomer| |Z|Ironforge|
+T Essential Artificials |QID|2924| |N|Klockmort Spannerspan - (69.8, 48.1) (Gnomer Dungeon Quest)| |D|Gnomer| |Z|Ironforge|
 T Return of the Ring |QID|2947| |N|(Gnomer Dungeon Quest)| |D|Gnomer| |Z|Ironforge|
 A Gnome Improvement |QID|2948| |N|(Gnomer Dungeon Quest)| |D|Gnomer| |Z|Ironforge|
 C Collect Silver Bar (x1) |QID|2948| |L|2842 1| |N|If you are able to obtain a [Silver Bar] and a [Moss Agate] finish this quest. If not, abandon it (Gnomer Dungeon Quest)| |D|Gnomer| |Z|Ironforge|

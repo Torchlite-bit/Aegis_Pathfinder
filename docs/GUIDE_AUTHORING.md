@@ -289,6 +289,24 @@ from [ryanmr82's fork](https://github.com/ryanmr82/pfQuest-turtle); its data
 grows as players send in captures, so run it again now and then.
 `Tools/test_zoneguide.lua` checks what it writes.
 
+## Routes and Dungeon Quests
+
+A route pack's route (`Routes/Routes.lua`) decides what comes after a guide on
+it: the next leg for the character's pack and race. A guide's own next guide
+(`RegisterGuide`'s second argument) is only the way on for a guide picked off
+the route, so keep the two in step; `Tools/test_routes.lua` fails on a leg or
+a next guide that does not exist.
+
+The first-time setup counts each dungeon's quests along a route, and a quest
+counts only if the guide takes you all the way through it.
+`python3 Tools/build_dungeon_quests.py --report` says which dungeon-tagged
+quests do not count and why -- never picked up, handed in before it is
+picked up, what the server wants done before it missing -- and without
+`--report` it writes `DungeonQuests.lua`, which `Tools/test_routes.lua` checks
+is up to date. After editing a guide's dungeon steps or a route, run it.
+(Remember that Parser.lua keeps only the first accept and the first hand-in
+of a quest in a guide: a later duplicate is dropped.)
+
 ## Registering Your Guide
 
 After creating the guide file, add it to the appropriate `Guides.xml`:

@@ -21,6 +21,7 @@ N You may also loot Corrupted Brain Stems once inside the Instance |N|(BFD Dunge
 C Researching the Corruption |QID|1275| |OIDX|1| |N|Kill Fallenroot Rogues, Fallenroot Satyrs, Blackfathom Oracles and Blackfathom Tide Priestesses. Loot them for their Corrupted Brain Stems (BFD Dungeon Quest)| |D|BFD| |Z|Tirisfal Glades|
 C Researching the Corruption |QID|1275| |OIDX|1| |N|Kill Nagas and Satyrs. Loot them for their Corrupted Brain Stems (BFD Dungeon Quest)| |D|BFD| |Z|Tirisfal Glades|
 C Knowledge in the Deeps |QID|971| |OIDX|1| |N|Open the Pitted Iron Chest underwater near the area with the turtles. Loot it for Lorgalis' Manuscript (BFD Dungeon Quest)| |D|BFD| |Z|Tirisfal Glades|
+T In Search of Thaelrid |QID|1198| |N|Argent Guard Thaelrid, inside Blackfathom Deeps (BFD Dungeon Quest)| |D|BFD| |Z|Ashenvale|
 A Blackfathom Villainy |QID|1200| |N|Argent Guard Thaelrid (BFD Dungeon Quest)| |D|BFD| |Z|Tirisfal Glades|
 C Twilight Falls |QID|1199| |OIDX|1| |N|Kill all of the Twilight's Hammer. Loot them for their Twilight Pendants (BFD Dungeon Quest)| |D|BFD| |Z|Tirisfal Glades|
 C Blackfathom Villainy |QID|1200| |OIDX|1| |N|Kill Twilight Lord Kelris. Loot him for his Head (BFD Dungeon Quest)| |D|BFD| |Z|Tirisfal Glades|

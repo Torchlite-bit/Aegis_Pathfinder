@@ -125,6 +125,30 @@ check(names(AegisPathfinder:GetCustomZoneChoices(58)) == "Moonwhisper Coast (52-
 	"at 58: Moonwhisper Coast still, and Hyjal; got '%s'", names(AegisPathfinder:GetCustomZoneChoices(58)))
 check(table.getn(AegisPathfinder:GetCustomZoneChoices(60)) == 0, "at 60, nothing: it is done with")
 
+-- What comes next: the route's next leg, before a guide's own next link ---------------
+
+-- A guide's next link names one successor for everyone; on your route, the
+-- route decides (RestedXP parts ways by race at 19).
+AegisPathfinder.nextzones["Optimized/Redridge (27-28)"] = "Westfall (12-17)"
+check(AegisPathfinder:GetRouteSuccessor("Optimized/Redridge (27-28)") == "Optimized/Duskwood (28-29)",
+	"on the route, the next leg, got %s", tostring(AegisPathfinder:GetRouteSuccessor("Optimized/Redridge (27-28)")))
+check(AegisPathfinder:GetRouteContinuation("Optimized/Redridge (27-28)") == "Optimized/Duskwood (28-29)",
+	"and that is where finishing it goes, not its own next link")
+check(AegisPathfinder:GetRouteSuccessor("Westfall (12-17)") == nil, "off the route, nothing")
+AegisPathfinder.nextzones["Westfall (12-17)"] = "Optimized/Arathi (37-38)"
+check(AegisPathfinder:GetRouteContinuation("Westfall (12-17)") == "Optimized/Arathi (37-38)",
+	"so a guide picked from the list goes where its own next link says")
+check(AegisPathfinder:GetRouteSuccessor("Optimized/Dustwallow (38-39)") == nil, "and the route's last guide has none after it")
+AegisPathfinder.routes.NightElf = { { levels = "27-28", guide = "Optimized/Redridge (27-28)" },
+	{ levels = "28-29", guide = "Optimized/Ashenvale (29-30)" } }
+AegisPathfinder.db.char.currentroute = "NightElf"
+check(AegisPathfinder:GetRouteSuccessor("Optimized/Redridge (27-28)") == "Optimized/Ashenvale (29-30)",
+	"a route the options chose, not your race's, is the one followed")
+AegisPathfinder.db.char.currentroute = nil
+AegisPathfinder.routes.NightElf = nil
+AegisPathfinder.nextzones["Optimized/Redridge (27-28)"] = "Optimized/Duskwood (28-29)"
+AegisPathfinder.nextzones["Westfall (12-17)"] = nil
+
 -- Finishing a route guide ------------------------------------------------------------
 
 AegisPathfinder:EnsureTabs()

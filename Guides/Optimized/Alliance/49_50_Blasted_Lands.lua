@@ -2,7 +2,7 @@
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
-AegisPathfinder:RegisterGuide("Optimized/Blasted Lands (49-50)", nil, "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Blasted Lands (49-50)", "Optimized/Searing Gorge (50-51)", "Alliance", function()
 
 return [[
 
