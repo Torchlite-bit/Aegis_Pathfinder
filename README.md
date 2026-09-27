@@ -2,7 +2,7 @@
 
 **Your levelling guide, on screen, all the way to 60.**
 
-[![Discord](https://img.shields.io/badge/Discord-join%20us-5865F2?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/hsgPTNkSX)
+[![Discord](https://img.shields.io/badge/Discord-join%20us-5865F2?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/Hr66t25vE7)
 [![Turtle WoW](https://img.shields.io/badge/Turtle%20WoW-1.18.1-2E8B57?style=flat-square&labelColor=555)](https://turtle-wow.org/)
 [![RavenCraft](https://img.shields.io/badge/RavenCraft-1.18.1-1e1e1e?style=flat-square&labelColor=555)](https://ravencraft.io/)
 [![CapyCraft](https://img.shields.io/badge/CapyCraft-1.18.1-8B5A2B?style=flat-square&labelColor=555)](https://capycraft.io/)
@@ -27,7 +27,7 @@ along for the ride.
 > ⚠️ **In development.** Not released yet. Tell us what misbehaves — which
 > guide, which step, which server.
 
-**[💬 Join the Discord](https://discord.gg/hsgPTNkSX)** for help, bug reports,
+**[💬 Join the Discord](https://discord.gg/Hr66t25vE7)** for help, bug reports,
 and feature ideas.
 
 ---
@@ -169,7 +169,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 1. Check the **version** in the load message or the options window's About page (`v0.8.0`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
-4. Tell us on **[Discord](https://discord.gg/hsgPTNkSX)** or open an
+4. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)** or open an
    [issue](https://github.com/Torchlite-bit/Aegis_Pathfinder/issues).
    Screenshots help enormously.
 
@@ -179,7 +179,7 @@ Recent changes are in [CHANGELOG.md](CHANGELOG.md).
 
 ## Contributing
 
-PRs welcome — say hi on **[Discord](https://discord.gg/hsgPTNkSX)** first if
+PRs welcome — say hi on **[Discord](https://discord.gg/Hr66t25vE7)** first if
 you're planning something big. [CONTRIBUTING.md](CONTRIBUTING.md) has the
 checks, the 1.12 / Lua 5.0 code rules and how versions work;
 [docs/GUIDE_AUTHORING.md](docs/GUIDE_AUTHORING.md) covers writing guides.
@@ -215,7 +215,7 @@ weights come from OctoPawn under its MIT licence, carried in
 
 <div align="center">
 
-**[💬 Discord](https://discord.gg/hsgPTNkSX)** · **[📜 Changelog](CHANGELOG.md)** · **[🐛 Issues](https://github.com/Torchlite-bit/Aegis_Pathfinder/issues)**
+**[💬 Discord](https://discord.gg/Hr66t25vE7)** · **[📜 Changelog](CHANGELOG.md)** · **[🐛 Issues](https://github.com/Torchlite-bit/Aegis_Pathfinder/issues)**
 
 *Aegis: Pathfinder is part of the Aegis addon series. Happy questing.* 🧭
 
