@@ -234,6 +234,24 @@ def progress_fill(w=64, h=8):
     return write_tga(img, os.path.join(MEDIA, "progress-fill.tga"))
 
 
+def _shade(col):
+    return sum(col) / float(sum(ARROW_TOP))
+
+
+def progress_mask(w=64, h=8):
+    """progress_fill's ramp in grey, for themes other than the concept's:
+    tinted with the theme's accent glow, it runs from dark to bright the way
+    the green one does (Theme:Skin)."""
+    img = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    px = img.load()
+    lo = sum(ACCENT_DEEP) / float(sum(ACCENT_GLOW))
+    for x in range(w):
+        v = int(round(255 * (lo + (1 - lo) * x / float(w - 1))))
+        for y in range(h):
+            px[x, y] = (v, v, v, 255)
+    return write_tga(img, os.path.join(MEDIA, "progress-mask.tga"))
+
+
 # --------------------------------------------------------------------------
 # Action icons
 # --------------------------------------------------------------------------
@@ -531,6 +549,32 @@ def nav_arrow(size=64):
     return write_tga(img, os.path.join(MEDIA, "nav-arrow.tga"))
 
 
+def nav_arrow_mask(size=64):
+    """nav_arrow in grey, its gradient kept as shade, for themes other than
+    the concept's: tinted with the theme's accent glow it keeps the arrow's
+    lit-from-above look in the theme's colour (Theme:Skin)."""
+    img = canvas(size)
+    d = ImageDraw.Draw(img)
+    s = size * SS
+
+    def pt(x, y):
+        return (x / 100.0 * s, y / 80.0 * s)
+
+    d.polygon([pt(50, 8), pt(92, 68), pt(50, 53), pt(8, 68)], fill=WHITE + (255,))
+    img = img.resize((size, size), Image.LANCZOS)
+    px = img.load()
+    top, mid, bot = 1.0, _shade(ARROW_MID), _shade(ARROW_BOT)
+    for y in range(size):
+        t = y / float(size - 1)
+        v = top + (mid - top) * t / 0.55 if t < 0.55 else mid + (bot - mid) * (t - 0.55) / 0.45
+        g = int(round(255 * v))
+        for x in range(size):
+            a = px[x, y][3]
+            if a:
+                px[x, y] = (g, g, g, a)
+    return write_tga(img, os.path.join(MEDIA, "nav-arrow-mask.tga"))
+
+
 def grip(size=16):
     """The concept's resize grip: six dots stepped into the bottom-right.
 
@@ -621,11 +665,13 @@ def main():
     record("glow.tga", glow())
     record("shadow.tga", shadow())
     record("progress-fill.tga", progress_fill())
+    record("progress-mask.tga", progress_mask())
     record("logo.tga", logo())
     record("wordmark.tga", wordmark())
     record("scroll-thumb.tga", scroll_thumb())
     record("switch-track.tga", switch_track())
     record("nav-arrow.tga", nav_arrow())
+    record("nav-arrow-mask.tga", nav_arrow_mask())
     record("grip.tga", grip())
 
     for name, fn in sorted(ICONS.items()):

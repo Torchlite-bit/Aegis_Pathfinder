@@ -214,6 +214,14 @@ free), and are never rewritten while the macro window is open. The options
 panel can switch the window off, which also stops the macros being made or
 updated.
 
+**Server themes.** The options panel's **Server theme** recolours the addon:
+Turtle WoW is the original green, OctoWoW purple, RavenCraft grey, Capybara
+Paradise tan, Aegis red, and Day (amber, lighter panels) and Night (moonlight
+blue, deeper panels). It applies at once, arrow and progress bars included, with
+no reload. A server's own theme also tells the addon that is your server, which
+is what its guide-data warnings go by. Every theme is checked for readability:
+accents and text keep a WCAG contrast of at least 4.5:1 against the panels.
+
 **Automatic advancement.** Accepting, completing and turning in quests, binding
 a hearthstone, and collecting tagged items all resolve themselves. So do travel
 steps, once a waypoint provider is active. The checkbox wears a halo on steps
@@ -293,7 +301,8 @@ Guide content here was authored against **OctoWoW**. It is likely but not
 guaranteed to be correct on Capybara Paradise or RavenCraft (which launched in
 August 2026).
 
-Tell the addon which server you are on with `/apg server`. It does not swap
+Tell the addon which server you are on by picking its **server theme** in the
+options panel, or with `/apg server`. It does not swap
 in a per-server dataset — only one exists — but it will say so on the status
 panel's footer when the loaded guide's data was authored somewhere else, which
 is the most likely reason a waypoint points at nothing.

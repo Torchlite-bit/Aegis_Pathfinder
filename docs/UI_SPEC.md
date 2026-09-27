@@ -297,7 +297,7 @@ secondary panel and all three `Core.lua` dialogs were still built from.
 ### Options panel -- `OptionsFrame.lua`
 
 The concept's `#options`: one 396px window, header and `Config` subhead, and a
-scrolling body of sections — Race, Route pack, Dungeons, Filters, Server — each
+scrolling body of sections — Race, Route pack, Dungeons, Filters, Server theme — each
 an accent uppercase `h3` over its controls. It used to be a column of pill
 buttons that opened the dungeons, the filters and the route picker as three
 more windows; all of that is sections now.
@@ -334,6 +334,33 @@ from `self.actions` entirely, so the parsed guide cannot answer the question.
 A negated tag (`|D|!DM|`) still counts as a reference: the step is
 conditional, the relevance is not. Results are cached per guide, since the
 scan walks guides that run to hundreds of steps.
+
+### Server themes -- `Theme.lua`
+
+Not in the concept, which is green. The options panel's **Server theme**
+(which replaced the Server dropdown) picks one of `Theme.THEMES`: Day, Night,
+Turtle WoW (the concept, the default), OctoWoW, RavenCraft, Capybara Paradise,
+Aegis. A theme names only the colours it changes: the accent family (`accent`,
+`accentDeep`, `accentGlow`), and for Day, Night and RavenCraft the panel shades.
+Text, gold, danger and the green/red step bands keep their meaning everywhere.
+
+- **Live**: `Theme:ApplyTheme` changes the colour tables in place and re-tints
+  every texture and font string `Tint`/`TextColor` last coloured by a name that
+  some theme changes (a weak-keyed record, so nothing is kept alive by it).
+  `SetTheme` then repaints the open windows, so colours chosen by state catch
+  up. The saved theme is applied in `OnInitialize`, before the first paint.
+- **Baked art**: the navigation arrow and progress fill are gradients drawn in
+  green. `Theme:Skin` keeps them exactly as drawn under Turtle WoW, and under
+  any other theme swaps in the same shape in grey (`nav-arrow-mask`,
+  `progress-mask`), tinted with the theme's accent glow.
+- **Readable**: `test_theme.lua` requires, in every theme, a WCAG contrast of
+  4.5:1 for the accent on the panel and for dark text on an accent pill, and
+  7:1 for dim text on the panel. RavenCraft's "dark grey" is its panels; its
+  accent is a lighter grey, since dark grey on a dark panel cannot be read.
+- **Servers**: a server's theme (OctoWoW, RavenCraft, Capybara Paradise) also
+  sets `profile.server`, which the guide-data provenance warnings read
+  (`Servers.lua`); the note under the dropdown carries what the Server section
+  used to say about that server's data. `/apg server` still sets it alone.
 
 ### Minimap button -- `MinimapButton.lua`
 

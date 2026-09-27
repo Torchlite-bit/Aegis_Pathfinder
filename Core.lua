@@ -559,6 +559,9 @@ function AegisPathfinder:OnInitialize()
 
     self:RegisterDB("AegisPathfinderDB")
     self:RegisterDefaults("char", defaults)
+    -- The saved theme, before anything else paints: windows built as the
+    -- files loaded are re-tinted to it (Theme.lua).
+    self.Theme:ApplyTheme(self.db.profile.theme)
 
     self.db.char.Dungeons = self.db.char.Dungeons or {}
     for k, v in pairs(defaults.Dungeons) do

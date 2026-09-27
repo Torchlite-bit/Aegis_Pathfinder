@@ -49,6 +49,55 @@ Theme.color = {
 	subtle     = hex("545454"),   -- unchecked control outlines
 }
 
+--[[ Themes.
+
+	The concept is green; the servers that continued Turtle WoW each have a
+	colour of their own, so the accent can follow the server you play on. A
+	theme names only the colours it changes -- the accent family, and for Day
+	and Night the panel shades as well. Text, gold, danger and the satisfied
+	and outstanding step bands keep their meaning in every theme.
+
+	Colours are changed in place, so anything holding a colour table sees the
+	new one, and everything already drawn is re-tinted from the record Tint
+	and TextColor keep (below): a theme applies at once, without a reload.
+
+	`server`, where set, is the server the theme is named for: picking the
+	theme also tells Servers.lua that is where you play.
+]]
+Theme.THEMES = {
+	{ key = "day", label = "Day", note = "Warm amber on lighter panels.",
+		colors = { accent = "f0b43c", accentDeep = "a8740f", accentGlow = "ffd98a",
+			panel = "2b2925", panel2 = "1c1a17", panel3 = "24221f", tabbg = "4a463e",
+			bg1 = "1f1c16", bg2 = "15130f" } },
+	{ key = "night", label = "Night", note = "Moonlight blue on deeper panels.",
+		colors = { accent = "6fa8ff", accentDeep = "2f5fae", accentGlow = "a9cbff",
+			panel = "171b25", panel2 = "0c0f16", panel3 = "12151e", tabbg = "2b3242",
+			bg1 = "0e1119", bg2 = "080a10" } },
+	{ key = "turtle", label = "Turtle WoW", note = "The original green.", colors = {} },
+	{ key = "octowow", label = "OctoWoW", server = "octowow", note = "OctoWoW's purple.",
+		colors = { accent = "a970ff", accentDeep = "6526c4", accentGlow = "cfb0ff" } },
+	{ key = "ravencraft", label = "RavenCraft", server = "ravencraft",
+		note = "RavenCraft's dark grey, with a lighter grey where the green was so it stays readable.",
+		colors = { accent = "a3aab3", accentDeep = "474d55", accentGlow = "d2d6db",
+			panel = "1a1a1c", panel2 = "0d0d0f", panel3 = "151517", tabbg = "323235" } },
+	{ key = "capybara", label = "Capybara Paradise", server = "capybara", note = "Capybara Paradise's tan.",
+		colors = { accent = "cfa77c", accentDeep = "8b5a2b", accentGlow = "ead0b0" } },
+	{ key = "aegis", label = "Aegis", note = "The Aegis suite's red.",
+		colors = { accent = "ea5f56", accentDeep = "9e2a22", accentGlow = "f4958e" } },
+}
+Theme.DEFAULT_THEME = "turtle"
+
+Theme.themeByKey = {}
+local RETINT = {}          -- every colour name some theme changes
+for _, def in ipairs(Theme.THEMES) do
+	Theme.themeByKey[def.key] = def
+	for name in pairs(def.colors) do RETINT[name] = true end
+end
+
+-- The concept's values, to go back to.
+local BASE = {}
+for name, c in pairs(Theme.color) do BASE[name] = { c[1], c[2], c[3] } end
+
 Theme.texture = {
 	solid       = MEDIA .. "solid",
 	panelFill   = MEDIA .. "panel-fill",
@@ -68,6 +117,8 @@ Theme.texture = {
 	wordmark    = MEDIA .. "wordmark",
 	grip        = MEDIA .. "grip",
 	navArrow    = MEDIA .. "nav-arrow",
+	navArrowMask = MEDIA .. "nav-arrow-mask",
+	progressMask = MEDIA .. "progress-mask",
 	scrollThumb = MEDIA .. "scroll-thumb",
 	switchTrack = MEDIA .. "switch-track",
 }
@@ -161,16 +212,88 @@ local S0, S1 = 10 / 32, 22 / 32
 
 --[[ Colour helpers ]]
 
+-- Which colour each texture and font string was last given by name, so a
+-- theme change can re-tint what is already on screen. Weak keys: the record
+-- never keeps anything alive.
+local tintName = setmetatable({}, { __mode = "k" })
+local tintAlpha = setmetatable({}, { __mode = "k" })
+local textName = setmetatable({}, { __mode = "k" })
+
 function Theme:Tint(tex, name, alpha)
 	local c = self.color[name] or name
 	tex:SetVertexColor(c[1], c[2], c[3], alpha or 1)
+	if type(name) == "string" then
+		tintName[tex], tintAlpha[tex] = name, alpha
+	else
+		tintName[tex], tintAlpha[tex] = nil, nil
+	end
 	return tex
 end
 
 function Theme:TextColor(fs, name)
 	local c = self.color[name] or name
 	fs:SetTextColor(c[1], c[2], c[3])
+	textName[fs] = type(name) == "string" and name or nil
 	return fs
+end
+
+--[[ Art with the concept's green baked in.
+
+	The navigation arrow and the progress fill are gradients, drawn in green
+	(Tools/make_assets.py). The concept's theme keeps that art exactly; any
+	other theme gets the same shape in grey, shaded the same way, tinted with
+	its accent glow.
+]]
+local SKINS = {
+	navArrow = { art = "navArrow", mask = "navArrowMask" },
+	progress = { art = "progress", mask = "progressMask" },
+}
+local skinned = setmetatable({}, { __mode = "k" })
+
+local function ApplySkin(tex, kind)
+	local skin = SKINS[kind]
+	if Theme.current == nil or Theme.current == Theme.DEFAULT_THEME then
+		tex:SetTexture(Theme.texture[skin.art])
+		tex:SetVertexColor(1, 1, 1, 1)
+	else
+		tex:SetTexture(Theme.texture[skin.mask])
+		local c = Theme.color.accentGlow
+		tex:SetVertexColor(c[1], c[2], c[3], 1)
+	end
+end
+
+--- Give `tex` one of the baked-gradient arts ("navArrow", "progress"), kept
+--- in step with the theme.
+function Theme:Skin(tex, kind)
+	skinned[tex] = kind
+	ApplySkin(tex, kind)
+	return tex
+end
+
+--- Switch to a theme by key (an unknown key is the default). Returns its
+--- definition.
+function Theme:ApplyTheme(key)
+	local def = self.themeByKey[key] or self.themeByKey[self.DEFAULT_THEME]
+	for name, base in pairs(BASE) do
+		local v = def.colors[name] and hex(def.colors[name]) or base
+		local c = self.color[name]
+		c[1], c[2], c[3] = v[1], v[2], v[3]
+	end
+	self.current = def.key
+	for tex, name in pairs(tintName) do
+		if RETINT[name] then
+			local c = self.color[name]
+			tex:SetVertexColor(c[1], c[2], c[3], tintAlpha[tex] or 1)
+		end
+	end
+	for fs, name in pairs(textName) do
+		if RETINT[name] then
+			local c = self.color[name]
+			fs:SetTextColor(c[1], c[2], c[3])
+		end
+	end
+	for tex, kind in pairs(skinned) do ApplySkin(tex, kind) end
+	return def
 end
 
 --[[ Typography ]]
@@ -330,7 +453,7 @@ function Theme:ProgressBar(parent, height)
 	track:SetVertexColor(0, 0, 0, 0.4)
 
 	local fill = bar:CreateTexture(nil, "ARTWORK")
-	fill:SetTexture(self.texture.progress)
+	self:Skin(fill, "progress")
 	fill:SetPoint("TOPLEFT", bar, "TOPLEFT", 0, 0)
 	fill:SetPoint("BOTTOMLEFT", bar, "BOTTOMLEFT", 0, 0)
 	fill:SetWidth(1)
@@ -1348,4 +1471,29 @@ function Theme:SetActionIcon(tex, code)
 	tex:SetTexture(self.actionIcon[code] or self.actionIcon.N)
 	self:Tint(tex, "textDim")
 	return tex
+end
+
+--[[ Choosing a theme. ]]
+
+--- The theme in use, and switch to another: saved, applied at once, and the
+--- open windows repainted so anything coloured by state picks it up too.
+function AegisPathfinder:GetTheme()
+	local key = self.db and self.db.profile.theme
+	return Theme.themeByKey[key] and key or Theme.DEFAULT_THEME
+end
+
+function AegisPathfinder:SetTheme(key)
+	local def = Theme:ApplyTheme(key)
+	self.db.profile.theme = def.key
+	-- A server's own theme says which server this is (Servers.lua), which is
+	-- what the guide-data warnings go by.
+	if def.server and self.GetServerInfo and self:GetServerInfo(def.server) then
+		self.db.profile.server = def.server
+	end
+	if self.UpdateStatusFrame then self:UpdateStatusFrame() end
+	for _, refresh in ipairs({ "RefreshConfigPanel", "UpdateGuideListPanel", "UpdateMaterialsPanel",
+		"UpdateCraftRoutePanel", "RefreshActiveFrames", "UpdateMinimapButton" }) do
+		if self[refresh] then self[refresh](self) end
+	end
+	return def
 end
