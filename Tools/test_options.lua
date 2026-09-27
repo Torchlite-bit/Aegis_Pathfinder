@@ -255,6 +255,9 @@ check(AegisPathfinder.__finder == 1, "the Gear finder button opens it")
 
 -- Solo Self-Found holds the Auction House switch off, and lets it go again.
 check(not frame.ssfSwitch:IsOn(), "Solo Self-Found is off by default")
+fire(frame.ssfSwitch, "OnEnter")
+check(AegisPathfinder.Theme.tip and AegisPathfinder.Theme.tip:IsShown(), "hovering it explains it, without an error")
+fire(frame.ssfSwitch, "OnLeave")
 click(frame.ssfSwitch)
 check(db.SelfFound == true, "the Self-Found switch turns it on")
 check(not frame.ahSwitch:IsOn(), "with Self-Found on, the Auction House switch reads off")

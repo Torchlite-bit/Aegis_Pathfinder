@@ -1259,7 +1259,10 @@ function AegisPathfinder:UpdateOHPanel(value)
 		local action, name = self:GetObjectiveInfo(idx)
 		if not name then row:Hide()
 		else
-			local turnedin, logi, complete = self:GetObjectiveStatus(idx)
+			local turnedin, logi, complete, skipped = self:GetObjectiveStatus(idx)
+			-- A hand-in for a quest you have not picked up is passed over when
+			-- the guide reaches it, not before: further down it is not done.
+			if skipped and idx > (self.current or 1) then turnedin = false end
 			local optional, intown = self:GetObjectiveTag("O", idx), self:GetObjectiveTag("T", idx)
 			local isActive = (idx == self.current)
 			row:Show()

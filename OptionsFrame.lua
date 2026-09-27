@@ -323,7 +323,7 @@ function AegisPathfinder:CreateConfigPanel()
 	ssf:SetWidth(BODY_W)
 	ssf:SetScript("OnEnter", function()
 		Theme:ShowTip(this, "RIGHT", "Solo Self-Found",
-			"Hides every step that trades with other players or uses the Auction House.")
+			{ "Hides every step that trades with other players or uses the Auction House." })
 	end)
 	ssf:SetScript("OnLeave", function() Theme:HideTip(this) end)
 	place(ssf, 22, 6)

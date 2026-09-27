@@ -24,6 +24,7 @@ lua5.1 Tools/test_guideengine.lua
 lua5.1 Tools/test_navcallout.lua
 lua5.1 Tools/test_dungeons.lua
 lua5.1 Tools/test_filtertags.lua
+lua5.1 Tools/test_smartskip.lua
 lua5.1 Tools/test_itemscore.lua
 lua5.1 Tools/test_gearframe.lua
 lua5.1 Tools/test_gearadvisor.lua
