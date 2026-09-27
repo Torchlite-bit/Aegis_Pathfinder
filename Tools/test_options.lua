@@ -95,7 +95,7 @@ UnitClass = function() return "Paladin", "PALADIN" end
 local talents = { 0, 0, 0 }
 GetTalentTabInfo = function(tab) return ({ "Holy", "Protection", "Retribution" })[tab], "icon", talents[tab] end
 local advisorSettings = { enabled = true, popups = true, questmark = true, bagmark = true }
-local finderSettings = { enabled = true, announce = true, raids = false }
+local finderSettings = { enabled = true, announce = true, raids = false, quests = true, reputation = true, crafted = true }
 AegisPathfinder.GearFinder = { Settings = function() return finderSettings end }
 function AegisPathfinder:ToggleGearFinder() self.__finder = (self.__finder or 0) + 1 end
 AegisPathfinder.GearAdvisor = {
@@ -360,6 +360,11 @@ check(frame.advisor.popups:IsEnabled(), "and let go when it is back on")
 click(frame.clearDeclined)
 check(AegisPathfinder.__declinedCleared, "Clear declined items clears them")
 check(frame.finder.enabled:IsOn() and frame.finder.announce:IsOn(), "the gear finder is on, and names upgrades")
+check(frame.finder.quests:IsOn() and frame.finder.reputation:IsOn() and frame.finder.crafted:IsOn(),
+	"and looks at quest, reputation and crafted gear")
+click(frame.finder.crafted)
+check(finderSettings.crafted == false, "each of which can be switched off")
+click(frame.finder.crafted)
 click(frame.finder.enabled)
 check(finderSettings.enabled == false and not frame.finder.announce:IsEnabled(), "off, its other switch is held")
 click(frame.finder.enabled)
@@ -540,8 +545,9 @@ fire(frame.grip, "OnUpdate")
 check(frame:GetWidth() == 546 + 100 and frame:GetHeight() == 560 + 100,
 	"dragging it right and down makes the window wider and taller, got %sx%s", frame:GetWidth(), frame:GetHeight())
 local _, tallerRange = frame.scrollbar:GetMinMaxValues()
-check(gearRange > 0 and tallerRange == math.max(0, gearRange - 100) and not frame.scrollbar:IsShown() == (tallerRange == 0),
-	"the page scrolls that much less, or not at all (%s from %s)", tallerRange, gearRange)
+-- At least that much less: wider, what wraps takes fewer lines too.
+check(gearRange > 0 and tallerRange <= math.max(0, gearRange - 100) and not frame.scrollbar:IsShown() == (tallerRange == 0),
+	"the page scrolls at least that much less, or not at all (%s from %s)", tallerRange, gearRange)
 check(frame.holder:GetWidth() == frame.bodyW and frame.bodyW == 396 - 28 - 10 - 4 + 100,
 	"the pane widens with it, got %s", tostring(frame.bodyW))
 check(frame.advisor.enabled:GetWidth() == frame.bodyW and frame.sections[1]:GetWidth() == frame.bodyW,

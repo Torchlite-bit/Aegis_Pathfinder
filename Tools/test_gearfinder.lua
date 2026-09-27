@@ -93,6 +93,23 @@ for _, d in ipairs(real.dungeons) do
 end
 check(sources["Ragnaros @ MC"] and sources["Nefarian @ BWL"] and sources["Darkmaster Gandling @ SCHOLO"],
 	"summoned bosses' loot is there, in their instances")
+-- Quest, reputation and crafted gear.
+check(real.crafted[12640] and real.crafted[12640][1] == "Blacksmithing" and real.crafted[12640][2] == 300
+	and real.crafted[12640][3] == false, "Lionheart Helm: Blacksmithing 300, anyone's to wear")
+check(real.crafted[15063] and real.crafted[15063][1] == "Leatherworking", "Devilsaur Gauntlets: Leatherworking")
+check(real.quests[8041] and real.quests[8041][5] == 270 and real.quests[8041][6] == 4
+	and real.factions[270][1] == "Zandalar Tribe", "a Zandalar quest, at Friendly")
+check(real.repgear[19083] and real.factions[real.repgear[19083][1]][2] == "Horde", "Frostwolf gear, for the Horde")
+local rewards = 0
+for _ in pairs(real.quests) do rewards = rewards + 1 end
+check(rewards > 500, "hundreds of quests whose rewards are gear, got %d", rewards)
+for _, table_ in ipairs({ real.repgear, real.crafted }) do
+	for id in pairs(table_) do
+		check(real.items[id], "item %d has its slot and level", id)
+		break
+	end
+end
+
 -- Turtle WoW's own dungeons, from pfQuest-turtle.
 local turtle = {}
 for _, d in ipairs(real.dungeons) do if d.turtle then turtle[d.name] = d end end
@@ -184,6 +201,8 @@ item(203, "INVTYPE_FEET", 50, 0)            -- grey
 item(205, "INVTYPE_FEET", 60, 3, 30)        -- too high for now; 204 not loaded yet
 worn[1] = 900
 A.db.char.Dungeons = { DM = true, WC = true, SFK = true }
+-- Quests, reputation and crafting come later; drops alone until then.
+GF.Settings().quests, GF.Settings().reputation, GF.Settings().crafted = false, false, false
 
 -- Where it looks ------------------------------------------------------------------
 
@@ -255,6 +274,69 @@ slots = {}
 for _, g in ipairs(results) do slots[g.slot] = g.entries end
 check(slots.Finger and slots.Finger[1].id == 204, "and the Turtle item that came is weighed")
 
+-- Quests, reputation and crafting ------------------------------------------------------
+
+local data = AegisPathfinder.GearData
+data.factions = { [529] = { "Argent Dawn", "" }, [730] = { "Stormpike Guard", "Alliance" },
+	[729] = { "Frostwolf Clan", "Horde" } }
+data.quests = {
+	[301] = { "The Hard Way", 18, "", 0, 0, 0, { 311 } },          -- a waist for anyone
+	[302] = { "For the Horde", 18, "Horde", 0, 0, 0, { 312 } },    -- the other side's
+	[303] = { "Mage Business", 18, "", 128, 0, 0, { 313 } },       -- mages only
+	[304] = { "Later On", 30, "", 0, 0, 0, { 314 } },               -- not yet
+	[305] = { "Done Already", 15, "", 0, 0, 0, { 315 } },          -- handed in
+	[306] = { "Old Hat", 5, "", 0, 0, 0, { 316 } },                 -- long outgrown
+	[307] = { "Dawn Duty", 18, "", 0, 529, 5, { 317 } },           -- needs Honored
+}
+data.repgear = { [321] = { 730, 6, "Quartermaster Rhon" }, [322] = { 729, 6, "Jotek" } }
+data.crafted = { [331] = { "Blacksmithing", 150, false }, [332] = { "Leatherworking", 140, true },
+	[333] = { "Tailoring", 145, true } }
+local function meta(id, loc, lvl) data.items[id] = { loc, 3, lvl or 20, 0 } end
+meta(311, "INVTYPE_WAIST"); meta(312, "INVTYPE_WAIST"); meta(313, "INVTYPE_WAIST"); meta(314, "INVTYPE_WAIST", 30)
+meta(315, "INVTYPE_WAIST"); meta(316, "INVTYPE_WAIST", 8); meta(317, "INVTYPE_LEGS")
+meta(321, "INVTYPE_SHOULDER"); meta(322, "INVTYPE_SHOULDER")
+meta(331, "INVTYPE_HAND"); meta(332, "INVTYPE_FEET"); meta(333, "INVTYPE_CLOAK")
+for _, id in ipairs({ 311, 312, 313, 314, 315, 316 }) do item(id, "INVTYPE_WAIST", 5 + id - 310) end
+item(317, "INVTYPE_LEGS", 6); item(321, "INVTYPE_SHOULDER", 6); item(322, "INVTYPE_SHOULDER", 9)
+item(331, "INVTYPE_HAND", 6); item(332, "INVTYPE_FEET", 50); item(333, "INVTYPE_CLOAK", 6)
+A.db.char.completedquestsbyid = { [305] = true }
+local skills = { { "Professions", 1 }, { "Tailoring", nil, nil, 150 } }
+GetNumSkillLines = function() return table.getn(skills) end
+GetSkillLineInfo = function(i) local l = skills[i]; return l[1], l[2], l[3], l[4] end
+GF.Settings().quests, GF.Settings().reputation, GF.Settings().crafted = true, true, true
+local function found()
+	local out = {}
+	for _, g in ipairs((GF:Find())) do
+		for _, e in ipairs(g.entries) do out[e.id] = e end
+	end
+	return out
+end
+local f = found()
+check(f[311] and f[311].where == "Quest: The Hard Way", "a quest reward, and the quest, got %s", tostring(f[311] and f[311].where))
+check(not f[312], "not the other side's quest")
+check(not f[313], "not a quest for another class")
+check(not f[314], "not a quest you cannot take yet")
+check(not f[315], "not a quest you have handed in")
+check(not f[316], "nor gear you have long outgrown")
+check(f[317] and f[317].where == "Quest: Dawn Duty (Honored, Argent Dawn)", "a quest that needs reputation says so, got %s",
+	tostring(f[317] and f[317].where))
+check(f[321] and f[321].where == "Revered with Stormpike Guard \194\183 Quartermaster Rhon",
+	"gear a vendor sells at a reputation rank, got %s", tostring(f[321] and f[321].where))
+check(not f[322], "not the other side's")
+check(f[331] and f[331].where == "Blacksmithing 150 \194\183 made by a crafter", "crafted gear anyone can have made, got %s",
+	tostring(f[331] and f[331].where))
+check(not f[332], "not gear that binds on pickup to a crafter you are not")
+check(f[333] and f[333].where == "Tailoring 145", "but yes if you are one, got %s", tostring(f[333] and f[333].where))
+A.db.char.SelfFound = true
+f = found()
+check(not f[331] and f[333], "Solo Self-Found: only what you make yourself")
+check(f[311] and f[321], "and still quests and reputation")
+A.db.char.SelfFound = nil
+GF.Settings().quests, GF.Settings().reputation, GF.Settings().crafted = false, false, false
+f = found()
+check(not f[311] and not f[321] and not f[333], "each can be switched off")
+GF.Settings().quests, GF.Settings().reputation, GF.Settings().crafted = true, true, true
+
 -- The window --------------------------------------------------------------------------
 
 GF:Toggle()
@@ -281,14 +363,17 @@ GF.Settings().raids = false
 GF:Refresh()
 A.db.char.SelfFound = true
 GF:Refresh()
-check(frame.note:GetText() == "Solo Self-Found is on, so it looks in no dungeons.", "with Self-Found on it says why it is empty, got %s",
-	tostring(frame.note:GetText()))
+check(string.find(frame.note:GetText(), "Solo Self-Found is on, so it looks in no dungeons.", 1, true) == 1,
+	"with Self-Found on it says why there are no dungeons, got %s", tostring(frame.note:GetText()))
 A.db.char.SelfFound = nil
 GF:Refresh()
 run(row, "OnEnter")
 check(GameTooltip.__link == "item:112:0:0:0", "hovering a row shows the item")
+printed = {}
 run(frame.raids, "OnClick")
 check(GF.Settings().raids, "the raids switch")
+check(printed[1] and string.find(printed[1], "minute or two", 1, true),
+	"turning raids on says the first look takes a while, got %s", tostring(printed[1]))
 run(frame.raids, "OnClick")
 worn[1] = 121
 GF:Refresh()

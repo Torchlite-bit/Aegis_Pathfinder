@@ -18,6 +18,27 @@ reports.
 
 ---
 
+## [0.9.1]
+
+### Added
+- **The Gear finder looks beyond drops**: at 60 much of the best gear is not
+  one. Each switched in the options' Gear page, on to start with:
+  - **Quest rewards** from quests you have still to do, on your side and for
+    your class — *Quest: Strength of Mount Mugamba (Friendly, Zandalar
+    Tribe)*.
+  - **Reputation gear** a vendor sells at a rank — *Revered with Stormpike
+    Guard*.
+  - **Crafted gear** — *Blacksmithing 300 · made by a crafter*, or just the
+    profession when it is yours. Gear that binds on pickup counts only if you
+    have the profession, and under Solo Self-Found all crafted gear does.
+
+  Near your level only (up to ten levels under it): there are thousands.
+- **Turning raids on in the Gear finder says it takes a while**: the first
+  time, hundreds of raid items load from the server, a minute or two. The
+  window says so too while they load.
+
+---
+
 ## [0.9.0]
 
 ### Fixed
@@ -298,6 +319,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.9.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.9.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.8.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.7.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

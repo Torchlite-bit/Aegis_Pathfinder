@@ -18,6 +18,14 @@
 	a few at a time, and the list fills in as they arrive.
 
 	Walking into a dungeon says, in chat, which of its drops are upgrades.
+
+	Not only drops: quest rewards from quests you have still to do, gear a
+	reputation vendor sells, and crafted gear (GearData's quests, repgear and
+	crafted), each switched in the options. Those are looked at only near your
+	level -- no more than AHEAD above it and BELOW under it -- since there are
+	thousands, and each has to be loaded to be weighed. Crafted gear that binds
+	on pickup counts only if you have the profession; so does all of it under
+	Solo Self-Found, when nobody else may make it for you.
 ]]
 
 local AegisPathfinder = AegisPathfinder
@@ -33,6 +41,8 @@ local L = {
 	AHEAD = 3,              -- dungeons and items up to this many levels above you
 	LOAD_BATCH = 5, LOAD_EVERY = 0.1, REFRESH_EVERY = 0.5,
 	NAMED = 4,              -- the note names this many places it looked, then counts
+	BELOW = 10,             -- quest, reputation and crafted gear this far under your level
+	RANKS = { [0] = "Hated", "Hostile", "Unfriendly", "Neutral", "Friendly", "Honored", "Revered", "Exalted" },
 	LOAD_GIVE_UP = 10,      -- seconds after the last request: an item never sent is not waited for
 }
 L.NOTE_TOP = L.CHROME_TOP + 8
@@ -73,6 +83,9 @@ local function settings()
 	if s.enabled == nil then s.enabled = true end
 	if s.raids == nil then s.raids = false end
 	if s.announce == nil then s.announce = true end
+	for _, key in ipairs({ "quests", "reputation", "crafted" }) do
+		if s[key] == nil then s[key] = true end
+	end
 	return s
 end
 GF.Settings = settings
@@ -144,6 +157,61 @@ end
 
 local results, missing = {}, 0
 
+--- Your professions, by name, with your skill in each.
+local function Professions()
+	local out = {}
+	for i = 1, (GetNumSkillLines and GetNumSkillLines() or 0) do
+		local name, isHeader, _, rank = GetSkillLineInfo(i)
+		if name and not isHeader then out[name] = rank end
+	end
+	return out
+end
+
+--- Gear from quests you have still to do, reputation vendors and crafting,
+--- near your level, for your side and class: { item, where it comes from }.
+function GF:Others(level, class)
+	local data, s, db = AegisPathfinder.GearData, settings(), AegisPathfinder.db.char
+	local faction = UnitFactionGroup("player")
+	local out = {}
+	local function near(id)
+		local m = data.items[id]
+		return m and m[3] <= level + L.AHEAD and m[3] >= level - L.BELOW
+	end
+	local function ours(side) return side == "" or not faction or side == faction end
+	if s.quests then
+		for q, d in pairs(data.quests or {}) do
+			local done = (db.completedquestsbyid and db.completedquestsbyid[q])
+				or (AegisPathfinder.IsQuestCompletedOnServer and AegisPathfinder:IsQuestCompletedOnServer(q))
+			if not done and d[2] <= level + L.AHEAD and ours(d[3]) and GF.ForClass(d[4], class) then
+				local where = "Quest: " .. d[1]
+				if d[5] > 0 then where = where .. " (" .. L.RANKS[d[6]] .. ", " .. data.factions[d[5]][1] .. ")" end
+				for _, id in ipairs(d[7]) do
+					if near(id) then table.insert(out, { id, where }) end
+				end
+			end
+		end
+	end
+	if s.reputation then
+		for id, d in pairs(data.repgear or {}) do
+			local f = data.factions[d[1]]
+			if near(id) and ours(f[2]) then
+				table.insert(out, { id, L.RANKS[d[2]] .. " with " .. f[1] .. " \194\183 " .. d[3] })
+			end
+		end
+	end
+	if s.crafted then
+		local mine = Professions()
+		for id, d in pairs(data.crafted or {}) do
+			local skill = mine[d[1]]
+			-- Bind on pickup, or Solo Self-Found: only if you make it yourself.
+			if near(id) and (skill or not (d[3] or db.SelfFound)) then
+				table.insert(out, { id, d[1] .. " " .. d[2] .. (skill and "" or " \194\183 made by a crafter") })
+			end
+		end
+	end
+	return out
+end
+
 --- Every upgrade in the dungeons you run: by slot, best first, at most a
 --- few per slot. Items not loaded yet are asked for, and counted.
 function GF:Find()
@@ -154,34 +222,37 @@ function GF:Find()
 	local weights = IS:Weights()
 	local bySlot, seen = {}, {}
 	missing = 0
-	for _, d in ipairs(self:Dungeons()) do
-		for _, drop in ipairs(d.loot) do
-			local id = drop[1]
-			local it = "item:" .. id .. ":0:0:0"
-			local meta = not seen[id] and describe(items, id, it)
-			if meta == nil and not seen[id] then
-				-- One of Turtle's own, not loaded yet: nothing to go on until it is.
-				seen[id] = true
+	-- One item from anywhere: weighed, and kept if it is an upgrade. A drop
+	-- has its dungeon, who drops it and the chance; anything else says where.
+	local function consider(id, dungeon, code, source, chance, where)
+		local it = "item:" .. id .. ":0:0:0"
+		local meta = not seen[id] and describe(items, id, it)
+		if meta == nil and not seen[id] then
+			-- One of Turtle's own, not loaded yet: nothing to go on until it is.
+			seen[id] = true
+			wantLoaded(id)
+			missing = missing + 1
+		elseif meta and meta[3] <= level + L.AHEAD and GF.ForClass(meta[4], class) then
+			seen[id] = true
+			if not GetItemInfo(it) then
 				wantLoaded(id)
 				missing = missing + 1
-			elseif meta and meta[3] <= level + L.AHEAD and GF.ForClass(meta[4], class) then
-				seen[id] = true
-				if not GetItemInfo(it) then
-					wantLoaded(id)
-					missing = missing + 1
-				else
-					local c = IS:Compare(it, weights)
-					if c and c.usable and not c.noCompare and (c.delta or 0) > 0.0001 then
-						bySlot[meta[1]] = bySlot[meta[1]] or {}
-						table.insert(bySlot[meta[1]], {
-							id = id, item = it, dungeon = d.name, code = d.code, source = drop[2],
-							chance = drop[3], compare = c, level = meta[3],
-						})
-					end
+			else
+				local c = IS:Compare(it, weights)
+				if c and c.usable and not c.noCompare and (c.delta or 0) > 0.0001 then
+					bySlot[meta[1]] = bySlot[meta[1]] or {}
+					table.insert(bySlot[meta[1]], {
+						id = id, item = it, dungeon = dungeon, code = code, source = source,
+						chance = chance, where = where, compare = c, level = meta[3],
+					})
 				end
 			end
 		end
 	end
+	for _, d in ipairs(self:Dungeons()) do
+		for _, drop in ipairs(d.loot) do consider(drop[1], d.name, d.code, drop[2], drop[3]) end
+	end
+	for _, o in ipairs(self:Others(level, class)) do consider(o[1], nil, nil, nil, nil, o[2]) end
 	results = {}
 	for _, g in ipairs(GROUPS) do
 		local list = {}
@@ -231,6 +302,10 @@ function GF:CreateWindow()
 	local raids = Theme:Switch(frame, "Include raids", function(on)
 		settings().raids = on
 		frame.offset = 0
+		if on then
+			AegisPathfinder:Print("Raids added to the Gear finder. The first time, their items have to "
+				.. "load from the server: it can take a minute or two, and the list fills in as they arrive.")
+		end
 		GF:Refresh()
 	end)
 	raids:SetWidth(L.WIDTH - L.PAD * 2)
@@ -356,7 +431,8 @@ function GF:Paint()
 			row.name:SetText((hex or "") .. (name or ("item " .. e.id)) .. "|r")
 			row.gain:SetText(AegisPathfinder.GearAdvisor.Gain(e.compare))
 			local at = (e.level > (UnitLevel("player") or 1)) and (" \194\183 at level " .. e.level) or ""
-			row.where:SetText(string.format("%s, %s \194\183 %s%%%s", e.source, e.dungeon, e.chance, at))
+			row.where:SetText(e.where and (e.where .. at)
+				or string.format("%s, %s \194\183 %s%%%s", e.source, e.dungeon, e.chance, at))
 			row:Show()
 		else
 			row.entry = nil
@@ -372,21 +448,36 @@ function GF:Paint()
 		if d.kind == "raid" then nr = nr + 1 else nd = nd + 1 end
 	end
 	local function count(n, one) return n .. " " .. one .. (n == 1 and "" or "s") end
-	local where = table.getn(names) <= L.NAMED and table.concat(names, ", ")
-		or (count(nd, "dungeon") .. (nr > 0 and (" and " .. count(nr, "raid")) or ""))
+	local s = settings()
+	local places = {}
+	if table.getn(names) > 0 then
+		table.insert(places, table.getn(names) <= L.NAMED and table.concat(names, ", ")
+			or (count(nd, "dungeon") .. (nr > 0 and (" and " .. count(nr, "raid")) or "")))
+	end
+	if s.quests then table.insert(places, "quests") end
+	if s.reputation then table.insert(places, "reputation") end
+	if s.crafted then table.insert(places, "crafting") end
+	local n = table.getn(places)
+	local where = n <= 1 and (places[1] or "")
+		or (table.concat(places, ", ", 1, n - 1) .. " and " .. places[n])
 	local text
-	if not settings().enabled then
+	if not s.enabled then
 		text = "The gear finder is switched off in the options."
-	elseif table.getn(dungeons) == 0 then
-		text = AegisPathfinder.db.char.SelfFound
-			and "Solo Self-Found is on, so it looks in no dungeons."
-			or "No dungeon at your level is ticked in the options."
+	elseif n == 0 then
+		text = "No dungeon at your level is ticked in the options."
 	elseif table.getn(lines) == 0 and missing == 0 then
-		text = "Nothing in " .. where .. " beats what you wear for " .. IS:SpecLabel((IS:Spec())) .. "."
+		text = "Nothing from " .. where .. " beats what you wear for " .. IS:SpecLabel((IS:Spec())) .. "."
 	else
 		text = "Upgrades for " .. IS:SpecLabel((IS:Spec())) .. " from " .. where .. "."
 	end
-	if missing > 0 then text = text .. string.format(" Loading %d more items...", missing) end
+	if s.enabled and table.getn(dungeons) == 0 and AegisPathfinder.db.char.SelfFound then
+		text = "Solo Self-Found is on, so it looks in no dungeons. " .. (n > 0 and text or "")
+	end
+	if missing > 0 then
+		text = text .. string.format(" Loading %d more items...", missing)
+		-- Raids are hundreds more; say why it is taking a while.
+		if s.raids then text = text .. " Raids take a minute or two, the first time." end
+	end
 	frame.note:SetText(text)
 	frame.raids:SetOn(settings().raids)
 end

@@ -318,6 +318,21 @@ what you wear, with who drops them, where, and how often.
   Core's Incindis and Basalthar, among others), loot moved between bosses,
   new items, and drops taken out. Where Turtle only changed a shared loot
   table, the CMaNGOS chance stands.
+- Not only drops -- at 60 much of the best gear is not one. Each switched in
+  the options, on to start with:
+  - **Quest rewards** from quests you have still to do, on your side and for
+    your class, that you can take within three levels: *Quest: Title*, with
+    the reputation it needs where it needs one (*Honored, Argent Dawn*).
+  - **Reputation gear** a vendor sells at a rank: *Revered with Stormpike
+    Guard · the quartermaster*.
+  - **Crafted gear**: *Blacksmithing 300*, and *made by a crafter* when you
+    are not one. Crafted gear that binds on pickup counts only if you have the
+    profession -- and under Solo Self-Found, all of it does.
+  These are looked at near your level only, up to ten levels under it: there
+  are thousands, each loaded to be weighed. They are vanilla's, from the
+  CMaNGOS database; Turtle's own quests and recipes are not in it.
+- Turning raids on says the first look takes a minute or two: hundreds more
+  items to load, once.
 
 ## Professions
 

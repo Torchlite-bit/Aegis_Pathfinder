@@ -44,7 +44,7 @@ That runs everything that can run without a WoW client:
 | `Tools/test_craftplanner.lua` | The crafting route planner: reading the recipe data, the skill-up chance, the route against brute force, learning fees, make-or-buy, pricing at depth, stock carried between steps, selling back, unpriced reagents; the auction scan against the suite's auction house rules; every profession planned from the real data |
 | `Tools/test_itemscore.lua` | The item score: reading 1.12 tooltips (stats, weapon DPS, school spell damage, set bonuses and procs ignored, red lines meaning unusable or later), soft caps, the spec from your talents, your own weights and sharing them in OctoPawn's string, comparing by slot (rings, two-handers, dual wield), and the tooltip line |
 | `Tools/test_gearadvisor.lua` | The Gear Advisor: upgrades found in the bags, offered biggest first and once a session, Equip into the right slot (waiting out a fight, finding an item that moved), Decline remembered across reloads, equip-for-me never binding an item, off at 60; the best quest reward (upgrade, else sell price, waiting for items to load) marked and picked; upgrades bordered in the bags |
-| `Tools/test_gearfinder.lua` | The Gear finder: the dungeons it looks in (level, side, your ticks, raids), the drops it weighs (level, class), Turtle WoW's own items described by the client (and badges, greys and items above you never weighed), loading the ones not cached, the best three a slot in the character sheet's order, the window, and naming upgrades on walking into a dungeon; and that the real loot data is there |
+| `Tools/test_gearfinder.lua` | The Gear finder: the dungeons it looks in (level, side, your ticks, raids), the drops it weighs (level, class), Turtle WoW's own items described by the client (and badges, greys and items above you never weighed), quest rewards (not done, your side and class, within reach), reputation gear and crafted gear (bind-on-pickup and Solo Self-Found only with the profession), loading the ones not cached, the best three a slot in the character sheet's order, the window, and naming upgrades on walking into a dungeon; and that the real loot data is there |
 | `Tools/test_gearframe.lua` | The Item Score page: the spec picker, the weights listed down the left and edited, show all growing the page, export, import and reset beside and under them |
 | `Tools/test_craftroute.lua` | The crafting route window and planned guides: rank steps placed where the skill cap runs out, crafts contiguous and parsed as skill steps, saving and restoring, the window's totals, rows, status line, re-planning only on change, and the scan button |
 | `Tools/test_partysync.lua` | Sharing a guide with the party: step names that survive different step numbering, holding a finished step for the slowest partner without pulling anyone back, skipping out of a hold, the messages both ways, the throttle and heartbeat, the popups, the members under the step, and the group changing |
@@ -144,8 +144,9 @@ python3 Tools/import_octopawn.py <path to OctoPawn>
 pfQuest-turtle checkout by
 `Tools/build_gear_data.py --cmangos <dump> --pfquest-turtle <pfQuest-turtle>`:
 what each quest reward sells for, which the Gear Advisor falls back on when no
-reward is an upgrade, and what drops in each dungeon and raid, for the Gear
-finder -- Turtle WoW's own from pfQuest-turtle, whose zones for them are listed
+reward is an upgrade; and for the Gear finder, what drops in each dungeon and
+raid, which quests reward gear, what reputation vendors sell, and what the
+professions make (`other_sources`) -- Turtle WoW's own from pfQuest-turtle, whose zones for them are listed
 in `TURTLE_INSTANCES`, and Turtle's changes to the vanilla ones laid over the
 CMaNGOS loot (`turtle_vanilla`).
 

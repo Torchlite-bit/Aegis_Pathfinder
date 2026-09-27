@@ -483,7 +483,10 @@ function AegisPathfinder:CreateConfigPanel()
 	-- The Gear Finder (GearFinder.lua): upgrades in the dungeons you run.
 	frame.finder = {}
 	for _, def in ipairs({
-		{ key = "enabled",  label = "Gear finder: upgrades from the dungeons I run" },
+		{ key = "enabled",  label = "Gear finder: upgrades waiting for me" },
+		{ key = "quests",   label = "Look at quest rewards" },
+		{ key = "reputation", label = "Look at reputation rewards" },
+		{ key = "crafted",  label = "Look at crafted gear" },
 		{ key = "announce", label = "Name the upgrades when I walk into a dungeon" },
 	}) do
 		local key = def.key
@@ -499,7 +502,9 @@ function AegisPathfinder:CreateConfigPanel()
 	place(openFinder, 26, 6)
 	note("It looks in the dungeons at or a little above your level that are "
 		.. "ticked under Dungeons, Turtle WoW's own included, and in raids if you "
-		.. "ask it to.")
+		.. "ask it to; and at quests you have still to do, reputation vendors and "
+		.. "crafted gear near your level. Crafted gear that binds on pickup counts "
+		.. "only if you have the profession.")
 	space(SECTION_GAP)
 	frame.scoreTips, frame.weightsButton, frame.clearDeclined = scoreTips, weights, clearDeclined
 	frame.openFinder = openFinder

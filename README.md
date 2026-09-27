@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.9.0)
+# Aegis: Pathfinder (v0.9.1)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -97,7 +97,8 @@ dungeons, no trading, no Auction House. Every switch applies to every guide.
 - **Gear Advisor** offers upgrades as you loot them and marks the best quest
   reward.
 - **Gear finder** lists the upgrades waiting in the dungeons you run — who
-  drops them, where, and how often. At 60 that is every dungeon, and the
+  drops them, where, and how often — and the quest rewards, reputation gear
+  and crafted gear within your reach. At 60 that is every dungeon, and the
   raids too if you ask it.
 
 <!-- Screenshots to come: the Item Score page, the Gear Advisor pop-up and the
@@ -189,7 +190,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.9.0`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.9.1`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)** or open an
