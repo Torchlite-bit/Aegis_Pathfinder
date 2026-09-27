@@ -9,7 +9,9 @@ Tools/find_filter_candidates.py lists the steps that probably want an |AH|,
 |P|GROUP| or |D|<code>| tag into docs/review/filter_candidates.json; the
 answers -- which of each item's suggested tags to add -- are in
 docs/review/filter_decisions.json. A "yes" adds the tag; a "no" -- an answer
-changed after the tags went in -- takes it off again.
+changed after the tags went in -- takes it off again; "steps" tags only the
+steps shown that are not the quest's own (the "buy it on the Auction House"
+note, not the quest you can also do by farming what it asks for).
 
 What a "yes" covers depends on what the evidence was:
 
@@ -201,12 +203,14 @@ def main():
                 if pat.search(line):
                     want((path, i), tags, into)
 
-    for answer, into in (("yes", wanted), ("no", unwanted)):
+    for answer, into in (("yes", wanted), ("no", unwanted), ("steps", wanted)):
         for item in items:
             tags = approved(decisions, item["id"], answer)
             if not tags:
                 continue
             for step in item["steps"]:
+                if answer == "steps" and step["action"] in QUEST_ACTIONS:
+                    continue
                 i = find_step(load(step["file"]), step, item.get("qid"))
                 if i is None:
                     problems.append("%s:%d no longer reads \"%s\" -- re-run find_filter_candidates.py"
@@ -214,7 +218,8 @@ def main():
                     continue
                 want((step["file"], i), tags, into)
             if quest_level(item):
-                whole_quest(item["qid"], tags, into)
+                # A "steps" answer takes the tag off the quest's own steps.
+                whole_quest(item["qid"], tags, unwanted if answer == "steps" else into)
 
     for qid, tags in sorted(record.get("followups", {}).items()):
         whole_quest(int(qid[1:]), sorted(tags), wanted)

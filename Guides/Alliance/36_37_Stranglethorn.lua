@@ -36,7 +36,7 @@ T Welcome to the Jungle |QID|583| |N|Hemet Nesingwary in Nesingwary's Expedition
 A Raptor Mastery (Part 1) |QID|194| |N|Hemet Nesingwary in Nesingwary's Expedition (35.66, 10.77)| |Z|Stranglethorn Vale|
 A Tiger Mastery (Part 1) |QID|185| |N|Ajeck Rouack in Nesingwary's Expedition (35.62, 10.62)| |Z|Stranglethorn Vale|
 A Panther Mastery (Part 1) |QID|190| |N|Sir S. J. Erlgadin in Nesingwary's Expedition (35.63, 10.51)| |Z|Stranglethorn Vale|
-N Keep Pages |QID|185| |N|Keep any Green Hills of Stranglethorn - Page 1 type pages that you find, it is a random drop from any Humanoids enemies in Stranglethorn Vale. You can also buy or sell these pages for decent profit in the Auction House if you fail to complete it. Tick this step| |AH|
+N Keep Pages |QID|185| |N|Keep any Green Hills of Stranglethorn - Page 1 type pages that you find, it is a random drop from any Humanoids enemies in Stranglethorn Vale. You can also buy or sell these pages for decent profit in the Auction House if you fail to complete it. Tick this step|
 C Tiger Mastery (Part 1) |QID|185| |N|Kill 10 Young Stranglethorn Tiger in Stranglethorn Vale (35.00, 12.10)| |Z|Stranglethorn Vale|
 
 R Nesingwary's Expedition |QID|186| |N|Travel to Nesingwary's Expedition (35.63, 10.65)| |Z|Stranglethorn Vale|

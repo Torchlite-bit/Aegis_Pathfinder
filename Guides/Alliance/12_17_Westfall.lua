@@ -115,7 +115,7 @@ N As you go... |AYG|102| |QID|22| |N|Kill Young Fleshripper and Young Goretusk y
 C Patrolling Westfall |QID|102| |OIDX|1| |N|Kill Gnolls near The Jansen Stead and collect 8 Gnoll Paw (56.90, 13.43)|
 
 C 3 Murloc Eye |QID|38| |OIDX|2| |N|Kill Murlocs in Longshore and collect 3 Murloc Eye (55.61, 9.02)|
-N Captain Sander's Treasure Map |QID|136| |N|Kill Murlocs until you find Captain Sander's Treasure Map in Longshore. This is a very low drop rate; You can skip this if you don't get it quickly or buy it from the Auction House (56.61, 9.47)| |AH|
+N Captain Sander's Treasure Map |QID|136| |N|Kill Murlocs until you find Captain Sander's Treasure Map in Longshore. This is a very low drop rate; You can skip this if you don't get it quickly or buy it from the Auction House (56.61, 9.47)|
 A Captain Sander's Hidden Treasure (Part 1) |QID|136| |N|Use Captain Sander's Treasure Map to accept quest| |U|1357| |O|
 
 N As you go... |AYG|102| |QID|22| |N|Kill Young Fleshripper and Young Goretusk you come across to collect 8 Goretusk Liver, 3 Goretusk Snout and 3 Stringy Vulture Meat, these items have low drop rate|

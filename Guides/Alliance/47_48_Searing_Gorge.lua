@@ -2,7 +2,7 @@ AegisPathfinder:RegisterGuide("Searing Gorge (47-48)", "Feralas (48-49)", "Allia
 
 return [[
 
-N 15 Silk Cloth |N|Make sure you collect at least 15 Silk Cloth for the quest 'Caught!' later in this guide, you can either purchase from the Auction or kill Shadowforge Tunneler in Badlands| |AH| |Z|Badlands| |L|4306 15|
+N 15 Silk Cloth |N|Make sure you collect at least 15 Silk Cloth for the quest 'Caught!' later in this guide, you can either purchase from the Auction or kill Shadowforge Tunneler in Badlands| |Z|Badlands| |L|4306 15|
 
 R Burning Steppes |QID|4449| |N|Travel to Burning Steppes from North of Redridge Mountains (47.23, 25.80) (46.70, 10.85) (46.44, 6.39)| |Z|Redridge Mountains|
 R Morgan's Vigil |QID|4449| |N|Travel to Morgan's Vigil (82.70, 63.31)| |Z|Burning Steppes|

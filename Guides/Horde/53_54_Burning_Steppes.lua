@@ -11,7 +11,7 @@ T Un'Goro Soil |QID|3761| |N|Ghede in Elder Rise (77.34, 22.09)| |Z|Thunder Bluf
 A Morrowgrain Research (Part 1) |QID|3782| |N|Arch Druid Hamuul Runetotem in Elder Rise (79.30, 28.45)| |Z|Thunder Bluff| |PRE|3761|
 T Morrowgrain Research (Part 1) |QID|3782| |N|Bashana Runetotem in Elder Rise (70.99, 34.09)| |Z|Thunder Bluff| |PRE|3761|
 A Morrowgrain Research (Part 2) |QID|3786| |N|Bashana Runetotem in Elder Rise (70.98, 34.03)| |Z|Thunder Bluff| |PRE|3761|
-N As you go... |AYG|4726| |QID|3786| |N|Use Evergreen Pouch every 10 mins to create Evergreen Herb Casing, open it to get some herbs, you will need to get 10 Morrowgrain using this method otherwise purchase from Auction. Tick this step| |U|11020| |PRE|3764| |AH|
+N As you go... |AYG|4726| |QID|3786| |N|Use Evergreen Pouch every 10 mins to create Evergreen Herb Casing, open it to get some herbs, you will need to get 10 Morrowgrain using this method otherwise purchase from Auction. Tick this step| |U|11020| |PRE|3764|
 
 R Ratchet |TID|4147| |N|Travel to Ratchet (62.48, 38.66)| |Z|The Barrens| |O|
 T Marvon's Workshop |QID|4147| |N|Bashana Runetotem in Ratchet (62.45, 38.72)| |Z|The Barrens| |O|

@@ -51,7 +51,7 @@ A Trollbane |QID|638| |N|Nimboya in Grom'gol Base Camp (32.16, 27.78)|
 A Bloody Bone Necklaces |QID|596| |N|Kin'weelay in Grom'gol Base Camp (32.23, 27.77)|
 A The Vile Reef |QID|629| |N|Kin'weelay in Grom'gol Base Camp (32.23, 27.77)|
 
-N Keep Pages |QID|605| |N|Keep any Green Hills of Stranglethorn - Page 1 type pages that you find, it is a random drop from any Humanoids enemies in Stranglethorn Vale. You can also buy or sell these pages for decent profit in the Auction House if you fail to complete it. Tick this step| |AH|
+N Keep Pages |QID|605| |N|Keep any Green Hills of Stranglethorn - Page 1 type pages that you find, it is a random drop from any Humanoids enemies in Stranglethorn Vale. You can also buy or sell these pages for decent profit in the Auction House if you fail to complete it. Tick this step|
 C Singing Blue Shards |QID|605| |N|Find Stone Maw Basilisk and collect some Singing Crystal Shard, you can complete this later, tick this step if you can't find crocs The Savage Coast (37, 8)| |Z|Stranglethorn Vale| |L|3918 5|
 
 R Bal'lal Ruins |QID|581| |N|Travel to Bal'lal Ruins (29.52, 20.87)|

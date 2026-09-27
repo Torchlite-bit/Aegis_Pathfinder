@@ -159,7 +159,11 @@ carried them. The Optimized and zone guides carry the ones the owner approved:
 `docs/review/filter_decisions.json`, and `Tools/apply_filter_tags.py` applies
 them. A "yes" on a quest's own step tags every step of that quest; a "yes" on
 a note or buy step that merely carries a quest id tags only that step; an
-answer changed to "no" takes the tag off again. Quests
+answer changed to "no" takes the tag off again. An Auction House tag belongs on
+the step that sends you to the Auction House, not on a quest you can also do by
+fishing, farming a drop or finding a vendor -- those are answered "steps", which
+tags only the buy steps. Only a quest that needs an item a crafting profession
+makes keeps the tag on the quest itself. Quests
 you can only reach through a tagged one inherit its tag (worked out from
 pfQuest's prerequisites with `--pfquest`, and kept in the decisions file).
 When you add a step for a tagged quest, give it the same tag --

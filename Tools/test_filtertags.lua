@@ -59,6 +59,7 @@ dofile("Guides/Optimized/Alliance/01_10_Elwynn_Forest.lua")
 dofile("Guides/Alliance/12_17_Westfall.lua")
 dofile("Guides/Alliance/28_29_Duskwood.lua")
 dofile("Guides/Optimized/Alliance/10_12_Westfall.lua")
+dofile("Guides/Alliance/12_17_Darkshore.lua")
 
 local char = AegisPathfinder.db.char
 
@@ -92,6 +93,13 @@ check(count("Westfall (12-17)", "The Tome of Divinity (Part 5)", "SOLO", false) 
 	"the Tome of Divinity needs only Linen Cloth, which drops -- it stays with Auction House steps off")
 check(count("Optimized/Westfall (10-12)", "Stormwind City@", "SOLO", false) > 0,
 	"the trip to Stormwind for Shipment to Stormwind stays in Solo mode")
+
+-- The Auction House tag is for the step that sends you there, not for a
+-- quest you can do another way: fish, farm the drop, find the vendor.
+check(count("Darkshore (12-17)", "The Family and the Fishing Pole", "SOLO", false) == 3,
+	"a fishing quest stays with Auction House steps off: you can catch the fish")
+check(count("Duskwood (28-29)", "Look To The Stars (Part 1)", "SOLO", false) == 3,
+	"a quest whose item drops stays with Auction House steps off")
 
 local DUSKWOOD = "Duskwood (28-29)"
 check(count(DUSKWOOD, "[Bronze Tube]", "SOLO", false) == 0,

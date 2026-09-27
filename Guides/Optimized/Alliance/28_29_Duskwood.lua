@@ -22,15 +22,15 @@ A Worgen in the Woods (Part 1) |QID|173| |N|Calor in Darkshire (75.24, 48.00)|
 A The Hermit |QID|165| |N|Elaine Carevin in Darkshire (75.33, 48.62)|
 A Deliveries to Sven |QID|164| |N|Elaine Carevin in Darkshire (75.33, 48.62)|
 A Raven Hill |QID|163| |N|Elaine Carevin in Darkshire (75.31, 48.51)| |Z|Duskwood|
-A Look To The Stars (Part 1) |QID|174| |N|Viktori Prism'Antras in Darkshire (79.79, 47.97)| |AH|
-C Look To The Stars (Part 1) |QID|174| |N|Give Bronze Tube to Viktori (79.79, 47.97)| |AH|
-T Look To The Stars (Part 1) |QID|174| |N|Viktori Prism'Antras in Darkshire (79.79, 47.97)| |AH|
-A Look To The Stars (Part 2) |QID|175| |N|Viktori Prism'Antras in Darkshire (79.79, 47.97)| |AH|
+A Look To The Stars (Part 1) |QID|174| |N|Viktori Prism'Antras in Darkshire (79.79, 47.97)|
+C Look To The Stars (Part 1) |QID|174| |N|Give Bronze Tube to Viktori (79.79, 47.97)|
+T Look To The Stars (Part 1) |QID|174| |N|Viktori Prism'Antras in Darkshire (79.79, 47.97)|
+A Look To The Stars (Part 2) |QID|175| |N|Viktori Prism'Antras in Darkshire (79.79, 47.97)|
 
-T Look To The Stars (Part 2) |QID|175| |N|Blind Mary in Tranquil Gardens Cemetery (81.80, 59.29)| |AH|
-A Look To The Stars (Part 3) |QID|177| |N|Blind Mary in Tranquil Gardens Cemetery (81.80, 59.29)| |AH|
+T Look To The Stars (Part 2) |QID|175| |N|Blind Mary in Tranquil Gardens Cemetery (81.80, 59.29)|
+A Look To The Stars (Part 3) |QID|177| |N|Blind Mary in Tranquil Gardens Cemetery (81.80, 59.29)|
 
-C Look To The Stars (Part 3) |QID|177| |N|Kill Insane Ghoul and collect Mary's Looking Glass (78, 70)| |AH|
+C Look To The Stars (Part 3) |QID|177| |N|Kill Insane Ghoul and collect Mary's Looking Glass (78, 70)|
 C Skeleton Finger |QID|101| |OIDX|3| |N|Collect 10 Skeleton Finger from skeletons (76.89, 72.07)|
 C The Night Watch (Part 1) |QID|56| |N|Kill 8 Skeletal Warrior and 6 Skeletal Mage|
 
@@ -42,8 +42,8 @@ T Worgen in the Woods (Part 1) |QID|173| |N|Calor in Darkshire (75.24, 48.00)|
 A Worgen in the Woods (Part 2) |QID|221| |N|Calor in Darkshire (75.24, 48.00)|
 T The Night Watch (Part 1) |QID|56| |N|Commander Althea Ebonlocke in Darkshire (73.60, 46.85)|
 A The Night Watch (Part 2) |QID|57| |N|Commander Althea Ebonlocke in Darkshire (73.60, 46.85)|
-T Look To The Stars (Part 3) |QID|177| |N|Viktori Prism'Antras in Darkshire (79.79, 47.97)| |AH|
-A Look To The Stars (Part 4) |QID|181| |N|Viktori Prism'Antras in Darkshire (79.79, 47.97)| |AH|
+T Look To The Stars (Part 3) |QID|177| |N|Viktori Prism'Antras in Darkshire (79.79, 47.97)|
+A Look To The Stars (Part 4) |QID|181| |N|Viktori Prism'Antras in Darkshire (79.79, 47.97)|
 
 R The Rotting Orchard |QID|221| |N|Travel to The Rotting Orchard (63, 70)|
 C Worgen in the Woods (Part 2) |QID|221| |N|Kill 12 Nightbane Dark Runner (63, 70)|
@@ -55,8 +55,8 @@ A Worgen in the Woods (Part 3) |QID|222| |N|Calor in Darkshire (75.24, 48.00)|
 R Roland's Doom |QID|222| |N|Travel to Roland's Doom (74.23, 77.55)| |Z|Duskwood|
 C Worgen in the Woods (Part 3) |QID|222| |N|Kill 8 Nightbane Vile Fang and 8 Nightbane Tainted One (74, 67)|
 
-R Vul'Gol Ogre Mound |QID|181| |N|Travel to Vul'Gol Ogre Mound (34.03, 76.59)| |AH|
-C Look To The Stars (Part 4) |QID|181| |N|Kill Zzarc'Vul inside the cave for Ogre's Monocle (36, 83)| |AH|
+R Vul'Gol Ogre Mound |QID|181| |N|Travel to Vul'Gol Ogre Mound (34.03, 76.59)|
+C Look To The Stars (Part 4) |QID|181| |N|Kill Zzarc'Vul inside the cave for Ogre's Monocle (36, 83)|
 
 R Raven Hill |QID|5| |N|Travel to Raven Hill (18.33, 56.25)|
 T Raven Hill |QID|163| |N|Jitters in Raven Hill (18.33, 56.25)|
@@ -92,7 +92,7 @@ A Ghost Hair Thread |QID|149| |N|Madame Eva in Darkshire (75.72, 45.34)|
 T Worgen in the Woods (Part 3) |QID|222| |N|Calor in Darkshire (75.24, 48.00)|
 A Worgen in the Woods (Part 4) |QID|223| |N|Calor in Darkshire (75.24, 48.00)|
 T Worgen in the Woods (Part 4) |QID|223| |N|Jonathan Carevin in Darkshire (75.33, 49.03)|
-T Look To The Stars (Part 4) |QID|181| |N|Viktori Prism'Antras in Darkshire (79.79, 47.97)| |AH|
+T Look To The Stars (Part 4) |QID|181| |N|Viktori Prism'Antras in Darkshire (79.79, 47.97)|
 T Ghost Hair Thread |QID|149| |N|Blind Mary in Darkshire (81.80, 59.29)|
 A Return the Comb |QID|154| |N|Blind Mary in Darkshire (81.80, 59.29)|
 T Return the Comb |QID|154| |N|Madame Eva in Darkshire (75.72, 45.34)|

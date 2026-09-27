@@ -1,6 +1,6 @@
 {
  "_about": "The repository owner's answers to docs/review/filter_candidates.json, given on the review page on 2026-09-27: for each item, each suggested tag and whether to add it. Tools/apply_filter_tags.py applies them.",
- "_revised": "2026-09-27, by the owner: q1644/q1648 (Tome of Divinity -- 10 Linen Cloth, which humanoids drop) and q6123/q6128 (Gathering the Cure -- Earthroot, and Lunar Fungus or Kodo Horns, all gathered or dropped) can be done without the Auction House; q61's tagged step is the trip to Stormwind for Shipment to Stormwind, not part of Hogger.",
+ "_revised": "2026-09-27, by the owner: q1644/q1648 (Tome of Divinity -- 10 Linen Cloth, which humanoids drop) and q6123/q6128 (Gathering the Cure -- Earthroot, and Lunar Fungus or Kodo Horns, all gathered or dropped) can be done without the Auction House; q61's tagged step is the trip to Stormwind for Shipment to Stormwind, not part of Hogger. Later the same day: the Auction House tag belongs on the step that sends you there, not on a quest you can also do another way. The fishing quests (q1141, q5386, q5421) are no longer tagged; Look To The Stars (q174: Bronze Tubes drop, and a vendor sometimes has one) keeps the tag on its buy steps only; notes that are about farming (q136, q185, q605, q3785, q3786, the Silk Cloth notes) are no longer tagged. Quests that need a crafted item -- q1073, q4244, q40190, q40730, q40735, q40736 -- keep theirs.",
  "_followups": "Quests you can only pick up after a quest tagged whole, with the tag they inherit and the quest they follow -- derived from pfQuest's prerequisites by Tools/apply_filter_tags.py --pfquest, not answered by anyone.",
  "decisions": {
   "q45": {
@@ -25,7 +25,7 @@
    "GROUP": "no"
   },
   "q1141": {
-   "AH": "yes"
+   "AH": "no"
   },
   "q4740": {
    "GROUP": "yes"
@@ -37,7 +37,7 @@
    "GROUP": "yes"
   },
   "q174": {
-   "AH": "yes"
+   "AH": "steps"
   },
   "q1448": {
    "ST": "yes"
@@ -100,10 +100,10 @@
    "GROUP": "yes"
   },
   "q5386": {
-   "AH": "yes"
+   "AH": "no"
   },
   "q5421": {
-   "AH": "yes"
+   "AH": "no"
   },
   "q639": {
    "GROUP": "yes"
@@ -175,7 +175,7 @@
    "AH": "no"
   },
   "q136": {
-   "AH": "yes"
+   "AH": "no"
   },
   "q132": {
    "DM": "yes"
@@ -220,7 +220,7 @@
    "GROUP": "yes"
   },
   "q185": {
-   "AH": "yes"
+   "AH": "no"
   },
   "q41880": {
    "GROUP": "yes"
@@ -262,7 +262,7 @@
    "AH": "yes"
   },
   "q3785": {
-   "AH": "yes"
+   "AH": "no"
   },
   "q40730": {
    "AH": "yes"
@@ -298,7 +298,7 @@
    "GROUP": "yes"
   },
   "q605": {
-   "AH": "yes"
+   "AH": "no"
   },
   "q679": {
    "GROUP": "yes"
@@ -319,7 +319,7 @@
    "GROUP": "yes"
   },
   "q3786": {
-   "AH": "yes"
+   "AH": "no"
   },
   "q6135": {
    "GROUP": "yes"
@@ -355,7 +355,7 @@
    "AH": "yes"
   },
   "n-Optimized-Alliance-50-51-Searing-Gorge-11": {
-   "AH": "yes"
+   "AH": "no"
   },
   "n-Optimized-Horde-18-20-Barrens-90": {
    "GROUP": "yes",
@@ -368,7 +368,7 @@
    "SM": "yes"
   },
   "n-Alliance-47-48-Searing-Gorge-5": {
-   "AH": "yes"
+   "AH": "no"
   },
   "n-Alliance-48-53-Lapidis-Isle-157": {
    "GROUP": "yes"
@@ -428,15 +428,6 @@
   },
   "q71": {
    "GROUP": "q45"
-  },
-  "q175": {
-   "AH": "q174"
-  },
-  "q177": {
-   "AH": "q174"
-  },
-  "q181": {
-   "AH": "q174"
   },
   "q208": {
    "GROUP": "q193"

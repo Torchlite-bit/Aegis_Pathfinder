@@ -56,8 +56,8 @@ A Other Fish to Fry |QID|6143| |N|Drulzegar Skraghook in Shadowprey Village (23.
 A Clam Bait |QID|6142| |N|Mai'Lahii in Shadowprey Village (22.67, 71.97)| |Z|Desolace|
 f Shadowprey Village |QID|5741| |N|Speak to Thalon and grab flight path for Shadowprey Village (21.6, 74)| |Z|Desolace|
 
-N Shellfish |QID|5386| |N|Collect 10 Shellfish from Shellfish Trap in The Veiled Sea for Bloodbelly Fish (21.20, 76.11) (19.01, 77.67)| |AH| |Z|Desolace| |L|13545 10|
-T Fish in a Bucket |QID|5421| |N|Jinar'Zillen in Shadowprey Village (22.4, 73)| |AH| |Z|Desolace|
+N Shellfish |QID|5386| |N|Collect 10 Shellfish from Shellfish Trap in The Veiled Sea for Bloodbelly Fish (21.20, 76.11) (19.01, 77.67)| |Z|Desolace| |L|13545 10|
+T Fish in a Bucket |QID|5421| |N|Jinar'Zillen in Shadowprey Village (22.4, 73)| |Z|Desolace|
 N Keep Bloodbelly Fish |N|Keep the 2 Bloodbelly Fish for Catch of the Day quest later|
 
 R Ethel Rethor |QID|6161| |N|Travel to Ethel Rethor (36.03, 30.41)| |Z|Desolace|
@@ -72,13 +72,13 @@ C The Burning of Spirits |QID|1435| |N|Use the Burning Gem on humanoids after da
 N Flayed Demon Skin |QID|1480| |N|Kill Burning Blade enemies until you find Flayed Demon Skin (56.2, 28.1)| |Z|Desolace| |L|20310|
 A The Corrupter (Part 1) |QID|1480| |N|Use Flayed Demon Skin to accept quest| |U|20310|
 
-R Ghost Walker Post |QID|5386| |N|Travel to Ghost Walker Post (52.24, 53.50)| |AH| |Z|Desolace|
+R Ghost Walker Post |QID|5386| |N|Travel to Ghost Walker Post (52.24, 53.50)| |Z|Desolace|
 T The Burning of Spirits |QID|1435| |N|Maurin Bonesplitter in Ghost Walker Post (52.24, 53.50)| |Z|Desolace|
 T The Corrupter (Part 1) |QID|1480| |N|Maurin Bonesplitter in Ghost Walker Post (52.24, 53.50)| |Z|Desolace|
 A The Corrupter (Part 2) |QID|1481| |N|Maurin Bonesplitter in Ghost Walker Post (52.24, 53.50)| |Z|Desolace|
-A Catch of the Day |QID|5386| |N|Nataka Longhorn in Ghost Walker Post (55.44, 55.77)| |AH| |Z|Desolace|
-C Catch of the Day |QID|5386| |N|Turn in 2 Bloodbelly Fish from Fish in a Bucket (55.44, 55.77)| |AH| |Z|Desolace|
-T Catch of the Day |QID|5386| |N|Nataka Longhorn in Ghost Walker Post (55.44, 55.77)| |AH| |Z|Desolace|
+A Catch of the Day |QID|5386| |N|Nataka Longhorn in Ghost Walker Post (55.44, 55.77)| |Z|Desolace|
+C Catch of the Day |QID|5386| |N|Turn in 2 Bloodbelly Fish from Fish in a Bucket (55.44, 55.77)| |Z|Desolace|
+T Catch of the Day |QID|5386| |N|Nataka Longhorn in Ghost Walker Post (55.44, 55.77)| |Z|Desolace|
 
 R Sargeron |QID|1481| |N|Travel to Sargeron (73.99, 22.93)| |Z|Desolace|
 C The Corrupter (Part 2) |QID|1481| |N|Kill Hatefury Shadowstalker to collect Shadowstalker Scalp (73.99, 22.93)| |Z|Desolace|
