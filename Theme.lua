@@ -1060,15 +1060,18 @@ function Theme:Switch(parent, label, onChange)
 
 	--[[ Lay the row out `width` wide. A label too long for the line wraps
 		under itself and the row grows to hold it, rather than running off
-		the edge. The lines are counted from the label's unwrapped width, with
-		a little slack for where the words break: a wrapped font string's own
-		height is not to be trusted on 1.12. Returns the row's height. ]]
+		the edge. The lines are counted from the label's unwrapped width: one
+		if it fits, else with a little slack for where the words break -- a
+		wrapped font string's own height is not to be trusted on 1.12. The
+		slack used to count a label that just fits as two lines, leaving a
+		gap round it. Returns the row's height. ]]
 	function row:Fit(width)
 		self:SetWidth(width)
 		local room = width - 45             -- the track and the gap after it
 		self.label:SetWidth(room)
 		self.label:SetJustifyH("LEFT")
-		local lines = math.max(1, math.ceil((self.label:GetStringWidth() or 0) / (room * 0.95)))
+		local sw = self.label:GetStringWidth() or 0
+		local lines = sw <= room and 1 or math.ceil(sw / (room * 0.95))
 		local h = math.max(22, lines * 15 + 4)
 		self:SetHeight(h)
 		return h

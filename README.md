@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.8.0)
+# Aegis: Pathfinder (v0.9.1)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -35,6 +35,14 @@ and feature ideas.
 <p align="center">
   <img src="docs/images/aegis-pathfinder-logo.png" width="300" alt="Aegis: Pathfinder logo"><br>
   <b>Aegis: Pathfinder — levelling, gear and professions for vanilla WoW</b>
+</p>
+
+---
+
+### 📷 In game
+
+<p align="center">
+  <img src="docs/images/in-game.jpg" width="820" alt="Pathfinder running in game: the guide with three tabs open at the bottom left, the active target marked with a star">
 </p>
 
 ---
@@ -89,7 +97,9 @@ dungeons, no trading, no Auction House. Every switch applies to every guide.
 - **Gear Advisor** offers upgrades as you loot them and marks the best quest
   reward.
 - **Gear finder** lists the upgrades waiting in the dungeons you run — who
-  drops them, where, and how often.
+  drops them, where, and how often — and the quest rewards, reputation gear
+  and crafted gear within your reach. At 60 that is every dungeon, and the
+  raids too if you ask it.
 
 <!-- Screenshots to come: the Item Score page, the Gear Advisor pop-up and the
      Gear finder. Put them in docs/images/ and add them here. -->
@@ -122,6 +132,20 @@ finished step waits for the slowest.
 | Quest targets, shared | Share with your party | Everyone's progress on the step |
 | :---: | :---: | :---: |
 | <img src="docs/images/party-targets.jpg" width="280" alt="A shared step with a quest target button, its tooltip, and the macros"> | <img src="docs/images/party-share.png" width="280" alt="The prompt to share the guide with your party"> | <img src="docs/images/party-progress.png" width="280" alt="A party member listed under the step"> |
+
+### ⚙️ Settings, laid out like Zygor's
+
+Every setting in one window, a page a category down the left: your route,
+dungeons, filters, appearance, gear and item score, behaviour, navigation.
+Resize it from the corner.
+
+| Route | Dungeons |
+| :---: | :---: |
+| <img src="docs/images/options-route.png" width="380" alt="Options, Route page: your race and route pack, with a preview of the route"> | <img src="docs/images/options-dungeons.png" width="380" alt="Options, Dungeons page: a chip for each dungeon"> |
+
+| Behaviour | Gear |
+| :---: | :---: |
+| <img src="docs/images/options-behaviour.png" width="380" alt="Options, Behaviour page: how the guide behaves, and its windows"> | <img src="docs/images/options-gear.png" width="380" alt="Options, Gear page: the item score, the Gear Advisor and the Gear finder"> |
 
 ### 🎨 Your server's colours
 
@@ -166,7 +190,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.8.0`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.9.1`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)** or open an

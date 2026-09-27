@@ -37,6 +37,24 @@ seen. Items the CMaNGOS database knows are filtered here as for any dungeon.
 Only direct drops are taken: the shared tables Turtle's dungeons use are the
 world's random drops, or pools of trash drops far under MIN_CHANCE.
 
+Gear from quests, reputation and crafting (other_sources), for the finder
+too -- at 60 much of the best gear is not a drop:
+
+  Quests        every quest whose reward is gear: its title, the level it can
+                be taken at, the side and classes it is for, and the
+                reputation it needs, if any. Quests Turtle removed are left
+                out; Turtle's own quests' rewards are in neither database.
+  Reputation    gear a vendor sells only at a reputation rank (npc_vendor,
+                and the vendor templates): the faction, the rank, the vendor.
+  Crafted       gear a profession makes: the craft spell a recipe or a
+                trainer teaches (spell_template's learn-spell effect) and
+                the item it makes, with the profession, the skill it is
+                learned at, and whether it binds on pickup -- which only
+                matters to someone with the profession.
+
+Faction names are not in the dump: FACTIONS names the ones that gate gear,
+and the run fails on one it does not know, so none goes unnamed.
+
 Turtle also changed the vanilla instances: bosses added, loot moved, drops
 taken out. turtle_vanilla lays those over the CMaNGOS loot, from the same
 pfQuest-turtle data (see its docstring for the rule).
@@ -123,6 +141,20 @@ TURTLE_INSTANCES = [
     (5097, "ES", "raid"),         # Emerald Sanctum
     (3457, "KARA", "raid"),       # Tower of Karazhan (Lower Karazhan Halls)
 ]
+
+PROFESSIONS = {164: "Blacksmithing", 165: "Leatherworking", 171: "Alchemy", 197: "Tailoring",
+               202: "Engineering", 333: "Enchanting"}
+# Reputations that gate gear: the name, and the side that can earn it.
+FACTIONS = {
+    270: ("Zandalar Tribe", None), 509: ("League of Arathor", "Alliance"),
+    510: ("The Defilers", "Horde"), 529: ("Argent Dawn", None), 576: ("Timbermaw Hold", None),
+    609: ("Cenarion Circle", None), 729: ("Frostwolf Clan", "Horde"),
+    730: ("Stormpike Guard", "Alliance"), 910: ("Brood of Nozdormu", None),
+}
+# Standing from the least reputation each rank starts at (0 Hated .. 7 Exalted).
+RANK_AT = [(42000, 7), (21000, 6), (9000, 5), (3000, 4), (0, 3), (-3000, 2), (-6000, 1)]
+ALLIANCE_RACES, HORDE_RACES = 1 | 4 | 8 | 64, 2 | 16 | 32 | 128
+SPELL_CREATE_ITEM, SPELL_LEARN_SPELL = 24, 36
 
 INVTYPE = {
     1: "INVTYPE_HEAD", 2: "INVTYPE_NECK", 3: "INVTYPE_SHOULDER", 5: "INVTYPE_CHEST",
@@ -432,6 +464,108 @@ def turtle_vanilla(pf, db, dungeons, gear):
     return counts
 
 
+def gear_meta(it):
+    """{ slot, quality, required level, class mask } for green-or-better gear, else None."""
+    slot = it and INVTYPE.get(num(it["InventoryType"]))
+    if not slot or num(it["Quality"]) < 2:
+        return None
+    mask = num(it["AllowableClass"])
+    return (slot, num(it["Quality"]), num(it["RequiredLevel"]),
+            0 if mask <= 0 or (mask & ALL_CLASSES) == ALL_CLASSES else mask)
+
+
+def side_of(races):
+    a, h = races & ALLIANCE_RACES, races & HORDE_RACES
+    return "Alliance" if a and not h else "Horde" if h and not a else ""
+
+
+def rank_of(value):
+    for least, rank in RANK_AT:
+        if value >= least:
+            return rank
+    return 0
+
+
+def other_sources(db, pf, gear):
+    """Gear from quests, reputation vendors and crafting -- see the docstring
+    at the top -- with each item's meta added to `gear`."""
+    items = {num(r["entry"]): r for r in db.rows("item_template")}
+    names = {num(r["Entry"]): r["Name"] for r in db.rows("creature_template")}
+    template_vendor = {}
+    for r in db.rows("creature_template"):
+        t = num(r.get("VendorTemplateId"))
+        if t:
+            template_vendor.setdefault(t, num(r["Entry"]))
+    turtle_quests = os.path.join(pf, "db", "quests-turtle.lua")
+    removed = set(q for q, b in lua_entries(turtle_quests).items() if b is None) if os.path.exists(turtle_quests) else set()
+
+    def keep(i):
+        m = gear_meta(items.get(i))
+        if m:
+            gear[i] = m
+        return m is not None
+
+    def faction(f):
+        if f and f not in FACTIONS:
+            sys.exit("no name for reputation faction %d: add it to FACTIONS" % f)
+        return f
+
+    quests = {}
+    for r in db.rows("quest_template"):
+        qid = num(r["entry"])
+        if qid in removed:
+            continue
+        ids = [num(r.get("RewChoiceItemId%d" % k)) for k in range(1, 7)] + \
+              [num(r.get("RewItemId%d" % k)) for k in range(1, 5)]
+        rewards = sorted(set(i for i in ids if i and keep(i)))
+        if not rewards:
+            continue
+        f = faction(num(r["RequiredMinRepFaction"]))
+        quests[qid] = (r["Title"], num(r["MinLevel"]), side_of(num(r["RequiredRaces"])),
+                       num(r["RequiredClasses"]), f, rank_of(num(r["RequiredMinRepValue"])) if f else 0, rewards)
+
+    repgear = {}
+    sold = [(num(r["entry"]), num(r["item"])) for r in db.rows("npc_vendor")]
+    sold += [(template_vendor[num(r["entry"])], num(r["item"])) for r in db.rows("npc_vendor_template")
+             if num(r["entry"]) in template_vendor]
+    for vendor, i in sold:
+        it = items.get(i)
+        f = it and num(it["RequiredReputationFaction"])
+        if f and i not in repgear and keep(i):
+            repgear[i] = (faction(f), num(it["RequiredReputationRank"]), names.get(vendor, "?"))
+
+    spells = {num(r["Id"]): r for r in db.rows("spell_template")}
+    makes = {}
+    for sid, sp in spells.items():
+        for e in (1, 2, 3):
+            if num(sp.get("Effect%d" % e)) == SPELL_CREATE_ITEM and keep(num(sp.get("EffectItemType%d" % e))):
+                makes[sid] = num(sp.get("EffectItemType%d" % e))
+
+    def taught(sid):
+        sp = spells.get(sid)
+        for e in (1, 2, 3):
+            if sp and num(sp.get("Effect%d" % e)) == SPELL_LEARN_SPELL:
+                c = num(sp.get("EffectTriggerSpell%d" % e))
+                if c in makes:
+                    return makes[c]
+        return None
+
+    crafted = {}
+    for r in db.rows("npc_trainer"):
+        i = taught(num(r["spell"]))
+        if i and num(r["reqskill"]) in PROFESSIONS:
+            crafted[i] = (PROFESSIONS[num(r["reqskill"])], num(r["reqskillvalue"]), num(items[i]["bonding"]) == 1)
+    for rid, r in items.items():
+        if num(r["class"]) != 9 or num(r["RequiredSkill"]) not in PROFESSIONS:
+            continue
+        for k in range(1, 6):
+            i = taught(num(r.get("spellid_%d" % k)))
+            if i and i not in crafted:
+                crafted[i] = (PROFESSIONS[num(r["RequiredSkill"])], num(r["RequiredSkillRank"]),
+                              num(items[i]["bonding"]) == 1)
+    return quests, repgear, crafted
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--cmangos", required=True, help="CMaNGOS classic-db full dump (.sql or .sql.gz)")
@@ -444,6 +578,7 @@ def main():
     turtle, turtle_gear = turtle_loot(args.pfquest_turtle, db)
     dungeons += turtle
     gear.update(turtle_gear)
+    quests, repgear, crafted = other_sources(db, args.pfquest_turtle, gear)
 
     lua = [
         "-- GearData.lua",
@@ -478,6 +613,31 @@ def main():
             lua.append("\t\t\t{ %d, %s, %s }," % (item, lua_str(src), "%g" % c))
         lua.append("\t\t} },")
     lua.append("\t},")
+    lua.append("\t-- Reputations that gate gear: { name, the side that can earn it (\"\" for both) }.")
+    lua.append("\tfactions = {")
+    for f in sorted(FACTIONS):
+        lua.append("\t\t[%d] = { %s, %s }," % (f, lua_str(FACTIONS[f][0]), lua_str(FACTIONS[f][1] or "")))
+    lua.append("\t},")
+    lua.append("\t-- Quests whose rewards are gear: [quest] = { title, level it can be taken at, side")
+    lua.append("\t-- (\"\" for both), class mask (0: any), reputation it needs, rank (0 Hated .. 7 Exalted), { items } }.")
+    lua.append("\tquests = {")
+    for q in sorted(quests):
+        t, lvl, side, cls, f, rank, rewards = quests[q]
+        lua.append("\t\t[%d] = { %s, %d, %s, %d, %d, %d, { %s } }," % (
+            q, lua_str(t), lvl, lua_str(side), cls, f, rank, ", ".join(str(i) for i in rewards)))
+    lua.append("\t},")
+    lua.append("\t-- Gear sold at a reputation rank: [item] = { faction, rank, vendor }.")
+    lua.append("\trepgear = {")
+    for i in sorted(repgear):
+        f, rank, vendor = repgear[i]
+        lua.append("\t\t[%d] = { %d, %d, %s }," % (i, f, rank, lua_str(vendor)))
+    lua.append("\t},")
+    lua.append("\t-- Crafted gear: [item] = { profession, skill it is learned at, binds on pickup }.")
+    lua.append("\tcrafted = {")
+    for i in sorted(crafted):
+        prof, skill, bop = crafted[i]
+        lua.append("\t\t[%d] = { %s, %d, %s }," % (i, lua_str(prof), skill, "true" if bop else "false"))
+    lua.append("\t},")
     lua.append("\t-- Each item there: { slot, quality, required level, class mask (0: any class) }.")
     lua.append("\titems = {")
     for item in sorted(gear):
@@ -488,8 +648,9 @@ def main():
 
     with open(OUT, "w", encoding="utf-8") as fh:
         fh.write("\n".join(lua))
-    print("wrote %s: sell prices for %d quest reward items; %d items from %d dungeons and raids"
-          % (os.path.relpath(OUT, ROOT), len(sell), len(gear), len(dungeons)))
+    print("wrote %s: sell prices for %d quest reward items; %d items from %d dungeons and raids, "
+          "%d quests, %d reputation vendors' items and %d crafts"
+          % (os.path.relpath(OUT, ROOT), len(sell), len(gear), len(dungeons), len(quests), len(repgear), len(crafted)))
     for d in dungeons:
         a, c, r = changes.get(d["code"], (0, 0, 0))
         print("  %-10s %4d items%s" % (d["code"], len(d["loot"]),

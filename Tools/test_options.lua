@@ -95,7 +95,7 @@ UnitClass = function() return "Paladin", "PALADIN" end
 local talents = { 0, 0, 0 }
 GetTalentTabInfo = function(tab) return ({ "Holy", "Protection", "Retribution" })[tab], "icon", talents[tab] end
 local advisorSettings = { enabled = true, popups = true, questmark = true, bagmark = true }
-local finderSettings = { enabled = true, announce = true, raids = false }
+local finderSettings = { enabled = true, announce = true, raids = false, quests = true, reputation = true, crafted = true }
 AegisPathfinder.GearFinder = { Settings = function() return finderSettings end }
 function AegisPathfinder:ToggleGearFinder() self.__finder = (self.__finder or 0) + 1 end
 AegisPathfinder.GearAdvisor = {
@@ -360,6 +360,11 @@ check(frame.advisor.popups:IsEnabled(), "and let go when it is back on")
 click(frame.clearDeclined)
 check(AegisPathfinder.__declinedCleared, "Clear declined items clears them")
 check(frame.finder.enabled:IsOn() and frame.finder.announce:IsOn(), "the gear finder is on, and names upgrades")
+check(frame.finder.quests:IsOn() and frame.finder.reputation:IsOn() and frame.finder.crafted:IsOn(),
+	"and looks at quest, reputation and crafted gear")
+click(frame.finder.crafted)
+check(finderSettings.crafted == false, "each of which can be switched off")
+click(frame.finder.crafted)
 click(frame.finder.enabled)
 check(finderSettings.enabled == false and not frame.finder.announce:IsEnabled(), "off, its other switch is held")
 click(frame.finder.enabled)
@@ -540,8 +545,9 @@ fire(frame.grip, "OnUpdate")
 check(frame:GetWidth() == 546 + 100 and frame:GetHeight() == 560 + 100,
 	"dragging it right and down makes the window wider and taller, got %sx%s", frame:GetWidth(), frame:GetHeight())
 local _, tallerRange = frame.scrollbar:GetMinMaxValues()
-check(gearRange > 0 and tallerRange == math.max(0, gearRange - 100) and not frame.scrollbar:IsShown() == (tallerRange == 0),
-	"the page scrolls that much less, or not at all (%s from %s)", tallerRange, gearRange)
+-- At least that much less: wider, what wraps takes fewer lines too.
+check(gearRange > 0 and tallerRange <= math.max(0, gearRange - 100) and not frame.scrollbar:IsShown() == (tallerRange == 0),
+	"the page scrolls at least that much less, or not at all (%s from %s)", tallerRange, gearRange)
 check(frame.holder:GetWidth() == frame.bodyW and frame.bodyW == 396 - 28 - 10 - 4 + 100,
 	"the pane widens with it, got %s", tostring(frame.bodyW))
 check(frame.advisor.enabled:GetWidth() == frame.bodyW and frame.sections[1]:GetWidth() == frame.bodyW,
@@ -561,6 +567,36 @@ check(frame:GetWidth() == 1024 - 40 and frame:GetHeight() == 768 - 40, "nor bigg
 AegisPathfinder:SizeConfigWindow()
 check(frame:GetWidth() == 546 and frame:GetHeight() == 560 and frame.bodyW == 396 - 28 - 10 - 4,
 	"and back to its first size")
+
+-- A label that wraps at one width and not at another: the rows under it
+-- follow, rather than leaving a gap.
+local pick, border = frame.advisor.questpick, frame.advisor.bagmark
+local stringWidth = pick.label.GetStringWidth
+pick.label.GetStringWidth = function() return frame.bodyW - 45 - 4 end   -- just fits
+check(pick:Fit(frame.bodyW) == 22, "a label that just fits is one line, not counted as two")
+pick.label.GetStringWidth = function() return 400 end   -- too long for the first width
+AegisPathfinder:SizeConfigWindow(546, 560)
+AegisPathfinder:SizeConfigWindow(547, 560)             -- a new width: laid out again
+local _, _, _, _, pickY = pick:GetPoint()
+local _, _, _, _, borderY = border:GetPoint()
+check(pick:GetHeight() > 22 and borderY == pickY - pick:GetHeight() - 6,
+	"wrapped, it is taller and the next row sits under it (%s, %s, %s)", pickY, pick:GetHeight(), borderY)
+AegisPathfinder:SizeConfigWindow(546 + 200, 560)
+local _, _, _, _, pickY2 = pick:GetPoint()
+local _, _, _, _, borderY2 = border:GetPoint()
+check(pick:GetHeight() == 22 and borderY2 == pickY2 - 22 - 6,
+	"wider, it is one line and the next row moves up to it (%s, %s)", pickY2, borderY2)
+local gearPage = frame.pages[5]
+local lowest = 0
+for _, e in ipairs(gearPage.flow) do
+	if e.region then
+		local _, _, _, _, ry = e.region:GetPoint()
+		if ry < lowest then lowest = ry end
+	end
+end
+check(gearPage.contentHeight > -lowest, "the page's height follows")
+pick.label.GetStringWidth = stringWidth
+AegisPathfinder:SizeConfigWindow()
 click(frame.navButtons[1])
 
 -- Credits ---------------------------------------------------------------------
