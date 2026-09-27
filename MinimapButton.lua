@@ -89,7 +89,7 @@ button:SetScript("OnMouseUp", function() icon:SetPoint("CENTER", button, "CENTER
 button:SetScript("OnEnter", function()
 	Theme:Tint(ring, "accent")
 	Theme:Tint(icon, "accentGlow")
-	Theme:ShowTip(this, "LEFT", "Aegis: Pathfinder", {
+	Theme:ShowTip(this, "LEFT", "Aegis: Pathfinder v" .. (AegisPathfinder.version or "?"), {
 		"Click to show or hide the guide",
 		"Right-click for settings",
 		"Drag to move this button",

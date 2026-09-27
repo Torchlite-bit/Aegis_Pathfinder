@@ -495,6 +495,50 @@ def check_upvalues(rep):
     rep.ok("upvalues", n)
 
 
+def check_version(rep):
+    """The version, in every place it is written.
+
+    As in every Aegis addon, a bump touches five places -- Core.lua's
+    AegisPathfinder.version, the .toc, the README's H1 and its "Something
+    broken?" line, and the newest CHANGELOG.md entry -- and a missed one makes
+    the addon report a version that is not the one it is, which sends a bug
+    report and its reader to different code. Whether a bump was the right
+    kind, MINOR or PATCH, is a judgement CONTRIBUTING.md describes and this
+    does not guess at.
+    """
+    def read(name):
+        with open(os.path.join(ROOT, name), encoding="utf-8") as fh:
+            return fh.read()
+
+    found = {}
+    m = re.search(r'^AegisPathfinder\.version = "([^"]+)"', read("Core.lua"), re.M)
+    found["Core.lua (AegisPathfinder.version)"] = m and m.group(1)
+    m = re.search(r"^## Version: (\S+)", read("Aegis_Pathfinder.toc"), re.M)
+    found["Aegis_Pathfinder.toc (## Version)"] = m and m.group(1)
+    readme = read("README.md")
+    m = re.search(r"^# Aegis: Pathfinder \(v([^)]+)\)", readme, re.M)
+    found["README.md (H1)"] = m and m.group(1)
+    m = re.search(r"Check the \*\*version\*\*.*?\(`v([^`]+)`\)", readme)
+    found["README.md (Something broken?)"] = m and m.group(1)
+    changelog = read("CHANGELOG.md")
+    m = re.search(r"^## \[([0-9][^\]]*)\]", changelog, re.M)
+    found["CHANGELOG.md (newest entry)"] = m and m.group(1)
+
+    for where, v in found.items():
+        if not v:
+            rep.fail("version", where, "no version found")
+    values = set(v for v in found.values() if v)
+    if len(values) > 1:
+        rep.fail("version", None, "the five version sites disagree: " +
+                 ", ".join("%s %s" % (w, v) for w, v in found.items()))
+    for v in values:
+        if not re.match(r"^\d+\.\d+\.\d+$", v):
+            rep.fail("version", None, "%s is not MAJOR.MINOR.PATCH" % v)
+        elif ("[%s]: " % v) not in changelog:
+            rep.fail("version", "CHANGELOG.md", "no link reference for [%s]" % v)
+    rep.ok("version", len(found))
+
+
 def main():
     print("Verifying %s\n" % ROOT)
     rep = Report()
@@ -509,6 +553,7 @@ def main():
     check_media(rep)
     check_texture_paths(rep)
     check_upvalues(rep)
+    check_version(rep)
     return rep.summary()
 
 

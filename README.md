@@ -1,4 +1,4 @@
-# Aegis: Pathfinder
+# Aegis: Pathfinder (v0.1.0)
 
 A Classic+ leveling guide for the Turtle WoW-lineage 1.12 client family —
 OctoWoW, Capybara Paradise and RavenCraft. Part of the Aegis addon suite.
@@ -317,6 +317,14 @@ pfQuest pack for your server: `pfQuest-octo` on OctoWoW, `pfQuest-turtle`
 elsewhere.
 
 Reports welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Something broken?
+
+1. Check the **version** in the load message or the options panel's About section (`v0.1.0`) — quote it.
+2. Open the **Error log** (options panel → Maintenance) and copy what it shows.
+3. Say which guide and step you were on, and which server you play on.
+
+Changes from version to version are in [CHANGELOG.md](CHANGELOG.md).
 
 ## Development
 

@@ -47,6 +47,25 @@ Everything must pass before you open a PR. **None of it proves the UI looks
 right** — that still needs someone to load the addon on a 1.12 client and look
 at it. Say in your PR whether you did.
 
+## Versions
+
+Numbered as every Aegis addon is: `MAJOR.MINOR.PATCH`, and `0.x` until the
+public release, when MAJOR becomes 1.
+
+- **MINOR** for a new capability — something the addon could not do before.
+  **PATCH** for a fix, wording, colour, layout, or a corrected calculation.
+  **MAJOR** only for a change that breaks an existing setup with no migration.
+- **One push, one MINOR**: a body of work that lands in one merge takes a single
+  MINOR bump, and each change inside it is a PATCH under that.
+- A bump touches **five places**: `Core.lua` (`AegisPathfinder.version`), the
+  `.toc`'s `## Version`, the README's H1 and its "Something broken?" line, and a
+  new [`CHANGELOG.md`](CHANGELOG.md) entry with its link reference at the
+  bottom. `Tools/verify.py` checks they agree.
+- Mark a release **restart** in the changelog when it adds or removes a `.lua`
+  file in the `.toc`.
+- Nothing under `Tools/` or `docs/` ships, so a change there alone is not a
+  release and takes no bump.
+
 ## Code rules
 
 **The client runs Lua 5.0.** No `#` length operator (`table.getn`), no
