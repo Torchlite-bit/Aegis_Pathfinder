@@ -146,7 +146,8 @@ pfQuest-turtle checkout by
 what each quest reward sells for, which the Gear Advisor falls back on when no
 reward is an upgrade, and what drops in each dungeon and raid, for the Gear
 finder -- Turtle WoW's own from pfQuest-turtle, whose zones for them are listed
-in `TURTLE_INSTANCES`.
+in `TURTLE_INSTANCES`, and Turtle's changes to the vanilla ones laid over the
+CMaNGOS loot (`turtle_vanilla`).
 
 **Recipe data in `Crafting/` is generated** from
 [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute)'s data files, with

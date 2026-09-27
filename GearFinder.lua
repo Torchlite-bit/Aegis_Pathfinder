@@ -1,8 +1,8 @@
 --[[ GearFinder.lua -- upgrades waiting in the dungeons you run, as Zygor's Gear
 	Finder has.
 
-	GearData.lua lists what drops in each dungeon and raid (from CMaNGOS, and
-	for Turtle WoW's own from pfQuest-turtle): the item, who drops it and how
+	GearData.lua lists what drops in each dungeon and raid (from CMaNGOS, with
+	Turtle WoW's changes laid over it, and for Turtle's own from pfQuest-turtle): the item, who drops it and how
 	often, and the item's slot, quality, required level and classes. Turtle's
 	own items come with none of that; the client says what they are once it
 	has loaded them -- slot, quality and level from GetItemInfo, and whether

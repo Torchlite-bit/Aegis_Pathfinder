@@ -37,6 +37,10 @@ seen. Items the CMaNGOS database knows are filtered here as for any dungeon.
 Only direct drops are taken: the shared tables Turtle's dungeons use are the
 world's random drops, or pools of trash drops far under MIN_CHANCE.
 
+Turtle also changed the vanilla instances: bosses added, loot moved, drops
+taken out. turtle_vanilla lays those over the CMaNGOS loot, from the same
+pfQuest-turtle data (see its docstring for the rule).
+
 Turtle's own quests are not in either. Their rewards have no price, and the
 Gear Advisor says so rather than guess.
 """
@@ -91,6 +95,18 @@ SUMMONED = {
     "SCHOLO": ["Darkmaster Gandling"],
     "ZG": ["Gahz'ranka", "Gri'lek", "Hazza'rah", "Renataki", "Wushoolay"],
 }
+
+# The vanilla instances' areas, where pfQuest-turtle places the creatures it
+# has for them. Turtle gave some instances areas of its own as well; those are
+# found by name (VANILLA_NAME where it differs from INSTANCES').
+VANILLA_AREA = {
+    "RFC": 2437, "WC": 718, "DM": 1581, "SFK": 209, "STOCKADES": 717, "BFD": 719,
+    "GNOMER": 721, "RFK": 491, "SM": 796, "RFD": 722, "ULDA": 1337, "ZF": 1176,
+    "MARA": 2100, "ST": 1477, "BRD": 1584, "DIREMAUL": 2557, "BRS": 1583,
+    "SCHOLO": 2057, "STRAT": 2017, "ZG": 1977, "AQ20": 3429, "ONY": 2159, "MC": 2717,
+    "BWL": 2677, "AQ40": 3428, "NAXX": 3456,
+}
+VANILLA_NAME = {"ST": "The Temple of Atal'Hakkar", "AQ40": "Ahn'Qiraj"}
 
 # Turtle WoW's own instances: the zone pfQuest-turtle places their creatures
 # in, a code, and dungeon or raid. Names are pfQuest-turtle's, which are the
@@ -242,7 +258,8 @@ def dungeon_loot(db):
         loot = sorted(((item, src, round(c, 1)) for item, (src, c) in best.items()),
                       key=lambda x: (x[1], -x[2], x[0]))
         dungeons.append({"map": mapid, "code": code, "name": name, "lo": lo, "hi": hi,
-                         "kind": kind, "faction": faction, "loot": loot})
+                         "kind": kind, "faction": faction, "loot": loot,
+                         "units": creatures.get(mapid, set()) | summoned})
     return dungeons, gear
 
 
@@ -267,6 +284,8 @@ def lua_entries(path):
                     cur, body = int(m.group(1)), []
                 elif m.group(2) == "{},":
                     out[int(m.group(1))] = ""
+                elif m.group(2) == '"_",':
+                    out[int(m.group(1))] = None       # Turtle removed it
             elif line == "  },":
                 out[cur] = "\n".join(body)
                 cur = None
@@ -296,6 +315,7 @@ def turtle_loot(pf, db):
     in_zone, levels = {}, {}
     wanted = set(z for z, _, _ in TURTLE_INSTANCES)
     for uid, body in lua_entries(path("units-turtle.lua")).items():
+        body = body or ""                      # a creature Turtle removed
         zones = [int(z) for z in re.findall(r"\{ [\d.]+, [\d.]+, (\d+), \d+ \}", body)]
         lvl = re.search(r'\["lvl"\] = "(\d+)(?:-(\d+))?"', body)
         elite = re.search(r'\["rnk"\] = "[1-9]"', body)
@@ -306,7 +326,7 @@ def turtle_loot(pf, db):
                     levels.setdefault(z, []).append(int(lvl.group(2) or lvl.group(1)))
     drops = {}
     for iid, body in lua_entries(path("items-turtle.lua")).items():
-        for uid, c in lua_sub(body, "U").items():
+        for uid, c in lua_sub(body or "", "U").items():
             drops.setdefault(uid, []).append((iid, c))
     dungeons, gear = [], {}
     for zone, code, kind in TURTLE_INSTANCES:
@@ -338,6 +358,80 @@ def turtle_loot(pf, db):
     return dungeons, gear
 
 
+def turtle_vanilla(pf, db, dungeons, gear):
+    """Turtle WoW's changes to the vanilla instances, over the CMaNGOS loot.
+
+    pfQuest-turtle's entry for an item replaces pfQuest's own outright, so
+    where it has one, Turtle's direct drops in the instance are what drops
+    there: a chance changed, an item added (to a boss Turtle added, too),
+    an item that no longer drops. An item Turtle removed ("_") is gone. An
+    item whose entry lists shared tables ("R") keeps the CMaNGOS chance: those
+    tables carry no groups, so the chance cannot be worked out from them.
+    Items Turtle has no entry for are as CMaNGOS has them. Returns how many
+    drops each instance had added, changed and taken away."""
+    def path(*parts):
+        p = os.path.join(pf, "db", *parts)
+        if not os.path.exists(p):
+            sys.exit("missing pfQuest-turtle file: %s" % p)
+        return p
+    zone_names = lua_names(path("enUS", "zones-turtle.lua"))
+    # Areas with a place on an outdoor map are outdoors: an instance has none.
+    outdoor = set(int(z) for z in re.findall(r"^  \[(\d+)\] = \{ ",
+                                             open(path("zones-turtle.lua")).read(), re.M))
+    names = {num(r["Entry"]): r["Name"] for r in db.rows("creature_template")}
+    names.update(lua_names(path("enUS", "units-turtle.lua")))
+    placed = {}
+    for uid, body in lua_entries(path("units-turtle.lua")).items():
+        for z in re.findall(r"\{ [\d.]+, [\d.]+, (\d+), \d+ \}", body or ""):
+            placed.setdefault(int(z), set()).add(uid)
+    items = lua_entries(path("items-turtle.lua"))
+    known = {num(r["entry"]): r for r in db.rows("item_template")}
+    counts = {}
+    for d in dungeons:
+        code = d["code"]
+        want = VANILLA_NAME.get(code, d["name"])
+        zones = {VANILLA_AREA[code]} | set(z for z, n in zone_names.items()
+                                           if n.replace("\\'", "'") == want and z not in outdoor)
+        units = set(d["units"])
+        for z in zones:
+            units |= placed.get(z, set())
+        loot = {item: (src, c) for item, src, c in d["loot"]}
+        added = changed = removed = 0
+        for iid, body in items.items():
+            if body is None:
+                if loot.pop(iid, None):
+                    removed += 1
+                continue
+            here = [(c, u) for u, c in lua_sub(body, "U").items() if u in units]
+            if not here:
+                if iid in loot and '["R"]' not in body:
+                    del loot[iid]
+                    removed += 1
+                continue
+            c, u = max(here)
+            it = known.get(iid)
+            if it:
+                slot = INVTYPE.get(num(it["InventoryType"]))
+                if not slot or num(it["Quality"]) < 2:
+                    continue
+                mask = num(it["AllowableClass"])
+                gear[iid] = (slot, num(it["Quality"]), num(it["RequiredLevel"]),
+                             0 if mask <= 0 or (mask & ALL_CLASSES) == ALL_CLASSES else mask)
+            if c < MIN_CHANCE:
+                if loot.pop(iid, None):
+                    removed += 1
+                continue
+            if iid not in loot:
+                added += 1
+            elif abs(loot[iid][1] - c) >= 0.05:
+                changed += 1
+            loot[iid] = (names.get(u, "?"), c)
+        d["loot"] = sorted(((item, src, round(c, 1)) for item, (src, c) in loot.items()),
+                           key=lambda x: (x[1], -x[2], x[0]))
+        counts[code] = (added, changed, removed)
+    return counts
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--cmangos", required=True, help="CMaNGOS classic-db full dump (.sql or .sql.gz)")
@@ -346,6 +440,7 @@ def main():
     db = Dump(args.cmangos)
     sell = reward_prices(db)
     dungeons, gear = dungeon_loot(db)
+    changes = turtle_vanilla(args.pfquest_turtle, db, dungeons, gear)
     turtle, turtle_gear = turtle_loot(args.pfquest_turtle, db)
     dungeons += turtle
     gear.update(turtle_gear)
@@ -357,7 +452,7 @@ def main():
         "-- Source:    CMaNGOS classic-db (https://github.com/cmangos/classic-db):",
         "--            quest_template, item_template, creature, creature_spawn_entry,",
         "--            creature_template, creature_loot_template, reference_loot_template;",
-        "--            and for Turtle WoW's own dungeons, pfQuest-turtle",
+        "--            and for Turtle WoW's own dungeons, and its changes to the vanilla ones, pfQuest-turtle",
         "--            (https://github.com/shagu/pfQuest-turtle): db/units-turtle.lua,",
         "--            db/items-turtle.lua, db/enUS/units-turtle.lua, db/enUS/zones-turtle.lua",
         "-- Generator: Tools/build_gear_data.py",
@@ -396,7 +491,9 @@ def main():
     print("wrote %s: sell prices for %d quest reward items; %d items from %d dungeons and raids"
           % (os.path.relpath(OUT, ROOT), len(sell), len(gear), len(dungeons)))
     for d in dungeons:
-        print("  %-10s %4d items" % (d["code"], len(d["loot"])))
+        a, c, r = changes.get(d["code"], (0, 0, 0))
+        print("  %-10s %4d items%s" % (d["code"], len(d["loot"]),
+                                       ("   Turtle: +%d ~%d -%d" % (a, c, r)) if (a or c or r) else ""))
     return 0
 
 

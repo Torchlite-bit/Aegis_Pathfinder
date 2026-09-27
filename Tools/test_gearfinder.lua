@@ -82,8 +82,10 @@ local dm
 for _, d in ipairs(real.dungeons) do if d.code == "DM" then dm = d end end
 check(dm and dm.lo == 18 and table.getn(dm.loot) > 10, "the Deadmines, with its loot")
 local vanCleef
-for _, drop in ipairs(dm.loot) do if drop[2] == "Edwin VanCleef" then vanCleef = drop end end
-check(vanCleef and real.items[vanCleef[1]] and real.items[vanCleef[1]][1], "VanCleef's drops, with their slot")
+for _, drop in ipairs(dm.loot) do
+	if drop[2] == "Edwin VanCleef" and real.items[drop[1]] then vanCleef = drop end
+end
+check(vanCleef and real.items[vanCleef[1]][1], "VanCleef's drops, with their slot")
 -- Bosses a script summons are on no map; the data names them.
 local sources = {}
 for _, d in ipairs(real.dungeons) do
@@ -111,6 +113,26 @@ check(turtle["Emerald Sanctum"] and turtle["Emerald Sanctum"].kind == "raid"
 for name, d in pairs(turtle) do
 	check(d.hi <= 60, "%s's levels are ones a player can be, got %s", name, tostring(d.hi))
 end
+-- Turtle's changes to the vanilla instances, over the CMaNGOS loot.
+local function dropsIn(code)
+	for _, d in ipairs(real.dungeons) do
+		if d.code == code then
+			local out = {}
+			for _, drop in ipairs(d.loot) do out[drop[1]] = drop end
+			return out
+		end
+	end
+end
+local mc, dmLoot = dropsIn("MC"), dropsIn("DM")
+check(mc[16812] and mc[16812][2] == "Incindis", "Molten Core as Turtle has it: Gloves of Prophecy from Incindis, got %s",
+	tostring(mc[16812] and mc[16812][2]))
+check(not mc[16799], "and not what Turtle took out: Arcanist Bindings off the core hounds")
+local basalthar = false
+for _, drop in pairs(mc) do if drop[2] == "Basalthar" then basalthar = true end end
+check(basalthar, "and a boss Turtle added there")
+check(dmLoot[81005] and dmLoot[81005][2] == "Edwin VanCleef" and not real.items[81005],
+	"VanCleef's Spiked Defias Spaulders, one of Turtle's own, which the client describes")
+check(dmLoot[5196] or dmLoot[5193] or dmLoot[5202], "and the Deadmines' own drops are still there")
 
 -- A small world to look in.
 AegisPathfinder.GearData = {

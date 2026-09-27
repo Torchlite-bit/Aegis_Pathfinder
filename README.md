@@ -1,8 +1,8 @@
-# Aegis: Pathfinder (v0.7.0)
+# Aegis: Pathfinder (v0.8.0)
 
 **Your levelling guide, on screen, all the way to 60.**
 
-[![Discord](https://img.shields.io/badge/Discord-join%20us-5865F2?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/hsgPTNkSX)
+[![Discord](https://img.shields.io/badge/Discord-join%20us-5865F2?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/Hr66t25vE7)
 [![Turtle WoW](https://img.shields.io/badge/Turtle%20WoW-1.18.1-2E8B57?style=flat-square&labelColor=555)](https://turtle-wow.org/)
 [![RavenCraft](https://img.shields.io/badge/RavenCraft-1.18.1-1e1e1e?style=flat-square&labelColor=555)](https://ravencraft.io/)
 [![CapyCraft](https://img.shields.io/badge/CapyCraft-1.18.1-8B5A2B?style=flat-square&labelColor=555)](https://capycraft.io/)
@@ -27,7 +27,7 @@ along for the ride.
 > ⚠️ **In development.** Not released yet. Tell us what misbehaves — which
 > guide, which step, which server.
 
-**[💬 Join the Discord](https://discord.gg/hsgPTNkSX)** for help, bug reports,
+**[💬 Join the Discord](https://discord.gg/Hr66t25vE7)** for help, bug reports,
 and feature ideas.
 
 ---
@@ -36,21 +36,6 @@ and feature ideas.
   <img src="docs/images/aegis-pathfinder-logo.png" width="300" alt="Aegis: Pathfinder logo"><br>
   <b>Aegis: Pathfinder — levelling, gear and professions for vanilla WoW</b>
 </p>
-
----
-
-### 📷 Interface Overview
-
-<p align="center">
-  <img src="docs/images/screenshot-world.jpg" width="720" alt="The guide on screen while questing, with a party member on the same step">
-</p>
-
-| Quest targets & macros | Share a guide with your party | Your party's progress on the step |
-| :---: | :---: | :---: |
-| <img src="docs/images/screenshot-guide.jpg" width="280" alt="The guide, a quest target button with its tooltip, and the macros"> | <img src="docs/images/screenshot-share.png" width="280" alt="The prompt to share the guide with your party"> | <img src="docs/images/screenshot-party.png" width="280" alt="A party member listed under the step"> |
-
-<!-- More to come: the options window, the Item Score page, the Gear Advisor
-     pop-up and the Gear finder. Put them in docs/images/ and add a row. -->
 
 ---
 
@@ -71,9 +56,20 @@ Every feature in full detail: **[docs/FEATURES.md](docs/FEATURES.md)**.
 
 1–60 for every race: **Optimized** (Joana's routes), **RestedXP**, **RXP
 Hardcore**, and **Kamisayo Speedrun** for Horde warriors. Steps tick themselves
-off as you accept, complete and turn in quests; a short setup on your first
-login picks your guide. Finish a guide and it offers the next — or one of your
-server's custom zones, if one fits your level.
+off as you accept, complete and turn in quests. Finish a guide and it offers
+the next — or one of your server's custom zones, if one fits your level.
+
+**First-time setup.** The first time you log in, three quick steps pick your
+guide, what it includes, and the dungeons you mean to run. Run it again any
+time with `/apg setup`.
+
+<p align="center">
+  <img src="docs/images/setup-in-game.jpg" width="720" alt="The first-time setup open in game beside the guide: choose your guide">
+</p>
+
+| Choose your features | Choose your dungeons |
+| :---: | :---: |
+| <img src="docs/images/setup-features.png" width="380" alt="Setup step 2: Auction House, Solo Self-Found, group quests and dungeons"> | <img src="docs/images/setup-dungeons.png" width="380" alt="Setup step 3: the dungeons, with their levels and how many steps each adds"> |
 
 ### 🎯 An arrow to every objective
 
@@ -95,6 +91,9 @@ dungeons, no trading, no Auction House. Every switch applies to every guide.
 - **Gear finder** lists the upgrades waiting in the dungeons you run — who
   drops them, where, and how often.
 
+<!-- Screenshots to come: the Item Score page, the Gear Advisor pop-up and the
+     Gear finder. Put them in docs/images/ and add them here. -->
+
 ### ⚒️ Professions
 
 All fourteen, 1–300, with trainers, reagents and a shopping list — and the
@@ -107,10 +106,22 @@ list goes straight onto its Crafting tab.
 Buttons for the step's quest items and targets, raid marks on the mobs your
 quests want, and two macros that follow the guide from an action bar.
 
+<p align="center">
+  <img src="docs/images/helper-windows.png" width="190" alt="The Active Targets and Macros windows">
+</p>
+
 ### 🤝 Play together *(beta)*
 
 Share a guide with your party: everyone's progress under the step, and a
 finished step waits for the slowest.
+
+<p align="center">
+  <img src="docs/images/party-world.jpg" width="720" alt="A shared guide in game, with the party member on the same step">
+</p>
+
+| Quest targets, shared | Share with your party | Everyone's progress on the step |
+| :---: | :---: | :---: |
+| <img src="docs/images/party-targets.jpg" width="280" alt="A shared step with a quest target button, its tooltip, and the macros"> | <img src="docs/images/party-share.png" width="280" alt="The prompt to share the guide with your party"> | <img src="docs/images/party-progress.png" width="280" alt="A party member listed under the step"> |
 
 ### 🎨 Your server's colours
 
@@ -155,10 +166,10 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.7.0`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.8.0`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
-4. Tell us on **[Discord](https://discord.gg/hsgPTNkSX)** or open an
+4. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)** or open an
    [issue](https://github.com/Torchlite-bit/Aegis_Pathfinder/issues).
    Screenshots help enormously.
 
@@ -168,7 +179,7 @@ Recent changes are in [CHANGELOG.md](CHANGELOG.md).
 
 ## Contributing
 
-PRs welcome — say hi on **[Discord](https://discord.gg/hsgPTNkSX)** first if
+PRs welcome — say hi on **[Discord](https://discord.gg/Hr66t25vE7)** first if
 you're planning something big. [CONTRIBUTING.md](CONTRIBUTING.md) has the
 checks, the 1.12 / Lua 5.0 code rules and how versions work;
 [docs/GUIDE_AUTHORING.md](docs/GUIDE_AUTHORING.md) covers writing guides.
@@ -204,7 +215,7 @@ weights come from OctoPawn under its MIT licence, carried in
 
 <div align="center">
 
-**[💬 Discord](https://discord.gg/hsgPTNkSX)** · **[📜 Changelog](CHANGELOG.md)** · **[🐛 Issues](https://github.com/Torchlite-bit/Aegis_Pathfinder/issues)**
+**[💬 Discord](https://discord.gg/Hr66t25vE7)** · **[📜 Changelog](CHANGELOG.md)** · **[🐛 Issues](https://github.com/Torchlite-bit/Aegis_Pathfinder/issues)**
 
 *Aegis: Pathfinder is part of the Aegis addon series. Happy questing.* 🧭
 
