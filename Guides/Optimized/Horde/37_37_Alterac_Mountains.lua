@@ -14,7 +14,7 @@ A Stone Tokens |QID|556| |N|Keeper Bel'varil in Tarren Mill (61.59, 20.71)| |Z|H
 
 R Growless Cave |QID|553| |N|Travel to Growless Cave (37.54, 67.91)| |Z|Alterac Mountains| |O|
 N Charge Flame of Uzel |QID|553| |OIDX|3| |N|Click Item Flame of Uzel in Growless Cave (37.54, 66.38)| |Z|Alterac Mountains| |O|
-K Frostmaw |QID|1136| |N|Kill Frostmaw and collect Frostmaw's Mane in Growless Cave (37.59, 65.84)| |Z|Alterac Mountains| |O|
+K Frostmaw |QID|1136| |N|Kill Frostmaw and collect Frostmaw's Mane in Growless Cave (37.59, 65.84)| |P|GROUP| |Z|Alterac Mountains| |O|
 
 R Dalaran |QID|556| |N|Travel to Dalaran (20.33, 84.79)| |Z|Alterac Mountains|
 C Stone Tokens |QID|556| |N|Kill Dalaran humanoid enemies and collect 10 Worn Stone Token (21, 83)| |Z|Alterac Mountains|

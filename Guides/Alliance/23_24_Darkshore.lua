@@ -4,7 +4,7 @@ return [[
 
 R Auberdine |QID|741| |N|Travel to Auberdine (37.21, 44.27)| |Z|Darkshore|
 h Auberdine |QID|741| |N|Speak to Innkeeper Shaussiy and set hearth in Auberdine (37, 44.1)|
-T WANTED: Murkdeep! |QID|4740| |N|Sentinel Glynda Nal'Shea in Auberdine (37.70, 43.44)| |Z|Darkshore| |O|
+T WANTED: Murkdeep! |QID|4740| |N|Sentinel Glynda Nal'Shea in Auberdine (37.70, 43.44)| |P|GROUP| |Z|Darkshore| |O|
 T The Absent Minded Prospector (Part 2) |QID|731| |N|Archaeologist Hollee in Auberdine (37.46, 41.88)| |Z|Darkshore| |O|
 A The Absent Minded Prospector (Part 3) |QID|741| |N|Archaeologist Hollee in Auberdine (37.46, 41.88)| |Z|Darkshore| |PRE|731|
 T How Big a Threat? (Part 2) |QID|985| |N|Terenthis in Auberdine (39.35, 43.46)| |O|

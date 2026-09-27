@@ -16,7 +16,7 @@ N A Royal Heist |QID|41113| |N|Optional quest to be completed in Gilneas City du
 T Report to Livia Strongarm |QID|40846| |N|Livia Strongarmdd in Blackthorn's Camp (14.1, 34.3)| |Z|Gilneas|
 A Rendezvous with the Infiltrator |QID|40847| |N|Livia Strongarmdd in Blackthorn's Camp (14.1, 34.3)| |Z|Gilneas||PRE|40846|
 C Heist in Dryrock Mine |QID|40845| |N|Collect 16 Sacks of Mithril Ore from the mine uphill (21.2, 51.5)| |OBJ|25522|
-N High level elite! |QID|40847| |N|Watch out! There is high level elite near the inn where Greta is standing.| |Z|Gilneas|
+N High level elite! |QID|40847| |N|Watch out! There is high level elite near the inn where Greta is standing.| |P|GROUP| |Z|Gilneas|
 C Rendezvous with the Infiltrator |QID|40847| |N|Get the report from Greta south of Ruins of Greyshire (14.1, 34.3)| |Z|Gilneas| |OBJ|3023|
 A Greymane Hatred |QID|40980| |N|Harrison Blackheart south-east from Ruins of Greyshire (38.1, 60.8)| |Z|Gilneas|
 C Greymane Hatred |QID|40980| |N|Collect 40 Greymane Signets from soldiers to the west (19.9, 60.9)| |Z|Gilneas| |OBJ|1705|
@@ -29,7 +29,7 @@ N Genn Greymane Must Die! |QID|40849| |N|Optional quest to be completed in Gilne
 T Greymane Hatred |QID|40980| |N|Harrison Blackheart south-east from Ruins of Greyshire (38.1, 60.8)| |Z|Gilneas|
 A The Blackheart Killer |QID|40981| |N|Harrison Blackheart south-east from Ruins of Greyshire (38.1, 60.8)| |Z|Gilneas||PRE|40980|
 R Stillward Church |OID|40850| |N|Travel north-east to the church (56.9, 38.1)| |Z|Gilneas|
-A Revenge After Death |QID|40974| |N|Dominic Larson in Stillward Church (56.6, 39.6)| |Z|Gilneas|
+A Revenge After Death |QID|40974| |N|Dominic Larson in Stillward Church (56.6, 39.6)| |P|GROUP| |Z|Gilneas|
 A War on Worgen |QID|40976| |N|Deathstalker Vernon in Stillward Church (56.9, 39.4)| |Z|Gilneas|
 A A Chief Among Brutes |QID|40855| |N|Deathstalker Vernon in Stillward Church (56.9, 39.4)| |Z|Gilneas|
 A Vernon's Task |QID|40854| |N|Deathstalker Vernon in Stillward Church (56.9, 39.4)| |Z|Gilneas|
@@ -45,7 +45,7 @@ A Ebonmere Worgen Infestation |QID|40978| |N|Joshua Ebonmere in Ebonmere Farm (4
 A Ebonmere Bat Infestation |QID|40977| |N|Joshua Ebonmere in Ebonmere Farm (49.6, 31.1)| |Z|Gilneas|
 C Ebonmere Bat Infestation |QID|40977| |N|Kill 12 bats around the farm| |Z|Gilneas|
 T Ebonmere Bat Infestation |QID|40977| |N|Joshua Ebonmere in Ebonmere Farm (49.6, 31.1)| |Z|Gilneas|
-C Revenge After Death |QID|40974| |N|Kill elite Snarlclaw in the cave west of the farm for his paw (41.1, 40.7)| |Z|Gilneas|
+C Revenge After Death |QID|40974| |N|Kill elite Snarlclaw in the cave west of the farm for his paw (41.1, 40.7)| |P|GROUP| |Z|Gilneas|
 C Ebonmere Worgen Infestation |QID|40978| |N|Kill worgens in the cave and in the north for their pelts (41.1, 40.7)| |Z|Gilneas|
 C War on Worgen |QID|40976| |N|Kill 9 alpha worgens in the cave (41.1, 40.7)| |Z|Gilneas|
 T Ebonmere Worgen Infestation |QID|40978| |N|Joshua Ebonmere in Ebonmere Farm (49.6, 31.1)| |Z|Gilneas|
@@ -76,7 +76,7 @@ N The Evil Made Me Do It |QID|40881| |N|Optional quest to be completed in Gilnea
 T The Blackheart Killer |QID|40981| |N|Harrison Blackheart south-east from Ruins of Greyshire (38.1, 60.8)| |Z|Gilneas|
 A In Memory of Franklin |QID|40982| |N|Harrison Blackheart south-east from Ruins of Greyshire (38.1, 60.8)| |Z|Gilneas||PRE|40981|
 T In Memory of Franklin |QID|40982| |N|Click the grave next to you, then speak with Harrison| |Z|Gilneas|
-T Revenge After Death |QID|40974| |N|Domindwic Larson in Stillward Church (56.6, 39.6)| |Z|Gilneas|
+T Revenge After Death |QID|40974| |N|Domindwic Larson in Stillward Church (56.6, 39.6)| |P|GROUP| |Z|Gilneas|
 T War on Worgen |QID|40976| |N|Deathstalker Vernon in Stillward Church (56.9, 39.4)| |Z|Gilneas|
 T A Chief Among Brutes |QID|40855| |N|Deathstalker Vernon in Stillward Church (56.9, 39.4)| |Z|Gilneas|
 T Vernon's Task |QID|40854| |N|Deathstalker Vernon in Stillward Church (56.9, 39.4)| |Z|Gilneas|

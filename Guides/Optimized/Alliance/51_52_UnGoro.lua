@@ -8,13 +8,13 @@ return [[
 
 N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Un'Goro Crater 51-52|
 
-N Mithril Casing |QID|4243| |N|You will need a Mithril Casing later - craft or purchase from Auction House|
+N Mithril Casing |QID|4243| |N|You will need a Mithril Casing later - craft or purchase from Auction House| |AH|
 
 R Ratchet |QID|4502| |N|Travel to Ratchet (62.54, 38.50)| |Z|The Barrens|
 N Violet Tragan |QID|2641| |N|Withdraw Violet Tragan from the bank if you have it (66.0, 45.2)| |Z|The Barrens| |L|8526| |O|
 N Insect Analysis Report |QID|162| |N|Withdraw Insect Analysis Report from the bank if you have it (66.0, 45.2)| |Z|The Barrens| |L|8594| |O|
 
-C The Stone Circle |QID|3444| |N|Collect Stone Circle from Marvon's chest in Ratchet (62.51, 38.54)| |Z|The Barrens| |O|
+C The Stone Circle |QID|3444| |N|Collect Stone Circle from Marvon's chest in Ratchet (62.51, 38.54)| |D|ST| |Z|The Barrens| |O|
 A Volcanic Activity |QID|4502| |N|Liv Rizzlefix in Ratchet (62.45, 38.72)| |Z|The Barrens|
 
 F Rut'theran Village |N|Fly to Rut'theran Village|
@@ -30,11 +30,11 @@ T Delivery for Marin |QID|2661| |N|Marin Noggenfogger in Gadgetzan (51.81, 28.65
 A Noggenfogger Elixir |QID|2662| |N|Marin Noggenfogger in Gadgetzan (51.80, 28.67)| |Z|Tanaris| |O|
 T Noggenfogger Elixir |QID|2662| |N|Marin Noggenfogger in Gadgetzan (51.81, 28.66)| |Z|Tanaris| |O|
 A Super Sticky |QID|4504| |N|Tran'rek in Gadgetzan (51.59, 26.77)| |Z|Tanaris|
-N Stone Circle |QID|3444| |N|Withdraw Stone Circle from the bank if you have it (52.30, 28.89)| |Z|Tanaris| |L|10556| |O|
-B Mithril Casing |QID|4243| |N|Craft or purchase a Mithril Casing from the Gadgetzan Auction House (52.0, 29.6)| |L|10561 1|
+N Stone Circle |QID|3444| |N|Withdraw Stone Circle from the bank if you have it (52.30, 28.89)| |D|ST| |Z|Tanaris| |L|10556| |O|
+B Mithril Casing |QID|4243| |N|Craft or purchase a Mithril Casing from the Gadgetzan Auction House (52.0, 29.6)| |L|10561 1| |AH|
 
-R Broken Pillar |QID|3444| |N|Travel to Broken Pillar (52.73, 45.93)| |Z|Tanaris| |O|
-T The Stone Circle |QID|3444| |N|Marvon Rivetseeker in Broken Pillar (52.73, 45.93)| |Z|Tanaris| |O|
+R Broken Pillar |QID|3444| |N|Travel to Broken Pillar (52.73, 45.93)| |D|ST| |Z|Tanaris| |O|
+T The Stone Circle |QID|3444| |N|Marvon Rivetseeker in Broken Pillar (52.73, 45.93)| |D|ST| |Z|Tanaris| |O|
 R Thistleshrub Valley |N|Run towards Thistleshrub Valley and into Un'Goro Crater (27.1, 57.3)| |Z|Tanaris|
 
 R Un'Goro Crater |QID|4290| |N|Travel to Un'Goro (71.63, 75.95)|
@@ -63,12 +63,12 @@ K Pterrordax |QID|4501| |N|Start killing Pterrordax and collecting Webbed Pterro
 
 R Fungal Rock |QID|4289| |N|Travel to Fungal Rock (63.86, 16.44)|
 T Chasing A-Me 01 (Part 1) |QID|4243| |N|A-Me 01 in Fungal Rock (67.65, 16.77)|
-A Chasing A-Me 01 (Part 2) |QID|4244| |N|A-Me 01 in Fungal Rock - requires Mithril Casing (67.65, 16.77)| |O|
-C Chasing A-Me 01 (Part 2) |QID|4244| |N|Use the Mithril Casing you brought (67.65, 16.77)| |O|
-T Chasing A-Me 01 (Part 2) |QID|4244| |N|A-Me 01 in Fungal Rock (67.65, 16.77)| |O|
-A Chasing A-Me 01 (Part 3) |QID|4245| |N|A-Me 01 in Fungal Rock (67.65, 16.77)|
-C Chasing A-Me 01 (Part 3) |QID|4245| |N|Escort A-Me 01 back to Marshal's Refuge (63.43, 16.67)|
-T Chasing A-Me 01 (Part 3) |QID|4245| |N|Karna Remtravel near Lakkari Tar Pits (46.38, 13.45)|
+A Chasing A-Me 01 (Part 2) |QID|4244| |N|A-Me 01 in Fungal Rock - requires Mithril Casing (67.65, 16.77)| |O| |AH|
+C Chasing A-Me 01 (Part 2) |QID|4244| |N|Use the Mithril Casing you brought (67.65, 16.77)| |O| |AH|
+T Chasing A-Me 01 (Part 2) |QID|4244| |N|A-Me 01 in Fungal Rock (67.65, 16.77)| |O| |AH|
+A Chasing A-Me 01 (Part 3) |QID|4245| |N|A-Me 01 in Fungal Rock (67.65, 16.77)| |AH|
+C Chasing A-Me 01 (Part 3) |QID|4245| |N|Escort A-Me 01 back to Marshal's Refuge (63.43, 16.67)| |AH|
+T Chasing A-Me 01 (Part 3) |QID|4245| |N|Karna Remtravel near Lakkari Tar Pits (46.38, 13.45)| |AH|
 
 C The Apes of Un'Goro |QID|4289| |N|Kill Un'Goro Gorilla, Un'Goro Thunderer and Un'Goro Stomper for quest items in Fungal Rock (63.86, 16.44)|
 K Pterrordax |QID|4501| |N|Continue killing Pterrordax in Lakkari Tar Pits (56.91, 9.94)|

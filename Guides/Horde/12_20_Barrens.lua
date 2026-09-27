@@ -171,9 +171,9 @@ A The Principal Source |QID|6127| |N|Dendrite Starblaze in Nighthaven (56.17, 30
 R Dreadmist Peak |QID|6127| |N|Travel to Dreadmist Peak (48.40, 18.90)| |C|Druid| |Z|The Barrens|
 C The Principal Source |QID|6127| |N|Use the Empty Dreadmist Peak Sampler to draw a sample of water from a pool at the top of Dreadmist Peak (48.40, 18.90)| |C|Druid| |Z|The Barrens| |U|15842|
 
-R The Crossroads |QID|6128| |N|Travel to The Crossroads (52.25, 31.92)| |C|Druid| |Z|The Barrens|
+R The Crossroads |QID|6128| |N|Travel to The Crossroads (52.25, 31.92)| |C|Druid| |AH| |Z|The Barrens|
 T The Principal Source |QID|6127| |N|Tonga Runetotem in The Crossroads (52.25, 31.92)| |C|Druid| |Z|The Barrens|
-A Gathering the Cure |QID|6128| |N|Tonga Runetotem in The Crossroads (52.25, 31.92)| |C|Druid| |Z|The Barrens|
+A Gathering the Cure |QID|6128| |N|Tonga Runetotem in The Crossroads (52.25, 31.92)| |C|Druid| |AH| |Z|The Barrens|
 
 N As you go... |AYG|870| |QID|845| |N|<b>Kill Zhevra Runner for 4 Zhevra Hooves<br/><b>Kill any raptors for 12 Raptor Head<br/><b>Kill Lost Barrens Kodo and collect 5 Kodo Horn| |C|Druid|
 N As you go... |AYG|870| |QID|845| |N|<b>Kill Zhevra Runner for 4 Zhevra Hooves<br/><b>Kill any raptors for 12 Raptor Head| |C|Warrior, Hunter, Mage, Warlock, Druid, Priest, Shaman, Rogue|
@@ -201,8 +201,8 @@ C The Zhevra |QID|845| |N|Kill Zhevra Runner for 4 Zhevra Hooves in The Barrens 
 C Greater Plainstrider |QID|821| |OIDX|2| |N|Kill Greater Plainstrider and collect 5 Plainstrider Kidney in The Barrens (47.27, 14.20)| |PRE|819|
 C Savannah Prowler |QID|821| |OIDX|1| |N|Kill Savannah Prowler and collect 5 Savannah Lion Tusk in The Barrens (40.80, 26.39)| |PRE|819|
 
-C Lost Barrens Kodo |QID|6128| |OIDX|2| |N|Find and kill Lost Barrens Kodo and collect 5 Kodo Horn, the Kodos are very scattered around The Barrens it will take a while to complete this quest<br/><b>Gather 5 Earthroot with (spell:2366) in The Barrens or purchase from the auction house (54.46, 40.42) (54.74, 39.69) (52.60, 43.36) (42.38, 37.63)| |C|Druid| |Z|The Barrens|
-N 5 Earthroot |QID|6123| |OIDX|1| |N|Gather 5 Earthroot with (spell:2366) in The Barrens or purchase from the auction house| |C|Druid| |Z|The Barrens|
+C Lost Barrens Kodo |QID|6128| |OIDX|2| |N|Find and kill Lost Barrens Kodo and collect 5 Kodo Horn, the Kodos are very scattered around The Barrens it will take a while to complete this quest<br/><b>Gather 5 Earthroot with (spell:2366) in The Barrens or purchase from the auction house (54.46, 40.42) (54.74, 39.69) (52.60, 43.36) (42.38, 37.63)| |C|Druid| |AH| |Z|The Barrens|
+N 5 Earthroot |QID|6123| |OIDX|1| |N|Gather 5 Earthroot with (spell:2366) in The Barrens or purchase from the auction house| |C|Druid| |AH| |Z|The Barrens|
 
 R Honor's Stand |QID|1062| |N|Take the road west out of the Crossroads to the edge of Stonetalon Mountains (35.29, 27.87)| |Z|The Barrens| |REACH|
 A Goblin Invaders |QID|1062| |N|Seereth Stonebreak in The Barrens (35.29, 27.87)| |Z|The Barrens|
@@ -232,22 +232,22 @@ T The Zhevra |QID|845| |N|Sergra Darkthorn in The Crossroads (52.21, 30.99)|
 A Prowlers of the Barrens |QID|903| |N|Sergra Darkthorn in The Crossroads (52.21, 30.99)|
 T The Forgotten Pools |QID|870| |N|Tonga Runetotem in The Crossroads (52.23, 31.93)|
 A The Stagnant Oasis |QID|877| |N|Tonga Runetotem in The Crossroads (52.23, 31.93)|
-T Gathering the Cure |QID|6128| |N|Tonga Runetotem in The Crossroads (52.24, 31.93)| |C|Druid| |Z|The Barrens|
-A Curing the Sick |QID|6129| |N|Tonga Runetotem in The Crossroads (52.24, 31.93)| |C|Druid| |Z|The Barrens|
+T Gathering the Cure |QID|6128| |N|Tonga Runetotem in The Crossroads (52.24, 31.93)| |C|Druid| |AH| |Z|The Barrens|
+A Curing the Sick |QID|6129| |N|Tonga Runetotem in The Crossroads (52.24, 31.93)| |C|Druid| |AH| |Z|The Barrens|
 
-N As you go... |AYG|875| |QID|6129| |N|Use the Curative Animal Salve on 10 Sickly Gazelle that are located throughout the northern part of the Barrens| |C|Druid|
+N As you go... |AYG|875| |QID|6129| |N|Use the Curative Animal Salve on 10 Sickly Gazelle that are located throughout the northern part of the Barrens| |C|Druid| |AH|
 C Prowlers of the Barrens |QID|903| |N|Kill Savannah Prowler and collect 7 Prowler Claws in The Barrens (40.9, 23.4)|
 R The Dry Hills |QID|875| |N|Travel to The Dry Hills (39.74, 17.29)| |Z|The Barrens|
 C Harpy Lieutenants |QID|875| |N|Kill Witchwing Slayer and collect 6 Harpy Lieutenant Ring in The Dry Hills (39.74, 17.29)|
 R The Barrens |QID|875| |N|Travel to The Barrens|
-C Curing the Sick |QID|6129| |N|Use the Curative Animal Salve on 10 Sickly Gazelle that are located throughout the northern part of the Barrens (50.0, 23.2) (45.6, 26.6) (48.8, 29.6) (50.4, 36.0) (54.6, 31.8) (53.6, 26.8) (54.2, 21.8) (50.4, 15.2) (53.6, 12.4) (56.8, 16.8)| |C|Druid| |Z|The Barrens| |U|15826|
+C Curing the Sick |QID|6129| |N|Use the Curative Animal Salve on 10 Sickly Gazelle that are located throughout the northern part of the Barrens (50.0, 23.2) (45.6, 26.6) (48.8, 29.6) (50.4, 36.0) (54.6, 31.8) (53.6, 26.8) (54.2, 21.8) (50.4, 15.2) (53.6, 12.4) (56.8, 16.8)| |C|Druid| |AH| |Z|The Barrens| |U|15826|
 
-R Nighthaven |QID|6130| |N|Travel to Nighthaven (56.27, 30.62)| |C|Druid| |Z|Moonglade|
-T Curing the Sick |QID|6129| |N|Dendrite Starblaze in Nighthaven (56.27, 30.62)| |C|Druid| |Z|Moonglade|
-A Power over Poison |QID|6130| |N|Dendrite Starblaze in Nighthaven (56.27, 30.62)| |C|Druid| |Z|Moonglade|
+R Nighthaven |QID|6130| |N|Travel to Nighthaven (56.27, 30.62)| |C|Druid| |AH| |Z|Moonglade|
+T Curing the Sick |QID|6129| |N|Dendrite Starblaze in Nighthaven (56.27, 30.62)| |C|Druid| |AH| |Z|Moonglade|
+A Power over Poison |QID|6130| |N|Dendrite Starblaze in Nighthaven (56.27, 30.62)| |C|Druid| |AH| |Z|Moonglade|
 
 R Elder Rise |TID|6130| |N|Travel to Elder Rise (76.36, 27.20)| |C|Druid| |Z|Thunder Bluff|
-T Power over Poison |QID|6130| |N|Dendrite Starblaze in Elder Rise (76.36, 27.20)| |C|Druid| |Z|Thunder Bluff|
+T Power over Poison |QID|6130| |N|Dendrite Starblaze in Elder Rise (76.36, 27.20)| |C|Druid| |AH| |Z|Thunder Bluff|
 A A Lesson to Learn |QID|27| |N|Turak Runetotem in Elder Rise, level 16 required (76.52, 27.45)| |C|Druid| |Z|Thunder Bluff|
 
 R Nighthaven |QID|28| |N|Travel to Nighthaven (56.22, 30.65)| |C|Druid| |Z|Moonglade|

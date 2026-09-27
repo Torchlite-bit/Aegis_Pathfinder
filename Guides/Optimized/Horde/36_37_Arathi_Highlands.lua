@@ -33,7 +33,7 @@ A Raising Spirits (Part 3) |QID|675| |N|Gor'mul in Hammerfall (72.68, 34.04)|
 T Raising Spirits (Part 3) |QID|675| |N|Tor'gan in Hammerfall (74.65, 36.34)|
 A Guile of the Raptor (Part 1) |QID|701| |N|Tor'gan in Hammerfall (74.61, 36.32)|
 T Trollbane |QID|638| |N|Zengu in Hammerfall (73.81, 33.87)| |O|
-A Sigil of Strom |QID|639| |N|Zengu in Hammerfall (73.81, 33.87)| |PRE|638|
+A Sigil of Strom |QID|639| |N|Zengu in Hammerfall (73.81, 33.87)| |PRE|638| |P|GROUP|
 A Foul Magics |QID|671| |N|Tor'gan in Hammerfall (74.61, 36.32)|
 A The Princess Trapped |QID|642| |N|Shards of Myzrael west of Hammerfall (62.5, 33.8)|
 C The Princess Trapped |QID|642| |N|Kill Drywhisker and collect 12 Mote of Myzrael in the cave (78, 37)|
@@ -60,14 +60,14 @@ C Foul Magics |QID|671| |N|Kill Syndicate Pathstalker, Mercenary and Highwayman 
 R Circle of West Binding |QID|651| |N|Travel to Circle of West Binding (25.4, 30.3)|
 C Burning Key |QID|651| |OIDX|1| |N|Get the Burning Key (25.4, 30.3)|
 
-R Stromgarde Keep |QID|639| |N|Travel to Stromgarde Keep (26.28, 62.59)| |PRE|638|
-C Sigil of Strom |QID|639| |N|Kill Syndicate Prowler or Conjuror until you find Sigil of Strom - GROUP quest (26.28, 62.59)| |PRE|638| |O|
+R Stromgarde Keep |QID|639| |N|Travel to Stromgarde Keep (26.28, 62.59)| |PRE|638| |P|GROUP|
+C Sigil of Strom |QID|639| |N|Kill Syndicate Prowler or Conjuror until you find Sigil of Strom - GROUP quest (26.28, 62.59)| |PRE|638| |O| |P|GROUP|
 
 R Circle of Inner Binding |QID|651| |N|Travel to Circle of Inner Binding (36.13, 57.42)|
 T Stones of Binding |QID|651| |N|Stone of Inner Binding (36.2, 57.5)|
-A Breaking the Keystone |QID|652| |N|Stone of Inner Binding (36.13, 57.42)|
-C Breaking the Keystone |QID|652| |N|Find and kill Fozruk near Refuge Pointe - GROUP quest (42.81, 53.59)| |O|
-T Breaking the Keystone |QID|652| |N|Keystone in Circle of Inner Binding (36.11, 57.93)|
+A Breaking the Keystone |QID|652| |N|Stone of Inner Binding (36.13, 57.42)| |P|GROUP|
+C Breaking the Keystone |QID|652| |N|Find and kill Fozruk near Refuge Pointe - GROUP quest (42.81, 53.59)| |O| |P|GROUP|
+T Breaking the Keystone |QID|652| |N|Keystone in Circle of Inner Binding (36.11, 57.93)| |P|GROUP|
 
 R Hammerfall |QID|677| |N|Travel to Hammerfall (74.61, 36.32)|
 T Foul Magics |QID|671| |N|Tor'gan in Hammerfall (74.61, 36.32)|

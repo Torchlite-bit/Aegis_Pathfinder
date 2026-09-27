@@ -11,13 +11,13 @@ T Un'Goro Soil |QID|3761| |N|Ghede in Elder Rise (77.34, 22.09)| |Z|Thunder Bluf
 A Morrowgrain Research (Part 1) |QID|3782| |N|Arch Druid Hamuul Runetotem in Elder Rise (79.30, 28.45)| |Z|Thunder Bluff| |PRE|3761|
 T Morrowgrain Research (Part 1) |QID|3782| |N|Bashana Runetotem in Elder Rise (70.99, 34.09)| |Z|Thunder Bluff| |PRE|3761|
 A Morrowgrain Research (Part 2) |QID|3786| |N|Bashana Runetotem in Elder Rise (70.98, 34.03)| |Z|Thunder Bluff| |PRE|3761|
-N As you go... |AYG|4726| |QID|3786| |N|Use Evergreen Pouch every 10 mins to create Evergreen Herb Casing, open it to get some herbs, you will need to get 10 Morrowgrain using this method otherwise purchase from Auction. Tick this step| |U|11020| |PRE|3764|
+N As you go... |AYG|4726| |QID|3786| |N|Use Evergreen Pouch every 10 mins to create Evergreen Herb Casing, open it to get some herbs, you will need to get 10 Morrowgrain using this method otherwise purchase from Auction. Tick this step| |U|11020| |PRE|3764| |AH|
 
 R Ratchet |TID|4147| |N|Travel to Ratchet (62.48, 38.66)| |Z|The Barrens| |O|
 T Marvon's Workshop |QID|4147| |N|Bashana Runetotem in Ratchet (62.45, 38.72)| |Z|The Barrens| |O|
-A Zapper Fuel |QID|4146| |N|Liv Rizzlefix in Ratchet (62.45, 38.72)| |Z|The Barrens| |PRE|4147|
+A Zapper Fuel |QID|4146| |N|Liv Rizzlefix in Ratchet (62.45, 38.72)| |D|ST| |Z|The Barrens| |PRE|4147|
 T Volcanic Activity |QID|4502| |N|Liv Rizzlefix in Ratchet (62.45, 38.72)| |Z|The Barrens| |O|
-N Black Dragonflight Molt |QID|4022| |N|Withdraw Black Dragonflight Molt from the bank. Tick this step (26.6, 76.4)| |Z|Stranglethorn Vale| |L|10575| |OO|
+N Black Dragonflight Molt |QID|4022| |N|Withdraw Black Dragonflight Molt from the bank. Tick this step (26.6, 76.4)| |P|GROUP| |Z|Stranglethorn Vale| |L|10575| |OO|
 N Un'Goro Soil |QID|3761| |N|Store Un'Goro Soil in the bank. Tick this step (26.6, 76.4)| |Z|Stranglethorn Vale| |L|3761| |O|
 N Un'Goro Slime Sample |QID|4294| |N|Store Un'Goro Slime Sample in the bank. Tick this step (26.6, 76.4)| |Z|Stranglethorn Vale| |L|12235| |O|
 N Linken's Training Sword |QID|3908| |N|Store Linken's Training Sword in the bank. Tick this step (26.6, 76.4)| |Z|Stranglethorn Vale| |L|11133| |O|
@@ -33,8 +33,8 @@ A Vivian Lagrave |QID|4133| |N|Apothecary Zinge in The Apothecarium (50.07, 68.1
 
 R Kargath |TID|4133| |N|Travel to Kargath (2.91, 47.78)| |Z|Badlands|
 T Vivian Lagrave |QID|4133| |N|Shadowmage Vivian Lagrave in Kargath (2.91, 47.78)| |Z|Badlands|
-A Lost Thunderbrew Recipe |QID|4134| |N|Shadowmage Vivian Lagrave in Kargath (2.91, 47.78)| |Z|Badlands|
-A The Rise of the Machines |QID|4061| |N|Hierophant Theodora Mulvadania in Kargath (3.01, 47.83)| |Z|Badlands|
+A Lost Thunderbrew Recipe |QID|4134| |N|Shadowmage Vivian Lagrave in Kargath (2.91, 47.78)| |D|BRD| |Z|Badlands|
+A The Rise of the Machines |QID|4061| |N|Hierophant Theodora Mulvadania in Kargath (3.01, 47.83)| |D|BRD| |Z|Badlands|
 A Dreadmaul Rock |QID|3821| |N|Thal'trak Proudtusk in Kargath, he sometimes patrol south and east of Kargath (3.36, 48.05)| |Z|Badlands|
 
 R Flame Crest |QID|4726| |N|Travel to Flame Crest (65.20, 23.89)| |Z|Burning Steppes|
@@ -42,20 +42,20 @@ A Broodling Essence |QID|4726| |N|Tinkee Steamboil in Flame Crest (65.20, 23.89)
 A Tablet of the Seven |QID|4296| |N|Maxwort Uberglint in Flame Crest (65.20, 23.89)| |Z|Burning Steppes|
 T Yuka Screwspigot |QID|4324| |N|Yuka Screwspigot in Flame Crest (66.04, 21.94)| |Z|Burning Steppes| |O|
 C Broodling Essence |QID|4726| |N|Use Draco-Incarcinatrix 900 on 8 Black Broodling before you kill them in Dreadmaul Rock (78.49, 27.51)| |Z|Burning Steppes| |U|12284|
-N Black Dragonflight Molt |QID|4022| |N|This is found inside Hoard of the Black Dragonflight quest reward from an earlier quest 'Trinkets...', you need this to complete the next quest 'A Taste of Flame', if you don't have it you will need to kill a level 54 elite that will spawn if you talk to the quest giver| |L|10575| |U|10569| |OID|4023|
+N Black Dragonflight Molt |QID|4022| |N|This is found inside Hoard of the Black Dragonflight quest reward from an earlier quest 'Trinkets...', you need this to complete the next quest 'A Taste of Flame', if you don't have it you will need to kill a level 54 elite that will spawn if you talk to the quest giver| |L|10575| |U|10569| |OID|4023| |P|GROUP|
 
-R Slither Rock |QID|4022| |N|Travel to Slither Rock (93.66, 32.10)| |Z|Burning Steppes| |OID|4023|
-A A Taste of Flame (Part 1) |QID|4022| |N|Cyrus Therepentous in Slither Rock (93.66, 32.10) (95.05, 31.57)| |Z|Burning Steppes| |OID|4023|
-C A Taste of Flame (Part 1) |QID|4022| |N|Speak to Cyrus Therepentous with Black Dragonflight Molt in Slither Rock (95.05, 31.57)| |Z|Burning Steppes| |OID|4023|
-T A Taste of Flame (Part 1) |QID|4022| |N|Cyrus Therepentous in Slither Rock (95.05, 31.57)| |Z|Burning Steppes| |OID|4023|
+R Slither Rock |QID|4022| |N|Travel to Slither Rock (93.66, 32.10)| |P|GROUP| |Z|Burning Steppes| |OID|4023|
+A A Taste of Flame (Part 1) |QID|4022| |N|Cyrus Therepentous in Slither Rock (93.66, 32.10) (95.05, 31.57)| |P|GROUP| |Z|Burning Steppes| |OID|4023|
+C A Taste of Flame (Part 1) |QID|4022| |N|Speak to Cyrus Therepentous with Black Dragonflight Molt in Slither Rock (95.05, 31.57)| |P|GROUP| |Z|Burning Steppes| |OID|4023|
+T A Taste of Flame (Part 1) |QID|4022| |N|Cyrus Therepentous in Slither Rock (95.05, 31.57)| |P|GROUP| |Z|Burning Steppes| |OID|4023|
 
 R Dreadmaul Rock |QID|3822| |N|Travel to Dreadmaul Rock (76.85, 32.88)| |Z|Burning Steppes|
 T Dreadmaul Rock |QID|3821| |N|Sha'ni Proudtusk in Dreadmaul Rock, click on her skeleton on the altar first (at top of the mountain)| |Z|Burning Steppes|
 A Krom'Grul |QID|3822| |N|Sha'ni Proudtusk in Dreadmaul Rock (79.86, 45.50)| |Z|Burning Steppes|
 C Krom'Grul |QID|3822| |N|Kill Krom'Grul and collect Sha'ni's Nose-Ring in Dreadmaul Rock, he spawns in 1 of 3 cave in Dreadmaul Rock. You can see the cave entrances on your world map (79.73, 47.34)| |Z|Burning Steppes|
 
-R Ruins of Thaurissan |QID|4061| |N|Travel to Ruins of Thaurissan (58.31, 37.03)| |Z|Burning Steppes|
-C The Rise of the Machines |QID|4061| |N|Kill War Reaver and collect Fractured Elemental Shard in Ruins of Thaurissan (58.31, 37.03)| |Z|Burning Steppes|
+R Ruins of Thaurissan |QID|4061| |N|Travel to Ruins of Thaurissan (58.31, 37.03)| |D|BRD| |Z|Burning Steppes|
+C The Rise of the Machines |QID|4061| |N|Kill War Reaver and collect Fractured Elemental Shard in Ruins of Thaurissan (58.31, 37.03)| |D|BRD| |Z|Burning Steppes|
 C Tablet of the Seven |QID|4296| |N|Collect Tablet Transcript from the tablet in Ruins of Thaurissan (54.03, 40.69)| |Z|Burning Steppes|
 
 R Flame Crest |QID|4808| |N|Travel to Flame Crest (65.25, 23.98)| |Z|Burning Steppes|
@@ -63,9 +63,9 @@ T Broodling Essence |QID|4726| |N|Tinkee Steamboil in Flame Crest (65.25, 23.98)
 A Felnok Steelspring |QID|4808| |N|Tinkee Steamboil in Flame Crest (65.24, 23.88)| |Z|Burning Steppes|
 T Tablet of the Seven |QID|4296| |N|Maxwort Uberglint in Flame Crest (65.19, 23.90)| |Z|Burning Steppes|
 T Krom'Grul |QID|3822| |N|Thal'trak Proudtusk in Kargath (3.38, 48.04)| |Z|Badlands|
-T The Rise of the Machines |QID|4061| |N|Hierophant Theodora Mulvadania in Kargath (3.06, 47.85)| |Z|Badlands|
-A The Rise of the Machines |QID|4062| |N|Hierophant Theodora Mulvadania in Kargath (3.09, 47.89)| |Z|Badlands|
-T The Rise of the Machines |QID|4062| |N|Lotwil Veriatus in The Dustbowl (25.95, 44.91)| |Z|Badlands|
+T The Rise of the Machines |QID|4061| |N|Hierophant Theodora Mulvadania in Kargath (3.06, 47.85)| |D|BRD| |Z|Badlands|
+A The Rise of the Machines |QID|4062| |N|Hierophant Theodora Mulvadania in Kargath (3.09, 47.89)| |D|BRD| |Z|Badlands|
+T The Rise of the Machines |QID|4062| |N|Lotwil Veriatus in The Dustbowl (25.95, 44.91)| |D|BRD| |Z|Badlands|
 
 R Valormok |QID|3505| |N|Travel to Valormok in Azshara (22.28, 51.50)| |Z|Azshara|
 T Betrayed (Part 1) |QID|3504| |N|Ag'tor Bloodfist in Valormok (22.28, 51.48)| |Z|Azshara|

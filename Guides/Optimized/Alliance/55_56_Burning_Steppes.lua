@@ -8,7 +8,7 @@ return [[
 
 N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Burning Steppes 55-56|
 
-R Ironforge |QID|2948| |N|Travel to Ironforge (30, 66)| |Z|Ironforge|
+R Ironforge |QID|2948| |N|Travel to Ironforge (30, 66)| |D|GNOMER| |Z|Ironforge|
 N Black Dragonflight Molt |QID|4023| |N|Withdraw Black Dragonflight Molt from the bank (35.48, 60.70)| |Z|Ironforge| |L|10575| |O|
 N Drawing Kit |QID|3461| |N|Withdraw Drawing Kit from the bank (35.48, 60.70)| |Z|Ironforge| |L|10445| |O|
 N Filled Cursed Ooze Jar |QID|4512| |N|Withdraw Filled Cursed Ooze Jar from the bank (35.48, 60.70)| |Z|Ironforge| |L|11947| |O|
@@ -47,7 +47,7 @@ R Slither Rock |QID|4023| |N|Travel to Slither Rock (95.05, 31.57)| |Z|Burning S
 A A Taste of Flame (Part 1) |QID|4023| |N|Cyrus Therepentous in Slither Rock (95.05, 31.57)| |Z|Burning Steppes|
 C A Taste of Flame (Part 1) |QID|4023| |N|Speak to Cyrus Therepentous with Black Dragonflight Molt (95.05, 31.57)| |Z|Burning Steppes|
 T A Taste of Flame (Part 1) |QID|4023| |N|Cyrus Therepentous in Slither Rock (95.05, 31.57)| |Z|Burning Steppes|
-A A Taste of Flame (Part 2) |QID|4024| |N|Cyrus Therepentous in Slither Rock (95.05, 31.57)| |Z|Burning Steppes|
+A A Taste of Flame (Part 2) |QID|4024| |N|Cyrus Therepentous in Slither Rock (95.05, 31.57)| |D|BRD| |Z|Burning Steppes|
 
 C Dragonkin Menace |QID|4182| |N|Kill the required Black Dragonkin in Terror Wing Path (79.43, 28.66)| |Z|Burning Steppes|
 
@@ -70,18 +70,18 @@ A Gor'tesh the Brute Lord |QID|3824| |N|Oralius in Morgan's Vigil (84.57, 68.66)
 C Gor'tesh the Brute Lord |QID|3824| |N|Kill Gor'tesh and collect Gor'tesh's Lopped Off Head in Pillar of Ash (39.35, 55.36)| |Z|Burning Steppes|
 C FIFTY! YEP! |QID|4283| |N|Kill Blackrock orc and collect 50 Blackrock Medallion (44.87, 56.77)| |Z|Burning Steppes|
 
-R Morgan's Vigil |QID|3825| |N|Travel to Morgan's Vigil (84.55, 68.70)| |Z|Burning Steppes|
+R Morgan's Vigil |QID|3825| |N|Travel to Morgan's Vigil (84.55, 68.70)| |P|GROUP| |Z|Burning Steppes|
 T Gor'tesh the Brute Lord |QID|3824| |N|Oralius in Morgan's Vigil (84.54, 68.69)| |Z|Burning Steppes|
-A Ogre Head On A Stick = Party |QID|3825| |N|Oralius in Morgan's Vigil (84.54, 68.69)| |Z|Burning Steppes|
+A Ogre Head On A Stick = Party |QID|3825| |N|Oralius in Morgan's Vigil (84.54, 68.69)| |P|GROUP| |Z|Burning Steppes|
 T FIFTY! YEP! |QID|4283| |N|Oralius in Morgan's Vigil (84.54, 68.69)| |Z|Burning Steppes|
 N Blackrock Medallion |N|Destroy Blackrock Medallion as it is no longer needed| |L|11467| |O|
 
-R Dreadmaul Rock |QID|3825| |N|Travel to Dreadmaul Rock (75.34, 38.61)| |Z|Burning Steppes|
-C Ogre Head On A Stick = Party |QID|3825| |N|Click on Soft Dirt Mound (75.34, 38.61)| |Z|Burning Steppes|
+R Dreadmaul Rock |QID|3825| |N|Travel to Dreadmaul Rock (75.34, 38.61)| |P|GROUP| |Z|Burning Steppes|
+C Ogre Head On A Stick = Party |QID|3825| |N|Click on Soft Dirt Mound (75.34, 38.61)| |P|GROUP| |Z|Burning Steppes|
 C Dragonkin Menace |QID|4182| |N|Finish killing the required Black Dragonkin if not completed (91.16, 34.50)| |Z|Burning Steppes|
 
 R Morgan's Vigil |QID|4183| |N|Travel to Morgan's Vigil (84.55, 68.70)| |Z|Burning Steppes|
-T Ogre Head On A Stick = Party |QID|3825| |N|Oralius in Morgan's Vigil (84.55, 68.70)| |Z|Burning Steppes|
+T Ogre Head On A Stick = Party |QID|3825| |N|Oralius in Morgan's Vigil (84.55, 68.70)| |P|GROUP| |Z|Burning Steppes|
 T Dragonkin Menace |QID|4182| |N|Helendis Riverhorn in Morgan's Vigil (85.81, 68.94)| |Z|Burning Steppes|
 A The True Masters (Part 1) |QID|4183| |N|Helendis Riverhorn in Morgan's Vigil (85.81, 68.94)| |Z|Burning Steppes|
 

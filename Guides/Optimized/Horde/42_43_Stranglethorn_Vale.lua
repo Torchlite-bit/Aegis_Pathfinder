@@ -99,8 +99,8 @@ T Mok'thardin's Enchantment (Part 4) |QID|573| |N|Far Seer Mok'thardin in Grom'g
 
 R Nesingwary's Expedition |OID|208| |N|Travel to Nesingwary's Expedition (35.7, 10.8)| |PRE|197|
 T Raptor Mastery (Part 4) |QID|197| |N|Hemet Nesingwary in Nesingwary's Expedition (35.7, 10.8)| |PRE|197|
-A Big Game Hunter |QID|208| |N|Hemet Nesingwary in Nesingwary's Expedition (35.7, 10.8)| |PRE|197|
-C Big Game Hunter |QID|208| |N|Kill King Bangalash and loot the Head of Bangalash (38, 35)| |PRE|197|
+A Big Game Hunter |QID|208| |N|Hemet Nesingwary in Nesingwary's Expedition (35.7, 10.8)| |PRE|197| |P|GROUP|
+C Big Game Hunter |QID|208| |N|Kill King Bangalash and loot the Head of Bangalash (38, 35)| |PRE|197| |P|GROUP|
 A The Green Hills of Stranglethorn |QID|338| |N|Barnil Stonepot in Nesingwary's Expedition (35.65, 10.51)|
 A Chapter I |QID|339| |N|Barnil Stonepot in Nesingwary's Expedition (35.65, 10.51)|
 A Chapter II |QID|340| |N|Barnil Stonepot in Nesingwary's Expedition (35.65, 10.51)|
@@ -116,7 +116,7 @@ R Stranglethorn Vale |QID|598| |N|Travel to Stranglethorn Vale (45.42, 30.46)|
 C Split Bone Necklace |QID|598| |N|Kill Skullsplitter trolls in Ziata'jai Ruins and Balia'mah Ruins (42.55, 35.34) (45.42, 30.46)| |Z|Stranglethorn Vale| |PRE|596|
 
 R Nesingwary's Expedition |TID|208| |N|Travel to Nesingwary's Expedition (35.7, 10.8)| |PRE|197|
-T Big Game Hunter |QID|208| |N|Hemet Nesingwary in Nesingwary's Expedition (35.7, 10.8)| |PRE|197|
+T Big Game Hunter |QID|208| |N|Hemet Nesingwary in Nesingwary's Expedition (35.7, 10.8)| |PRE|197| |P|GROUP|
 
 R Grom'gol Base Camp|TID|598| |N|Travel to Grom'gol Base Camp (32.21, 27.75)| |PRE|596|
 T Split Bone Necklace |QID|598| |N|Kin'weelay in Grom'gol Base Camp (32.21, 27.75)| |Z|Stranglethorn Vale| |PRE|596|

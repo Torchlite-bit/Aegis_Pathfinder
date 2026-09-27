@@ -94,8 +94,8 @@ T Badlands Reagent Run |QID|2500| |N|Ghak Healtouch in Thelsamar (37.06, 49.36)|
 R Ironband's Excavation Site |TID|739| |N|Travel to Ironband's Excavation Site (65.88, 65.59)| |Z|Loch Modan|
 T Murdaloc |QID|739| |N|Prospector Ironband in Ironband's Excavation Site (65.88, 65.59)| |Z|Loch Modan| |PRE|707|
 
-F Stormwind City |QID|1448| |N|Fly to Stormwind City|
-A In Search of The Temple |QID|1448| |N|Brohann Caskbelly in Dwarven District (64.27, 20.74)| |Z|Stormwind City|
+F Stormwind City |QID|1448| |N|Fly to Stormwind City| |D|ST|
+A In Search of The Temple |QID|1448| |N|Brohann Caskbelly in Dwarven District (64.27, 20.74)| |D|ST| |Z|Stormwind City|
 
 F Darkshire |QID|1477| |N|Fly to Darkshire, make it your home|
 h Darkshire |QID|1477| |N|Set hearth at Scarlet Raven Tavern in Darkshire (73.9, 44.4)| |Z|Duskwood|

@@ -74,12 +74,12 @@ T Wyrms of the Highlands |QID|41219| |N|Commander Braedin at the Silver Covenant
 
 R Anasterian Park |QID|41214| |N|Travel to Anasterian Park (55.2, 46.9)| |Z|Thalassian Highlands|
 A Peculiar Treants |QID|41214| |N|Calhir Dawnchaser in Anasterian Park (55.2, 46.9)| |Z|Thalassian Highlands|
-A Party Like There's No Tomorrow |QID|41223| |N|Relaina Whiteshore near Anasterian Park (47.9, 52.1)| |Z|Thalassian Highlands|
+A Party Like There's No Tomorrow |QID|41223| |N|Relaina Whiteshore near Anasterian Park (47.9, 52.1)| |P|GROUP| |Z|Thalassian Highlands|
 
-C Party Like There's No Tomorrow |QID|41223| |N|Recover party supplies from around Anasterian Park (48, 50) (52, 48)| |Z|Thalassian Highlands|
+C Party Like There's No Tomorrow |QID|41223| |N|Recover party supplies from around Anasterian Park (48, 50) (52, 48)| |P|GROUP| |Z|Thalassian Highlands|
 C Peculiar Treants |QID|41214| |N|Kill Thalassian Treants and collect a Thalasian Primal Heart in Anasterian Park (53, 48) (55, 45)| |Z|Thalassian Highlands|
 
-T Party Like There's No Tomorrow |QID|41223| |N|Relaina Whiteshore near Anasterian Park (47.9, 52.1)| |Z|Thalassian Highlands|
+T Party Like There's No Tomorrow |QID|41223| |N|Relaina Whiteshore near Anasterian Park (47.9, 52.1)| |P|GROUP| |Z|Thalassian Highlands|
 T Peculiar Treants |QID|41214| |N|Calhir Dawnchaser in Anasterian Park (55.2, 46.9)| |Z|Thalassian Highlands|
 A Whispers of Autumn |QID|41215| |N|Calhir Dawnchaser in Anasterian Park (55.2, 46.9)| |Z|Thalassian Highlands|
 

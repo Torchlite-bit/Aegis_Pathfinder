@@ -111,14 +111,14 @@ N Train Skills |N|Get new skills from your class trainer|
 T Rise of the Silithid |QID|4267| |N|Gracina Spiritmight in Temple of the Moon (41.76, 85.52)| |Z|Darnassus|
 T Doling Justice (Part 2) |QID|2972| |N|Tyrande Whisperwind in Temple of the Moon (39.02, 81.55)| |Z|Darnassus|
 
-N Buy 2 Elixir of Fortitude |N|Purchase 2 Elixir of Fortitude from AH for a later quest|
+N Buy 2 Elixir of Fortitude |N|Purchase 2 Elixir of Fortitude from AH for a later quest| |AH|
 
 H Feathermoon Stronghold |QID|2941| |N|Hearth to Feathermoon (or fly)| |Z|Feralas|
 F Gadgetzan |QID|2941| |N|Fly to Gadgetzan| |Z|Tanaris|
 T The Borrower |QID|2941| |N|Curgle Cranklehop in Gadgetzan| |Z|Tanaris|
-A The Super Snapper FX |QID|2944| |N|Curgle Cranklehop in Gadgetzan| |Z|Tanaris|
+A The Super Snapper FX |QID|2944| |N|Curgle Cranklehop in Gadgetzan| |P|GROUP| |Z|Tanaris|
 
-N Level 45 |N|You should be level 45 now. Continue to Uldaman|
+N Level 45 |N|You should be level 45 now. Continue to Uldaman| |D|ULDA|
 
 ]]
 end)

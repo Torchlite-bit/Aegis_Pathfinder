@@ -97,7 +97,7 @@ A Evershine |QID|318| |N|Pilot Bellowfiz in Steelgrill's Depot (49.49, 48.37)|
 B Rhapsody Malt |QID|384| |OIDX|2| |N|Speak to Innkeeper Belm and buy Rhapsody Malt in Thunderbrew Distillery (47.4, 52.5)| |L|2894|
 T Beer Basted Boar Ribs |QID|384| |N|Ragnar Thunderbrew in Kharanos (46.81, 52.37)|
 A Frostmane Hold |QID|287| |N|Senir Whitebeard in Kharanos (46.66, 53.83)|
-A Operation Recombobulation |QID|412| |N|Razzle Sprysprocket in Kharanos (45.8, 49.2)|
+A Operation Recombobulation |QID|412| |N|Razzle Sprysprocket in Kharanos (45.8, 49.2)| |D|GNOMER|
 
 R Chill Breeze Valley |QID|312| |N|Travel to Chill Breeze Valley (43.52, 56.65) (37.54, 60.37) (34.87, 58.14) (34.74, 56.54)|
 A Tundra MacGrann's Stolen Stash |QID|312| |N|Tundra MacGrann in Chill Breeze Valley (36.70, 52.13) (35.16, 51.83) (34.57, 51.63)|
@@ -130,13 +130,13 @@ T Return to Marleth |QID|311| |N|Marleth Barleybrew in Brewnall Village (30.22, 
 R Frostmane Hold |QID|287| |N|Travel to Frostmane Hold (24.90, 50.94)|
 C Frostmane Hold |QID|287| |N|Go inside the cave to explore Frostmane Hold and kill 5 Frostmane Headhunter (24.90, 50.94) (22.88, 52.07)|
 
-R Gnomeregan |QID|412| |N|Travel to Gnomeregan (24.90, 50.94) (25.05, 42.90)|
-C Operation Recombobulation |QID|412| |N|Kill Leper Gnome and collect 8 Restabilization Cog and 8 Gyromechanic Gear in Gnomeregan (25.05, 42.90)|
+R Gnomeregan |QID|412| |N|Travel to Gnomeregan (24.90, 50.94) (25.05, 42.90)| |D|GNOMER|
+C Operation Recombobulation |QID|412| |N|Kill Leper Gnome and collect 8 Restabilization Cog and 8 Gyromechanic Gear in Gnomeregan (25.05, 42.90)| |D|GNOMER|
 
 R Kharanos |QID|291| |N|Travel to Kharanos<br/><b>You can die on purpose and resurrect to get there quicker (46.66, 53.83)|
 T Frostmane Hold |QID|287| |N|Senir Whitebeard in Kharanos (46.66, 53.83)|
 A The Reports |QID|291| |N|Senir Whitebeard in Kharanos (46.66, 53.83)|
-T Operation Recombobulation |QID|412| |N|Razzle Sprysprocket in Kharanos (45.8, 49.2)|
+T Operation Recombobulation |QID|412| |N|Razzle Sprysprocket in Kharanos (45.8, 49.2)| |D|GNOMER|
 
 R Steelgrill's Depot |TID|320| |N|Travel to Steelgrill's Depot (49.49, 48.37)|
 T Return to Bellowfiz |QID|320| |N|Pilot Bellowfiz in Steelgrill's Depot (49.49, 48.37)|
@@ -176,19 +176,19 @@ A Ironband's Compound |QID|1681| |N|Tormus Deepforge in The Great Forge (48.74, 
 R Ironband's Compound |QID|1681| |N|Travel to Ironband's Compound (57.32, 51.83) (74.79, 56.02) (77.95, 62.21)| |C|Warrior|
 C Ironband's Compound |QID|1681| |N|Collect Umbral Ore from the Ironband lockbox in Ironband's Compound (77.95, 62.21)| |C|Warrior|
 
-R The Great Forge |QID|2238| |N|Travel to The Great Forge<br/><b>You can die on purpose and resurrect to get there quicker (47.20, 42.18) (51.48, 39.74) (53.87, 34.44) (48.65, 43.07)| |Z|Ironforge| |C|Warrior, Hunter, Rogue|
-R The Great Forge |QID|2238| |N|Travel to The Great Forge<br/><b>You can die on purpose and resurrect to get there quicker (47.20, 42.18) (51.48, 39.74) (53.87, 34.44) (48.65, 43.07)| |Z|Ironforge| |C|Warlock, Mage|
+R The Great Forge |QID|2238| |N|Travel to The Great Forge<br/><b>You can die on purpose and resurrect to get there quicker (47.20, 42.18) (51.48, 39.74) (53.87, 34.44) (48.65, 43.07)| |D|GNOMER| |Z|Ironforge| |C|Warrior, Hunter, Rogue|
+R The Great Forge |QID|2238| |N|Travel to The Great Forge<br/><b>You can die on purpose and resurrect to get there quicker (47.20, 42.18) (51.48, 39.74) (53.87, 34.44) (48.65, 43.07)| |D|GNOMER| |Z|Ironforge| |C|Warlock, Mage|
 T Ironband's Compound |QID|1681| |N|Tormus Deepforge in The Great Forge (48.65, 43.07)| |Z|Ironforge| |C|Warrior|
 T Training the Beast |QID|6086| |N|Belia Thundergranite in Hall of Arms (70.93, 85.66)| |C|Hunter| |Z|Ironforge|
 T Road to Salvation |QID|2218| |N|Hulfdan Blackbeard in The Forlorn Cavern (51.88, 14.66)| |C|Rogue| |Z|Ironforge|
-A Simple Subterfugin' |QID|2238| |N|Hulfdan Blackbeard in The Forlorn Cavern (51.88, 14.66)| |C|Rogue| |Z|Ironforge|
+A Simple Subterfugin' |QID|2238| |N|Hulfdan Blackbeard in The Forlorn Cavern (51.88, 14.66)| |C|Rogue| |D|GNOMER| |Z|Ironforge|
 
-R Gnomeregan |QID|2239| |N|Travel to Gnomeregan (25.18, 44.44)| |C|Rogue|
-T Simple Subterfugin' |QID|2238| |N|Onin MacHammar in Gnomeregan (25.18, 44.44)| |C|Rogue|
-A Onin's Report |QID|2239| |N|Onin MacHammar in Gnomeregan (25.18, 44.44)| |C|Rogue|
+R Gnomeregan |QID|2239| |N|Travel to Gnomeregan (25.18, 44.44)| |C|Rogue| |D|GNOMER|
+T Simple Subterfugin' |QID|2238| |N|Onin MacHammar in Gnomeregan (25.18, 44.44)| |C|Rogue| |D|GNOMER|
+A Onin's Report |QID|2239| |N|Onin MacHammar in Gnomeregan (25.18, 44.44)| |C|Rogue| |D|GNOMER|
 
 R The Forlorn Cavern |TID|2239| |N|The Forlorn Cavern (51.89, 14.85)| |C|Rogue| |Z|Ironforge|
-T Onin's Report |QID|2239| |N|Hulfdan Blackbeard in The Forlorn Cavern (51.89, 14.85)| |C|Rogue| |Z|Ironforge|
+T Onin's Report |QID|2239| |N|Hulfdan Blackbeard in The Forlorn Cavern (51.89, 14.85)| |C|Rogue| |D|GNOMER| |Z|Ironforge|
 
 A The Slaughtered Lamb |QID|1715| |N|Lago Blackwrench, in The Forlorn Cavern (47.64, 9.76)| |Z|Ironforge| |C|Warlock|
 
@@ -211,10 +211,10 @@ C The Binding |QID|1689| |N|Keep going down the stair until you find the purple 
 T The Binding |QID|1689| |N|Gakin the Darkbinder in The Slaughtered Lamb (39.2, 85.2)| |C|Warlock| |Z|Stormwind City|
 
 T Speak with Bink |QID|1879| |N|Bink in Hall of Mysteries (27.23, 8.33)| |Z|Ironforge| |C|Mage|
-A Mage-tastic Gizmonitor |QID|1880| |N|Bink in Hall of Mysteries (27.23, 8.33)| |Z|Ironforge| |C|Mage|
-R Gnomeregan |QID|1880| |N|Travel to Gnomeregan (27.69, 36.42)| |Z|Dun Morogh| |C|Mage|
-C Mage-tastic Gizmonitor |QID|1880| |N|Collect Mage-tastic Gizmonitor from Blink toolbox in Gnomeregan (27.69, 36.42)| |Z|Dun Morogh| |C|Mage|
-T Mage-tastic Gizmonitor |QID|1880| |N|Bink in Hall of Mysteries (27.24, 8.31)| |Z|Ironforge| |C|Mage|
+A Mage-tastic Gizmonitor |QID|1880| |N|Bink in Hall of Mysteries (27.23, 8.33)| |D|GNOMER| |Z|Ironforge| |C|Mage|
+R Gnomeregan |QID|1880| |N|Travel to Gnomeregan (27.69, 36.42)| |D|GNOMER| |Z|Dun Morogh| |C|Mage|
+C Mage-tastic Gizmonitor |QID|1880| |N|Collect Mage-tastic Gizmonitor from Blink toolbox in Gnomeregan (27.69, 36.42)| |D|GNOMER| |Z|Dun Morogh| |C|Mage|
+T Mage-tastic Gizmonitor |QID|1880| |N|Bink in Hall of Mysteries (27.24, 8.31)| |D|GNOMER| |Z|Ironforge| |C|Mage|
 
 R North Gate Pass |QID|417| |N|Travel to North Gate Pass (80.96, 42.95)|
 A The Lost Pilot |QID|419| |N|Pilot Hammerfoot in North Gate Outpost (80.96, 42.95) (83.90, 39.10)|

@@ -41,10 +41,10 @@ T The Vile Reef |QID|629| |N|Kin'weelay in Grom'gol Base Camp (32.22, 27.77)| |Z
 R Ziata'jai Ruins |QID|209| |N|Travel to Ziata'jai Ruins (42.17, 36.16)| |Z|Stranglethorn Vale|
 C Skullsplitter Tusks |QID|209| |N|Kill Trolls and collect 18 Skullsplitter Tusk at Ziata'jai and Zul'Mamwe (45.72, 42.19) (44.86, 40.70)| |Z|Stranglethorn Vale|
 
-C Panther Mastery (Part 4) |QID|193| |N|Kill Bhag'thera and loot the Fang of Bhag'thera - GROUP quest (48.35, 23.74)| |Z|Stranglethorn Vale| |O|
+C Panther Mastery (Part 4) |QID|193| |N|Kill Bhag'thera and loot the Fang of Bhag'thera - GROUP quest (48.35, 23.74)| |P|GROUP| |Z|Stranglethorn Vale| |O|
 
 R Nesingwary's Expedition |QID|197| |N|Travel to Nesingwary's Expedition (35.58, 10.59)| |Z|Stranglethorn Vale|
-T Panther Mastery (Part 4) |QID|193| |N|Sir S. J. Erlgadin in Nesingwary's Expedition (35.58, 10.59)| |Z|Stranglethorn Vale| |O|
+T Panther Mastery (Part 4) |QID|193| |N|Sir S. J. Erlgadin in Nesingwary's Expedition (35.58, 10.59)| |P|GROUP| |Z|Stranglethorn Vale| |O|
 T Raptor Mastery (Part 3) |QID|196| |N|Hemet Nesingwary in Nesingwary's Expedition (35.65, 10.75)| |Z|Stranglethorn Vale|
 A Raptor Mastery (Part 4) |QID|197| |N|Hemet Nesingwary in Nesingwary's Expedition (35.65, 10.75)| |Z|Stranglethorn Vale|
 

@@ -28,12 +28,12 @@ C Some Assembly Required |QID|577| |N|Kill Snapjaw Crocolisk for 5 Snapjaw Croco
 
 R Ziata'jai Ruins |QID|209| |N|Travel to Ziata'jai Ruins (42.17, 36.16)| |Z|Stranglethorn Vale|
 C Skullsplitter Tusks |QID|209| |N|Kill Trolls for 18 Skullsplitter Tusk at Ziata'jai and Ruins of Zul'Mamwe (45.72, 42.19)| |Z|Stranglethorn Vale|
-C Panther Mastery (Part 4) |QID|193| |N|Kill Bhag'thera - stealth level 40 elite, soloable (49.52, 23.82)| |Z|Stranglethorn Vale|
+C Panther Mastery (Part 4) |QID|193| |N|Kill Bhag'thera - stealth level 40 elite, soloable (49.52, 23.82)| |P|GROUP| |Z|Stranglethorn Vale|
 
 R Nesingwary's Expedition |QID|197| |N|Travel to Nesingwary's Expedition (35.65, 10.79)| |Z|Stranglethorn Vale|
 T Raptor Mastery (Part 3) |QID|196| |N|Hemet Nesingwary in Nesingwary's Expedition (35.65, 10.79)| |Z|Stranglethorn Vale|
 A Raptor Mastery (Part 4) |QID|197| |N|Hemet Nesingwary in Nesingwary's Expedition (35.65, 10.79)| |Z|Stranglethorn Vale|
-T Panther Mastery (Part 4) |QID|193| |N|Sir S. J. Erlgadin in Nesingwary's Expedition (35.55, 10.54)| |Z|Stranglethorn Vale|
+T Panther Mastery (Part 4) |QID|193| |N|Sir S. J. Erlgadin in Nesingwary's Expedition (35.55, 10.54)| |P|GROUP| |Z|Stranglethorn Vale|
 
 R The Savage Coast |QID|601| |N|Travel to The Savage Coast (27.43, 19.73)| |Z|Stranglethorn Vale|
 C Water Elementals |QID|601| |N|Kill Lesser Water Elemental for 6 Water Elemental Bracers (27.43, 19.73) (21.08, 23.20)| |Z|Stranglethorn Vale|
@@ -80,7 +80,7 @@ T The Green Hills of Stranglethorn |QID|338| |N|Barnil Stonepot (35.65, 10.51)| 
 C Raptor Mastery (Part 4) |QID|197| |N|Kill Tethis in Stranglethorn Vale - level 40 elite (28.68, 43.26)| |Z|Stranglethorn Vale|
 
 T Raptor Mastery (Part 4) |QID|197| |N|Hemet Nesingwary in Nesingwary's Expedition (35.65, 10.79)| |Z|Stranglethorn Vale|
-A Big Game Hunter |QID|208| |N|Hemet Nesingwary in Nesingwary's Expedition (35.65, 10.79)| |Z|Stranglethorn Vale|
+A Big Game Hunter |QID|208| |N|Hemet Nesingwary in Nesingwary's Expedition (35.65, 10.79)| |P|GROUP| |Z|Stranglethorn Vale|
 
 R Booty Bay |TID|628| |N|Travel or Hearthstone to Booty Bay (28.29, 77.60)| |Z|Stranglethorn Vale|
 T Excelsior |QID|628| |N|Drizzlik in Booty Bay (28.29, 77.60)| |Z|Stranglethorn Vale|

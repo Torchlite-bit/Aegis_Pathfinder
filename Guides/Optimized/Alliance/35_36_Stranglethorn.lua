@@ -50,7 +50,7 @@ A Raptor Mastery (Part 3) |QID|196| |N|Hemet Nesingwary in Nesingwary's Expediti
 T Hemet Nesingwary |QID|5762| |N|Hemet Nesingwary in Nesingwary's Expedition (35.67, 10.77)| |Z|Stranglethorn Vale| |O|
 T Tiger Mastery (Part 4) |QID|188| |N|Ajeck Rouack in Nesingwary's Expedition (35.63, 10.61)| |Z|Stranglethorn Vale|
 T Panther Mastery (Part 3) |QID|192| |N|Sir S. J. Erlgadin in Nesingwary's Expedition (35.58, 10.57)| |Z|Stranglethorn Vale|
-A Panther Mastery (Part 4) |QID|193| |N|Sir S. J. Erlgadin in Nesingwary's Expedition (35.58, 10.57)| |Z|Stranglethorn Vale|
+A Panther Mastery (Part 4) |QID|193| |N|Sir S. J. Erlgadin in Nesingwary's Expedition (35.58, 10.57)| |P|GROUP| |Z|Stranglethorn Vale|
 
 C Supply and Demand |QID|575| |N|Kill River Crocolisk for 2 Large River Crocolisk Skin (34.12, 9.70)| |Z|Stranglethorn Vale|
 C Singing Blue Shards |QID|605| |N|Kill Stone Maw Basilisk for Singing Crystal Shard (37, 8)| |Z|Stranglethorn Vale| |L|3918 5|
@@ -74,7 +74,7 @@ T Supplies to Private Thorsen |QID|198| |N|Private Thorsen in Rebel Camp (37.99,
 T The Spy Revealed! |QID|329| |N|Lieutenant Doren in Rebel Camp (38.05, 3.05)| |Z|Stranglethorn Vale|
 A Patrol Schedules |QID|330| |N|Lieutenant Doren in Rebel Camp (38.05, 3.05)| |Z|Stranglethorn Vale|
 T Special Forces |QID|574| |N|Lieutenant Doren in Rebel Camp (38.05, 3.05)| |Z|Stranglethorn Vale|
-A Colonel Kurzen |QID|202| |N|Lieutenant Doren in Rebel Camp (38.05, 3.05)| |Z|Stranglethorn Vale|
+A Colonel Kurzen |QID|202| |N|Lieutenant Doren in Rebel Camp (38.05, 3.05)| |P|GROUP| |Z|Stranglethorn Vale|
 T Patrol Schedules |QID|330| |N|Corporal Sethman in Rebel Camp (37.67, 3.39)| |Z|Stranglethorn Vale|
 A Report to Doren |QID|331| |N|Corporal Sethman in Rebel Camp (37.67, 3.39)| |Z|Stranglethorn Vale|
 T Report to Doren |QID|331| |N|Lieutenant Doren in Rebel Camp (38.04, 3.04)| |Z|Stranglethorn Vale|

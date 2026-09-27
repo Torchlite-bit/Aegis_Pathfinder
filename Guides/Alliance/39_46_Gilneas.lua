@@ -29,7 +29,7 @@ C Hollow Web Silk |QID|40925| |N|Kill Hollow Web Spiders and Venomspitters for s
 C To Numb the Pain |QID|41032| |N|Collect Hollow Web Venom from spiders around the cemetery (35, 72) (30, 70)| |Z|Gilneas|
 
 R Shademore Tavern |N|Travel north to Shademore Tavern (33.2, 53.4)| |Z|Gilneas|
-A Snarlclaw |QID|40945| |N|Maxwell Givings at Shademore Tavern (33.2, 53.4)| |Z|Gilneas|
+A Snarlclaw |QID|40945| |N|Maxwell Givings at Shademore Tavern (33.2, 53.4)| |P|GROUP| |Z|Gilneas|
 A Foulhide Pests |QID|40928| |N|Darrow Shademore at Shademore Tavern (33.3, 53.3)| |Z|Gilneas|
 A Allies Against Undeath |QID|40934| |N|Brother Elias at Shademore Tavern (33.5, 54.2)| |Z|Gilneas|
 
@@ -61,14 +61,14 @@ R Bloodclaw Cave |N|Travel west to the Bloodclaw worgen cave (38, 40)| |Z|Gilnea
 C Securing Gilneas I |QID|40926| |N|Kill Bloodclaw Worgen and collect pelts from the cave and surrounding area (38, 40) (42, 45)| |Z|Gilneas|
 
 R Wolfswood |N|Travel southwest to Wolfswood area (45, 43)| |Z|Gilneas|
-C Snarlclaw |QID|40945| |N|Find and slay Snarlclaw, an elite worgen in the cave above Mossgrove Farm (41.1, 40.7)| |Z|Gilneas|
+C Snarlclaw |QID|40945| |N|Find and slay Snarlclaw, an elite worgen in the cave above Mossgrove Farm (41.1, 40.7)| |P|GROUP| |Z|Gilneas|
 
 R Ruins of Greyshire |N|Travel south to the Ruins of Greyshire (34.5, 49.7)| |Z|Gilneas|
 C Allies Against Undeath |QID|40934| |N|Slay 7 Lingering Skeletons and 7 Shambling Dead in the ruins (35, 48) (32, 50)| |Z|Gilneas|
 
 R Shademore Tavern |N|Return to Shademore Tavern (33.2, 53.4)| |Z|Gilneas|
 T Rosewick Worries |QID|40933| |N|Frell Rosewick at Shademore Tavern (33.1, 54)| |Z|Gilneas|
-T Snarlclaw |QID|40945| |N|Maxwell Givings at Shademore Tavern (33.2, 53.4)| |Z|Gilneas|
+T Snarlclaw |QID|40945| |N|Maxwell Givings at Shademore Tavern (33.2, 53.4)| |P|GROUP| |Z|Gilneas|
 T Allies Against Undeath |QID|40934| |N|Brother Elias at Shademore Tavern (33.5, 54.2)| |Z|Gilneas|
 A Scarlet Corruption |QID|40935| |N|Brother Elias at Shademore Tavern (33.5, 54.2)| |PRE|40934| |Z|Gilneas|
 
@@ -164,7 +164,7 @@ N Gilneas City Dungeon |N|Quest 40956 (The Fall and Rise of Greymane) requires e
 N Font of Arcana |QID|40940| |N|Quest 40940 requires traveling to Badlands to kill blue dragonkin. Complete when visiting that zone.| |Z|Gilneas|
 N The Deed to Ravenshire |QID|40966| |N|Quest 40966 requires entering Gilneas City dungeon. Complete when running the dungeon.| |Z|Gilneas|
 
-N Optional Quests |N|Scarlet Corruption (40935) requires running Scarlet Monastery. The Gilneas Lighthouse chain (40929-40931) starts in Dustwallow Marsh.|
+N Optional Quests |N|Scarlet Corruption (40935) requires running Scarlet Monastery. The Gilneas Lighthouse chain (40929-40931) starts in Dustwallow Marsh.| |D|SM|
 
 N Guide Complete |N|You have completed the main Gilneas Alliance questline. Continue to your next zone or run Gilneas City dungeon for the remaining quests.|
 

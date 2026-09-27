@@ -16,7 +16,7 @@ A Regthar Deathgate |QID|1361| |N|Krusk in Tarren Mill (63.17, 20.70)| |Z|Hillsb
 
 R Growless Cave |QID|553| |N|Travel to Growless Cave in Alterac Mountains (37.54, 67.91)| |Z|Alterac Mountains|
 C Charge Flame of Uzel |QID|553| |OIDX|3| |N|Click Item Flame of Uzel in Growless Cave (37.54, 66.38)| |Z|Alterac Mountains|
-K Frostmaw |QID|1136| |N|Kill Frostmaw and collect Frostmaw's Mane in Growless Cave - group recommended (37.59, 65.84)| |Z|Alterac Mountains| |L|5808| |O|
+K Frostmaw |QID|1136| |N|Kill Frostmaw and collect Frostmaw's Mane in Growless Cave - group recommended (37.59, 65.84)| |P|GROUP| |Z|Alterac Mountains| |L|5808| |O|
 
 R Tarren Mill |TID|553| |N|Travel to Tarren Mill (61.59, 20.71)| |Z|Hillsbrad Foothills|
 T Helcular's Revenge (Part 2) |QID|553| |N|Use Rod of Helcular at Southshore (52.74, 53.26)| |Z|Hillsbrad Foothills| |O|

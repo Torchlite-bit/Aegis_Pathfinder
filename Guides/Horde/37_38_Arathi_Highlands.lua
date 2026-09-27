@@ -27,7 +27,7 @@ A Raising Spirits (Part 3) |QID|675| |N|Gor'mul in Hammerfall (72.68, 34.04)|
 T Raising Spirits (Part 3) |QID|675| |N|Tor'gan in Hammerfall (74.65, 36.34)|
 A Guile of the Raptor (Part 1) |QID|701| |N|Tor'gan in Hammerfall (74.61, 36.32)|
 T Trollbane |QID|638| |N|Zengu in Hammerfall (73.81, 33.87)| |O|
-A Sigil of Strom |QID|639| |N|Zengu in Hammerfall (73.81, 33.87)| |PRE|638|
+A Sigil of Strom |QID|639| |N|Zengu in Hammerfall (73.81, 33.87)| |PRE|638| |P|GROUP|
 A Foul Magics |QID|671| |N|Tor'gan in Hammerfall (74.61, 36.32)|
 A Guile of the Raptor (Part 1) |QID|701| |N|Tor'gan in Hammerfall (74.61, 36.32)|
 A The Princess Trapped |QID|642| |N|Shards of Myzrael west of Hammerfall (62.5, 33.8)|
@@ -55,14 +55,14 @@ C Foul Magics |QID|671| |N|Kill Syndicate Pathstalker, Syndicate Mercenary and S
 R Circle of West Binding |QID|651| |N|Travel to Circle of West Binding (25.4, 30.3)|
 C Burning Key |QID|651| |OIDX|1| |N|Get the Burning Key in Circle of West Binding (25.4, 30.3)|
 
-R Stromgarde Keep |QID|639| |N|Travel to Stromgarde Keep (26.28, 62.59)| |PRE|638|
-C Sigil of Strom |QID|639| |N|Kill Syndicate Prowler or Syndicate Conjuror until you find Sigil of Strom in Stromgarde Keep. This is a group quest only and safe to skip (26.28, 62.59)| |PRE|638|
+R Stromgarde Keep |QID|639| |N|Travel to Stromgarde Keep (26.28, 62.59)| |PRE|638| |P|GROUP|
+C Sigil of Strom |QID|639| |N|Kill Syndicate Prowler or Syndicate Conjuror until you find Sigil of Strom in Stromgarde Keep. This is a group quest only and safe to skip (26.28, 62.59)| |PRE|638| |P|GROUP|
 
 R Circle of Inner Binding |TID|651| |N|Travel to Circle of Inner Binding (36.13, 57.42)|
 T Stones of Binding |QID|651| |N|Stone of Inner Binding in Circle of Inner Binding (36.2, 57.5)|
-A Breaking the Keystone |QID|652| |N|Stone of Inner Binding in Circle of Inner Binding (36.13, 57.42)|
-C Breaking the Keystone |QID|652| |N|Find and kill Fozruk in Refuge Pointe. This is a group quest and not possible to solo. Safe to skip (42.81, 53.59)|
-T Breaking the Keystone |QID|652| |N|Keystone in Circle of Inner Binding (36.11, 57.93)|
+A Breaking the Keystone |QID|652| |N|Stone of Inner Binding in Circle of Inner Binding (36.13, 57.42)| |P|GROUP|
+C Breaking the Keystone |QID|652| |N|Find and kill Fozruk in Refuge Pointe. This is a group quest and not possible to solo. Safe to skip (42.81, 53.59)| |P|GROUP|
+T Breaking the Keystone |QID|652| |N|Keystone in Circle of Inner Binding (36.11, 57.93)| |P|GROUP|
 
 R Hammerfall |QID|677| |N|Travel to Hammerfall (74.61, 36.32)|
 T Foul Magics |QID|671| |N|Tor'gan in Hammerfall (74.61, 36.32)|
@@ -111,20 +111,20 @@ A Sunken Treasure (Part 3) |QID|668| |N|Doctor Draxlegauge in Faldir's Cove (33.
 T Sunken Treasure (Part 3) |QID|668| |N|Shakes O'Breen in Faldir's Cove (32.31, 81.52)|
 A Sunken Treasure (Part 4) |QID|669| |N|Shakes O'Breen in Faldir's Cove (32.31, 81.52)|
 
-N Optional Group Quests |QID|679| |N|The rest of the guide are group quest only, these are optional and safe to skip to the next guide. Tick this step|
+N Optional Group Quests |QID|679| |N|The rest of the guide are group quest only, these are optional and safe to skip to the next guide. Tick this step| |P|GROUP|
 A Call to Arms (Part 3) |QID|679| |N|Drum Fel in Hammerfall (74.22, 33.77)|
-A The Broken Sigil |QID|640| |N|Zengu in Hammerfall (73.84, 33.95)|
-A The Real Threat |QID|680| |N|Korin Fel in Hammerfall (74.03, 33.16)|
+A The Broken Sigil |QID|640| |N|Zengu in Hammerfall (73.84, 33.95)| |P|GROUP|
+A The Real Threat |QID|680| |N|Korin Fel in Hammerfall (74.03, 33.16)| |P|GROUP|
 A Foul Magics |QID|673| |N|Tor'gan in Hammerfall (74.65, 36.27)|
-C The Broken Sigil |QID|640| |N|Collect 11 Sigil Fragment from the defenders in Stromgarde Keep (23.70, 59.12)|
+C The Broken Sigil |QID|640| |N|Collect 11 Sigil Fragment from the defenders in Stromgarde Keep (23.70, 59.12)| |P|GROUP|
 C Foul Magics |QID|673| |N|Kill Marez Cowl and collect Befouled Bloodstone Orb in Stromgarde Keep (28.95, 61.09)|
-C The Real Threat |QID|680| |N|Kill Or'Kalar and collect Or'Kalar's Head in Stromgarde Keep (20.85, 64.93)|
+C The Real Threat |QID|680| |N|Kill Or'Kalar and collect Or'Kalar's Head in Stromgarde Keep (20.85, 64.93)| |P|GROUP|
 C Call to Arms (Part 3) |QID|679| |OIDX|1| |N|Kill 15 Boulderfist Shaman and 10 Boulderfist Lord in Stromgarde Keep (18.90, 67.50)|
 
 R Hammerfall |TID|673| |N|Travel to Hammerfall (74.16, 33.82)|
 T Call to Arms (Part 3) |QID|679| |N|Drum Fel in Hammerfall (74.16, 33.82)|
-T The Real Threat |QID|680| |N|Korin Fel in Hammerfall (74.05, 33.22)|
-T The Broken Sigil |QID|640| |N|Tor'gan in Hammerfall (74.69, 36.46)|
+T The Real Threat |QID|680| |N|Korin Fel in Hammerfall (74.05, 33.22)| |P|GROUP|
+T The Broken Sigil |QID|640| |N|Tor'gan in Hammerfall (74.69, 36.46)| |P|GROUP|
 T Foul Magics |QID|673| |N|Tor'gan in Hammerfall (74.69, 36.46)|
 
 N Guide Complete |N|Tick to continue to the next guide|

@@ -187,10 +187,10 @@ T Taming the Beast (Part 3) |QID|6082| |N|Thotar in Razor Hill (51.87, 43.49)| |
 A Training the Beast |QID|6081| |N|Thotar in Razor Hill (52.01, 43.48)| |C|Hunter| |LV|10|
 A Gan'rul's Summons |QID|1506| |N|Ophek in Razor Hill (54.21, 41.04)| |C|Warlock| |LV|10|
 
-R Orgrimmar |QID|5726| |N|Travel to Orgrimmar (33, 37)| |Z|Orgrimmar|
+R Orgrimmar |QID|5726| |N|Travel to Orgrimmar (33, 37)| |D|RFC| |Z|Orgrimmar|
 A Speak with Un'thuwa |QID|1883| |N|Uthel'nay in Valley of Spirits (38.86, 86.28)| |Z|Orgrimmar|
 T The Admiral's Orders (Part 2) |QID|831| |N|Nazgrel in Grommash Hold (32.40, 36.03)| |Z|Orgrimmar|
-A Hidden Enemies (Part 1) |QID|5726| |N|Thrall in Grommash Hold (32.00, 37.86)| |Z|Orgrimmar|
+A Hidden Enemies (Part 1) |QID|5726| |N|Thrall in Grommash Hold (32.00, 37.86)| |D|RFC| |Z|Orgrimmar|
 A Finding the Antidote |QID|813| |N|Kor'ghan in Cleft of Shadow (47.00, 53.56)| |Z|Orgrimmar|
 T Training the Beast |QID|6081| |N|Ormak Grimshot in Valley of Honor (66.07, 18.59)| |C|Hunter| |Z|Orgrimmar|
 
@@ -234,15 +234,15 @@ A Skull Rock |QID|827| |N|Margoz in Durotar (56.38, 20.15)|
 R Skull Rock |QID|827| |N|Travel to Skull Rock (55.10, 9.91)|
 C Creature of the Void |QID|1501| |N|Follow the path around the right side of the cave and collect Tablet of Verga from the chest in Skull Rock (52.83, 7.84) (51.41, 8.50) (51.61, 9.71)| |C|Warlock|
 C Skull Rock |QID|827| |N|Kill Burning Blade Apprentice, Burning Blade Fanatic and collect 6 Searing Collar in Skull Rock (54.06, 8.86)|
-C Hidden Enemies (Part 1) |QID|5726| |N|Kill Burning Blade Apprentice until you find Lieutenant's Insignia in Skull Rock (54.06, 8.86)|
+C Hidden Enemies (Part 1) |QID|5726| |N|Kill Burning Blade Apprentice until you find Lieutenant's Insignia in Skull Rock (54.06, 8.86)| |D|RFC|
 K Gazz'uz |QID|832| |N|Kill Gazz'uz to collect Eye of Burning Shadow to start a quest. Use the Faintly Glowing Skull on him to help if you still have this. (52.6, 8.8)(51.5, 9.7).  Skip this if you fail| |U|4945| |L|4903|
 A Burning Shadows |QID|832| |N|Use Eye of Burning Shadow to accept quest| |Z|Orgrimmar| |U|4903| |O|
 T Skull Rock |QID|827| |N|Margoz in Durotar (56.35, 20.05)|
 A Neeru Fireblade |QID|829| |N|Margoz in Durotar (56.35, 20.05)|
 
 R Grommash Hold |TID|5726| |N|Travel to Grommash Hold (31.98, 37.83)| |Z|Orgrimmar|
-T Hidden Enemies (Part 1) |QID|5726| |N|Thrall in Grommash Hold (31.98, 37.83)| |Z|Orgrimmar|
-A Hidden Enemies (Part 2) |QID|5727| |N|Thrall in Grommash Hold (31.98, 37.83)| |Z|Orgrimmar|
+T Hidden Enemies (Part 1) |QID|5726| |N|Thrall in Grommash Hold (31.98, 37.83)| |D|RFC| |Z|Orgrimmar|
+A Hidden Enemies (Part 2) |QID|5727| |N|Thrall in Grommash Hold (31.98, 37.83)| |D|RFC| |Z|Orgrimmar|
 T Neeru Fireblade |QID|829| |N|Neeru Fireblade in Cleft of Shadow (49.56, 50.46)| |Z|Orgrimmar|
 A Ak'Zeloth |QID|809| |N|Neeru Fireblade in Cleft of Shadow (49.56, 50.46)| |Z|Orgrimmar|
 T Creature of the Void |QID|1501| |N|Gan'rul Bloodeye in Cleft of Shadow (48.26, 45.41)| |C|Warlock|
@@ -250,9 +250,9 @@ A The Binding |QID|1504| |N|Gan'rul Bloodeye in Cleft of Shadow (48.26, 45.41)| 
 C The Binding |QID|1504| |N|Using the Glyphs of Summoning summon on the purple summoning circle and subdue a Summoned Voidwalker in Cleft of Shadow (45.60, 0.07)| |U|7464| |C|Warlock|
 T The Binding |QID|1504| |N|Gan'rul Bloodeye in Cleft of Shadow (48.26, 45.41)| |C|Warlock|
 
-C Hidden Enemies (Part 2) |QID|5727| |N|Talk to Neeru Fireblade in Cleft of Shadow (49.56, 50.46)| |Z|Orgrimmar|
+C Hidden Enemies (Part 2) |QID|5727| |N|Talk to Neeru Fireblade in Cleft of Shadow (49.56, 50.46)| |D|RFC| |Z|Orgrimmar|
 T Burning Shadows |QID|832| |N|Neeru Fireblade in Cleft of Shadow (49.56, 50.46)| |Z|Orgrimmar|
-T Hidden Enemies (Part 2) |QID|5727| |N|Thrall in Grommash Hold (31.98, 37.83)| |Z|Orgrimmar|
+T Hidden Enemies (Part 2) |QID|5727| |N|Thrall in Grommash Hold (31.98, 37.83)| |D|RFC| |Z|Orgrimmar|
 N Lieutenant's Insignia |N|Destroy Lieutenant's Insignia, it is not used for anything else. Tick this step| |L|14544| |O|
 
 R Razor Hill |QID|840| |N|Travel to Razor Hill (50.89, 43.58)|

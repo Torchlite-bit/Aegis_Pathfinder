@@ -37,7 +37,7 @@ N Goodsteel Ledger |QID|4450| |N|Store Goodsteel Ledger in the bank. Tick this s
 N Solid Crystal Leg Shaft |QID|4450| |N|Store Solid Crystal Leg Shaft in the bank. Tick this step (26.6, 76.4)| |Z|Stranglethorn Vale| |L|11725| |O| 
 N Goodsteel's Balanced Flameberge |QID|4450| |N|Store Goodsteel's Balanced Flameberge in the bank. Tick this step (26.6, 76.4)| |Z|Stranglethorn Vale| |L|11723| |O| 
 N Torch of Retribution |N|Store Torch of Retribution in the bank. Tick this step (26.6, 76.4)| |Z|Stranglethorn Vale| |L|10515| |O| 
-N Black Dragonflight Molt |QID|4022| |N|Store Black Dragonflight Molt in the bank. Tick this step (26.6, 76.4)| |Z|Stranglethorn Vale| |L|10575| |O| 
+N Black Dragonflight Molt |QID|4022| |N|Store Black Dragonflight Molt in the bank. Tick this step (26.6, 76.4)| |P|GROUP| |Z|Stranglethorn Vale| |L|10575| |O| 
 N Dark Iron Scraps |QID|9131| |N|Store Dark Iron Scraps in the bank. Tick this step (26.6, 76.4)| |Z|Stranglethorn Vale| |L|22528| |O| 
 N Core of Elements |QID|9128| |N|Store Core of Elements in the bank. Tick this step (26.6, 76.4)| |Z|Stranglethorn Vale| |L|22527| |O| 
 N Wildkin Muisek |QID|3123| |N|Withdraw Wildkin Muisek from the bank. Tick this step (26.6, 76.4)| |Z|Stranglethorn Vale| |L|9594| |OO| 

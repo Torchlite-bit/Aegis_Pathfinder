@@ -36,9 +36,9 @@ N Wastewander Water Pouch |QID|1691| |N|Withdraw Wastewander Water Pouch from th
 N Hippogryph Egg |QID|2741| |N|Withdraw Hippogryph Egg from the bank . Tick this step (54.2, 28.8)| |Z|Tanaris| |L|8564| |OO|
 N Long Elegant Feather |QID|7842| |N|Store Long Elegant Feather at the bank. Tick this step (54.2, 28.8)| |Z|Tanaris| |L|4589| |O|
 
-R Broken Pillar |QID|3444| |N|Travel to Broken Pillar (52.72, 45.92)| |Z|Tanaris|
-T The Sunken Temple |QID|3380| |N|Marvon Rivetseeker in Broken Pillar (52.72, 45.92)| |Z|Tanaris|
-A The Stone Circle |QID|3444| |N|Marvon Rivetseeker in Broken Pillar (52.72, 45.92)| |Z|Tanaris|
+R Broken Pillar |QID|3444| |N|Travel to Broken Pillar (52.72, 45.92)| |D|ST| |Z|Tanaris|
+T The Sunken Temple |QID|3380| |N|Marvon Rivetseeker in Broken Pillar (52.72, 45.92)| |D|ST| |Z|Tanaris|
+A The Stone Circle |QID|3444| |N|Marvon Rivetseeker in Broken Pillar (52.72, 45.92)| |D|ST| |Z|Tanaris|
 A Gahz'ridian |QID|3161| |N|Marvon Rivetseeker in Broken Pillar (52.72, 45.92)| |Z|Tanaris|
 U Gahz'ridian Detector |QID|3161| |N|Use Gahz'ridian Detector to help you find 30 Gahz'ridian Ornament from the small sand mound on the ground| |U|9978| |OBJ|1767|
 

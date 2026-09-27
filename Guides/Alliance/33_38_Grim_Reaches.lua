@@ -108,7 +108,7 @@ A The Dragonmaw War |QID|41865| |N|Mountaineer Steelwind (46.5, 35.3)| |Z|Grim R
 
 C The Dragonmaw War |QID|41865| |N|Slay 12 Dragonmaw Invaders, 10 Dragonmaw Renegades, 10 Dragonmaw Flamebinders, and the warband leader Grathok Flamehand (40, 40) (38, 45)| |Z|Grim Reaches|
 T The Dragonmaw War |QID|41865| |N|Mountaineer Steelwind (46.5, 35.3)| |Z|Grim Reaches|
-A The Dragonmaw War |QID|41880| |N|Mountaineer Steelwind (46.5, 35.3)| |Z|Grim Reaches|
+A The Dragonmaw War |QID|41880| |N|Mountaineer Steelwind (46.5, 35.3)| |P|GROUP| |Z|Grim Reaches|
 
 R Geth'kar |QID|41866| |N|Travel to Geth'kar, the Dragonmaw camp (35, 35)| |Z|Grim Reaches|
 A Assault on Geth'kar |QID|41866| |N|Garlin Redbrand in Dun Kithas assigns this. Steal crates from Geth'kar (48, 34)| |Z|Grim Reaches|
@@ -119,8 +119,8 @@ A The Lost Archives |QID|41874| |N|Sorgan Trustgrip in Dun Kithas assigns this. 
 C The Lost Archives |QID|41874| |N|Recover 6 Wildhammer Archive Books from Stolgaz Keep (25, 30) (23, 28)| |Z|Grim Reaches|
 C Crystal Clear Impression |QID|41879| |N|Find a Stormwrought Crystal in the ruins (24, 32)| |Z|Grim Reaches|
 
-R Zarm'geth Stronghold |QID|41880| |N|Travel to Zarm'geth Stronghold (30, 25)| |Z|Grim Reaches|
-C The Dragonmaw War |QID|41880| |N|Slay 10 Dragonmaw Elite and 10 Dragonmaw Champions in Zarm'geth Stronghold. This is an elite area - consider grouping (30, 25) (28, 22)| |Z|Grim Reaches|
+R Zarm'geth Stronghold |QID|41880| |N|Travel to Zarm'geth Stronghold (30, 25)| |P|GROUP| |Z|Grim Reaches|
+C The Dragonmaw War |QID|41880| |N|Slay 10 Dragonmaw Elite and 10 Dragonmaw Champions in Zarm'geth Stronghold. This is an elite area - consider grouping (30, 25) (28, 22)| |P|GROUP| |Z|Grim Reaches|
 
 R Baggoth's Wall |TID|41872| |N|Return to Baggoth's Wall (45.8, 48.5)| |Z|Grim Reaches|
 T Provisions for War |QID|41872| |N|Mountaineer Lightboots (45.8, 48.5)| |Z|Grim Reaches|
@@ -149,9 +149,9 @@ A Ore Must Flow Return |N|Return to Dun Kithas with the news|
 
 F Dun Kithas |N|Fly back to Dun Kithas| |Z|Ironforge|
 
-T The Dragonmaw War |QID|41880| |N|Mountaineer Steelwind (46.5, 35.3)| |Z|Grim Reaches|
-A The Dragonmaw War |QID|41882| |N|Mountaineer Steelwind (46.5, 35.3)| |Z|Grim Reaches|
-T The Dragonmaw War |QID|41882| |N|Magistrate Hurdam Toughhand in Dun Kithas (51, 57.6)| |Z|Grim Reaches|
+T The Dragonmaw War |QID|41880| |N|Mountaineer Steelwind (46.5, 35.3)| |P|GROUP| |Z|Grim Reaches|
+A The Dragonmaw War |QID|41882| |N|Mountaineer Steelwind (46.5, 35.3)| |P|GROUP| |Z|Grim Reaches|
+T The Dragonmaw War |QID|41882| |N|Magistrate Hurdam Toughhand in Dun Kithas (51, 57.6)| |P|GROUP| |Z|Grim Reaches|
 
 N Optional: Letter from Korlag Doomsong |QID|41883| |N|If you find the Letter from Korlag Doomsong (drops from Dragonmaw), bring it to Magistrate Hurdam Toughhand for the quest chain to kill Korlag Doomsong in Zarm'geth Stronghold| |O|
 
@@ -162,7 +162,7 @@ A To Cure the Withered |QID|41849| |N|Ranger Faellina Swiftstride| |Z|Grim Reach
 C To Cure the Withered |QID|41849| |N|Find a Replenishable Mana Crystal inside the Grim Passage (38, 48)| |Z|Grim Reaches|
 T To Cure the Withered |QID|41849| |N|Ranger Faellina Swiftstride| |Z|Grim Reaches|
 
-N Guide Complete |N|You have completed the Grim Reaches guide. The zone offers additional content including the Shadow Curse quest chain with Dorthas Read, optional elite quests in Zarm'geth Stronghold, and the Destruction of the Dragonmaw if you found Korlag's letter. Continue to Dustwallow Marsh (38-39).|
+N Guide Complete |N|You have completed the Grim Reaches guide. The zone offers additional content including the Shadow Curse quest chain with Dorthas Read, optional elite quests in Zarm'geth Stronghold, and the Destruction of the Dragonmaw if you found Korlag's letter. Continue to Dustwallow Marsh (38-39).| |P|GROUP|
 
 ]]
 end)

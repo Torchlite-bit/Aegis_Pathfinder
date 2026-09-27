@@ -1,4 +1,5 @@
-"""The Herbalism, Skinning and Fishing guides, from Tools/data/gathering.json.
+"""The Herbalism, Skinning and Fishing guides, and where Mining's ore is,
+from Tools/data/gathering.json.
 
 Used by Tools/convert_professions.py. A gathering profession levels by going
 somewhere, not by making something, so each skill band is one step naming
@@ -10,6 +11,10 @@ the best places for it -- worked out from the data, never typed in:
              with most of them (normal creatures only; no elites).
   Fishing    the zones where nothing gets away at the band's skill -- a zone
              is fished clean at 95 over its base skill -- highest first.
+  Mining     not a guide of its own: the smelting route comes from the
+             professions document, and each of its steps is given, per
+             faction, where the ore it smelts is mined -- or, for a step that
+             levels by mining, the zones scored as Herbalism's are.
 
 Where a zone is on your side of the map comes from this repository's own zone
 guides: a zone with a guide only in Guides/Alliance/ is Alliance ground, one
@@ -357,6 +362,89 @@ def artisan_fishing(trainer, quest):
 
 
 # --------------------------------------------------------------------------
+# Mining
+# --------------------------------------------------------------------------
+
+def ores_for(step, mines):
+    """The ores a step's reagents come from: an ore a vein yields, or a bar
+    named for one ("Tin Bar" from "Tin Ore"), checked against the veins."""
+    mined = {m["ore"] for m in mines}
+    out = []
+    for r in step.get("reagents") or []:
+        item = r["item"]
+        ore = item if item in mined else (item[:-4] + " Ore" if item.endswith(" Bar") else None)
+        if ore in mined and ore not in out:
+            out.append(ore)
+    return out
+
+
+def near_level(zones, faction, skill):
+    """Zones a character at `skill` is likely to be levelling in: ones this
+    addon's guides start by level skill / 5 + 15. Loose on purpose -- skill
+    and level are only loosely tied -- it keeps the copper miner out of a
+    level-35 zone that happens to be full of copper, and little else."""
+    return lambda z: zones[z]["levels"].get(faction, (0, 0))[0] <= skill // 5 + 15
+
+
+def pick(score, keep, top):
+    """The top zones among those `keep` allows -- or among all of them, when
+    it allows too few."""
+    kept = [z for z, _ in score.most_common() if keep(z)]
+    return (kept if len(kept) >= top else [z for z, _ in score.most_common()])[:top]
+
+
+def ore_zones(mines, zones, faction, ore, top=3):
+    """The zones with most veins yielding `ore`, the lowest-skill veins
+    first -- the ones you can mine soonest."""
+    veins = sorted((m for m in mines if m["ore"] == ore), key=lambda m: m["skill"])
+    score = collections.Counter()
+    for zone, n in veins[0]["zones"].items():
+        if open_to(zones, zone, faction) and not zones[zone].get("city"):
+            score[zone] += n
+    return veins[0]["name"], pick(score, near_level(zones, faction, veins[0]["skill"]), top)
+
+
+def mine_zones(mines, zones, faction, skill, top=3):
+    """Herbalism's scoring, for veins: nodes that can still raise `skill`."""
+    score, what = collections.Counter(), collections.defaultdict(collections.Counter)
+    for m in mines:
+        w = gather_weight(skill - m["skill"])
+        if not w:
+            continue
+        for zone, n in m["zones"].items():
+            if open_to(zones, zone, faction) and not zones[zone].get("city"):
+                score[zone] += w * n
+                what[zone][m["name"]] += w * n
+    return [(zone, [name for name, _ in what[zone].most_common(2)])
+            for zone in pick(score, near_level(zones, faction, skill), top)]
+
+
+def mining_places(step, data, zones):
+    """One copy of a Mining route step per faction, its note saying where to
+    mine: for the ore a smelting step uses, or -- for a step that levels by
+    mining -- the best zones for the band."""
+    out, lo, hi = [], step["skill"]["from"], step["skill"]["to"]
+    ores = ores_for(step, data["mines"])
+    for fac in FACTIONS:
+        if ores:
+            parts = []
+            for ore in ores:
+                vein, where_ = ore_zones(data["mines"], zones, fac, ore)
+                if where_:
+                    parts.append("%s: mine %ss, most in %s" % (ore, vein, join(label(zones, z, fac) for z in where_)))
+            extra = (" %s. Or buy %s." % ("; ".join(parts), "it" if len(parts) == 1 else "them")) if parts else ""
+        else:
+            best = mine_zones(data["mines"], zones, fac, lo + (hi - lo) // 3)
+            extra = " Best: %s." % "; ".join("%s: %s" % (label(zones, z, fac), ", ".join(v)) for z, v in best) \
+                if best else ""
+        copy = dict(step)
+        copy["faction"] = fac
+        copy["note"] = step["note"] + extra
+        out.append(copy)
+    return out
+
+
+# --------------------------------------------------------------------------
 
 BUILDERS = {"Herbalism": herbalism, "Skinning": skinning, "Fishing": fishing}
 
@@ -375,6 +463,16 @@ INTRO = {
 def load(path=DATA):
     with open(path, encoding="utf-8") as fh:
         return json.load(fh)
+
+
+_context = {}
+
+
+def context():
+    """The data and zone table, read once."""
+    if not _context:
+        _context["data"], _context["zones"] = load(), zone_table()
+    return _context["data"], _context["zones"]
 
 
 def build(prof, data=None, zones=None):

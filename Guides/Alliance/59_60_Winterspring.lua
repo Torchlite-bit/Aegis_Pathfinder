@@ -44,10 +44,10 @@ T Cache of Mau'ari |QID|975| |N|Storm Shadowhoof in Everlook (61.92, 38.29)| |Z|
 
 R Frostfire Hot Springs |TID|5087| |N|Travel to Frostfire Hot Springs (31.28, 45.17)| |Z|Winterspring| |PRE|5086|
 T Winterfall Runners |QID|5087| |N|Donova Snowden in Frostfire Hot Springs (31.28, 45.17)| |Z|Winterspring| |PRE|5086|
-A High Chief Winterfall |QID|5121| |N|Donova Snowden in Frostfire Hot Springs (31.28, 45.17)| |Z|Winterspring| |PRE|5087|
+A High Chief Winterfall |QID|5121| |N|Donova Snowden in Frostfire Hot Springs (31.28, 45.17)| |P|GROUP| |Z|Winterspring| |PRE|5087|
 
-R Winterfall Village |QID|5121| |N|Travel to Winterfall Village (69.69, 38.26)| |Z|Winterspring| |PRE|5087|
-C High Chief Winterfall |QID|5121| |N|Kill High Chief Winterfall in Winterfall Village, he's a level 59 elite (69.69, 38.26)| |Z|Winterspring| |PRE|5087|
+R Winterfall Village |QID|5121| |N|Travel to Winterfall Village (69.69, 38.26)| |P|GROUP| |Z|Winterspring| |PRE|5087|
+C High Chief Winterfall |QID|5121| |N|Kill High Chief Winterfall in Winterfall Village, he's a level 59 elite (69.69, 38.26)| |P|GROUP| |Z|Winterspring| |PRE|5087|
 N Crudely-written Log |QID|5123| |N|Collect Crudely-written Log from High Chief Winterfall in Winterfall Village (69.69, 38.26)| |Z|Winterspring| |L|12842| |PRE|5087|
 A The Final Piece |QID|5123| |N|Use Crudely-written Log to accept quest| |Z|Winterspring| |U|12842| |PRE|5087|
 

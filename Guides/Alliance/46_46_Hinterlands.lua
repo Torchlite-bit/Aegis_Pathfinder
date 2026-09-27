@@ -19,18 +19,18 @@ A Troll Necklace Bounty |QID|2880| |N|Fraggar Thundermantle in Wildhammer Keep (
 A Cracking the Witherbark |QID|60071| |N|Drakin Swiftaxe in Wildhammer Keep (14.8, 44.4)| |Z|The Hinterlands|
 A Proving A Point |QID|41140| |N|Brok Thunderforge in Wildhammer Keep (10.0, 48.7)| |Z|The Hinterlands|
 
-T To The Hinterlands |QID|1449| |N|Archmage Ansirem Runeweaver in Aerie Peak (11.80, 46.74)| |Z|The Hinterlands|
-A Gryphon Master Talonaxe |QID|1450| |N|Falstad Wildhammer in Aerie Peak (11.90, 46.58)| |Z|The Hinterlands|
+T To The Hinterlands |QID|1449| |N|Archmage Ansirem Runeweaver in Aerie Peak (11.80, 46.74)| |D|ST| |Z|The Hinterlands|
+A Gryphon Master Talonaxe |QID|1450| |N|Falstad Wildhammer in Aerie Peak (11.90, 46.58)| |D|ST| |Z|The Hinterlands|
 f Aerie Peak |TID|1450| |N|Speak to Guthrum Thunderfist and grab flight path for Aerie Peak (11.09, 46.16)| |Z|The Hinterlands|
-T Gryphon Master Talonaxe |QID|1450| |N|Archmage Ansirem Runeweaver in Aerie Peak (9.77, 44.45)| |Z|The Hinterlands|
-A Rhapsody Shindigger |QID|1451| |N|Gryphon Master Talonaxe in Aerie Peak (9.77, 44.45)| |Z|The Hinterlands|
+T Gryphon Master Talonaxe |QID|1450| |N|Archmage Ansirem Runeweaver in Aerie Peak (9.77, 44.45)| |D|ST| |Z|The Hinterlands|
+A Rhapsody Shindigger |QID|1451| |N|Gryphon Master Talonaxe in Aerie Peak (9.77, 44.45)| |D|ST| |Z|The Hinterlands|
 A Witherbark Cages |QID|2988| |N|Gryphon Master Talonaxe in Aerie Peak (9.77, 44.45)| |Z|The Hinterlands|
 h Wildhammer Keep |QID|3661| |N|Speak to Innkeeper Thulfram and set hearth at Wildhammer Keep (13.52, 44.76) (13.46, 43.97) (13.46, 41.66) (13.91, 42.24)| |Z|The Hinterlands|
 
 N As you go... |AYG|2988| |QID|3661| |N|Collect 15 Wildkin Feather scattered around The Hinterlands| |OBJ|2630|
-R Shindigger's Camp |QID|1452| |N|Travel to Shindigger's Camp (20.00, 48.33) (26.93, 48.60)| |Z|The Hinterlands|
-T Rhapsody Shindigger |QID|1451| |N|Rhapsody Shindigger in Shindigger's Camp (26.93, 48.60)| |Z|The Hinterlands|
-A Rhapsody's Kalimdor Kocktail |QID|1452| |N|Rhapsody Shindigger in Shindigger's Camp (26.93, 48.60)| |Z|The Hinterlands|
+R Shindigger's Camp |QID|1452| |N|Travel to Shindigger's Camp (20.00, 48.33) (26.93, 48.60)| |D|ST| |Z|The Hinterlands|
+T Rhapsody Shindigger |QID|1451| |N|Rhapsody Shindigger in Shindigger's Camp (26.93, 48.60)| |D|ST| |Z|The Hinterlands|
+A Rhapsody's Kalimdor Kocktail |QID|1452| |N|Rhapsody Shindigger in Shindigger's Camp (26.93, 48.60)| |D|ST| |Z|The Hinterlands|
 C Check First Cage |QID|2988| |OIDX|1| |N|Click First Witherbark Cage in Zun'watha (23.27, 58.71)| |Z|The Hinterlands| |OBJ|676|
 C Check Second Cage |QID|2988| |OIDX|2| |N|Click Second Witherbark Cage in Zun'watha (23.13, 58.73)| |Z|The Hinterlands| |OBJ|676|
 C Cracking the Witherbark |QID|60071| |N|Kill 10 Witherbark Scalper, 10 Witherbark Zealot and 5 Witherbark Venomblood (23.13, 58.73)| |Z|The Hinterlands|
@@ -45,9 +45,9 @@ A Rescue OOX-09/HL! |QID|836| |N|Homing Robot OOX-09/HL in Agol'watha (49.36, 37
 C Skulk Rock Clean-up |QID|2877| |N|Kill 10 Green Sludge and 10 Jade Ooze in Agol'watha (46.35, 40.24)| |Z|The Hinterlands|
 C Proving A Point |QID|41140| |N|Keep killing Green Sludge and Jade Ooze if you have not already looted 15 Etched Mithril Shard (46.35, 40.24)| |Z|The Hinterlands| |OBJ|41000|
 
-R The Overlook Cliffs |QID|2944| |N|Travel to The Overlook Cliffs (72.36, 66.07)| |Z|The Hinterlands|
+R The Overlook Cliffs |QID|2944| |N|Travel to The Overlook Cliffs (72.36, 66.07)| |P|GROUP| |Z|The Hinterlands|
 N As you go... |QID|40540| |N|Kill Saltwater Snapjaw until you have 1 Turtle Meat (72.36, 66.07)| |Z|The Hinterlands| |OBJ|3712|
-C The Super Snapper FX |QID|2944| |OIDX|1| |N|Use Super Snapper FX on the elite turtle Gammerita in The Overlook Cliffs. You don't need to kill the elite, get close enough to take a snap and then run as Gammerita will aggro (72.36, 66.07) (76.72, 60.63) (79.83, 58.12)| |Z|The Hinterlands| |U|9328|
+C The Super Snapper FX |QID|2944| |OIDX|1| |N|Use Super Snapper FX on the elite turtle Gammerita in The Overlook Cliffs. You don't need to kill the elite, get close enough to take a snap and then run as Gammerita will aggro (72.36, 66.07) (76.72, 60.63) (79.83, 58.12)| |P|GROUP| |Z|The Hinterlands| |U|9328|
 
 A An Unusual Find |QID|40540| |N|Murloc Tadpole in The Overlook Cliffs (79.6, 62.6)| |Z|The Hinterlands|
 C An Unusual Find |QID|40540| |N|Kill Saltwater Snapjaw until you have 1 Turtle Meat (72.36, 66.07)| |Z|The Hinterlands| |OBJ|3712|
@@ -73,8 +73,8 @@ R City of Ironforge |QID|3448| |N|Travel to Hall of Explorers in City of Ironfor
 N Leftwitch's Package |QID|1467| |N|Withdraw Leftwitch's Package from the bank. Tick this step (35.48, 60.70)| |Z|Ironforge| |L|6253| |OO|
 N Kravel's Scheme |QID|1118| |N|Withdraw Kravel's Scheme from the bank. Tick this step (35.48, 60.70)| |Z|Ironforge| |L|5826| |OO|
 N Stoley's Bottle |QID|2874| |N|Withdraw Stoley's Bottle from the bank. Tick this step (35.48, 60.70)| |Z|Ironforge| |L|9245| |OO|
-N Snapshot of Gammerita |QID|2944| |N|Store Snapshot of Gammerita to the bank (35.48, 60.70)| |Z|Ironforge| |L|9330| |O|
-N Super Snapper FX |QID|2944| |N|Store Super Snapper FX to the bank (35.48, 60.70)| |Z|Ironforge| |L|9328| |O|
+N Snapshot of Gammerita |QID|2944| |N|Store Snapshot of Gammerita to the bank (35.48, 60.70)| |P|GROUP| |Z|Ironforge| |L|9330| |O|
+N Super Snapper FX |QID|2944| |N|Store Super Snapper FX to the bank (35.48, 60.70)| |P|GROUP| |Z|Ironforge| |L|9328| |O|
 N Wildkin Feather |QID|3661| |N|Store Wildkin Feather to the bank (35.48, 60.70)| |Z|Ironforge| |L|10819| |O|
 T Reagents for Reclaimers Inc. |QID|1467| |N|Roetten Stonehammer in Hall of Explorers (68.00, 17.78)| |Z|Ironforge|
 A Passing the Burden |QID|3448| |N|Historian Karnik in The Library (77.48, 11.82)| |Z|Ironforge|

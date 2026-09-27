@@ -41,8 +41,8 @@ R Stormwind City |QID|1651| |N|Travel to Stormwind City (38.49, 82.62)| |Z|Storm
 N Letter to Delgren |QID|967| |N|Withdraw Letter to Delgren from the bank. Tick this step (57.00, 72.81)| |Z|Stormwind City| |L|5354| |OO|
 N Fandral's Message |QID|952| |N|Withdraw Fandral's Message from the bank. Tick this step (57.00, 72.81)| |Z|Stormwind City| |L|5390| |OO|
 
-R Auberdine |QID|4740| |N|Travel to Auberdine (37.21, 44.27)|
-A WANTED: Murkdeep! |QID|4740| |N|Wanted Poster in Auberdine (37.21, 44.27)|
+R Auberdine |QID|4740| |N|Travel to Auberdine (37.21, 44.27)| |P|GROUP|
+A WANTED: Murkdeep! |QID|4740| |N|Wanted Poster in Auberdine (37.21, 44.27)| |P|GROUP|
 A How Big a Threat? (Part 1) |QID|984| |N|Terenthis in Auberdine (39.35, 43.46)|
 A The Absent Minded Prospector (Part 1) |QID|729| |N|Archaeologist Hollee in Auberdine (37.48, 41.85)|
 C How Big a Threat? (Part 1) |QID|984| |N|Find a corrupt furbolg camp in Darkshore; You just need to reach the waypoint to complete the quest (39.92, 53.62)|
@@ -74,13 +74,13 @@ A The Powers Below |QID|968| |N|Use Book: The Powers Below to accept the quest| 
 T The Absent Minded Prospector (Part 1) |QID|729| |N|Prospector Remtravel in Remtravel's Excavation (35.75, 83.69)|
 A The Absent Minded Prospector (Part 2) |QID|731| |N|Prospector Remtravel in Remtravel's Excavation (35.76, 83.71)|
 C The Absent Minded Prospector (Part 2) |QID|731| |N|Protect Prospector Remtravel as he searches for the mysterious fossil<br/><b>This can be quite difficult to solo, try to clear the mobs in the area before accepting the quest. You can redo the quest if you fail but you need to wait about 5 mins for the quest giver to respawn (36, 86)|
-C WANTED: Murkdeep! |QID|4740| |N|Kill murlocs around the area and Murkdeep will eventually appear, kill him complete the quest (36.55, 76.53)|
+C WANTED: Murkdeep! |QID|4740| |N|Kill murlocs around the area and Murkdeep will eventually appear, kill him complete the quest (36.55, 76.53)| |P|GROUP|
 T Washed Ashore (Part 2) |QID|4681| |N|Gwennyth Bly'Leggonde in Auberdine (36.61, 45.59)| |O|
 A Beached Sea Creature (Part 3) |QID|4730| |N|Beached Sea Creature in Twilight Shore (32.66, 80.89)| |PRE|4681|
 
 T Beached Sea Creature (Part 3) |QID|4730| |N|Gwennyth Bly'Leggonde in Auberdine (36.61, 45.59)| |PRE|4681|
 T The Absent Minded Prospector (Part 2) |QID|731| |N|Archaeologist Hollee in Auberdine (37.46, 41.88)|
-T WANTED: Murkdeep! |QID|4740| |N|Sentinel Glynda Nal'Shea in Auberdine (37.70, 43.44)|
+T WANTED: Murkdeep! |QID|4740| |N|Sentinel Glynda Nal'Shea in Auberdine (37.70, 43.44)| |P|GROUP|
 
 R Grove of the Ancients |TID|950| |N|Travel to Grove of the Ancients (43.55, 76.32)|
 T Return to Onu |QID|950| |N|Onu in Grove of the Ancients (43.55, 76.32)|

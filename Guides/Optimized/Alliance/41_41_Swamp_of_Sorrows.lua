@@ -48,8 +48,8 @@ A Supplies for Nethergarde |QID|1395| |N|Watchmaster Sorigal in Darkshire (75.75
 R Nethergarde Keep |QID|1395| |N|Travel back to Nethergarde Keep (66.53, 21.41)| |Z|Blasted Lands|
 T Supplies for Nethergarde |QID|1395| |N|Quartermaster Lungertz in Nethergarde Keep (66.53, 21.41)| |Z|Blasted Lands|
 
-R Pool of Tears |QID|1448| |N|Travel to Pool of Tears in Swamp of Sorrows (70, 54)| |Z|Swamp of Sorrows|
-C In Search of The Temple |QID|1448| |N|Run towards the Temple of Atal'Hakkar area - quest completes automatically (67.8, 44.4)| |Z|Swamp of Sorrows|
+R Pool of Tears |QID|1448| |N|Travel to Pool of Tears in Swamp of Sorrows (70, 54)| |D|ST| |Z|Swamp of Sorrows|
+C In Search of The Temple |QID|1448| |N|Run towards the Temple of Atal'Hakkar area - quest completes automatically (67.8, 44.4)| |D|ST| |Z|Swamp of Sorrows|
 
 R Misty Reed Strand |QID|1258| |N|Travel to Misty Reed Strand (75.98, 4.96)| |Z|Swamp of Sorrows|
 C ... and Bugs |QID|1258| |N|Kill Silt Crawler and Monstrous Crawler for 12 Pristine Crawler Leg (75.98, 4.96)| |Z|Swamp of Sorrows|

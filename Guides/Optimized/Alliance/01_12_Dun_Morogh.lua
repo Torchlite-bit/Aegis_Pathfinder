@@ -92,7 +92,7 @@ H Thunderbrew Distillery |QID|400| |N|Set hearth at Innkeeper Belm in Thunderbre
 
 A Tools for Steelgrill |QID|400| |N|Tharek Blackstone in Kharanos (46.03, 51.75)|
 A Frostmane Hold |QID|287| |N|Senir Whitebeard in Kharanos (46.66, 53.83)|
-A Operation Recombobulation |QID|412| |N|Razzle Sprysprocket in Kharanos (45.8, 49.2)|
+A Operation Recombobulation |QID|412| |N|Razzle Sprysprocket in Kharanos (45.8, 49.2)| |D|GNOMER|
 
 R Steelgrill's Depot |QID|5541| |N|Travel east to Steelgrill's Depot (50.42, 49.13)|
 T Tools for Steelgrill |QID|400| |N|Beldin Steelgrill in Steelgrill's Depot (50.42, 49.13)|
@@ -141,8 +141,8 @@ A Shimmer Stout |QID|413| |N|Rejold Barleybrew in Brewnall Village - level 8 req
 R Frostmane Hold |QID|287| |N|Travel southeast to Frostmane Hold (24.90, 50.94)|
 C Frostmane Hold |QID|287| |N|Go inside cave, explore Frostmane Hold, kill 5 Frostmane Headhunter (22.88, 52.07)|
 
-R Gnomeregan |QID|412| |N|Travel north to Gnomeregan (25.05, 42.90)|
-C Operation Recombobulation |QID|412| |N|Kill Leper Gnomes for 8 Restabilization Cog and 8 Gyromechanic Gear (25.05, 42.90)|
+R Gnomeregan |QID|412| |N|Travel north to Gnomeregan (25.05, 42.90)| |D|GNOMER|
+C Operation Recombobulation |QID|412| |N|Kill Leper Gnomes for 8 Restabilization Cog and 8 Gyromechanic Gear (25.05, 42.90)| |D|GNOMER|
 
 H Thunderbrew Distillery |QID|287| |N|Hearth to Thunderbrew Distillery|
 B Thunder Ale |QID|311| |N|Buy Thunder Ale from Innkeeper Belm (47.4, 52.5)| |L|2686|
@@ -151,7 +151,7 @@ A Return to Marleth |QID|311| |N|Unguarded Thunder Ale Barrel (47.7, 52.7)|
 
 T Frostmane Hold |QID|287| |N|Senir Whitebeard in Kharanos (46.66, 53.83)|
 A The Reports |QID|291| |N|Senir Whitebeard in Kharanos (46.66, 53.83)|
-T Operation Recombobulation |QID|412| |N|Razzle Sprysprocket in Kharanos (45.8, 49.2)|
+T Operation Recombobulation |QID|412| |N|Razzle Sprysprocket in Kharanos (45.8, 49.2)| |D|GNOMER|
 
 R Brewnall Village |QID|311| |N|Travel to Brewnall Village (30.22, 45.54)|
 T Return to Marleth |QID|311| |N|Marleth Barleybrew in Brewnall Village (30.22, 45.54)|
@@ -253,15 +253,15 @@ T Ironband's Compound |QID|1681| |N|Tormus Deepforge in The Great Forge (48.74, 
 T Training the Beast |QID|6086| |N|Belia Thundergranite in Hall of Arms (70.93, 85.66)| |Z|Ironforge| |C|Hunter|
 
 T Road to Salvation |QID|2218| |N|Hulfdan Blackbeard in The Forlorn Cavern (51.88, 14.66)| |Z|Ironforge| |C|Rogue|
-A Simple Subterfugin' |QID|2238| |N|Hulfdan Blackbeard in The Forlorn Cavern (51.88, 14.66)| |Z|Ironforge| |C|Rogue|
-R Gnomeregan |QID|2238| |N|Travel to Gnomeregan (25.18, 44.44)| |C|Rogue|
-T Simple Subterfugin' |QID|2238| |N|Onin MacHammar in Gnomeregan (25.18, 44.44)| |C|Rogue|
-A Onin's Report |QID|2239| |N|Onin MacHammar in Gnomeregan (25.18, 44.44)| |C|Rogue|
-R Ironforge |QID|2239| |N|Return to Ironforge| |Z|Ironforge| |C|Rogue|
-T Onin's Report |QID|2239| |N|Hulfdan Blackbeard in The Forlorn Cavern (51.89, 14.85)| |Z|Ironforge| |C|Rogue|
+A Simple Subterfugin' |QID|2238| |N|Hulfdan Blackbeard in The Forlorn Cavern (51.88, 14.66)| |D|GNOMER| |Z|Ironforge| |C|Rogue|
+R Gnomeregan |QID|2238| |N|Travel to Gnomeregan (25.18, 44.44)| |C|Rogue| |D|GNOMER|
+T Simple Subterfugin' |QID|2238| |N|Onin MacHammar in Gnomeregan (25.18, 44.44)| |C|Rogue| |D|GNOMER|
+A Onin's Report |QID|2239| |N|Onin MacHammar in Gnomeregan (25.18, 44.44)| |C|Rogue| |D|GNOMER|
+R Ironforge |QID|2239| |N|Return to Ironforge| |D|GNOMER| |Z|Ironforge| |C|Rogue|
+T Onin's Report |QID|2239| |N|Hulfdan Blackbeard in The Forlorn Cavern (51.89, 14.85)| |D|GNOMER| |Z|Ironforge| |C|Rogue|
 
 T Speak with Bink |QID|1879| |N|Bink in Hall of Mysteries (27.23, 8.33)| |Z|Ironforge| |C|Mage|
-A Mage-tastic Gizmonitor |QID|1880| |N|Bink in Hall of Mysteries (27.23, 8.33)| |Z|Ironforge| |C|Mage|
+A Mage-tastic Gizmonitor |QID|1880| |N|Bink in Hall of Mysteries (27.23, 8.33)| |D|GNOMER| |Z|Ironforge| |C|Mage|
 
 A The Slaughtered Lamb |QID|1715| |N|Lago Blackwrench in The Forlorn Cavern (47.64, 9.76)| |Z|Ironforge| |C|Warlock|
 A Deeprun Rat Roundup |QID|6661| |N|Monty in Deeprun Tram, Ironforge Side (76.31, 51.13)| |Z|Ironforge| |C|Warlock|

@@ -9,7 +9,7 @@ return [[
 N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Dustwallow Marsh 38-38|
 
 R Thunder Bluff |QID|1205| |N|Travel to Thunder Bluff (40.2, 27.5)| |Z|Thunder Bluff|
-T Frostmaw |QID|1136| |N|Melor Stonehoof in Hunter's Rise (61.4, 80.6)| |Z|Thunder Bluff| |O|
+T Frostmaw |QID|1136| |N|Melor Stonehoof in Hunter's Rise (61.4, 80.6)| |P|GROUP| |Z|Thunder Bluff| |O|
 A Deadmire |QID|1205| |N|Melor Stonehoof in Hunter's Rise (61.4, 80.6)| |Z|Thunder Bluff| |PRE|1136|
 N Bank Items |N|Store Fizzle Brassbolts' Letter at the bank if you have it (47.4, 58.8)| |Z|Thunder Bluff|
 

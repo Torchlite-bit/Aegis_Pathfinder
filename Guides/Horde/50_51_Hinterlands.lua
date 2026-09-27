@@ -38,10 +38,10 @@ T Jes'rimon's Payment to Jediga |QID|3563| |N|Jediga in Valormok (22.56, 51.41)|
 T Andron's Payment to Jediga |QID|3564| |N|Jediga in Valormok (22.56, 51.41)| |Z|Azshara| 
 
 R Ratchet |OID|4502| |N|Travel to Ratchet (62.54, 38.50)| |Z|The Barrens|
-C The Stone Circle |QID|3444| |N|Collect Stone Circle from Marvon's chest in Ratchet (62.51, 38.54)| |Z|The Barrens| |O|
+C The Stone Circle |QID|3444| |N|Collect Stone Circle from Marvon's chest in Ratchet (62.51, 38.54)| |D|ST| |Z|The Barrens| |O|
 A Volcanic Activity |QID|4502| |N|Liv Rizzlefix in Ratchet (62.45, 38.72)| |Z|The Barrens| 
 N Violet Tragan |QID|2641| |N|Store Violet Tragan in the bank . Tick this step (62.6, 37.4)| |Z|The Barrens| |L|8526| |O| 
-N Stone Circle |QID|3444| |N|Store Stone Circle in the bank . Tick this step (62.6, 37.4)| |Z|The Barrens| |L|10556| |O| 
+N Stone Circle |QID|3444| |N|Store Stone Circle in the bank . Tick this step (62.6, 37.4)| |D|ST| |Z|The Barrens| |L|10556| |O| 
 
 R Booty Bay |TID|580| |N|Travel to Booty Bay (28.35, 76.35)| |Z|Stranglethorn Vale| |O|
 T Rescue OOX-09/HL! |QID|836| |N|Gryphon Master Talonaxe in Booty Bay (28.35, 76.35)| |Z|Stranglethorn Vale| |O| 

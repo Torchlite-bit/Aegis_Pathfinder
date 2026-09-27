@@ -18,6 +18,26 @@ reports.
 
 ---
 
+## [0.3.0]
+
+### Added
+- **Mining says where to mine.** Each step of the Mining route, for your
+  faction: where to mine the ore a smelting step uses (Copper, Tin, Silver,
+  Iron, Gold, Truesilver, Thorium), and, for the stretches that level by
+  mining alone, the zones with most of the veins that can still raise your
+  skill. From pfQuest's ore nodes and the CMaNGOS database's vein loot.
+
+### Changed
+- **The Auction House, Group and Dungeon switches now cover the Optimized and
+  zone guides**, as they always did the RestedXP ones — the tags the owner
+  approved in the filter review. In Solo mode those guides leave out elite
+  and group quests, and the quests that follow on from them; with Auction
+  House steps off they leave out quests that need an item most players buy;
+  a dungeon's quests show while that dungeon is ticked. The defaults (Solo,
+  Auction House steps off) mean fewer steps than before on these guides.
+
+---
+
 ## [0.2.0]
 
 ### Added
@@ -61,5 +81,6 @@ on, each change gets its own entry.
 
 ---
 
+[0.3.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.2.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.1.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

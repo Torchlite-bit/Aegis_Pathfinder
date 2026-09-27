@@ -30,7 +30,7 @@ C The Spitefin Bounty |QID|40725| |N|Collect 20 Spitefin Claws from murlocs on t
 C Collecting Specimens |QID|40729| |N|Travel to the small island east of Tazzo's Shack and collect 3 Strange Tel'Abim Bananas (58, 78)| |Z|Tel'Abim|
 
 T Collecting Specimens |QID|40729| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |Z|Tel'Abim|
-A Early Testing |QID|40730| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |Z|Tel'Abim|
+A Early Testing |QID|40730| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |AH| |Z|Tel'Abim|
 
 N Northern Exploration |N|Head north to complete quests and reach Bixxle's Storehouse.|
 
@@ -95,18 +95,18 @@ T A Report From Bixxle |QID|40766| |N|Baron Telraz (43.3, 77.6)| |Z|Tel'Abim|
 
 N Banana Transmutation Chain |N|Continue Tazzo's banana research questline.|
 
-R Tazzo's Shack |QID|40730| |N|Travel east to Tazzo's Shack (52.7, 80.7)| |Z|Tel'Abim|
-C Early Testing |QID|40730| |N|Bring an Elixir of Giant Growth to Tazzo. Buy from AH or have an Alchemist make it| |Z|Tel'Abim|
-T Early Testing |QID|40730| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |Z|Tel'Abim|
-A A Costly Favor |QID|40731| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |Z|Tel'Abim|
+R Tazzo's Shack |QID|40730| |N|Travel east to Tazzo's Shack (52.7, 80.7)| |AH| |Z|Tel'Abim|
+C Early Testing |QID|40730| |N|Bring an Elixir of Giant Growth to Tazzo. Buy from AH or have an Alchemist make it| |AH| |Z|Tel'Abim|
+T Early Testing |QID|40730| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |AH| |Z|Tel'Abim|
+A A Costly Favor |QID|40731| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |AH| |Z|Tel'Abim|
 
-R Tel Co. Basecamp |QID|40731| |N|Return to Tel Co. Basecamp (42.6, 77.6)| |Z|Tel'Abim|
-T A Costly Favor |QID|40731| |N|Leezza Fraxtoggle at Tel Co. Basecamp (42.6, 77.6)| |Z|Tel'Abim|
-A Two Favors For The Price of One |QID|40732| |N|Leezza Fraxtoggle at Tel Co. Basecamp (42.6, 77.6)| |Z|Tel'Abim|
+R Tel Co. Basecamp |QID|40731| |N|Return to Tel Co. Basecamp (42.6, 77.6)| |AH| |Z|Tel'Abim|
+T A Costly Favor |QID|40731| |N|Leezza Fraxtoggle at Tel Co. Basecamp (42.6, 77.6)| |AH| |Z|Tel'Abim|
+A Two Favors For The Price of One |QID|40732| |N|Leezza Fraxtoggle at Tel Co. Basecamp (42.6, 77.6)| |AH| |Z|Tel'Abim|
 
 C The Work Must Continue |QID|40742| |N|Slay 8 Brushtail Adders and 8 Brushtail Cobras around the island (45, 70) (50, 65)| |Z|Tel'Abim|
 C Highvale Rise |QID|40728| |N|Slay 14 Elder Highvale Gorillas around Highvale Rise (50, 45) (55, 40)| |Z|Tel'Abim|
-C Two Favors For The Price of One |QID|40732| |N|Collect 8 Venomflayer Sacs from Venomflayer Serpents in the jungle (40, 60) (45, 55)| |Z|Tel'Abim|
+C Two Favors For The Price of One |QID|40732| |N|Collect 8 Venomflayer Sacs from Venomflayer Serpents in the jungle (40, 60) (45, 55)| |AH| |Z|Tel'Abim|
 
 R The Jagged Isles |QID|40764| |N|Head to the western-most isle of The Jagged Isles (35, 15)| |Z|Tel'Abim|
 C Azotha Gold |QID|40764| |N|Dig around the ritual site and find the Azotha Ritual Cache on the western-most isle (35, 15)| |Z|Tel'Abim|
@@ -116,55 +116,55 @@ H Tel Co. Basecamp |N|Hearth back to Tel Co. Basecamp| |Z|Tel'Abim|
 T The Work Must Continue |QID|40742| |N|Baron Telraz (43.3, 77.6)| |Z|Tel'Abim|
 T Highvale Rise |QID|40728| |N|Sneel Fizzwack (43.3, 77.4)| |Z|Tel'Abim|
 T Azotha Gold |QID|40764| |N|Archaeologist Trixia Goldspark (40.9, 78.4)| |Z|Tel'Abim|
-T Two Favors For The Price of One |QID|40732| |N|Leezza Fraxtoggle at Tel Co. Basecamp (42.6, 77.6)| |Z|Tel'Abim|
-A Gargantuan Information! |QID|40733| |N|Leezza Fraxtoggle at Tel Co. Basecamp (42.6, 77.6)| |Z|Tel'Abim|
+T Two Favors For The Price of One |QID|40732| |N|Leezza Fraxtoggle at Tel Co. Basecamp (42.6, 77.6)| |AH| |Z|Tel'Abim|
+A Gargantuan Information! |QID|40733| |N|Leezza Fraxtoggle at Tel Co. Basecamp (42.6, 77.6)| |AH| |Z|Tel'Abim|
 
-C Gargantuan Information! |QID|40733| |N|Listen to the information about the Gargantuan Banana from Leezza (42.6, 77.6)| |Z|Tel'Abim|
-T Gargantuan Information! |QID|40733| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |Z|Tel'Abim|
-A A Must Have Discovery |QID|40734| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |Z|Tel'Abim|
+C Gargantuan Information! |QID|40733| |N|Listen to the information about the Gargantuan Banana from Leezza (42.6, 77.6)| |AH| |Z|Tel'Abim|
+T Gargantuan Information! |QID|40733| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |AH| |Z|Tel'Abim|
+A A Must Have Discovery |QID|40734| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |AH| |Z|Tel'Abim|
 
-R The Jagged Isles |QID|40734| |N|Travel north to The Jagged Isles (50, 17)| |Z|Tel'Abim|
-C A Must Have Discovery |QID|40734| |N|Find the Gargantuan Tel'abim Banana nestled in roots and bushes on the largest of The Jagged Isles (48, 18)| |Z|Tel'Abim|
+R The Jagged Isles |QID|40734| |N|Travel north to The Jagged Isles (50, 17)| |AH| |Z|Tel'Abim|
+C A Must Have Discovery |QID|40734| |N|Find the Gargantuan Tel'abim Banana nestled in roots and bushes on the largest of The Jagged Isles (48, 18)| |AH| |Z|Tel'Abim|
 
-T A Must Have Discovery |QID|40734| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |Z|Tel'Abim|
-A The Micro Filter Tazzo-Scope |QID|40735| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |Z|Tel'Abim|
+T A Must Have Discovery |QID|40734| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |AH| |Z|Tel'Abim|
+A The Micro Filter Tazzo-Scope |QID|40735| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |AH| |Z|Tel'Abim|
 
-N Materials Gathering |N|Collect materials for Tazzo. These require AH or tradeskills: Star Ruby, Blue Sapphire, Accurate Scope.|
+N Materials Gathering |N|Collect materials for Tazzo. These require AH or tradeskills: Star Ruby, Blue Sapphire, Accurate Scope.| |AH|
 
-C The Micro Filter Tazzo-Scope |QID|40735| |N|Collect a Star Ruby, a Blue Sapphire, and an Accurate Scope for Tazzo. Check AH or Jewelcrafters/Engineers| |Z|Tel'Abim|
-T The Micro Filter Tazzo-Scope |QID|40735| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |Z|Tel'Abim|
-A Gargantuan Studies |QID|40736| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |Z|Tel'Abim|
+C The Micro Filter Tazzo-Scope |QID|40735| |N|Collect a Star Ruby, a Blue Sapphire, and an Accurate Scope for Tazzo. Check AH or Jewelcrafters/Engineers| |AH| |Z|Tel'Abim|
+T The Micro Filter Tazzo-Scope |QID|40735| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |AH| |Z|Tel'Abim|
+A Gargantuan Studies |QID|40736| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |AH| |Z|Tel'Abim|
 
 N More Materials |N|Collect enchanting mats: 1 Dream Dust, 1 Greater Eternal Essence, 1 Small Radiant Shard, and 5 Ripe Tel'abim Bananas.|
 
-C Gargantuan Studies |QID|40736| |N|Gather 1 Dream Dust, 1 Greater Eternal Essence, 1 Small Radiant Shard, and 5 Ripe Tel'abim Bananas for Tazzo. Bananas are on the island, enchanting mats from AH or Enchanters| |Z|Tel'Abim|
-T Gargantuan Studies |QID|40736| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |Z|Tel'Abim|
-A The Final Test |QID|40737| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |Z|Tel'Abim|
+C Gargantuan Studies |QID|40736| |N|Gather 1 Dream Dust, 1 Greater Eternal Essence, 1 Small Radiant Shard, and 5 Ripe Tel'abim Bananas for Tazzo. Bananas are on the island, enchanting mats from AH or Enchanters| |AH| |Z|Tel'Abim|
+T Gargantuan Studies |QID|40736| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |AH| |Z|Tel'Abim|
+A The Final Test |QID|40737| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |AH| |Z|Tel'Abim|
 
-C The Final Test |QID|40737| |N|Wait for Tazzo Gearfire to finish his experiments (52.7, 80.7)| |Z|Tel'Abim|
-T The Final Test |QID|40737| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |Z|Tel'Abim|
-A News for Danonzo! |QID|40738| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |Z|Tel'Abim|
+C The Final Test |QID|40737| |N|Wait for Tazzo Gearfire to finish his experiments (52.7, 80.7)| |AH| |Z|Tel'Abim|
+T The Final Test |QID|40737| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |AH| |Z|Tel'Abim|
+A News for Danonzo! |QID|40738| |N|Tazzo Gearfire at Tazzo's Shack (52.7, 80.7)| |AH| |Z|Tel'Abim|
 
 N Banana Transmutation Unlocked |N|You can now repeat transmutation quests 40739 and 40740 for Gargantuan Bananas!|
 
-R Tel Co. Basecamp |QID|40738| |N|Return to Tel Co. Basecamp (41.1, 79.2)| |Z|Tel'Abim|
-T News for Danonzo! |QID|40738| |N|Chef Danonzo Laxjolt at Tel Co. Basecamp (41.1, 79.2)| |Z|Tel'Abim|
+R Tel Co. Basecamp |QID|40738| |N|Return to Tel Co. Basecamp (41.1, 79.2)| |AH| |Z|Tel'Abim|
+T News for Danonzo! |QID|40738| |N|Chef Danonzo Laxjolt at Tel Co. Basecamp (41.1, 79.2)| |AH| |Z|Tel'Abim|
 
 N Cooking Recipes Unlocked |N|Chef Danonzo now offers special cooking quests for unique food buffs!|
 
-A Danonzo's Tel'Abim Surprise |QID|40752| |N|Chef Danonzo Laxjolt (41.1, 79.2). Requires: Gargantuan Tel'Abim Banana, Heart of the Wild, Soothing Spices| |Z|Tel'Abim| |O|
-A Danonzo's Tel'Abim Delight |QID|40753| |N|Chef Danonzo Laxjolt (41.1, 79.2). Requires: Gargantuan Tel'Abim Banana, Icecap, Soothing Spices| |Z|Tel'Abim| |O|
-A Danonzo's Tel'Abim Medley |QID|40754| |N|Chef Danonzo Laxjolt (41.1, 79.2). Requires: Gargantuan Tel'Abim Banana, Golden Sansam, Soothing Spices| |Z|Tel'Abim| |O|
+A Danonzo's Tel'Abim Surprise |QID|40752| |N|Chef Danonzo Laxjolt (41.1, 79.2). Requires: Gargantuan Tel'Abim Banana, Heart of the Wild, Soothing Spices| |AH| |Z|Tel'Abim| |O|
+A Danonzo's Tel'Abim Delight |QID|40753| |N|Chef Danonzo Laxjolt (41.1, 79.2). Requires: Gargantuan Tel'Abim Banana, Icecap, Soothing Spices| |AH| |Z|Tel'Abim| |O|
+A Danonzo's Tel'Abim Medley |QID|40754| |N|Chef Danonzo Laxjolt (41.1, 79.2). Requires: Gargantuan Tel'Abim Banana, Golden Sansam, Soothing Spices| |AH| |Z|Tel'Abim| |O|
 
-N Group Quest |N|King Morogo Thunderfoot is an elite group quest available from a bounty board.|
+N Group Quest |N|King Morogo Thunderfoot is an elite group quest available from a bounty board.| |P|GROUP|
 
-A King Morogo Thunderfoot! |QID|40785| |N|From the wanted poster near Sneel Fizzwack. Group quest to kill the gorilla leader at Highvale Rise| |Z|Tel'Abim| |O|
+A King Morogo Thunderfoot! |QID|40785| |N|From the wanted poster near Sneel Fizzwack. Group quest to kill the gorilla leader at Highvale Rise| |P|GROUP| |Z|Tel'Abim| |O|
 
 N Tanaris Connection Quest |N|Operation FIX Screwfuse 1000 sends you to Jabbey in Tanaris, then BRD and Eastern Plaguelands for the epic gun chain.|
 
 R Steamwheedle Port |QID|40756| |N|Take the flight to Gadgetzan, then travel to Steamwheedle Port in Tanaris| |Z|Tanaris|
 T Operation FIX Screwfuse 1000 |QID|40756| |N|Jabbey at Steamwheedle Port in Tanaris (67.0, 24.0)| |Z|Tanaris|
-A Operation Help Jabbey |QID|40757| |N|Jabbey at Steamwheedle Port in Tanaris (67.0, 24.0). Requires going to Blackrock Depths| |Z|Tanaris| |O|
+A Operation Help Jabbey |QID|40757| |N|Jabbey at Steamwheedle Port in Tanaris (67.0, 24.0). Requires going to Blackrock Depths| |D|BRD| |Z|Tanaris| |O|
 
 N Guide Complete |N|You have completed the main quests in Tel'Abim. Return for repeatable banana transmutation and cooking quests. The epic gun questline continues through BRD, LBRS, and Molten Core!|
 

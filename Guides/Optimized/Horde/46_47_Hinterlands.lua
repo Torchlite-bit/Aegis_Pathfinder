@@ -94,7 +94,7 @@ R Shadra'Alor |QID|2934| |N|Travel to Shadra'Alor (10.31, 54.81) (23.77, 56.50)(
 C Undamaged Venom Sac |QID|2934| |N|Kill Witherbark Broodguard and collect Undamaged Venom Sac in Shadra'Alor (34.96, 68.43)| |Z|The Hinterlands|
 T The Atal'ai Exile |QID|1429| |N|Atal'ai Exile in Shadra'Alor (33.74, 75.16)| |Z|The Hinterlands|
 A Return to Fel'Zerul |QID|1444| |N|Atal'ai Exile in Shadra'Alor (33.74, 75.16)| |Z|The Hinterlands|
-A Jammal'an the Prophet |QID|1446| |N|Atal'ai Exile in Shadra'Alor (33.74, 75.16)| |Z|The Hinterlands|
+A Jammal'an the Prophet |QID|1446| |N|Atal'ai Exile in Shadra'Alor (33.74, 75.16)| |D|ST| |Z|The Hinterlands|
 
 R Tarren Mill |QID|2934| |N|Travel to Tarren Mill (61.46, 19.15)| |Z|Hillsbrad Foothills|
 T Undamaged Venom Sac |QID|2934| |N|Apothecary Lydon in Tarren Mill (61.47, 19.10)| |Z|Hillsbrad Foothills|

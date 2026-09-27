@@ -3,7 +3,7 @@ AegisPathfinder:RegisterGuide("Dustwallow Marsh (38-38)", "Stranglethorn (38-40)
 return [[
 
 R Thunder Bluff |QID|1205| |N|Travel to Thunder Bluff (40.2, 27.5)| |Z|Thunder Bluff|
-T Frostmaw |QID|1136| |N|Melor Stonehoof in Hunter's Rise (61.4, 80.6)| |Z|Thunder Bluff| |O|
+T Frostmaw |QID|1136| |N|Melor Stonehoof in Hunter's Rise (61.4, 80.6)| |P|GROUP| |Z|Thunder Bluff| |O|
 A Deadmire |QID|1205| |N|Melor Stonehoof in Hunter's Rise (61.4, 80.6)| |Z|Thunder Bluff| |PRE|1136|
 N Fizzle Brassbolts' Letter |QID|1106| |N|Store Fizzle Brassbolts' Letter at the bank. Tick this step (47.4, 58.8)| |Z|Thunder Bluff| |L|5827| |O|
 

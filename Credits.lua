@@ -30,7 +30,7 @@ local CREDITS = {
 	} },
 	{ "Libraries and data", {
 		"The Ace Development Team -- Ace2",
-		"shagu -- pfQuest, and the herb nodes behind Herbalism",
+		"shagu -- pfQuest, and the herb and ore nodes",
 		"Cladhaire, laytya and the TWOW porters -- TomTom-TWOW",
 		"Kitymeowmeow -- CraftRoute, the recipe data behind crafting routes",
 		"The CMaNGOS team -- classic-db, trainers and gathering data",

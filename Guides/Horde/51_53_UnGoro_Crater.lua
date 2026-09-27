@@ -2,7 +2,7 @@ AegisPathfinder:RegisterGuide("Un'goro (51-53)", "Burning Steppes (53-54)", "Hor
 
 return [[
 
-B Mithril Casing |QID|4244| |N|Buy Mithril Casing from your nearest Auction House it should be available for around 1-2<g>, this is used for a quest later in (map:1449). You can skip this if you're poor, Tick this step| |L|10561|
+B Mithril Casing |QID|4244| |N|Buy Mithril Casing from your nearest Auction House it should be available for around 1-2<g>, this is used for a quest later in (map:1449). You can skip this if you're poor, Tick this step| |L|10561| |AH|
 
 R The Drag |OID|4300| |N|Travel to The Drag in Orgrimmar (55.67, 34.21)| |Z|Orgrimmar|
 A Bone-Bladed Weapons |QID|4300| |N|Jes'rimon in The Drag (55.67, 34.21)| |Z|Orgrimmar|
@@ -12,7 +12,7 @@ A A Sample of Slime... |QID|4293| |N|Chemist Fuely in The Apothecarium (47.46, 7
 A ... and a Batch of Ooze |QID|4294| |N|Chemist Fuely in The Apothecarium (47.46, 73.30)| |Z|Undercity|
 
 R Ratchet |OID|4502| |N|Travel to Ratchet (62.54, 38.50)| |Z|The Barrens|
-C The Stone Circle |QID|3444| |N|Collect Stone Circle from Marvon's chest in Ratchet (62.51, 38.54)| |Z|The Barrens| |O|
+C The Stone Circle |QID|3444| |N|Collect Stone Circle from Marvon's chest in Ratchet (62.51, 38.54)| |D|ST| |Z|The Barrens| |O|
 A Volcanic Activity |QID|4502| |N|Liv Rizzlefix in Ratchet (62.45, 38.72)| |Z|The Barrens|
 
 R Gadgetzan |TID|2641| |N|Travel to Gadgetzan (51.05, 26.87)| |Z|Tanaris| |O|
@@ -24,12 +24,12 @@ T Delivery for Marin |QID|2661| |N|Marin Noggenfogger in Gadgetzan (51.80, 28.66
 A Noggenfogger Elixir |QID|2662| |N|Marin Noggenfogger in Gadgetzan (51.80, 28.66)| |Z|Tanaris| |PRE|2641|
 T Noggenfogger Elixir |QID|2662| |N|Marin Noggenfogger in Gadgetzan (51.80, 28.66)| |Z|Tanaris| |PRE|2641|
 N Violet Tragan |QID|2641| |N|Withdraw Violet Tragan from the bank . Tick this step (54.2, 28.8)| |Z|Tanaris| |L|8526| |OO|
-N Stone Circle |QID|3444| |N|Withdraw Stone Circle from the bank . Tick this step (54.2, 28.8)| |Z|Tanaris| |L|10556| |OO|
+N Stone Circle |QID|3444| |N|Withdraw Stone Circle from the bank . Tick this step (54.2, 28.8)| |D|ST| |Z|Tanaris| |L|10556| |OO|
 N Noggenfogger Elixir |N|Store Noggenfogger Elixir in the bank or destroy it . Tick this step (54.2, 28.8)| |Z|Tanaris| |L|8529| |O|
 A Super Sticky |QID|4504| |N|Tran'rek in Gadgetzan (51.59, 26.77)| |Z|Tanaris|
 
 R Broken Pillar |TID|3444| |N|Travel to Broken Pillar (52.73, 45.93)| |Z|Tanaris| |O|
-T The Stone Circle |QID|3444| |N|Marvon Rivetseeker in Broken Pillar (52.73, 45.93)| |Z|Tanaris| |O|
+T The Stone Circle |QID|3444| |N|Marvon Rivetseeker in Broken Pillar (52.73, 45.93)| |D|ST| |Z|Tanaris| |O|
 
 R Un'Goro |QID|4290| |N|Travel to Un'Goro (71.63, 75.95)| |Z|Un'Goro Crater|
 A The Apes of Un'Goro |QID|4289| |N|Torwa Pathfinder in Un'Goro (71.63, 75.95)| |Z|Un'Goro Crater|
@@ -59,12 +59,12 @@ C Bloodpetal Flayer |QID|4145| |OIDX|3| |N|Kill 5 Bloodpetal Flayer near Lakkari
 
 R Fungal Rock |QID|4289| |N|Travel to Fungal Rock (63.86, 16.44)| |Z|Un'Goro Crater|
 T Chasing A-Me 01 |QID|4243| |N|Williden Marshal in Fungal Rock (67.65, 16.77)| |Z|Un'Goro Crater|
-A Chasing A-Me 01 |QID|4244| |N|A-Me 01 in Fungal Rock (67.65, 16.77)| |Z|Un'Goro Crater| |L|10561| |O|
-C Chasing A-Me 01 |QID|4244| |N|Get Mithril Casing, this is crafted by Engineers, purchase from Auction house| |Z|Un'Goro Crater| |O|
-T Chasing A-Me 01 |QID|4244| |N|A-Me 01 in Fungal Rock (67.65, 16.77)| |Z|Un'Goro Crater| |O|
-A Chasing A-Me 01 |QID|4245| |N|A-Me 01 in Fungal Rock (67.65, 16.77)| |Z|Un'Goro Crater| |PRE|4244|
-C Chasing A-Me 01 |QID|4245| |N|Escort A-Me 01 back to Marshal's Refuge (63.43, 16.67) (61.24, 17.00) (67.62, 16.76)| |Z|Un'Goro Crater| |PRE|4244|
-T Chasing A-Me 01 |QID|4245| |N|Karna Remtravel in Lakkari Tar Pits (46.38, 13.45)| |Z|Un'Goro Crater| |PRE|4244|
+A Chasing A-Me 01 |QID|4244| |N|A-Me 01 in Fungal Rock (67.65, 16.77)| |AH| |Z|Un'Goro Crater| |L|10561| |O|
+C Chasing A-Me 01 |QID|4244| |N|Get Mithril Casing, this is crafted by Engineers, purchase from Auction house| |AH| |Z|Un'Goro Crater| |O|
+T Chasing A-Me 01 |QID|4244| |N|A-Me 01 in Fungal Rock (67.65, 16.77)| |AH| |Z|Un'Goro Crater| |O|
+A Chasing A-Me 01 |QID|4245| |N|A-Me 01 in Fungal Rock (67.65, 16.77)| |AH| |Z|Un'Goro Crater| |PRE|4244|
+C Chasing A-Me 01 |QID|4245| |N|Escort A-Me 01 back to Marshal's Refuge (63.43, 16.67) (61.24, 17.00) (67.62, 16.76)| |AH| |Z|Un'Goro Crater| |PRE|4244|
+T Chasing A-Me 01 |QID|4245| |N|Karna Remtravel in Lakkari Tar Pits (46.38, 13.45)| |AH| |Z|Un'Goro Crater| |PRE|4244|
 
 C The Apes of Un'Goro |QID|4289| |N|Kill Un'Goro Gorilla, Un'Goro Thunderer and Un'Goro Stomper for the quest items all of them found in Fungal Rock (63.86, 16.44)| |Z|Un'Goro Crater|
 C Pterrordax |QID|4501| |OIDX|1| |N|Finish killing 10 Pterrordax in Lakkari Tar Pits (58.51, 16.74) (56.91, 9.94)| |Z|Un'Goro Crater|
