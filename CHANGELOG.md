@@ -25,6 +25,8 @@ reports.
   Zygor's options have them: Route, Dungeons, Filters, Appearance, Gear,
   Behaviour, Navigation, Maintenance, About. One page at a time, scrolling
   only when it is taller than the window; the **Credits** button is on About.
+- **The README is short**: what you get, installing, the main commands. Every
+  feature in detail is in [docs/FEATURES.md](docs/FEATURES.md).
 
 ### Fixed
 - **A new character opened at the end of the guide** — far into the High Elf
