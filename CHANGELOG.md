@@ -18,6 +18,21 @@ reports.
 
 ---
 
+## [0.8.0]
+
+### Changed
+- **The Gear finder knows Turtle WoW's vanilla dungeons and raids as Turtle
+  has them**, not as they were in 2006: the bosses Turtle added (Molten Core's
+  Incindis and Basalthar, Deadmines and Blackrock additions and more), loot
+  moved from one boss to another, new items on old bosses (VanCleef's Spiked
+  Defias Spaulders), and drops Turtle took out. From pfQuest-turtle, over the
+  CMaNGOS loot it had.
+- **The README's screenshots sit with their features**: party sharing under
+  *Play together*, the first-time setup under *Guides*, the helper windows
+  under *Quest helpers*.
+
+---
+
 ## [0.7.0]
 
 ### Changed
@@ -264,6 +279,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.8.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.7.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.6.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.6.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

@@ -313,8 +313,11 @@ what you wear, with who drops them, where, and how often.
   of Karazhan raids. Their levels are read off their creatures. pfQuest-turtle
   does not say what Turtle's own items are, so the game is asked the first
   time -- a list may fill in over a few seconds, once.
-- Vanilla dungeons are as the CMaNGOS database has them; where Turtle WoW has
-  changed their loot, the finder does not know.
+- The vanilla dungeons and raids are as Turtle WoW has them: pfQuest-turtle's
+  changes are laid over the CMaNGOS loot -- bosses Turtle added (Molten
+  Core's Incindis and Basalthar, among others), loot moved between bosses,
+  new items, and drops taken out. Where Turtle only changed a shared loot
+  table, the CMaNGOS chance stands.
 
 ## Professions
 
