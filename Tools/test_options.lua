@@ -553,7 +553,7 @@ check(frame.holder:GetWidth() == frame.bodyW and frame.bodyW == 396 - 28 - 10 - 
 check(frame.advisor.enabled:GetWidth() == frame.bodyW and frame.sections[1]:GetWidth() == frame.bodyW,
 	"and what is on it: switches and section rules")
 check(frame.race:GetWidth() == frame.bodyW and frame.race.list:GetWidth() == frame.bodyW, "dropdowns and their lists")
-check(AegisPathfinder.itemscorepage.share:GetWidth() == frame.bodyW - 186 - 16,
+check(AegisPathfinder.itemscorepage.share:GetWidth() == frame.bodyW - 206 - 16,
 	"and the Item Score page's share column, out to the new edge")
 stub.mouseDown = false
 fire(frame.grip, "OnUpdate")

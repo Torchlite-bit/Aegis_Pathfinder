@@ -52,7 +52,8 @@ That runs everything that can run without a WoW client:
 
 Everything must pass before you open a PR. **None of it proves the UI looks
 right** — that still needs someone to load the addon on a 1.12 client and look
-at it. Say in your PR whether you did.
+at it. Say in your PR whether you did. Before a release, the whole in-game pass
+is in [docs/TESTING.md](docs/TESTING.md).
 
 ## Versions
 

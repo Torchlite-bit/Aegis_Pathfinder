@@ -333,7 +333,8 @@ unwrapped width, since a wrapped font string's own height is not reliable on
 **Item Score** (`GearFrame.lua`) is Zygor's page of the same name: the spec
 picker and your class, a note on where the spec came from and whether the
 weights are the defaults or yours, *Show all stats*, then the weights one to a
-row down the left — label, then a 72px field (black, with a hairline edge) —
+row down the left — label (134px, so the longest stat names stay on one line),
+then a 58px field (black, with a hairline edge) —
 and beside them a *Share weights* column: the OctoPawn string's field with
 **Import** and **Export** under it, and what they did. **Reset** sits under the
 longer column. The list's length follows the spec and *Show all stats*, so the

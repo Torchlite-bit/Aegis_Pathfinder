@@ -1,0 +1,135 @@
+# In-game test pass
+
+The offline checks (`sh Tools/run_tests.sh`) prove the logic against a stubbed
+1.12 API. They cannot prove that a window looks right, that a texture loads,
+or that the server answers the way the stub does. This list is what only a
+real client can check. Run it before a release.
+
+**How to use it.** Copy it into a GitHub issue, where the boxes can be ticked,
+and work down it. For anything wrong, add a screenshot, the version (Options →
+About), and what the **Error log** says (Options → Maintenance), under the item.
+
+Start with a **full client restart** (not `/reload`): new textures and files
+are only found at startup.
+
+---
+
+## 1. Loading
+
+- [ ] The load message in chat names the version you installed.
+- [ ] No Lua error on login (the Error log is empty).
+- [ ] The minimap button is the Aegis: Pathfinder logo, round, in its own
+      colours; hovering it shows a green ring and a tooltip.
+- [ ] Click toggles the guide; right-click opens the options; dragging walks it
+      round the minimap and it stays there after `/reload`.
+
+## 2. First-time setup (a new character, or `/apg setup`)
+
+- [ ] Step 1 offers only guides with a route for your race.
+- [ ] Step 2: turning **Solo Self-Found** on dims Auction House, Group quests
+      and Dungeons, and they can't be clicked; off again, they come back as they
+      were.
+- [ ] With Dungeons on (and Self-Found off) there is a step 3; the list shows
+      levels and steps each adds; Recommended / All / None work.
+- [ ] Finish: the chat line says what was set up, and the guide reloads.
+
+## 3. The guide
+
+- [ ] A new character opens at step 1, not at the end.
+- [ ] Accepting, completing and handing in a quest ticks its steps by itself.
+- [ ] ◀ and ▶ step back and on; the tick marks the step done.
+- [ ] Click ◀ a few times, then **right-click ▶**: back at your place, with the
+      steps ticked as they were. Same the other way (▶ a few times, right-click ◀).
+- [ ] Right-clicking the arrow pointing away from your place says which to use.
+- [ ] Hovering ◀ / ▶ mentions the right-click.
+- [ ] Several tabs: open a second guide beside the first; each keeps its place.
+- [ ] Finishing a guide next to a custom zone at your level asks **Where next?**
+- [ ] The expand button swaps one step for the whole guide; the grip resizes it.
+
+## 4. Arrow and waypoints
+
+- [ ] With TomTom or pfQuest, the arrow points at the step and counts down the
+      distance.
+- [ ] Options → Navigation → Arrow: each choice (ours, theirs, both, neither)
+      does what it says.
+
+## 5. Options window
+
+- [ ] Opens beside the guide; categories down the left; the page shown is
+      marked and named in the strip under the title.
+- [ ] Every page opens at its top; a long page (Gear) scrolls, a short one
+      doesn't show a scroll bar.
+- [ ] No label is cut off or crowded, on any page (Gear, Behaviour especially).
+- [ ] Drag the corner grip: the window grows wider and taller, and every page
+      re-lays itself without gaps; it keeps the size after `/reload`.
+- [ ] `/apg resetpanels` puts it back to its first size and place.
+- [ ] A dropdown left open closes when you change page or close the window.
+- [ ] **Filters**: turning Solo Self-Found on holds Group mode, Auction House
+      and every dungeon chip off (dimmed, unclickable), and the Dungeons page
+      says why; off again, they are as they were.
+- [ ] **Appearance**: each theme recolours everything at once, no reload.
+
+## 6. Gear
+
+- [ ] Item tooltips show the item score line: `+12%` green for an upgrade,
+      red for worse, *empty slot*, *not for you*.
+- [ ] **Item Score** page (under Gear): the spec picker, every weight on one
+      line each (no wrapped names), editing a box changes the tooltips,
+      Show all stats lengthens the page, Export → Import round-trips.
+- [ ] `/apg gear` opens the options at Item Score, and again closes them.
+- [ ] Gear Advisor: loot an upgrade → a pop-up with Equip / Decline; Equip puts
+      it on; Decline is remembered; in a fight Equip waits.
+- [ ] A quest with reward choices: the best one is marked.
+- [ ] Upgrades are bordered in the bags.
+
+## 7. Gear finder (`/apg finder`)
+
+- [ ] At a levelling character: upgrades from the dungeons at your level, each
+      with who drops it, where, and the chance — and quest, reputation and
+      crafted gear (*Quest: …*, *Revered with …*, *Blacksmithing 300 …*).
+- [ ] The note names up to four places and counts the rest, without running
+      over the list.
+- [ ] Turning **Include raids** on says in chat it takes a minute or two; the
+      list fills in as items load.
+- [ ] At 60: every dungeon, Turtle's own included; Molten Core shows Turtle's
+      bosses (Incindis, Basalthar).
+- [ ] Walking into a dungeon names its upgrades in chat.
+- [ ] Options → Gear: switching off quest, reputation or crafted gear removes
+      them from the list.
+- [ ] With Solo Self-Found on: no dungeons, and crafted gear only from your own
+      professions.
+
+## 8. Professions
+
+- [ ] A profession guide from the guide list advances on your skill.
+- [ ] **Shopping list** (`/apg materials`): counts what your bags hold, and
+      **This step** / **Whole route** switch.
+- [ ] **Cheapest route** (`/apg craft`): plans, **Scan prices** at the auction
+      house fills prices in, **Load as guide** adds the planned guide.
+- [ ] With Aegis: Exchange loaded: **Send to Exchange** puts the crafts on its
+      Crafting tab, and Remove takes them back out.
+
+## 9. Quest helpers
+
+- [ ] **Active Items**: a button for the step's quest item; clicking uses it.
+- [ ] **Active Targets**: a button for the step's NPC or mob; clicking targets
+      and marks it.
+- [ ] Quest icons: mousing over a quest NPC or mob puts the right raid marker
+      on it (star to talk, skull to kill, cross to loot, square to interact).
+- [ ] **Macros**: AegisTarget and AegisItem appear in your character macros and
+      follow the guide from an action bar.
+
+## 10. Party sharing
+
+- [ ] In a party, the party icon asks to share; your partner gets a pop-up and
+      the guide opens in a new tab.
+- [ ] Each of you shows under the step with your progress; a finished step
+      waits for the other.
+- [ ] Leaving the group stops sharing.
+
+## 11. The rest
+
+- [ ] Options → About → **Credits** opens beside the options and closes with
+      them.
+- [ ] Options → Maintenance: **Rescan progress**, **Error log**, **Run setup**.
+- [ ] The slash commands in the README all do what they say.
