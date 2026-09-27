@@ -12,6 +12,10 @@ OctoPawn's order -- the order matters, the first match on a line wins over
 the general ones after it -- its soft caps, and its stat labels.
 
 Only the data is taken. The scoring in ItemScore.lua is this addon's own.
+
+Weapon skills (+Swords, +Daggers, ...) are left out, on the owner's call: the
+item score is Zygor's shape, which has none, and they were rows of near-zero
+weights for most specs.
 """
 
 import json
@@ -61,6 +65,10 @@ end
 io.write(table.concat(out, "\n"))
 """
 
+# Left out of the item score: the weapon skills.
+EXCLUDED = {"SWORDS", "AXES", "MACES", "DAGGERS", "FIST WEAPONS", "POLEARMS", "STAVES",
+            "BOWS", "GUNS", "CROSSBOWS", "THROWN", "WANDS"}
+
 CLASS_ORDER = ["WARRIOR", "PALADIN", "HUNTER", "ROGUE", "PRIEST", "SHAMAN", "MAGE", "WARLOCK", "DRUID"]
 
 
@@ -89,6 +97,9 @@ def main():
     weights, patterns, caps, labels = {}, [], {}, {}
     for line in raw.split("\n"):
         f = line.split("\t")
+        if (f[0] in ("w",) and f[3] in EXCLUDED) or (f[0] == "p" and f[3] in EXCLUDED) \
+                or (f[0] == "l" and f[1] in EXCLUDED):
+            continue
         if f[0] == "w" and float(f[4]) != 0:
             weights.setdefault(f[1], {}).setdefault(f[2], {})[f[3]] = f[4]
         elif f[0] == "p":

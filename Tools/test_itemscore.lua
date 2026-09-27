@@ -92,6 +92,14 @@ info = IS:Read("item:3:0:0:0")
 check(info.stats["SPELL POWER"] == 12, "spell power read, got %s", tostring(info.stats["SPELL POWER"]))
 check(info.stats.HIT == nil and info.stats.STAMINA == nil, "a set bonus counts for nothing")
 
+-- Weapon skills are not part of the score.
+ITEMS[8] = { loc = "INVTYPE_HAND", lines = { "Edgemaster's Handguards", "Hands", "Equip: Increased Axes +7.",
+	"Equip: Increased Daggers +7.", "Equip: Increased Swords +7." } }
+check(next(IS:Read("item:8:0:0:0").stats) == nil, "a weapon skill line adds nothing")
+for _, stat in ipairs(AegisPathfinder.ItemScoreData.stats) do
+	check(stat ~= "SWORDS" and stat ~= "DAGGERS", "no weapon skill among the weights (%s)", stat)
+end
+
 -- What you cannot use.
 ITEMS[4] = { loc = "INVTYPE_HEAD", lines = { "Plate Helm", { "Head", "Plate", false, true }, "+20 Strength" } }
 check(IS:Read("item:4:0:0:0").usable == false, "a red armour type means you cannot wear it")
