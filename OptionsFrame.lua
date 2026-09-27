@@ -24,6 +24,7 @@
 	  Filters       Filters
 	  Appearance    Server theme
 	  Gear          the item score, the Gear Advisor, the Gear finder
+	    Item Score  the stat weights (GearFrame.lua), listed under Gear
 	  Behaviour     Guide behaviour
 	  Navigation    Waypoints, Arrow
 	  Maintenance   Maintenance
@@ -177,14 +178,14 @@ function AegisPathfinder:CreateConfigPanel()
 	-- Lay the sections out top to bottom with a running cursor, a page at a
 	-- time.
 	local y = 0
-	local function page(name)
+	local function page(name, sub)
 		if body then body.contentHeight = y + PAD_BOTTOM end
 		body = CreateFrame("Frame", nil, holder)
 		body:SetWidth(BODY_W)
 		body:SetHeight(1)
 		body:SetPoint("TOPLEFT", holder, "TOPLEFT", 0, 0)
 		body:Hide()
-		body.pageName = name
+		body.pageName, body.sub = name, sub
 		table.insert(frame.pages, body)
 		y = 0
 	end
@@ -392,11 +393,13 @@ function AegisPathfinder:CreateConfigPanel()
 	scoreTips:SetWidth(BODY_W)
 	place(scoreTips, 22, 6)
 	local weights = Theme:Pill(body, "Stat weights", 120, 26)
-	weights:SetScript("OnClick", function() AegisPathfinder:ToggleGearPanel() end)
+	weights:SetScript("OnClick", function()
+		AegisPathfinder:ShowConfigPage(AegisPathfinder.ITEM_SCORE_PAGE)
+	end)
 	place(weights, 26, 6)
 	note("Each item's tooltip shows what it is worth to your spec and how it "
 		.. "compares with what you wear. The weights come from OctoPawn; change "
-		.. "them, or pick another spec, under Stat weights.")
+		.. "them, or pick another spec, under Item Score.")
 	y = y + 10
 	-- The Gear Advisor's switches (GearAdvisor.lua), Zygor's in this style.
 	frame.advisor = {}
@@ -450,6 +453,12 @@ function AegisPathfinder:CreateConfigPanel()
 	y = y + SECTION_GAP
 	frame.scoreTips, frame.weightsButton, frame.clearDeclined = scoreTips, weights, clearDeclined
 	frame.openFinder = openFinder
+
+	--[[ Item Score: the weights, as Zygor lists them under Gear. The page is
+		GearFrame.lua's; it sets its own height as its list changes. ]]
+	page(AegisPathfinder.ITEM_SCORE_PAGE, true)
+	table.insert(frame.sections, section("Item score"))
+	local scorePage = AegisPathfinder:CreateItemScorePage(body, BODY_W, y, PAD_BOTTOM)
 
 	-- Beyond the concept: the addon's own settings, in the same language. -------
 	page("Behaviour")
@@ -546,7 +555,7 @@ function AegisPathfinder:CreateConfigPanel()
 	frame.scroll, frame.holder, frame.scrollbar = scroll, holder, bar
 	-- Their lists hang off UIParent, so they are closed by hand when the
 	-- page or the window goes.
-	frame.dropdowns = { race, theme, waypoints, arrow }
+	frame.dropdowns = { race, theme, waypoints, arrow, scorePage.spec }
 
 	--[[ The categories, down the left: Zygor's list, in this style -- a
 		quieter column than the page, the page shown marked with an accent
@@ -582,7 +591,9 @@ function AegisPathfinder:CreateConfigPanel()
 		Theme:Tint(mark, "accent")
 		local label = b:CreateFontString(nil, "OVERLAY")
 		Theme:SetFont(label, "body", 13)
-		label:SetPoint("LEFT", b, "LEFT", 14, 0)
+		-- A page that belongs to the one above it sits in under it.
+		if p.sub then Theme:SetFont(label, "body", 12) end
+		label:SetPoint("LEFT", b, "LEFT", p.sub and 28 or 14, 0)
 		label:SetText(p.pageName)
 		b.fill, b.mark, b.label, b.pageName = fill, mark, label, p.pageName
 		function b:SetActive(on)
@@ -640,15 +651,29 @@ function AegisPathfinder:ShowConfigPage(name)
 	end
 	for _, d in ipairs(frame.dropdowns) do d.list:Hide() end
 	frame.page = shown.pageName
+	if shown.refresh then shown.refresh() end
+	self:SizeConfigPage()
+	for _, b in ipairs(frame.navButtons) do b:SetActive(b.pageName == frame.page) end
+	frame.subhead.label:SetText("CONFIG \194\183 " .. string.upper(frame.page))
+end
+
+--- Fit the scroll range to the page shown: from its top, or, with `keep`,
+--- staying where it is (a page whose height just changed under you).
+function AegisPathfinder:SizeConfigPage(keep)
+	local frame = self.optionsframe
+	if not (frame and frame.page) then return end
+	local shown
+	for _, p in ipairs(frame.pages) do
+		if p.pageName == frame.page then shown = p end
+	end
 	frame.holder:SetHeight(shown.contentHeight)
 	frame.scroll:UpdateScrollChildRect()
 	local over = math.max(0, shown.contentHeight - frame.visible)
 	frame.scrollbar:SetMinMaxValues(0, over)
-	frame.scrollbar:SetValue(0)
-	frame.scroll:SetVerticalScroll(0)
+	local v = keep and math.min(frame.scrollbar:GetValue(), over) or 0
+	frame.scrollbar:SetValue(v)
+	frame.scroll:SetVerticalScroll(v)
 	if over > 0 then frame.scrollbar:Show() else frame.scrollbar:Hide() end
-	for _, b in ipairs(frame.navButtons) do b:SetActive(b.pageName == frame.page) end
-	frame.subhead.label:SetText("CONFIG \194\183 " .. string.upper(frame.page))
 end
 
 --- Open the options panel, or close it if it is open. The header's menu chip
@@ -716,6 +741,7 @@ function AegisPathfinder:RefreshConfigPanel()
 	frame.ahSwitch:SetLocked(db.SelfFound)
 	frame.ssfSwitch:SetOn(db.SelfFound)
 	frame.scoreTips:SetOn(self.ItemScore.Settings().tooltips)
+	self:UpdateItemScorePage()
 	local finder = self.GearFinder.Settings()
 	for key, sw in pairs(frame.finder) do
 		sw:SetOn(finder[key])

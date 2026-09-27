@@ -16,7 +16,7 @@ version.
 | `/apg exchange` | Send the guide's remaining crafts to Aegis: Exchange, or take them back out |
 | `/apg craft` | The crafting route window: the cheapest way to level a profession at today's prices |
 | `/apg share` | Share the guide you are on with your party, or stop sharing (beta) |
-| `/apg gear` | The Gear window: the stat weights behind the item score |
+| `/apg gear` | The options at **Item Score**: the stat weights behind the item score |
 | `/apg finder` | The Gear finder: upgrades that drop in the dungeons you run |
 | `/apg ssf` | Solo Self-Found on or off |
 | `/apg setup` | Run the first-time setup again: your guide, its features and your dungeons |
@@ -34,8 +34,8 @@ round the minimap. The options window's **Behaviour** page can hide it, as can
 FuBar is no longer supported: the button is the addon's own now.
 
 The options window lists its pages down the left: **Route** (race and route
-pack), **Dungeons**, **Filters**, **Appearance** (server theme), **Gear**,
-**Behaviour**, **Navigation** (waypoints and arrow), **Maintenance** (rescan,
+pack), **Dungeons**, **Filters**, **Appearance** (server theme), **Gear** and
+under it **Item Score** (the stat weights), **Behaviour**, **Navigation** (waypoints and arrow), **Maintenance** (rescan,
 error log, setup) and **About** (version and credits).
 
 ## What it does
@@ -260,10 +260,11 @@ low for says the level it becomes an upgrade at.
 - **Comparing:** a ring or trinket is weighed against the weaker of the two you
   wear, a one-hander against either hand once you can dual wield, a two-hander
   against both hands together. Enchants are left out on both sides.
-- **The weights** are OctoPawn's defaults for every class and spec. The **Gear**
-  window (`/apg gear`, or **Stat weights** in the options) lists them, lets you
-  change any of them, pick another spec, reset, and export or import them as a
-  string OctoPawn reads too.
+- **The weights** are OctoPawn's defaults for every class and spec. The
+  options window's **Item Score** page, under **Gear** (`/apg gear`, or **Stat
+  weights** on the Gear page), lists them down the left with a box each, as
+  Zygor's does. Change any of them, pick another spec, reset, or import and
+  export them as a string OctoPawn reads too.
 
 **Gear Advisor.** It watches for upgrades, as Zygor's does, and is switched
 under **Gear** in the options:

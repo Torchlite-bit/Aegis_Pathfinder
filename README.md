@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.5.0)
+# Aegis: Pathfinder (v0.6.0)
 
 **A levelling guide for 1.12 servers in the Turtle WoW family** — Turtle WoW,
 OctoWoW, Capybara Paradise and RavenCraft. Part of the Aegis addon suite.
@@ -57,7 +57,7 @@ Coming from TurtleGuide or VanillaGuide+? Your progress carries over.
 |---|---|
 | `/apg` | Open the guide |
 | `/apg setup` | Run the first-time setup again |
-| `/apg gear` | Stat weights behind the item score |
+| `/apg gear` | Your stat weights (options → Item Score) |
 | `/apg finder` | Upgrades in the dungeons you run |
 | `/apg craft` | Cheapest route to 300 in a profession |
 | `/apg share` | Share your guide with your party |
@@ -68,7 +68,7 @@ too. [All commands](docs/FEATURES.md#commands).
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.5.0`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.6.0`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 

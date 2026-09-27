@@ -306,13 +306,25 @@ is sections now.
 sections added, one scrolling body grew too long to find anything in, so the
 sections are grouped into pages with a category list down the left, as Zygor's
 options have it: Route (Race, Route pack), Dungeons, Filters, Appearance
-(Server theme), Gear, Behaviour, Navigation (Waypoints, Arrow), Maintenance,
-About. The concept's 396px pane is unchanged, with the 150px list beside it
+(Server theme), Gear and, set in under it, Item Score, Behaviour, Navigation
+(Waypoints, Arrow), Maintenance, About. The concept's 396px pane is unchanged, with the 150px list beside it
 (546px in all). The list is a quieter column than the pane — a 3% text tint and
 a hairline on its right edge — and the page shown is marked with a 3px accent
 bar, a brighter row and white text. The subhead names the page (`CONFIG ·
 GEAR`). A page scrolls only when it is taller than the window, and every page
 opens at its top; changing page closes any dropdown list left open.
+
+**Item Score** (`GearFrame.lua`) is Zygor's page of the same name: the spec
+picker and your class, a note on where the spec came from and whether the
+weights are the defaults or yours, *Show all stats*, then the weights one to a
+row down the left — label, then a 72px field (black, with a hairline edge) —
+and beside them a *Share weights* column: the OctoPawn string's field with
+**Import** and **Export** under it, and what they did. **Reset** sits under the
+longer column. The list's length follows the spec and *Show all stats*, so the
+page sets its own height as it is drawn and the window keeps your place while
+it changes. It used to be a window of its own. Zygor's has a many-line box for
+the string; here the field is one line that scrolls sideways, so the page
+needs no second scroll frame inside its own.
 
 | Concept | Implementation |
 |---|---|

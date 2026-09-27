@@ -90,9 +90,10 @@ function AegisPathfinder:GetWaypointProvider() return self.__provider end
 function AegisPathfinder:ClearWaypoint() self.__cleared = true end
 function AegisPathfinder:ForceWaypointUpdate() self.__resent = true end
 
--- The item score's settings, as ItemScore.lua keeps them.
-local scoreSettings = { tooltips = true }
-AegisPathfinder.ItemScore = { Settings = function() return scoreSettings end }
+-- The item score is the real one: its page is in this window.
+UnitClass = function() return "Paladin", "PALADIN" end
+local talents = { 0, 0, 0 }
+GetTalentTabInfo = function(tab) return ({ "Holy", "Protection", "Retribution" })[tab], "icon", talents[tab] end
 local advisorSettings = { enabled = true, popups = true, questmark = true, bagmark = true }
 local finderSettings = { enabled = true, announce = true, raids = false }
 AegisPathfinder.GearFinder = { Settings = function() return finderSettings end }
@@ -102,9 +103,12 @@ AegisPathfinder.GearAdvisor = {
 	Dirty = function() end,
 	ClearDeclined = function() AegisPathfinder.__declinedCleared = true end,
 }
-function AegisPathfinder:ToggleGearPanel() self.__gear = (self.__gear or 0) + 1 end
 
 dofile("Theme.lua")
+dofile("ItemScoreData.lua")
+dofile("ItemScore.lua")
+local scoreSettings = AegisPathfinder.ItemScore.Settings()
+dofile("GearFrame.lua")
 dofile("WidgetWarlock.lua")
 dofile("Credits.lua")
 dofile("OptionsFrame.lua")
@@ -153,8 +157,8 @@ check(AegisPathfinder.ToggleDungeonPanel == nil and AegisPathfinder.ToggleFilter
 	"the functions that opened those windows are gone")
 
 -- The pages, and the list that picks them.
-local PAGES = { "Route", "Dungeons", "Filters", "Appearance", "Gear", "Behaviour", "Navigation",
-	"Maintenance", "About" }
+local PAGES = { "Route", "Dungeons", "Filters", "Appearance", "Gear", "Item Score", "Behaviour",
+	"Navigation", "Maintenance", "About" }
 local names = {}
 for _, p in ipairs(frame.pages) do table.insert(names, p.pageName) end
 check(table.concat(names, ", ") == table.concat(PAGES, ", "), "the pages, in order: %s", table.concat(names, ", "))
@@ -295,7 +299,54 @@ click(frame.scoreTips)
 check(scoreSettings.tooltips == false, "and the switch takes it off")
 click(frame.scoreTips)
 click(frame.weightsButton)
-check(AegisPathfinder.__gear == 1, "Stat weights opens the Gear window")
+check(frame.page == "Item Score", "Stat weights turns to the Item Score page, got %s", tostring(frame.page))
+check(AegisPathfinder.gearframe == nil, "not a window of its own")
+
+-- Item Score: Zygor's page, listed under Gear.
+local scoreNav, gearNav
+for _, b in ipairs(frame.navButtons) do
+	if b.pageName == "Item Score" then scoreNav = b end
+	if b.pageName == "Gear" then gearNav = b end
+end
+local _, _, _, scoreX = scoreNav.label:GetPoint()
+local _, _, _, gearX = gearNav.label:GetPoint()
+check(scoreX > gearX, "the list sets Item Score in under Gear (%s against %s)", tostring(scoreX), tostring(gearX))
+check(frame.subhead.label:GetText() == "CONFIG \194\183 ITEM SCORE", "the subhead names it")
+local scorePage = AegisPathfinder.itemscorepage
+check(scorePage.body:IsShown() and scorePage.body.pageName == "Item Score", "the page is shown")
+check(scorePage.cells.STRENGTH and scorePage.cells.STRENGTH:IsShown(), "with the weights on it")
+local _, shortRange = frame.scrollbar:GetMinMaxValues()
+click(scorePage.showAll)
+local _, longRange = frame.scrollbar:GetMinMaxValues()
+check(longRange > shortRange and frame.holder:GetHeight() == scorePage.body.contentHeight,
+	"Show all stats lengthens the page, and the window scrolls further (%s to %s)", shortRange, longRange)
+arg1 = -3; fire(frame, "OnMouseWheel")
+local at = frame.scroll:GetVerticalScroll()
+click(scorePage.showAll)
+check(frame.scroll:GetVerticalScroll() == math.min(at, select(2, frame.scrollbar:GetMinMaxValues())),
+	"and shortening it keeps your place where it can")
+click(scorePage.spec)
+check(scorePage.spec.list:IsShown(), "the spec picker opens")
+click(gearNav)
+check(not scorePage.spec.list:IsShown(), "and closes with the page")
+talents[2] = 21
+AegisPathfinder.ItemScore:Changed()
+check(scorePage.spec.items[1].label == "Auto (Retribution)", "off screen, the page waits")
+click(scoreNav)
+check(scorePage.spec.items[1].label == "Auto (Protection)", "and is drawn afresh when turned to, got %s",
+	scorePage.spec.items[1].label)
+talents[2] = 0
+AegisPathfinder.ItemScore:Changed()
+click(gearNav)
+
+-- /apg gear: the window at this page, or closed if it is on it.
+AegisPathfinder:ToggleItemScorePage()
+check(frame:IsShown() and frame.page == "Item Score", "/apg gear turns an open window to the page")
+AegisPathfinder:ToggleItemScorePage()
+check(not frame:IsShown(), "and again closes it")
+AegisPathfinder:ToggleItemScorePage()
+check(frame:IsShown() and frame.page == "Item Score", "and opens it at the page when it is closed")
+click(frame.navButtons[1])
 check(frame.advisor.enabled:IsOn() and frame.advisor.popups:IsOn(), "the Gear Advisor is on, with pop-ups")
 check(not frame.advisor.autoequip:IsOn() and not frame.advisor.questpick:IsOn(),
 	"nothing is equipped or picked for you until you ask")

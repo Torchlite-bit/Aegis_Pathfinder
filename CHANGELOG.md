@@ -18,6 +18,17 @@ reports.
 
 ---
 
+## [0.6.0]
+
+### Changed
+- **The stat weights are a page of the options now, not a window of their
+  own**: **Item Score**, listed under **Gear**, laid out as Zygor's is. Your
+  spec, *Show all stats*, and every weight down the left with a box each;
+  beside them the OctoPawn string with **Import** and **Export**; **Reset**
+  under them. `/apg gear` and **Stat weights** on the Gear page turn to it.
+
+---
+
 ## [0.5.0]
 
 ### Changed
@@ -193,6 +204,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.6.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.5.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.4.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.4.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
