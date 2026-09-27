@@ -37,6 +37,7 @@ lua5.1 Tools/test_craftroute.lua
 lua5.1 Tools/test_partysync.lua
 lua5.1 Tools/test_activeframes.lua
 lua5.1 Tools/test_nextguide.lua
+lua5.1 Tools/test_zoneguide.lua
 lua5.1 Tools/test_setup.lua
 lua5.1 Tools/test_objectivetabs.lua
 lua5.1 Tools/test_objectivepanel.lua

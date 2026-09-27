@@ -45,6 +45,10 @@ are only found at startup.
 - [ ] Several tabs: open a second guide beside the first; each keeps its place.
 - [ ] Finishing a guide next to a custom zone at your level asks **Where next?**
 - [ ] The expand button swaps one step for the whole guide; the grip resizes it.
+- [ ] **Moonwhisper Coast** (52-60, both sides): Where next? offers it from 51;
+      the arrow points where each step says. Its quest data is gathered by
+      players, so note any step that sends you to the wrong place, any quest
+      it never mentions, and any it asks for that you can't get.
 
 ## 4. Arrow and waypoints
 

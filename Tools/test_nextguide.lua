@@ -61,6 +61,7 @@ guide("Balor (29-34)")
 guide("Grim Reaches (33-38)")
 guide("Gilneas (39-46)")
 guide("Hyjal (58-60)")
+guide("Moonwhisper Coast (52-60)")
 guide("Westfall (12-17)")
 AegisPathfinder.routes.Human = {
 	{ levels = "27-28", guide = "Optimized/Redridge (27-28)" },
@@ -118,6 +119,11 @@ AegisPathfinder.db.char.completion["Balor (29-34)"] = 1
 check(names(AegisPathfinder:GetCustomZoneChoices(28)) == "Northwind (28-34)", "nor one finished before")
 AegisPathfinder.db.char.completion["Balor (29-34)"] = nil
 check(table.getn(AegisPathfinder:GetCustomZoneChoices(20)) == 0, "a level with none fitting offers none")
+check(names(AegisPathfinder:GetCustomZoneChoices(51)) == "Moonwhisper Coast (52-60)",
+	"at 51: Moonwhisper Coast, a level early; got '%s'", names(AegisPathfinder:GetCustomZoneChoices(51)))
+check(names(AegisPathfinder:GetCustomZoneChoices(58)) == "Moonwhisper Coast (52-60), Hyjal (58-60)",
+	"at 58: Moonwhisper Coast still, and Hyjal; got '%s'", names(AegisPathfinder:GetCustomZoneChoices(58)))
+check(table.getn(AegisPathfinder:GetCustomZoneChoices(60)) == 0, "at 60, nothing: it is done with")
 
 -- Finishing a route guide ------------------------------------------------------------
 

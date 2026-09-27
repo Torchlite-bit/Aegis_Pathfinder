@@ -33,6 +33,7 @@ whoever wrote it. As of the port, that history carries commits from
 | Optimized quest ordering | **mrmr**, credited in the headers of `Guides/Optimized/` |
 | RestedXP speedrun and hardcore route packs | **RestedXP Guides** — Tactics and Zeroji |
 | Turtle WoW custom zone content | The **Turtle WoW** team, and the successor-server teams continuing it |
+| Moonwhisper Coast (`Guides/*/52_60_Moonwhisper_Coast.lua`) | Written by `Tools/build_zone_guide.py` from **ryanmr82**'s [pfQuest-turtle](https://github.com/ryanmr82/pfQuest-turtle) fork (the Hydra guild's, built from the captures its players send in), with a title and objective it lacks from **rivi-s**'s [pfQuest-turtle-HDB](https://github.com/rivi-s/pfQuest-turtle-HDB) |
 | Profession routes (`Guides/Professions/`) | Converted from a reference document supplied by the repository owner; Engineering's from [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) by **Kitymeowmeow** |
 
 ## Libraries and data

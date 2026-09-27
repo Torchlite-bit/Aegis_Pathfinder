@@ -18,6 +18,29 @@ reports.
 
 ---
 
+## [0.11.0] — restart
+
+### Added
+- **Moonwhisper Coast (52-60)**, the zone patch 1.18.1 added north of
+  Azshara, with a guide for each side: Moro'gai Village's draenei for both,
+  Sunsworn Camp and Narvalis Point for the Alliance, Moonhoof Village and
+  Moonhoof Retreat for the Horde. The Horde's stories go out to Azshara and
+  Mulgore and back, and the guide goes with them. Where next? offers it from
+  51, and it is under the guide list's **Custom** tab.
+  - Written from quest data players have gathered
+    ([ryanmr82's pfQuest-turtle](https://github.com/ryanmr82/pfQuest-turtle)),
+    not a server's database, so expect gaps: quests nobody is on record as
+    giving, and the ones picked up elsewhere, show only once they are in
+    your log. Tell us where it sends you wrong.
+- **`Tools/build_zone_guide.py`** writes a zone's guides from a
+  pfQuest-turtle checkout -- prerequisites, then level, then the nearest
+  thing to do -- so the guide can be written again as the data grows.
+
+### Docs
+- The authoring notes gave `|C|` and `|R|` lists with commas; the parser
+  splits them on `/`, and matches races as the client names them
+  (`Night Elf`).
+
 ## [0.10.0]
 
 ### Fixed
@@ -332,6 +355,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.11.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.10.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.9.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.9.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

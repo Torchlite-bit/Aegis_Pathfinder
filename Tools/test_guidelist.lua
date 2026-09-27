@@ -85,7 +85,7 @@ check(AegisPathfinder:GetGuideCategory("Westfall (12-17)") == "zone",
 for _, name in ipairs({ "Thalassian Highlands (1-10)", "Blackstone Island (1-10)", "Northwind (28-34)",
 		"Balor (29-34)", "Grim Reaches (33-38)", "Gilneas (39-46)", "Icepoint Rock (40-50)",
 		"Lapidis Isle (48-53)", "Gillijim's Isle (48-53)", "Tel'Abim (54-60)",
-		"Scarlet Enclave (55-60)", "Hyjal (58-60)" }) do
+		"Scarlet Enclave (55-60)", "Hyjal (58-60)", "Moonwhisper Coast (52-60)" }) do
 	check(AegisPathfinder:GetGuideCategory(name) == "turtle", "%s belongs under Custom", name)
 end
 -- Guides/Both holds only custom-zone guides; each of them must be found.
