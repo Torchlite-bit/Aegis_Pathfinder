@@ -333,6 +333,7 @@ function IS:Read(link)
 	local state = {}
 	for i, l in ipairs(self:ReadLines(item)) do
 		if l.left then
+			if l.left == "Binds when equipped" then info.boe = true end
 			local _, _, level = string.find(l.left, "^Requires Level (%d+)")
 			if level then
 				info.level = tonumber(level)

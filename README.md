@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.4.0)
+# Aegis: Pathfinder (v0.4.1)
 
 A Classic+ leveling guide for the Turtle WoW-lineage 1.12 client family —
 OctoWoW, Capybara Paradise and RavenCraft. Part of the Aegis addon suite.
@@ -290,8 +290,23 @@ low for says the level it becomes an upgrade at.
   change any of them, pick another spec, reset, and export or import them as a
   string OctoPawn reads too.
 
-The Gear Advisor (upgrade pop-ups, the best quest reward picked for you) and
-the Gear Finder (upgrades from the dungeons you run) are coming next.
+**Gear Advisor.** It watches for upgrades, as Zygor's does, and is switched
+under **Gear** in the options:
+
+- **Upgrades as you pick them up.** When something in your bags beats what you
+  wear and you can wear it now, a window says so: the item, how much better,
+  what it replaces, and **Equip** or **Decline**. Declined items are not offered
+  again until you **Clear declined items**. In a fight, Equip waits for the
+  fight to end.
+- **Equip upgrades for me** puts them on without asking — never one that binds
+  when equipped; that one still asks. Off until you turn it on.
+- **Quest rewards.** When a quest offers a choice, the best one is marked: the
+  biggest upgrade, or, with none, the one a vendor pays most for. With **pick it
+  for me** on, and quests turning in by themselves, it is taken.
+- **Your bags.** Upgrades get a border in the default bag frames.
+- It can be switched off, or off at level 60.
+
+The Gear Finder (upgrades from the dungeons you run) is coming next.
 
 ## Professions
 
@@ -372,7 +387,7 @@ Reports welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options panel's About section (`v0.4.0`) — quote it.
+1. Check the **version** in the load message or the options panel's About section (`v0.4.1`) — quote it.
 2. Open the **Error log** (options panel → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 
@@ -438,7 +453,7 @@ so `git log` and `git blame` still attribute each line to whoever wrote it.
 | The authors of MetaMap, MetaMapBWP and Cartographer | Supported waypoint providers |
 | **Kitymeowmeow** | [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) — the recipe data behind the priced crafting routes: skill thresholds, reagents, learn costs, recipe sources, vendor prices; and the Engineering route |
 | **iGreed** | [OctoPawn](https://github.com/iGreed1993/OctoPawn) (MIT) — the stat weights for every class and spec, the tooltip stat patterns and soft caps behind the item score |
-| **The CMaNGOS team** | [classic-db](https://github.com/cmangos/classic-db) — which trainers teach each Engineering, Herbalism, Skinning and Fishing rank; the ore each vein yields, the skinnable beasts, each zone's fishing skill, the Expert fishing book and Nat Pagle's quest |
+| **The CMaNGOS team** | [classic-db](https://github.com/cmangos/classic-db) — which trainers teach each Engineering, Herbalism, Skinning and Fishing rank; the ore each vein yields, what quest rewards sell for, the skinnable beasts, each zone's fishing skill, the Expert fishing book and Nat Pagle's quest |
 | **Indian Type Foundry** | Rajdhani (SIL OFL 1.1) |
 | **The Inter Project Authors** | Inter (SIL OFL 1.1) |
 

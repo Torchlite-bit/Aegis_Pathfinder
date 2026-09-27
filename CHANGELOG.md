@@ -18,6 +18,33 @@ reports.
 
 ---
 
+## [0.4.1] — restart
+
+### Added
+- **Gear Advisor**, the second part of Gear, switched under **Gear** in the
+  options:
+  - Upgrades you pick up pop up with **Equip** or **Decline**; declined items
+    are not offered again until you clear the list. In a fight, Equip waits.
+  - **Equip upgrades for me** (off until you turn it on) never equips an item
+    that would bind to you; that one still asks.
+  - The best quest reward is marked — the biggest upgrade, or the one a vendor
+    pays most for — and, with **pick it for me** on and quests turning in by
+    themselves, taken. Sell prices come from the CMaNGOS database.
+  - Upgrades are bordered in the default bags.
+  - Off, or off at level 60, when you want.
+
+### Changed
+- **Auction House tags go on the step that sends you there, not on the
+  quest.** A quest you can do by fishing, farming a drop or finding a vendor
+  now stays with Auction House steps off: *The Family and the Fishing Pole*,
+  *Catch of the Day*, *Fish in a Bucket*, *Look To The Stars*. Notes about
+  farming (Green Hills pages to keep, the Treasure Map, Morrowgrain, Silk
+  Cloth) are no longer hidden either. Quests that need a crafted item —
+  *Ineptitude + Chemicals = Fun*, *Chasing A-Me 01*, *The Blazno Touch* and the
+  Tel'Abim alchemy, engineering and enchanting quests — still are.
+
+---
+
 ## [0.4.0] — restart
 
 ### Added
@@ -119,6 +146,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.4.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.4.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.3.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.3.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

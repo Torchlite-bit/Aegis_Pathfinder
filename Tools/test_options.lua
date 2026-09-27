@@ -91,6 +91,12 @@ function AegisPathfinder:ForceWaypointUpdate() self.__resent = true end
 -- The item score's settings, as ItemScore.lua keeps them.
 local scoreSettings = { tooltips = true }
 AegisPathfinder.ItemScore = { Settings = function() return scoreSettings end }
+local advisorSettings = { enabled = true, popups = true, questmark = true, bagmark = true }
+AegisPathfinder.GearAdvisor = {
+	Settings = function() return advisorSettings end,
+	Dirty = function() end,
+	ClearDeclined = function() AegisPathfinder.__declinedCleared = true end,
+}
 function AegisPathfinder:ToggleGearPanel() self.__gear = (self.__gear or 0) + 1 end
 
 dofile("Theme.lua")
@@ -225,6 +231,18 @@ check(scoreSettings.tooltips == false, "and the switch takes it off")
 click(frame.scoreTips)
 click(frame.weightsButton)
 check(AegisPathfinder.__gear == 1, "Stat weights opens the Gear window")
+check(frame.advisor.enabled:IsOn() and frame.advisor.popups:IsOn(), "the Gear Advisor is on, with pop-ups")
+check(not frame.advisor.autoequip:IsOn() and not frame.advisor.questpick:IsOn(),
+	"nothing is equipped or picked for you until you ask")
+click(frame.advisor.autoequip)
+check(advisorSettings.autoequip == true, "the switch asks for it")
+click(frame.advisor.enabled)
+check(advisorSettings.enabled == false and not frame.advisor.popups:IsEnabled(),
+	"with the advisor off its other switches are held")
+click(frame.advisor.enabled)
+check(frame.advisor.popups:IsEnabled(), "and let go when it is back on")
+click(frame.clearDeclined)
+check(AegisPathfinder.__declinedCleared, "Clear declined items clears them")
 
 -- Solo Self-Found holds the Auction House switch off, and lets it go again.
 check(not frame.ssfSwitch:IsOn(), "Solo Self-Found is off by default")

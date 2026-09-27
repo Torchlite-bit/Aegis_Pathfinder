@@ -361,8 +361,36 @@ function AegisPathfinder:CreateConfigPanel()
 	note("Each item's tooltip shows what it is worth to your spec and how it "
 		.. "compares with what you wear. The weights come from OctoPawn; change "
 		.. "them, or pick another spec, under Stat weights.")
-	y = y + SECTION_GAP
-	frame.scoreTips, frame.weightsButton = scoreTips, weights
+	y = y + 10
+	-- The Gear Advisor's switches (GearAdvisor.lua), Zygor's in this style.
+	frame.advisor = {}
+	local ADVISOR = {
+		{ key = "enabled",   label = "Gear Advisor: tell me about upgrades" },
+		{ key = "maxlevel",  label = "Turn it off at level 60" },
+		{ key = "popups",    label = "Pop up new upgrades as I pick them up" },
+		{ key = "autoequip", label = "Equip upgrades for me (never one that binds)" },
+		{ key = "questmark", label = "Mark the best quest reward" },
+		{ key = "questpick", label = "Pick it for me when quests turn in by themselves" },
+		{ key = "bagmark",   label = "Border upgrades in my bags" },
+	}
+	for _, def in ipairs(ADVISOR) do
+		local key = def.key
+		local sw = Theme:Switch(body, def.label, function(on)
+			AegisPathfinder.GearAdvisor.Settings()[key] = on
+			AegisPathfinder.GearAdvisor:Dirty()
+			AegisPathfinder:RefreshConfigPanel()
+		end)
+		sw:SetWidth(BODY_W)
+		place(sw, 22, 6)
+		frame.advisor[key] = sw
+	end
+	local clearDeclined = Theme:Pill(body, "Clear declined items", 150, 26)
+	clearDeclined:SetScript("OnClick", function()
+		AegisPathfinder.GearAdvisor:ClearDeclined()
+		AegisPathfinder:Print("Declined upgrades cleared: they will be offered again.")
+	end)
+	place(clearDeclined, 26, SECTION_GAP)
+	frame.scoreTips, frame.weightsButton, frame.clearDeclined = scoreTips, weights, clearDeclined
 
 	-- Beyond the concept: the addon's own settings, in the same language. -------
 	table.insert(frame.sections, section("Guide behaviour"))
@@ -552,6 +580,12 @@ function AegisPathfinder:RefreshConfigPanel()
 	frame.ahSwitch:SetLocked(db.SelfFound)
 	frame.ssfSwitch:SetOn(db.SelfFound)
 	frame.scoreTips:SetOn(self.ItemScore.Settings().tooltips)
+	local advisor = self.GearAdvisor.Settings()
+	for key, sw in pairs(frame.advisor) do
+		sw:SetOn(advisor[key])
+		-- The rest of the advisor's switches mean nothing with it off.
+		sw:SetLocked(key ~= "enabled" and not advisor.enabled)
+	end
 	frame.filterNote:SetText((grouped and "Group mode" or "Solo mode") .. " \194\183 "
 		.. (db.SelfFound and "Self-Found: no trading or Auction House steps"
 			or ("Auction House steps " .. (db.UseAH and "shown" or "hidden"))))
