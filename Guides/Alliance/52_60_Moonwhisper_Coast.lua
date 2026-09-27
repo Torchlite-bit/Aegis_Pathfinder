@@ -103,22 +103,22 @@ C Led Astray |QID|42042| |N|Stop the misguided druids on Tyrandas (66.8, 16.8)| 
 C The Rot of Elun’aran |QID|42096| |N|Slay 10 Sisters of Rot, 10 Whispering Satyrs, and 5 Rotting Ancients in Elun'aran (65.5, 18.5)| |Z|Moonwhisper Coast|
 T Led Astray |QID|42042| |N|Keeper Bandalar at the Grove of the Sun (67.2, 22.5)| |Z|Moonwhisper Coast|
 T The Rot of Elun’aran |QID|42096| |N|Sister Mirallun at the Grove of the Sun (67.8, 22.4)| |Z|Moonwhisper Coast|
-A Keeper of the Broken Grove |QID|42097| |N|Sister Mirallun at the Grove of the Sun (67.8, 22.4)| |Z|Moonwhisper Coast|
-C Keeper of the Broken Grove |QID|42097| |N|Slay Keeper Krothis in Elun'aran (65.5, 18.5)| |Z|Moonwhisper Coast|
-T Keeper of the Broken Grove |QID|42097| |N|Sister Mirallun at the Grove of the Sun (67.8, 22.4)| |Z|Moonwhisper Coast|
+A Keeper of the Broken Grove |QID|42097| |N|Sister Mirallun at the Grove of the Sun (67.8, 22.4)| |P|GROUP| |Z|Moonwhisper Coast|
+C Keeper of the Broken Grove |QID|42097| |N|Slay Keeper Krothis in Elun'aran (65.5, 18.5)| |P|GROUP| |Z|Moonwhisper Coast|
+T Keeper of the Broken Grove |QID|42097| |N|Sister Mirallun at the Grove of the Sun (67.8, 22.4)| |P|GROUP| |Z|Moonwhisper Coast|
 C Belated Preservation |QID|42043| |N|Collect Elunaris Relics (68.8, 15.4)| |Z|Moonwhisper Coast|
 T Belated Preservation |QID|42043| |N|Grovetender Sellais at the Grove of the Sun (68.3, 21.6)| |Z|Moonwhisper Coast|
-A A Star That Calls Back |QID|42092| |N|Zarazar Sagewind at Zarazar's camp (57.5, 28.8)| |Z|Moonwhisper Coast|
+A A Star That Calls Back |QID|42092| |N|Zarazar Sagewind at Zarazar's camp (57.5, 28.8)| |P|GROUP| |Z|Moonwhisper Coast|
 C An’she’s Respite |QID|42088| |N|Slay 12 Shadewalker Bonerattlers, 8 Shadewalker Brutes and 8 Shadewalker Sharpshooters at An'she's Respite (44.5, 20.4)| |Z|Moonwhisper Coast|
-C A Star That Calls Back |QID|42092| |N|Slay Starcaller at the Starshard Cradle (39.6, 22.2)| |Z|Moonwhisper Coast|
-T A Star That Calls Back |QID|42092| |N|Zarazar Sagewind at Zarazar's camp (57.5, 28.8)| |Z|Moonwhisper Coast|
+C A Star That Calls Back |QID|42092| |N|Slay Starcaller at the Starshard Cradle (39.6, 22.2)| |P|GROUP| |Z|Moonwhisper Coast|
+T A Star That Calls Back |QID|42092| |N|Zarazar Sagewind at Zarazar's camp (57.5, 28.8)| |P|GROUP| |Z|Moonwhisper Coast|
 C Wolf in Sheep's Clothing |QID|41911| |N|Find Nar'an in the outpost north of Moro'gai Village: Bloodred Crystal (63.1, 45.7)| |Z|Moonwhisper Coast|
 C Echoes of Nendis |QID|42086| |N|Recover 30 Nendis Mementos from the ruins of Nendis (69.3, 54.1)| |Z|Moonwhisper Coast|
 A Powerless Runestone |QID|42010| |N|Keeper N’las at Maras'ethil (71.4, 66.4)| |Z|Moonwhisper Coast|
 T Wolf in Sheep's Clothing |QID|41911| |N|Ar'lia at Moro'gai Village (63.4, 66.9)| |Z|Moonwhisper Coast|
 A An Ill Omen |QID|41912| |N|Crystal Entity at Moro'gai Village (61.1, 66)| |Z|Moonwhisper Coast|
 C An Ill Omen |QID|41912| |N|Get the red crystal (61.1, 66)| |Z|Moonwhisper Coast|
-A Draenethyst Recovery |QID|41953| |N|Riftmaster Ral'pekta at Moro'gai Village (61.1, 66)| |Z|Moonwhisper Coast|
+A Draenethyst Recovery |QID|41953| |N|Riftmaster Ral'pekta at Moro'gai Village (61.1, 66)| |P|GROUP| |Z|Moonwhisper Coast|
 T An Ill Omen |QID|41912| |N|Riftmaster Ral'pekta at Moro'gai Village (61.1, 66)| |Z|Moonwhisper Coast|
 A Draenei Divination |QID|41913| |N|Riftmaster Ral'pekta at Moro'gai Village (61.1, 66)| |Z|Moonwhisper Coast|
 C Draenei Divination |QID|41913| |N|Acquire the needed materials: Raw Draenethyst Formation, Purple Lotus, Arcane Bark, Highborne Fragment (65.1, 71) (65.7, 55.1) (58.8, 40.4)| |Z|Moonwhisper Coast|
@@ -147,21 +147,21 @@ A Answers from Father |QID|41915| |N|Given as you hand in Hooves and Horns, Clad
 T Answers from Father |QID|41915| |N|Moro'gai K'la at Moro'gai Village (61, 65.3)| |Z|Moonwhisper Coast|
 A The Elder's End |QID|41916| |N|Moro'gai K'la at Moro'gai Village (61, 65.3)| |Z|Moonwhisper Coast|
 T Scales of the Tideblade |QID|42089| |N|Sentinel Commander Silverstreak at Narvalis Point (41, 45.9)| |Z|Moonwhisper Coast|
-A Serpents Without Heads |QID|42090| |N|Sentinel Commander Silverstreak at Narvalis Point (41, 45.9)| |Z|Moonwhisper Coast|
+A Serpents Without Heads |QID|42090| |N|Sentinel Commander Silverstreak at Narvalis Point (41, 45.9)| |P|GROUP| |Z|Moonwhisper Coast|
 C The Elder's End |QID|41916| |N|Locate Elder Bhu'robi and stop his crusade (45.8, 28.5)| |Z|Moonwhisper Coast|
 C The Light of Elunaris |QID|42087| |N|Find the source of power within the Temple of Elunaris on the Isle of Tyrandas (67.3, 13.5)| |Z|Moonwhisper Coast|
-C Serpents Without Heads |QID|42090| |N|Slay Lady Serpentia and Lord Ta'jax in the ruins of Nendis (69.1, 50.1) (72.9, 57)| |Z|Moonwhisper Coast|
+C Serpents Without Heads |QID|42090| |N|Slay Lady Serpentia and Lord Ta'jax in the ruins of Nendis (69.1, 50.1) (72.9, 57)| |P|GROUP| |Z|Moonwhisper Coast|
 T The Elder's End |QID|41916| |N|Moro'gai K'la at Moro'gai Village (61, 65.3)| |Z|Moonwhisper Coast|
 A A Student's Determination |QID|41917| |N|Moro'gai K'la at Moro'gai Village (61, 65.3)| |Z|Moonwhisper Coast|
 T A Student's Determination |QID|41917| |N|Ar'lia at Moro'gai Village (63.4, 66.9)| |Z|Moonwhisper Coast|
 T The Light of Elunaris |QID|42087| |N|Talanis Amberscribe at Narvalis Point (41, 45.9)| |Z|Moonwhisper Coast|
-T Serpents Without Heads |QID|42090| |N|Sentinel Commander Silverstreak at Narvalis Point (41, 45.9)| |Z|Moonwhisper Coast|
-C Draenethyst Recovery |QID|41953| |N|Enter Timbermaw Hold and retrieve the corrupted draenethyst (51.1, 96.1)| |Z|Moonwhisper Coast|
-T Draenethyst Recovery |QID|41953| |N|Riftmaster Ral'pekta at Moro'gai Village (61.1, 66)| |Z|Moonwhisper Coast|
-A Word to the High Priestess |QID|42091| |N|Sentinel Commander Silverstreak at Narvalis Point (41, 45.9)| |Z|Moonwhisper Coast|
+T Serpents Without Heads |QID|42090| |N|Sentinel Commander Silverstreak at Narvalis Point (41, 45.9)| |P|GROUP| |Z|Moonwhisper Coast|
+C Draenethyst Recovery |QID|41953| |N|Enter Timbermaw Hold and retrieve the corrupted draenethyst (51.1, 96.1)| |P|GROUP| |Z|Moonwhisper Coast|
+T Draenethyst Recovery |QID|41953| |N|Riftmaster Ral'pekta at Moro'gai Village (61.1, 66)| |P|GROUP| |Z|Moonwhisper Coast|
+A Word to the High Priestess |QID|42091| |N|Sentinel Commander Silverstreak at Narvalis Point (41, 45.9)| |P|GROUP| |Z|Moonwhisper Coast|
 
-R Teldrassil |N|Head to Teldrassil.| |Z|Teldrassil|
-T Word to the High Priestess |QID|42091| |N|Tyrande Whisperwind (25.3, 63.9), in Teldrassil| |Z|Teldrassil|
+R Teldrassil |N|Head to Teldrassil.| |Z|Teldrassil| |P|GROUP|
+T Word to the High Priestess |QID|42091| |N|Tyrande Whisperwind (25.3, 63.9), in Teldrassil| |P|GROUP| |Z|Teldrassil|
 T Homecoming |QID|41922| |N|Sanv K'la (25.2, 30.3), in Swamp of Sorrows| |Z|Swamp of Sorrows| |O|
 
 N Guide complete |N|That is Moonwhisper Coast done. Carry on with Winterspring (59-60).|

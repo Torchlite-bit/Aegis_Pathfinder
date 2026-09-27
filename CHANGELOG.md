@@ -18,6 +18,16 @@ reports.
 
 ---
 
+## [0.11.1]
+
+### Changed
+- **Moonwhisper Coast's group quests are for Group mode**: Price of Betrayal,
+  Draenethyst Recovery (inside Timbermaw Hold, at 60) and the zone's bosses --
+  Mothshroud Falls, Serpents Without Heads, Keeper of the Broken Grove, Shade
+  Mother, A Star That Calls Back -- and every quest that follows from them.
+  Solo, the Horde's Moonhoof story stops before Shade Mother, and the
+  Alliance skips the trip to Darnassus for Word to the High Priestess.
+
 ## [0.11.0] — restart
 
 ### Added
@@ -355,6 +365,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.11.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.11.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.10.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.9.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

@@ -162,7 +162,7 @@ T Rainhorn’s Frustration |QID|42048| |N|Elder Moonhoof at Moonhoof Village (66
 T Heart Full of Shadows |QID|42017| |N|Duln Ashtotem at Moonhoof Village (67.3, 41.6)| |Z|Moonwhisper Coast|
 A Actual Collector of Draenethyst |QID|42012| |N|Thobias Shallowgrave at Moonhoof Village (66.1, 39.9)| |Z|Moonwhisper Coast|
 A Brother’s Duty |QID|42020| |N|Ulf Stonetotem at Moonhoof Village (65.7, 39.7)| |Z|Moonwhisper Coast|
-A Shade Mother |QID|41994| |N|Elder Moonhoof at Moonhoof Village (66, 41.3)| |Z|Moonwhisper Coast|
+A Shade Mother |QID|41994| |N|Elder Moonhoof at Moonhoof Village (66, 41.3)| |P|GROUP| |Z|Moonwhisper Coast|
 A Gifting the Matron |QID|42018| |N|Duln Ashtotem at Moonhoof Village (67.3, 41.6)| |Z|Moonwhisper Coast|
 A Taste for Hydra |QID|41997| |N|Fisher Rainstrider at Moonhoof Village (67.5, 39.7)| |Z|Moonwhisper Coast|
 A Led Astray |QID|42042| |N|Keeper Bandalar at the Grove of the Sun (67.2, 22.5)| |Z|Moonwhisper Coast|
@@ -177,7 +177,7 @@ A Zalwan's Cut |QID|41975| |N|Gordnak at Moonhoof Retreat (52.1, 36.1)| |PRE|Con
 A A Tale of Scales |QID|42084| |N|Elder Starstrider at Moonhoof Retreat (50.2, 35.7)| |Z|Moonwhisper Coast|
 C The Elder's End |QID|41916| |N|Locate Elder Bhu'robi and stop his crusade (45.8, 28.5)| |Z|Moonwhisper Coast|
 C A Tale of Scales |QID|42084| |N|Gather 3 Dragon Dust from the Blue Dragonflight present in Moonwhisper Coast (42.4, 25.2) (48.7, 9.4)| |Z|Moonwhisper Coast|
-C Shade Mother |QID|41994| |N|Kill Matriarch Ohanzee (42.7, 20.8)| |Z|Moonwhisper Coast|
+C Shade Mother |QID|41994| |N|Kill Matriarch Ohanzee (42.7, 20.8)| |P|GROUP| |Z|Moonwhisper Coast|
 T A Tale of Scales |QID|42084| |N|Elder Starstrider at Moonhoof Retreat (50.2, 35.7)| |Z|Moonwhisper Coast|
 A The Moonhoof Celebration |QID|42085| |N|Elder Starstrider at Moonhoof Retreat (50.2, 35.7)| |Z|Moonwhisper Coast|
 C The Moonhoof Celebration |QID|42085| |N|Behold the Moonhoof Celebration atop of the hill overlooking Moonhoof Retreat in Moonwhisper Coast (50.2, 35.7)| |Z|Moonwhisper Coast|
@@ -186,7 +186,7 @@ T The Elder's End |QID|41916| |N|Moro'gai K'la at Moro'gai Village (61, 65.3)| |
 T Wanted: Tama’an the Ruthless |QID|41947| |N|Chief Defender Hamaam at Moro'gai Village (63.8, 65.8)| |Z|Moonwhisper Coast|
 T Actual Collector of Draenethyst |QID|42012| |N|Heghala at Moro'gai Village (61.2, 66.2)| |Z|Moonwhisper Coast|
 A A Student's Determination |QID|41917| |N|Moro'gai K'la at Moro'gai Village (61, 65.3)| |Z|Moonwhisper Coast|
-A Draenethyst Recovery |QID|41953| |N|Riftmaster Ral'pekta at Moro'gai Village (61.1, 66)| |Z|Moonwhisper Coast|
+A Draenethyst Recovery |QID|41953| |N|Riftmaster Ral'pekta at Moro'gai Village (61.1, 66)| |P|GROUP| |Z|Moonwhisper Coast|
 T A Student's Determination |QID|41917| |N|Ar'lia at Moro'gai Village (63.4, 66.9)| |Z|Moonwhisper Coast|
 A Powerless Runestone |QID|42010| |N|Keeper N’las at Maras'ethil (71.4, 66.4)| |Z|Moonwhisper Coast|
 A Twisted Relations |QID|41898| |N|Raghol at the entrance to Timbermaw Hold (51.1, 96.1)| |Z|Moonwhisper Coast|
@@ -201,15 +201,15 @@ C Powerless Runestone |QID|42010| |N|Collect Frozen Highborne Vials (43.3, 91.6)
 T Out of the Moonlight |QID|41952| |N|Riftmaster Ral'pekta at Moro'gai Village (61.1, 66)| |Z|Moonwhisper Coast|
 T Wanted: Growlpaw |QID|41948| |N|Chief Defender Hamaam at Moro'gai Village (63.8, 65.8)| |Z|Moonwhisper Coast|
 T Powerless Runestone |QID|42010| |N|Keeper N’las at Maras'ethil (71.4, 66.4)| |Z|Moonwhisper Coast|
-T Shade Mother |QID|41994| |N|Elder Moonhoof at Moonhoof Village (66, 41.3)| |Z|Moonwhisper Coast|
-A Mindless Monster |QID|41995| |N|Moonhoof the Younger at Moonhoof Village (66.6, 40.3)| |Z|Moonwhisper Coast|
-C Mindless Monster |QID|41995| |N|Kill Baxdi'zha in Riverhorn Village (59.9, 46.3)| |Z|Moonwhisper Coast|
-T Mindless Monster |QID|41995| |N|Moonhoof the Younger at Moonhoof Village (66.6, 40.3)| |Z|Moonwhisper Coast|
-A One Heir to Another |QID|42070| |N|Moonhoof the Younger at Moonhoof Village (66.6, 40.3)| |Z|Moonwhisper Coast|
+T Shade Mother |QID|41994| |N|Elder Moonhoof at Moonhoof Village (66, 41.3)| |P|GROUP| |Z|Moonwhisper Coast|
+A Mindless Monster |QID|41995| |N|Moonhoof the Younger at Moonhoof Village (66.6, 40.3)| |P|GROUP| |Z|Moonwhisper Coast|
+C Mindless Monster |QID|41995| |N|Kill Baxdi'zha in Riverhorn Village (59.9, 46.3)| |P|GROUP| |Z|Moonwhisper Coast|
+T Mindless Monster |QID|41995| |N|Moonhoof the Younger at Moonhoof Village (66.6, 40.3)| |P|GROUP| |Z|Moonwhisper Coast|
+A One Heir to Another |QID|42070| |N|Moonhoof the Younger at Moonhoof Village (66.6, 40.3)| |P|GROUP| |Z|Moonwhisper Coast|
 C Taste for Hydra |QID|41997| |N|Hunt the Hydra for their meat (51.2, 20.9) (41.6, 17.4)| |Z|Moonwhisper Coast|
 T Taste for Hydra |QID|41997| |N|Fisher Rainstrider at Moonhoof Village (67.5, 39.7)| |Z|Moonwhisper Coast|
-C Draenethyst Recovery |QID|41953| |N|Enter Timbermaw Hold and retrieve the corrupted draenethyst (51.1, 96.1)| |Z|Moonwhisper Coast|
-T Draenethyst Recovery |QID|41953| |N|Riftmaster Ral'pekta at Moro'gai Village (61.1, 66)| |Z|Moonwhisper Coast|
+C Draenethyst Recovery |QID|41953| |N|Enter Timbermaw Hold and retrieve the corrupted draenethyst (51.1, 96.1)| |P|GROUP| |Z|Moonwhisper Coast|
+T Draenethyst Recovery |QID|41953| |N|Riftmaster Ral'pekta at Moro'gai Village (61.1, 66)| |P|GROUP| |Z|Moonwhisper Coast|
 
 R Azshara |N|Head to Azshara.| |Z|Azshara|
 T In Need of Water |QID|42049| |N|Duke Hydraxis (79.3, 73.7), in Azshara| |Z|Azshara|
@@ -219,34 +219,34 @@ R Moonwhisper Coast |N|Back to Moonwhisper Coast.| |Z|Moonwhisper Coast|
 T In Water, Clarity |QID|42050| |N|Uz'tuk at Moonhoof Village (66.7, 39.4)| |Z|Moonwhisper Coast|
 
 R Mulgore |N|Head to Mulgore.| |Z|Mulgore|
-T One Heir to Another |QID|42070| |N|Baine Bloodhoof (47.5, 60.2), in Mulgore| |Z|Mulgore|
-A Father Will Listen |QID|42071| |N|Baine Bloodhoof (47.5, 60.2), in Mulgore| |Z|Mulgore|
+T One Heir to Another |QID|42070| |N|Baine Bloodhoof (47.5, 60.2), in Mulgore| |P|GROUP| |Z|Mulgore|
+A Father Will Listen |QID|42071| |N|Baine Bloodhoof (47.5, 60.2), in Mulgore| |P|GROUP| |Z|Mulgore|
 T Brother’s Duty |QID|42020| |N|Hulfnar Stonetotem (50, 60.9), in Mulgore| |Z|Mulgore|
 T Gifting the Matron |QID|42018| |N|Magatha Grimtotem (44, 23.1), in Mulgore| |Z|Mulgore|
-T Father Will Listen |QID|42071| |N|Cairne Bloodhoof (42, 27.3), in Mulgore| |Z|Mulgore|
-A Bloodhoof Stands with Moonhoof |QID|42072| |N|Cairne Bloodhoof (42, 27.3), in Mulgore| |Z|Mulgore|
+T Father Will Listen |QID|42071| |N|Cairne Bloodhoof (42, 27.3), in Mulgore| |P|GROUP| |Z|Mulgore|
+A Bloodhoof Stands with Moonhoof |QID|42072| |N|Cairne Bloodhoof (42, 27.3), in Mulgore| |P|GROUP| |Z|Mulgore|
 R Moonwhisper Coast |N|Back to Moonwhisper Coast.| |Z|Moonwhisper Coast|
 
-T Bloodhoof Stands with Moonhoof |QID|42072| |N|Moonhoof the Younger at Moonhoof Village (66.6, 40.3)| |Z|Moonwhisper Coast|
-A Facing the Elder |QID|42073| |N|Moonhoof the Younger at Moonhoof Village (66.6, 40.3)| |Z|Moonwhisper Coast|
-C Facing the Elder |QID|42073| |N|Face the Elder Moonhoof and then speak to him in Moonhoof Village, Moonwhisper Coast (66, 41.3)| |Z|Moonwhisper Coast|
-T Facing the Elder |QID|42073| |N|Elder Moonhoof at Moonhoof Village (66, 41.3)| |Z|Moonwhisper Coast|
-A Seeking the Truth |QID|42074| |N|Elder Moonhoof at Moonhoof Village (66, 41.3)| |Z|Moonwhisper Coast|
-C Seeking the Truth |QID|42074| |N|Find clues of the Mothshroud's ambition in Maras'ethil: Worn Letter (71.2, 69.3)| |Z|Moonwhisper Coast|
-T Seeking the Truth |QID|42074| |N|Moonhoof the Younger at Moonhoof Village (66.6, 40.3)| |Z|Moonwhisper Coast|
-A Moondancer Lives? |QID|42080| |N|Moonhoof the Younger at Moonhoof Village (66.6, 40.3)| |Z|Moonwhisper Coast|
-T Moondancer Lives? |QID|42080| |N|Ireth Moondancer at the Ruins of Nendis (72.2, 57)| |Z|Moonwhisper Coast|
-A Price of Betrayal |QID|42075| |N|Ireth Moondancer at the Ruins of Nendis (72.2, 57)| |Z|Moonwhisper Coast|
-C Price of Betrayal |QID|42075| |N|Slay Rampaging Grells and Withered Gardeners in the Withered Enclave on the isle of Tyrandas (62.4, 22.9)| |Z|Moonwhisper Coast|
-T Price of Betrayal |QID|42075| |N|Ireth Moondancer at the Ruins of Nendis (72.2, 57)| |Z|Moonwhisper Coast|
-A Return to the Dream |QID|42076| |N|Ireth Moondancer at the Ruins of Nendis (72.2, 57)| |Z|Moonwhisper Coast|
-C Return to the Dream |QID|42076| |N|Retrieve Moonlit Charms from the fallen druids of Elun'aran (66.8, 16.8)| |Z|Moonwhisper Coast|
-T Return to the Dream |QID|42076| |N|Ireth Moondancer at the Ruins of Nendis (72.2, 57)| |Z|Moonwhisper Coast|
-A Mothshroud Falls |QID|42077| |N|Ireth Moondancer at the Ruins of Nendis (72.2, 57)| |Z|Moonwhisper Coast|
-C Mothshroud Falls |QID|42077| |N|Kill Arch Druid Mothshroud atop the Temple of Elunaris, Tyrandas (67, 12.9)| |Z|Moonwhisper Coast|
-T Mothshroud Falls |QID|42077| |N|Moonhoof the Younger at Moonhoof Village (66.6, 40.3)| |Z|Moonwhisper Coast|
-A Moonhoof Rests |QID|42078| |N|Moonhoof the Younger at Moonhoof Village (66.6, 40.3)| |Z|Moonwhisper Coast|
-T Moonhoof Rests |QID|42078| |N|Elder Moonhoof at Moonhoof Village (66, 41.3)| |Z|Moonwhisper Coast|
+T Bloodhoof Stands with Moonhoof |QID|42072| |N|Moonhoof the Younger at Moonhoof Village (66.6, 40.3)| |P|GROUP| |Z|Moonwhisper Coast|
+A Facing the Elder |QID|42073| |N|Moonhoof the Younger at Moonhoof Village (66.6, 40.3)| |P|GROUP| |Z|Moonwhisper Coast|
+C Facing the Elder |QID|42073| |N|Face the Elder Moonhoof and then speak to him in Moonhoof Village, Moonwhisper Coast (66, 41.3)| |P|GROUP| |Z|Moonwhisper Coast|
+T Facing the Elder |QID|42073| |N|Elder Moonhoof at Moonhoof Village (66, 41.3)| |P|GROUP| |Z|Moonwhisper Coast|
+A Seeking the Truth |QID|42074| |N|Elder Moonhoof at Moonhoof Village (66, 41.3)| |P|GROUP| |Z|Moonwhisper Coast|
+C Seeking the Truth |QID|42074| |N|Find clues of the Mothshroud's ambition in Maras'ethil: Worn Letter (71.2, 69.3)| |P|GROUP| |Z|Moonwhisper Coast|
+T Seeking the Truth |QID|42074| |N|Moonhoof the Younger at Moonhoof Village (66.6, 40.3)| |P|GROUP| |Z|Moonwhisper Coast|
+A Moondancer Lives? |QID|42080| |N|Moonhoof the Younger at Moonhoof Village (66.6, 40.3)| |P|GROUP| |Z|Moonwhisper Coast|
+T Moondancer Lives? |QID|42080| |N|Ireth Moondancer at the Ruins of Nendis (72.2, 57)| |P|GROUP| |Z|Moonwhisper Coast|
+A Price of Betrayal |QID|42075| |N|Ireth Moondancer at the Ruins of Nendis (72.2, 57)| |P|GROUP| |Z|Moonwhisper Coast|
+C Price of Betrayal |QID|42075| |N|Slay Rampaging Grells and Withered Gardeners in the Withered Enclave on the isle of Tyrandas (62.4, 22.9)| |P|GROUP| |Z|Moonwhisper Coast|
+T Price of Betrayal |QID|42075| |N|Ireth Moondancer at the Ruins of Nendis (72.2, 57)| |P|GROUP| |Z|Moonwhisper Coast|
+A Return to the Dream |QID|42076| |N|Ireth Moondancer at the Ruins of Nendis (72.2, 57)| |P|GROUP| |Z|Moonwhisper Coast|
+C Return to the Dream |QID|42076| |N|Retrieve Moonlit Charms from the fallen druids of Elun'aran (66.8, 16.8)| |P|GROUP| |Z|Moonwhisper Coast|
+T Return to the Dream |QID|42076| |N|Ireth Moondancer at the Ruins of Nendis (72.2, 57)| |P|GROUP| |Z|Moonwhisper Coast|
+A Mothshroud Falls |QID|42077| |N|Ireth Moondancer at the Ruins of Nendis (72.2, 57)| |P|GROUP| |Z|Moonwhisper Coast|
+C Mothshroud Falls |QID|42077| |N|Kill Arch Druid Mothshroud atop the Temple of Elunaris, Tyrandas (67, 12.9)| |P|GROUP| |Z|Moonwhisper Coast|
+T Mothshroud Falls |QID|42077| |N|Moonhoof the Younger at Moonhoof Village (66.6, 40.3)| |P|GROUP| |Z|Moonwhisper Coast|
+A Moonhoof Rests |QID|42078| |N|Moonhoof the Younger at Moonhoof Village (66.6, 40.3)| |P|GROUP| |Z|Moonwhisper Coast|
+T Moonhoof Rests |QID|42078| |N|Elder Moonhoof at Moonhoof Village (66, 41.3)| |P|GROUP| |Z|Moonwhisper Coast|
 T Homecoming |QID|41922| |N|Sanv K'la (25.2, 30.3), in Swamp of Sorrows| |Z|Swamp of Sorrows| |O|
 T Zalwan's Cut |QID|41975| |N|Pumpworker Zalwan (43, 76.5), in Tel'Abim| |Z|Tel'Abim| |O|
 

@@ -113,7 +113,10 @@ Point for the Alliance, Moonhoof Village and Moonhoof Retreat for the Horde,
 with the Horde's trips to Azshara and Mulgore and back where its stories go.
 It is written from quest data players have gathered, not from a server's
 database, and that data is still growing: quests nobody is on record as giving,
-and the ones that start elsewhere, show only once they are in your log.
+and the ones that start elsewhere, show only once they are in your log. Its
+bosses, Price of Betrayal and Draenethyst Recovery are group quests: in Solo
+mode they are left out, with what follows them -- for the Horde, the Moonhoof
+story from Shade Mother on.
 
 **Professions.** Ten 1–300 routes with trainers, craft counts, reagents and
 recipe sources, tracked against your actual skill level. See below.

@@ -48,7 +48,8 @@ are only found at startup.
 - [ ] **Moonwhisper Coast** (52-60, both sides): Where next? offers it from 51;
       the arrow points where each step says. Its quest data is gathered by
       players, so note any step that sends you to the wrong place, any quest
-      it never mentions, and any it asks for that you can't get.
+      it never mentions, and any it asks for that you can't get. In Solo mode
+      its bosses and what follows them are gone; in Group mode they are back.
 
 ## 4. Arrow and waypoints
 

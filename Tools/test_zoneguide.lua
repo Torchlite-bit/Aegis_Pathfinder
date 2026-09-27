@@ -8,7 +8,9 @@
 	objectives done before it is handed in; a quest that follows another comes
 	after the other's hand-in -- the Moro'gai story, the Horde's trips to
 	Azshara and Mulgore and back; the quest log never runs past its 20; the
-	quests you may not have are optional; and the zone is a custom zone, so
+	quests you may not have are optional; group quests and what follows them
+	are in Group mode only, and so is a trip made for them alone; and the zone
+	is a custom zone, so
 	the guide list files it under Custom and Where next? offers it.
 
 	Run:  lua5.1 Tools/test_zoneguide.lua
@@ -83,10 +85,10 @@ do
 	check(block and string.find(block, '["Moonwhisper Coast"] = true', 1, true), "Moonwhisper Coast is a custom zone")
 end
 
--- Each side, parsed.
-local function load(side)
+-- Each side, parsed, in Group mode unless it says Solo.
+local function load(side, style)
 	local char = AegisPathfinder.db.char
-	char.currentguide = nil
+	char.currentguide, char.PlayStyle = nil, style or "GROUP"
 	AegisPathfinder:LoadGuide(side .. "/" .. NAME)
 	local steps = {}
 	for i, action in ipairs(AegisPathfinder.actions) do
@@ -108,9 +110,16 @@ end
 local sides = {}
 sides.Alliance = load("Alliance")
 sides.Horde = load("Horde")
+local solo = {}
+solo.Alliance = load("Alliance", "SOLO")
+solo.Horde = load("Horde", "SOLO")
 
-for side, steps in pairs(sides) do
-	check(table.getn(steps) > 150, "%s: a whole zone's steps, got %d", side, table.getn(steps))
+-- Group or solo, the same holds.
+local all = {}
+for side, steps in pairs(sides) do all[side] = steps end
+for side, steps in pairs(solo) do all[side .. " solo"] = steps end
+for side, steps in pairs(all) do
+	check(table.getn(steps) > 100, "%s: a whole zone's steps, got %d", side, table.getn(steps))
 
 	-- Every quest step has an id, a zone and somewhere to go.
 	local quests, log, most = {}, {}, 0
@@ -190,6 +199,32 @@ check(out and back and out < first(H, "TURNIN", 42070) and first(H, "ACCEPT", 42
 check(H[first(H, "TURNIN", 42071)].zone == "Mulgore", "Cairne's hand-in is in Mulgore")
 check(first(H, "TURNIN", 42020) > out and first(H, "TURNIN", 42020) < back,
 	"Brother's Duty, handed in in Mulgore, goes with that trip rather than one of its own")
+
+-- Group quests -- the ones the owner chose, and everything that follows from
+-- them -- are not in the solo guide; the rest is.
+local GROUP = {
+	Alliance = { 42090, 42091, 42097, 42092, 41953 },
+	Horde = { 41994, 41995, 42070, 42072, 42075, 42076, 42077, 42078, 41953 },
+}
+for side, qids in pairs(GROUP) do
+	for _, qid in ipairs(qids) do
+		check(first(sides[side], "ACCEPT", qid), "%s: quest %d is in the group guide", side, qid)
+		check(not first(solo[side], "ACCEPT", qid) and not first(solo[side], "TURNIN", qid),
+			"%s: quest %d is not in the solo guide", side, qid)
+	end
+end
+check(first(solo.Alliance, "ACCEPT", 42088) and first(solo.Alliance, "ACCEPT", 42089),
+	"Alliance solo: An'she's Respite and Scales of the Tideblade, before Serpents Without Heads, stay")
+check(first(solo.Horde, "ACCEPT", 41993), "Horde solo: Hiding in the Shade, before Shade Mother, stays")
+local function has(steps, zone)
+	for _, s in ipairs(steps) do
+		if s.action == "RUN" and s.name == zone then return true end
+	end
+end
+check(has(sides.Alliance, "Teldrassil") and not has(solo.Alliance, "Teldrassil"),
+	"Alliance: the trip to Teldrassil is for Word to the High Priestess alone, so not solo")
+check(has(solo.Horde, "Mulgore") and first(solo.Horde, "TURNIN", 42020),
+	"Horde solo: the Mulgore trip stays, for Brother's Duty")
 
 -- Quests you may not have are optional: picked up on the way here, or with no
 -- one on record as giving them. The ones everyone gets are not.

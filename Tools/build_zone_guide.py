@@ -166,8 +166,20 @@ ZONES = {
             42071: {"T": "Father Will Listen",
                     "O": "Report to Cairne Bloodhoof in Elders' Rise, Thunder Bluff, Mulgore."},
         },
-        # Quests that want a group: shown in Group mode only.
-        "group": set(),
+        # Quests that want a group: shown in Group mode only, with every
+        # quest that follows from them (Route.group). Chosen by the owner:
+        # Price of Betrayal's text says to bring friends; Draenethyst
+        # Recovery is level 60 and inside Timbermaw Hold; the rest are the
+        # zone's bosses.
+        "group": {
+            42075,      # Price of Betrayal
+            41953,      # Draenethyst Recovery
+            42077,      # Mothshroud Falls
+            42090,      # Serpents Without Heads
+            42097,      # Keeper of the Broken Grove
+            41994,      # Shade Mother
+            42092,      # A Star That Calls Back
+        },
         # Quests shown only once they are in your log, and why.
         "optional": {
             41954: "wants leather armour you have crafted",
@@ -529,8 +541,6 @@ class Quest:
             out.append("|C|%s|" % "/".join(n for b, n in CLASSES if self.cls & b))
         if self.race and self.race & mask != mask:
             out.append("|R|%s|" % "/".join(n for b, n in RACES if self.race & b))
-        if self.id in self.cfg["group"]:
-            out.append("|P|GROUP|")
         return out
 
 
@@ -589,6 +599,16 @@ class Route:
                 pre = [p for p in q.pre if p in self.quests]
                 if q.id not in self.optional and pre and all(p in self.optional for p in pre):
                     self.optional.add(q.id)
+                    changed = True
+        # Group quests, and whatever follows from them: nobody solo can pick
+        # those up either.
+        self.group = set(cfg["group"]) & set(self.quests)
+        changed = True
+        while changed:
+            changed = False
+            for q in self.quests.values():
+                if q.id not in self.group and any(p in self.group for p in q.pre):
+                    self.group.add(q.id)
                     changed = True
         # Handed in outside the zone, and nothing here follows from them:
         # picked up last, on the way out -- unless a chain goes to that zone
@@ -670,6 +690,8 @@ class Route:
 
     def emit(self, action, q, note, zone=None, extra=()):
         tags = ["|QID|%d|" % q.id, "|N|%s|" % note] + q.tags(self.mask) + list(extra)
+        if q.id in self.group:
+            tags.append("|P|GROUP|")
         tags.append("|Z|%s|" % (zone or self.cfg["zone"]))
         if q.id in self.optional:
             tags.append("|O|")
@@ -797,20 +819,29 @@ class Route:
         if not self.final and not opens(zone):
             return False
         self.lines += ["", "R %s |N|Head to %s.| |Z|%s|" % (zone, zone, zone)]
+        there, went = len(self.lines) - 1, set()
         changed = True
         while changed:
             changed = False
             for q in self.order():
                 if self.ready(q) and q.taker and q.taker.zone == zone:
                     self.turnin(q)
+                    went.add(q.id)
                     changed = True
                 elif (q.giver and q.giver.zone == zone and q.id not in self.optional and
                       self.can_accept(q, True)):
                     self.accept(q)
+                    went.add(q.id)
                     changed = True
         if not self.final:
             z = self.cfg["zone"]
             self.lines += ["R %s |N|Back to %s.| |Z|%s|" % (z, z, z), ""]
+        # A trip only for group quests is only for groups: solo, there is
+        # nothing there to go for.
+        if all(i in self.group or i in self.optional for i in went):
+            for i in range(there, len(self.lines)):
+                if self.lines[i].startswith("R "):
+                    self.lines[i] += " |P|GROUP|"
         return True
 
     def run(self):
