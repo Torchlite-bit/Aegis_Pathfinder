@@ -296,11 +296,23 @@ secondary panel and all three `Core.lua` dialogs were still built from.
 
 ### Options panel -- `OptionsFrame.lua`
 
-The concept's `#options`: one 396px window, header and `Config` subhead, and a
-scrolling body of sections — Race, Route pack, Dungeons, Filters, Server theme — each
-an accent uppercase `h3` over its controls. It used to be a column of pill
-buttons that opened the dungeons, the filters and the route picker as three
-more windows; all of that is sections now.
+The concept's `#options`: header and `Config` subhead over a body of sections —
+Race, Route pack, Dungeons, Filters, Server theme — each an accent uppercase
+`h3` over its controls. It used to be a column of pill buttons that opened the
+dungeons, the filters and the route picker as three more windows; all of that
+is sections now.
+
+**Substitution: pages.** With the gear, behaviour, navigation and maintenance
+sections added, one scrolling body grew too long to find anything in, so the
+sections are grouped into pages with a category list down the left, as Zygor's
+options have it: Route (Race, Route pack), Dungeons, Filters, Appearance
+(Server theme), Gear, Behaviour, Navigation (Waypoints, Arrow), Maintenance,
+About. The concept's 396px pane is unchanged, with the 150px list beside it
+(546px in all). The list is a quieter column than the pane — a 3% text tint and
+a hairline on its right edge — and the page shown is marked with a 3px accent
+bar, a brighter row and white text. The subhead names the page (`CONFIG ·
+GEAR`). A page scrolls only when it is taller than the window, and every page
+opens at its top; changing page closes any dropdown list left open.
 
 | Concept | Implementation |
 |---|---|
@@ -311,11 +323,12 @@ more windows; all of that is sections now.
 | `.dchip` grid | `Theme:Chip`, four across |
 | `.toggle-row` + `.switch` | `Theme:Switch` — `switch-track.tga` (a stadium) and a circle knob that slides from left to right |
 | `.fine-print` | `Theme:FinePrint` |
-| `overflow-y:auto` | A ScrollFrame, the theme's scroll bar, and the wheel anywhere on the panel |
+| `overflow-y:auto` | A ScrollFrame, the theme's scroll bar, and the wheel anywhere on the panel; the bar hides on a page that fits |
 
 **Substitutions.** The concept has no home for the addon's own behaviour
-settings, the waypoint provider or the Rescan / Error log actions, so they
-follow as three more sections in the same language. Last comes **About**, with
+settings, the item score and gear, the waypoint provider or the Rescan / Error
+log actions, so they follow as more sections in the same language. Last comes
+**About**, with
 a **Credits** button that opens the credits as a window of their own -- the
 same chrome and section layout as this panel, beside it on the side away from
 the guide, closing when the options panel does. Credits used to be a slash

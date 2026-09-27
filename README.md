@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.4.2)
+# Aegis: Pathfinder (v0.5.0)
 
 A Classic+ leveling guide for the Turtle WoW-lineage 1.12 client family —
 OctoWoW, Capybara Paradise and RavenCraft. Part of the Aegis addon suite.
@@ -398,7 +398,7 @@ Reports welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options panel's About section (`v0.4.2`) — quote it.
+1. Check the **version** in the load message or the options panel's About page (`v0.5.0`) — quote it.
 2. Open the **Error log** (options panel → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 

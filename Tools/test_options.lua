@@ -2,9 +2,11 @@
 	Tests for the options panel -- the concept's #options.
 
 	It used to be a column of buttons that opened the dungeons, the filters and
-	the route picker as three more windows. It is one scrolling panel now, with
-	the concept's sections in the concept's order, so this checks the layout
-	and that every control actually drives the setting it shows.
+	the route picker as three more windows. It is one window now, with the
+	categories down the left as Zygor's options have them and the concept's
+	sections, in the concept's order, on their pages; so this checks the
+	layout, the pages, and that every control actually drives the setting it
+	shows.
 
 	Run:  lua5.1 Tools/test_options.lua
 ]]
@@ -130,11 +132,12 @@ frame:Show()
 fire(frame, "OnShow")
 local db = AegisPathfinder.db.char
 
--- One panel, the concept's sections, in its order --------------------------------
+-- One window: the categories on the left, the concept's pane beside them ---------
 
-check(frame:GetWidth() == 396, "the concept's panel is 396px wide, got %s", frame:GetWidth())
+check(frame:GetWidth() == 396 + 150, "the concept's 396px pane and a 150px list, got %s", frame:GetWidth())
 check(frame.header ~= nil and frame.subhead ~= nil, "it wears the concept's chrome")
-check(frame.subhead.label:GetText() == "CONFIG", "and names itself Config")
+check(frame.subhead.label:GetText() == "CONFIG \194\183 ROUTE",
+	"and names itself Config, and the page, got '%s'", tostring(frame.subhead.label:GetText()))
 
 local order = {}
 for _, h in ipairs(frame.sections) do table.insert(order, h.label:GetText()) end
@@ -149,22 +152,81 @@ check(AegisPathfinder.filtersframe == nil, "filters are a section, not a window"
 check(AegisPathfinder.ToggleDungeonPanel == nil and AegisPathfinder.ToggleFiltersPanel == nil,
 	"the functions that opened those windows are gone")
 
--- Sections run top to bottom without overlapping.
-local lastY = 1
+-- The pages, and the list that picks them.
+local PAGES = { "Route", "Dungeons", "Filters", "Appearance", "Gear", "Behaviour", "Navigation",
+	"Maintenance", "About" }
+local names = {}
+for _, p in ipairs(frame.pages) do table.insert(names, p.pageName) end
+check(table.concat(names, ", ") == table.concat(PAGES, ", "), "the pages, in order: %s", table.concat(names, ", "))
+check(table.getn(frame.navButtons) == table.getn(PAGES), "one entry in the list per page")
+for i, b in ipairs(frame.navButtons) do
+	check(b.label:GetText() == PAGES[i], "list entry %d names %s, got %s", i, PAGES[i], tostring(b.label:GetText()))
+	local _, rel, _, x = b:GetPoint()
+	check(rel == frame.nav and x == 0, "and sits in the list down the left")
+end
+local function shown()
+	local out = {}
+	for _, p in ipairs(frame.pages) do if p:IsShown() then table.insert(out, p.pageName) end end
+	return table.concat(out, ", ")
+end
+check(shown() == "Route", "it opens on the first page alone, got '%s'", shown())
+check(frame.navButtons[1].active and frame.navButtons[1].mark:IsShown() and not frame.navButtons[2].mark:IsShown(),
+	"marked in the list")
+local _, scrollRel, _, scrollX = frame.scroll:GetPoint()
+check(scrollRel == frame and scrollX == 150 + 14, "the page sits right of the list, got %s", tostring(scrollX))
+
+click(frame.navButtons[3])
+check(shown() == "Filters", "clicking an entry shows its page alone, got '%s'", shown())
+check(frame.subhead.label:GetText() == "CONFIG \194\183 FILTERS", "and names it, got '%s'",
+	tostring(frame.subhead.label:GetText()))
+check(frame.navButtons[3].active and not frame.navButtons[1].active, "and moves the mark")
+AegisPathfinder:ShowConfigPage("Nowhere")
+check(shown() == "Route", "a page that is not there falls back to the first")
+
+-- Each page's sections run top to bottom, from its top, without overlapping.
+local lastY, lastPage = 1, nil
 for _, h in ipairs(frame.sections) do
 	local _, _, _, _, yoff = h:GetPoint()
-	check(yoff < lastY, "section %s should sit below the one before it", h.label:GetText())
-	lastY = yoff
+	local p = h:GetParent()
+	if p ~= lastPage then
+		check(yoff == 0, "section %s opens its page", h.label:GetText())
+	else
+		check(yoff < lastY, "section %s should sit below the one before it", h.label:GetText())
+	end
+	lastY, lastPage = yoff, p
+end
+check(frame.sections[1]:GetParent().pageName == "Route" and frame.sections[2]:GetParent().pageName == "Route",
+	"Race and Route pack share the Route page")
+
+-- A long page scrolls; a short one does not -------------------------------------
+
+check(not frame.scrollbar:IsShown(), "the Route page fits, so no scroll bar")
+local long
+for i, p in ipairs(frame.pages) do
+	if not long and p.contentHeight > frame.visible then long = i end
+end
+check(long ~= nil, "at least one page is taller than the window")
+if long then
+	click(frame.navButtons[long])
+	local _, range = frame.scrollbar:GetMinMaxValues()
+	check(range > 0 and frame.scrollbar:IsShown(), "the %s page scrolls (range %s)", frame.pages[long].pageName, range)
+	check(frame.holder:GetHeight() == frame.pages[long].contentHeight, "over its own height")
+	arg1 = -1; fire(frame, "OnMouseWheel")
+	check(frame.scroll:GetVerticalScroll() > 0, "the mouse wheel scrolls the page")
+	arg1 = 1; fire(frame, "OnMouseWheel")
+	check(frame.scroll:GetVerticalScroll() == 0, "and back up, without going past the top")
+	arg1 = -1; fire(frame, "OnMouseWheel")
+	click(frame.navButtons[1])
+	check(frame.scroll:GetVerticalScroll() == 0 and frame.scrollbar:GetValue() == 0,
+		"another page opens at its top, the scroll bar with it")
 end
 
--- It scrolls ----------------------------------------------------------------------
-
-local _, range = frame.scrollbar:GetMinMaxValues()
-check(range > 0, "seven sections do not fit 560px, so the body must scroll (range %s)", range)
-arg1 = -1; fire(frame, "OnMouseWheel")
-check(frame.scroll:GetVerticalScroll() > 0, "the mouse wheel scrolls the body")
-arg1 = 1; fire(frame, "OnMouseWheel")
-check(frame.scroll:GetVerticalScroll() == 0, "and back up, without going past the top")
+-- A list left open does not hang over the next page.
+click(frame.race)
+check(frame.race.list:IsShown(), "the race list opens")
+click(frame.navButtons[2])
+check(not frame.race.list:IsShown(), "and closes when the page changes")
+click(frame.navButtons[1])
 
 -- Race -------------------------------------------------------------------------------
 
@@ -391,11 +453,13 @@ check(AegisPathfinder.__errorlog, "Error log opens the log")
 
 -- Credits ---------------------------------------------------------------------
 
---[[ Credits are a button at the bottom of the panel, not a slash command that
-	printed into chat. ]]
+--[[ Credits are a button on the About page, not a slash command that printed
+	into chat. ]]
 local last = frame.sections[table.getn(frame.sections)]
 check(last.label:GetText() == "ABOUT", "the last section is About, got %s",
 	tostring(last.label:GetText()))
+check(last:GetParent().pageName == "About" and frame.credits:GetParent() == last:GetParent(),
+	"on the About page, with the Credits button")
 check(frame.credits ~= nil and frame.credits.label:GetText() == "CREDITS",
 	"with a Credits button in it")
 local _, _, _, _, lastY = last:GetPoint()

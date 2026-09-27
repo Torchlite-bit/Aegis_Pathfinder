@@ -1,6 +1,8 @@
---[[ OptionsFrame.lua -- the concept's #options panel.
+--[[ OptionsFrame.lua -- the concept's #options panel, in pages.
 
-	One window, one scrolling body, sections top to bottom:
+	Categories down the left, as Zygor's options have them; the page picked
+	on the right, scrolling when it is taller than the window. The pages hold
+	the concept's sections, in the concept's order:
 
 	  Race          a dropdown of your faction's races
 	  Route pack    pills, with a preview of the route underneath
@@ -16,6 +18,16 @@
 	score, the waypoint provider or the maintenance actions, so they follow as
 	more sections in the same style -- the substitution is the extra sections, not
 	a different look.
+
+	  Route         Race, Route pack
+	  Dungeons      Dungeons
+	  Filters       Filters
+	  Appearance    Server theme
+	  Gear          the item score, the Gear Advisor, the Gear finder
+	  Behaviour     Guide behaviour
+	  Navigation    Waypoints, Arrow
+	  Maintenance   Maintenance
+	  About         About, Credits
 ]]
 
 local AegisPathfinder = AegisPathfinder
@@ -24,12 +36,15 @@ local Theme = AegisPathfinder.Theme
 
 -- Concept geometry: .panel{width:396px}, .options-body{padding:12px 14px 16px},
 -- section{margin-bottom:16px}.
-local WIDTH, HEIGHT = 396, 560
+-- The pane keeps the concept's 396px; the category list sits beside it.
+local PANE_W, HEIGHT = 396, 560
+local NAV_W, NAV_ROW_H = 150, 30
+local WIDTH = PANE_W + NAV_W
 local HEADER_H, SUBHEAD_H = 30, 18
 local CHROME_TOP = HEADER_H + SUBHEAD_H
 local PAD_X, PAD_TOP, PAD_BOTTOM = 14, 12, 16
 local SCROLL_W = 10
-local BODY_W = WIDTH - PAD_X * 2 - SCROLL_W - 4
+local BODY_W = PANE_W - PAD_X * 2 - SCROLL_W - 4
 local SECTION_GAP = 16
 local HEADER_GAP = 7                  -- h3 margin-bottom
 
@@ -127,13 +142,17 @@ function AegisPathfinder:CreateConfigPanel()
 		drives it, and the mouse wheel works anywhere over the panel.
 	]]
 	local scroll = CreateFrame("ScrollFrame", "AegisPathfinderOptionsScroll", frame)
-	scroll:SetPoint("TOPLEFT", frame, "TOPLEFT", PAD_X, -(CHROME_TOP + PAD_TOP))
+	scroll:SetPoint("TOPLEFT", frame, "TOPLEFT", NAV_W + PAD_X, -(CHROME_TOP + PAD_TOP))
 	scroll:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(PAD_X + SCROLL_W), PAD_BOTTOM)
 
-	local body = CreateFrame("Frame", nil, scroll)
-	body:SetWidth(BODY_W)
-	body:SetHeight(1)
-	scroll:SetScrollChild(body)
+	-- The scroll child holds every page; one is shown at a time, and the
+	-- holder takes its height.
+	local holder = CreateFrame("Frame", nil, scroll)
+	holder:SetWidth(BODY_W)
+	holder:SetHeight(1)
+	scroll:SetScrollChild(holder)
+	local body
+	frame.pages = {}
 
 	local bar = Theme:ScrollBar(frame, SCROLL_W)
 	bar:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -6, -(CHROME_TOP + PAD_TOP + SCROLL_W))
@@ -155,8 +174,20 @@ function AegisPathfinder:CreateConfigPanel()
 		bar:SetValue(v)
 	end)
 
-	-- Lay the sections out top to bottom with a running cursor.
+	-- Lay the sections out top to bottom with a running cursor, a page at a
+	-- time.
 	local y = 0
+	local function page(name)
+		if body then body.contentHeight = y + PAD_BOTTOM end
+		body = CreateFrame("Frame", nil, holder)
+		body:SetWidth(BODY_W)
+		body:SetHeight(1)
+		body:SetPoint("TOPLEFT", holder, "TOPLEFT", 0, 0)
+		body:Hide()
+		body.pageName = name
+		table.insert(frame.pages, body)
+		y = 0
+	end
 	local function place(region, height, gap)
 		region:ClearAllPoints()
 		region:SetPoint("TOPLEFT", body, "TOPLEFT", 0, -y)
@@ -177,6 +208,7 @@ function AegisPathfinder:CreateConfigPanel()
 	frame.sections = {}
 
 	-- Race -----------------------------------------------------------------------
+	page("Route")
 	table.insert(frame.sections, section("Race"))
 	local race = Theme:Dropdown(body, BODY_W, function(route)
 		AegisPathfinder:SelectRoute(route)
@@ -254,6 +286,7 @@ function AegisPathfinder:CreateConfigPanel()
 	frame.preview = preview
 
 	-- Dungeons ---------------------------------------------------------------------
+	page("Dungeons")
 	local dungeonHeader = section("Dungeons")
 	local hint = dungeonHeader:CreateFontString(nil, "OVERLAY")
 	Theme:SetFont(hint, "body", 11)
@@ -300,6 +333,7 @@ function AegisPathfinder:CreateConfigPanel()
 	frame.wiredHint = wired
 
 	-- Filters ------------------------------------------------------------------------
+	page("Filters")
 	table.insert(frame.sections, section("Filters"))
 	local group = Theme:Switch(body, "Group mode", function(on)
 		AegisPathfinder.db.char.PlayStyle = on and "GROUP" or "SOLO"
@@ -334,6 +368,7 @@ function AegisPathfinder:CreateConfigPanel()
 	--[[ Server theme: the colours of your server, or Day or Night. Colours
 		only -- the guides are the same on every server. It took the place of
 		the Server dropdown. ]]
+	page("Appearance")
 	table.insert(frame.sections, section("Server theme"))
 	local theme = Theme:Dropdown(body, BODY_W, function(key)
 		AegisPathfinder:SetTheme(key)
@@ -349,6 +384,7 @@ function AegisPathfinder:CreateConfigPanel()
 	frame.theme, frame.themeNote = theme, themeNote
 
 	--[[ Gear: the item score on tooltips, and the window with its weights. ]]
+	page("Gear")
 	table.insert(frame.sections, section("Gear"))
 	local scoreTips = Theme:Switch(body, "Item score on tooltips", function(on)
 		AegisPathfinder.ItemScore.Settings().tooltips = on
@@ -416,6 +452,7 @@ function AegisPathfinder:CreateConfigPanel()
 	frame.openFinder = openFinder
 
 	-- Beyond the concept: the addon's own settings, in the same language. -------
+	page("Behaviour")
 	table.insert(frame.sections, section("Guide behaviour"))
 	frame.switches = {}
 	local BEHAVIOUR = {
@@ -447,6 +484,7 @@ function AegisPathfinder:CreateConfigPanel()
 	end
 	y = y + SECTION_GAP - 8
 
+	page("Navigation")
 	table.insert(frame.sections, section("Waypoints"))
 	local waypoints = Theme:Dropdown(body, BODY_W, function(name)
 		AegisPathfinder:SetWaypointProvider(name)
@@ -469,6 +507,7 @@ function AegisPathfinder:CreateConfigPanel()
 	place(arrowNote, 30, SECTION_GAP)
 	frame.arrow, frame.arrowNote = arrow, arrowNote
 
+	page("Maintenance")
 	table.insert(frame.sections, section("Maintenance"))
 	local rescan = Theme:Pill(body, "Rescan progress", 140, 26)
 	rescan:SetScript("OnClick", function() AegisPathfinder:QueryServerCompletedQuests(true) end)
@@ -487,6 +526,7 @@ function AegisPathfinder:CreateConfigPanel()
 	y = y + SECTION_GAP
 
 	-- Last, where an about box goes: who this addon is built on.
+	page("About")
 	table.insert(frame.sections, section("About"))
 	frame.version = note("Version v" .. (AegisPathfinder.version or "?") .. " -- quote it in bug reports.")
 	y = y + 4
@@ -499,16 +539,65 @@ function AegisPathfinder:CreateConfigPanel()
 	y = y + 26
 	frame.credits = credits
 
-	--[[ Now the body's height is known, the scroll bar can be given its range:
-		how far past the visible area the sections run. ]]
-	y = y + PAD_BOTTOM
-	body:SetHeight(y)
-	frame.bodyHeight = y
-	local visible = HEIGHT - CHROME_TOP - PAD_TOP - PAD_BOTTOM
-	bar:SetMinMaxValues(0, math.max(0, y - visible))
-	bar:SetValue(0)
+	-- Each page's height is known now: what the scroll bar ranges over.
+	body.contentHeight = y + PAD_BOTTOM
+	for _, p in ipairs(frame.pages) do p:SetHeight(p.contentHeight) end
+	frame.visible = HEIGHT - CHROME_TOP - PAD_TOP - PAD_BOTTOM
+	frame.scroll, frame.holder, frame.scrollbar = scroll, holder, bar
+	-- Their lists hang off UIParent, so they are closed by hand when the
+	-- page or the window goes.
+	frame.dropdowns = { race, theme, waypoints, arrow }
 
-	frame.scroll, frame.body, frame.scrollbar = scroll, body, bar
+	--[[ The categories, down the left: Zygor's list, in this style -- a
+		quieter column than the page, the page shown marked with an accent
+		bar and the text brightened. ]]
+	local nav = CreateFrame("Frame", nil, frame)
+	nav:SetPoint("TOPLEFT", frame, "TOPLEFT", 0, -CHROME_TOP)
+	nav:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 0, 0)
+	nav:SetWidth(NAV_W)
+	local navBg = nav:CreateTexture(nil, "BACKGROUND")
+	navBg:SetTexture(Theme.texture.solid)
+	navBg:SetAllPoints(nav)
+	Theme:Tint(navBg, "text", 0.03)
+	local navEdge = nav:CreateTexture(nil, "BORDER")
+	navEdge:SetTexture(Theme.texture.solid)
+	navEdge:SetPoint("TOPRIGHT", nav, "TOPRIGHT", 0, 0)
+	navEdge:SetPoint("BOTTOMRIGHT", nav, "BOTTOMRIGHT", 0, 0)
+	navEdge:SetWidth(1)
+	Theme:Tint(navEdge, "text", 0.08)
+	frame.nav, frame.navButtons = nav, {}
+	for i, p in ipairs(frame.pages) do
+		local b = CreateFrame("Button", nil, nav)
+		b:SetHeight(NAV_ROW_H)
+		b:SetPoint("TOPLEFT", nav, "TOPLEFT", 0, -(8 + (i - 1) * NAV_ROW_H))
+		b:SetPoint("RIGHT", nav, "RIGHT", -1, 0)
+		local fill = b:CreateTexture(nil, "BACKGROUND")
+		fill:SetTexture(Theme.texture.solid)
+		fill:SetAllPoints(b)
+		local mark = b:CreateTexture(nil, "ARTWORK")
+		mark:SetTexture(Theme.texture.solid)
+		mark:SetPoint("TOPLEFT", b, "TOPLEFT", 0, 0)
+		mark:SetPoint("BOTTOMLEFT", b, "BOTTOMLEFT", 0, 0)
+		mark:SetWidth(3)
+		Theme:Tint(mark, "accent")
+		local label = b:CreateFontString(nil, "OVERLAY")
+		Theme:SetFont(label, "body", 13)
+		label:SetPoint("LEFT", b, "LEFT", 14, 0)
+		label:SetText(p.pageName)
+		b.fill, b.mark, b.label, b.pageName = fill, mark, label, p.pageName
+		function b:SetActive(on)
+			self.active = on
+			Theme:Tint(self.fill, "text", on and 0.08 or 0)
+			if on then self.mark:Show() else self.mark:Hide() end
+			Theme:TextColor(self.label, on and "text" or "textDim")
+		end
+		b:SetScript("OnClick", function() AegisPathfinder:ShowConfigPage(this.pageName) end)
+		b:SetScript("OnEnter", function() if not this.active then Theme:Tint(this.fill, "text", 0.04) end end)
+		b:SetScript("OnLeave", function() if not this.active then Theme:Tint(this.fill, "text", 0) end end)
+		b:SetActive(false)
+		frame.navButtons[i] = b
+	end
+	self:ShowConfigPage(frame.pages[1].pageName)
 
 	frame:SetScript("OnShow", function()
 		-- Snap beside the guide only while the player has not dragged this
@@ -529,13 +618,37 @@ function AegisPathfinder:CreateConfigPanel()
 	frame:SetScript("OnHide", function()
 		-- The credits open from here, and close with it.
 		if AegisPathfinder.creditsframe then AegisPathfinder.creditsframe:Hide() end
-		race.list:Hide()
-		theme.list:Hide()
-		waypoints.list:Hide()
+		for _, d in ipairs(this.dropdowns) do d.list:Hide() end
 	end)
 	ww.SetFadeTime(frame, 0.5)
 
 	table.insert(UISpecialFrames, "AegisPathfinderOptions")
+end
+
+--- Show one page of the options panel: its content on the right, its name
+--- marked in the list and in the header strip, scrolled to the top.
+function AegisPathfinder:ShowConfigPage(name)
+	local frame = self.optionsframe
+	if not frame then return end
+	local shown
+	for _, p in ipairs(frame.pages) do
+		if p.pageName == name then shown = p end
+	end
+	shown = shown or frame.pages[1]
+	for _, p in ipairs(frame.pages) do
+		if p == shown then p:Show() else p:Hide() end
+	end
+	for _, d in ipairs(frame.dropdowns) do d.list:Hide() end
+	frame.page = shown.pageName
+	frame.holder:SetHeight(shown.contentHeight)
+	frame.scroll:UpdateScrollChildRect()
+	local over = math.max(0, shown.contentHeight - frame.visible)
+	frame.scrollbar:SetMinMaxValues(0, over)
+	frame.scrollbar:SetValue(0)
+	frame.scroll:SetVerticalScroll(0)
+	if over > 0 then frame.scrollbar:Show() else frame.scrollbar:Hide() end
+	for _, b in ipairs(frame.navButtons) do b:SetActive(b.pageName == frame.page) end
+	frame.subhead.label:SetText("CONFIG \194\183 " .. string.upper(frame.page))
 end
 
 --- Open the options panel, or close it if it is open. The header's menu chip
