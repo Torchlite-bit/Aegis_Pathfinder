@@ -44,7 +44,7 @@ arrowBox:SetHeight(ARROW)
 arrowBox:SetPoint("TOP", frame, "TOP", 0, 0)
 
 local arrow = arrowBox:CreateTexture(nil, "ARTWORK")
-arrow:SetTexture(Theme.texture.navArrow)
+Theme:Skin(arrow, "navArrow")      -- the theme's colour (Theme.lua)
 arrow:SetAllPoints(arrowBox)
 
 local instruction = frame:CreateFontString(nil, "OVERLAY")

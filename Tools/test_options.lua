@@ -121,7 +121,7 @@ check(frame.subhead.label:GetText() == "CONFIG", "and names itself Config")
 
 local order = {}
 for _, h in ipairs(frame.sections) do table.insert(order, h.label:GetText()) end
-local want = { "RACE", "ROUTE PACK", "DUNGEONS", "FILTERS", "SERVER" }
+local want = { "RACE", "ROUTE PACK", "DUNGEONS", "FILTERS", "SERVER THEME" }
 for i, name in ipairs(want) do
 	check(order[i] == name, "section %d should be %s, got %s", i, name, tostring(order[i]))
 end
@@ -216,17 +216,38 @@ click(frame.groupSwitch)
 local _, _, _, offX = frame.groupSwitch.knob:GetPoint()
 check(onX > offX, "the knob sits right when on (%s) and left when off (%s)", onX, offX)
 
--- Server ---------------------------------------------------------------------------------
+-- Server theme ---------------------------------------------------------------------------
 
-check(frame.server.label:GetText() == "OctoWoW", "the server defaults to OctoWoW, got '%s'",
-	tostring(frame.server.label:GetText()))
-check(string.find(frame.serverNote:GetText(), "authored against OctoWoW", 1, true) ~= nil,
-	"on the native server the note says so, got '%s'", tostring(frame.serverNote:GetText()))
-click(frame.server.rows[3])
-check(AegisPathfinder.db.profile.server == "ravencraft", "picking a server sets it")
-check(string.find(frame.serverNote:GetText(), "not been checked on RavenCraft", 1, true) ~= nil,
-	"and the note warns that the data is unverified there, got '%s'",
-	tostring(frame.serverNote:GetText()))
+local themeLabels = {}
+for _, row in ipairs(frame.theme.rows) do table.insert(themeLabels, row.text:GetText()) end
+check(table.concat(themeLabels, ", ") == "Day, Night, Turtle WoW, OctoWoW, RavenCraft, Capybara Paradise, Aegis",
+	"the themes, in order: %s", table.concat(themeLabels, ", "))
+check(frame.theme.label:GetText() == "Turtle WoW", "the theme defaults to Turtle WoW, got '%s'",
+	tostring(frame.theme.label:GetText()))
+check(frame.server == nil, "the Server dropdown is gone")
+local function pickTheme(label)
+	for _, row in ipairs(frame.theme.rows) do
+		if row.text:GetText() == label then click(row) return end
+	end
+	error("no theme " .. label)
+end
+local Theme = AegisPathfinder.Theme
+local green = { Theme.color.accent[1], Theme.color.accent[2], Theme.color.accent[3] }
+pickTheme("OctoWoW")
+check(AegisPathfinder.db.profile.theme == "octowow", "picking a theme saves it")
+check(Theme.color.accent[1] > green[1] and Theme.color.accent[3] > green[3], "and the accent turns purple")
+check(AegisPathfinder.db.profile.server == "octowow", "a server's theme says which server this is")
+check(string.find(frame.themeNote:GetText(), "authored against OctoWoW", 1, true) ~= nil,
+	"on the native server the note says so, got '%s'", tostring(frame.themeNote:GetText()))
+pickTheme("RavenCraft")
+check(AegisPathfinder.db.profile.server == "ravencraft", "RavenCraft's theme sets RavenCraft")
+check(string.find(frame.themeNote:GetText(), "not been checked on RavenCraft", 1, true) ~= nil,
+	"and the note warns that the data is unverified there, got '%s'", tostring(frame.themeNote:GetText()))
+pickTheme("Night")
+check(AegisPathfinder.db.profile.server == "ravencraft", "a theme with no server leaves the server alone")
+check(frame.themeNote:GetText() == "Moonlight blue on deeper panels.", "and says only what it looks like")
+pickTheme("Turtle WoW")
+check(Theme.color.accent[1] == green[1] and Theme.color.accent[2] == green[2], "and Turtle WoW is green again")
 
 -- The addon's own settings ---------------------------------------------------------------
 

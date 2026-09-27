@@ -33,7 +33,7 @@ whoever wrote it. As of the port, that history carries commits from
 | Optimized quest ordering | **mrmr**, credited in the headers of `Guides/Optimized/` |
 | RestedXP speedrun and hardcore route packs | **RestedXP Guides** — Tactics and Zeroji |
 | Turtle WoW custom zone content | The **Turtle WoW** team, and the successor-server teams continuing it |
-| Profession routes (`Guides/Professions/`) | Converted from a reference document supplied by the repository owner |
+| Profession routes (`Guides/Professions/`) | Converted from a reference document supplied by the repository owner; Engineering's from [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) by **Kitymeowmeow** |
 
 ## Libraries and data
 
@@ -45,6 +45,8 @@ whoever wrote it. As of the port, that history carries commits from
 | [TomTom-TWOW](https://github.com/laytya/TomTom-TWOW) | **Cladhaire**; ported to 1.12 by Aero, Schaka, Logonz, Dyaxler, Alphaest, cralor and **laytya**. Earlier builds of this addon targeted the [sweetgiorni](https://github.com/sweetgiorni/TomTom) port |
 | MetaMap, MetaMapBWP, Cartographer | Their respective authors — supported waypoint providers |
 | [ClassicAPI](https://github.com/brues-code/ClassicAPI) | **brues-code** — required at runtime |
+| [CMaNGOS classic-db](https://github.com/cmangos/classic-db) | The **CMaNGOS** team — which trainers teach each Engineering rank, from its trainer lists |
+| [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) | **Kitymeowmeow** — the recipe data behind the priced crafting routes (skill thresholds, reagents, learn costs, recipe sources, vendor buy and sell prices), converted by `Tools/import_recipes.py`. CraftRoute is GPLv3, which is why this addon is too; the route planner itself is written separately |
 
 ## Fonts
 

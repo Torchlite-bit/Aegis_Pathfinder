@@ -192,6 +192,10 @@ local function newTexture(name, parent, layer)
 		checkColor("Texture:SetVertexColor", r, g, b, a)
 		self.__color = { r, g, b, a }
 	end
+	function t:GetVertexColor()
+		local c = self.__color or { 1, 1, 1, 1 }
+		return c[1], c[2], c[3], c[4] or 1
+	end
 	function t:SetBlendMode() end
 	function t:SetRotation() end
 	return t
@@ -217,6 +221,10 @@ local function newFontString(name, parent, layer)
 	function fs:SetTextColor(r, g, b, a)
 		checkColor("FontString:SetTextColor", r, g, b, a)
 		self.__color = { r, g, b, a }
+	end
+	function fs:GetTextColor()
+		local c = self.__color or { 1, 1, 1, 1 }
+		return c[1], c[2], c[3], c[4] or 1
 	end
 	function fs:SetJustifyH(v)
 		if v ~= "LEFT" and v ~= "RIGHT" and v ~= "CENTER" then

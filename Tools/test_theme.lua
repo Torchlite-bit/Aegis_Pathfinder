@@ -298,6 +298,89 @@ check(moved.__clamped == true, "windows are kept on screen")
 check(Theme:RestorePosition(other, "neversaved") == false,
 	"with nothing saved it should leave the frame's own anchors alone")
 
+-- Themes ---------------------------------------------------------------------
+
+AegisPathfinder.db = AegisPathfinder.db or { profile = {} }
+local keys = {}
+for _, def in ipairs(Theme.THEMES) do keys[def.key] = def end
+for _, k in ipairs({ "day", "night", "turtle", "octowow", "ravencraft", "capybara", "aegis" }) do
+	check(keys[k] ~= nil, "a %s theme", k)
+end
+check(Theme.DEFAULT_THEME == "turtle" and next(keys.turtle.colors) == nil, "Turtle WoW is the concept, unchanged")
+
+-- Readable in every theme: the accent against the panel it sits on, and body
+-- text against the panel, by the WCAG contrast ratio.
+local function lum(c)
+	local function ch(v) if v <= 0.03928 then return v / 12.92 end return ((v + 0.055) / 1.055) ^ 2.4 end
+	return 0.2126 * ch(c[1]) + 0.7152 * ch(c[2]) + 0.0722 * ch(c[3])
+end
+local function contrast(a, b)
+	local la, lb = lum(a), lum(b)
+	if la < lb then la, lb = lb, la end
+	return (la + 0.05) / (lb + 0.05)
+end
+for _, def in ipairs(Theme.THEMES) do
+	Theme:ApplyTheme(def.key)
+	check(contrast(Theme.color.accent, Theme.color.panel) >= 4.5,
+		"%s: the accent reads on the panel (%.2f:1)", def.key, contrast(Theme.color.accent, Theme.color.panel))
+	check(contrast(Theme.color.textDim, Theme.color.panel) >= 7,
+		"%s: dim text reads on the panel (%.2f:1)", def.key, contrast(Theme.color.textDim, Theme.color.panel))
+	check(contrast({ 0.05, 0.10, 0.02 }, Theme.color.accent) >= 4.5,
+		"%s: dark text reads on an accent pill (%.2f:1)", def.key, contrast({ 0.05, 0.10, 0.02 }, Theme.color.accent))
+	check(Theme.current == def.key, "%s is the theme in use", def.key)
+end
+
+-- Switching re-tints what is already drawn, in place, and nothing else.
+Theme:ApplyTheme("turtle")
+local accentTable = Theme.color.accent
+local host = CreateFrame("Frame", nil, UIParent)
+local accentTex = host:CreateTexture(nil, "ARTWORK")
+Theme:Tint(accentTex, "accent", 0.5)
+local goldTex = host:CreateTexture(nil, "ARTWORK")
+Theme:Tint(goldTex, "gold")
+local rawTex = host:CreateTexture(nil, "ARTWORK")
+Theme:Tint(rawTex, { 0.1, 0.2, 0.3 })
+local fs = host:CreateFontString(nil, "OVERLAY")
+Theme:TextColor(fs, "accent")
+local panelFill = Theme:NineSlice(host, Theme.texture.panelFill, "BACKGROUND", "panel")
+
+Theme:ApplyTheme("aegis")
+local r, g, b, a = accentTex:GetVertexColor()
+check(math.abs(r - 0xea / 255) < 1e-6 and math.abs(a - 0.5) < 1e-6, "an accent texture turns red, alpha kept (%s, %s)", r, a)
+local fr = fs:GetTextColor()
+check(math.abs(fr - 0xea / 255) < 1e-6, "accent text turns red")
+local gr = goldTex:GetVertexColor()
+check(math.abs(gr - 1) < 1e-6, "gold stays gold")
+local rr = rawTex:GetVertexColor()
+check(math.abs(rr - 0.1) < 1e-6, "a colour given by value is left alone")
+check(Theme.color.accent == accentTable, "the colour table is changed in place, so references to it follow")
+Theme:ApplyTheme("night")
+local pr = panelFill.center:GetVertexColor()
+check(math.abs(pr - 0x17 / 255) < 1e-6, "Night deepens the panels already drawn")
+Theme:Tint(accentTex, "gold")
+Theme:ApplyTheme("octowow")
+local ar = accentTex:GetVertexColor()
+check(math.abs(ar - 1) < 1e-6, "a texture re-tinted to a colour that no theme changes is left as it is")
+-- The baked-green art: exact in the concept's theme, a tinted grey elsewhere.
+Theme:ApplyTheme("turtle")
+local arrowTex = host:CreateTexture(nil, "ARTWORK")
+Theme:Skin(arrowTex, "navArrow")
+local ar1, ag1 = arrowTex:GetVertexColor()
+check(arrowTex.__texture == Theme.texture.navArrow and ar1 == 1 and ag1 == 1, "Turtle WoW keeps the green arrow as drawn")
+Theme:ApplyTheme("octowow")
+local ar2 = arrowTex:GetVertexColor()
+check(arrowTex.__texture == Theme.texture.navArrowMask and math.abs(ar2 - 0xcf / 255) < 1e-6,
+	"another theme swaps in the grey arrow, tinted its glow")
+local bar = Theme:ProgressBar(host, 4)
+check(bar.fill.__texture == Theme.texture.progressMask, "a progress bar made under a theme takes its art")
+Theme:ApplyTheme("turtle")
+check(arrowTex.__texture == Theme.texture.navArrow and bar.fill.__texture == Theme.texture.progress,
+	"and back to the concept's art with the concept's theme")
+
+Theme:ApplyTheme("nonsense")
+check(Theme.current == "turtle" and math.abs(Theme.color.accent[1] - 0x52 / 255) < 1e-6, "an unknown theme is the default")
+check(math.abs(Theme.color.panel[1] - 0x20 / 255) < 1e-6, "and puts the panels back")
+
 -- Report ---------------------------------------------------------------------
 
 local apiErrors = stub.report()

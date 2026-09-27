@@ -47,6 +47,7 @@ too — the old `TurtleGuide` global is still an alias.
 | `/apg resetpanels` | Put every window back where it opens by default |
 | `/apg materials` | The shopping list: reagents for this craft, or the rest of the guide |
 | `/apg exchange` | Send the guide's remaining crafts to Aegis: Exchange, or take them back out |
+| `/apg craft` | The crafting route window: the cheapest way to level a profession at today's prices |
 | `/apg setup` | Run the first-time setup again: your guide, its features and your dungeons |
 | `/apg target` | Target and mark the step's next active target (put it in a macro) |
 | `/apg useitem` | Use the first active item |
@@ -139,6 +140,35 @@ yourself are never touched — if one shares a name with a craft on the route,
 it is set aside while the route's stands in for it and put back afterwards.
 Exchange's demo mode has to be off.
 
+**Cheapest crafting route.** **Cheapest route** on the shopping list (or
+`/apg craft`) opens a window that works out the cheapest way from your skill to
+300 in a profession at today's prices, as
+[CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) does — without
+needing CraftRoute. It shows the total, what it is made of (reagents, recipes,
+what you get back selling leftovers to a merchant), and a row per recipe: the
+skill band, how many crafts, the reagents and what the step costs. Hover a row
+for how the recipe is learned, what to buy and what gets made first.
+
+- **Prices** come from merchants (built in) and the auction house: press **Scan
+  prices** with the auction house open and it searches for each reagent and
+  recipe the profession could use, the route's own first, keeping every
+  listing so forty of something is priced as forty. With Aegis: Exchange
+  loaded its prices are used too. A reagent nobody has a price for is never
+  counted as free: the route avoids it, or says it has no price.
+- **Your recipes**: open your profession window once and the recipes you know
+  cost nothing to learn; drop and reputation recipes are only used once you
+  know them.
+- **Load as guide** turns the route into a guide, *Alchemy (cheapest route)*
+  and so on, in the Professions list: the authored guide's trainers, level and
+  rank steps (and the Expert cookbook and Artisan quest for Cooking) placed
+  where your skill cap runs out, with the planned crafts in between. It is kept
+  between sessions and replaced when you plan again.
+
+It plans Alchemy, Blacksmithing, Cooking, Enchanting, Engineering,
+Jewelcrafting, Leatherworking, Survival and Tailoring, from 1,095 recipes whose
+thresholds, reagents and sources come from CraftRoute's data (with its
+author's permission); the planner itself is this addon's own.
+
 **Active items and targets.** Two small windows, as RestedXP has, hang under
 the guide. **Active Items** has a button for every item the guide wants you to
 use — the current step's, and those for any quest in your log that is not done
@@ -184,6 +214,14 @@ free), and are never rewritten while the macro window is open. The options
 panel can switch the window off, which also stops the macros being made or
 updated.
 
+**Server themes.** The options panel's **Server theme** recolours the addon:
+Turtle WoW is the original green, OctoWoW purple, RavenCraft grey, Capybara
+Paradise tan, Aegis red, and Day (amber, lighter panels) and Night (moonlight
+blue, deeper panels). It applies at once, arrow and progress bars included, with
+no reload. A server's own theme also tells the addon that is your server, which
+is what its guide-data warnings go by. Every theme is checked for readability:
+accents and text keep a WCAG contrast of at least 4.5:1 against the panels.
+
 **Automatic advancement.** Accepting, completing and turning in quests, binding
 a hearthstone, and collecting tagged items all resolve themselves. So do travel
 steps, once a waypoint provider is active. The checkbox wears a halo on steps
@@ -208,8 +246,12 @@ pins either way.
 
 | Authored | |
 |---|---|
-| Alchemy, Blacksmithing, Cooking, Enchanting, First Aid, Jewelcrafting, Leatherworking, Mining, Survival, Tailoring | Full 1–300 routes |
-| Engineering, Herbalism, Skinning, Fishing | Placeholders — see below |
+| Alchemy, Blacksmithing, Cooking, Enchanting, Engineering, First Aid, Jewelcrafting, Leatherworking, Mining, Survival, Tailoring | Full 1–300 routes |
+| Herbalism, Skinning, Fishing | Placeholders — see below |
+
+Each authored guide is a fixed route, chosen once. For one planned from today's
+prices instead, see **Cheapest crafting route** above — it keeps the authored
+guide's trainer and rank steps and replaces only the crafts.
 
 Each authored guide says what to craft in each skill band and roughly how many,
 the reagents (the shopping list totals what the rest of the route still
@@ -224,17 +266,26 @@ train Expert or Artisan: the guide sends you to buy the Expert tome, and at
 skill 225 — the point the route cannot pass without it — walks you through
 the Artisan quest, level 40 and what to bring included.
 
+Engineering is not in the reference the other guides were converted from. Its
+route is CraftRoute's (a craft-by-craft 1–300 route checked against its recipe
+data), with reagents and recipe sources from the same recipe data the cheapest
+route uses. Its trainers come from the CMaNGOS 1.12 database: every NPC whose
+trainer list teaches that rank, in the zone pfQuest puts them in. Artisan is
+Buzzek Bracketswing in Gadgetzan (Tanaris) for both factions. Trainers the
+Turtle-lineage servers added in their own new zones are not in those databases,
+so are not listed.
+
 Steps complete themselves on the numbers the game reports: a craft or
 gathering step when your skill reaches its target, a rank when your skill cap
 does. Open a guide part-way through and it goes straight to where you are.
 
-The four placeholders are listed but unauthored, and carry a grey `TPL` badge
+The three placeholders are listed but unauthored, and carry a grey `TPL` badge
 in the guide list: the reference these guides were converted from does not
 cover them. They appear in the list so the
 Professions tab matches the design, and are labelled so an unauthored guide is
-obviously unauthored rather than silently missing. Three of them — Herbalism,
-Skinning and Fishing — are gathering professions and need a different kind of
-guide anyway: where to gather at each skill band, not what to craft.
+obviously unauthored rather than silently missing. Herbalism, Skinning and
+Fishing are gathering professions and need a different kind of guide anyway:
+where to gather at each skill band, not what to craft.
 
 Where the reference had no recipe for a skill range, the guide says so rather
 than inventing one. Mining's mid-range gaps are real, and it tells you to go
@@ -250,7 +301,8 @@ Guide content here was authored against **OctoWoW**. It is likely but not
 guaranteed to be correct on Capybara Paradise or RavenCraft (which launched in
 August 2026).
 
-Tell the addon which server you are on with `/apg server`. It does not swap
+Tell the addon which server you are on by picking its **server theme** in the
+options panel, or with `/apg server`. It does not swap
 in a per-server dataset — only one exists — but it will say so on the status
 panel's footer when the loaded guide's data was authored somewhere else, which
 is the most likely reason a waypoint points at nothing.
@@ -271,7 +323,8 @@ Runs everything that can be checked without a client: Lua syntax, Lua 5.0
 compatibility, `.toc` and `Guides.xml` integrity, TGA validity, that every
 texture path resolves to a real file, that no panel has drifted off the theme,
 that every window stacks rather than interleaving with the others, and
-nineteen test suites that execute the addon's own code against a stubbed 1.12 API.
+that no function passes Lua 5.0's upvalue limit, and twenty-one test suites
+that execute the addon's own code against a stubbed 1.12 API.
 
 None of it proves the UI looks right. That needs a client.
 
@@ -318,6 +371,8 @@ so `git log` and `git blame` still attribute each line to whoever wrote it.
 | **shagu** | [pfQuest](https://github.com/shagu/pfQuest), pfQuest-turtle, pfQuest-octo |
 | **Cladhaire**; the TWOW port by **laytya** and others | [TomTom-TWOW](https://github.com/laytya/TomTom-TWOW) |
 | The authors of MetaMap, MetaMapBWP and Cartographer | Supported waypoint providers |
+| **Kitymeowmeow** | [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) — the recipe data behind the priced crafting routes: skill thresholds, reagents, learn costs, recipe sources, vendor prices; and the Engineering route |
+| **The CMaNGOS team** | [classic-db](https://github.com/cmangos/classic-db) — which trainers teach each Engineering rank |
 | **Indian Type Foundry** | Rajdhani (SIL OFL 1.1) |
 | **The Inter Project Authors** | Inter (SIL OFL 1.1) |
 
@@ -329,3 +384,10 @@ A fan project, not affiliated with or endorsed by Blizzard Entertainment,
 Zygor Guides LLC, RestedXP, or any server team. The interface deliberately
 follows conventions set by Zygor and RestedXP; no art or code from either was
 used — every texture in `media/` is generated by `Tools/make_assets.py`.
+
+## Licence
+
+GNU General Public License v3.0 — see [LICENSE](LICENSE). The crafting routes
+are planned from recipe data converted from CraftRoute, which is GPLv3, so the
+addon is too. The bundled Ace2 libraries keep their own licence, and the fonts
+the SIL Open Font License (see [media/README.md](media/README.md)).

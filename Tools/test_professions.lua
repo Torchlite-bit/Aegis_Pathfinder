@@ -52,10 +52,10 @@ end
 -- Load every generated guide -------------------------------------------------
 
 local AUTHORED = {
-	"Alchemy", "Blacksmithing", "Cooking", "Enchanting", "First_Aid",
+	"Alchemy", "Blacksmithing", "Cooking", "Enchanting", "Engineering", "First_Aid",
 	"Jewelcrafting", "Leatherworking", "Mining", "Survival", "Tailoring",
 }
-local TEMPLATES = { "Engineering", "Fishing", "Herbalism", "Skinning" }
+local TEMPLATES = { "Fishing", "Herbalism", "Skinning" }
 
 for _, name in ipairs(AUTHORED) do
 	dofile("Guides/Professions/" .. name .. ".lua")
@@ -121,6 +121,38 @@ for _, name in ipairs(TEMPLATES) do
 		end
 		check(not hasSkill, "%s is a template but carries skill steps", name)
 	end
+end
+
+-- Engineering, authored from CraftRoute's route --------------------------------
+
+local eng = AegisPathfinder.qsplusguides["Engineering (1-300)"]
+check(eng and not eng.template, "Engineering is authored, not a placeholder")
+if eng then
+	local ranks, crafts, reagentless, trainers = {}, 0, 0, {}
+	local lastSkill = 1
+	for _, s in ipairs(eng.steps) do
+		if s.skill then
+			crafts = crafts + 1
+			if not s.reagents or table.getn(s.reagents) == 0 then reagentless = reagentless + 1 end
+			lastSkill = s.skill.to
+		end
+		if s.rank then
+			ranks[s.rank.cap] = (ranks[s.rank.cap] or 0) + 1
+			-- Each rank is trained once the skill it needs is reached and
+			-- before the old cap stops you: 50, 125 and 200.
+			local needs = { [75] = 1, [150] = 50, [225] = 125, [300] = 200 }
+			check(lastSkill >= needs[s.rank.cap] and lastSkill <= s.rank.cap - 75 or s.rank.cap == 75,
+				"Engineering: the rank to %d comes at skill %d", s.rank.cap, lastSkill)
+			for _, n in ipairs(s.npcs or {}) do trainers[n] = true end
+		end
+	end
+	check(crafts == 22, "Engineering has CraftRoute's 22 craft steps (%d)", crafts)
+	check(reagentless == 0, "every Engineering craft lists its reagents")
+	for _, cap in ipairs({ 75, 150, 225, 300 }) do
+		check(ranks[cap] == 2, "Engineering trains the rank to %d, once per faction (%s)", cap, tostring(ranks[cap]))
+	end
+	check(trainers["Buzzek Bracketswing"] and trainers["Roxxik"] and trainers["Springspindle Fizzlegear"],
+		"Engineering's rank steps name their trainers")
 end
 
 -- Tag round trip -------------------------------------------------------------

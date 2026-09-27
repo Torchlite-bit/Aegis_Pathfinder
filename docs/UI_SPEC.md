@@ -297,7 +297,7 @@ secondary panel and all three `Core.lua` dialogs were still built from.
 ### Options panel -- `OptionsFrame.lua`
 
 The concept's `#options`: one 396px window, header and `Config` subhead, and a
-scrolling body of sections — Race, Route pack, Dungeons, Filters, Server — each
+scrolling body of sections — Race, Route pack, Dungeons, Filters, Server theme — each
 an accent uppercase `h3` over its controls. It used to be a column of pill
 buttons that opened the dungeons, the filters and the route picker as three
 more windows; all of that is sections now.
@@ -334,6 +334,33 @@ from `self.actions` entirely, so the parsed guide cannot answer the question.
 A negated tag (`|D|!DM|`) still counts as a reference: the step is
 conditional, the relevance is not. Results are cached per guide, since the
 scan walks guides that run to hundreds of steps.
+
+### Server themes -- `Theme.lua`
+
+Not in the concept, which is green. The options panel's **Server theme**
+(which replaced the Server dropdown) picks one of `Theme.THEMES`: Day, Night,
+Turtle WoW (the concept, the default), OctoWoW, RavenCraft, Capybara Paradise,
+Aegis. A theme names only the colours it changes: the accent family (`accent`,
+`accentDeep`, `accentGlow`), and for Day, Night and RavenCraft the panel shades.
+Text, gold, danger and the green/red step bands keep their meaning everywhere.
+
+- **Live**: `Theme:ApplyTheme` changes the colour tables in place and re-tints
+  every texture and font string `Tint`/`TextColor` last coloured by a name that
+  some theme changes (a weak-keyed record, so nothing is kept alive by it).
+  `SetTheme` then repaints the open windows, so colours chosen by state catch
+  up. The saved theme is applied in `OnInitialize`, before the first paint.
+- **Baked art**: the navigation arrow and progress fill are gradients drawn in
+  green. `Theme:Skin` keeps them exactly as drawn under Turtle WoW, and under
+  any other theme swaps in the same shape in grey (`nav-arrow-mask`,
+  `progress-mask`), tinted with the theme's accent glow.
+- **Readable**: `test_theme.lua` requires, in every theme, a WCAG contrast of
+  4.5:1 for the accent on the panel and for dark text on an accent pill, and
+  7:1 for dim text on the panel. RavenCraft's "dark grey" is its panels; its
+  accent is a lighter grey, since dark grey on a dark panel cannot be read.
+- **Servers**: a server's theme (OctoWoW, RavenCraft, Capybara Paradise) also
+  sets `profile.server`, which the guide-data provenance warnings read
+  (`Servers.lua`); the note under the dropdown carries what the Server section
+  used to say about that server's data. `/apg server` still sets it alone.
 
 ### Minimap button -- `MinimapButton.lua`
 
@@ -470,8 +497,9 @@ a dragged position is restored (it used to be saved and never read).
 - **Bag counts** are by name over bags 0-4. `BAG_UPDATE` only marks the list
   stale; the window repaints from OnUpdate at most every 0.25s, and only while
   open, so a loot or a stack split is one repaint, not one per bag.
-- **Send to Exchange** (`Theme:PanelButton`, full width at the foot). See
-  below.
+- **Send to Exchange** and **Cheapest route** (`Theme:PanelButton`, half the
+  width each, at the foot). Exchange is below; Cheapest route opens the
+  crafting route window.
 
 Nothing in it is profession-specific -- any guide carrying `|MATS|` tags gets
 a shopping list.
@@ -502,6 +530,93 @@ the step settles, which marks things stale for one OnUpdate, and
 Finishing the route removes it. It only syncs while the guide it was sent
 from is the one loaded. Exchange's demo mode shows made-up projects in place
 of the saved list, so nothing is sent or removed while it is on.
+
+### Crafting route -- `CraftRouteFrame.lua`
+
+Not in the concept. It does what CraftRoute does, without CraftRoute: plans
+the cheapest way from your skill to 300 at today's prices and shows it, and
+can turn it into a guide. The planning is `CraftPlanner.lua`, the auction scan
+`CraftScan.lua`, the recipe and merchant-price data `Crafting/` (converted from
+CraftRoute's data by `Tools/import_recipes.py`).
+
+Opened by **Cheapest route** on the shopping list, or `/apg craft`. It pops out
+beside the guide like the shopping list, until dragged (`craftframe`).
+
+- **Chrome**: the standard header and a `CRAFTING ROUTE` subhead, 360px wide.
+- **Profession** (`Theme:Dropdown`): every profession with recipe data, with
+  your skill beside the ones you have. It opens on the profession of the guide
+  you are reading, else the last one planned, else the first you have. At the
+  right, `SKILL 41 TO 300` (`display` 12, dim): from your current skill to
+  where the route gets.
+- **Total** (`display` 18, gold) and the crafts beside it. A route that pays for
+  itself by selling back shows `+` and the amount in the accent, and says so.
+- **Breakdown** (`body` 10, dim): reagents, recipes, what is sold back, how many
+  items have no price, and where the route stops if it stops short.
+- **Status line**: where auction prices come from ("your scan 2 h ago and Aegis:
+  Exchange"), or gold when there are none or some reagents have no price, or the
+  scan's progress while it runs.
+- **Rows**, two lines each, 30px, eight visible and the theme's scroll bar past
+  that: the skill band (`display` 11, accent), the recipe, the crafts (`x49`,
+  gold); under them the reagents of one craft and what the step spends. A step
+  with an unpriced reagent is gold. Hovering a row shows the expected crafts,
+  the cost of one, how the recipe is learned, what to buy, what is made first,
+  and what has no price.
+- **Sell what is left over to a merchant** (`Theme:Switch`): whether leftovers
+  count against the cost. `char.craftsellback`, on by default.
+- **Scan prices** / **Stop scan** and **Load as guide** (`Theme:PanelButton`,
+  half width each).
+
+The plan is worked out when the window opens and again only when something it
+depends on changes: the profession, your skill, the sell-back switch, a
+finished scan, or a recipe newly seen in your profession window. Scan progress
+only repaints. Each of those arrives as a dirty flag flushed once on the next
+frame.
+
+#### The planner
+
+1. Unit costs: the lower of a merchant's price and the auction house's, or the
+   cost of making the item from its own reagents where this profession can and
+   that is cheaper.
+2. Skill-up chance: certain from orange to yellow, then falling in a straight
+   line to nothing at grey.
+3. The route: a dynamic program over skill points with the last recipe used as
+   the state. Carrying on costs the next point (a craft's cost over its chance);
+   switching also costs the new recipe's fee, and one craft as a nudge against
+   one-point detours.
+4. Depth: the route is priced at the quantities it buys, walking up the
+   auction listings, and planned again at those prices until it settles.
+5. Accounting: the route is played through in order -- an earlier step's
+   products are used by a later one before anything is bought -- and what is
+   left is sold back if the switch says so.
+
+A known recipe is free to learn; a drop or reputation recipe is only planned
+once known; `skip` recipes (cooldowns, rare drops) never. A reagent with no
+price keeps its recipe out, unless the route cannot go on without it, in which
+case the route uses it, says which items have no price, and leaves them out of
+the total rather than guessing.
+
+#### Auction prices
+
+`CraftScan.lua` searches for each reagent and recipe book the profession could
+use that no merchant sells -- the route's own first -- one name at a time, gated
+on `CanSendAuctionQuery()`, reading `AUCTION_ITEM_LIST_UPDATE` only while a
+reply is awaited, up to four pages an item, and keeping only listings with
+exactly the name searched for. Each item's listings are stored cheapest first
+per realm (`realm.craftprices`), so forty units are priced as forty. Items
+searched in the last half hour are skipped. Aegis: Exchange's unit price is
+used where there is no scan of our own, or ours is over a week old.
+
+#### Load as guide
+
+The route becomes a QuestShell+ guide, `<Profession> (cheapest route)`, in the
+Professions list. The authored profession guide's non-craft steps -- trainers
+per rank, the level each rank needs, the Expert cookbook, the Artisan quest --
+are kept, each block placed where the old skill cap runs out (the rank to 150
+at 75, and so on); crafts are split there. Craft steps carry `|SKILL|`,
+`|CRAFT|` and `|MATS|` like authored ones, so they complete on your skill and
+feed the shopping list; a trainer recipe you do not know carries your
+faction's trainers. The guide is saved in `char.craftguides` and registered
+again at login, and loading a new plan replaces it.
 
 ### Active Items, Active Targets and Macros -- `ActiveFrames.lua`
 

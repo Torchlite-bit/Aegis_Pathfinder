@@ -14,6 +14,9 @@
 
 	It pops out beside the guide panel until you drag it somewhere of your own.
 
+	Beside it, Cheapest route opens the crafting route window: the same
+	profession planned again at today's prices (CraftRouteFrame.lua).
+
 	With Aegis: Exchange loaded, one button puts the same list on Exchange's
 	Crafting tab -- one project per craft still ahead -- where its shopping
 	list prices every line at the auction house. From then on it is kept in
@@ -135,8 +138,9 @@ function AegisPathfinder:CreateMaterialsPanel()
 	frame:SetScript("OnMouseWheel", function() slider:Nudge(-(arg1 or 0)) end)
 
 	-- Sending the list to Aegis: Exchange, or taking it back out.
-	local exchange = Theme:PanelButton(frame, "Send to Exchange", WIDTH - PAD * 2, BUTTON_H)
-	exchange:SetPoint("BOTTOM", frame, "BOTTOM", 0, PAD)
+	local half = (WIDTH - PAD * 2 - 6) / 2
+	local exchange = Theme:PanelButton(frame, "Send to Exchange", half, BUTTON_H)
+	exchange:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", PAD, PAD)
 	exchange:SetScript("OnClick", function() AegisPathfinder:ToggleExchange() end)
 	local enter, leave = exchange:GetScript("OnEnter"), exchange:GetScript("OnLeave")
 	exchange:SetScript("OnEnter", function()
@@ -148,6 +152,23 @@ function AegisPathfinder:CreateMaterialsPanel()
 		Theme:HideTip(this)
 	end)
 	frame.exchange = exchange
+
+	-- The same profession, planned at today's prices (CraftRouteFrame.lua).
+	local cheapest = Theme:PanelButton(frame, "Cheapest route", half, BUTTON_H)
+	cheapest:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -PAD, PAD)
+	cheapest:SetScript("OnClick", function() AegisPathfinder:ToggleCraftRoutePanel() end)
+	local center, cleave = cheapest:GetScript("OnEnter"), cheapest:GetScript("OnLeave")
+	cheapest:SetScript("OnEnter", function()
+		center()
+		Theme:ShowTip(this, "BOTTOM", "The cheapest way to 300 at today's prices", {
+			"Plans the route again from auction and merchant prices, and can load it as a guide.",
+		})
+	end)
+	cheapest:SetScript("OnLeave", function()
+		cleave()
+		Theme:HideTip(this)
+	end)
+	frame.cheapest = cheapest
 
 	--[[ Counts follow the bags. BAG_UPDATE comes in bursts -- a stack
 		split, a loot, a trade -- so the event only marks the list stale and

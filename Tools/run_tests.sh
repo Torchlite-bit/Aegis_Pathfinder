@@ -15,6 +15,7 @@ echo
 echo "== profession source document =="
 python3 Tools/convert_professions.py --check
 
+
 echo
 echo "== lua tests =="
 lua5.1 Tools/test_theme.lua
@@ -25,6 +26,8 @@ lua5.1 Tools/test_servers.lua
 lua5.1 Tools/test_dungeons.lua
 lua5.1 Tools/test_guidelist.lua
 lua5.1 Tools/test_materials.lua
+lua5.1 Tools/test_craftplanner.lua
+lua5.1 Tools/test_craftroute.lua
 lua5.1 Tools/test_activeframes.lua
 lua5.1 Tools/test_nextguide.lua
 lua5.1 Tools/test_setup.lua

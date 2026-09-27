@@ -6,7 +6,7 @@
 	  Route pack    pills, with a preview of the route underneath
 	  Dungeons      the chip grid
 	  Filters       group mode and Auction House steps, as sliding switches
-	  Server        a dropdown, with what is known about that server's data
+	  Server theme  a dropdown: the colours of your server, or Day or Night
 
 	That is the concept. It used to be a menu of buttons that opened the
 	dungeons, the filters and the route picker as three more windows; all of
@@ -319,21 +319,22 @@ function AegisPathfinder:CreateConfigPanel()
 	place(filterNote, 16, SECTION_GAP)
 	frame.groupSwitch, frame.ahSwitch, frame.filterNote = group, ah, filterNote
 
-	-- Server -------------------------------------------------------------------------
-	table.insert(frame.sections, section("Server"))
-	local server = Theme:Dropdown(body, BODY_W, function(key)
-		AegisPathfinder:SetCurrentServer(key)
-		AegisPathfinder:RefreshConfigPanel()
+	--[[ Server theme. It took the place of the Server dropdown: picking a
+		server's theme also says that is your server, which the guide-data
+		warnings go by (Servers.lua; /apg server still sets it on its own). ]]
+	table.insert(frame.sections, section("Server theme"))
+	local theme = Theme:Dropdown(body, BODY_W, function(key)
+		AegisPathfinder:SetTheme(key)
 	end)
-	local serverItems = {}
-	for _, info in ipairs(self.servers or {}) do
-		table.insert(serverItems, { value = info.key, label = info.label })
+	local themeItems = {}
+	for _, def in ipairs(Theme.THEMES) do
+		table.insert(themeItems, { value = def.key, label = def.label })
 	end
-	server:SetItems(serverItems)
-	place(server, 30, 6)
-	local serverNote = Theme:FinePrint(body, BODY_W)
-	place(serverNote, 44, SECTION_GAP)
-	frame.server, frame.serverNote = server, serverNote
+	theme:SetItems(themeItems)
+	place(theme, 30, 6)
+	local themeNote = Theme:FinePrint(body, BODY_W)
+	place(themeNote, 44, SECTION_GAP)
+	frame.theme, frame.themeNote = theme, themeNote
 
 	-- Beyond the concept: the addon's own settings, in the same language. -------
 	table.insert(frame.sections, section("Guide behaviour"))
@@ -448,7 +449,7 @@ function AegisPathfinder:CreateConfigPanel()
 		-- The credits open from here, and close with it.
 		if AegisPathfinder.creditsframe then AegisPathfinder.creditsframe:Hide() end
 		race.list:Hide()
-		server.list:Hide()
+		theme.list:Hide()
 		waypoints.list:Hide()
 	end)
 	ww.SetFadeTime(frame, 0.5)
@@ -521,12 +522,13 @@ function AegisPathfinder:RefreshConfigPanel()
 	frame.filterNote:SetText((grouped and "Group mode" or "Solo mode")
 		.. " \194\183 Auction House steps " .. (db.UseAH and "shown" or "hidden"))
 
-	-- Server, and what is known about guide data there.
-	local key = self:GetCurrentServer()
-	frame.server:SetValue(key)
-	local info = self:GetServerInfo(key)
+	-- The theme, and -- for a server's own theme -- what is known about guide
+	-- data on that server.
+	local def = Theme.themeByKey[self:GetTheme()]
+	frame.theme:SetValue(def.key)
+	local info = def.server and self:GetServerInfo(def.server)
 	local source = self:GetServerInfo(self.defaultDataSource)
-	local lines = {}
+	local lines = { def.note }
 	if info and info.dataset == "native" then
 		table.insert(lines, "Guide data here is authored against " .. info.label .. ".")
 	elseif info then
@@ -539,7 +541,7 @@ function AegisPathfinder:RefreshConfigPanel()
 		table.insert(lines, info.pfquest and ("pfQuest pack: " .. info.pfquest)
 			or "No pfQuest pack confirmed for this server.")
 	end
-	frame.serverNote:SetText(table.concat(lines, " "))
+	frame.themeNote:SetText(table.concat(lines, " "))
 
 	-- The addon's own switches.
 	for key, sw in pairs(frame.switches) do

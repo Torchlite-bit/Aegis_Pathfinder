@@ -18,6 +18,7 @@ Exits non-zero if any check fails.
 
 import os
 import re
+import shutil
 import struct
 import subprocess
 import sys
@@ -84,6 +85,11 @@ LUA50_BANNED = [
     (re.compile(r"(?<![.:\w])select\s*\(\s*[\"'#]"), "select()", "explicit named parameters"),
     (re.compile(r"\bmodule\s*\("), "module()", "a plain global table"),
     (re.compile(r"\b\d+//\d+"), "// integer division", "math.floor(a/b)"),
+    # 5.1 additions to the standard library: nil on the client.
+    (re.compile(r"\bmath\.huge\b"), "math.huge", "a large number, e.g. 1e9"),
+    (re.compile(r"\bmath\.fmod\b"), "math.fmod", "math.mod()"),
+    (re.compile(r"\btable\.maxn\b"), "table.maxn", "table.getn()"),
+    (re.compile(r"\bstring\.match\b|:match\("), "string.match", "string.find() with captures"),
 ]
 
 
@@ -463,6 +469,32 @@ def check_stacking(rep):
     rep.ok("stacking", len(files))
 
 
+def check_upvalues(rep):
+    """No function may read more than 32 file-scope locals.
+
+    Lua 5.0 refuses to load a file that breaks this -- "too many upvalues
+    (limit=32)" -- and the whole addon dies with it. Lua 5.1, which runs the
+    tests, allows 60, so nothing else here would notice. `luac -l` prints
+    each function's upvalue count; any 5.x luac reports the same number.
+    """
+    luac = shutil.which("luac5.1") or shutil.which("luac")
+    if not luac:
+        rep.ok("upvalues", 0)
+        return
+    n = 0
+    for path in sorted(walk({".lua"})):
+        if not is_shipped(path):
+            continue
+        out = subprocess.run([luac, "-l", "-p", path], capture_output=True, text=True)
+        if out.returncode != 0:
+            continue    # a syntax error; check_syntax reports it
+        for count in re.findall(r"(\d+) upvalues?", out.stdout):
+            if int(count) > 32:
+                rep.fail("upvalues", path, "a function reads %s upvalues; Lua 5.0 allows 32" % count)
+        n += 1
+    rep.ok("upvalues", n)
+
+
 def main():
     print("Verifying %s\n" % ROOT)
     rep = Report()
@@ -476,6 +508,7 @@ def main():
     check_tooltips(rep)
     check_media(rep)
     check_texture_paths(rep)
+    check_upvalues(rep)
     return rep.summary()
 
 

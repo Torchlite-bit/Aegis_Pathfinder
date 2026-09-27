@@ -171,6 +171,18 @@ check(routeList["Swiftthistle"].have == 0, "nothing carried reads as 0, not blan
 
 AegisPathfinder:CreateMaterialsPanel()
 local frame = AegisPathfinder.materialsframe
+
+-- Beside Send to Exchange, the same profession planned at today's prices.
+do
+	local toggled = 0
+	local real = AegisPathfinder.ToggleCraftRoutePanel
+	AegisPathfinder.ToggleCraftRoutePanel = function() toggled = toggled + 1 end
+	check(frame.cheapest and frame.cheapest:GetText() == "CHEAPEST ROUTE", "the list offers the cheapest route")
+	this = frame.cheapest
+	frame.cheapest:GetScript("OnClick")()
+	check(toggled == 1, "which opens the crafting route window")
+	AegisPathfinder.ToggleCraftRoutePanel = real
+end
 check(frame ~= nil, "the materials panel was not created")
 check(not frame:IsShown(), "it starts hidden")
 
