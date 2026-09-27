@@ -108,9 +108,9 @@ T Rot Hide Clues |QID|439| |N|High Executor Hadrec in The Sepulcher (43.41, 40.8
 A Rot Hide Ichor |QID|443| |N|High Executor Hadrec in The Sepulcher (43.41, 40.84)| |Z|Silverpine Forest|
 A The Engraved Ring |QID|440| |N|High Executor Hadrec in The Sepulcher (43.41, 40.84)| |Z|Silverpine Forest|
 
-R Undercity |QID|450| |N|Travel to The Apothecarium in Undercity (48.88, 69.45)| |Z|Undercity|
+R Undercity |QID|450| |N|Travel to The Apothecarium in Undercity (48.88, 69.45)| |P|GROUP| |Z|Undercity|
 T A Recipe For Death (Part 1) |QID|447| |N|Master Apothecary Faranell in The Apothecarium (48.88, 69.45)| |Z|Undercity|
-A A Recipe For Death (Part 2) |QID|450| |N|Master Apothecary Faranell in The Apothecarium (48.88, 69.45)| |Z|Undercity|
+A A Recipe For Death (Part 2) |QID|450| |N|Master Apothecary Faranell in The Apothecarium (48.88, 69.45)| |P|GROUP| |Z|Undercity|
 
 R Brill Town Hall |QID|441| |N|Travel to Brill Town Hall (61.26, 50.85)| |Z|Tirisfal|
 T The Engraved Ring |QID|440| |N|Magistrate Sevren in Brill Town Hall (61.26, 50.85)| |Z|Tirisfal|
@@ -335,19 +335,19 @@ A Beren's Peril |QID|516| |N|Shadow Priest Allister in The Sepulcher (44.00, 40.
 A Journey to Hillsbrad Foothills |QID|493| |N|Apothecary Renferrel in The Sepulcher (42.82, 40.98)| |Z|Silverpine Forest|
 h The Sepulcher |QID|516| |N|Speak to Innkeeper Bates and set hearth in The Sepulcher (43.16, 41.30)| |Z|Silverpine Forest|
 
-R Pyrewood Village |QID|450| |N|Travel to Pyrewood Village (48.75, 74.59)| |Z|Silverpine Forest|
-C A Recipe For Death (Part 2) |QID|450| |N|Follow the waypoint to the back entrance and sneak around the back to avoid most of the guards. Collect Berard's Journal from Berard's Bookshelf upstairs on the room to your right, the room is guarded by Apothecary Berard level 16 elite (47.00, 74.57) (46.08, 75.46) (45.07, 75.71) (42.62, 73.60) (43.11, 72.47) (43.95, 73.27) (42.96, 73.23)| |Z|Silverpine Forest| |OBJ|137|
+R Pyrewood Village |QID|450| |N|Travel to Pyrewood Village (48.75, 74.59)| |P|GROUP| |Z|Silverpine Forest|
+C A Recipe For Death (Part 2) |QID|450| |N|Follow the waypoint to the back entrance and sneak around the back to avoid most of the guards. Collect Berard's Journal from Berard's Bookshelf upstairs on the room to your right, the room is guarded by Apothecary Berard level 16 elite (47.00, 74.57) (46.08, 75.46) (45.07, 75.71) (42.62, 73.60) (43.11, 72.47) (43.95, 73.27) (42.96, 73.23)| |P|GROUP| |Z|Silverpine Forest| |OBJ|137|
 C Arugal's Folly (Part 4) |QID|99| |N|Kill Pyrewood humans and collect 6 Miners' Union Card in Pyrewood Village (46.97, 72.46)| |Z|Silverpine Forest|
 
 R The Sepulcher |OID|451| |N|Travel to The Sepulcher (42.95, 41.98)| |Z|Silverpine Forest|
 T Arugal's Folly (Part 4) |QID|99| |N|Dalar Dawnweaver in The Sepulcher (44.21, 39.80)| |Z|Silverpine Forest|
-T A Recipe For Death (Part 2) |QID|450| |N|Apothecary Renferrel in The Sepulcher (42.80, 40.89)| |Z|Silverpine Forest|
-A A Recipe For Death (Part 3) |QID|451| |N|Apothecary Renferrel in The Sepulcher (42.85, 40.95)| |Z|Silverpine Forest|
+T A Recipe For Death (Part 2) |QID|450| |N|Apothecary Renferrel in The Sepulcher (42.80, 40.89)| |P|GROUP| |Z|Silverpine Forest|
+A A Recipe For Death (Part 3) |QID|451| |N|Apothecary Renferrel in The Sepulcher (42.85, 40.95)| |P|GROUP| |Z|Silverpine Forest|
 
-R Fenris Isle |QID|451| |N|Travel to Fenris Isle (60.02, 34.34) (64.62, 33.37) (65.67, 33.80)| |Z|Silverpine Forest|
-C Lake Skulker Moss |QID|451| |OIDX|1| |N|Kill Lake Skulker and collect 6 Lake Skulker Moss in Fenris Isle (71.32, 36.80)| |Z|Silverpine Forest|
-C Hardened Tumor |QID|451| |OIDX|3| |N|Kill any Murloc until you collect Hardened Tumor in The Dawning Isles (75.12, 32.80)| |Z|Silverpine Forest|
-C Lake Creeper Moss |QID|451| |OIDX|2| |N|Kill Lake Creeper and collect 6 Lake Creeper Moss in The Dawning Isles (78.10, 23.38)| |Z|Silverpine Forest|
+R Fenris Isle |QID|451| |N|Travel to Fenris Isle (60.02, 34.34) (64.62, 33.37) (65.67, 33.80)| |P|GROUP| |Z|Silverpine Forest|
+C Lake Skulker Moss |QID|451| |OIDX|1| |N|Kill Lake Skulker and collect 6 Lake Skulker Moss in Fenris Isle (71.32, 36.80)| |P|GROUP| |Z|Silverpine Forest|
+C Hardened Tumor |QID|451| |OIDX|3| |N|Kill any Murloc until you collect Hardened Tumor in The Dawning Isles (75.12, 32.80)| |P|GROUP| |Z|Silverpine Forest|
+C Lake Creeper Moss |QID|451| |OIDX|2| |N|Kill Lake Creeper and collect 6 Lake Creeper Moss in The Dawning Isles (78.10, 23.38)| |P|GROUP| |Z|Silverpine Forest|
 R Fenris Isle |QID|460| |N|Travel to Fenris Isle (65.91, 27.24)| |Z|Silverpine Forest|
 N As you go... |AYG|461| |QID|443| |N|Kill Rothide Gnolls and collect 8 Rot Hide Ichor|
 N A Talking Head |QID|460| |N|Kill Rothide Gnolls until you collect A Talking Head Fenris Isle (65.91, 27.24)| |Z|Silverpine Forest|  |L|3317|
@@ -364,7 +364,7 @@ T Rot Hide Ichor |QID|443| |N|Apothecary Renferrel in The Sepulcher (42.79, 40.9
 A Rot Hide Origins |QID|444| |N|Apothecary Renferrel in The Sepulcher (42.79, 40.90)| |Z|Silverpine Forest|
 
 R Undercity |OID|446| |N|Travel to The Apothecarium in Undercity (48.72, 69.30)| |Z|Undercity|
-T A Recipe For Death (Part 3) |QID|451| |N|Master Apothecary Faranell in The Apothecarium (48.72, 69.30)| |Z|Undercity|
+T A Recipe For Death (Part 3) |QID|451| |N|Master Apothecary Faranell in The Apothecarium (48.72, 69.30)| |P|GROUP| |Z|Undercity|
 T Rot Hide Origins |QID|444| |N|Bethor Iceshard in Magic Quarter (84.16, 17.41)| |Z|Undercity|
 T Wand to Bethor |QID|491| |N|Bethor Iceshard in Magic Quarter (84.16, 17.41)| |Z|Undercity|
 A Thule Ravenclaw |QID|446| |N|Bethor Iceshard in Magic Quarter (84.16, 17.41)| |Z|Undercity|
@@ -390,7 +390,7 @@ T Beren's Peril |QID|516| |N|Shadow Priest Allister in The Sepulcher (43.98, 40.
 T Assault on Fenris Isle |QID|442| |N|High Executor Hadrec in The Sepulcher (43.40, 40.87)| |Z|Silverpine Forest|
 T A Husband's Revenge |QID|530| |N|Raleigh Andrean in Trade Quarter (62.00, 42.88)| |Z|Undercity|
 
-N Optional Quest |QID|442| |N|'Assault on Fenris Isle' is a difficult quest to solo, Thule Ravenclaw is a level 24 elite with 2 bodyguards, you will need to group up. Only recommend doing if the reward benefits your class|
+N Optional Quest |QID|442| |N|'Assault on Fenris Isle' is a difficult quest to solo, Thule Ravenclaw is a level 24 elite with 2 bodyguards, you will need to group up. Only recommend doing if the reward benefits your class| |P|GROUP|
 C Assault on Fenris Isle |QID|442| |N|Kill Thule Ravenclaw and collect Thule's Head in Fenris Keep (65.66, 24.16)| |Z|Silverpine Forest|
 T Assault on Fenris Isle |QID|442| |N|High Executor Hadrec in The Sepulcher (43.41, 40.85)| |Z|Silverpine Forest|
 

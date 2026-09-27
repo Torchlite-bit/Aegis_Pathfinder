@@ -78,9 +78,9 @@ C Singing Blue Shards |QID|605| |N|Collect 10 total Singing Crystal Shard from b
 R Mizjah Ruins |QID|569| |N|Travel to Mizjah Ruins (36.93, 30.82)| |Z|Stranglethorn Vale|
 C The Defense of Grom'gol (Part 2) |QID|569| |N|Kill 10 Mosh'Ogg Brute and 5 Mosh'Ogg Witch Doctor (36, 30)| |Z|Stranglethorn Vale|
 
-R Nesingwary's Expedition |QID|193| |N|Travel to Nesingwary's Expedition (35.53, 10.56)| |Z|Stranglethorn Vale|
+R Nesingwary's Expedition |QID|193| |N|Travel to Nesingwary's Expedition (35.53, 10.56)| |P|GROUP| |Z|Stranglethorn Vale|
 T Panther Mastery (Part 3) |QID|192| |N|Sir S. J. Erlgadin in Nesingwary's Expedition (35.53, 10.56)| |Z|Stranglethorn Vale|
-A Panther Mastery (Part 4) |QID|193| |N|Sir S. J. Erlgadin in Nesingwary's Expedition (35.53, 10.56)| |Z|Stranglethorn Vale|
+A Panther Mastery (Part 4) |QID|193| |N|Sir S. J. Erlgadin in Nesingwary's Expedition (35.53, 10.56)| |P|GROUP| |Z|Stranglethorn Vale|
 T Tiger Mastery (Part 3) |QID|187| |N|Ajeck Rouack in Nesingwary's Expedition (35.61, 10.66)| |Z|Stranglethorn Vale|
 A Tiger Mastery (Part 4) |QID|188| |N|Ajeck Rouack in Nesingwary's Expedition (35.61, 10.66)| |Z|Stranglethorn Vale|
 

@@ -36,7 +36,7 @@ T Welcome to the Jungle |QID|583| |N|Hemet Nesingwary in Nesingwary's Expedition
 A Raptor Mastery (Part 1) |QID|194| |N|Hemet Nesingwary in Nesingwary's Expedition (35.66, 10.77)| |Z|Stranglethorn Vale|
 A Tiger Mastery (Part 1) |QID|185| |N|Ajeck Rouack in Nesingwary's Expedition (35.62, 10.62)| |Z|Stranglethorn Vale|
 A Panther Mastery (Part 1) |QID|190| |N|Sir S. J. Erlgadin in Nesingwary's Expedition (35.63, 10.51)| |Z|Stranglethorn Vale|
-N Keep Pages |QID|185| |N|Keep any Green Hills of Stranglethorn - Page 1 type pages that you find, it is a random drop from any Humanoids enemies in Stranglethorn Vale. You can also buy or sell these pages for decent profit in the Auction House if you fail to complete it. Tick this step|
+N Keep Pages |QID|185| |N|Keep any Green Hills of Stranglethorn - Page 1 type pages that you find, it is a random drop from any Humanoids enemies in Stranglethorn Vale. You can also buy or sell these pages for decent profit in the Auction House if you fail to complete it. Tick this step| |AH|
 C Tiger Mastery (Part 1) |QID|185| |N|Kill 10 Young Stranglethorn Tiger in Stranglethorn Vale (35.00, 12.10)| |Z|Stranglethorn Vale|
 
 R Nesingwary's Expedition |QID|186| |N|Travel to Nesingwary's Expedition (35.63, 10.65)| |Z|Stranglethorn Vale|
@@ -77,7 +77,7 @@ A Raptor Mastery |QID|196| |N|Hemet Nesingwary in Nesingwary's Expedition (35.67
 T Hemet Nesingwary Jr. |QID|5762| |N|Hemet Nesingwary in Nesingwary's Expedition (35.67, 10.77)| |Z|Stranglethorn Vale|
 T Tiger Mastery |QID|188| |N|Ajeck Rouack in Nesingwary's Expedition (35.63, 10.61)| |Z|Stranglethorn Vale|
 T Panther Mastery |QID|192| |N|Sir S. J. Erlgadin in Nesingwary's Expedition (35.58, 10.57)| |Z|Stranglethorn Vale|
-A Panther Mastery |QID|193| |N|Sir S. J. Erlgadin in Nesingwary's Expedition (35.58, 10.57)| |Z|Stranglethorn Vale|
+A Panther Mastery |QID|193| |N|Sir S. J. Erlgadin in Nesingwary's Expedition (35.58, 10.57)| |P|GROUP| |Z|Stranglethorn Vale|
 
 C Supply and Demand |QID|575| |N|Kill River Crocolisk and collect 2 Large River Crocolisk Skin Stranglethorn Vale (34.12, 9.70)| |Z|Stranglethorn Vale|
 C Singing Blue Shards |QID|605| |N|Find Stone Maw Basilisk and collect some Singing Crystal Shard, you can complete this later, tick this step if you can't find crocs The Savage Coast (37, 8)| |Z|Stranglethorn Vale| |L|3918 5|
@@ -120,7 +120,7 @@ T Supplies to Private Thorsen |QID|198| |N|Private Thorsen in Rebel Camp (37.99,
 T The Spy Revealed! |QID|329| |N|Lieutenant Doren in Rebel Camp (38.05, 3.05)| |Z|Stranglethorn Vale| |PRE|200|
 A Patrol Schedules |QID|330| |N|Lieutenant Doren in Rebel Camp (38.05, 3.05)| |Z|Stranglethorn Vale| |PRE|200|
 T Special Forces |QID|574| |N|Lieutenant Doren in Rebel Camp (38.05, 3.05)| |Z|Stranglethorn Vale|
-A Colonel Kurzen |QID|202| |N|Lieutenant Doren in Rebel Camp (38.05, 3.05)| |Z|Stranglethorn Vale|
+A Colonel Kurzen |QID|202| |N|Lieutenant Doren in Rebel Camp (38.05, 3.05)| |P|GROUP| |Z|Stranglethorn Vale|
 T Patrol Schedules |QID|330| |N|Corporal Sethman in Rebel Camp (37.67, 3.39)| |Z|Stranglethorn Vale| |PRE|200|
 A Report to Doren |QID|331| |N|Corporal Sethman in Rebel Camp (37.67, 3.39)| |Z|Stranglethorn Vale| |PRE|200|
 T Report to Doren |QID|331| |N|Lieutenant Doren in Rebel Camp (38.04, 3.04)| |Z|Stranglethorn Vale| |PRE|200|

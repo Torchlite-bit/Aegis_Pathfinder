@@ -26,7 +26,7 @@ T Suspicious Hoofprints |QID|1268| |N|Krog in Brackenwall Village (36.42, 31.82)
 T Lieutenant Paval Reethe |QID|1269| |N|Krog in Brackenwall Village (36.42, 31.82)| |Z|Dustwallow Marsh|
 A Questioning Reethe |QID|1273| |N|Ogron in Dustwallow Marsh (40.98, 36.66)| |Z|Dustwallow Marsh|
 T The Black Shield (Part 2) |QID|1321| |N|Do'gol in Brackenwall Village (36.54, 30.86)| |Z|Dustwallow Marsh|
-A Identifying the Brood |QID|1169| |N|Draz'Zilb in Brackenwall Village (37.13, 33.08)| |Z|Dustwallow Marsh|
+A Identifying the Brood |QID|1169| |N|Draz'Zilb in Brackenwall Village (37.13, 33.08)| |P|GROUP| |Z|Dustwallow Marsh|
 
 R Dustwallow Marsh |QID|1201| |N|Travel to Brackenwall Village (35.26, 30.63)|
 A The Black Shield (Part 3) |QID|1322| |N|Do'gol in Brackenwall Village (36.45, 30.85)|
@@ -54,8 +54,8 @@ C Razzeric's Tweaking |QID|1187| |N|Collect Seaforium Booster from the Gizmorium
 R Tidefury Cove |QID|1261| |N|Travel to Tidefury Cove (55.21, 58.79) (55.37, 64.12)| |Z|Dustwallow Marsh|
 C Marg Speaks |QID|1261| |N|Kill Muckshell Pincer until you collect Jeweled Pendant in Tidefury Cove, this is a low drop rate (55.37, 64.12)| |Z|Dustwallow Marsh| |PRE|1240|
 
-R Stonemaul Ruins |QID|1169| |N|Travel to Stonemaul Ruins (44.60, 66.19)| |Z|Dustwallow Marsh|
-C Identifying the Brood |QID|1169| |N|Kill Searing Hatchling or Searing Whelp for 7 Searing Tongue and 7 Searing Heart in Stonemaul Ruins, stay away from the elite dragons (47.0, 66.19)| |Z|Dustwallow Marsh|
+R Stonemaul Ruins |QID|1169| |N|Travel to Stonemaul Ruins (44.60, 66.19)| |P|GROUP| |Z|Dustwallow Marsh|
+C Identifying the Brood |QID|1169| |N|Kill Searing Hatchling or Searing Whelp for 7 Searing Tongue and 7 Searing Heart in Stonemaul Ruins, stay away from the elite dragons (47.0, 66.19)| |P|GROUP| |Z|Dustwallow Marsh|
 
 R Brackenwall Village |QID|1262| |N|Travel to Brackenwall Village (35.22, 30.63)| |Z|Dustwallow Marsh|
 T Marg Speaks |QID|1261| |N|Nazeer Bloodpike in Brackenwall Village (35.22, 30.63)| |Z|Dustwallow Marsh| |PRE|1240|
@@ -63,9 +63,9 @@ A Report to Zor |QID|1262| |N|Nazeer Bloodpike in Brackenwall Village (35.22, 30
 
 T Questioning Reethe |QID|1273| |QID|1276| |N|Krog in Brackenwall Village (36.43, 31.88)| |Z|Dustwallow Marsh|
 A The Black Shield |QID|1276| |N|Krog in Brackenwall Village (36.43, 31.88)| |Z|Dustwallow Marsh|
-T Identifying the Brood |QID|1169| |N|Draz'Zilb in Brackenwall Village (37.13, 33.08)| |Z|Dustwallow Marsh|
-A The Brood of Onyxia |QID|1170| |N|Draz'Zilb in Brackenwall Village (37.13, 33.08)| |Z|Dustwallow Marsh|
-T The Brood of Onyxia |QID|1170| |N|Nazeer Bloodpike in Brackenwall Village -Skip follow up (36.31, 31.44)| |Z|Dustwallow Marsh|
+T Identifying the Brood |QID|1169| |N|Draz'Zilb in Brackenwall Village (37.13, 33.08)| |P|GROUP| |Z|Dustwallow Marsh|
+A The Brood of Onyxia |QID|1170| |N|Draz'Zilb in Brackenwall Village (37.13, 33.08)| |P|GROUP| |Z|Dustwallow Marsh|
+T The Brood of Onyxia |QID|1170| |N|Nazeer Bloodpike in Brackenwall Village -Skip follow up (36.31, 31.44)| |P|GROUP| |Z|Dustwallow Marsh|
 
 R Hunter Rise |TID|1276| |N|Travel to Hunter Rise in Thunder Bluff (54.22, 80.66)| |Z|Thunder Bluff|
 T The Black Shield (Part 5) |QID|1276| |N|Mosarn in Hunter Rise (54.22, 80.66)| |Z|Thunder Bluff|

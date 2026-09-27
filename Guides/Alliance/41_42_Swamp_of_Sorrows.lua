@@ -10,7 +10,7 @@ N (spell:13819) |N|Speak to Arthur the Faithful and train (spell:13819) (38.67, 
 
 R Stormwind City |QID|1477| |N|Travel to Stormwind City(37.48, 81.72)| |Z|Stormwind City|
 A Vital Supplies |QID|1477| |N|High Sorcerer Andromath in Wizard's Sanctum (37.48, 81.72)| |Z|Stormwind City|
-A In Search of The Temple |QID|1448| |N|Brohann Caskbelly in Dwarven District (64.27, 20.74)| |Z|Stormwind City|
+A In Search of The Temple |QID|1448| |N|Brohann Caskbelly in Dwarven District (64.27, 20.74)| |D|ST| |Z|Stormwind City|
 
 T The Rumormonger |QID|1115| |N|Krazek in The Salty Sailor Tavern (26.95, 77.22)| |Z|Stranglethorn Vale| |O|
 A Dream Dust in the Swamp |QID|1116| |N|Krazek in The Salty Sailor Tavern (26.95, 77.22)| |Z|Stranglethorn Vale| |PRE|1115|
@@ -51,10 +51,10 @@ f Nethergarde Keep |OID|1395| |N|Speak to Alexandra Constantine and grab flight 
 R Darkshire |OID|1395| |N|Travel to Darkshire (75.75, 46.19)| |Z|Duskwood|
 A Supplies for Nethergarde |QID|1395| |N|Watchmaster Sorigal in Darkshire (75.75, 46.19)| |Z|Duskwood|
 
-R Nethergarde Keep |QID|1448| |N|Travel to Nethergarde Keep (66.53, 21.41)| |Z|Blasted Lands|
+R Nethergarde Keep |QID|1448| |N|Travel to Nethergarde Keep (66.53, 21.41)| |D|ST| |Z|Blasted Lands|
 T Supplies for Nethergarde |QID|1395| |N|Quartermaster Lungertz in Nethergarde Keep (66.53, 21.41)| |Z|Blasted Lands|
 
-C In Search of The Temple |QID|1448| |N|Search for the Temple of Atal'Hakkar in Pool of Tears, just run towards the waypoint to complete the quest (67.8, 44.4)| |Z|Swamp of Sorrows|
+C In Search of The Temple |QID|1448| |N|Search for the Temple of Atal'Hakkar in Pool of Tears, just run towards the waypoint to complete the quest (67.8, 44.4)| |D|ST| |Z|Swamp of Sorrows|
 
 R Misty Reed Strand |QID|1258| |N|Travel to Misty Reed Strand (75.98, 4.96)| |Z|Swamp of Sorrows|
 C ... and Bugs |QID|1258| |N|Kill Silt Crawler and collect 12 Pristine Crawler Leg in Misty Reed Strand (75.98, 4.96)| |Z|Swamp of Sorrows|
@@ -68,8 +68,8 @@ T Deliver the Shipment |QID|1425| |N|Quartermaster Lungertz in Nethergarde Keep 
 
 R Stormwind City |QID|1477| |N|Travel to Stormwind City(37.48, 81.72)| |Z|Stormwind City|
 N Draenethyst Shard |QID|1373| |N|Store Draenethyst Shard to the bank (57.00, 72.81)| |Z|Stormwind City| |L|6190| |O|
-T In Search of The Temple |QID|1448| |N|Brohann Caskbelly in Dwarven District (64.27, 20.74)| |Z|Stormwind City|
-A To The Hinterlands |QID|1449| |N|Brohann Caskbelly in Dwarven District (64.27, 20.74)| |Z|Stormwind City|
+T In Search of The Temple |QID|1448| |N|Brohann Caskbelly in Dwarven District (64.27, 20.74)| |D|ST| |Z|Stormwind City|
+A To The Hinterlands |QID|1449| |N|Brohann Caskbelly in Dwarven District (64.27, 20.74)| |D|ST| |Z|Stormwind City|
 
 R The Salty Sailor Tavern |QID|1117| |N|Travel to The Salty Sailor Tavern in Booty Bay (26.95, 77.21)| |Z|Stranglethorn Vale|
 T Dream Dust in the Swamp |QID|1116| |N|Krazek in The Salty Sailor Tavern (26.95, 77.21)| |Z|Stranglethorn Vale| |PRE|1115|

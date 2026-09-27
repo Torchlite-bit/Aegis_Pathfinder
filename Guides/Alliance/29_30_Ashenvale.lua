@@ -69,7 +69,7 @@ C Fallen Sky Lake |QID|1035| |N|Kill a Shadethicket Oracle and collect Fallen Mo
 R Forest Song |OID|1012| |N|Travel to Forest Song (67.39, 71.40) (85.23, 44.70)| |Z|Ashenvale|
 T Forsaken Diseases |QID|1011| |N|Kayneth Stillwind in Forest Song (85.23, 44.70)| |Z|Ashenvale|
 A Insane Druids |QID|1012| |N|Kayneth Stillwind in Forest Song (85.23, 44.70)| |Z|Ashenvale|
-N Please Read |QID|1012| |N|The quest 'Insane Druids' is difficulty to solo but highly recommended if you have a group, it provide a lot of grinding XP and good 2H Sword reward for Warrior and Paladin. Recommend that you give it a go solo and it is safe to skip|
+N Please Read |QID|1012| |N|The quest 'Insane Druids' is difficulty to solo but highly recommended if you have a group, it provide a lot of grinding XP and good 2H Sword reward for Warrior and Paladin. Recommend that you give it a go solo and it is safe to skip| |P|GROUP|
 R The Dor'Danil Barrow Den |QID|1012| |N|Travel to The Dor'Danil Barrow Den for the quest Insane Druids (75.96, 75.35)| |Z|Ashenvale|
 C Taneel Darkwood |QID|1012| |OIDX|1| |N|Kill Taneel Darkwood for the quest Insane Druids inside the cave in The Dor'Danil Barrow Den (75.96, 75.35) (77.25, 74.74)| |Z|Ashenvale|
 C Uthil Mooncall |QID|1012| |OIDX|2| |N|Kill Uthil Mooncall for the quest Insane Druids in in The Dor'Danil Barrow Den (78.08, 72.87)| |Z|Ashenvale|

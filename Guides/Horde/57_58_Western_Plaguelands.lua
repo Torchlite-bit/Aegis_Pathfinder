@@ -33,13 +33,13 @@ A Unfinished Business (Part 2) |QID|6023| |N|Kirsta Deepshadow in Northridge Lum
 C Huntsman Radley |QID|6023| |OIDX|1| |N|Kill Huntsman Radley in Hearthglen (50.75, 31.67) (52.76, 35.58) (53.81, 36.13) (57.47, 35.93)| |Z|Western Plaguelands| 
 C Cavalier Durgen |QID|6023| |OIDX|2| |N|Kill Cavalier Durgen in Hearthglen (54.94, 23.55)| |Z|Western Plaguelands| 
 T Unfinished Business (Part 2) |QID|6023| |N|Kirsta Deepshadow in Northridge Lumber Camp (51.91, 28.08)| |Z|Western Plaguelands| 
-A Unfinished Business (Part 3) |QID|6025| |N|Kirsta Deepshadow in Northridge Lumber Camp (51.92, 28.04)| |Z|Western Plaguelands| 
+A Unfinished Business (Part 3) |QID|6025| |N|Kirsta Deepshadow in Northridge Lumber Camp (51.92, 28.04)| |P|GROUP| |Z|Western Plaguelands| 
 
-R Hearthglen |QID|6025| |N|Follow the waypoint for a shortcut to Hearthglen (50.07, 29.07) (50.52, 27.36) (50.62, 24.72) (45.77, 18.31)| |Z|Western Plaguelands|
-C Unfinished Business (Part 3) |QID|6025| |N|You just need to reach the top of the tower without dying to complete the quest, just mount up and ignore the Elite npcs and run to top of the tower then jump down. You will need to use a health potion (45.77, 18.31)| |Z|Western Plaguelands|
+R Hearthglen |QID|6025| |N|Follow the waypoint for a shortcut to Hearthglen (50.07, 29.07) (50.52, 27.36) (50.62, 24.72) (45.77, 18.31)| |P|GROUP| |Z|Western Plaguelands|
+C Unfinished Business (Part 3) |QID|6025| |N|You just need to reach the top of the tower without dying to complete the quest, just mount up and ignore the Elite npcs and run to top of the tower then jump down. You will need to use a health potion (45.77, 18.31)| |P|GROUP| |Z|Western Plaguelands|
 
 R Northridge Lumber Camp |TID|6025| |N|Travel to Northridge Lumber Camp (51.94, 28.06)| |Z|Western Plaguelands|
-T Unfinished Business (Part 3) |QID|6025| |N|Kirsta Deepshadow in Northridge Lumber Camp (51.94, 28.06)| |Z|Western Plaguelands| 
+T Unfinished Business (Part 3) |QID|6025| |N|Kirsta Deepshadow in Northridge Lumber Camp (51.94, 28.06)| |P|GROUP| |Z|Western Plaguelands| 
 
 R The Writhing Haunt |OID|4984| |N|Travel to The Writhing Haunt (53.67, 64.76)| |Z|Western Plaguelands|
 A The Wildlife Suffers Too (Part 1)|QID|4984| |N|Mulgris Deepriver in The Writhing Haunt (53.67, 64.76)| |Z|Western Plaguelands|

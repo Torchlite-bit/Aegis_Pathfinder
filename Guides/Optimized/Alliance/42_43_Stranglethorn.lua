@@ -50,17 +50,17 @@ C Raptor Mastery (Part 4) |QID|197| |N|Kill Tethis for Talon of Tethis behind th
 
 R Nesingwary's Expedition |TID|197| |N|Travel to Nesingwary's Expedition (35.7, 10.8)| |Z|Stranglethorn Vale|
 T Raptor Mastery (Part 4) |QID|197| |N|Hemet Nesingwary (35.7, 10.8)| |Z|Stranglethorn Vale| |O|
-A Big Game Hunter |QID|208| |N|Hemet Nesingwary in Nesingwary's Expedition (35.7, 10.8)| |Z|Stranglethorn Vale| |PRE|197|
+A Big Game Hunter |QID|208| |N|Hemet Nesingwary in Nesingwary's Expedition (35.7, 10.8)| |P|GROUP| |Z|Stranglethorn Vale| |PRE|197|
 
-R Rebel Camp |QID|202| |N|Travel to Rebel Camp (38, 3)| |Z|Stranglethorn Vale|
-A Colonel Kurzen |QID|202| |N|Lieutenant Doren at Rebel Camp (38.1, 3.3)| |Z|Stranglethorn Vale|
+R Rebel Camp |QID|202| |N|Travel to Rebel Camp (38, 3)| |P|GROUP| |Z|Stranglethorn Vale|
+A Colonel Kurzen |QID|202| |N|Lieutenant Doren at Rebel Camp (38.1, 3.3)| |P|GROUP| |Z|Stranglethorn Vale|
 
-R Kurzen's Compound |QID|202| |N|Travel to the cave at Kurzen's Compound (45, 8)| |Z|Stranglethorn Vale|
-C Colonel Kurzen |QID|202| |N|Kill Colonel Kurzen (elite) deep in the cave, along with 6 Kurzen Elite and 4 Kurzen Subchief (49, 3)| |Z|Stranglethorn Vale|
+R Kurzen's Compound |QID|202| |N|Travel to the cave at Kurzen's Compound (45, 8)| |P|GROUP| |Z|Stranglethorn Vale|
+C Colonel Kurzen |QID|202| |N|Kill Colonel Kurzen (elite) deep in the cave, along with 6 Kurzen Elite and 4 Kurzen Subchief (49, 3)| |P|GROUP| |Z|Stranglethorn Vale|
 
 N Die on purpose |N|Die on purpose to resurrect near Rebel Camp|
 
-T Colonel Kurzen |QID|202| |N|Lieutenant Doren at Rebel Camp (38.1, 3.3)| |Z|Stranglethorn Vale|
+T Colonel Kurzen |QID|202| |N|Lieutenant Doren at Rebel Camp (38.1, 3.3)| |P|GROUP| |Z|Stranglethorn Vale|
 
 N Grind Trolls |N|Kill trolls around (44, 34) until about 9k from leveling| |Z|Stranglethorn Vale|
 

@@ -23,6 +23,7 @@ lua5.1 Tools/test_professions.lua
 lua5.1 Tools/test_guideengine.lua
 lua5.1 Tools/test_navcallout.lua
 lua5.1 Tools/test_dungeons.lua
+lua5.1 Tools/test_filtertags.lua
 lua5.1 Tools/test_guidelist.lua
 lua5.1 Tools/test_materials.lua
 lua5.1 Tools/test_craftplanner.lua

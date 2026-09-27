@@ -18,13 +18,13 @@ C An Offering for Kaneq'nuun |QID|40323| |N|Gather 6 Ice Crawler Claws from Ice 
 T An Offering for Kaneq'nuun |QID|40323| |N|Panukuki in Kaneq'nuun (55.7, 64.2)| |Z|Icepoint Rock|
 
 A Icepoint Whiteclaws |QID|40325| |N|Aputuq in Kaneq'nuun (56.1, 65.5)| |Z|Icepoint Rock|
-A The Legend of Tarqsiku |QID|40324| |N|Panukuki in Kaneq'nuun (55.7, 64.2)| |Z|Icepoint Rock|
+A The Legend of Tarqsiku |QID|40324| |N|Panukuki in Kaneq'nuun (55.7, 64.2)| |P|GROUP| |Z|Icepoint Rock|
 
 C Icepoint Whiteclaws |QID|40325| |N|Gather 5 Whiteclaw Pelts from Icepoint Whiteclaw bears in the cave to the north (60, 52) (57, 48) (52, 47) (44, 41)| |Z|Icepoint Rock|
-C The Legend of Tarqsiku |QID|40324| |N|Find and slay Tarqsiku deep in the cave beneath Kaneq'nuun (45.6, 50.1). He is a level 48 elite ice elemental that has fallen to darkness.| |Z|Icepoint Rock|
+C The Legend of Tarqsiku |QID|40324| |N|Find and slay Tarqsiku deep in the cave beneath Kaneq'nuun (45.6, 50.1). He is a level 48 elite ice elemental that has fallen to darkness.| |P|GROUP| |Z|Icepoint Rock|
 
 T Icepoint Whiteclaws |QID|40325| |N|Aputuq in Kaneq'nuun (56.1, 65.5)| |Z|Icepoint Rock|
-T The Legend of Tarqsiku |QID|40324| |N|Panukuki in Kaneq'nuun (55.7, 64.2)| |Z|Icepoint Rock|
+T The Legend of Tarqsiku |QID|40324| |N|Panukuki in Kaneq'nuun (55.7, 64.2)| |P|GROUP| |Z|Icepoint Rock|
 
 N Guide Complete |N|You have completed the Icepoint Rock quests. Return to Darkshore via the boat at the dock or continue your leveling in other zones.|
 

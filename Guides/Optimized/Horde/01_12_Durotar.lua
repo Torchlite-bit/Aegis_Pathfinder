@@ -203,7 +203,7 @@ R Orgrimmar |QID|831| |N|Travel to Orgrimmar (33, 37)| |Z|Orgrimmar|
 T Training the Beast |QID|6081| |N|Ormak Grimshot in Valley of Honor (66.07, 18.59)| |C|Hunter| |Z|Orgrimmar|
 
 T The Admiral's Orders (Part 2) |QID|831| |N|Nazgrel in Grommash Hold (32.40, 36.03)| |Z|Orgrimmar|
-A Hidden Enemies (Part 1) |QID|5726| |N|Thrall in Grommash Hold (32.00, 37.86)| |Z|Orgrimmar|
+A Hidden Enemies (Part 1) |QID|5726| |N|Thrall in Grommash Hold (32.00, 37.86)| |D|RFC| |Z|Orgrimmar|
 
 A Finding the Antidote |QID|813| |N|Kor'ghan in Cleft of Shadow (47.00, 53.56)| |Z|Orgrimmar|
 A Speak with Un'thuwa |QID|1883| |N|Uthel'nay in Valley of Spirits (38.86, 86.28)| |C|Mage| |Z|Orgrimmar|
@@ -235,17 +235,17 @@ A Skull Rock |QID|827| |N|Margoz in Durotar (56.38, 20.15)|
 R Skull Rock |QID|827| |N|Travel to Skull Rock (55.10, 9.91)|
 C Creature of the Void |QID|1501| |N|Collect Tablet of Verga from the chest in Skull Rock (51.61, 9.71)| |C|Warlock|
 C Skull Rock |QID|827| |N|Kill Burning Blade Apprentice, Burning Blade Fanatic and collect 6 Searing Collar (54.06, 8.86)|
-C Hidden Enemies (Part 1) |QID|5726| |N|Kill Burning Blade Apprentice until you find Lieutenant's Insignia (54.06, 8.86)|
+C Hidden Enemies (Part 1) |QID|5726| |N|Kill Burning Blade Apprentice until you find Lieutenant's Insignia (54.06, 8.86)| |D|RFC|
 N Kill Gazz'uz |N|Kill Gazz'uz (52.6, 8.8) to collect Eye of Burning Shadow. Use the Faintly Glowing Skull to help| |U|4945| |O|
 A Burning Shadows |QID|832| |N|Use Eye of Burning Shadow to accept quest| |U|4903| |O|
 
 T Skull Rock |QID|827| |N|Margoz in Durotar (56.35, 20.05)|
 A Neeru Fireblade |QID|829| |N|Margoz in Durotar (56.35, 20.05)|
 
-R Orgrimmar |QID|5726| |N|Travel to Orgrimmar (31.98, 37.83)| |Z|Orgrimmar|
+R Orgrimmar |QID|5726| |N|Travel to Orgrimmar (31.98, 37.83)| |D|RFC| |Z|Orgrimmar|
 
-T Hidden Enemies (Part 1) |QID|5726| |N|Thrall in Grommash Hold (31.98, 37.83)| |Z|Orgrimmar|
-A Hidden Enemies (Part 2) |QID|5727| |N|Thrall in Grommash Hold (31.98, 37.83)| |Z|Orgrimmar|
+T Hidden Enemies (Part 1) |QID|5726| |N|Thrall in Grommash Hold (31.98, 37.83)| |D|RFC| |Z|Orgrimmar|
+A Hidden Enemies (Part 2) |QID|5727| |N|Thrall in Grommash Hold (31.98, 37.83)| |D|RFC| |Z|Orgrimmar|
 
 T Finding the Antidote |QID|813| |N|Kor'ghan in Cleft of Shadow (47.10, 53.17)| |Z|Orgrimmar|
 
@@ -258,8 +258,8 @@ A The Binding |QID|1504| |N|Gan'rul Bloodeye in Cleft of Shadow (48.26, 45.41)| 
 C The Binding |QID|1504| |N|Use Glyphs of Summoning on the purple circle and subdue a Summoned Voidwalker (45.60, 0.07)| |U|7464| |C|Warlock| |Z|Orgrimmar|
 T The Binding |QID|1504| |N|Gan'rul Bloodeye in Cleft of Shadow (48.26, 45.41)| |C|Warlock| |Z|Orgrimmar|
 
-C Hidden Enemies (Part 2) |QID|5727| |N|Talk to Neeru Fireblade in Cleft of Shadow (49.56, 50.46)| |Z|Orgrimmar|
-T Hidden Enemies (Part 2) |QID|5727| |N|Thrall in Grommash Hold (31.98, 37.83)| |Z|Orgrimmar|
+C Hidden Enemies (Part 2) |QID|5727| |N|Talk to Neeru Fireblade in Cleft of Shadow (49.56, 50.46)| |D|RFC| |Z|Orgrimmar|
+T Hidden Enemies (Part 2) |QID|5727| |N|Thrall in Grommash Hold (31.98, 37.83)| |D|RFC| |Z|Orgrimmar|
 
 T Need for a Cure |QID|812| |N|Rhinag in Durotar (41.57, 18.64)|
 

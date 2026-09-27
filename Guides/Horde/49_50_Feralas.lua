@@ -6,7 +6,7 @@ return [[
 R Camp Mojache |QID|3062| |N|Travel to Camp Mojache (74.42, 43.35)| |Z|Feralas|
 T Testing the Vessel |QID|3123| |N|Witch Doctor Uzer'i in Camp Mojache (74.42, 43.35)| |Z|Feralas| |O| 
 A Hippogryph Muisek |QID|3124| |N|Witch Doctor Uzer'i in Camp Mojache (74.42, 43.35)| |Z|Feralas| |PRE|3123| 
-A The Sunken Temple |QID|3380| |N|Witch Doctor Uzer'i in Camp Mojache (74.42, 43.35)| |Z|Feralas| 
+A The Sunken Temple |QID|3380| |N|Witch Doctor Uzer'i in Camp Mojache (74.42, 43.35)| |D|ST| |Z|Feralas| 
 A Improved Quality |QID|7734| |N|in Camp Mojache (74.51, 42.95)| |Z|Feralas|
 A Dark Heart |QID|3062| |N|Talo Thornhoof in Camp Mojache (76.18, 43.82)| |Z|Feralas| 
 A Vengeance on the Northspring |QID|3063| |N|Talo Thornhoof in Camp Mojache (76.18, 43.82)| |Z|Feralas| 

@@ -3,7 +3,7 @@ AegisPathfinder:RegisterGuide("Darkshore (12-17)", "Loch Modan (17-18)", "Allian
 return [[
 
 N Level 12 Required |N|You need to be at least level 12 to continue this guide; Grind until you reach level 12|
-N Linen Cloth |QID|1644| |N|You need at least 10 Linen Cloth to complete the Paladin quest line; grind any Humanoid mobs or purchase later from the auction house| |OID|1778| |L|2589 10| |C|Paladin|
+N Linen Cloth |QID|1644| |N|You need at least 10 Linen Cloth to complete the Paladin quest line; grind any Humanoid mobs or purchase later from the auction house| |OID|1778| |L|2589 10| |C|Paladin| |AH|
 
 A Tome of Divinity (Part 1) |QID|3681| |N|Brandur Ironhammer in Hall of Mysteries. You need to be level 12 to get this quest (23.25, 6.34)| |C|Paladin| |R|Human| |O| |Z|Ironforge|
 A Tome of Divinity (Part 1) |QID|2998| |N|Brother Wilhelm in Goldshire. You need to be level 12 to get this quest (41.09, 66.05)| |C|Paladin| |R|Human| |O|
@@ -17,25 +17,25 @@ A The Tome of Divinity (Part 3) |QID|1642| |N|Duthorian Rall in Cathedral of Lig
 T The Tome of Divinity (Part 3) |QID|1642| |N|Duthorian Rall in Cathedral of Light (39.83, 29.82)| |C|Paladin| |R|Human| |Z|Stormwind City|
 A The Tome of Divinity (Part 4) |QID|1643| |N|Duthorian Rall in Cathedral of Light (39.83, 29.82)| |C|Paladin| |R|Human| |Z|Stormwind City|
 T The Tome of Divinity (Part 4) |QID|1643| |N|Stephanie Turner in Trade District (57.01, 61.73)| |C|Paladin| |R|Human| |Z|Stormwind City|
-A The Tome of Divinity (Part 5) |QID|1644| |N|Stephanie Turner in Trade District (57.01, 61.73)| |C|Paladin| |R|Human| |Z|Stormwind City|
-C The Tome of Divinity (Part 5) |QID|1644| |N|Bring 10 Linen Cloth to Stephanie Turner in Stormwind. You can purchase it from the auction house| |C|Paladin| |R|Human|
-T The Tome of Divinity (Part 5) |QID|1644| |N|Stephanie Turner in Trade District (57.12, 61.89)| |C|Paladin| |R|Human| |Z|Stormwind City|
-A The Tome of Divinity (Part 6) |QID|1780| |N|Stephanie Turner in Trade District (57.12, 61.89)| |C|Paladin| |R|Human| |Z|Stormwind City|
-T The Tome of Divinity (Part 6) |QID|1780| |N|Duthorian Rall in Cathedral of Light (39.89, 29.73)| |C|Paladin| |R|Human| |Z|Stormwind City|
-A The Tome of Divinity (Part 7) |QID|1781| |N|Duthorian Rall in Cathedral of Light (39.89, 29.73)| |C|Paladin| |R|Human| |Z|Stormwind City|
-T The Tome of Divinity (Part 7) |QID|1781| |N|Gazin Tenorm in Cathedral of Light (38.63, 26.66)| |C|Paladin| |R|Human| |Z|Stormwind City|
-A The Tome of Divinity (Part 8) |QID|1786| |N|Gazin Tenorm in Cathedral of Light (38.63, 26.66)| |C|Paladin| |R|Human| |Z|Stormwind City|
+A The Tome of Divinity (Part 5) |QID|1644| |N|Stephanie Turner in Trade District (57.01, 61.73)| |C|Paladin| |R|Human| |AH| |Z|Stormwind City|
+C The Tome of Divinity (Part 5) |QID|1644| |N|Bring 10 Linen Cloth to Stephanie Turner in Stormwind. You can purchase it from the auction house| |C|Paladin| |R|Human| |AH|
+T The Tome of Divinity (Part 5) |QID|1644| |N|Stephanie Turner in Trade District (57.12, 61.89)| |C|Paladin| |R|Human| |AH| |Z|Stormwind City|
+A The Tome of Divinity (Part 6) |QID|1780| |N|Stephanie Turner in Trade District (57.12, 61.89)| |C|Paladin| |R|Human| |AH| |Z|Stormwind City|
+T The Tome of Divinity (Part 6) |QID|1780| |N|Duthorian Rall in Cathedral of Light (39.89, 29.73)| |C|Paladin| |R|Human| |AH| |Z|Stormwind City|
+A The Tome of Divinity (Part 7) |QID|1781| |N|Duthorian Rall in Cathedral of Light (39.89, 29.73)| |C|Paladin| |R|Human| |AH| |Z|Stormwind City|
+T The Tome of Divinity (Part 7) |QID|1781| |N|Gazin Tenorm in Cathedral of Light (38.63, 26.66)| |C|Paladin| |R|Human| |AH| |Z|Stormwind City|
+A The Tome of Divinity (Part 8) |QID|1786| |N|Gazin Tenorm in Cathedral of Light (38.63, 26.66)| |C|Paladin| |R|Human| |AH| |Z|Stormwind City|
 
-R Heroes' Vigil |QID|1786| |N|Travel to Heroes' Vigil (72.53, 51.40)| |Z|Elwynn Forest| |C|Paladin| |R|Human|
-C The Tome of Divinity (Part 8) |QID|1786| |N|Use Defias Bodyguard to resurrect Henze Faulk in Heroes' Vigil (72.53, 51.40)| |Z|Elwynn Forest| |C|Paladin| |R|Human|
-T The Tome of Divinity (Part 8) |QID|1786| |N|Henze Faulk in Heroes' Vigil (72.53, 51.40)| |Z|Elwynn Forest| |C|Paladin| |R|Human|
-A The Tome of Divinity (Part 9) |QID|1787| |N|Henze Faulk in Heroes' Vigil (72.53, 51.40)| |Z|Elwynn Forest| |C|Paladin| |R|Human|
-C The Tome of Divinity (Part 9) |QID|1787| |N|Kill Defias Rogue Wizard and collect Defias Script in Heroes' Vigil (73.61, 51.14)| |Z|Elwynn Forest| |C|Paladin| |R|Human|
+R Heroes' Vigil |QID|1786| |N|Travel to Heroes' Vigil (72.53, 51.40)| |AH| |Z|Elwynn Forest| |C|Paladin| |R|Human|
+C The Tome of Divinity (Part 8) |QID|1786| |N|Use Defias Bodyguard to resurrect Henze Faulk in Heroes' Vigil (72.53, 51.40)| |AH| |Z|Elwynn Forest| |C|Paladin| |R|Human|
+T The Tome of Divinity (Part 8) |QID|1786| |N|Henze Faulk in Heroes' Vigil (72.53, 51.40)| |AH| |Z|Elwynn Forest| |C|Paladin| |R|Human|
+A The Tome of Divinity (Part 9) |QID|1787| |N|Henze Faulk in Heroes' Vigil (72.53, 51.40)| |AH| |Z|Elwynn Forest| |C|Paladin| |R|Human|
+C The Tome of Divinity (Part 9) |QID|1787| |N|Kill Defias Rogue Wizard and collect Defias Script in Heroes' Vigil (73.61, 51.14)| |AH| |Z|Elwynn Forest| |C|Paladin| |R|Human|
 
-R Cathedral of Light |QID|1788| |N|Travel to Cathedral of Light (38.49, 26.38)| |C|Paladin| |R|Human| |Z|Stormwind City|
-T The Tome of Divinity (Part 9) |QID|1787| |N|Gazin Tenorm in Cathedral of Light (38.49, 26.38)| |C|Paladin| |R|Human| |Z|Stormwind City|
-A The Tome of Divinity (Part 10) |QID|1788| |N|Gazin Tenorm in Cathedral of Light (38.49, 26.38)| |C|Paladin| |R|Human| |Z|Stormwind City|
-T The Tome of Divinity (Part 10) |QID|1788| |N|Duthorian Rall in Cathedral of Light (72.53, 51.40)| |C|Paladin| |R|Human| |Z|Stormwind City|
+R Cathedral of Light |QID|1788| |N|Travel to Cathedral of Light (38.49, 26.38)| |C|Paladin| |R|Human| |AH| |Z|Stormwind City|
+T The Tome of Divinity (Part 9) |QID|1787| |N|Gazin Tenorm in Cathedral of Light (38.49, 26.38)| |C|Paladin| |R|Human| |AH| |Z|Stormwind City|
+A The Tome of Divinity (Part 10) |QID|1788| |N|Gazin Tenorm in Cathedral of Light (38.49, 26.38)| |C|Paladin| |R|Human| |AH| |Z|Stormwind City|
+T The Tome of Divinity (Part 10) |QID|1788| |N|Duthorian Rall in Cathedral of Light (72.53, 51.40)| |C|Paladin| |R|Human| |AH| |Z|Stormwind City|
 
 A Tome of Divinity |QID|2997| |N|Azar Stronghammer in Thunderbrew Distillery (47.58, 52.04)| |C|Paladin| |R|Dwarf| |Z|Dun Morogh| |O|
 T Tome of Divinity |QID|2997| |N|Tiza Battleforge in Hall of Mysteries (27.63, 12.25)| |C|Paladin| |R|Dwarf| |Z|Ironforge| |O|
@@ -45,25 +45,25 @@ A The Tome of Divinity (Part 2) |QID|1646| |N|Use Tome of Divinity to begin ques
 T The Tome of Divinity (Part 2) |QID|1646| |N|Tiza Battleforge in Hall of Mysteries (27.63, 12.25)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
 A The Tome of Divinity (Part 3) |QID|1647| |N|Tiza Battleforge in Hall of Mysteries (27.63, 12.25)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
 T The Tome of Divinity (Part 3) |QID|1647| |N|John Turner in Ironforge; He patrols around the outer ring of Ironforge (23.35, 62.64)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
-A The Tome of Divinity (Part 4) |QID|1648| |N|John Turner in Ironforge (23.35, 62.64)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
-C The Tome of Divinity (Part 4) |QID|1648| |N|Buy 10 Linen Cloth from the Auction House in Ironforge (23.35, 62.64)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
-T The Tome of Divinity (Part 4) |QID|1648| |N|John Turner in Ironforge (23.35, 62.64)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
-A The Tome of Divinity (Part 5) |QID|1778| |N|John Turner in Ironforge (23.51, 62.47)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
-T The Tome of Divinity (Part 5) |QID|1778| |N|Tiza Battleforge in Hall of Mysteries (27.73, 12.15)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
-A The Tome of Divinity (Part 6) |QID|1779| |N|Tiza Battleforge in Hall of Mysteries (27.73, 12.15)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
-T The Tome of Divinity (Part 6) |QID|1779| |N|Muiredon Battleforge in Hall of Mysteries (23.55, 8.33)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
-A The Tome of Divinity (Part 7) |QID|1783| |N|Muiredon Battleforge in Hall of Mysteries (23.55, 8.33)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
+A The Tome of Divinity (Part 4) |QID|1648| |N|John Turner in Ironforge (23.35, 62.64)| |C|Paladin| |R|Dwarf| |AH| |Z|Ironforge|
+C The Tome of Divinity (Part 4) |QID|1648| |N|Buy 10 Linen Cloth from the Auction House in Ironforge (23.35, 62.64)| |C|Paladin| |R|Dwarf| |AH| |Z|Ironforge|
+T The Tome of Divinity (Part 4) |QID|1648| |N|John Turner in Ironforge (23.35, 62.64)| |C|Paladin| |R|Dwarf| |AH| |Z|Ironforge|
+A The Tome of Divinity (Part 5) |QID|1778| |N|John Turner in Ironforge (23.51, 62.47)| |C|Paladin| |R|Dwarf| |AH| |Z|Ironforge|
+T The Tome of Divinity (Part 5) |QID|1778| |N|Tiza Battleforge in Hall of Mysteries (27.73, 12.15)| |C|Paladin| |R|Dwarf| |AH| |Z|Ironforge|
+A The Tome of Divinity (Part 6) |QID|1779| |N|Tiza Battleforge in Hall of Mysteries (27.73, 12.15)| |C|Paladin| |R|Dwarf| |AH| |Z|Ironforge|
+T The Tome of Divinity (Part 6) |QID|1779| |N|Muiredon Battleforge in Hall of Mysteries (23.55, 8.33)| |C|Paladin| |R|Dwarf| |AH| |Z|Ironforge|
+A The Tome of Divinity (Part 7) |QID|1783| |N|Muiredon Battleforge in Hall of Mysteries (23.55, 8.33)| |C|Paladin| |R|Dwarf| |AH| |Z|Ironforge|
 
-R Ironband's Compound |QID|1783| |N|Travel to Ironband's Compound (51.54, 40.12) (78.33, 58.06)| |C|Paladin| |R|Dwarf| |Z|Dun Morogh|
-N Narm Faulk |QID|1783| |N|Use Symbol of Life to resurrect Narm Faulk| |C|Paladin| |R|Dwarf| |Z|Dun Morogh|
-T The Tome of Divinity (Part 7) |QID|1783| |N|Narm Faulk in Ironband's Compound (78.33, 58.06)| |C|Paladin| |R|Dwarf| |Z|Dun Morogh|
-A The Tome of Divinity (Part 8) |QID|1784| |N|Narm Faulk in Ironband's Compound (78.33, 58.06)| |C|Paladin| |R|Dwarf| |Z|Dun Morogh|
-C The Tome of Divinity (Part 8) |QID|1784| |N|Kill a Dark Iron Spy and collect Dark Iron Script in Ironband's Compound (78.10, 59.98)| |C|Paladin| |R|Dwarf| |Z|Dun Morogh|
+R Ironband's Compound |QID|1783| |N|Travel to Ironband's Compound (51.54, 40.12) (78.33, 58.06)| |C|Paladin| |R|Dwarf| |AH| |Z|Dun Morogh|
+N Narm Faulk |QID|1783| |N|Use Symbol of Life to resurrect Narm Faulk| |C|Paladin| |R|Dwarf| |AH| |Z|Dun Morogh|
+T The Tome of Divinity (Part 7) |QID|1783| |N|Narm Faulk in Ironband's Compound (78.33, 58.06)| |C|Paladin| |R|Dwarf| |AH| |Z|Dun Morogh|
+A The Tome of Divinity (Part 8) |QID|1784| |N|Narm Faulk in Ironband's Compound (78.33, 58.06)| |C|Paladin| |R|Dwarf| |AH| |Z|Dun Morogh|
+C The Tome of Divinity (Part 8) |QID|1784| |N|Kill a Dark Iron Spy and collect Dark Iron Script in Ironband's Compound (78.10, 59.98)| |C|Paladin| |R|Dwarf| |AH| |Z|Dun Morogh|
 
-R Hall of Mysteries |QID|1785| |N|Travel to Hall of Mysteries (23.56, 8.38)| |Z|Ironforge| |C|Paladin| |R|Dwarf|
-T The Tome of Divinity (Part 8) |QID|1784| |N|Muiredon Battleforge in Hall of Mysteries (23.56, 8.38)| |C|Paladin| |R|Dwarf| |Z|Ironforge| |Z|Ironforge|
-A The Tome of Divinity (Part 9) |QID|1785| |N|Muiredon Battleforge in Hall of Mysteries (23.72, 8.61)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
-T The Tome of Divinity (Part 9) |QID|1785| |N|Tiza Battleforge in Hall of Mysteries (27.51, 12.18)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
+R Hall of Mysteries |QID|1785| |N|Travel to Hall of Mysteries (23.56, 8.38)| |AH| |Z|Ironforge| |C|Paladin| |R|Dwarf|
+T The Tome of Divinity (Part 8) |QID|1784| |N|Muiredon Battleforge in Hall of Mysteries (23.56, 8.38)| |C|Paladin| |R|Dwarf| |Z|Ironforge| |AH| |Z|Ironforge|
+A The Tome of Divinity (Part 9) |QID|1785| |N|Muiredon Battleforge in Hall of Mysteries (23.72, 8.61)| |C|Paladin| |R|Dwarf| |AH| |Z|Ironforge|
+T The Tome of Divinity (Part 9) |QID|1785| |N|Tiza Battleforge in Hall of Mysteries (27.51, 12.18)| |C|Paladin| |R|Dwarf| |AH| |Z|Ironforge|
 
 R Auberdine |QID|3524| |N|Travel to Auberdine (36.61, 45.59)|
 F Auberdine |QID|3524| |N|Speak to Caylais Moonfeather and grab flight path for Auberdine (36.4, 45.5)|
@@ -80,10 +80,10 @@ A Buzzbox 827 |QID|983| |N|Wizbang Cranktoggle in Auberdine (36.98, 44.10)|
 A The Red Crystal |QID|4811| |N|Sentinel Glynda Nal'Shea in Auberdine (37.64, 43.36)|
 H Auberdine |QID|963| |N|Speak to Innkeeper Shaussiy and set your hearthstone to Auberdine (37, 44.1)|
 A Cave Mushrooms |QID|947| |N|Barithras Moonshade in Auberdine (37.32, 43.66)|
-A The Family and the Fishing Pole |QID|1141| |N|Gubber Blump in Auberdine (36.10, 44.96)|
-B Fishing Pole |QID|1141| |N|Speak to Gubber Blump, train Fishing and buy a Fishing Pole. Buy a Shiny Bauble if you can afford it (36.10, 44.96)| |L|6256|
-C The Family and the Fishing Pole |QID|1141| |N|Catch 6 Darkshore Grouper in Auberdine. Equip the Fishing Pole and apply the Shiny Bauble to it. Cast the Fishing spell near the water and click on the bob when you see it moving to catch the fish; Keep trying until you complete the quest. This is an easy quest and recommended but you can safely skip it (35.91, 44.98)|
-T The Family and the Fishing Pole |QID|1141| |N|Gubber Blump in Auberdine (36.07, 44.94)|
+A The Family and the Fishing Pole |QID|1141| |N|Gubber Blump in Auberdine (36.10, 44.96)| |AH|
+B Fishing Pole |QID|1141| |N|Speak to Gubber Blump, train Fishing and buy a Fishing Pole. Buy a Shiny Bauble if you can afford it (36.10, 44.96)| |L|6256| |AH|
+C The Family and the Fishing Pole |QID|1141| |N|Catch 6 Darkshore Grouper in Auberdine. Equip the Fishing Pole and apply the Shiny Bauble to it. Cast the Fishing spell near the water and click on the bob when you see it moving to catch the fish; Keep trying until you complete the quest. This is an easy quest and recommended but you can safely skip it (35.91, 44.98)| |AH|
+T The Family and the Fishing Pole |QID|1141| |N|Gubber Blump in Auberdine (36.07, 44.94)| |AH|
 
 A Bashal'Aran (Part 1) |QID|954| |N|Thundris Windweaver in Auberdine (37.41, 40.16)|
 A Tools of the Highborne |QID|958| |N|Thundris Windweaver in Auberdine (37.41, 40.16)|
@@ -199,7 +199,7 @@ T Cleansing of the Infected |QID|2138| |N|Tharnariun Treetender in Auberdine (38
 A Tharnariun's Hope |QID|2139| |N|Tharnariun Treetender in Auberdine (38.85, 43.44)|
 T How Big a Threat? (Part 2) |QID|985| |N|Terenthis in Auberdine (39.35, 43.46)|
 T The Principal Source |QID|6122| |N|Alanndarian Nightsong in Auberdine (37.69, 40.66)| |C|Druid| |Z|Darkshore|
-A Gathering the Cure |QID|6123| |N|Alanndarian Nightsong in Auberdine (37.69, 40.69)| |C|Druid| |Z|Darkshore|
+A Gathering the Cure |QID|6123| |N|Alanndarian Nightsong in Auberdine (37.69, 40.69)| |C|Druid| |AH| |Z|Darkshore|
 N Filled Cleansing Bowl |QID|4763| |N|Use Empty Cleansing Bowl at the Moonwell to get Filled Cleansing Bowl in Auberdine (37.8, 44.0)| |U|12346| |L|12347|
 N Blackwood Grain Sample |QID|4763| |N|Collect Blackwood Grain Sample from the barrel in the Furbolg camp (50.67, 35.03)| |L|12342|
 C Tharnariun's Hope |QID|2139| |N|Go to the cave where you will find the Den Mother (level 19) with several level 9-10 cubs (52.40, 35,88) (51.60, 37.38)|
@@ -222,18 +222,18 @@ T Beached Sea Turtle (Part 3) |QID|4727| |N|Gwennyth Bly'Leggonde in Auberdine (
 T The Blackwood Corrupted |QID|4763| |N|Thundris Windweaver in Auberdine (37.41, 40.16)|
 T Tharnariun's Hope |QID|2139| |N|Tharnariun Treetender in Auberdine (38.85, 43.44)|
 
-C 12 Lunar Fungus |QID|6123| |OIDX|2| |N|Collect 12 Lunar Fungus from the inside the caves in each waypoint, you should find 3 Lunar Fungus in each cave (46.42, 45.61) (43.19, 45.75) (43.27, 49.17) (43.65, 50.41) (42.60, 52.39)| |C|Druid| |Z|Darkshore|
-C 5 Earthroot |QID|6123| |OIDX|1| |N|Gather 5 Earthroot with (spell:2366) in Teldrassil or purchase from the auction house| |C|Druid| |Z|Teldrassil|
-T Gathering the Cure |QID|6123| |N|Alanndarian Nightsong in Auberdine (37.68, 40.67)| |C|Druid| |Z|Darkshore|
-A Curing the Sick |QID|6124| |N|Alanndarian Nightsong in Auberdine (37.71, 40.83)| |C|Druid| |Z|Darkshore|
-C Curing the Sick |QID|6124| |N|Use the Curative Animal Salve on 10 Sickly Deer that are located throughout Darkshore. The deer are scattered throughout Darkshore and it can take a long time to complete this quest (41.6, 46.2) (41.6, 38.4) (43.8, 41.8) (47.0, 42.2) (49.4, 35.2) (45.6, 31.6) (44.6, 28.0) (44.6, 24.6) (52.0, 32.4)| |C|Druid| |Z|Darkshore|
+C 12 Lunar Fungus |QID|6123| |OIDX|2| |N|Collect 12 Lunar Fungus from the inside the caves in each waypoint, you should find 3 Lunar Fungus in each cave (46.42, 45.61) (43.19, 45.75) (43.27, 49.17) (43.65, 50.41) (42.60, 52.39)| |C|Druid| |AH| |Z|Darkshore|
+C 5 Earthroot |QID|6123| |OIDX|1| |N|Gather 5 Earthroot with (spell:2366) in Teldrassil or purchase from the auction house| |C|Druid| |AH| |Z|Teldrassil|
+T Gathering the Cure |QID|6123| |N|Alanndarian Nightsong in Auberdine (37.68, 40.67)| |C|Druid| |AH| |Z|Darkshore|
+A Curing the Sick |QID|6124| |N|Alanndarian Nightsong in Auberdine (37.71, 40.83)| |C|Druid| |AH| |Z|Darkshore|
+C Curing the Sick |QID|6124| |N|Use the Curative Animal Salve on 10 Sickly Deer that are located throughout Darkshore. The deer are scattered throughout Darkshore and it can take a long time to complete this quest (41.6, 46.2) (41.6, 38.4) (43.8, 41.8) (47.0, 42.2) (49.4, 35.2) (45.6, 31.6) (44.6, 28.0) (44.6, 24.6) (52.0, 32.4)| |C|Druid| |AH| |Z|Darkshore|
 
 R Nighthaven |OID|6125| |N|Travel to Nighthaven (56.26, 30.64)| |C|Druid| |Z|Moonglade|
-T Curing the Sick |QID|6124| |N|Dendrite Starblaze in Nighthaven (56.25, 30.59)| |C|Druid| |Z|Moonglade|
-A Power over Poison |QID|6125| |N|Dendrite Starblaze in Nighthaven (56.25, 30.59)| |C|Druid| |Z|Moonglade|
+T Curing the Sick |QID|6124| |N|Dendrite Starblaze in Nighthaven (56.25, 30.59)| |C|Druid| |AH| |Z|Moonglade|
+A Power over Poison |QID|6125| |N|Dendrite Starblaze in Nighthaven (56.25, 30.59)| |C|Druid| |AH| |Z|Moonglade|
 
 R Cenarion Enclave |TID|6125|  |N|Travel to Cenarion Enclave (35.36, 8.31)| |C|Druid| |Z|Darnassus|
-T Power over Poison |QID|6125| |N|Dendrite Starblaze in Cenarion Enclave (35.36, 8.31)| |C|Druid| |Z|Darnassus|
+T Power over Poison |QID|6125| |N|Dendrite Starblaze in Cenarion Enclave (35.36, 8.31)| |C|Druid| |AH| |Z|Darnassus|
 A A Lesson to Learn |QID|26| |N|Mathrengyl Bearwalker in Cenarion Enclave, Level 16 required (35.36, 8.31)| |C|Druid| |R|Night Elf| |Z|Darnassus|
 
 R Cenarion Enclave |OID|26|  |N|Travel to Cenarion Enclave (35.36, 8.31)| |C|Druid| |R|Night Elf| |Z|Darnassus|

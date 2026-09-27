@@ -76,16 +76,16 @@ T Blood Tinged Skies |QID|5543| |N|in Thondroril River (7.54, 43.67)| |Z|Eastern
 A Redemption |QID|5742| |N|Tirion Fordring in Thondroril River (7.54, 43.67)| |Z|Eastern Plaguelands| 
 C Redemption |QID|5742| |N|Type /sit next to Tirion Fordring and speak to him to complete the quest in Thondroril River. The speech option won't appear unless your character is a sitting position (7.53, 43.68)| |Z|Eastern Plaguelands| 
 T Redemption |QID|5742| |N|Tirion Fordring in Thondroril River (7.53, 43.68)| |Z|Eastern Plaguelands| 
-A Of Forgotten Memories |QID|5781| |N|Tirion Fordring in Thondroril River (7.53, 43.68)| |Z|Eastern Plaguelands| 
+A Of Forgotten Memories |QID|5781| |N|Tirion Fordring in Thondroril River (7.53, 43.68)| |P|GROUP| |Z|Eastern Plaguelands| 
 
 R The Undercroft |QID|6021| |N|Travel to The Undercroft (27.85, 85.37)| |Z|Eastern Plaguelands|
 C Zaeldarr the Outcast |QID|6021| |N|Kill Zaeldarr the Outcast in The Undercroft (27.47, 84.93)| |Z|Eastern Plaguelands| 
 T Hameya's Plea |QID|6024| |N|Mount of dirt in The Undercroft (27.84, 85.36)| (28.07, 86.07)| |Z|Eastern Plaguelands| |OBJ|20|
-C Of Forgotten Memories |QID|5781| |N|Click on the Loose Dirt Mount to summon and kill Mercutio Filthgorger to collect Taelan's Hammer. IMPORTANT: Mercutio Filthgorger will spawn first and it is possible for you to pull him away from his bodyguards to solo him, otherwise you won't be able to solo it (28.22, 86.21)| |Z|Eastern Plaguelands| 
+C Of Forgotten Memories |QID|5781| |N|Click on the Loose Dirt Mount to summon and kill Mercutio Filthgorger to collect Taelan's Hammer. IMPORTANT: Mercutio Filthgorger will spawn first and it is possible for you to pull him away from his bodyguards to solo him, otherwise you won't be able to solo it (28.22, 86.21)| |P|GROUP| |Z|Eastern Plaguelands| 
 
 R Thondroril River |OID|5845| |N|Travel to Thondroril River (7.56, 43.69)| |Z|Eastern Plaguelands| 
-T Of Forgotten Memories |QID|5781| |N|Tirion Fordring in Thondroril River (7.56, 43.69)| |Z|Eastern Plaguelands| 
-A Of Lost Honor |QID|5845| |N|Tirion Fordring in Thondroril River (7.56, 43.69)| |Z|Eastern Plaguelands| 
+T Of Forgotten Memories |QID|5781| |N|Tirion Fordring in Thondroril River (7.56, 43.69)| |P|GROUP| |Z|Eastern Plaguelands| 
+A Of Lost Honor |QID|5845| |N|Tirion Fordring in Thondroril River (7.56, 43.69)| |P|GROUP| |Z|Eastern Plaguelands| 
 
 R Light's Hope Chapel |TID|6021| |N|Travel to Light's Hope Chapel (79.66, 63.62)| |Z|Eastern Plaguelands|
 T Zaeldarr the Outcast |QID|6021| |N|Caretaker Alen in Light's Hope Chapel (79.66, 63.62)| |Z|Eastern Plaguelands| 
@@ -100,13 +100,13 @@ T Minion's Scourgestones |QID|5510| |N|Duke Nicholas Zverenhoff in Light's Hope 
 T Corruptor's Scourgestones |QID|5508| |N|Duke Nicholas Zverenhoff in Light's Hope Chapel (81.43, 59.84)| |Z|Eastern Plaguelands| |L|12843| |O| 
 T Invader's Scourgestones |QID|5509| |N|Duke Nicholas Zverenhoff in Light's Hope Chapel (81.43, 59.84)| |Z|Eastern Plaguelands| |L|12841 10| |O|
 
-R Northdale |QID|5845| |N|Travel to Northdale (71.28, 33.97)| |Z|Eastern Plaguelands|
-C Of Lost Honor |QID|5845| |N|Collect Symbol of Lost Honor in the middle of the lake in Northdale (71.28, 33.97)| |Z|Eastern Plaguelands|
-T Of Lost Honor |QID|5845| |N|Tirion Fordring in Thondroril River (7.58, 43.72)| |Z|Eastern Plaguelands| 
-A Of Love and Family (Part 1)|QID|5846| |N|Tirion Fordring in Thondroril River (7.58, 43.72)| |Z|Eastern Plaguelands| 
+R Northdale |QID|5845| |N|Travel to Northdale (71.28, 33.97)| |P|GROUP| |Z|Eastern Plaguelands|
+C Of Lost Honor |QID|5845| |N|Collect Symbol of Lost Honor in the middle of the lake in Northdale (71.28, 33.97)| |P|GROUP| |Z|Eastern Plaguelands|
+T Of Lost Honor |QID|5845| |N|Tirion Fordring in Thondroril River (7.58, 43.72)| |P|GROUP| |Z|Eastern Plaguelands| 
+A Of Love and Family (Part 1)|QID|5846| |N|Tirion Fordring in Thondroril River (7.58, 43.72)| |P|GROUP| |Z|Eastern Plaguelands| 
 
 R Caer Darrow |TID|5846| |N|Travel to Caer Darrow (65.76, 75.36)| |Z|Western Plaguelands|
-T Of Love and Family (Part 1) |QID|5846| |N|Artist Renfray in Caer Darrow (65.76, 75.36)| |Z|Western Plaguelands| 
+T Of Love and Family (Part 1) |QID|5846| |N|Artist Renfray in Caer Darrow (65.76, 75.36)| |P|GROUP| |Z|Western Plaguelands| 
 
 R Western Plaguelands |N|Travel to Western Plaguelands: Travel west through Thondroril River to Western Plaguelands.| |Z|Western Plaguelands|
 

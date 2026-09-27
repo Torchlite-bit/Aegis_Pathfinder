@@ -70,11 +70,11 @@ T The Ghostly Charm |QID|40191| |N|Tarokar at Kalkor Point (49.4, 41.6)| |Z|Gill
 
 R Blazno Blastpipe |QID|40189| |N|Return to Blazno Blastpipe near Maul'ogg Post (56.4, 83.4)| |Z|Gillijim's Isle|
 T To Make A Fortune |QID|40189| |N|Blazno Blastpipe (56.4, 83.4)| |Z|Gillijim's Isle|
-A The Blazno Touch |QID|40190| |N|Blazno Blastpipe (56.4, 83.4)| |Z|Gillijim's Isle|
+A The Blazno Touch |QID|40190| |N|Blazno Blastpipe (56.4, 83.4)| |AH| |Z|Gillijim's Isle|
 
-N Gold Bar Required |QID|40190| |N|The Blazno Touch requires a Gold Bar. You can get one from the Auction House or a miner friend. Skip this quest if you don't have one.|
-C The Blazno Touch |QID|40190| |N|Gather a Gold Bar for Blazno Blastpipe. This can be purchased from the Auction House or crafted by miners.| |O|
-T The Blazno Touch |QID|40190| |N|Blazno Blastpipe (56.4, 83.4)| |Z|Gillijim's Isle| |O|
+N Gold Bar Required |QID|40190| |N|The Blazno Touch requires a Gold Bar. You can get one from the Auction House or a miner friend. Skip this quest if you don't have one.| |AH|
+C The Blazno Touch |QID|40190| |N|Gather a Gold Bar for Blazno Blastpipe. This can be purchased from the Auction House or crafted by miners.| |O| |AH|
+T The Blazno Touch |QID|40190| |N|Blazno Blastpipe (56.4, 83.4)| |AH| |Z|Gillijim's Isle| |O|
 
 R Ruins of Zul'Razar |QID|40195| |N|Travel back to the Ruins of Zul'Razar (45, 55)| |Z|Gillijim's Isle|
 C The Razzari Leaders |QID|40195| |N|Kill Speaker Ujuwa and Chief Imaz'ul deep in Zul'Razar and collect their skulls (42, 50) (45, 48)| |Z|Gillijim's Isle|
@@ -101,7 +101,7 @@ C Destroying the Deeptide |QID|40276| |N|Slay Tidelord Hakash and Princess Shasz
 H Maul'ogg Refuge |N|Hearth back to Maul'ogg Refuge| |Z|Gillijim's Isle|
 T Destroying the Deeptide |QID|40276| |N|Explorer Fangosh in Maul'ogg Refuge (70.7, 75.7)| |Z|Gillijim's Isle|
 
-N Maul'ogg Crisis Continues |N|The Maul'ogg Crisis questline continues with travel to Lapidis Isle (Gor'dosh Heights) and later to Kazon Island to meet Insom'ni. This is a long chain involving travel to Un'Goro Crater, Felwood, and the Temple of Atal'Hakkar.|
+N Maul'ogg Crisis Continues |N|The Maul'ogg Crisis questline continues with travel to Lapidis Isle (Gor'dosh Heights) and later to Kazon Island to meet Insom'ni. This is a long chain involving travel to Un'Goro Crater, Felwood, and the Temple of Atal'Hakkar.| |D|ST|
 
 N Travel to Lapidis Isle |QID|40266| |N|For The Maul'ogg Crisis III, you need to travel to Gor'dosh Heights on Lapidis Isle to the north to speak with Seer Bol'ukk.| |O|
 N The Maul Orb |QID|40258| |N|The Maul Orb quest also requires travel to Gor'dosh Heights on Lapidis Isle.| |O|

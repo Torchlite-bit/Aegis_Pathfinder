@@ -9,11 +9,11 @@ return [[
 N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Badlands 40-41|
 
 R Undercity |QID|710| |N|Travel to Undercity (64.0, 36.0)| |Z|Undercity|
-B Frost Oil |QID|710| |N|Buy Frost Oil from Auction House. Skip this if not available. Don't buy if this is your first character and you still need to purchase a mount (64.0, 36.0)| |L|3829| |Z|Undercity|
-B Gyrochronatom |QID|710| |N|Buy Gyrochronatom from Auction House. Don't buy if you didn't find a Frost Oil. Don't buy if this is your first character and you still need to purchase a mount (64.0, 36.0)| |L|4389| |Z|Undercity|
-B Healing Potion |QID|710| |N|Buy Healing Potion from Auction House. Don't buy if you didn't find a Frost Oil and Gyrochronatom. Don't buy if this is your first character and you still need to purchase a mount (64.0, 36.0)| |L|929| |Z|Undercity|
-B Lesser Invisibility Potion |QID|710| |N|Buy Lesser Invisibility Potion from Auction House. Don't buy if you didn't find a Frost Oil and Gyrochronatom. Don't buy if this is your first character and you still need to purchase a mount (64.0, 36.0)| |L|3823| |Z|Undercity|
-B 4 Buzzard Wing |QID|710| |N|Buy 4 Buzzard Wing from Auction House - Skip this if not available (64.0, 36.0)| |L|3404 4| |Z|Undercity|
+B Frost Oil |QID|710| |N|Buy Frost Oil from Auction House. Skip this if not available. Don't buy if this is your first character and you still need to purchase a mount (64.0, 36.0)| |L|3829| |AH| |Z|Undercity|
+B Gyrochronatom |QID|710| |N|Buy Gyrochronatom from Auction House. Don't buy if you didn't find a Frost Oil. Don't buy if this is your first character and you still need to purchase a mount (64.0, 36.0)| |L|4389| |AH| |Z|Undercity|
+B Healing Potion |QID|710| |N|Buy Healing Potion from Auction House. Don't buy if you didn't find a Frost Oil and Gyrochronatom. Don't buy if this is your first character and you still need to purchase a mount (64.0, 36.0)| |L|929| |AH| |Z|Undercity|
+B Lesser Invisibility Potion |QID|710| |N|Buy Lesser Invisibility Potion from Auction House. Don't buy if you didn't find a Frost Oil and Gyrochronatom. Don't buy if this is your first character and you still need to purchase a mount (64.0, 36.0)| |L|3823| |AH| |Z|Undercity|
+B 4 Buzzard Wing |QID|710| |N|Buy 4 Buzzard Wing from Auction House - Skip this if not available (64.0, 36.0)| |L|3404 4| |AH| |Z|Undercity|
 N Fizzle Brassbolts' Letter |QID|1106| |N|Withdraw Fizzle Brassbolts' Letter from the bank (66.0, 45.2)| |Z|Undercity| |L|5827| |OO|
 
 R Wetlands |QID|710| |N|Travel to Wetlands (45.4, 96.6)| |Z|Arathi Highlands|

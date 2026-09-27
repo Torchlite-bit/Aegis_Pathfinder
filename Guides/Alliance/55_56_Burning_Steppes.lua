@@ -2,7 +2,7 @@ AegisPathfinder:RegisterGuide("Burning Steppes (55-56)", "Western Plaguelands (5
 
 return [[
 
-R City of Ironforge |QID|2948| |N|Travel to Ironforge (30, 66)| |Z|Ironforge|
+R City of Ironforge |QID|2948| |N|Travel to Ironforge (30, 66)| |D|GNOMER| |Z|Ironforge|
 N Black Dragonflight Molt |QID|4023| |N|Withdraw Black Dragonflight Molt from the bank. Tick this step (35.48, 60.70)| |Z|Ironforge| |L|10575| |OO|
 N Drawing Kit |QID|3461| |N|Withdraw Drawing Kit from the bank. Tick this step (35.48, 60.70)| |Z|Ironforge| |L|10445| |OO|
 N Filled Cursed Ooze Jar |QID|4512| |N|Withdraw Filled Cursed Ooze Jar from the bank. Tick this step (35.48, 60.70)| |Z|Ironforge| |L|11947| |OO|
@@ -29,7 +29,7 @@ A Dragonkin Menace |QID|4182| |N|Helendis Riverhorn in Morgan's Vigil (85.82, 68
 A Broodling Essence |QID|4726| |N|Tinkee Steamboil in Flame Crest (65.14, 23.83)| |Z|Burning Steppes|
 A Tablet of the Seven |QID|4296| |N|Maxwort Uberglint in Flame Crest (65.17, 23.92)| |Z|Burning Steppes|
 T Yuka Screwspigot |QID|4324| |N|Yuka Screwspigot in Flame Crest (66.04, 21.94)| |Z|Burning Steppes| |O|
-N Black Dragonflight Molt |QID|4023| |N|This is found inside Hoard of the Black Dragonflight quest reward from an earlier quest 'Trinkets...', you need this to complete the next quest 'A Taste of Flame', if you don't have it you will need to kill a level 54 elite that will spawn if you talk to the quest giver| |L|10575| |U|10569| |OID|4022|
+N Black Dragonflight Molt |QID|4023| |N|This is found inside Hoard of the Black Dragonflight quest reward from an earlier quest 'Trinkets...', you need this to complete the next quest 'A Taste of Flame', if you don't have it you will need to kill a level 54 elite that will spawn if you talk to the quest giver| |L|10575| |U|10569| |OID|4022| |P|GROUP|
 
 N As you go... |AYG|4182| |QID|4283| |N|Kill Ember Worg and collect 50 Blackrock Medallion, don't worry about trying to finish this now|
 C Broodling Essence |QID|4726| |N|Use Unloaded Zapper on 8 Scalding Broodling before you kill them in Dreadmaul Rock (78.49, 27.51)| |Z|Burning Steppes| |U|11319|
@@ -38,7 +38,7 @@ R Slither Rock |QID|4023| |N|Travel to Slither Rock (93.66, 32.10)| |Z|Burning S
 A A Taste of Flame (Part 1) |QID|4023| |N|Cyrus Therepentous in Slither Rock (93.66, 32.10) (95.05, 31.57)| |Z|Burning Steppes| |OID|4022|
 C A Taste of Flame (Part 1) |QID|4023| |N|Speak to Cyrus Therepentous with Black Dragonflight Molt in Slither Rock (95.05, 31.57)| |Z|Burning Steppes| |OID|4022|
 T A Taste of Flame (Part 1) |QID|4023| |N|Cyrus Therepentous in Slither Rock (95.05, 31.57)| |Z|Burning Steppes| |OID|4022|
-A A Taste of Flame (Part 2) |N|Cyrus Therepentous in Slither Rock| |QID|4024| |Z|Burning Steppes|
+A A Taste of Flame (Part 2) |N|Cyrus Therepentous in Slither Rock| |QID|4024| |D|BRD| |Z|Burning Steppes|
 
 C Dragonkin Menace |QID|4182| |N|Kill the required Black Dragonkin in Terror Wing Path, you can complete this later if there's not enough to kill (79.43, 28.66) (90.60, 32.80) (90.18, 44.25) (91.50, 53.36)| |Z|Burning Steppes|
 
@@ -60,18 +60,18 @@ A Gor'tesh the Brute Lord |QID|3824| |N|Oralius in Morgan's Vigil (84.57, 68.66)
 C Gor'tesh the Brute Lord |QID|3824| |N|Kill Gor'tesh and collect Gor'tesh's Lopped Off Head in Pillar of Ash (39.35, 55.36)| |Z|Burning Steppes|
 C FIFTY! YEP! |QID|4283| |N|Kill Blackrock orc in the area and collect 50 Blackrock Medallion (44.87, 56.77)| |Z|Burning Steppes|
 
-R Morgan's Vigil |QID|3825| |N|Travel to Morgan's Vigil (84.55, 68.70)| |Z|Burning Steppes|
+R Morgan's Vigil |QID|3825| |N|Travel to Morgan's Vigil (84.55, 68.70)| |P|GROUP| |Z|Burning Steppes|
 T Gor'tesh the Brute Lord |QID|3824| |N|Oralius in Morgan's Vigil (84.54, 68.69)| |Z|Burning Steppes|
-A Ogre Head On A Stick = Party |QID|3825| |N|Oralius in Morgan's Vigil (84.54, 68.69)| |Z|Burning Steppes|
+A Ogre Head On A Stick = Party |QID|3825| |N|Oralius in Morgan's Vigil (84.54, 68.69)| |P|GROUP| |Z|Burning Steppes|
 T FIFTY! YEP! |QID|4283| |N|Oralius in Morgan's Vigil (84.54, 68.69)| |Z|Burning Steppes|
-N Blackrock Medallion |QID|3825| |N|Destroy Blackrock Medallion as it is no longer needed| |L|11467| |O|
+N Blackrock Medallion |QID|3825| |N|Destroy Blackrock Medallion as it is no longer needed| |L|11467| |O| |P|GROUP|
 
-R Dreadmaul Rock |QID|3825| |N|Travel to Dreadmaul Rock (75.34, 38.61)| |Z|Burning Steppes|
-C Ogre Head On A Stick = Party |QID|3825| |N|Click on Soft Dirt Mound in Dreadmaul Rock (75.34, 38.61) (77.69, 38.25) (79.60, 40.84) (80.98, 46.72)| |Z|Burning Steppes| |OBJ|20|
+R Dreadmaul Rock |QID|3825| |N|Travel to Dreadmaul Rock (75.34, 38.61)| |P|GROUP| |Z|Burning Steppes|
+C Ogre Head On A Stick = Party |QID|3825| |N|Click on Soft Dirt Mound in Dreadmaul Rock (75.34, 38.61) (77.69, 38.25) (79.60, 40.84) (80.98, 46.72)| |P|GROUP| |Z|Burning Steppes| |OBJ|20|
 C Dragonkin Menace |QID|4182| |N|Kill the required Black Dragonkin in Terror Wing Path, you can complete this later if there's not enough to kill (91.16, 34.50) (90.30, 46.43) (91.47, 55.08)| |Z|Burning Steppes|
 
 R Morgan's Vigil |QID|4183| |N|Travel to Morgan's Vigil (84.55, 68.70)| |Z|Burning Steppes|
-T Ogre Head On A Stick = Party |QID|3825| |N|Oralius in Morgan's Vigil (84.55, 68.70)| |Z|Burning Steppes|
+T Ogre Head On A Stick = Party |QID|3825| |N|Oralius in Morgan's Vigil (84.55, 68.70)| |P|GROUP| |Z|Burning Steppes|
 T Dragonkin Menace |QID|4182| |N|Helendis Riverhorn in Morgan's Vigil (85.81, 68.94)| |Z|Burning Steppes|
 A The True Masters (Part 1) |QID|4183| |N|Helendis Riverhorn in Morgan's Vigil (85.81, 68.94)| |Z|Burning Steppes|
 

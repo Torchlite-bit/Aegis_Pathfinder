@@ -84,7 +84,10 @@ their setup and prerequisite steps to mandatory; opting out hides them. A blue
 dot marks the dungeons the guide you are currently on actually has steps for.
 
 **Filters.** Solo or group mode, and whether Auction House steps appear.
-Defaults follow the route pack you chose.
+Defaults follow the route pack you chose. They act on every route pack: in
+Solo mode the Optimized and zone guides leave out elite and group quests, and
+the quests that follow on from them; with Auction House steps off they leave
+out quests that need an item most players buy there.
 
 **First-time setup.** The first time the addon loads on a character, a short
 setup asks three things, as RestedXP does:

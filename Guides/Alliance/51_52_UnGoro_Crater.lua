@@ -1,12 +1,12 @@
 AegisPathfinder:RegisterGuide("Un'goro (51-52)", "Azshara (52-53)", "Alliance",function()
 
 return [[
-N Mithril Casing |QID|4243| |N|You be asked to craft or purchase Mithril Casing from the Auction House in a later step of this guide|
+N Mithril Casing |QID|4243| |N|You be asked to craft or purchase Mithril Casing from the Auction House in a later step of this guide| |AH|
 R Ratchet |OID|4502| |N|Travel to Ratchet (62.54, 38.50)| |Z|The Barrens|
 N Violet Tragan |QID|2641| |N|Withdraw Violet Tragan from the bank. Tick this step (66.0, 45.2)| |Z|Barrens| |L|8526| |OO|
 N [Insect Analysys Report] |QID|162| |N|Withdraw Insect Analysys Report. Tick this step (66.0, 45.2)| |Z|Barrens| |L|8594| |OO|
 
-C The Stone Circle |QID|3444| |N|Collect Stone Circle from Marvon's chest in Ratchet (62.51, 38.54)| |Z|The Barrens| |O|
+C The Stone Circle |QID|3444| |N|Collect Stone Circle from Marvon's chest in Ratchet (62.51, 38.54)| |D|ST| |Z|The Barrens| |O|
 A Volcanic Activity |QID|4502| |N|Liv Rizzlefix in Ratchet (62.45, 38.72)| |Z|The Barrens|
 
 F Rut'theran Village
@@ -24,11 +24,11 @@ T Delivery for Marin |QID|2661| |N|Marin Noggenfogger in Gadgetzan (51.81, 28.65
 A Noggenfogger Elixir |QID|2662| |N|Marin Noggenfogger in Gadgetzan (51.80, 28.67)| |Z|Tanaris| |PRE|2641|
 T Noggenfogger Elixir |QID|2662| |N|Marin Noggenfogger in Gadgetzan (51.81, 28.66)| |Z|Tanaris| |PRE|2641|
 A Super Sticky |QID|4504| |N|Tran'rek in Gadgetzan (51.59, 26.77)| |Z|Tanaris|
-N Stone Circle |QID|3444| |N|Withdraw Stone Circle. Tick this step (52.30, 28.89)| |Z|Tanaris| |L|10556| |OO|
-B Action House - Mithril Casing |QID|4243| |N|Craft or Purchase a Mithril Casing from the Gadgetzan Auction House( 52.0, 29.6)| |L|10561 1|
+N Stone Circle |QID|3444| |N|Withdraw Stone Circle. Tick this step (52.30, 28.89)| |D|ST| |Z|Tanaris| |L|10556| |OO|
+B Action House - Mithril Casing |QID|4243| |N|Craft or Purchase a Mithril Casing from the Gadgetzan Auction House( 52.0, 29.6)| |L|10561 1| |AH|
 
 R Broken Pillar |TID|3444| |N|Travel to Broken Pillar (52.73, 45.93)| |Z|Tanaris| |O|
-T The Stone Circle |QID|3444| |N|Marvon Rivetseeker in Broken Pillar (52.73, 45.93)| |Z|Tanaris| |O|
+T The Stone Circle |QID|3444| |N|Marvon Rivetseeker in Broken Pillar (52.73, 45.93)| |D|ST| |Z|Tanaris| |O|
 R Thistleshrub Valley Run towards Thistleshrub Valley and into Un'Goro Crater (27.1, 57.3) (27.0, 53.8) Tanaris
 R Un'Goro Crater|QID|4290| |N|Travel to Un'Goro (71.63, 75.95)|
 A The Apes of Un'Goro |QID|4289| |N|Torwa Pathfinder in Un'Goro (71.63, 75.95)|
@@ -55,12 +55,12 @@ C Pterrordax |QID|4501| |OIDX|1| |N|Make a start for killing 10 Pterrordax and a
 
 R Fungal Rock |QID|4289| |N|Travel to Fungal Rock (63.86, 16.44)|
 T Chasing A-Me 01 (Part 1)|QID|4243| |N|Williden Marshal in Fungal Rock (67.65, 16.77)|
-A Chasing A-Me 01 (Part 2)|QID|4244| |N|A-Me 01 in Fungal Rock (67.65, 16.77)| |L|10561| |O|
-C Chasing A-Me 01 (Part 2)|QID|4244| |N|Get Mithril Casing, this is crafted by Engineers, purchase from Auction house| |O|
-T Chasing A-Me 01 (Part 2)|QID|4244| |N|A-Me 01 in Fungal Rock (67.65, 16.77)| |O|
-A Chasing A-Me 01 (Part 3)|QID|4245| |N|A-Me 01 in Fungal Rock (67.65, 16.77)| |PRE|4244|
-C Chasing A-Me 01 (Part 3)|QID|4245| |N|Escort A-Me 01 back to Marshal's Refuge (63.43, 16.67) (61.24, 17.00) (67.62, 16.76)| |PRE|4244|
-T Chasing A-Me 01 (Part 3)|QID|4245| |N|Karna Remtravel, in Lakkari Tar Pits (46.38, 13.45)| |PRE|4244|
+A Chasing A-Me 01 (Part 2)|QID|4244| |N|A-Me 01 in Fungal Rock (67.65, 16.77)| |L|10561| |O| |AH|
+C Chasing A-Me 01 (Part 2)|QID|4244| |N|Get Mithril Casing, this is crafted by Engineers, purchase from Auction house| |O| |AH|
+T Chasing A-Me 01 (Part 2)|QID|4244| |N|A-Me 01 in Fungal Rock (67.65, 16.77)| |O| |AH|
+A Chasing A-Me 01 (Part 3)|QID|4245| |N|A-Me 01 in Fungal Rock (67.65, 16.77)| |PRE|4244| |AH|
+C Chasing A-Me 01 (Part 3)|QID|4245| |N|Escort A-Me 01 back to Marshal's Refuge (63.43, 16.67) (61.24, 17.00) (67.62, 16.76)| |PRE|4244| |AH|
+T Chasing A-Me 01 (Part 3)|QID|4245| |N|Karna Remtravel, in Lakkari Tar Pits (46.38, 13.45)| |PRE|4244| |AH|
 
 C The Apes of Un'Goro |QID|4289| |N|Kill Un'Goro Gorilla, Un'Goro Thunderer and Un'Goro Stomper for the quest items all of them found in Fungal Rock (63.86, 16.44)| |QO|10/10 Pterrordax slain|
 C Pterrordax |QID|4501| |OIDX|1| |N|Finish killing 10 Pterrordax in Lakkari Tar Pits (58.51, 16.74) (56.91, 9.94)|

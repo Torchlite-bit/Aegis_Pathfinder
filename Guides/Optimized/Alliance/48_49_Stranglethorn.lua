@@ -14,7 +14,7 @@ T Back to Booty Bay |QID|1118| |N|Crank Fizzlebub in The Salty Sailor Tavern (27
 T Whiskey Slim's Lost Grog |QID|580| |N|Whiskey Slim (27.12, 77.43)| |Z|Stranglethorn Vale| |O|
 T Deliver to MacKinley |QID|2874| |N|Sea Wolf MacKinley (27.78, 77.07)| |Z|Stranglethorn Vale|
 A Stranglethorn Fever |QID|348| |N|Fin Fizracket under the boat near dock (27.63, 76.75)| |Z|Stranglethorn Vale|
-A The Captain's Chest |QID|614| |N|Captain Hecklebury Smotts (26.70, 73.61)| |Z|Stranglethorn Vale|
+A The Captain's Chest |QID|614| |N|Captain Hecklebury Smotts (26.70, 73.61)| |P|GROUP| |Z|Stranglethorn Vale|
 
 T Rescue OOX-09/HL! |QID|836| |N|Oglethorpe Obnoticus (28.35, 76.35)| |Z|Stranglethorn Vale| |O|
 T Rescue OOX-22/FE! |QID|2767| |N|Oglethorpe Obnoticus (28.35, 76.35)| |Z|Stranglethorn Vale| |O|
@@ -26,12 +26,12 @@ N 10 Gorilla Fang |QID|348| |N|Kill Elder Mistvale Gorilla until you have 10 Gor
 T Stranglethorn Fever |QID|349| |N|Witch Doctor Unbagwa in Spirit Den (35.28, 60.39)| |Z|Stranglethorn Vale|
 C Stranglethorn Fever |QID|348| |N|Survive waves of gorillas until Mokk the Savage spawns, kill for Heart of Mokk (35.17, 60.54)| |Z|Stranglethorn Vale|
 
-R Arena |QID|208| |N|Travel north toward arena (38, 35)| |Z|Stranglethorn Vale|
-C Big Game Hunter |QID|208| |N|Kill King Bangalash for Head of Bangalash (38, 35)| |Z|Stranglethorn Vale| |PRE|197|
-T Big Game Hunter |QID|208| |N|Hemet Nesingwary at Nesingwary's Expedition (35.7, 10.8)| |Z|Stranglethorn Vale| |PRE|197|
+R Arena |QID|208| |N|Travel north toward arena (38, 35)| |P|GROUP| |Z|Stranglethorn Vale|
+C Big Game Hunter |QID|208| |N|Kill King Bangalash for Head of Bangalash (38, 35)| |P|GROUP| |Z|Stranglethorn Vale| |PRE|197|
+T Big Game Hunter |QID|208| |N|Hemet Nesingwary at Nesingwary's Expedition (35.7, 10.8)| |P|GROUP| |Z|Stranglethorn Vale| |PRE|197|
 
 R Mosh'ogg Ogre Mound |QID|627| |N|Travel to Mosh'ogg Ogre Mound (48, 25)| |Z|Stranglethorn Vale|
-N Cracking Maury's Foot |QID|627| |N|Kill elite ogres until Maury's Key drops (low drop rate). Grind until 2 bars from 49 if key doesn't drop after an hour (48.25)| |Z|Stranglethorn Vale| |L|4098|
+N Cracking Maury's Foot |QID|627| |N|Kill elite ogres until Maury's Key drops (low drop rate). Grind until 2 bars from 49 if key doesn't drop after an hour (48.25)| |P|GROUP| |Z|Stranglethorn Vale| |L|4098|
 
 H Booty Bay |QID|348| |N|Hearth to Booty Bay| |Z|Stranglethorn Vale|
 T Stranglethorn Fever |QID|348| |N|Fin Fizracket (27.64, 76.75)| |Z|Stranglethorn Vale|
@@ -40,8 +40,8 @@ R Beach |QID|594| |N|Travel to beach east of Booty Bay (34.6, 73.0)| |Z|Strangle
 N Message in a Bottle |QID|594| |N|Look for Half Buried Bottle (green) along the beach until you find Carefully Folded Note (34.6, 73.0) (33.9, 76.7)| |Z|Stranglethorn Vale| |OBJ|228| |L|4098|
 A Message in a Bottle (Part 1) |QID|594| |N|Use Carefully Folded Note| |Z|Stranglethorn Vale| |U|4098|
 
-R Crystal Shore |QID|614| |N|Travel to Crystal Shore (36.95, 69.73)| |Z|Stranglethorn Vale|
-C The Captain's Chest |QID|614| |N|Kill Gorlash (47 Elite) for Smotts' Chest - use cooldowns (36.69, 69.73)| |Z|Stranglethorn Vale|
+R Crystal Shore |QID|614| |N|Travel to Crystal Shore (36.95, 69.73)| |P|GROUP| |Z|Stranglethorn Vale|
+C The Captain's Chest |QID|614| |N|Kill Gorlash (47 Elite) for Smotts' Chest - use cooldowns (36.69, 69.73)| |P|GROUP| |Z|Stranglethorn Vale|
 
 R Jaguero Isle |TID|594| |N|Travel south to Jaguero Isle (38.51, 80.58)| |Z|Stranglethorn Vale|
 T Message in a Bottle (Part 1) |QID|594| |N|Princess Poobah on island (38.51, 80.58)| |Z|Stranglethorn Vale|
@@ -55,13 +55,13 @@ A Cortello's Riddle (Part 1) |QID|624| |N|Use Cortello's Riddle| |Z|Stranglethor
 
 N Die on purpose |N|Die to resurrect at Booty Bay|
 
-T The Captain's Chest |QID|614| |N|Captain Hecklebury Smotts (26.69, 73.62)| |Z|Stranglethorn Vale|
+T The Captain's Chest |QID|614| |N|Captain Hecklebury Smotts (26.69, 73.62)| |P|GROUP| |Z|Stranglethorn Vale|
 T The Bloodsail Buccaneers (Part 5) |QID|608| |N|Fleet Master Seahorn (27.19, 76.99)| |Z|Stranglethorn Vale| |PRE|604|
 
-F Stormwind City |QID|1469| |N|Fly to Stormwind City| |Z|Stormwind City|
-T Rhapsody's Tale |QID|1469| |N|Brohann Caskbelly in Dwarven District (64.27, 20.74)| |Z|Stormwind City|
+F Stormwind City |QID|1469| |N|Fly to Stormwind City| |D|ST| |Z|Stormwind City|
+T Rhapsody's Tale |QID|1469| |N|Brohann Caskbelly in Dwarven District (64.27, 20.74)| |D|ST| |Z|Stormwind City|
 
-N Auction House |N|Check AH for Beaststalker Bracers and Mithril Casing for later Un'Goro quests|
+N Auction House |N|Check AH for Beaststalker Bracers and Mithril Casing for later Un'Goro quests| |AH|
 
 F Darkshire |QID|624| |N|Fly to Darkshire| |Z|Duskwood|
 

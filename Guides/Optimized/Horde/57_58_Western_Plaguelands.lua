@@ -34,13 +34,13 @@ A Unfinished Business (Part 2) |QID|6023| |N|Kirsta Deepshadow in Northridge Lum
 C Huntsman Radley |QID|6023| |OIDX|1| |N|Kill Huntsman Radley in Hearthglen (57.47, 35.93)| |Z|Western Plaguelands|
 C Cavalier Durgen |QID|6023| |OIDX|2| |N|Kill Cavalier Durgen in Hearthglen (54.94, 23.55)| |Z|Western Plaguelands|
 T Unfinished Business (Part 2) |QID|6023| |N|Kirsta Deepshadow in Northridge Lumber Camp (51.91, 28.08)| |Z|Western Plaguelands|
-A Unfinished Business (Part 3) |QID|6025| |N|Kirsta Deepshadow in Northridge Lumber Camp (51.92, 28.04)| |Z|Western Plaguelands|
+A Unfinished Business (Part 3) |QID|6025| |N|Kirsta Deepshadow in Northridge Lumber Camp (51.92, 28.04)| |P|GROUP| |Z|Western Plaguelands|
 
-R Hearthglen |QID|6025| |N|Follow waypoint for shortcut to Hearthglen (45.77, 18.31)| |Z|Western Plaguelands|
-C Unfinished Business (Part 3) |QID|6025| |N|Reach the top of the tower without dying - mount up and ignore Elite NPCs, run to top then jump down. Use health potion (45.77, 18.31)| |Z|Western Plaguelands|
+R Hearthglen |QID|6025| |N|Follow waypoint for shortcut to Hearthglen (45.77, 18.31)| |P|GROUP| |Z|Western Plaguelands|
+C Unfinished Business (Part 3) |QID|6025| |N|Reach the top of the tower without dying - mount up and ignore Elite NPCs, run to top then jump down. Use health potion (45.77, 18.31)| |P|GROUP| |Z|Western Plaguelands|
 
 R Northridge Lumber Camp |TID|6025| |N|Return to Northridge Lumber Camp (51.94, 28.06)| |Z|Western Plaguelands|
-T Unfinished Business (Part 3) |QID|6025| |N|Kirsta Deepshadow in Northridge Lumber Camp (51.94, 28.06)| |Z|Western Plaguelands|
+T Unfinished Business (Part 3) |QID|6025| |N|Kirsta Deepshadow in Northridge Lumber Camp (51.94, 28.06)| |P|GROUP| |Z|Western Plaguelands|
 
 R The Writhing Haunt |OID|4984| |N|Travel to The Writhing Haunt (53.67, 64.76)| |Z|Western Plaguelands|
 A The Wildlife Suffers Too (Part 1) |QID|4984| |N|Mulgris Deepriver in The Writhing Haunt (53.67, 64.76)| |Z|Western Plaguelands|

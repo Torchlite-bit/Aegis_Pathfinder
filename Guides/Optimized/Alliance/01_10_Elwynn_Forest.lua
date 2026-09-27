@@ -145,12 +145,12 @@ A Red Linen Goods |QID|83| |N|Sara Timberlain (79.47, 68.75)|
 A A Bundle of Trouble |QID|5545| |N|Supervisor Raelen (81.45, 66.19)|
 
 T Find the Lost Guards |QID|37| |N|Mangled body west of waterfall (72.7, 60.5)|
-A Discover Rolf's Fate |QID|45| |N|The mangled body (72.7, 60.5)|
+A Discover Rolf's Fate |QID|45| |N|The mangled body (72.7, 60.5)| |P|GROUP|
 
 N Level 8 |N|You should ding 8 around now|
 
-T Discover Rolf's Fate |QID|45| |N|Rolf's corpse at murloc camp - may need group (79.8, 55.6)|
-A Report to Thomas |QID|71| |N|Rolf's corpse (79.8, 55.6)|
+T Discover Rolf's Fate |QID|45| |N|Rolf's corpse at murloc camp - may need group (79.8, 55.6)| |P|GROUP|
+A Report to Thomas |QID|71| |N|Rolf's corpse (79.8, 55.6)| |P|GROUP|
 
 C A Bundle of Trouble |QID|5545| |N|Collect 8 bundles of wood near trees (80, 60)|
 C Protect the Frontier |QID|52| |N|Kill 8 Prowler and 5 Young Forest Bear south and east (81, 62) (83, 78)|
@@ -161,8 +161,8 @@ N Furlbrow's Deed |N|Defias may drop Furlbrow's Deed - keep it for Westfall|
 T A Bundle of Trouble |QID|5545| |N|Supervisor Raelen (81.45, 66.19)|
 T Red Linen Goods |QID|83| |N|Sara Timberlain - should be close to level 9 (79.47, 68.75)|
 
-T Report to Thomas |QID|71| |N|Guard Thomas (73.89, 72.18)|
-A Deliver Thomas' Report |QID|39| |N|Guard Thomas (73.89, 72.18)|
+T Report to Thomas |QID|71| |N|Guard Thomas (73.89, 72.18)| |P|GROUP|
+A Deliver Thomas' Report |QID|39| |N|Guard Thomas (73.89, 72.18)| |P|GROUP|
 T Protect the Frontier |QID|52| |N|Guard Thomas (73.89, 72.18)|
 A Report to Gryan Stoutmantle |QID|109| |N|Guard Thomas - must be level 9 (73.96, 72.16)|
 
@@ -171,8 +171,8 @@ H Goldshire |QID|114| |N|Hearth to Goldshire|
 T Collecting Kelp |QID|112| |N|William Pestle (43.43, 66.05)|
 A The Escape |QID|114| |N|William Pestle (43.43, 66.05)|
 T The Jasperlode Mine |QID|76| |N|Marshal Dughan (42.14, 65.90)|
-T Deliver Thomas' Report |QID|39| |N|Marshal Dughan (42.14, 65.90)|
-A Cloth and Leather Armor |QID|59| |N|Marshal Dughan (42.11, 65.97)|
+T Deliver Thomas' Report |QID|39| |N|Marshal Dughan (42.14, 65.90)| |P|GROUP|
+A Cloth and Leather Armor |QID|59| |N|Marshal Dughan (42.11, 65.97)| |P|GROUP|
 A Westbrook Garrison Needs Help! |QID|239| |N|Marshal Dughan (42.14, 65.90)|
 A Elmore's Task |QID|1097| |N|Smith Argus (42.01, 65.60)|
 
@@ -181,7 +181,7 @@ T Goldtooth |QID|87| |N|Auntie Bernice Stonefield (34.5, 84.3)|
 
 T Westbrook Garrison Needs Help! |QID|239| |N|Deputy Rainer at Westbrook Garrison (24.26, 74.54)|
 A Riverpaw Gnoll Bounty |QID|11| |N|Deputy Rainer (24.26, 74.54)|
-A Wanted: "Hogger" |QID|176| |N|Wanted Poster - SKIP unless you have a group (24.47, 74.74)| |O|
+A Wanted: "Hogger" |QID|176| |N|Wanted Poster - SKIP unless you have a group (24.47, 74.74)| |O| |P|GROUP|
 
 C Riverpaw Gnoll Bounty |QID|11| |N|Kill gnolls south of garrison for 8 Painted Gnoll Armband (25, 86)|
 

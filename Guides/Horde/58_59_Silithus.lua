@@ -65,13 +65,13 @@ C Shattered Sword of Marduk |QID|5181| |OIDX|2| |N|Collect Shattered Sword of Ma
 R Light's Hope Chapel |TID|5181| |N|Travel west to Light's Hope Chapel (81.52, 59.75)| |Z|Eastern Plaguelands|
 T Villains of Darrowshire |QID|5181| |N|Carlin Redpath in Light's Hope Chapel (81.52, 59.75)| |Z|Eastern Plaguelands| 
 
-R The Marris Stead |QID|6135| |N|Travel south-east to The Marris Stead (26.56, 74.72)| |Z|Eastern Plaguelands|
-A Duskwing, Oh How I Hate Thee... |QID|6135| |N|Nathanos Blightcaller in The Marris Stead (26.56, 74.72)| |Z|Eastern Plaguelands| 
-A The Corpulent One |QID|6136| |N|Nathanos Blightcaller in The Marris Stead (26.72, 74.74)| |Z|Eastern Plaguelands| 
-C Duskwing, Oh How I Hate Thee... |QID|6135| |N|Kill Duskwing and collect Patch of Duskwing's Fur, you will need to group up to complete this quest. This is a popular quest and you should be able to find someone group with, otherwise it is safe to skip (31.14, 72.03)| |Z|Eastern Plaguelands|  
-T Duskwing, Oh How I Hate Thee... |QID|6135| |N|Nathanos Blightcaller in The Marris Stead (26.56, 74.75)| |Z|Eastern Plaguelands| 
-C The Corpulent One |QID|6136| |N|Kill Borelgore, you will need to group up to complete this quest. This is a popular quest and you should be able to find someone group with, otherwise it is safe to skip (53.62, 31.89) (62.24, 33.17)| |Z|Eastern Plaguelands| 
-T The Corpulent One |QID|6136| |N|Nathanos Blightcaller in The Marris Stead (26.72, 74.74)| |Z|Eastern Plaguelands| 
+R The Marris Stead |QID|6135| |N|Travel south-east to The Marris Stead (26.56, 74.72)| |P|GROUP| |Z|Eastern Plaguelands|
+A Duskwing, Oh How I Hate Thee... |QID|6135| |N|Nathanos Blightcaller in The Marris Stead (26.56, 74.72)| |P|GROUP| |Z|Eastern Plaguelands| 
+A The Corpulent One |QID|6136| |N|Nathanos Blightcaller in The Marris Stead (26.72, 74.74)| |P|GROUP| |Z|Eastern Plaguelands| 
+C Duskwing, Oh How I Hate Thee... |QID|6135| |N|Kill Duskwing and collect Patch of Duskwing's Fur, you will need to group up to complete this quest. This is a popular quest and you should be able to find someone group with, otherwise it is safe to skip (31.14, 72.03)| |P|GROUP| |Z|Eastern Plaguelands|  
+T Duskwing, Oh How I Hate Thee... |QID|6135| |N|Nathanos Blightcaller in The Marris Stead (26.56, 74.75)| |P|GROUP| |Z|Eastern Plaguelands| 
+C The Corpulent One |QID|6136| |N|Kill Borelgore, you will need to group up to complete this quest. This is a popular quest and you should be able to find someone group with, otherwise it is safe to skip (53.62, 31.89) (62.24, 33.17)| |P|GROUP| |Z|Eastern Plaguelands| 
+T The Corpulent One |QID|6136| |N|Nathanos Blightcaller in The Marris Stead (26.72, 74.74)| |P|GROUP| |Z|Eastern Plaguelands| 
 
 R Winterspring |N|Travel to Everlook in Winterspring via Moonglade or fly from Orgrimmar| |Z|Winterspring|
 

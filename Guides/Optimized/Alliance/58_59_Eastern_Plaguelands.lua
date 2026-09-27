@@ -80,16 +80,16 @@ T Blood Tinged Skies |QID|5543| |N|Tirion Fordring in Thondroril River (7.54, 43
 A Redemption |QID|5742| |N|Tirion Fordring in Thondroril River (7.54, 43.67)| |Z|Eastern Plaguelands|
 C Redemption |QID|5742| |N|Type /sit next to Tirion Fordring and speak to him (7.53, 43.68)| |Z|Eastern Plaguelands|
 T Redemption |QID|5742| |N|Tirion Fordring in Thondroril River (7.53, 43.68)| |Z|Eastern Plaguelands|
-A Of Forgotten Memories |QID|5781| |N|Tirion Fordring in Thondroril River (7.53, 43.68)| |Z|Eastern Plaguelands|
+A Of Forgotten Memories |QID|5781| |N|Tirion Fordring in Thondroril River (7.53, 43.68)| |P|GROUP| |Z|Eastern Plaguelands|
 
 R The Undercroft |QID|6021| |N|Travel to The Undercroft (27.85, 85.37)| |Z|Eastern Plaguelands|
 C Zaeldarr the Outcast |QID|6021| |N|Kill Zaeldarr the Outcast (27.47, 84.93)| |Z|Eastern Plaguelands|
 T Hameya's Plea |QID|6024| |N|Mount of dirt in The Undercroft (28.07, 86.07)| |Z|Eastern Plaguelands|
-C Of Forgotten Memories |QID|5781| |N|Click on Loose Dirt Mount to summon Mercutio Filthgorger - kill him for Taelan's Hammer (28.22, 86.21)| |Z|Eastern Plaguelands|
+C Of Forgotten Memories |QID|5781| |N|Click on Loose Dirt Mount to summon Mercutio Filthgorger - kill him for Taelan's Hammer (28.22, 86.21)| |P|GROUP| |Z|Eastern Plaguelands|
 
-R Thondroril River |QID|5845| |N|Travel to Thondroril River (7.56, 43.69)| |Z|Eastern Plaguelands|
-T Of Forgotten Memories |QID|5781| |N|Tirion Fordring in Thondroril River (7.56, 43.69)| |Z|Eastern Plaguelands|
-A Of Lost Honor |QID|5845| |N|Tirion Fordring in Thondroril River (7.56, 43.69)| |Z|Eastern Plaguelands|
+R Thondroril River |QID|5845| |N|Travel to Thondroril River (7.56, 43.69)| |P|GROUP| |Z|Eastern Plaguelands|
+T Of Forgotten Memories |QID|5781| |N|Tirion Fordring in Thondroril River (7.56, 43.69)| |P|GROUP| |Z|Eastern Plaguelands|
+A Of Lost Honor |QID|5845| |N|Tirion Fordring in Thondroril River (7.56, 43.69)| |P|GROUP| |Z|Eastern Plaguelands|
 
 R Light's Hope Chapel |QID|6021| |N|Travel to Light's Hope Chapel (79.66, 63.62)| |Z|Eastern Plaguelands|
 T Zaeldarr the Outcast |QID|6021| |N|Caretaker Alen in Light's Hope Chapel (79.66, 63.62)| |Z|Eastern Plaguelands|
@@ -103,10 +103,10 @@ T Minion's Scourgestones |QID|5510| |N|Duke Nicholas Zverenhoff (81.43, 59.84)| 
 T Corruptor's Scourgestones |QID|5508| |N|Duke Nicholas Zverenhoff (81.43, 59.84)| |Z|Eastern Plaguelands| |L|12843| |O|
 T Invader's Scourgestones |QID|5509| |N|Duke Nicholas Zverenhoff (81.43, 59.84)| |Z|Eastern Plaguelands| |L|12841 10| |O|
 
-R Northdale |QID|5845| |N|Travel to Northdale (71.28, 33.97)| |Z|Eastern Plaguelands|
-C Of Lost Honor |QID|5845| |N|Collect Symbol of Lost Honor in the middle of the lake (71.28, 33.97)| |Z|Eastern Plaguelands|
-T Of Lost Honor |QID|5845| |N|Tirion Fordring in Thondroril River (7.58, 43.72)| |Z|Eastern Plaguelands|
-A Of Love and Family (Part 1) |QID|5846| |N|Tirion Fordring in Thondroril River (7.58, 43.72)| |Z|Eastern Plaguelands|
+R Northdale |QID|5845| |N|Travel to Northdale (71.28, 33.97)| |P|GROUP| |Z|Eastern Plaguelands|
+C Of Lost Honor |QID|5845| |N|Collect Symbol of Lost Honor in the middle of the lake (71.28, 33.97)| |P|GROUP| |Z|Eastern Plaguelands|
+T Of Lost Honor |QID|5845| |N|Tirion Fordring in Thondroril River (7.58, 43.72)| |P|GROUP| |Z|Eastern Plaguelands|
+A Of Love and Family (Part 1) |QID|5846| |N|Tirion Fordring in Thondroril River (7.58, 43.72)| |P|GROUP| |Z|Eastern Plaguelands|
 
 R Sorrow Hill |QID|5153| |N|Travel to Sorrow Hill in Western Plaguelands (49.17, 78.59)| |Z|Western Plaguelands|
 T Auntie Marlene |QID|5152| |N|Marlene Redpath in Sorrow Hill (49.19, 78.61)| |Z|Western Plaguelands|
@@ -138,16 +138,16 @@ A Unfinished Business (Part 2) |QID|6023| |N|Kirsta Deepshadow (51.95, 28.10)| |
 K Huntsman Radley |QID|6023| |N|Kill Huntsman Radley (57.47, 35.93)| |Z|Western Plaguelands|
 K Cavalier Durgen |QID|6023| |N|Kill Cavalier Durgen (54.94, 23.55)| |Z|Western Plaguelands|
 T Unfinished Business (Part 2) |QID|6023| |N|Kirsta Deepshadow (51.91, 28.08)| |Z|Western Plaguelands|
-A Unfinished Business (Part 3) |QID|6025| |N|Kirsta Deepshadow (51.92, 28.04)| |Z|Western Plaguelands|
+A Unfinished Business (Part 3) |QID|6025| |N|Kirsta Deepshadow (51.92, 28.04)| |P|GROUP| |Z|Western Plaguelands|
 
-R Hearthglen |QID|6025| |N|Travel to Hearthglen (45.77, 18.31)| |Z|Western Plaguelands|
-C Unfinished Business (Part 3) |QID|6025| |N|Mount up and run to top of the tower, ignore elites then jump down - use health potion (45.77, 18.31)| |Z|Western Plaguelands|
+R Hearthglen |QID|6025| |N|Travel to Hearthglen (45.77, 18.31)| |P|GROUP| |Z|Western Plaguelands|
+C Unfinished Business (Part 3) |QID|6025| |N|Mount up and run to top of the tower, ignore elites then jump down - use health potion (45.77, 18.31)| |P|GROUP| |Z|Western Plaguelands|
 
-R Northridge Lumber Camp |QID|6025| |N|Travel to Northridge Lumber Camp (51.94, 28.06)| |Z|Western Plaguelands|
-T Unfinished Business (Part 3) |QID|6025| |N|Kirsta Deepshadow (51.94, 28.06)| |Z|Western Plaguelands|
+R Northridge Lumber Camp |QID|6025| |N|Travel to Northridge Lumber Camp (51.94, 28.06)| |P|GROUP| |Z|Western Plaguelands|
+T Unfinished Business (Part 3) |QID|6025| |N|Kirsta Deepshadow (51.94, 28.06)| |P|GROUP| |Z|Western Plaguelands|
 
-R Caer Darrow |QID|5846| |N|Travel to Caer Darrow (65.76, 75.36)| |Z|Western Plaguelands|
-T Of Love and Family (Part 1) |QID|5846| |N|Artist Renfray in Caer Darrow (65.76, 75.36)| |Z|Western Plaguelands|
+R Caer Darrow |QID|5846| |N|Travel to Caer Darrow (65.76, 75.36)| |P|GROUP| |Z|Western Plaguelands|
+T Of Love and Family (Part 1) |QID|5846| |N|Artist Renfray in Caer Darrow (65.76, 75.36)| |P|GROUP| |Z|Western Plaguelands|
 
 R Chillwind Camp |QID|6389| |N|Travel to Chillwind Camp (43.42, 84.84)| |Z|Western Plaguelands|
 T A Plague Upon Thee (Part 3) |QID|6389| |N|Nathaniel Dumah in Chillwind Camp (43.42, 84.84)| |Z|Western Plaguelands|

@@ -21,7 +21,7 @@ T A Swift Message |QID|6181| |N|Thor at Sentinel Hill (56.54, 52.64)|
 A Continue to Stormwind |QID|6281| |N|Thor at Sentinel Hill (56.54, 52.64)|
 f Sentinel Hill |QID|6281| |N|Get flight path from Thor at Sentinel Hill (56.54, 52.64)|
 
-R Stormwind City |QID|61| |N|Travel to Stormwind City. If you killed Hogger with a group earlier, you can hearth to Goldshire and turn it in at the inn, then continue to Stormwind| |Z|Stormwind City|
+R Stormwind City |QID|61| |N|Travel to Stormwind City. If you killed Hogger with a group earlier, you can hearth to Goldshire and turn it in at the inn, then continue to Stormwind| |P|GROUP| |Z|Stormwind City|
 
 T Shipment to Stormwind |QID|61| |N|Morgan Pestle in Trade District (56.23, 64.59)| |Z|Stormwind City|
 N Train Weapons |N|Visit the weapon trainer at (57, 57) to learn new weapon skills| |Z|Stormwind City|

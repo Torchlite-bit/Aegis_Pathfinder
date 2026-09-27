@@ -126,12 +126,12 @@ T Scavenging the Wrecks |QID|41726| |N|Harlekk (59.9, 30.5)| |Z|Grim Reaches|
 T The Betrayal of Rethkag |QID|41724| |N|Gar'gekk (59, 30.1)| |Z|Grim Reaches|
 T Stolgaz Documents |QID|41720| |N|Advisor Ranagg (58.9, 29.8)| |Z|Grim Reaches|
 T Death to Geshgan |QID|41719| |N|Commander Aggnash (58.8, 29.5)| |Z|Grim Reaches|
-A Zarm'geth Stronghold |QID|41721| |N|Commander Aggnash (58.8, 29.5)| |Z|Grim Reaches|
+A Zarm'geth Stronghold |QID|41721| |N|Commander Aggnash (58.8, 29.5)| |P|GROUP| |Z|Grim Reaches|
 
-R Zarm'geth Stronghold |QID|41721| |N|Return to Zarm'geth Stronghold (30, 25)| |Z|Grim Reaches|
-C Zarm'geth Stronghold |QID|41721| |N|Slay 7 Dragonmaw Elites, 7 Dragonmaw Champions, and 7 Dragonmaw Darkweavers. This is an elite area - consider grouping (30, 25) (28, 22)| |Z|Grim Reaches|
+R Zarm'geth Stronghold |QID|41721| |N|Return to Zarm'geth Stronghold (30, 25)| |P|GROUP| |Z|Grim Reaches|
+C Zarm'geth Stronghold |QID|41721| |N|Slay 7 Dragonmaw Elites, 7 Dragonmaw Champions, and 7 Dragonmaw Darkweavers. This is an elite area - consider grouping (30, 25) (28, 22)| |P|GROUP| |Z|Grim Reaches|
 
-T Zarm'geth Stronghold |QID|41721| |N|Commander Aggnash at Shatterblade Post (58.8, 29.5)| |Z|Grim Reaches|
+T Zarm'geth Stronghold |QID|41721| |N|Commander Aggnash at Shatterblade Post (58.8, 29.5)| |P|GROUP| |Z|Grim Reaches|
 
 N Optional: Entranced Magic Chain |QID|41727| |N|Far Seer Mothang has a lengthy quest chain requiring items from The Grim Hollow (Dark Essence), Desolace (Lingering Fel Energy), and Stranglethorn (Crystal Spine Scale). Complete these when convenient| |O|
 C Entranced Magic |QID|41727| |N|Gather 5 Vials of Entranced Blood from creatures in the zone (50, 60)| |Z|Grim Reaches|

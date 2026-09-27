@@ -15,13 +15,13 @@ A The Dunemaul Compound |QID|5863| |N|Andi Lynn behind Inn (52.76, 27.37)| |Z|Ta
 A Thistleshrub Valley |QID|3362| |N|Tran'rek near north entrance (51.59, 26.77)| |Z|Tanaris|
 
 R Broken Pillar |QID|3161| |N|Travel to Broken Pillar (52.72, 45.92)| |Z|Tanaris|
-T The Sunken Temple |QID|3445| |N|Marvon Rivetseeker (52.72, 45.92)| |Z|Tanaris|
-A The Stone Circle |QID|3444| |N|Marvon Rivetseeker (52.72, 45.92)| |Z|Tanaris|
+T The Sunken Temple |QID|3445| |N|Marvon Rivetseeker (52.72, 45.92)| |D|ST| |Z|Tanaris|
+A The Stone Circle |QID|3444| |N|Marvon Rivetseeker (52.72, 45.92)| |D|ST| |Z|Tanaris|
 A Gahz'ridian |QID|3161| |N|Marvon Rivetseeker (52.72, 45.92)| |Z|Tanaris|
 
 N Gahz'ridian Detector |QID|3161| |N|Equip the Gahz'ridian Detector to help find ornaments - yellow dots on minimap| |U|9978|
 
-N Grind Rocs |QID|1452| |N|Kill Searing Roc at skeletons around (49, 36) and (44, 39) for Roc Gizzard|
+N Grind Rocs |QID|1452| |N|Kill Searing Roc at skeletons around (49, 36) and (44, 39) for Roc Gizzard| |D|ST|
 
 R Dunemaul Compound |QID|5863| |N|Travel to Dunemaul Compound (40.43, 55.72)| |Z|Tanaris|
 C Gor'marok the Ravager |QID|5863| |OIDX|3| |N|Kill Gor'marok the Ravager inside the cave (41.46, 57.78)| |Z|Tanaris|
@@ -32,11 +32,11 @@ C Gahz'ridian |QID|3161| |N|Collect 30 Gahz'ridian Ornament from ruins (47.02, 6
 
 N Grind to 10k from 48 |N|Grind on ogres until you're about 10,000 from level 48|
 
-R Uldum |QID|2963| |N|Travel to Uldum pedestal (37, 81)| |Z|Tanaris|
-T Seeing What Happens |QID|2963| |N|Touch the pedestal at Uldum (37, 81)| |Z|Tanaris| |O|
-A The Stone Watcher |QID|2954| |N|Stone Watcher of Norgannon - talk until complete| |Z|Tanaris| |O|
-T The Stone Watcher |QID|2954| |N|Touch the pedestal again| |Z|Tanaris| |O|
-A Return to Ironforge |QID|2963| |N|Touch the pedestal one more time| |Z|Tanaris| |O|
+R Uldum |QID|2963| |N|Travel to Uldum pedestal (37, 81)| |D|ULDA| |Z|Tanaris|
+T Seeing What Happens |QID|2963| |N|Touch the pedestal at Uldum (37, 81)| |D|ULDA| |Z|Tanaris| |O|
+A The Stone Watcher |QID|2954| |N|Stone Watcher of Norgannon - talk until complete| |D|ULDA| |Z|Tanaris| |O|
+T The Stone Watcher |QID|2954| |N|Touch the pedestal again| |D|ULDA| |Z|Tanaris| |O|
+A Return to Ironforge |QID|2963| |N|Touch the pedestal one more time| |D|ULDA| |Z|Tanaris| |O|
 
 R Thistleshrub Valley |QID|3362| |N|Travel west to Thistleshrub Valley (29.66)| |Z|Tanaris|
 K Thistleshrub Dew Collector |QID|2605| |N|Kill Thistleshrub Dew Collector until Laden Dew Gland drops (28.18, 63.86)| |Z|Tanaris|
@@ -50,7 +50,7 @@ R The Noxious Lair |QID|82| |N|Travel to The Noxious Lair (34, 46)| |Z|Tanaris|
 C Noxious Lair Investigation |QID|82| |N|Kill Centipaar insects for 5 Centipaar Insect Parts (34, 47)| |Z|Tanaris|
 
 T Tooga's Quest |QID|1560| |N|Escort Tooga to Torta near Steamwheedle Port (66.57, 25.69)| |Z|Tanaris| |O|
-A Yuka Screwspigot |QID|2768| |N|Torta near Steamwheedle Port| |Z|Tanaris| |O|
+A Yuka Screwspigot |QID|2768| |N|Torta near Steamwheedle Port| |D|ZF| |Z|Tanaris| |O|
 T Screecher Spirits |QID|3520| |N|Yeh'kinya in Steamwheedle Port (66.99, 22.36)| |Z|Tanaris|
 
 H Gadgetzan |QID|2605| |N|Hearth to Gadgetzan| |Z|Tanaris|
@@ -91,9 +91,9 @@ F Ironforge |QID|3843| |N|Fly to Ironforge| |Z|Ironforge|
 h Ironforge |QID|3843| |N|Set hearth in Ironforge| |Z|Ironforge|
 N Train Skills |N|Get new skills from your class trainer|
 
-T Return to Ironforge |QID|2963| |N|Historian Karnik in The Library (77.48, 11.82)| |Z|Ironforge| |O|
-A A Future Task |QID|2964| |N|Historian Karnik (77, 11)| |Z|Ironforge| |O|
-T A Future Task |QID|2964| |N|High Explorer Magellas (70, 18)| |Z|Ironforge| |O|
+T Return to Ironforge |QID|2963| |N|Historian Karnik in The Library (77.48, 11.82)| |D|ULDA| |Z|Ironforge| |O|
+A A Future Task |QID|2964| |N|Historian Karnik (77, 11)| |D|ULDA| |Z|Ironforge| |O|
+T A Future Task |QID|2964| |N|High Explorer Magellas (70, 18)| |D|ULDA| |Z|Ironforge| |O|
 
 A Passing the Burden |QID|3448| |N|Historian Karnik (77.48, 11.82)| |Z|Ironforge|
 T Passing the Burden |QID|3448| |N|Tymor in Mystic Ward (31.04, 4.77)| |Z|Ironforge|

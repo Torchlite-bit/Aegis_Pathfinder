@@ -51,15 +51,15 @@ A The Eye of Paleth |QID|292| |N|Intrepid's Locked Strongbox (14.5, 24.1)|
 
 R Angerfang Encampment |TID|465| |N|Travel to Angerfang Encampment (47.5, 46.9)| |O|
 T Nek'rosh's Gambit |QID|465| |N|Dragonmaw Catapult in Angerfang Encampment (47.5, 46.9)| |O|
-A Defeat Nek'rosh |QID|474| |N|Dragonmaw Catapult in Angerfang Encampment (47.40, 46.90)| |Z|Wetlands| |PRE|465|
-C Defeat Nek'rosh |QID|474| |N|Kill Chieftain Nek'rosh in Angerfang Encampment. Chieftain Nek'rosh is a level 32 elite npc and difficult to solo, you can give it a try if you're good, the graveyard is nearby otherwise safe to skip (53.50, 54.67)| |Z|Wetlands| |PRE|465|
+A Defeat Nek'rosh |QID|474| |N|Dragonmaw Catapult in Angerfang Encampment (47.40, 46.90)| |P|GROUP| |Z|Wetlands| |PRE|465|
+C Defeat Nek'rosh |QID|474| |N|Kill Chieftain Nek'rosh in Angerfang Encampment. Chieftain Nek'rosh is a level 32 elite npc and difficult to solo, you can give it a try if you're good, the graveyard is nearby otherwise safe to skip (53.50, 54.67)| |P|GROUP| |Z|Wetlands| |PRE|465|
 
 R Deepwater Tavern |OID|293| |N|Travel or Hearthstone to Deepwater Tavern (10.60, 60.61)| |Z|Wetlands|
 T The Eye of Paleth |QID|292| |N|Glorin Steelbrow in Deepwater Tavern (10.60, 60.61)| |Z|Wetlands|
 A Cleansing the Eye |QID|293| |N|Glorin Steelbrow in Deepwater Tavern (10.60, 60.61)| |Z|Wetlands|
 
 R Menethil Keep |TID|474| |N|Travel to Menethil Keep (9.90, 57.45)| |Z|Wetlands|
-T Defeat Nek'rosh |QID|474| |N|Captain Stoutfist in Menethil Keep (9.90, 57.45)| |Z|Wetlands| |PRE|465|
+T Defeat Nek'rosh |QID|474| |N|Captain Stoutfist in Menethil Keep (9.90, 57.45)| |P|GROUP| |Z|Wetlands| |PRE|465|
 
 R Hillsbrad Foothills |N|Travel north through Dun Modr, cross the Thandol Span into Arathi Highlands, then head west into Hillsbrad Foothills. Go to Southshore (51.10, 58.90)| |Z|Hillsbrad Foothills|
 

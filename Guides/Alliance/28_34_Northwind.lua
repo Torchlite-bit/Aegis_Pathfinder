@@ -166,14 +166,14 @@ T Some May Call It Quackery |QID|41691| |N|The Witch of Northwind (34.4, 23.6).|
 
 N Blackrock and Dark Iron Quests |N|Higher level content in the zone.|
 
-A Orcs by Our Borders |QID|41676| |N|Colonel Driscol at the Plump Pumpkin Inn (63.3, 73.3).| |Z|Northwind|
+A Orcs by Our Borders |QID|41676| |N|Colonel Driscol at the Plump Pumpkin Inn (63.3, 73.3).| |P|GROUP| |Z|Northwind|
 A Darker than Iron |QID|41677| |N|Colonel Driscol at the Plump Pumpkin Inn (63.3, 73.3).| |Z|Northwind|
 
 C Darker than Iron |QID|41677| |N|Sabotage fifteen Dark Iron Gunpowder Kegs around the Blackrock camps (75, 35) (78, 38) (80, 40).| |Z|Northwind|
-C Orcs by Our Borders |QID|41676| |N|Kill Overlord Throkk (83.7, 58.2), Ozuk Doomspike (75.8, 34), and Shuni Steeltooth (54.2, 32.4). These are elite commanders.| |Z|Northwind|
+C Orcs by Our Borders |QID|41676| |N|Kill Overlord Throkk (83.7, 58.2), Ozuk Doomspike (75.8, 34), and Shuni Steeltooth (54.2, 32.4). These are elite commanders.| |P|GROUP| |Z|Northwind|
 
 T Darker than Iron |QID|41677| |N|Colonel Driscol at the Plump Pumpkin Inn (63.3, 73.3).| |Z|Northwind|
-T Orcs by Our Borders |QID|41676| |N|Colonel Driscol at the Plump Pumpkin Inn (63.3, 73.3).| |Z|Northwind|
+T Orcs by Our Borders |QID|41676| |N|Colonel Driscol at the Plump Pumpkin Inn (63.3, 73.3).| |P|GROUP| |Z|Northwind|
 
 A Misery At Sherwood Quarry |QID|41687| |N|Duke Sherwood at the Jousting Grounds (37.9, 57.4).| |Z|Northwind|
 

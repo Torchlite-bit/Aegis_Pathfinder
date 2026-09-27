@@ -87,7 +87,7 @@ C Pie for Billy |QID|86| |N|Kill any of the boars surrounding Elywnn Forest to c
 R The Stonefield Farm |QID|84| |N|Travel to The Stonefield Farm (34.5, 84.3)|
 T Pie for Billy |QID|86| |N|\Auntie\ Bernice Stonefield in The Stonefield Farm (34.5, 84.3)|
 A Back to Billy |QID|84| |N|\Auntie\ Bernice Stonefield in The Stonefield Farm (34.5, 84.3)|
-A Princess Must Die! |QID|88| |N|Ma Stonefield in The Stonefield Farm (34.61, 84.43)|
+A Princess Must Die! |QID|88| |N|Ma Stonefield in The Stonefield Farm (34.61, 84.43)| |P|GROUP|
 T Young Lovers |QID|106| |N|Tommy Joe Stonefield in The Stonefield Farm (29.86, 85.90)|
 A Speak with Gramma |QID|111| |N|Tommy Joe Stonefield in The Stonefield Farm (29.86, 85.90)|
 T Speak with Gramma |QID|111| |N|Gramma Stonefield in The Stonefield Farm (34.95, 83.84)|
@@ -141,25 +141,25 @@ A A Bundle of Trouble |QID|5545| |N|Supervisor Raelen in Eastvale Logging Camp (
 
 N As you go... |AYG|45| |QID|5545| |N|Collect 8 Bundle of Wood near the base of the trees and kill 8 Prowler and 5 Young Forest Bear| |EQID|52|
 T Find the Lost Guards |QID|37| |N|A Half-eaten Body in Stone Cairn Lake (72.7, 60.5)|
-A Discover Rolf's Fate |QID|45| |N|A Half-eaten Body in Stone Cairn Lake (72.7, 60.5)|
-T Discover Rolf's Fate |QID|45| |N|Rolf's corpse in Stone Cairn Lake (79.8, 55.6)|
-A Report to Thomas |QID|71| |N|Rolf's corpse in Stone Cairn Lake (79.8, 55.6)|
+A Discover Rolf's Fate |QID|45| |N|A Half-eaten Body in Stone Cairn Lake (72.7, 60.5)| |P|GROUP|
+T Discover Rolf's Fate |QID|45| |N|Rolf's corpse in Stone Cairn Lake (79.8, 55.6)| |P|GROUP|
+A Report to Thomas |QID|71| |N|Rolf's corpse in Stone Cairn Lake (79.8, 55.6)| |P|GROUP|
 
 C The Master and the Student |QID|41748| |N|Kill Ralthas and collect Necklace of Azora; He patrols around. You can also collect some Red Linen Bandana here for a later quest (74, 49.4)|
 
 C A Bundle of Trouble |QID|5545| |N|Collect 8 Bundle of Wood near the base of the trees in Stone Cairn Lake (80.25, 60.11)| |OBJ|1248|
 C Protect the Frontier |QID|52| |N|Kill 8 Prowler and 5 Young Forest Bear which can both be found to the east around Eastvale Logging Camp as well as in the southern area across the bridge (81, 62) (83, 78)|
 
-R Eastvale Logging Camp |QID|39| |N|Travel to Eastvale Logging Camp (81.45, 66.19)|
+R Eastvale Logging Camp |QID|39| |N|Travel to Eastvale Logging Camp (81.45, 66.19)| |P|GROUP|
 T A Bundle of Trouble |QID|5545| |N|Supervisor Raelen in Eastvale Logging Camp (81.45, 66.19)|
 
-C Princess Must Die! |QID|88| |N|Kill Princess and loot the Brass Collar; She patrols around with two level 7 guards. Find a group if you can; You can skip it if you're unable to complete (69, 78)|
+C Princess Must Die! |QID|88| |N|Kill Princess and loot the Brass Collar; She patrols around with two level 7 guards. Find a group if you can; You can skip it if you're unable to complete (69, 78)| |P|GROUP|
 C Red Linen Goods |QID|83| |N|Kill the Defias Bandit in the area to collect 6 Red Linen Bandana (90.09, 80.19) (69.99, 80.31)|
 K Defias Bandit |QID|184| |N|Keep killing Defias Bandit until you find Westfall Deed to begin a quest. It's a low drop rate, so skip this if you want (69.99, 80.31)| |L|1972|
 A Furlbrow's Deed |QID|184| |N|Use Westfall Deed to accept quest| |U|1972| |O|
 
-T Report to Thomas |QID|71| |N|Guard Thomas in Elwynn Forest (73.89, 72.18)|
-A Deliver Thomas' Report |QID|39| |N|Guard Thomas in Elwynn Forest (73.89, 72.18)|
+T Report to Thomas |QID|71| |N|Guard Thomas in Elwynn Forest (73.89, 72.18)| |P|GROUP|
+A Deliver Thomas' Report |QID|39| |N|Guard Thomas in Elwynn Forest (73.89, 72.18)| |P|GROUP|
 T Protect the Frontier |QID|52| |N|Guard Thomas in Elwynn Forest (73.89, 72.18)|
 A Report to Gryan Stoutmantle |QID|109| |N|Guard Thomas in Elwynn Forest (73.96, 72.16)| |Z|Elwynn Forest|
 
@@ -173,8 +173,8 @@ T That Dirty Old Ring |QID|60130| |N|Zaldimar Wefhellt upstairs in Goldshire Inn
 A The Tower of Azora |QID|41747| |N|Zaldimar Wefhellt (43.28, 66.22)|
 T Collecting Kelp |QID|112| |N|William Pestle in Goldshire (43.28, 66.22)|
 A The Escape |QID|114| |N|William Pestle in Goldshire (43.43, 66.05)|
-T Deliver Thomas' Report |QID|39| |N|Marshal Dughan in Goldshire (42.14, 65.90)|
-A Cloth and Leather Armor |QID|59| |N|Marshal Dughan in Goldshire (42.11, 65.97)|
+T Deliver Thomas' Report |QID|39| |N|Marshal Dughan in Goldshire (42.14, 65.90)| |P|GROUP|
+A Cloth and Leather Armor |QID|59| |N|Marshal Dughan in Goldshire (42.11, 65.97)| |P|GROUP|
 T The Jasperlode Mine |QID|76| |N|Marshal Dughan in Goldshire (42.14, 65.90)|
 A Westbrook Garrison Needs Help! |QID|239| |N|Marshal Dughan in Goldshire (42.14, 65.90)|
 A Elmore's Task |QID|1097| |N|Smith Argus in Goldshire (42.01, 65.60)|
@@ -182,7 +182,7 @@ A Elmore's Task |QID|1097| |N|Smith Argus in Goldshire (42.01, 65.60)|
 R Maclure Vineyards |TID|87| |N|Travel to the Maclure Vineyards (43.12, 89.55)|
 T The Escape |QID|114| |N|Maybell Maclure in the Maclure Vineyards (43.12, 89.55)|
 T Goldtooth |QID|87| |N|\Auntie\ Bernice Stonefield in The Stonefield Farm (34.5, 84.3)|
-T Princess Must Die! |QID|88| |N|Ma Stonefield in The Stonefield Farm (34.61, 84.43)|
+T Princess Must Die! |QID|88| |N|Ma Stonefield in The Stonefield Farm (34.61, 84.43)| |P|GROUP|
 
 N Level 10 Required |N|You need to be at least level 10 to continue; Keep grinding nearby mobs until you reach level 10| 
 R Goldshire |QID|1860| |N|Travel or Hearthstone to Goldshire (43.28, 66.22)|
@@ -194,7 +194,7 @@ A Gakin's Summons |QID|1685| |N|Remen Marcot in Goldshire (44.5, 66.1)| |C|Warlo
 R Westbrook Garrison |TID|239| |N|Travel to Westbrook Garrison (24.26, 74.54)|
 T Westbrook Garrison Needs Help! |QID|239| |N|Deputy Rainer in Westbrook Garrison (24.26, 74.54)|
 A Riverpaw Gnoll Bounty |QID|11| |N|Deputy Rainer in Westbrook Garrison (24.26, 74.54)|
-A Wanted: "Hogger" |QID|176| |N|Wanted Poster in Westbrook Garrison (24.47, 74.74)|
+A Wanted: "Hogger" |QID|176| |N|Wanted Poster in Westbrook Garrison (24.47, 74.74)| |P|GROUP|
 
 R The Jansen Stead |QID|109| |N|Travel to The Jansen Stead (60.00, 19.37)| |Z|Westfall|
 T Furlbrow's Deed |QID|184| |N|Farmer Furlbrow in The Jansen Stead (60.00, 19.37)| |Z|Westfall| |O|
@@ -264,7 +264,7 @@ T Return to Lewis |QID|6285| |N|Quartermaster Lewis (56.9, 47.2)| |Z|Westfall|
 R Forest's Edge |QID|11| |N|Travel to Forest's Edge (63.96, 26.68) (25, 86)|
 C Riverpaw Gnoll Bounty |QID|11| |N|Collect 8 Painted Gnoll Armband from the Riverpaw Outrunner and Riverpaw Runt which can be found to the South (25, 86)|
 C Culling the Riverpaw |QID|60042| |N| Kill 10 Riverpaw Outrunner and 10 Riverpaw Runt (25, 86)|
-C Wanted: "Hogger" |QID|176| |N|Kill Hogger and collect Huge Gnoll Claw in Forest's Edge. This is a group quest and safe to skip (26.14, 94.34)|
+C Wanted: "Hogger" |QID|176| |N|Kill Hogger and collect Huge Gnoll Claw in Forest's Edge. This is a group quest and safe to skip (26.14, 94.34)| |P|GROUP|
 
 N Gold Pickup Schedule |QID|123| |N|Kill Gnolls until you find Gold Pickup Schedule to begin a new quest; You can skip this if you can't find it (25, 86)| |L|1307|
 A The Collector |QID|123| |N|Use Gold Pickup Schedule to accept quest| |U|1307| |O|
@@ -274,7 +274,7 @@ T Riverpaw Gnoll Bounty |QID|11| |N|Deputy Rainer in Westbrook Garrison (24.26, 
 
 R Goldshire |TID|123| |N|Travel to Goldshire (42.12, 65.96)|
 T The Collector |QID|123| |N|Marshal Dughan in Goldshire (42.12, 65.96)| |O|
-T Wanted: "Hogger" |QID|176| |N|Marshal Dughan in Goldshire (42.12, 65.96)|
+T Wanted: "Hogger" |QID|176| |N|Marshal Dughan in Goldshire (42.12, 65.96)| |P|GROUP|
 A Manhunt |QID|147| |N|Marshal Dughan in Goldshire (42.12, 65.96)|
 
 R Tower of Azora |QID|87| |N|Travel to the Tower of Azora (64.1, 68.6)|
@@ -289,7 +289,7 @@ C Bounty on Murlocs |QID|46| |N|Kill Murlocs and collect 8 Torn Murloc Fin in St
 T Bounty on Murlocs |QID|46| |N|Guard Thomas in Elwynn Forest (73.89, 72.18)|
 
 R Eastvale Logging Camp |TID|59| |N|Travel to Eastvale Logging Camp (79.50, 68.69)|
-T Cloth and Leather Armor |QID|59| |N|Sara Timberlain in Eastvale Logging Camp (79.50, 68.69)|
+T Cloth and Leather Armor |QID|59| |N|Sara Timberlain in Eastvale Logging Camp (79.50, 68.69)| |P|GROUP|
 T Culling the Riverpaw |QID|60042| |N|Supervisor Raelen in Eastvale Logging Camp (81.4, 66.1)|
 
 T Marshal Haggard |QID|1666| |N|Marshal Haggard in Eastvale Logging Camp (84.61, 69.37)| |C|Warrior|

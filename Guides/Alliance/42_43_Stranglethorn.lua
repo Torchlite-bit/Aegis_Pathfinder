@@ -55,11 +55,11 @@ R Stranglethorn Vale |QID|197| |N|Travel to Nesingwary's Expedition (35.7, 10.8)
 C Raptor Mastery (Part 4) |QID|197| |N|Kill Tethis and loot Talon of Tethis (28, 44)| |O|
 
 T Raptor Mastery (Part 4) |QID|197| |N|Hemet Nesingwary in Nesingwary's Expedition (35.7, 10.8)| |O|
-A Big Game Hunter |QID|208| |N|Hemet Nesingwary in Nesingwary's Expedition (35.7, 10.8)| |PRE|197|
-C Big Game Hunter |QID|208| |N|Kill King Bangalash and loot the Head of Bangalash (38, 35)| |PRE|197|
+A Big Game Hunter |QID|208| |N|Hemet Nesingwary in Nesingwary's Expedition (35.7, 10.8)| |PRE|197| |P|GROUP|
+C Big Game Hunter |QID|208| |N|Kill King Bangalash and loot the Head of Bangalash (38, 35)| |PRE|197| |P|GROUP|
 
 R Nesingwary's Expedition |TID|208| |N|Travel to Nesingwary's Expedition (35.7, 10.8)| |PRE|197|
-T Big Game Hunter |QID|208| |N|Hemet Nesingwary in Nesingwary's Expedition (35.7, 10.8)| |PRE|197|
+T Big Game Hunter |QID|208| |N|Hemet Nesingwary in Nesingwary's Expedition (35.7, 10.8)| |PRE|197| |P|GROUP|
 
 R Booty Bay |TID|609| |N|Travel or Hearthstone to Booty Bay (27.1, 77.3)| |U|6948|
 T Zanzil's Secret |QID|621| |N|Crank Fizzlebub in The Salty Sailor Tavern (27.1, 77.3)|

@@ -19,15 +19,15 @@ A The Eye of Paleth |QID|292| |N|Intrepid's Locked Strongbox (14.5, 24.1)|
 
 R Angerfang Encampment |TID|465| |N|Travel to Angerfang Encampment (47.5, 46.9)| |O|
 T Nek'rosh's Gambit |QID|465| |N|Dragonmaw Catapult in Angerfang Encampment (47.5, 46.9)| |O|
-A Defeat Nek'rosh |QID|474| |N|Dragonmaw Catapult in Angerfang Encampment (47.40, 46.90)| |Z|Wetlands|
-C Defeat Nek'rosh |QID|474| |N|Kill Chieftain Nek'rosh (level 32 elite) - difficult to solo, skip if needed (53.50, 54.67)| |Z|Wetlands| |O|
+A Defeat Nek'rosh |QID|474| |N|Dragonmaw Catapult in Angerfang Encampment (47.40, 46.90)| |P|GROUP| |Z|Wetlands|
+C Defeat Nek'rosh |QID|474| |N|Kill Chieftain Nek'rosh (level 32 elite) - difficult to solo, skip if needed (53.50, 54.67)| |P|GROUP| |Z|Wetlands| |O|
 
 R Deepwater Tavern |OID|293| |N|Travel or Hearthstone to Deepwater Tavern (10.60, 60.61)| |Z|Wetlands|
 T The Eye of Paleth |QID|292| |N|Glorin Steelbrow in Deepwater Tavern (10.60, 60.61)| |Z|Wetlands|
 A Cleansing the Eye |QID|293| |N|Glorin Steelbrow in Deepwater Tavern (10.60, 60.61)| |Z|Wetlands|
 
 R Menethil Keep |TID|474| |N|Travel to Menethil Keep (9.90, 57.45)| |Z|Wetlands|
-T Defeat Nek'rosh |QID|474| |N|Captain Stoutfist in Menethil Keep (9.90, 57.45)| |Z|Wetlands| |O|
+T Defeat Nek'rosh |QID|474| |N|Captain Stoutfist in Menethil Keep (9.90, 57.45)| |P|GROUP| |Z|Wetlands| |O|
 
 N To Arathi Highlands |N|You are now ready to proceed to Arathi Highlands (30+)|
 

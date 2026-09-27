@@ -139,11 +139,11 @@ T The Tower of Lapidis VIII |QID|40170| |N|Insom'ni on Kazon Island (56.2, 16.2)
 A The Tower of Lapidis IX |QID|40171| |N|Insom'ni on Kazon Island (56.2, 16.2)| |Z|Lapidis Isle|
 C The Tower of Lapidis IX |QID|40171| |N|Wait for Insom'ni to attune the Enchanted Brass Key| |Z|Lapidis Isle|
 T The Tower of Lapidis IX |QID|40171| |N|Return the key to Hydromancer Flakereef in Caelan's Rest (59.2, 43.8)| |Z|Lapidis Isle|
-A The Tower of Lapidis X |QID|40303| |N|Hydromancer Flakereef in Caelan's Rest (59.2, 43.8). This is a group quest!| |Z|Lapidis Isle|
+A The Tower of Lapidis X |QID|40303| |N|Hydromancer Flakereef in Caelan's Rest (59.2, 43.8). This is a group quest!| |P|GROUP| |Z|Lapidis Isle|
 
 N Group Quest: The Tower of Lapidis X |N|Venture into The Tower of Lapidis dungeon, slay Arch Hydromancer Lapidis, and return his head to Colonel Hardinus. You will need a group of fellow adventurers!|
-C The Tower of Lapidis X |QID|40303| |N|Enter The Tower of Lapidis with a group, slay Arch Hydromancer Lapidis and take his head| |Z|Lapidis Isle|
-T The Tower of Lapidis X |QID|40303| |N|Colonel Hardinus in Caelan's Rest (61.2, 41.4)| |Z|Lapidis Isle|
+C The Tower of Lapidis X |QID|40303| |N|Enter The Tower of Lapidis with a group, slay Arch Hydromancer Lapidis and take his head| |P|GROUP| |Z|Lapidis Isle|
+T The Tower of Lapidis X |QID|40303| |N|Colonel Hardinus in Caelan's Rest (61.2, 41.4)| |P|GROUP| |Z|Lapidis Isle|
 
 N Optional: An Extravagant Book |QID|40153| |N|Found in a barrel on the island. Return it to Father Benofar in Caelan's Rest (57.1, 43.1)| |Z|Lapidis Isle| |O|
 A An Extravagant Book |QID|40153| |N|Found in a barrel in shipwreck areas around the island| |Z|Lapidis Isle| |O|
@@ -154,7 +154,7 @@ N Optional Off-Island Quests |N|The Hazzuri Primalists have quests requiring tra
 T Thunderhead Horn |QID|40158| |N|Head-Primalist Manaz'ago in the Hazzuri Glade (52.7, 49.7). Requires Pristine Thunderhead Horn from Azshara| |Z|Lapidis Isle| |O|
 T Rumors of the Great Fire Plume |QID|40159| |N|Head-Primalist Manaz'ago in the Hazzuri Glade (52.7, 49.7). Requires Pure Volcanic Ember from Un'Goro Crater| |Z|Lapidis Isle| |O|
 
-N Guide Complete |N|You have completed the Lapidis Isle guide. Continue to Felwood (53-54) or return to complete any remaining group content.|
+N Guide Complete |N|You have completed the Lapidis Isle guide. Continue to Felwood (53-54) or return to complete any remaining group content.| |P|GROUP|
 
 ]]
 end)

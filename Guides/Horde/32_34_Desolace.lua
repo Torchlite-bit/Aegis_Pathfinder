@@ -51,9 +51,9 @@ A Other Fish to Fry |QID|6143| |N|Drulzegar Skraghook in Shadowprey Village (23.
 A Clam Bait |QID|6142| |N|Mai'Lahii in Shadowprey Village (22.67, 71.97)|
 f Shadowprey Village |QID|5741| |N|Speak to Thalon and grab flight path for Shadowprey Village (21.6, 74)|
 
-N Shellfish |QID|5386| |N|Collect 10 Shellfish from Shellfish Trap in The Veiled Sea, you need this to get 2 Bloodbelly Fish from Jinar'Zillen  (21.20, 76.11) (19.01, 77.67) (19.16, 81.38)| |L|13545 10|
-T Fish in a Bucket |QID|5421| |N|Jinar'Zillen in Shadowprey Village (22.4, 73)|
-N Please Read |QID|5386| |N|Keep the 2 Bloodbelly Fish that you received from quest reward, this is required for 'Catch of the Day' quest later. Tick this step|
+N Shellfish |QID|5386| |N|Collect 10 Shellfish from Shellfish Trap in The Veiled Sea, you need this to get 2 Bloodbelly Fish from Jinar'Zillen  (21.20, 76.11) (19.01, 77.67) (19.16, 81.38)| |L|13545 10| |AH|
+T Fish in a Bucket |QID|5421| |N|Jinar'Zillen in Shadowprey Village (22.4, 73)| |AH|
+N Please Read |QID|5386| |N|Keep the 2 Bloodbelly Fish that you received from quest reward, this is required for 'Catch of the Day' quest later. Tick this step| |AH|
 
 R Ethel Rethor |QID|6161| |N|Travel to Ethel Rethor (36.03, 30.41)|
 A Claim Rackmore's Treasure! |QID|6161| |N|Rackmore's Log in Ethel Rethor (36.03, 30.41)|
@@ -69,13 +69,13 @@ C The Burning of Spirits |QID|1435| |N|Use the Burning Gem on the humanoids afte
 N Flayed Demon Skin |QID|1480| |N|Kill Burning Blade enemies until you find Flayed Demon Skin (56.2, 28.1)| |L|20310|
 A The Corrupter (Part 1) |QID|1480| |N|Use Flayed Demon Skin to accept quest| |U|20310|
 
-R Ghost Walker Post |QID|5386| |N|Travel to Ghost Walker Post (52.24, 53.50)|
+R Ghost Walker Post |QID|5386| |N|Travel to Ghost Walker Post (52.24, 53.50)| |AH|
 T The Burning of Spirits |QID|1435| |N|Maurin Bonesplitter in Ghost Walker Post (52.24, 53.50)|
 T The Corrupter (Part 1) |QID|1480| |N|Maurin Bonesplitter in Ghost Walker Post (52.24, 53.50)|
 A The Corrupter (Part 2) |QID|1481| |N|Maurin Bonesplitter in Ghost Walker Post (52.24, 53.50)|
-A Catch of the Day |QID|5386| |N|Nataka Longhorn in Ghost Walker Post (55.44, 55.77)|
-C Catch of the Day |QID|5386| |N|Collect 2 Bloodbelly Fish, you can get it from completing 'Fish in a Bucket' quest from Jinar'Zillen in Shadowprey Village (22.4, 73)|
-T Catch of the Day |QID|5386| |N|Nataka Longhorn in Ghost Walker Post (55.44, 55.77)|
+A Catch of the Day |QID|5386| |N|Nataka Longhorn in Ghost Walker Post (55.44, 55.77)| |AH|
+C Catch of the Day |QID|5386| |N|Collect 2 Bloodbelly Fish, you can get it from completing 'Fish in a Bucket' quest from Jinar'Zillen in Shadowprey Village (22.4, 73)| |AH|
+T Catch of the Day |QID|5386| |N|Nataka Longhorn in Ghost Walker Post (55.44, 55.77)| |AH|
 
 R Sargeron |QID|1481| |N|Travel to Sargeron (73.99, 22.93)|
 C The Corrupter (Part 2) |QID|1481| |N|Kill Hatefury Shadowstalker to collect Shadowstalker Scalp Sargeron (73.99, 22.93)|

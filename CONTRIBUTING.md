@@ -30,6 +30,7 @@ That runs everything that can run without a WoW client:
 | `Tools/verify.py` | Lua syntax, Lua 5.0 compatibility for shipped files, `.toc` paths, `Guides.xml` completeness, TGA validity, no Blizzard chrome, the 32-upvalue ceiling |
 | `Tools/convert_professions.py --check` | The profession source document still parses and is internally consistent; the gathering guides cover 1–300 for each faction with somewhere named in every band; the committed guides are what the generator writes |
 | `Tools/test_theme.lua` | The theme layer against a stubbed 1.12 API |
+| `Tools/test_filtertags.lua` | The filter tags in the Optimized and zone guides through the real parser: group quests and their follow-ups hide in Solo mode, Auction House steps with Auction House steps off, dungeon quests with the dungeon unticked; and every approved tag is still in place |
 | `Tools/test_professions.lua` | Generated guides through the real parsers: skill bands tile 1–300 for each faction, every rank is reached, and a gathering guide never sends a faction into the other side's starting zones or capitals |
 | `Tools/test_statusframe.lua` | The status card's layout and population |
 | `Tools/test_dungeons.lua` | Dungeon chips and the guide-reference scan |
@@ -137,12 +138,18 @@ item id are named from pfQuest's item database, cached in
 `Tools/data/recipe_item_names.json`; pass `--pfquest <dir>` to refresh it.
 
 **Filter tags.** The Auction House, Group and Dungeon switches act on `|AH|`,
-`|P|GROUP|` and `|D|<code>|` tags. The RestedXP and RXP Hardcore guides carry
-them; the Optimized and zone guides mostly do not, so on those the switches
-change little. `Tools/find_filter_candidates.py` lists the steps there that
-probably should be tagged -- by quest, from the RestedXP guides' own tags and
-from the guides' notes -- into `docs/review/filter_candidates.json`, for a
-person to review before any tag is added.
+`|P|GROUP|` and `|D|<code>|` tags. The RestedXP and RXP Hardcore guides always
+carried them. The Optimized and zone guides carry the ones the owner approved:
+`Tools/find_filter_candidates.py` listed the steps that probably wanted one
+(`docs/review/filter_candidates.json`), the answers are in
+`docs/review/filter_decisions.json`, and `Tools/apply_filter_tags.py` applies
+them. A "yes" on a quest's own step tags every step of that quest; a "yes" on
+a note or buy step that merely carries a quest id tags only that step. Quests
+you can only reach through a tagged one inherit its tag (worked out from
+pfQuest's prerequisites with `--pfquest`, and kept in the decisions file).
+When you add a step for a tagged quest, give it the same tag --
+`Tools/test_filtertags.lua` runs `apply_filter_tags.py --check`, which fails
+if an approved tag has gone missing.
 
 ## Guide data and servers
 

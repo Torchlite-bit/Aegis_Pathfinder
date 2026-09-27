@@ -53,7 +53,7 @@ A A Fool's Stout |QID|2898| |N|Crank Fizzlebub (27.11, 77.21)| |Z|Stranglethorn 
 
 R Ratchet |QID|4502| |N|Take boat to Ratchet| |Z|The Barrens|
 A Volcanic Activity |QID|4502| |N|Liv Rizzlefix in Ratchet (62.45, 38.72)| |Z|The Barrens|
-T The Stone Circle |QID|3444| |N|Collect Stone Circle from Marvon's chest (62.51, 38.54)| |Z|The Barrens| |O|
+T The Stone Circle |QID|3444| |N|Collect Stone Circle from Marvon's chest (62.51, 38.54)| |D|ST| |Z|The Barrens| |O|
 
 F Gadgetzan |QID|2641| |N|Fly to Gadgetzan| |Z|Tanaris|
 T Sprinkle's Secret Ingredient |QID|2641| |N|Sprinkle near NW entrance (51.06, 26.88)| |Z|Tanaris|
@@ -69,7 +69,7 @@ A Get the Goblins Drunk |QID|2922| |N|Kravel Koalbeard (77.77, 77.23)| |Z|Thousa
 T Get the Goblins Drunk |QID|2922| |N|Goblin Pit Boss (79, 76)| |Z|Thousand Needles|
 A Report Back to Fizzlebub |QID|2924| |N|Return to Kravel Koalbeard (77.77, 77.23)| |Z|Thousand Needles|
 
-T The Stone Circle |QID|3444| |N|Marvon Rivetseeker at Broken Pillar (52, 45)| |Z|Tanaris| |O|
+T The Stone Circle |QID|3444| |N|Marvon Rivetseeker at Broken Pillar (52, 45)| |D|ST| |Z|Tanaris| |O|
 
 N ZF Quests |N|If doing ZF, get quests: Troll Temper, Divino-matic Rod, Gahz'rilla, The Prophecy of Mosh'Aru|
 

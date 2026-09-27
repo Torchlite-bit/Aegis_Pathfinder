@@ -51,7 +51,7 @@ T Cleansing of the Infected |QID|2138| |N|Tharnariun Treetender in Auberdine (38
 A Tharnariun's Hope |QID|2139| |N|Tharnariun Treetender (38.85, 43.44)|
 T How Big a Threat? (Part 2) |QID|985| |N|Terenthis in Auberdine (39.35, 43.46)|
 T The Principal Source |QID|6122| |N|Alanndarian Nightsong in Auberdine (37.69, 40.66)| |C|Druid|
-A Gathering the Cure |QID|6123| |N|Alanndarian Nightsong in Auberdine (37.69, 40.69)| |C|Druid|
+A Gathering the Cure |QID|6123| |N|Alanndarian Nightsong in Auberdine (37.69, 40.69)| |C|Druid| |AH|
 
 N Filled Cleansing Bowl |N|Use Empty Cleansing Bowl at the Moonwell (37.8, 44.0)| |U|12346|
 
@@ -77,18 +77,18 @@ T Fruit of the Sea |QID|1138| |N|Gubber Blump in Auberdine (36.13, 44.92)|
 T The Blackwood Corrupted |QID|4763| |N|Thundris Windweaver in Auberdine (37.41, 40.16)|
 T Tharnariun's Hope |QID|2139| |N|Tharnariun Treetender in Auberdine (38.85, 43.44)|
 
-N Druid Cure Chain |QID|6123| |N|Collect 12 Lunar Fungus from caves (46.42, 45.61) (43.19, 45.75) (43.27, 49.17) (43.65, 50.41) (42.60, 52.39)| |C|Druid|
-N Druid Cure Chain |QID|6123| |N|Gather 5 Earthroot with Herbalism or purchase from auction house| |C|Druid|
-T Gathering the Cure |QID|6123| |N|Alanndarian Nightsong in Auberdine (37.68, 40.67)| |C|Druid|
-A Curing the Sick |QID|6124| |N|Alanndarian Nightsong in Auberdine (37.71, 40.83)| |C|Druid|
-C Curing the Sick |QID|6124| |N|Use Curative Animal Salve on 10 Sickly Deer throughout Darkshore (41.6, 46.2) (43.8, 41.8) (47.0, 42.2) (49.4, 35.2) (45.6, 31.6)| |C|Druid|
+N Druid Cure Chain |QID|6123| |N|Collect 12 Lunar Fungus from caves (46.42, 45.61) (43.19, 45.75) (43.27, 49.17) (43.65, 50.41) (42.60, 52.39)| |C|Druid| |AH|
+N Druid Cure Chain |QID|6123| |N|Gather 5 Earthroot with Herbalism or purchase from auction house| |C|Druid| |AH|
+T Gathering the Cure |QID|6123| |N|Alanndarian Nightsong in Auberdine (37.68, 40.67)| |C|Druid| |AH|
+A Curing the Sick |QID|6124| |N|Alanndarian Nightsong in Auberdine (37.71, 40.83)| |C|Druid| |AH|
+C Curing the Sick |QID|6124| |N|Use Curative Animal Salve on 10 Sickly Deer throughout Darkshore (41.6, 46.2) (43.8, 41.8) (47.0, 42.2) (49.4, 35.2) (45.6, 31.6)| |C|Druid| |AH|
 
-R Nighthaven |QID|6125| |N|Use Teleport: Moonglade to travel to Nighthaven (56.26, 30.64)| |C|Druid| |Z|Moonglade|
-T Curing the Sick |QID|6124| |N|Dendrite Starblaze in Nighthaven (56.25, 30.59)| |C|Druid| |Z|Moonglade|
-A Power over Poison |QID|6125| |N|Dendrite Starblaze in Nighthaven (56.25, 30.59)| |C|Druid| |Z|Moonglade|
+R Nighthaven |QID|6125| |N|Use Teleport: Moonglade to travel to Nighthaven (56.26, 30.64)| |C|Druid| |AH| |Z|Moonglade|
+T Curing the Sick |QID|6124| |N|Dendrite Starblaze in Nighthaven (56.25, 30.59)| |C|Druid| |AH| |Z|Moonglade|
+A Power over Poison |QID|6125| |N|Dendrite Starblaze in Nighthaven (56.25, 30.59)| |C|Druid| |AH| |Z|Moonglade|
 
 R Cenarion Enclave |QID|26| |N|Travel to Cenarion Enclave in Darnassus (35.36, 8.31)| |C|Druid| |Z|Darnassus|
-T Power over Poison |QID|6125| |N|Mathrengyl Bearwalker in Cenarion Enclave (35.36, 8.31)| |C|Druid| |Z|Darnassus|
+T Power over Poison |QID|6125| |N|Mathrengyl Bearwalker in Cenarion Enclave (35.36, 8.31)| |C|Druid| |AH| |Z|Darnassus|
 A A Lesson to Learn |QID|26| |N|Mathrengyl Bearwalker in Cenarion Enclave - Level 16 required (35.36, 8.31)| |C|Druid| |Z|Darnassus|
 
 R Nighthaven |QID|29| |N|Use Teleport: Moonglade to travel to Nighthaven (56.26, 30.64)| |C|Druid| |Z|Moonglade|

@@ -269,13 +269,13 @@ T Ursal the Mauler |QID|486| |N|Athridas Bearmantle in Dolanaar (55.95, 57.28)|
 
 R Lake Al'Ameth |QID|2498| |N|Travel to Lake Al'Ameth (60.91, 68.45)|
 T Return to Denalan |QID|2498| |N|Denalan in Lake Al'Ameth (60.91, 68.45)|
-A Oakenscowl |QID|2499| |N|Denalan in Lake Al'Ameth (60.91, 68.45)|
+A Oakenscowl |QID|2499| |N|Denalan in Lake Al'Ameth (60.91, 68.45)| |P|GROUP|
 T The Glowing Fruit |QID|930| |N|Denalan in Lake Al'Ameth (60.91, 68.45)|
 T The Shimmering Frond |QID|931| |N|Denalan in Lake Al'Ameth (60.91, 68.45)|
 T The Moss-twined Heart |QID|927| |N|Denalan. Skip if you did not find Blackmoss (60.91, 68.45)| |O|
 
-C Oakenscowl |QID|2499| |N|Kill Oakenscowl and collect Gargantuan Tumor. Elite - may need group or skip (53.55, 74.99)| |O|
-T Oakenscowl |QID|2499| |N|Denalan in Lake Al'Ameth (60.91, 68.45)| |O|
+C Oakenscowl |QID|2499| |N|Kill Oakenscowl and collect Gargantuan Tumor. Elite - may need group or skip (53.55, 74.99)| |O| |P|GROUP|
+T Oakenscowl |QID|2499| |N|Denalan in Lake Al'Ameth (60.91, 68.45)| |O| |P|GROUP|
 
 N Level 12 |N|You should be close to level 12. Grind if needed|
 

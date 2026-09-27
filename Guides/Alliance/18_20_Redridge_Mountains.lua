@@ -119,7 +119,7 @@ N Please Read |QID|2609| |N|It's optional to complete the Touch of Zanzil quest 
 B Simple Wildflowers |QID|2609| |OIDX|1| |N|Buy Simple Wildflowers from Bernard Gump in The Canals (65.13, 60.05) (64.19, 61.12)| |Z|Stormwind City| |C|Rogue|
 B Leaded Vial |QID|2609| |OIDX|2| |N|Buy Leaded Vial from Edna Mullby in Trade District (58.10, 60.64)| |Z|Stormwind City| |C|Rogue|
 C Spool of Light Chartreuse Silk Thread |QID|2609| |OIDX|4| |N|Collect Spool of Light Chartreuse Silk Thread from the floor inside the shop, it's near the crate on the left hand side as you walk in (39.97, 46.23)| |Z|Stormwind City| |C|Rogue|
-B Bronze Tube |QID|2609| |OIDX|3| |N|It is easiest to purchase Bronze Tube from the Auction House, but it may be more expensive. Tick this step to try vendors (55.24, 7.12)| |Z|Stormwind City| |C|Rogue|
+B Bronze Tube |QID|2609| |OIDX|3| |N|It is easiest to purchase Bronze Tube from the Auction House, but it may be more expensive. Tick this step to try vendors (55.24, 7.12)| |AH| |Z|Stormwind City| |C|Rogue|
 B Bronze Tube |QID|2609| |OIDX|3| |N|Buy Bronze Tube from Billibub Cogspinner in Dwarven District. This is a limited supply item and may not be available. Tick this step to try another vendor (55.24, 7.12)| |Z|Stormwind City| |C|Rogue|
 B Bronze Tube |QID|2609| |OIDX|3| |N|Buy Bronze Tube from Loslor Rudge in Steelgrill's Depot. This is a limited supply item and may not be available. Tick this step to try another vendor (50.08, 49.36)| |Z|Dun Morogh| |C|Rogue|
 B Bronze Tube |QID|2609| |OIDX|3| |N|Buy Bronze Tube from Gearcutter Cogspinner in Tinker Town. This is a limited supply item and may not be available. Tick this step to try another vendor (67.87, 42.69)| |Z|Ironforge| |C|Rogue|

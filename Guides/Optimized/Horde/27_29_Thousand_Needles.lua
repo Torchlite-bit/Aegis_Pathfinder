@@ -38,7 +38,7 @@ C Homeward Bound |QID|4770| |N|Escort Pao'ka Swiftmountain from Highperch (15.15
 
 F Thunder Bluff |QID|1131| |N|Fly to Thunder Bluff for abilities and turn-ins| |Z|Thunder Bluff|
 T Steelsnap |QID|1131| |N|Melor Stonehoof in Hunter Rise (61.31, 80.77)| |Z|Thunder Bluff| |O|
-A Frostmaw |QID|1136| |N|Melor Stonehoof in Hunter Rise (61.31, 80.77)| |Z|Thunder Bluff|
+A Frostmaw |QID|1136| |N|Melor Stonehoof in Hunter Rise (61.31, 80.77)| |P|GROUP| |Z|Thunder Bluff|
 T Sacred Fire |QID|5062| |N|Magatha Grimtotem in Elder Rise (70.13, 31.21)| |Z|Thunder Bluff|
 A Arikara |QID|5088| |N|Magatha Grimtotem in Elder Rise (70.13, 31.21)| |Z|Thunder Bluff|
 

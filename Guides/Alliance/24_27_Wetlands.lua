@@ -104,13 +104,13 @@ A Lifting the Curse |QID|290| |N|First Mate Fitzsimmons in Menethil Harbor (10.9
 R Ironforge |TID|968| |N|Travel to Ironforge (55.88, 47.87)| |Z|Ironforge| |O|
 N Dwarven Tinder |QID|465| |N|Store Dwarven Tinder to the bank (35.48, 60.70)| |Z|Ironforge| |L|3339| |O|
 N Book: The Powers Below |QID|968| |N|Withdraw Book: The Powers Below from the bank. Tick this step (35.48, 60.70)| |Z|Ironforge| |L|5352| |O| |OO|
-N Bronze Tube |QID|174| |N|Withdraw Bronze Tube from the bank, or purchase from the Auction House. Tick this step (35.48, 60.70)| |Z|Ironforge| |L|4371| |OO|
-B [Minor Mana Potion] [Elixir of Minor Fortitude] |QID|1073| N|Buy 4 Minor Mana Potion and 2 Elixir of Minor Fortitude from the Auction House, skip the quest if items are too expensive for you or not available (24.2, 74.4)| |Z|Ironforge| |PRE|1072|
+N Bronze Tube |QID|174| |N|Withdraw Bronze Tube from the bank, or purchase from the Auction House. Tick this step (35.48, 60.70)| |AH| |Z|Ironforge| |L|4371| |OO|
+B [Minor Mana Potion] [Elixir of Minor Fortitude] |QID|1073| N|Buy 4 Minor Mana Potion and 2 Elixir of Minor Fortitude from the Auction House, skip the quest if items are too expensive for you or not available (24.2, 74.4)| |AH| |Z|Ironforge| |PRE|1072|
 
 T An Old Colleague |QID|1072| |N|Lomac Gearstrip in Tinker Town (71.8, 51.4)| |Z|Ironforge| |O|
-A Ineptitude + Chemicals = Fun (Part 1) |QID|1073| |N|Lomac Gearstrip in Tinker Town (71.8, 51.4)| |Z|Ironforge| |PRE|1072|
-C Ineptitude + Chemicals = Fun (Part 1) |QID|1073| |N|Buy 4 Minor Mana Potion and 2 Elixir of Minor Fortitude from the Auction House, skip the quest if items are too expensive for you or not available (24.2, 74.4)| |Z|Ironforge| |PRE|1072|
-T Ineptitude + Chemicals = Fun (Part 1) |QID|1073| |N|Lomac Gearstrip in Tinker Town (71.8, 51.4)| |Z|Ironforge| |PRE|1072|
+A Ineptitude + Chemicals = Fun (Part 1) |QID|1073| |N|Lomac Gearstrip in Tinker Town (71.8, 51.4)| |AH| |Z|Ironforge| |PRE|1072|
+C Ineptitude + Chemicals = Fun (Part 1) |QID|1073| |N|Buy 4 Minor Mana Potion and 2 Elixir of Minor Fortitude from the Auction House, skip the quest if items are too expensive for you or not available (24.2, 74.4)| |AH| |Z|Ironforge| |PRE|1072|
+T Ineptitude + Chemicals = Fun (Part 1) |QID|1073| |N|Lomac Gearstrip in Tinker Town (71.8, 51.4)| |AH| |Z|Ironforge| |PRE|1072|
 T The Powers Below |QID|968| |N|Gerrig Bonegrip in The Great Forge (50.8, 6.0)| |Z|Ironforge| |O|
 R Redridge Mountains |N|Take the Deeprun Tram from Ironforge to Stormwind, then travel east through Elwynn Forest to Redridge Mountains (31.52, 57.90)| |Z|Redridge Mountains|
 

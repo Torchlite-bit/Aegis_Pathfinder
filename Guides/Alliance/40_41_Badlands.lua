@@ -8,11 +8,11 @@ T The Tome of Nobility |QID|4485| |N|Duthorian Rall in Cathedral of Light (39.86
 N Summon Warhorse |N|Speak to Arthur the Faithful and train Summon Warhorse (38.67, 32.91)|  |C|Paladin|  |BUFF|136103|
 
 R City of Ironforge |QID|713| |N|Travel to City of Ironforge (24, 70)|
-B [Frost Oil] |QID|713| |N|Buy Frost Oil from Auction House.  Skip this if not available.  Don't buy if this is your first character and you still need to purchase a mount (24, 70)| |L|3829|
-B [Gyrochronatom] |QID|713| |N|Buy Gyrochronatom from Auction House.  Don't buy if you didn't find a Frost Oil.  Don't buy if this is your first character and you still need to purchase a mount (24, 70)| |L|4389|
-B [Healing Potion] |QID|713| |N|Buy Healing Potion from Auction House.  Don't buy if you didn't find a Frost Oil and Gyrochronatom.  Don't buy if this is your first character and you still need to purchase a mount (24, 70)| |L|929|
-B [Lesser Invisibility Potion] |QID|713| |N|Buy Lesser Invisibility Potion from Auction House.  Don't buy if you didn't find a Frost Oil and Gyrochronatom.  Don't buy if this is your first character and you still need to purchase a mount (24, 70)| |L|3823|
-B [4 Buzzard Wing] |QID|713| |N|Buy 4 Buzzard Wing from Auction House - Skip this if not available (24, 70)| |L|3404 4|
+B [Frost Oil] |QID|713| |N|Buy Frost Oil from Auction House.  Skip this if not available.  Don't buy if this is your first character and you still need to purchase a mount (24, 70)| |L|3829| |AH|
+B [Gyrochronatom] |QID|713| |N|Buy Gyrochronatom from Auction House.  Don't buy if you didn't find a Frost Oil.  Don't buy if this is your first character and you still need to purchase a mount (24, 70)| |L|4389| |AH|
+B [Healing Potion] |QID|713| |N|Buy Healing Potion from Auction House.  Don't buy if you didn't find a Frost Oil and Gyrochronatom.  Don't buy if this is your first character and you still need to purchase a mount (24, 70)| |L|929| |AH|
+B [Lesser Invisibility Potion] |QID|713| |N|Buy Lesser Invisibility Potion from Auction House.  Don't buy if you didn't find a Frost Oil and Gyrochronatom.  Don't buy if this is your first character and you still need to purchase a mount (24, 70)| |L|3823| |AH|
+B [4 Buzzard Wing] |QID|713| |N|Buy 4 Buzzard Wing from Auction House - Skip this if not available (24, 70)| |L|3404 4| |AH|
 A Ironband Wants You! |QID|707| |N|Prospector Stormpike in The Library (74.57, 11.68)| |Z|Ironforge|
 T Stormpike's Deciphering |QID|554| |N|Prospector Stormpike in The Library (74.57, 11.68)|  |O| |Z|Ironforge|
 N Fizzle Brassbolts' Letter |QID|1146| |N|Withdraw Fizzle Brassbolts' Letter from the bank.  Tick this step (35.48, 60.70)|  |L|5827| |OO| |Z|Ironforge|
@@ -102,7 +102,7 @@ C Badlands Reagent Run |QID|2500| |N|Kill Buzzards, Coyotes and Rock Elementals 
 R Ironband's Excavation Site |TID|739| |N|Travel to Ironband's Excavation Site in Loch Modan (65.88, 65.59)| |Z|Loch Modan|
 T Murdaloc |QID|739| |N|Prospector Ironband in Ironband's Excavation Site (65.88, 65.59)|  |PRE|707| |Z|Loch Modan|
 
-A Agmond's Fate |QID|704| |N|Prospector Ironband in Ironband's Excavation Site (65.88, 65.59)|  |PRE|707| |Z|Loch Modan|
+A Agmond's Fate |QID|704| |N|Prospector Ironband in Ironband's Excavation Site (65.88, 65.59)|  |PRE|707| |D|ULDA| |Z|Loch Modan|
 
 R Thelsamar |TID|2500| |N|Travel to Thelsamar (37.06, 49.36)| |Z|Loch Modan|
 T Badlands Reagent Run |QID|2500| |N|Ghak Healtouch in Thelsamar (37.06, 49.36)| |Z|Loch Modan|
