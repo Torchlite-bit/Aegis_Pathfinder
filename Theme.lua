@@ -729,6 +729,12 @@ function Theme:Chip(parent, code, name, width, height)
 	end
 	function b:IsActive() return self.__active end
 
+	--- Held as it is and dimmed: Solo Self-Found runs no dungeons.
+	function b:SetLocked(locked)
+		if locked then self:Disable() else self:Enable() end
+		self:SetAlpha(locked and 0.45 or 1)
+	end
+
 	--- Mark that the loaded guide has steps referencing this dungeon.
 	function b:SetWired(wired)
 		if wired then self.dot:Show() else self.dot:Hide() end
@@ -1050,6 +1056,22 @@ function Theme:Switch(parent, label, onChange)
 	function row:SetLocked(locked)
 		if locked then self:Disable() else self:Enable() end
 		self:SetAlpha(locked and 0.45 or 1)
+	end
+
+	--[[ Lay the row out `width` wide. A label too long for the line wraps
+		under itself and the row grows to hold it, rather than running off
+		the edge. The lines are counted from the label's unwrapped width, with
+		a little slack for where the words break: a wrapped font string's own
+		height is not to be trusted on 1.12. Returns the row's height. ]]
+	function row:Fit(width)
+		self:SetWidth(width)
+		local room = width - 45             -- the track and the gap after it
+		self.label:SetWidth(room)
+		self.label:SetJustifyH("LEFT")
+		local lines = math.max(1, math.ceil((self.label:GetStringWidth() or 0) / (room * 0.95)))
+		local h = math.max(22, lines * 15 + 4)
+		self:SetHeight(h)
+		return h
 	end
 
 	row:SetScript("OnClick", function()

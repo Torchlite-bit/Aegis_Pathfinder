@@ -117,7 +117,14 @@ AegisPathfinder:RegisterGuide("Trade Test (1-2)", nil, "Alliance", function()
 end)
 check(count("Trade Test (1-2)", "Ask a mage", "SOLO", true) == 0, "Solo Self-Found hides a |TRADE| step")
 check(count("Trade Test (1-2)", "Drink", "SOLO", true) == 1, "and keeps the rest")
+check(count(ELWYNN, "Discover Rolf's Fate", "GROUP", false) == 0,
+	"Solo Self-Found is solo: a group quest stays hidden with group mode on")
+check(count("Westfall (12-17)", "The Defias Brotherhood (Part 2)", "SOLO", false, { DM = true }) == 0,
+	"and runs no dungeons: a Deadmines quest stays hidden with the Deadmines ticked")
 char.SelfFound = false
+check(count(ELWYNN, "Discover Rolf's Fate", "GROUP", false) == 2
+	and count("Westfall (12-17)", "The Defias Brotherhood (Part 2)", "SOLO", false, { DM = true }) > 0,
+	"off again, group mode and the Deadmines are as they were")
 check(count("Trade Test (1-2)", "Ask a mage", "SOLO", false) == 1, "a |TRADE| step shows otherwise")
 
 local WESTFALL = "Westfall (12-17)"

@@ -47,6 +47,7 @@ local PAD_X, PAD_TOP, PAD_BOTTOM = 14, 12, 16
 local SCROLL_W = 10
 local BODY_W = PANE_W - PAD_X * 2 - SCROLL_W - 4
 local SECTION_GAP = 16
+local MIN_HEIGHT = 360                -- the grip goes no shorter; never narrower than WIDTH
 local HEADER_GAP = 7                  -- h3 margin-bottom
 
 -- The dungeon grid: four across in a 396px panel.
@@ -189,6 +190,9 @@ function AegisPathfinder:CreateConfigPanel()
 		table.insert(frame.pages, body)
 		y = 0
 	end
+	-- What widens with the window, each with how to set it to a width.
+	frame.stretch = {}
+	local function stretchy(fit) table.insert(frame.stretch, fit) end
 	local function place(region, height, gap)
 		region:ClearAllPoints()
 		region:SetPoint("TOPLEFT", body, "TOPLEFT", 0, -y)
@@ -197,13 +201,22 @@ function AegisPathfinder:CreateConfigPanel()
 	local function section(title)
 		local h = Theme:SectionHeader(body, title, BODY_W)
 		place(h, 20, HEADER_GAP)
+		stretchy(function(w) h:SetWidth(w) end)
 		return h
 	end
+	local function fine(fs)
+		stretchy(function(w) fs:SetWidth(w) end)
+		return fs
+	end
 	local function note(text)
-		local fs = Theme:FinePrint(body, BODY_W)
+		local fs = fine(Theme:FinePrint(body, BODY_W))
 		fs:SetText(text or "")
 		place(fs, fs:GetHeight(), 0)
 		return fs
+	end
+	local function wide(dropdown)
+		stretchy(function(w) dropdown:SetWidth(w); dropdown.list:SetWidth(w) end)
+		return dropdown
 	end
 
 	frame.sections = {}
@@ -216,6 +229,7 @@ function AegisPathfinder:CreateConfigPanel()
 		AegisPathfinder:RefreshConfigPanel()
 	end)
 	place(race, 30, SECTION_GAP)
+	wide(race)
 	frame.race = race
 
 	-- Route pack -------------------------------------------------------------------
@@ -224,6 +238,7 @@ function AegisPathfinder:CreateConfigPanel()
 	-- One pill per pack this character can use, wrapping if they do not fit.
 	local pillRow = CreateFrame("Frame", nil, body)
 	pillRow:SetWidth(BODY_W)
+	stretchy(function(w) pillRow:SetWidth(w) end)
 	frame.packPills = {}
 	local px, py = 0, 0
 	for _, pack in ipairs(self:GetAvailableRoutePacks()) do
@@ -284,6 +299,7 @@ function AegisPathfinder:CreateConfigPanel()
 		AegisPathfinder:DrawRoutePreview()
 	end)
 	place(preview, PREVIEW_H, SECTION_GAP)
+	stretchy(function(w) preview:SetWidth(w) end)
 	frame.preview = preview
 
 	-- Dungeons ---------------------------------------------------------------------
@@ -308,6 +324,7 @@ function AegisPathfinder:CreateConfigPanel()
 		chip.dungeonCode = d.code
 		local code, name = d.code, d.name
 		chip:SetScript("OnClick", function()
+			if AegisPathfinder.db.char.SelfFound then return end
 			local on = not this:IsActive()
 			this:SetActive(on)
 			AegisPathfinder.db.char.Dungeons[code] = on
@@ -328,7 +345,7 @@ function AegisPathfinder:CreateConfigPanel()
 	note("Toggling a dungeon on forces its setup and prerequisite steps to "
 		.. "mandatory and reveals them in guides that reference it; toggling "
 		.. "off hides them.")
-	local wired = Theme:FinePrint(body, BODY_W)
+	local wired = fine(Theme:FinePrint(body, BODY_W))
 	Theme:TextColor(wired, "blue")
 	place(wired, 16, SECTION_GAP)
 	frame.wiredHint = wired
@@ -341,29 +358,30 @@ function AegisPathfinder:CreateConfigPanel()
 		ReloadCurrentGuide()
 		AegisPathfinder:RefreshConfigPanel()
 	end)
-	group:SetWidth(BODY_W)
-	place(group, 22, 8)
+	place(group, group:Fit(BODY_W), 8)
+	stretchy(function(w) group:Fit(w) end)
 	local ah = Theme:Switch(body, "Auction House steps", function(on)
 		AegisPathfinder.db.char.UseAH = on
 		ReloadCurrentGuide()
 		AegisPathfinder:RefreshConfigPanel()
 	end)
-	ah:SetWidth(BODY_W)
-	place(ah, 22, 6)
-	-- RestedXP's Solo Self-Found mode: no trading, no Auction House. It
-	-- holds the Auction House switch off while it is on.
+	place(ah, ah:Fit(BODY_W), 6)
+	stretchy(function(w) ah:Fit(w) end)
+	-- RestedXP's Solo Self-Found mode: alone, no trading, no Auction House.
+	-- It holds group mode, the Auction House and the dungeons off while it is
+	-- on, and gives them back as they were.
 	local ssf = Theme:Switch(body, "Solo Self-Found", function(on)
 		AegisPathfinder:SetSelfFound(on)
 	end)
-	ssf:SetWidth(BODY_W)
 	ssf:SetScript("OnEnter", function()
 		Theme:ShowTip(this, "RIGHT", "Solo Self-Found",
-			{ "Hides every step that trades with other players or uses the Auction House." })
+			{ "Play alone: hides group quests, dungeons, and every step that trades with other players or uses the Auction House. Their switches are held off until you turn this off." })
 	end)
 	ssf:SetScript("OnLeave", function() Theme:HideTip(this) end)
-	place(ssf, 22, 6)
-	local filterNote = Theme:FinePrint(body, BODY_W)
-	place(filterNote, 16, SECTION_GAP)
+	place(ssf, ssf:Fit(BODY_W), 6)
+	stretchy(function(w) ssf:Fit(w) end)
+	local filterNote = fine(Theme:FinePrint(body, BODY_W))
+	place(filterNote, 30, SECTION_GAP)
 	frame.groupSwitch, frame.ahSwitch, frame.ssfSwitch, frame.filterNote = group, ah, ssf, filterNote
 
 	--[[ Server theme: the colours of your server, or Day or Night. Colours
@@ -380,7 +398,8 @@ function AegisPathfinder:CreateConfigPanel()
 	end
 	theme:SetItems(themeItems)
 	place(theme, 30, 6)
-	local themeNote = Theme:FinePrint(body, BODY_W)
+	wide(theme)
+	local themeNote = fine(Theme:FinePrint(body, BODY_W))
 	place(themeNote, 44, SECTION_GAP)
 	frame.theme, frame.themeNote = theme, themeNote
 
@@ -390,8 +409,8 @@ function AegisPathfinder:CreateConfigPanel()
 	local scoreTips = Theme:Switch(body, "Item score on tooltips", function(on)
 		AegisPathfinder.ItemScore.Settings().tooltips = on
 	end)
-	scoreTips:SetWidth(BODY_W)
-	place(scoreTips, 22, 6)
+	place(scoreTips, scoreTips:Fit(BODY_W), 6)
+	stretchy(function(w) scoreTips:Fit(w) end)
 	local weights = Theme:Pill(body, "Stat weights", 120, 26)
 	weights:SetScript("OnClick", function()
 		AegisPathfinder:ShowConfigPage(AegisPathfinder.ITEM_SCORE_PAGE)
@@ -419,8 +438,8 @@ function AegisPathfinder:CreateConfigPanel()
 			AegisPathfinder.GearAdvisor:Dirty()
 			AegisPathfinder:RefreshConfigPanel()
 		end)
-		sw:SetWidth(BODY_W)
-		place(sw, 22, 6)
+		place(sw, sw:Fit(BODY_W), 6)
+		stretchy(function(w) sw:Fit(w) end)
 		frame.advisor[key] = sw
 	end
 	local clearDeclined = Theme:Pill(body, "Clear declined items", 150, 26)
@@ -440,8 +459,8 @@ function AegisPathfinder:CreateConfigPanel()
 			AegisPathfinder.GearFinder.Settings()[key] = on
 			AegisPathfinder:RefreshConfigPanel()
 		end)
-		sw:SetWidth(BODY_W)
-		place(sw, 22, 6)
+		place(sw, sw:Fit(BODY_W), 6)
+		stretchy(function(w) sw:Fit(w) end)
 		frame.finder[key] = sw
 	end
 	local openFinder = Theme:Pill(body, "Gear finder", 110, 26)
@@ -459,6 +478,7 @@ function AegisPathfinder:CreateConfigPanel()
 	page(AegisPathfinder.ITEM_SCORE_PAGE, true)
 	table.insert(frame.sections, section("Item score"))
 	local scorePage = AegisPathfinder:CreateItemScorePage(body, BODY_W, y, PAD_BOTTOM)
+	stretchy(function(w) scorePage:Resize(w) end)
 
 	-- Beyond the concept: the addon's own settings, in the same language. -------
 	page("Behaviour")
@@ -486,9 +506,9 @@ function AegisPathfinder:CreateConfigPanel()
 				AegisPathfinder:RefreshActiveFrames()
 			end
 		end)
-		sw:SetWidth(BODY_W)
 		sw.settingKey = key
-		place(sw, 22, 8)
+		place(sw, sw:Fit(BODY_W), 8)
+		stretchy(function(w) sw:Fit(w) end)
 		frame.switches[key] = sw
 	end
 	y = y + SECTION_GAP - 8
@@ -500,6 +520,7 @@ function AegisPathfinder:CreateConfigPanel()
 		AegisPathfinder:RefreshConfigPanel()
 	end)
 	place(waypoints, 30, SECTION_GAP)
+	wide(waypoints)
 	frame.waypoints = waypoints
 
 	--[[ Whose arrow points at the step: ours, the waypoint addon's, both, or
@@ -512,7 +533,8 @@ function AegisPathfinder:CreateConfigPanel()
 	end)
 	arrow:SetItems(AegisPathfinder.ARROW_MODES)
 	place(arrow, 30, 6)
-	local arrowNote = Theme:FinePrint(body, BODY_W)
+	wide(arrow)
+	local arrowNote = fine(Theme:FinePrint(body, BODY_W))
 	place(arrowNote, 30, SECTION_GAP)
 	frame.arrow, frame.arrowNote = arrow, arrowNote
 
@@ -608,6 +630,64 @@ function AegisPathfinder:CreateConfigPanel()
 		b:SetActive(false)
 		frame.navButtons[i] = b
 	end
+	--[[ Resize grip, bottom right, as the guide has: drag it to make the
+		window wider or taller. It sizes the window itself rather than calling
+		StartSizing, for the reason the guide's grip gives (ObjectivesFrame.lua):
+		the client's sizing re-anchors the frame as it sees fit. ]]
+	local grip = CreateFrame("Frame", nil, frame)
+	grip:SetWidth(12)
+	grip:SetHeight(12)
+	grip:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 2)
+	grip:EnableMouse(true)
+	grip:SetFrameLevel(frame:GetFrameLevel() + 6)
+	local gripTex = grip:CreateTexture(nil, "OVERLAY")
+	gripTex:SetTexture(Theme.texture.grip)
+	gripTex:SetAllPoints(grip)
+	Theme:Tint(gripTex, "textDim", 0.55)
+	local function cursor()
+		local scale = frame:GetEffectiveScale()
+		local x, y = GetCursorPosition()
+		return x / scale, y / scale
+	end
+	local function stop()
+		grip.sizing = nil
+		grip:SetScript("OnUpdate", nil)
+		Theme:Tint(gripTex, "textDim", 0.55)
+	end
+	local function sizing()
+		local s = grip.sizing
+		if not s then return end
+		-- A button let go somewhere the grip never heard about still ends it.
+		if s.poll and not IsMouseButtonDown("LeftButton") then return stop() end
+		local x, y = cursor()
+		-- Screen y grows upward: dragging down is a smaller y, a taller window.
+		AegisPathfinder:SizeConfigWindow(s.w + x - s.x, s.h + s.y - y, true)
+	end
+	grip:SetScript("OnMouseDown", function()
+		Theme:Tint(gripTex, "accentGlow", 1)
+		-- Grow right and down from where the window is, however it was anchored.
+		Theme:AnchorTopLeft(frame)
+		local x, y = cursor()
+		grip.sizing = { x = x, y = y, w = frame:GetWidth(), h = frame:GetHeight(),
+			poll = IsMouseButtonDown and IsMouseButtonDown("LeftButton") and true or false }
+		grip:SetScript("OnUpdate", sizing)
+	end)
+	grip:SetScript("OnMouseUp", function()
+		sizing()
+		stop()
+	end)
+	grip:SetScript("OnEnter", function()
+		Theme:Tint(gripTex, "accent", 1)
+		Theme:ShowTip(this, "LEFT", "Drag to resize")
+	end)
+	grip:SetScript("OnLeave", function()
+		if not grip.sizing then Theme:Tint(gripTex, "textDim", 0.55) end
+		Theme:HideTip(this)
+	end)
+	frame.grip, frame.bodyW = grip, BODY_W
+
+	-- The size it was left at.
+	self:SizeConfigWindow(self.db.profile.optionswidth, self.db.profile.optionsheight)
 	self:ShowConfigPage(frame.pages[1].pageName)
 
 	frame:SetScript("OnShow", function()
@@ -634,6 +714,30 @@ function AegisPathfinder:CreateConfigPanel()
 	ww.SetFadeTime(frame, 0.5)
 
 	table.insert(UISpecialFrames, "AegisPathfinderOptions")
+end
+
+--- The options window at `w` by `h` -- no narrower than it opens, no shorter
+--- than MIN_HEIGHT, no bigger than the screen -- with every page's contents
+--- widened to fit and the scroll range to match. `save` keeps the size.
+function AegisPathfinder:SizeConfigWindow(w, h, save)
+	local frame = self.optionsframe
+	if not frame then return end
+	w = math.floor(math.max(WIDTH, math.min(w or WIDTH, UIParent:GetWidth() - 40)) + 0.5)
+	h = math.floor(math.max(MIN_HEIGHT, math.min(h or HEIGHT, UIParent:GetHeight() - 40)) + 0.5)
+	frame:SetWidth(w)
+	frame:SetHeight(h)
+	local bodyW = w - NAV_W - PAD_X * 2 - SCROLL_W - 4
+	if bodyW ~= frame.bodyW then
+		frame.bodyW = bodyW
+		frame.holder:SetWidth(bodyW)
+		for _, p in ipairs(frame.pages) do p:SetWidth(bodyW) end
+		for _, fit in ipairs(frame.stretch) do fit(bodyW) end
+	end
+	frame.visible = h - CHROME_TOP - PAD_TOP - PAD_BOTTOM
+	self:SizeConfigPage(true)
+	if save then
+		self.db.profile.optionswidth, self.db.profile.optionsheight = w, h
+	end
 end
 
 --- Show one page of the options panel: its content on the right, its name
@@ -735,8 +839,10 @@ function AegisPathfinder:RefreshConfigPanel()
 	self:RefreshDungeonPanel()
 
 	-- Filters, and the one-line summary the concept prints under them.
-	local grouped = (db.PlayStyle or "SOLO") == "GROUP"
+	-- Solo Self-Found holds group mode, the Auction House and the dungeons off.
+	local grouped = (db.PlayStyle or "SOLO") == "GROUP" and not db.SelfFound
 	frame.groupSwitch:SetOn(grouped)
+	frame.groupSwitch:SetLocked(db.SelfFound)
 	frame.ahSwitch:SetOn(db.UseAH and not db.SelfFound)
 	frame.ahSwitch:SetLocked(db.SelfFound)
 	frame.ssfSwitch:SetOn(db.SelfFound)
@@ -753,9 +859,10 @@ function AegisPathfinder:RefreshConfigPanel()
 		-- The rest of the advisor's switches mean nothing with it off.
 		sw:SetLocked(key ~= "enabled" and not advisor.enabled)
 	end
-	frame.filterNote:SetText((grouped and "Group mode" or "Solo mode") .. " \194\183 "
-		.. (db.SelfFound and "Self-Found: no trading or Auction House steps"
-			or ("Auction House steps " .. (db.UseAH and "shown" or "hidden"))))
+	frame.filterNote:SetText(db.SelfFound
+		and "Solo Self-Found \194\183 no group quests, dungeons, trading or Auction House steps"
+		or ((grouped and "Group mode" or "Solo mode") .. " \194\183 Auction House steps "
+			.. (db.UseAH and "shown" or "hidden")))
 
 	-- The theme, and what it looks like.
 	local def = Theme.themeByKey[self:GetTheme()]
@@ -799,14 +906,18 @@ function AegisPathfinder:RefreshDungeonPanel()
 	local wired = self:HasNoGuide() and {} or self:GetGuideDungeons()
 	local wiredCount = 0
 
+	local ssf = self.db.char.SelfFound
 	for _, chip in ipairs(frame.chips) do
-		chip:SetActive(self.db.char.Dungeons[chip.dungeonCode])
+		chip:SetActive(self.db.char.Dungeons[chip.dungeonCode] and not ssf)
+		chip:SetLocked(ssf)
 		local isWired = wired[chip.dungeonCode] and true or false
 		chip:SetWired(isWired)
 		if isWired then wiredCount = wiredCount + 1 end
 	end
 
-	if wiredCount > 0 then
+	if ssf then
+		frame.wiredHint:SetText("Solo Self-Found is on: no dungeons until it is off.")
+	elseif wiredCount > 0 then
 		frame.wiredHint:SetText(string.format(
 			"Dotted: %d referenced by this guide.", wiredCount))
 	else

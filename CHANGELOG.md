@@ -18,6 +18,29 @@ reports.
 
 ---
 
+## [0.7.0]
+
+### Changed
+- **Solo Self-Found is solo.** Turning it on now also leaves out group quests
+  and dungeon quests, not only trading and the Auction House. Group mode, the
+  Auction House switch and the dungeon chips read off and can't be clicked
+  until it is off again — in the options and in the first-time setup, which
+  skips its dungeons step. The Gear finder looks in no dungeons. What they
+  were set to is kept, and comes back when Self-Found goes off.
+- **The README has screenshots**: the guide in the world, a quest target and
+  the macros, and sharing a guide with your party.
+
+### Added
+- **The options window resizes** from a grip in its bottom-right corner:
+  wider or taller, and it keeps the size. `/apg resetpanels` puts it back.
+
+### Fixed
+- **Long option labels were cut off** at the window's edge ("Pick it for me
+  when quests turn in by themselves", "Quest icons: mark quest NPCs as you
+  mouse over them"). A label that does not fit now wraps onto a second line.
+
+---
+
 ## [0.6.3]
 
 ### Added
@@ -241,6 +264,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.7.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.6.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.6.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.6.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

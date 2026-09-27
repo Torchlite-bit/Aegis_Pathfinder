@@ -314,6 +314,19 @@ bar, a brighter row and white text. The subhead names the page (`CONFIG ·
 GEAR`). A page scrolls only when it is taller than the window, and every page
 opens at its top; changing page closes any dropdown list left open.
 
+A grip in the bottom-right corner (the guide's `grip.tga`) resizes the window:
+wider or taller, never narrower than it opens, never shorter than 360px, never
+bigger than the screen, and the size is kept. The pane's contents are laid out
+for its width once, and each widget that spans it -- section rules, switches,
+fine print, dropdowns and their lists, the route preview, the Item Score
+page's share column -- is registered with how to take a new width, so a wider
+window reflows them; a taller one shows more of the page before it scrolls.
+
+A switch's label wraps under itself when it is too long for the row, and the
+row grows to hold it (`Switch:Fit`): the lines are counted from the label's
+unwrapped width, since a wrapped font string's own height is not reliable on
+1.12. Labels used to run under the scroll bar and be cut off.
+
 **Item Score** (`GearFrame.lua`) is Zygor's page of the same name: the spec
 picker and your class, a note on where the spec came from and whether the
 weights are the defaults or yours, *Show all stats*, then the weights one to a

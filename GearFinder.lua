@@ -91,6 +91,8 @@ function GF:Dungeons()
 	local chips = AegisPathfinder.db.char.Dungeons or {}
 	local s = settings()
 	local out = {}
+	-- Solo Self-Found runs no dungeons.
+	if AegisPathfinder.db.char.SelfFound then return out end
 	for _, d in ipairs(AegisPathfinder.GearData.dungeons) do
 		local ok = d.lo <= level + L.AHEAD
 		if d.kind == "raid" and not s.raids then ok = false end
@@ -367,7 +369,9 @@ function GF:Paint()
 	if not settings().enabled then
 		text = "The gear finder is switched off in the options."
 	elseif table.getn(dungeons) == 0 then
-		text = "No dungeon at your level is ticked in the options."
+		text = AegisPathfinder.db.char.SelfFound
+			and "Solo Self-Found is on, so it looks in no dungeons."
+			or "No dungeon at your level is ticked in the options."
 	elseif table.getn(lines) == 0 and missing == 0 then
 		text = "Nothing in " .. table.getn(dungeons) .. " dungeons at your level beats what you wear for "
 			.. IS:SpecLabel((IS:Spec())) .. "."

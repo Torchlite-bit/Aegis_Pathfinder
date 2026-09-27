@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.6.3)
+# Aegis: Pathfinder (v0.7.0)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -39,20 +39,20 @@ and feature ideas.
 
 ---
 
-<!-- Screenshots: put them in docs/images/ with these names and uncomment.
-
 ### 📷 Interface Overview
 
-| The guide & arrow | Options |
-| :---: | :---: |
-| <img src="docs/images/screenshot-guide.png" width="400"> | <img src="docs/images/screenshot-options.png" width="400"> |
+<p align="center">
+  <img src="docs/images/screenshot-world.jpg" width="720" alt="The guide on screen while questing, with a party member on the same step">
+</p>
 
-| Item score | Gear Advisor | Gear finder |
+| Quest targets & macros | Share a guide with your party | Your party's progress on the step |
 | :---: | :---: | :---: |
-| <img src="docs/images/screenshot-itemscore.png" width="280"> | <img src="docs/images/screenshot-advisor.png" width="280"> | <img src="docs/images/screenshot-finder.png" width="280"> |
+| <img src="docs/images/screenshot-guide.jpg" width="280" alt="The guide, a quest target button with its tooltip, and the macros"> | <img src="docs/images/screenshot-share.png" width="280" alt="The prompt to share the guide with your party"> | <img src="docs/images/screenshot-party.png" width="280" alt="A party member listed under the step"> |
+
+<!-- More to come: the options window, the Item Score page, the Gear Advisor
+     pop-up and the Gear finder. Put them in docs/images/ and add a row. -->
 
 ---
--->
 
 ## Contents
 
@@ -82,8 +82,9 @@ Waypoints and map pins go through **TomTom** or **pfQuest**.
 
 ### 🎛️ Play it your way
 
-**Solo** or **group**, **Auction House** steps on or off, **Solo Self-Found**,
-and only the dungeons you mean to run. Every switch applies to every guide.
+**Solo** or **group**, **Auction House** steps on or off, and only the dungeons
+you mean to run. **Solo Self-Found** holds all three off: no group quests, no
+dungeons, no trading, no Auction House. Every switch applies to every guide.
 
 ### 🛡️ Gear
 
@@ -154,7 +155,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.6.3`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.7.0`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/hsgPTNkSX)** or open an

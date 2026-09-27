@@ -33,7 +33,9 @@ round the minimap. The options window's **Behaviour** page can hide it, as can
 `/apg minimapbutton`.
 FuBar is no longer supported: the button is the addon's own now.
 
-The options window lists its pages down the left: **Route** (race and route
+The options window can be resized from its bottom-right corner, wider or
+taller, and keeps the size; `/apg resetpanels` puts it back. It lists its
+pages down the left: **Route** (race and route
 pack), **Dungeons**, **Filters**, **Appearance** (server theme), **Gear** and
 under it **Item Score** (the stat weights), **Behaviour**, **Navigation** (waypoints and arrow), **Maintenance** (rescan,
 error log, setup) and **About** (version and credits).
@@ -65,10 +67,14 @@ Solo mode the Optimized and zone guides leave out elite and group quests, and
 the quests that follow on from them; with Auction House steps off they leave
 out quests that need an item most players buy there.
 
-**Solo Self-Found.** For a character that never trades and never uses the
-Auction House: every step that needs either is left out, and the Auction House
-switch is held off while it is on. It is a switch under **Filters**, a choice
-in the first-time setup, and `/apg ssf`.
+**Solo Self-Found.** For a character that plays alone, never trades and never
+uses the Auction House: group quests, dungeon quests and every step that trades
+or uses the Auction House are left out. While it is on, the group mode and
+Auction House switches and the dungeon chips are held off and can't be clicked
+-- in the options and in the first-time setup -- and the Gear finder looks in
+no dungeons. What they were set to is kept, and comes back when it goes off.
+It is a switch under **Filters**, a choice in the first-time setup, and
+`/apg ssf`.
 
 **First-time setup.** The first time the addon loads on a character, a short
 setup asks three things, as RestedXP does:

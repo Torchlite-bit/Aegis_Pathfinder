@@ -1113,6 +1113,8 @@ function AegisPathfinder:ResetWindowLayout()
 	for _, key in ipairs(WINDOW_KEYS) do Theme:ForgetPosition(key) end
 	local profile = self.db.profile
 	profile.objframewidth, profile.objframemaxheight, profile.objframeheight = nil, nil, nil
+	profile.optionswidth, profile.optionsheight = nil, nil
+	if self.optionsframe and self.SizeConfigWindow then self:SizeConfigWindow() end
 
 	frame:ClearAllPoints()
 	frame:SetPoint(G.DEFAULT_ANCHOR[1], UIParent, G.DEFAULT_ANCHOR[2], G.DEFAULT_ANCHOR[3], G.DEFAULT_ANCHOR[4])
