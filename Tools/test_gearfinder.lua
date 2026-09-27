@@ -83,6 +83,13 @@ check(dm and dm.lo == 18 and table.getn(dm.loot) > 10, "the Deadmines, with its 
 local vanCleef
 for _, drop in ipairs(dm.loot) do if drop[2] == "Edwin VanCleef" then vanCleef = drop end end
 check(vanCleef and real.items[vanCleef[1]] and real.items[vanCleef[1]][1], "VanCleef's drops, with their slot")
+-- Bosses a script summons are on no map; the data names them.
+local sources = {}
+for _, d in ipairs(real.dungeons) do
+	for _, drop in ipairs(d.loot) do sources[drop[2] .. " @ " .. d.code] = true end
+end
+check(sources["Ragnaros @ MC"] and sources["Nefarian @ BWL"] and sources["Darkmaster Gandling @ SCHOLO"],
+	"summoned bosses' loot is there, in their instances")
 
 -- A small world to look in.
 AegisPathfinder.GearData = {

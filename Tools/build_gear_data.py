@@ -21,7 +21,9 @@ with no database:
 The dungeons are found by map: the creatures spawned there (creature,
 creature_spawn_entry). Map ids and names live in the client's Map.dbc, which
 the dump does not carry, so INSTANCES names them -- with the level ranges the
-first-time setup uses (SetupFrame.lua), and the usual ones for the rest.
+first-time setup uses (SetupFrame.lua), and the usual ones for the rest. A
+few bosses are summoned by a script rather than spawned, so appear on no map;
+SUMMONED names them, and their loot is looked up like any other.
 
 Turtle WoW's own quests and dungeons are not in that database. Their rewards
 have no price and their loot is not in the finder, and both say so rather
@@ -68,6 +70,15 @@ INSTANCES = [
     (531, "AQ40", "Temple of Ahn'Qiraj", 60, 60, "raid", None),
     (533, "NAXX", "Naxxramas", 60, 60, "raid", None),
 ]
+
+# Bosses a script summons, by the instance they appear in. The run fails if a
+# name is not a creature with loot, so a typo cannot pass unnoticed.
+SUMMONED = {
+    "MC": ["Ragnaros"],
+    "BWL": ["Nefarian"],
+    "SCHOLO": ["Darkmaster Gandling"],
+    "ZG": ["Gahz'ranka", "Gri'lek", "Hazza'rah", "Renataki", "Wushoolay"],
+}
 
 INVTYPE = {
     1: "INVTYPE_HEAD", 2: "INVTYPE_NECK", 3: "INVTYPE_SHOULDER", 5: "INVTYPE_CHEST",
@@ -173,9 +184,18 @@ def dungeon_loot(db):
     tables = loot_tables(db)
     uses = ref_uses(tables)
     dungeons, gear = [], {}
+    by_name = {}
+    for e, t in tmpl.items():
+        if num(t.get("LootId")):
+            by_name.setdefault(t["Name"], e)
     for mapid, code, name, lo, hi, kind, faction in INSTANCES:
         best = {}
-        for cid in sorted(creatures.get(mapid, ())):
+        summoned = set()
+        for boss in SUMMONED.get(code, []):
+            if boss not in by_name:
+                sys.exit("SUMMONED names %r, which is no creature with loot" % boss)
+            summoned.add(by_name[boss])
+        for cid in sorted(creatures.get(mapid, set()) | summoned):
             t = tmpl.get(cid)
             if not t or not num(t.get("LootId")):
                 continue

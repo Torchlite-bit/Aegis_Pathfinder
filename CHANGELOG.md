@@ -27,7 +27,9 @@ reports.
   the dungeons starting no more than three levels above you, on your side,
   ticked under **Dungeons** — and in raids if you ask. Walking into a dungeon
   names its upgrades in chat. The loot is the CMaNGOS database's, for every
-  vanilla dungeon and raid; Turtle WoW's own dungeons are not in it yet.
+  vanilla dungeon and raid — bosses a script summons (Ragnaros, Nefarian,
+  Darkmaster Gandling, the Edge of Madness) included; Turtle WoW's own
+  dungeons are not in it yet.
 
 ### Changed
 - **Weapon skills are out of the item score** (+Swords, +Daggers and the
