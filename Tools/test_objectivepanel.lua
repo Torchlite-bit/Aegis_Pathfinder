@@ -96,6 +96,11 @@ AegisPathfinder.guidelistframe = CreateFrame("Frame", nil, UIParent)
 dofile("Theme.lua")
 dofile("WidgetWarlock.lua")
 dofile("ObjectivesFrame.lua")
+-- Sharing adds the party icon and the members under the step.
+AegisPathfinder.SkipToNextObjective = AegisPathfinder.SkipToNextObjective or function() end
+GetNumPartyMembers = function() return 1 end
+GetNumRaidMembers = function() return 0 end
+dofile("PartySync.lua")
 
 local Theme = AegisPathfinder.Theme
 
@@ -626,6 +631,26 @@ check(Theme.tip and Theme.tip:IsShown(), "and hovering it says what it is")
 mats:GetScript("OnLeave")()
 AegisPathfinder.__hasMats = false
 AegisPathfinder:UpdateOHPanel()
+
+-- Sharing the guide (PartySync.lua) ------------------------------------------
+
+do
+	local share = AegisPathfinder.shareState
+	local b = AegisPathfinder.sharebutton
+	check(b ~= nil and b:GetParent() == frame.navrow, "the step row carries the party icon")
+	AegisPathfinder.db.char.overviewmode = nil
+	AegisPathfinder:UpdateOHPanel()
+	local before = AegisPathfinder:PanelContentHeight()
+	share.active, share.guide = true, AegisPathfinder.db.char.currentguide
+	share.members = { Ghanndraine = { key = AegisPathfinder:ShareStepKey(AegisPathfinder.current) } }
+	AegisPathfinder:UpdateOHPanel()
+	check(frame.partyblock and frame.partyblock:IsShown(), "sharing, the members show under the step")
+	check(AegisPathfinder:PanelContentHeight() == before + 2 + frame.partyblock:GetHeight(),
+		"and the panel grows to fit them (%s from %s)", AegisPathfinder:PanelContentHeight(), before)
+	share.active, share.guide, share.members = false, nil, {}
+	AegisPathfinder:UpdateOHPanel()
+	check(not frame.partyblock:IsShown() and AegisPathfinder:PanelContentHeight() == before, "and they go when sharing stops")
+end
 
 -- Report ---------------------------------------------------------------------
 

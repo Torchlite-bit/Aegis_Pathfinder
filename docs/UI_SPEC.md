@@ -335,6 +335,38 @@ A negated tag (`|D|!DM|`) still counts as a reference: the step is
 conditional, the relevance is not. Results are cached per guide, since the
 scan walks guides that run to hundreds of steps.
 
+### Sharing a guide -- `PartySync.lua`
+
+Not in the concept. Zygor's Share Mode, in this addon's language:
+
+- **The party icon** (`Theme:GlyphButton` with the generated `party` glyph)
+  sits at the right end of the objectives panel's step row, and the step count
+  moves left of it. Dim while not sharing, gold while waiting for anyone to
+  accept, the accent once someone has. Its tooltip says what sharing does, or
+  who you are sharing with.
+- **Confirmation** and **invitation** share one themed popup (header, `GUIDE
+  SHARING (BETA)` subhead, centred lines, two half-width buttons). The
+  confirmation names the guide, notes that the party needs Aegis: Pathfinder,
+  and has a "Don't warn me again" box (`char.sharenowarn`). The invitation names
+  who and which guide, and says accepting opens it in a new tab. Closing an
+  invitation any way but Accept declines it.
+- **Members under the step**: in focus mode, a block under the meter (or the
+  step, with no meter), counted into the panel's height: a line per member,
+  name left and status right — `[3/6]` (gold) or `[done]` (accent) on your step,
+  `step N, behind` (gold), `step N` or `step N, waiting` ahead, `on a step you do
+  not have`, `joining...`. A held step adds a first line, "Done. Waiting for your
+  party to finish this step."
+- **Holding**: `UpdateStatusFrame` asks `ShareHold` after finding the next
+  step. A member on step p allows up to p, or p + 1 once they have finished p;
+  past the smallest such limit you stay on the step you were on (never going
+  back). The skip arrow on a held step bypasses it until the party passes it.
+- **Messages**: over `PARTY` or `RAID`, prefix `AegisPF`, fields joined by `^`:
+  `INV`, `ACC`, `DEC`, `NOG`, `ST` (step, done, have, need), `REQ`, `BYE`. A
+  step is `action:questid-or-title#occurrence`, so class and race filtering do
+  not misalign it. Our status is looked at twice a second and sent on change
+  (at most once a second) or every 15 seconds; incoming news sets a dirty flag
+  flushed once a frame, so a burst of messages is one engine run.
+
 ### Server themes -- `Theme.lua`
 
 Not in the concept, which is green. The options panel's **Server theme**

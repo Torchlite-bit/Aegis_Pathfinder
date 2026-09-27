@@ -319,6 +319,13 @@ function AegisPathfinder:UpdateStatusFrame()
 	QuestLog_Update()
 	QuestWatch_Update()
 
+	-- Sharing the guide with the party (PartySync.lua): a step you have
+	-- finished is held until everyone sharing it has finished it too.
+	if self.ShareHold then
+		local held = self:ShareHold(nextstep, oldcurrent)
+		if held then nextstep = held end
+	end
+
 	-- A guide just finished: offer the custom zones that fit before moving
 	-- on, if there are any (NextGuideFrame.lua). The guide waits for the
 	-- answer.

@@ -48,6 +48,7 @@ too — the old `TurtleGuide` global is still an alias.
 | `/apg materials` | The shopping list: reagents for this craft, or the rest of the guide |
 | `/apg exchange` | Send the guide's remaining crafts to Aegis: Exchange, or take them back out |
 | `/apg craft` | The crafting route window: the cheapest way to level a profession at today's prices |
+| `/apg share` | Share the guide you are on with your party, or stop sharing (beta) |
 | `/apg setup` | Run the first-time setup again: your guide, its features and your dungeons |
 | `/apg target` | Target and mark the step's next active target (put it in a macro) |
 | `/apg useitem` | Use the first active item |
@@ -214,6 +215,25 @@ free), and are never rewritten while the macro window is open. The options
 panel can switch the window off, which also stops the macros being made or
 updated.
 
+**Sharing a guide with your party (beta).** Playing a guide with someone else
+is awkward when neither of you can see which step the other is on. In a party,
+click the party icon at the right of the guide panel's step row (or
+`/apg share`) and confirm; everyone in the party running Aegis: Pathfinder gets
+a popup, and accepting opens the guide in a new tab. From then on:
+
+- Under the step, each member sharing it is listed with their progress on it —
+  `Ghanndraine [3/6]`, `[done]` — or which step they are on, if another.
+- A step you have finished waits until everyone sharing has finished it too,
+  then the guide moves on for all of you. Nobody is pulled back to someone who
+  is behind: you wait where you are. The skip arrow still moves you on alone.
+- The icon is gold while nobody has accepted yet, lit once someone has, and a
+  second click stops sharing. Leaving the group leaves the share.
+
+Steps are matched by what they are (the quest, or the step's title), not by
+number, so characters whose guides differ by a class or race step still line
+up; a partner on a step you do not have is shown but cannot hold you. The
+confirmation has a "Don't warn me again" box.
+
 **Server themes.** The options panel's **Server theme** recolours the addon:
 Turtle WoW is the original green, OctoWoW purple, RavenCraft grey, Capybara
 Paradise tan, Aegis red, and Day (amber, lighter panels) and Night (moonlight
@@ -323,7 +343,7 @@ Runs everything that can be checked without a client: Lua syntax, Lua 5.0
 compatibility, `.toc` and `Guides.xml` integrity, TGA validity, that every
 texture path resolves to a real file, that no panel has drifted off the theme,
 that every window stacks rather than interleaving with the others, and
-that no function passes Lua 5.0's upvalue limit, and twenty-one test suites
+that no function passes Lua 5.0's upvalue limit, and twenty-two test suites
 that execute the addon's own code against a stubbed 1.12 API.
 
 None of it proves the UI looks right. That needs a client.

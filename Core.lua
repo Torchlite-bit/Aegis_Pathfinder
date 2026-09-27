@@ -122,6 +122,7 @@ local defaults = {
     setupdone = false,            -- has this character been through the first-time setup?
     offercustomzones = true,      -- offer custom zones when a guide finishes (NextGuideFrame.lua)
     craftsellback = true,         -- crafting routes sell what is left over to a merchant (CraftPlanner.lua)
+    sharenowarn = false,          -- skip the "share this guide with your party?" question (PartySync.lua)
     routepack = nil,              -- Active route pack name (e.g., "VanillaGuide", "RestedXP")
     PlayStyle = "SOLO",           -- Default playstyle ("SOLO" or "GROUP")
     UseAH = false,                -- Default Auction House setting (true/false)
@@ -179,6 +180,12 @@ local options = {
             desc = "Use the first active item",
             type = "execute",
             func = function() AegisPathfinder:UseActiveItem(1) end,
+        },
+        Share = {
+            name = "Share",
+            desc = "Share the guide you are on with your party, or stop sharing (beta)",
+            type = "execute",
+            func = function() AegisPathfinder:ToggleSharing() end,
         },
         Craft = {
             name = "Craft",

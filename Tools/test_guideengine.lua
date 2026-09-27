@@ -247,6 +247,36 @@ do
 	AegisPathfinder.OfferNextGuide = nil
 end
 
+-- Sharing holds a finished step for the party (PartySync.lua) --------------------------
+
+do
+	AegisPathfinder.actions = { "NOTE", "NOTE", "NOTE" }
+	AegisPathfinder.quests = { "One@1@", "Two@2@", "Three@3@" }
+	AegisPathfinder.tags = { "|N|1|", "|N|2|", "|N|3|" }
+	AegisPathfinder.turnedin = { ["One@1@"] = true, ["Two@2@"] = true }
+	AegisPathfinder.current = 2
+	local asked = {}
+	function AegisPathfinder:ShareHold(nextstep, oldcurrent)
+		table.insert(asked, { nextstep, oldcurrent })
+		return 2
+	end
+	AegisPathfinder:UpdateStatusFrame()
+	check(asked[1] and asked[1][1] == 3 and asked[1][2] == 2,
+		"the engine asks with the next step and the one it was on")
+	check(AegisPathfinder.current == 2, "and stays on the held step, got %s", tostring(AegisPathfinder.current))
+	function AegisPathfinder:ShareHold() return nil end
+	AegisPathfinder:UpdateStatusFrame()
+	check(AegisPathfinder.current == 3, "released, it moves on")
+
+	AegisPathfinder.turnedin["Three@3@"] = true
+	local moved = 0
+	function AegisPathfinder:LoadNextGuide() moved = moved + 1; return false end
+	function AegisPathfinder:ShareHold(nextstep) if nextstep == nil then return 3 end end
+	AegisPathfinder:UpdateStatusFrame()
+	check(AegisPathfinder.current == 3 and moved == 0, "a finished guide waits for the party before moving on")
+	AegisPathfinder.ShareHold = nil
+end
+
 -- Report ---------------------------------------------------------------------
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end

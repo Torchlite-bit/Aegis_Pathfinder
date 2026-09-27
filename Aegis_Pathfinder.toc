@@ -46,6 +46,7 @@ CraftRouteFrame.lua
 ActiveFrames.lua
 NextGuideFrame.lua
 SetupFrame.lua
+PartySync.lua
 MinimapButton.lua
 
 # Routes

@@ -28,6 +28,7 @@ lua5.1 Tools/test_guidelist.lua
 lua5.1 Tools/test_materials.lua
 lua5.1 Tools/test_craftplanner.lua
 lua5.1 Tools/test_craftroute.lua
+lua5.1 Tools/test_partysync.lua
 lua5.1 Tools/test_activeframes.lua
 lua5.1 Tools/test_nextguide.lua
 lua5.1 Tools/test_setup.lua

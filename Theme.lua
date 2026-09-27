@@ -141,6 +141,7 @@ Theme.glyph = {
 	bang         = MEDIA .. "icons\\bang",
 	pin          = MEDIA .. "icons\\pin",
 	expand       = MEDIA .. "icons\\expand",
+	party        = MEDIA .. "icons\\party",
 	caretUp      = MEDIA .. "icons\\caret-up",
 	caretDown    = MEDIA .. "icons\\caret-down",
 }

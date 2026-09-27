@@ -560,6 +560,9 @@ function AegisPathfinder:UpdateObjectivePanel()
 	Theme:TextColor(navCount, "textDim")
 
 	frame.navrow = navrow
+	navrow.count = navCount
+	-- The party icon, for sharing the guide (PartySync.lua).
+	if self.AttachShareButton then self:AttachShareButton(navrow) end
 
 	-- Guide completion, as a 4px rule across the full width.
 	guideProgress = Theme:ProgressBar(frame, G.PROGRESS_H)
@@ -996,6 +999,9 @@ function AegisPathfinder:PanelContentHeight()
 	if frame.meter and frame.meter:IsShown() then
 		h = h + 2 + frame.meter:GetHeight()
 	end
+	if frame.partyblock and frame.partyblock:IsShown() then
+		h = h + 2 + frame.partyblock:GetHeight()
+	end
 	return h + 8
 end
 
@@ -1199,6 +1205,12 @@ function AegisPathfinder:UpdateOHPanel(value)
 		end
 	end
 	if showMeter then meter:Show() else meter:Hide() end
+	-- Party members sharing the guide, under the meter or the step
+	-- (PartySync.lua); the panel's height counts them.
+	if self.PaintPartyBlock then
+		if showMeter then self:PaintPartyBlock(frame, meter, 0) else self:PaintPartyBlock(frame, rows[1], G.ROWPAD) end
+	end
+	if self.PaintShareButton then self:PaintShareButton() end
 	self:LayoutPanelHeight()
 
 	local shown = self:VisibleRowCount()
