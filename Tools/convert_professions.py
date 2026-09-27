@@ -48,6 +48,9 @@ OUTDIR = os.path.join(ROOT, "Guides", "Professions")
 ROUTES = os.path.join(ROOT, "Tools", "data", "craftroute_routes.json")
 RECIPES = os.path.join(ROOT, "Crafting")
 FROM_CRAFTROUTE = ["Engineering"]
+# Professions whose route steps also say, per faction, where to mine the ore
+# (Tools/gathering_guides.py, from Tools/data/gathering.json).
+MINED = ["Mining"]
 
 # Professions the concept's Professions tab lists but nothing here has a route
 # for. They ship as visibly-unauthored templates rather than being dropped, so
@@ -530,6 +533,8 @@ def emit_steps(p, training=None):
                 out.extend(expert_book_steps(p, sec))
             else:
                 out.extend(train_steps(p, s, training))
+        elif name in MINED:
+            out.extend(gathering_guides.mining_places(craft_step(p, s), *gathering_guides.context()))
         else:
             out.append(craft_step(p, s))
 
@@ -612,8 +617,15 @@ GATHERED_HEADER = """-- %(name)s (1-300)
 """
 
 
+MINED_SOURCE = """-- Where to mine: Tools/data/gathering.json -- pfQuest's ore nodes and
+--            CMaNGOS classic-db's vein loot, via Tools/gathering_guides.py
+"""
+
+
 def emit_guide(p):
     header = ROUTED_HEADER if p.get("routed") else HEADER
+    if p["name"] in MINED:
+        header = header.replace("-- Generator:", MINED_SOURCE + "-- Generator:", 1)
     return emit_lua(p["name"], header, emit_steps(p))
 
 

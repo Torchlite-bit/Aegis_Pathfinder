@@ -56,7 +56,9 @@ local AUTHORED = {
 	"Fishing", "Herbalism", "Jewelcrafting", "Leatherworking", "Mining", "Skinning",
 	"Survival", "Tailoring",
 }
-local GATHERED = { "Herbalism", "Skinning", "Fishing" }
+-- The guides that say where to go: the gathering ones, and Mining, whose
+-- smelting route says where to mine the ore.
+local PLACED = { "Herbalism", "Skinning", "Fishing", "Mining" }
 local FACTIONS = { "Alliance", "Horde" }
 
 for _, name in ipairs(AUTHORED) do
@@ -119,7 +121,7 @@ local OTHER_SIDE = {
 	Alliance = { "Durotar", "Mulgore", "Tirisfal Glades", "Orgrimmar", "Thunder Bluff", "Undercity" },
 	Horde = { "Elwynn Forest", "Dun Morogh", "Teldrassil", "Stormwind City", "Ironforge", "Darnassus" },
 }
-for _, name in ipairs(GATHERED) do
+for _, name in ipairs(PLACED) do
 	local guide = AegisPathfinder.qsplusguides[name .. " (1-300)"]
 	for _, fac in ipairs(FACTIONS) do
 		local caps, bands = {}, 0
@@ -127,7 +129,8 @@ for _, name in ipairs(GATHERED) do
 			if not s.faction or s.faction == fac then
 				if s.skill then
 					bands = bands + 1
-					check(string.find(s.note, "Best: ", 1, true) or string.find(s.note, "Fish anywhere", 1, true),
+					check(string.find(s.note, "Best: ", 1, true) or string.find(s.note, "Fish anywhere", 1, true)
+						or string.find(s.note, ", most in ", 1, true),
 						"%s (%s): %d-%d names no place", name, fac, s.skill.from, s.skill.to)
 				end
 				if s.rank then caps[s.rank.cap] = (caps[s.rank.cap] or 0) + 1 end

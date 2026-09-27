@@ -41,11 +41,11 @@ whoever wrote it. As of the port, that history carries commits from
 |---|---|
 | Ace2 (`AceAddon-2.0`, `AceEvent-2.0`, `AceDB-2.0`, `AceLibrary`, `AceOO-2.0`, `AceConsole-2.0`, `AceDebug-2.0`, `AceHook-2.1`) | The **Ace Development Team** |
 | Dewdrop-2.0, Tablet-2.0, FuBarPlugin-2.0 (the minimap icon and its menu, until the addon drew its own) | **ckknight** and the Ace Development Team |
-| [pfQuest](https://github.com/shagu/pfQuest) / pfQuest-turtle / pfQuest-octo | **shagu** — also the herb node counts behind the Herbalism guide, extracted by `Tools/build_gathering.py` |
+| [pfQuest](https://github.com/shagu/pfQuest) / pfQuest-turtle / pfQuest-octo | **shagu** — also the herb and ore node counts behind the Herbalism and Mining guides, extracted by `Tools/build_gathering.py` |
 | [TomTom-TWOW](https://github.com/laytya/TomTom-TWOW) | **Cladhaire**; ported to 1.12 by Aero, Schaka, Logonz, Dyaxler, Alphaest, cralor and **laytya**. Earlier builds of this addon targeted the [sweetgiorni](https://github.com/sweetgiorni/TomTom) port |
 | MetaMap, MetaMapBWP, Cartographer | Their respective authors — supported waypoint providers |
 | [ClassicAPI](https://github.com/brues-code/ClassicAPI) | **brues-code** — required at runtime |
-| [CMaNGOS classic-db](https://github.com/cmangos/classic-db) | The **CMaNGOS** team — which trainers teach each Engineering, Herbalism, Skinning and Fishing rank, from its trainer lists; the skinnable beasts, each zone's fishing skill, the Expert fishing book and Nat Pagle's quest, extracted by `Tools/build_gathering.py` |
+| [CMaNGOS classic-db](https://github.com/cmangos/classic-db) | The **CMaNGOS** team — which trainers teach each Engineering, Herbalism, Skinning and Fishing rank, from its trainer lists; the ore each vein yields, the skinnable beasts, each zone's fishing skill, the Expert fishing book and Nat Pagle's quest, extracted by `Tools/build_gathering.py` |
 | [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) | **Kitymeowmeow** — the recipe data behind the priced crafting routes (skill thresholds, reagents, learn costs, recipe sources, vendor buy and sell prices), converted by `Tools/import_recipes.py`. CraftRoute is GPLv3, which is why this addon is too; the route planner itself is written separately |
 
 ## Fonts

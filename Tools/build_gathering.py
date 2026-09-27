@@ -4,18 +4,20 @@
     python3 Tools/build_gathering.py --pfquest DIR [DIR ...] --cmangos FILE
 
 Herbalism, Skinning and Fishing level by gathering, not crafting, so their
-guides say where to go at each skill band rather than what to make. That
-needs facts about the world, and none of them are typed in by hand here:
+guides say where to go at each skill band rather than what to make; Mining's
+guide, a smelting route, says where to mine the ore for it. That needs facts
+about the world, and none of them are typed in by hand here:
 
   pfQuest (https://github.com/shagu/pfQuest, and pfQuest-turtle for the
-  Turtle-lineage servers): every herb node with the skill it needs and where
-  it spawns (db/meta.lua, db/objects.lua), every creature's spawn points
+  Turtle-lineage servers): every herb and ore node with the skill it needs
+  and where it spawns (db/meta.lua, db/objects.lua), every creature's spawn points
   (db/units.lua), and zone names (db/enUS/zones.lua). Each DIR is a checkout
   -- pass pfQuest's and pfQuest-turtle's -- or one folder holding the files
   with "/" in their paths replaced by "_" (db_objects.lua, ...).
 
-  CMaNGOS classic-db (https://github.com/cmangos/classic-db): which creatures
-  can be skinned and their levels (creature_template), the fishing skill each
+  CMaNGOS classic-db (https://github.com/cmangos/classic-db): the ore each
+  vein always yields (gameobject_template, gameobject_loot_template), which
+  creatures can be skinned and their levels (creature_template), the fishing skill each
   zone needs (skill_fishing_base_level), which trainer teaches which rank
   (npc_trainer), the Expert fishing book and who sells it (item_template,
   npc_vendor), and the Artisan fishing quest (quest_template and its giver),
@@ -185,6 +187,39 @@ def herbs(pf):
     return out
 
 
+def mines(pf, db):
+    """Ore nodes, one entry per ore and skill: the vein's name (the commonest,
+    so not "Ooze Covered ..."), the ore it always yields, the skill it
+    needs, and its spawns per zone. A node whose sure drop is a quest item
+    (Lesser Bloodstone) is left out."""
+    meta = lua_meta(pf.path("db_meta.lua"), "mines")
+    spawns = pf.spawns("objects", set(meta))
+    loot_id = {num(r["entry"]): num(r["data1"]) for r in db.rows("gameobject_template") if num(r["entry"]) in meta}
+    items = {num(r["entry"]): (r["name"], num(r["class"])) for r in db.rows("item_template")}
+    sure = {}
+    for r in db.rows("gameobject_loot_template"):
+        if num(r["mincountOrRef"]) > 0 and num(r["ChanceOrQuestChance"]) >= 100:
+            sure[num(r["entry"])] = items.get(num(r["item"]))
+    TRADE_GOODS = 7
+    merged = {}
+    for oid, skill in meta.items():
+        name, ore = pf.objects.get(oid), sure.get(loot_id.get(oid))
+        if not name or not ore or ore[1] != TRADE_GOODS:
+            continue
+        entry = merged.setdefault((ore[0], max(1, skill)), {
+            "ore": ore[0], "skill": max(1, skill), "names": collections.Counter(), "zones": collections.Counter()})
+        for z in spawns.get(oid, ([], None))[0]:
+            if pf.zone(z):
+                entry["zones"][pf.zone(z)] += 1
+                entry["names"][name] += 1
+    out = []
+    for e in sorted(merged.values(), key=lambda e: (e["skill"], e["ore"])):
+        if e["names"]:
+            name = sorted(e["names"].items(), key=lambda kv: (-kv[1], kv[0]))[0][0]
+            out.append({"name": name, "ore": e["ore"], "skill": e["skill"], "zones": dict(sorted(e["zones"].items()))})
+    return out
+
+
 def skinning(pf, db):
     """zone -> { level: spawns } of the normal-rank creatures that can be
     skinned. Elites are left out: a gathering guide should not send anyone
@@ -330,18 +365,19 @@ def main():
     db = Dump(args.cmangos)
     training, names = trainers(pf, db)
     data = {
-        "_about": "Facts behind the Herbalism, Skinning and Fishing guides, extracted by "
+        "_about": "Facts behind the Herbalism, Skinning and Fishing guides and Mining's ore, extracted by "
                   "Tools/build_gathering.py from pfQuest (with pfQuest-turtle) and CMaNGOS "
                   "classic-db. Read by Tools/convert_professions.py.",
         "herbs": herbs(pf),
+        "mines": mines(pf, db),
         "skinning": skinning(pf, db),
         "fishing": fishing(pf, db),
         "trainers": training,
         "fishingBook": fishing_book(pf, db, names),
         "fishingQuest": fishing_quest(pf, db, names),
     }
-    print("herbs: %d kinds; skinnable mobs in %d zones; fishing skill for %d zones" % (
-        len(data["herbs"]), len(data["skinning"]), len(data["fishing"])))
+    print("herbs: %d kinds; ores: %d kinds; skinnable mobs in %d zones; fishing skill for %d zones" % (
+        len(data["herbs"]), len(data["mines"]), len(data["skinning"]), len(data["fishing"])))
     for prof, ranks in data["trainers"].items():
         print("  %-10s %s" % (prof, ", ".join("%s %d/%d" % (r, len(v["Alliance"]), len(v["Horde"]))
                                              for r, v in ranks.items())))

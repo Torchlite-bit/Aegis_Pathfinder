@@ -106,16 +106,18 @@ does not cover, comes from CraftRoute's fixed route
 (`Tools/data/craftroute_routes.json`, exported by `Tools/import_recipes.py`)
 with its trainers in `Tools/data/profession_training.json`. Herbalism, Skinning
 and Fishing are built by `Tools/gathering_guides.py` from
-`Tools/data/gathering.json`, and only send players to zones this addon has a
-zone guide for:
+`Tools/data/gathering.json`, which also gives each step of the Mining route,
+per faction, where to mine its ore. They only send players to zones this addon
+has a zone guide for:
 
 ```sh
 python3 Tools/convert_professions.py
 ```
 
-`Tools/data/gathering.json` is extracted from pfQuest (herb nodes, spawn
-points, zone names) and the CMaNGOS classic-db dump (skinnable creatures,
-fishing skill by zone, trainers, the Expert fishing book, Nat Pagle's quest).
+`Tools/data/gathering.json` is extracted from pfQuest (herb and ore nodes,
+spawn points, zone names) and the CMaNGOS classic-db dump (the ore each vein
+yields, skinnable creatures, fishing skill by zone, trainers, the Expert
+fishing book, Nat Pagle's quest).
 To refresh it, check both out and run:
 
 ```sh

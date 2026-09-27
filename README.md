@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.2.0)
+# Aegis: Pathfinder (v0.3.0)
 
 A Classic+ leveling guide for the Turtle WoW-lineage 1.12 client family —
 OctoWoW, Capybara Paradise and RavenCraft. Part of the Aegis addon suite.
@@ -325,7 +325,9 @@ for it.
 
 Where the reference had no recipe for a skill range, the guide says so rather
 than inventing one. Mining's mid-range gaps are real, and it tells you to go
-mine nodes.
+mine nodes — and where: for your faction, the zones with most of the veins
+that can still raise your skill. Each of its smelting steps says where to
+mine the ore it uses, too.
 
 ## Servers
 
@@ -339,7 +341,7 @@ Reports welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options panel's About section (`v0.2.0`) — quote it.
+1. Check the **version** in the load message or the options panel's About section (`v0.3.0`) — quote it.
 2. Open the **Error log** (options panel → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 
@@ -400,11 +402,11 @@ so `git log` and `git blame` still attribute each line to whoever wrote it.
 | | |
 |---|---|
 | **The Ace Development Team** | Ace2 (`AceAddon-2.0`, `AceEvent-2.0`, `AceDB-2.0`, `AceLibrary`, `AceOO-2.0`, `AceConsole-2.0`, `AceDebug-2.0`, `AceHook-2.1`) |
-| **shagu** | [pfQuest](https://github.com/shagu/pfQuest), pfQuest-turtle, pfQuest-octo — and the herb node counts behind the Herbalism guide |
+| **shagu** | [pfQuest](https://github.com/shagu/pfQuest), pfQuest-turtle, pfQuest-octo — and the herb and ore node counts behind the Herbalism and Mining guides |
 | **Cladhaire**; the TWOW port by **laytya** and others | [TomTom-TWOW](https://github.com/laytya/TomTom-TWOW) |
 | The authors of MetaMap, MetaMapBWP and Cartographer | Supported waypoint providers |
 | **Kitymeowmeow** | [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) — the recipe data behind the priced crafting routes: skill thresholds, reagents, learn costs, recipe sources, vendor prices; and the Engineering route |
-| **The CMaNGOS team** | [classic-db](https://github.com/cmangos/classic-db) — which trainers teach each Engineering, Herbalism, Skinning and Fishing rank; the skinnable beasts, each zone's fishing skill, the Expert fishing book and Nat Pagle's quest |
+| **The CMaNGOS team** | [classic-db](https://github.com/cmangos/classic-db) — which trainers teach each Engineering, Herbalism, Skinning and Fishing rank; the ore each vein yields, the skinnable beasts, each zone's fishing skill, the Expert fishing book and Nat Pagle's quest |
 | **Indian Type Foundry** | Rajdhani (SIL OFL 1.1) |
 | **The Inter Project Authors** | Inter (SIL OFL 1.1) |
 
