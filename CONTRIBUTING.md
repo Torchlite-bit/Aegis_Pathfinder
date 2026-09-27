@@ -61,9 +61,8 @@ idiom. Do not modernise code you are only passing through.
 load a file that breaks this ("too many upvalues"), taking the whole addon
 with it, and the Lua 5.1 the tests run on allows 60, so nothing else notices.
 Group constants into a table rather than adding another local beside a large
-function. `Tools/verify.py` checks it with `luac -l`; the guide panel's builder
-in `ObjectivesFrame.lua` is over the line already and is held at its current
-count until that is resolved.
+function -- `ObjectivesFrame.lua` keeps its layout in `G` for this reason.
+`Tools/verify.py` checks it with `luac -l`.
 
 **Colours, fonts and textures live in `Theme.lua`**, and nowhere else. If you
 need a colour that is not there, add it there.

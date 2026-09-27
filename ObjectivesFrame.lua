@@ -22,19 +22,24 @@ local ww = WidgetWarlock
 local Theme = AegisPathfinder.Theme
 
 
+-- Layout constants live in one table: a file-scope local per constant cost
+-- UpdateObjectivePanel one upvalue each, and Lua 5.0 refuses a function with
+-- more than 32 (see CONTRIBUTING.md).
+local G = {}
+
 -- Concept geometry. CHROME_TOP is everything above the step list; the list
 -- and the footer divide what is left.
-local HEADER_H   = 30
-local TABBAR_H   = 26
-local NAVROW_H   = 26
-local PROGRESS_H = 4
-local FOOTER_H   = 24
-local CHROME_TOP = HEADER_H + TABBAR_H + NAVROW_H + PROGRESS_H
+G.HEADER_H   = 30
+G.TABBAR_H   = 26
+G.NAVROW_H   = 26
+G.PROGRESS_H = 4
+G.FOOTER_H   = 24
+G.CHROME_TOP = G.HEADER_H + G.TABBAR_H + G.NAVROW_H + G.PROGRESS_H
 
-local ROWHEIGHT = 44          -- title over note, as the concept stacks them
-local ROWPAD    = 14          -- .zrow padding-left
-local DOTSIZE   = 14
-local ICONSIZE  = 16
+G.ROWHEIGHT = 44          -- title over note, as the concept stacks them
+G.ROWPAD    = 14          -- .zrow padding-left
+G.DOTSIZE   = 14
+G.ICONSIZE  = 16
 
 --[[ Size.
 
@@ -44,14 +49,14 @@ local ICONSIZE  = 16
 	the cap, and nothing the player drags can leave the panel a size its
 	content does not fit.
 ]]
-local DEFAULT_WIDTH = 396                                      -- .panel{width:396px}
-local OLD_DEFAULT_WIDTH = 630
-local DEFAULT_ANCHOR = { "TOPRIGHT", "TOPRIGHT", -40, -180 }  -- top:180px; right:40px
-local MIN_WIDTH, MAX_WIDTH = 320, 1200                         -- makeResizable minWidth
-local DEFAULT_CAP, MIN_CAP = 600, 260                          -- max-height, minHeight
-local NOTE_TOP = 31      -- where the note starts in a row: title's top, its line, a gap
-local NOTE_BOTTOM = 8
-local MAX_ROWS = 30
+G.DEFAULT_WIDTH = 396                                      -- .panel{width:396px}
+G.OLD_DEFAULT_WIDTH = 630
+G.DEFAULT_ANCHOR = { "TOPRIGHT", "TOPRIGHT", -40, -180 }  -- top:180px; right:40px
+G.MIN_WIDTH, G.MAX_WIDTH = 320, 1200                         -- makeResizable minWidth
+G.DEFAULT_CAP, G.MIN_CAP = 600, 260                          -- max-height, minHeight
+G.NOTE_TOP = 31      -- where the note starts in a row: title's top, its line, a gap
+G.NOTE_BOTTOM = 8
+G.MAX_ROWS = 30
 local NUMROWS = 1
 
 
@@ -73,14 +78,14 @@ local guideTabs = {}
 	max-width; below BADGE_MIN a tab drops its XP/TPL badge so the width goes
 	to the name.
 ]]
-local MAX_TABS = AegisPathfinder.MAX_GUIDE_TABS or 8
-local VISIBLE_TABS = 4
-local TAB_W_MAX = 190      -- .tab{max-width:190px}
-local TAB_W_MIN = 100      -- narrower and the name is mostly ellipsis
-local TAB_GAP = 2
-local BADGE_MIN = 130
-local ADD_W = TABBAR_H - 9
-local ARROW_W = 16
+G.MAX_TABS = AegisPathfinder.MAX_GUIDE_TABS or 8
+G.VISIBLE_TABS = 4
+G.TAB_W_MAX = 190      -- .tab{max-width:190px}
+G.TAB_W_MIN = 100      -- narrower and the name is mostly ellipsis
+G.TAB_GAP = 2
+G.BADGE_MIN = 130
+G.ADD_W = G.TABBAR_H - 9
+G.ARROW_W = 16
 
 -- The first tab in view, and what the bar last showed: the view follows the
 -- active tab when that changes, and otherwise stays where the arrows put it.
@@ -90,11 +95,11 @@ local tabFirst, shownActive, shownCount = 1, nil, nil
 local frame = CreateFrame("Frame", "AegisPathfinderObjectives", UIParent)
 AegisPathfinder.objectiveframe = frame
 frame:SetFrameStrata("DIALOG")
-frame:SetWidth(DEFAULT_WIDTH)
-frame:SetHeight(CHROME_TOP + ROWHEIGHT + FOOTER_H)
+frame:SetWidth(G.DEFAULT_WIDTH)
+frame:SetHeight(G.CHROME_TOP + G.ROWHEIGHT + G.FOOTER_H)
 -- The concept parks it at top:180px; right:40px. There is no status card to
 -- hang off any more, so it anchors to the screen.
-frame:SetPoint(DEFAULT_ANCHOR[1], UIParent, DEFAULT_ANCHOR[2], DEFAULT_ANCHOR[3], DEFAULT_ANCHOR[4])
+frame:SetPoint(G.DEFAULT_ANCHOR[1], UIParent, G.DEFAULT_ANCHOR[2], G.DEFAULT_ANCHOR[3], G.DEFAULT_ANCHOR[4])
 AegisPathfinder.objectiveskin = Theme:Panel(frame, "panel")
 frame:Hide()
 frame:SetScript("OnShow", function() AegisPathfinder:UpdateObjectivePanel() end)
@@ -107,8 +112,8 @@ Theme:RegisterWindow(frame)
 function AegisPathfinder:GetPanelCap()
 	local cap = self.db.profile.objframemaxheight
 	local screen = UIParent:GetHeight()
-	if not cap then cap = math.min(DEFAULT_CAP, math.floor(screen * 0.7)) end
-	return math.max(MIN_CAP, math.min(cap, screen - 20))
+	if not cap then cap = math.min(G.DEFAULT_CAP, math.floor(screen * 0.7)) end
+	return math.max(G.MIN_CAP, math.min(cap, screen - 20))
 end
 
 
@@ -161,9 +166,9 @@ local function Sizing()
 	if s.poll and not IsMouseButtonDown("LeftButton") then return StopSizing() end
 	local x, y = Cursor()
 	local db = AegisPathfinder.db.profile
-	local w = math.max(MIN_WIDTH, math.min(MAX_WIDTH, math.floor(s.w + x - s.x + 0.5)))
+	local w = math.max(G.MIN_WIDTH, math.min(G.MAX_WIDTH, math.floor(s.w + x - s.x + 0.5)))
 	-- Screen y grows upward, so dragging down is a smaller y and a taller cap.
-	local cap = math.max(MIN_CAP, math.min(UIParent:GetHeight() - 20, math.floor(s.cap + s.y - y + 0.5)))
+	local cap = math.max(G.MIN_CAP, math.min(UIParent:GetHeight() - 20, math.floor(s.cap + s.y - y + 0.5)))
 	db.objframemaxheight = cap
 	if w ~= frame:GetWidth() then
 		db.objframewidth = w
@@ -213,7 +218,7 @@ local function AnchorRows(overview)
 	for i, row in ipairs(rows) do
 		row:ClearAllPoints()
 		if i == 1 then
-			row:SetPoint("TOPLEFT", frame, "TOPLEFT", 1, -CHROME_TOP)
+			row:SetPoint("TOPLEFT", frame, "TOPLEFT", 1, -G.CHROME_TOP)
 		else
 			row:SetPoint("TOPLEFT", rows[i - 1], "BOTTOMLEFT", 0, 0)
 		end
@@ -228,7 +233,7 @@ end
 -- The width a focus-mode note wraps to: the row, less the dot, the glyph and
 -- the padding either side of the text.
 local function NoteWidth()
-	return frame:GetWidth() - 2 - (ROWPAD + DOTSIZE + 9 + ICONSIZE + 9) - ROWPAD
+	return frame:GetWidth() - 2 - (G.ROWPAD + G.DOTSIZE + 9 + G.ICONSIZE + 9) - G.ROWPAD
 end
 
 frame:SetScript("OnSizeChanged", function()
@@ -271,7 +276,7 @@ function AegisPathfinder:UpdateObjectivePanel()
 		drag the window by -- which is why the panel could not be moved before:
 		it had a floating title above the frame and no handle at all.
 	]]
-	local header = Theme:Header(frame, HEADER_H)
+	local header = Theme:Header(frame, G.HEADER_H)
 	header:MakeDragHandle(frame, Theme:PositionSaver("objframe"))
 
 	local menuChip = Theme:ChipButton(header, "menu")
@@ -347,7 +352,7 @@ function AegisPathfinder:UpdateObjectivePanel()
 		are looking while you follow it.
 	]]
 	local tabbar = CreateFrame("Frame", nil, frame)
-	tabbar:SetHeight(TABBAR_H)
+	tabbar:SetHeight(G.TABBAR_H)
 	tabbar:SetPoint("TOPLEFT", header, "BOTTOMLEFT", 0, 0)
 	tabbar:SetPoint("TOPRIGHT", header, "BOTTOMRIGHT", 0, 0)
 	Theme:Strip(tabbar, "tabbg")
@@ -355,8 +360,8 @@ function AegisPathfinder:UpdateObjectivePanel()
 
 	local function MakeTab(index)
 		local t = CreateFrame("Button", nil, tabbar)
-		t:SetHeight(TABBAR_H - 5)
-		t:SetWidth(TAB_W_MAX)
+		t:SetHeight(G.TABBAR_H - 5)
+		t:SetWidth(G.TAB_W_MAX)
 		t.index = index
 		t.fill = Theme:NineSlice(t, Theme.texture.tabFill, "BACKGROUND", "tabbg")
 
@@ -429,7 +434,7 @@ function AegisPathfinder:UpdateObjectivePanel()
 
 	-- Anchored as they are shown, by UpdateObjectiveTabs: which tab sits
 	-- first depends on where the bar is scrolled to.
-	for i = 1, MAX_TABS do
+	for i = 1, G.MAX_TABS do
 		guideTabs[i] = MakeTab(i)
 	end
 
@@ -440,7 +445,7 @@ function AegisPathfinder:UpdateObjectivePanel()
 		one tab and dims at its end. The wheel over the bar does the same.
 	]]
 	local function TabArrow(glyphName, delta, tip)
-		local b = Theme:GlyphButton(tabbar, glyphName, 9, ARROW_W)
+		local b = Theme:GlyphButton(tabbar, glyphName, 9, G.ARROW_W)
 		b:SetScript("OnClick", function()
 			if this.__disabled then return end
 			AegisPathfinder:ScrollObjectiveTabs(delta)
@@ -465,14 +470,14 @@ function AegisPathfinder:UpdateObjectivePanel()
 	local tabLeft = TabArrow("chevronLeft", -1, "Earlier guides")
 	local tabRight = TabArrow("chevronRight", 1, "Later guides")
 	-- Centred on the tabs, which sit on the bar's bottom edge.
-	tabLeft:SetPoint("LEFT", tabbar, "BOTTOMLEFT", 8, (TABBAR_H - 5) / 2)
+	tabLeft:SetPoint("LEFT", tabbar, "BOTTOMLEFT", 8, (G.TABBAR_H - 5) / 2)
 
 	tabbar:EnableMouseWheel(true)
 	tabbar:SetScript("OnMouseWheel", function()
 		AegisPathfinder:ScrollObjectiveTabs(-(arg1 or 0))
 	end)
 
-	local addTab = Theme:GlyphButton(tabbar, "plus", 10, TABBAR_H - 9)
+	local addTab = Theme:GlyphButton(tabbar, "plus", 10, G.TABBAR_H - 9)
 	Theme:NineSlice(addTab, Theme.texture.tabBorder, "BORDER", "subtle")
 	addTab:SetScript("OnClick", function()
 		-- Opens beside the guide, not instead of it.
@@ -502,14 +507,14 @@ function AegisPathfinder:UpdateObjectivePanel()
 		row on moving through the guide instead.
 	]]
 	local navrow = CreateFrame("Frame", nil, frame)
-	navrow:SetHeight(NAVROW_H)
+	navrow:SetHeight(G.NAVROW_H)
 	navrow:SetPoint("TOPLEFT", tabbar, "BOTTOMLEFT", 0, 0)
 	navrow:SetPoint("TOPRIGHT", tabbar, "BOTTOMRIGHT", 0, 0)
 	Theme:Strip(navrow, "tabbg")
 	Theme:Divider(navrow, navrow, "BOTTOMLEFT", 0, 0)
 
 	local prevArrow = Theme:GlyphButton(navrow, "arrowLeft", 11, 20)
-	prevArrow:SetPoint("LEFT", navrow, "LEFT", ROWPAD - 4, 0)
+	prevArrow:SetPoint("LEFT", navrow, "LEFT", G.ROWPAD - 4, 0)
 	prevArrow:SetScript("OnClick", function() AegisPathfinder:GoToPreviousObjective() end)
 
 	navStepNum = navrow:CreateFontString(nil, "OVERLAY")
@@ -550,14 +555,14 @@ function AegisPathfinder:UpdateObjectivePanel()
 
 	navCount = navrow:CreateFontString(nil, "OVERLAY")
 	Theme:SetFont(navCount, "body", 10)
-	navCount:SetPoint("RIGHT", navrow, "RIGHT", -ROWPAD, 0)
+	navCount:SetPoint("RIGHT", navrow, "RIGHT", -G.ROWPAD, 0)
 	navCount:SetJustifyH("RIGHT")
 	Theme:TextColor(navCount, "textDim")
 
 	frame.navrow = navrow
 
 	-- Guide completion, as a 4px rule across the full width.
-	guideProgress = Theme:ProgressBar(frame, PROGRESS_H)
+	guideProgress = Theme:ProgressBar(frame, G.PROGRESS_H)
 	guideProgress:SetPoint("TOPLEFT", navrow, "BOTTOMLEFT", 0, 0)
 	guideProgress:SetPoint("TOPRIGHT", navrow, "BOTTOMRIGHT", 0, 0)
 	frame.guideProgress = guideProgress
@@ -573,7 +578,7 @@ function AegisPathfinder:UpdateObjectivePanel()
 		returning from a branch on the branch tab itself.
 	]]
 	local footer = CreateFrame("Frame", nil, frame)
-	footer:SetHeight(FOOTER_H)
+	footer:SetHeight(G.FOOTER_H)
 	footer:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 1, 1)
 	footer:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -1, 1)
 	Theme:CapStrip(footer, "panel2", "bottom")
@@ -587,7 +592,7 @@ function AegisPathfinder:UpdateObjectivePanel()
 
 	footerCount = footer:CreateFontString(nil, "OVERLAY")
 	Theme:SetFont(footerCount, "body", 10)
-	footerCount:SetPoint("RIGHT", footer, "RIGHT", -ROWPAD, 0)
+	footerCount:SetPoint("RIGHT", footer, "RIGHT", -G.ROWPAD, 0)
 	footerCount:SetJustifyH("RIGHT")
 	Theme:TextColor(footerCount, "textDim")
 
@@ -596,7 +601,7 @@ function AegisPathfinder:UpdateObjectivePanel()
 	-- whole of it is on the footer's tooltip.
 	footerQid = footer:CreateFontString(nil, "OVERLAY")
 	Theme:SetFont(footerQid, "body", 10)
-	footerQid:SetPoint("LEFT", footer, "LEFT", ROWPAD, 0)
+	footerQid:SetPoint("LEFT", footer, "LEFT", G.ROWPAD, 0)
 	footerQid:SetPoint("RIGHT", footerCount, "LEFT", -8, 0)
 	footerQid:SetHeight(12)
 	footerQid:SetJustifyH("LEFT")
@@ -613,7 +618,7 @@ function AegisPathfinder:UpdateObjectivePanel()
 		so in words: a bare icon in a footer is easy to miss, and on a craft
 		step there is no quest id beside it to crowd. ]]
 	local materials = Theme:GlyphButton(footer, Theme.actionIcon.B, 11, 18)
-	materials:SetPoint("LEFT", footer, "LEFT", ROWPAD - 4, 0)
+	materials:SetPoint("LEFT", footer, "LEFT", G.ROWPAD - 4, 0)
 	materials.glyph:ClearAllPoints()
 	materials.glyph:SetPoint("LEFT", materials, "LEFT", 4, 0)
 	local matsLabel = materials:CreateFontString(nil, "OVERLAY")
@@ -640,8 +645,8 @@ function AegisPathfinder:UpdateObjectivePanel()
 	frame.footer = footer
 
 	scrollbar, upbutt, downbutt = ww.ConjureScrollBar(frame)
-	scrollbar:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -7, -(CHROME_TOP + 14))
-	scrollbar:SetPoint("BOTTOM", frame, "BOTTOM", 0, FOOTER_H + 18)
+	scrollbar:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -7, -(G.CHROME_TOP + 14))
+	scrollbar:SetPoint("BOTTOM", frame, "BOTTOM", 0, G.FOOTER_H + 18)
 	scrollbar:SetScript("OnValueChanged", function() local val = arg1 self:UpdateOHPanel(val) end)
 
 	upbutt:SetScript("OnClick", function()
@@ -660,9 +665,9 @@ function AegisPathfinder:UpdateObjectivePanel()
 		them. A `.zrow` dot/glyph/title/note, or -- for an ACCEPT or TURNIN
 		that is current or done -- the coloured band laid over the whole slot.
 	]]
-	for i = 1, MAX_ROWS do
+	for i = 1, G.MAX_ROWS do
 		local row = CreateFrame("Button", nil, frame)
-		row:SetHeight(ROWHEIGHT)
+		row:SetHeight(G.ROWHEIGHT)
 
 		-- Faint wash on the active step, plus the left accent bar.
 		row.bg = row:CreateTexture(nil, "BACKGROUND")
@@ -681,11 +686,11 @@ function AegisPathfinder:UpdateObjectivePanel()
 
 		-- Top-aligned, as the concept's flex-start row is: a row that grows
 		-- for a long note keeps its dot, glyph and title where they were.
-		local check = Theme:StepCheck(row, DOTSIZE)
-		check:SetPoint("TOPLEFT", row, "TOPLEFT", ROWPAD, -(ROWHEIGHT - DOTSIZE) / 2)
+		local check = Theme:StepCheck(row, G.DOTSIZE)
+		check:SetPoint("TOPLEFT", row, "TOPLEFT", G.ROWPAD, -(G.ROWHEIGHT - G.DOTSIZE) / 2)
 
 		local icon = row:CreateTexture(nil, "ARTWORK")
-		icon:SetWidth(ICONSIZE); icon:SetHeight(ICONSIZE)
+		icon:SetWidth(G.ICONSIZE); icon:SetHeight(G.ICONSIZE)
 		icon:SetPoint("LEFT", check, "RIGHT", 9, 0)
 
 		-- Title over note, both clipped to one line: the concept stacks them,
@@ -693,7 +698,7 @@ function AegisPathfinder:UpdateObjectivePanel()
 		local text = row:CreateFontString(nil, "OVERLAY")
 		Theme:SetFont(text, "body", 12)
 		text:SetPoint("TOPLEFT", icon, "TOPRIGHT", 9, 1)
-		text:SetPoint("RIGHT", row, "RIGHT", -ROWPAD, 0)
+		text:SetPoint("RIGHT", row, "RIGHT", -G.ROWPAD, 0)
 		text:SetJustifyH("LEFT")
 		text:SetHeight(16)
 		Theme:TextColor(text, "text")
@@ -701,7 +706,7 @@ function AegisPathfinder:UpdateObjectivePanel()
 		local detail = row:CreateFontString(nil, "OVERLAY")
 		Theme:SetFont(detail, "body", 11)
 		detail:SetPoint("TOPLEFT", text, "BOTTOMLEFT", 0, -2)
-		detail:SetPoint("RIGHT", row, "RIGHT", -ROWPAD, 0)
+		detail:SetPoint("RIGHT", row, "RIGHT", -G.ROWPAD, 0)
 		detail:SetJustifyH("LEFT")
 		detail:SetHeight(15)
 		-- #8f8f86 in the concept: dimmer than --text-dim, so the note reads as
@@ -724,7 +729,7 @@ function AegisPathfinder:UpdateObjectivePanel()
 		--[[ The band, covering the slot when this step is an ACCEPT or TURNIN
 			that is current or done. Its own button so a click anywhere on it
 			toggles the step, as the concept has it. ]]
-		local band = Theme:Band(row, ROWHEIGHT)
+		local band = Theme:Band(row, G.ROWHEIGHT)
 		band:SetPoint("TOPLEFT", row, "TOPLEFT", 0, 0)
 		band:SetPoint("BOTTOMRIGHT", row, "BOTTOMRIGHT", 0, 0)
 		band:Hide()
@@ -769,8 +774,8 @@ function AegisPathfinder:UpdateObjectivePanel()
 	]]
 	meter = CreateFrame("Frame", nil, frame)
 	meter:SetHeight(38)
-	meter:SetPoint("TOPLEFT", rows[1], "BOTTOMLEFT", ROWPAD, -2)
-	meter:SetPoint("RIGHT", frame, "RIGHT", -ROWPAD, 0)
+	meter:SetPoint("TOPLEFT", rows[1], "BOTTOMLEFT", G.ROWPAD, -2)
+	meter:SetPoint("RIGHT", frame, "RIGHT", -G.ROWPAD, 0)
 	Theme:NineSlice(meter, Theme.texture.tabFill, "BACKGROUND", "text", 0.04)
 	Theme:NineSlice(meter, Theme.texture.tabBorder, "BORDER", "border")
 	meter:Hide()
@@ -795,8 +800,8 @@ function AegisPathfinder:UpdateObjectivePanel()
 	frame.meter = meter
 
 	local empty = CreateFrame("Button", nil, frame)
-	empty:SetHeight(ROWHEIGHT)
-	empty:SetPoint("TOPLEFT", frame, "TOPLEFT", 1, -CHROME_TOP)
+	empty:SetHeight(G.ROWHEIGHT)
+	empty:SetPoint("TOPLEFT", frame, "TOPLEFT", 1, -G.CHROME_TOP)
 	empty:SetPoint("RIGHT", frame, "RIGHT", -1, 0)
 	local emptyText = empty:CreateFontString(nil, "OVERLAY")
 	Theme:SetFont(emptyText, "body", 12)
@@ -826,9 +831,9 @@ function AegisPathfinder:UpdateObjectivePanel()
 	-- Earlier versions saved the width on every resize, the first layout
 	-- included, so the old 630px default is stored for nearly everyone
 	-- whether or not they chose it. Only a width set with the grip is kept.
-	if profile.objframewidth == OLD_DEFAULT_WIDTH then profile.objframewidth = nil end
+	if profile.objframewidth == G.OLD_DEFAULT_WIDTH then profile.objframewidth = nil end
 	if profile.objframewidth then
-		frame:SetWidth(math.max(MIN_WIDTH, math.min(MAX_WIDTH, profile.objframewidth)))
+		frame:SetWidth(math.max(G.MIN_WIDTH, math.min(G.MAX_WIDTH, profile.objframewidth)))
 	end
 	Theme:RestorePosition(frame, "objframe")
 	frame.expandChip:SetActive(self.db.char.overviewmode)
@@ -847,18 +852,18 @@ function AegisPathfinder:UpdateObjectiveTabs()
 	if not frame.guideTabs or not frame.guideTabs[1] then return end
 
 	local tabs = self:EnsureTabs()
-	local count = math.min(table.getn(tabs), MAX_TABS)
+	local count = math.min(table.getn(tabs), G.MAX_TABS)
 	local active = self.db.char.activetab or 1
 
 	-- How many tabs fit at a readable width: 8px in from the left, the + and
 	-- its gap on the right, and room for the arrows once they are needed.
 	local function fit(room)
-		local n = math.floor((room + TAB_GAP) / (TAB_W_MIN + TAB_GAP))
-		return math.max(1, math.min(VISIBLE_TABS, n))
+		local n = math.floor((room + G.TAB_GAP) / (G.TAB_W_MIN + G.TAB_GAP))
+		return math.max(1, math.min(G.VISIBLE_TABS, n))
 	end
-	local room = frame:GetWidth() - 2 - 8 - (ADD_W + 4) - 8
+	local room = frame:GetWidth() - 2 - 8 - (G.ADD_W + 4) - 8
 	local overflow = count > fit(room)
-	if overflow then room = room - 2 * (ARROW_W + 2) end
+	if overflow then room = room - 2 * (G.ARROW_W + 2) end
 	local visible = math.min(count, fit(room))
 
 	-- Follow the active tab when it changes -- a switch, an open, a close --
@@ -875,14 +880,14 @@ function AegisPathfinder:UpdateObjectiveTabs()
 	tabFirst = math.max(1, math.min(tabFirst, count - visible + 1))
 	local lastShown = tabFirst + visible - 1
 
-	local width = TAB_W_MAX
+	local width = G.TAB_W_MAX
 	if visible > 0 then
-		width = math.floor((room - (visible - 1) * TAB_GAP) / visible)
-		if width > TAB_W_MAX then width = TAB_W_MAX end
+		width = math.floor((room - (visible - 1) * G.TAB_GAP) / visible)
+		if width > G.TAB_W_MAX then width = G.TAB_W_MAX end
 	end
 
 	local prev
-	for i = 1, MAX_TABS do
+	for i = 1, G.MAX_TABS do
 		local button = frame.guideTabs[i]
 		local tab = tabs[i]
 		if not tab or i < tabFirst or i > lastShown then
@@ -890,14 +895,14 @@ function AegisPathfinder:UpdateObjectiveTabs()
 		else
 			button:ClearAllPoints()
 			if prev then
-				button:SetPoint("BOTTOMLEFT", prev, "BOTTOMRIGHT", TAB_GAP, 0)
+				button:SetPoint("BOTTOMLEFT", prev, "BOTTOMRIGHT", G.TAB_GAP, 0)
 			else
 				button:SetPoint("BOTTOMLEFT", frame.tabbar, "BOTTOMLEFT",
-					overflow and (8 + ARROW_W + 2) or 8, 0)
+					overflow and (8 + G.ARROW_W + 2) or 8, 0)
 			end
 			button:Show()
 			button:SetWidth(width)
-			button:SetBadgeShown(width >= BADGE_MIN)
+			button:SetBadgeShown(width >= G.BADGE_MIN)
 			-- The pack prefix ("Optimized/") is the same on every tab and
 			-- costs a third of a narrow one; the tooltip keeps the full name.
 			button.label:SetText((string.gsub(tab.guide, "^.*/", "")))
@@ -932,7 +937,7 @@ function AegisPathfinder:UpdateObjectiveTabs()
 	end
 
 	-- Past MAX_TABS there is nowhere to put another tab, so stop offering.
-	if table.getn(tabs) >= MAX_TABS then frame.addTab:Hide() else frame.addTab:Show() end
+	if table.getn(tabs) >= G.MAX_TABS then frame.addTab:Hide() else frame.addTab:Show() end
 end
 
 --- Move the tab bar's view by `delta` tabs. Only the view: the guide you are
@@ -982,12 +987,12 @@ end
 	grows and shrinks from the bottom edge rather than moving its header.
 ]]
 function AegisPathfinder:PanelContentHeight()
-	if self:HasNoGuide() then return ROWHEIGHT + 6 end
+	if self:HasNoGuide() then return G.ROWHEIGHT + 6 end
 	if self.db.char.overviewmode then
 		local total = self.actions and table.getn(self.actions) or 0
-		return math.max(1, math.min(total, MAX_ROWS)) * ROWHEIGHT + 2
+		return math.max(1, math.min(total, G.MAX_ROWS)) * G.ROWHEIGHT + 2
 	end
-	local h = rows[1] and rows[1]:GetHeight() or ROWHEIGHT
+	local h = rows[1] and rows[1]:GetHeight() or G.ROWHEIGHT
 	if frame.meter and frame.meter:IsShown() then
 		h = h + 2 + frame.meter:GetHeight()
 	end
@@ -1000,7 +1005,7 @@ function AegisPathfinder:LayoutPanelHeight()
 	-- lands back here; without this guard the first layout never returns.
 	if frame.layoutlock then return end
 
-	local h = CHROME_TOP + self:PanelContentHeight() + FOOTER_H
+	local h = G.CHROME_TOP + self:PanelContentHeight() + G.FOOTER_H
 	h = math.min(h, self:GetPanelCap())
 
 	frame.layoutlock = true
@@ -1021,8 +1026,8 @@ end
 ]]
 function AegisPathfinder:VisibleRowCount()
 	if not self.db.char.overviewmode then return 1 end
-	local fits = math.floor((frame:GetHeight() - CHROME_TOP - FOOTER_H) / ROWHEIGHT)
-	return math.max(1, math.min(fits, MAX_ROWS))
+	local fits = math.floor((frame:GetHeight() - G.CHROME_TOP - G.FOOTER_H) / G.ROWHEIGHT)
+	return math.max(1, math.min(fits, G.MAX_ROWS))
 end
 
 function AegisPathfinder:OnObjectiveFrameResized()
@@ -1090,8 +1095,8 @@ function AegisPathfinder:ResetWindowLayout()
 	profile.objframewidth, profile.objframemaxheight, profile.objframeheight = nil, nil, nil
 
 	frame:ClearAllPoints()
-	frame:SetPoint(DEFAULT_ANCHOR[1], UIParent, DEFAULT_ANCHOR[2], DEFAULT_ANCHOR[3], DEFAULT_ANCHOR[4])
-	frame:SetWidth(DEFAULT_WIDTH)
+	frame:SetPoint(G.DEFAULT_ANCHOR[1], UIParent, G.DEFAULT_ANCHOR[2], G.DEFAULT_ANCHOR[3], G.DEFAULT_ANCHOR[4])
+	frame:SetWidth(G.DEFAULT_WIDTH)
 	self:LayoutPanelHeight()
 	self:UpdateOHPanel()
 
@@ -1275,7 +1280,7 @@ function AegisPathfinder:UpdateOHPanel(value)
 				list does not turn into a wall of colour.
 			]]
 			if BANDABLE[action] and (checked or isActive) then
-				row:SetHeight(ROWHEIGHT)
+				row:SetHeight(G.ROWHEIGHT)
 				row.note:Hide()
 				row.bg:Hide()
 				row.activebar:Hide()
@@ -1334,7 +1339,7 @@ function AegisPathfinder:UpdateOHPanel(value)
 				if overview then
 					row.note:Hide()
 					row.detail:Show()
-					row:SetHeight(ROWHEIGHT)
+					row:SetHeight(G.ROWHEIGHT)
 				else
 					row.detail:Hide()
 					row.note:SetWidth(NoteWidth())
@@ -1349,7 +1354,7 @@ function AegisPathfinder:UpdateOHPanel(value)
 							noteH = math.ceil(row.note:GetStringWidth() / NoteWidth()) * 14
 						end
 					end
-					row:SetHeight(math.max(ROWHEIGHT, NOTE_TOP + noteH + NOTE_BOTTOM))
+					row:SetHeight(math.max(G.ROWHEIGHT, G.NOTE_TOP + noteH + G.NOTE_BOTTOM))
 				end
 
 				if (self.current > idx) and optional and not checked then
@@ -1398,7 +1403,7 @@ function AegisPathfinder:UpdateOHPanel(value)
 		footerQid:SetPoint("LEFT", materials, "RIGHT", 6, 0)
 	else
 		materials:Hide()
-		footerQid:SetPoint("LEFT", frame.footer, "LEFT", ROWPAD, 0)
+		footerQid:SetPoint("LEFT", frame.footer, "LEFT", G.ROWPAD, 0)
 	end
 	footerQid:SetPoint("RIGHT", footerCount, "LEFT", -8, 0)
 	if isWarning then
