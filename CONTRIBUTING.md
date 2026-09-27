@@ -32,7 +32,6 @@ That runs everything that can run without a WoW client:
 | `Tools/test_theme.lua` | The theme layer against a stubbed 1.12 API |
 | `Tools/test_professions.lua` | Generated guides through the real parsers |
 | `Tools/test_statusframe.lua` | The status card's layout and population |
-| `Tools/test_servers.lua` | Guide data provenance and mismatch detection |
 | `Tools/test_dungeons.lua` | Dungeon chips and the guide-reference scan |
 | `Tools/test_guidelist.lua` | Guide categorisation, tabs and badges |
 | `Tools/test_activeframes.lua` | Active Items, Active Targets and Macros: which items and targets each step offers, targeting and raid marks, the generated AegisTarget/AegisItem macros, placement, the key bindings |
@@ -41,6 +40,7 @@ That runs everything that can run without a WoW client:
 | `Tools/test_materials.lua` | Shopping list arithmetic, checked against the source document's own shopping list; bag counts, the scope tabs, and sending to Aegis: Exchange |
 | `Tools/test_craftplanner.lua` | The crafting route planner: reading the recipe data, the skill-up chance, the route against brute force, learning fees, make-or-buy, pricing at depth, stock carried between steps, selling back, unpriced reagents; the auction scan against the suite's auction house rules; every profession planned from the real data |
 | `Tools/test_craftroute.lua` | The crafting route window and planned guides: rank steps placed where the skill cap runs out, crafts contiguous and parsed as skill steps, saving and restoring, the window's totals, rows, status line, re-planning only on change, and the scan button |
+| `Tools/test_partysync.lua` | Sharing a guide with the party: step names that survive different step numbering, holding a finished step for the slowest partner without pulling anyone back, skipping out of a hold, the messages both ways, the throttle and heartbeat, the popups, the members under the step, and the group changing |
 | `Tools/test_objectivetabs.lua` | The objectives tab bar and branch state |
 
 Everything must pass before you open a PR. **None of it proves the UI looks
@@ -115,11 +115,7 @@ person to review before any tag is added.
 
 ## Guide data and servers
 
-Guide content in this repository was authored against **OctoWoW**. The
-Turtle WoW-lineage servers each reconstructed content past roughly patch 1.17
-independently, so quest ids and coordinates are not guaranteed to match on
-Capybara Paradise or RavenCraft.
-
-If you author or verify guide data, say which server you checked it against.
-Guides that silently assume one server's data is the most likely source of
-wrong waypoints in this addon.
+Turtle WoW, OctoWoW, Capybara Paradise and RavenCraft share the quests and
+places these guides use, so one set of guides serves all of them. If you find a
+quest id or a location that differs on one server, report it with the server
+and the step.

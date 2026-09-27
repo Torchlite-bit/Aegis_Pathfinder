@@ -474,6 +474,21 @@ def _pin(d, s):              # map pin -- prefixes a coordinate pair
     d.ellipse([s * .40, s * .28, s * .60, s * .48], fill=(0, 0, 0, 0))
 
 
+def _party(d, s):            # nav row -- share the guide with your party
+    """Two people, the nearer one in front: a head and shoulders each. The
+    one behind is cut away where the nearer overlaps it, so the pair still
+    reads as two at 12px."""
+    # Behind, up and to the right.
+    d.ellipse([s * .52, s * .14, s * .80, s * .42], fill=W)
+    d.pieslice([s * .40, s * .46, s * .92, s * .98], 180, 360, fill=W)
+    # A gap around the nearer figure, then the nearer figure itself.
+    clear = (0, 0, 0, 0)
+    d.ellipse([s * .12, s * .22, s * .52, s * .62], fill=clear)
+    d.pieslice([s * .00, s * .56, s * .66, s * 1.22], 180, 360, fill=clear)
+    d.ellipse([s * .18, s * .28, s * .46, s * .56], fill=W)
+    d.pieslice([s * .06, s * .62, s * .60, s * 1.16], 180, 360, fill=W)
+
+
 CHROME = {
     "menu": _menu,
     "close": _close,
@@ -486,6 +501,7 @@ CHROME = {
     "bang": _bang,
     "pin": _pin,
     "expand": _expand,
+    "party": _party,
     "caret-up": lambda d, s: _caret(d, s, "up"),
     "caret-down": lambda d, s: _caret(d, s, "down"),
 }

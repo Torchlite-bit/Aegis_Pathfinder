@@ -560,6 +560,9 @@ function AegisPathfinder:UpdateObjectivePanel()
 	Theme:TextColor(navCount, "textDim")
 
 	frame.navrow = navrow
+	navrow.count = navCount
+	-- The party icon, for sharing the guide (PartySync.lua).
+	if self.AttachShareButton then self:AttachShareButton(navrow) end
 
 	-- Guide completion, as a 4px rule across the full width.
 	guideProgress = Theme:ProgressBar(frame, G.PROGRESS_H)
@@ -596,9 +599,9 @@ function AegisPathfinder:UpdateObjectivePanel()
 	footerCount:SetJustifyH("RIGHT")
 	Theme:TextColor(footerCount, "textDim")
 
-	-- Up to the count and no further, on one line: a data-source warning is
-	-- longer than a 396px footer has room for beside the count, and the
-	-- whole of it is on the footer's tooltip.
+	-- Up to the count and no further, on one line: a warning can be longer
+	-- than a 396px footer has room for beside the count, and the whole of it
+	-- is on the footer's tooltip.
 	footerQid = footer:CreateFontString(nil, "OVERLAY")
 	Theme:SetFont(footerQid, "body", 10)
 	footerQid:SetPoint("LEFT", footer, "LEFT", G.ROWPAD, 0)
@@ -996,6 +999,9 @@ function AegisPathfinder:PanelContentHeight()
 	if frame.meter and frame.meter:IsShown() then
 		h = h + 2 + frame.meter:GetHeight()
 	end
+	if frame.partyblock and frame.partyblock:IsShown() then
+		h = h + 2 + frame.partyblock:GetHeight()
+	end
 	return h + 8
 end
 
@@ -1199,6 +1205,12 @@ function AegisPathfinder:UpdateOHPanel(value)
 		end
 	end
 	if showMeter then meter:Show() else meter:Hide() end
+	-- Party members sharing the guide, under the meter or the step
+	-- (PartySync.lua); the panel's height counts them.
+	if self.PaintPartyBlock then
+		if showMeter then self:PaintPartyBlock(frame, meter, 0) else self:PaintPartyBlock(frame, rows[1], G.ROWPAD) end
+	end
+	if self.PaintShareButton then self:PaintShareButton() end
 	self:LayoutPanelHeight()
 
 	local shown = self:VisibleRowCount()
@@ -1390,9 +1402,10 @@ function AegisPathfinder:UpdateOHPanel(value)
 
 	--[[ Footer: the current step's quest id, and progress through the guide.
 
-		A data-source warning outranks the id. It is the most likely reason a
-		waypoint points at nothing and it otherwise fails silently, so when
-		there is one it takes the slot and turns red. ]]
+		A warning from GetStepMeta outranks the id: it takes the slot and
+		turns red. (Nothing raises one at present -- the guide-data-by-server
+		warning that did went when it was clear the servers share the guides'
+		quests and places.) ]]
 	local qid, meta, isWarning = self:GetStepMeta(self.current)
 	frame.footer.warning = isWarning and meta or nil
 

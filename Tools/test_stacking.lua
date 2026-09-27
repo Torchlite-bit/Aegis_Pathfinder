@@ -95,7 +95,6 @@ AegisPathfinder.guidelistframe = CreateFrame("Frame", nil, UIParent)
 
 dofile("Theme.lua")
 dofile("WidgetWarlock.lua")
-dofile("Servers.lua")
 dofile("ObjectivesFrame.lua")
 dofile("OptionsFrame.lua")
 

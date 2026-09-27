@@ -80,7 +80,6 @@ function AegisPathfinder:GetWaypointProvider() return nil end
 function AegisPathfinder:UpdateOHPanel() end
 function AegisPathfinder:UpdateNavCallout() end
 function AegisPathfinder:RedriveQuestAutomation() end
-function AegisPathfinder:GetDataSourceWarning() return nil end
 function AegisPathfinder:TrackCurrentQuest() end
 function AegisPathfinder:IsEventRegistered() return false end
 function AegisPathfinder:UnregisterEvent() end

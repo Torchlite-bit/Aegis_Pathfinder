@@ -319,9 +319,9 @@ function AegisPathfinder:CreateConfigPanel()
 	place(filterNote, 16, SECTION_GAP)
 	frame.groupSwitch, frame.ahSwitch, frame.filterNote = group, ah, filterNote
 
-	--[[ Server theme. It took the place of the Server dropdown: picking a
-		server's theme also says that is your server, which the guide-data
-		warnings go by (Servers.lua; /apg server still sets it on its own). ]]
+	--[[ Server theme: the colours of your server, or Day or Night. Colours
+		only -- the guides are the same on every server. It took the place of
+		the Server dropdown. ]]
 	table.insert(frame.sections, section("Server theme"))
 	local theme = Theme:Dropdown(body, BODY_W, function(key)
 		AegisPathfinder:SetTheme(key)
@@ -522,26 +522,10 @@ function AegisPathfinder:RefreshConfigPanel()
 	frame.filterNote:SetText((grouped and "Group mode" or "Solo mode")
 		.. " \194\183 Auction House steps " .. (db.UseAH and "shown" or "hidden"))
 
-	-- The theme, and -- for a server's own theme -- what is known about guide
-	-- data on that server.
+	-- The theme, and what it looks like.
 	local def = Theme.themeByKey[self:GetTheme()]
 	frame.theme:SetValue(def.key)
-	local info = def.server and self:GetServerInfo(def.server)
-	local source = self:GetServerInfo(self.defaultDataSource)
-	local lines = { def.note }
-	if info and info.dataset == "native" then
-		table.insert(lines, "Guide data here is authored against " .. info.label .. ".")
-	elseif info then
-		table.insert(lines, "Guide data here is authored against "
-			.. (source and source.label or "another server")
-			.. " and has not been checked on " .. info.label
-			.. ". Quest ids and coordinates may differ.")
-	end
-	if info then
-		table.insert(lines, info.pfquest and ("pfQuest pack: " .. info.pfquest)
-			or "No pfQuest pack confirmed for this server.")
-	end
-	frame.themeNote:SetText(table.concat(lines, " "))
+	frame.themeNote:SetText(def.note)
 
 	-- The addon's own switches.
 	for key, sw in pairs(frame.switches) do

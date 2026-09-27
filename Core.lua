@@ -98,7 +98,6 @@ local defaults = {
     showactivetargets = true,
     questicons = true,        -- mark quest NPCs and mobs on mouseover/target
     showmacros = true,        -- the Macros window, and the AegisTarget/AegisItem macros
-    server = nil,             -- see Servers.lua; nil means the default dataset
     showuseitem = true,
     showuseitemcomplete = true,
     skipfollowups = true,
@@ -122,6 +121,7 @@ local defaults = {
     setupdone = false,            -- has this character been through the first-time setup?
     offercustomzones = true,      -- offer custom zones when a guide finishes (NextGuideFrame.lua)
     craftsellback = true,         -- crafting routes sell what is left over to a merchant (CraftPlanner.lua)
+    sharenowarn = false,          -- skip the "share this guide with your party?" question (PartySync.lua)
     routepack = nil,              -- Active route pack name (e.g., "VanillaGuide", "RestedXP")
     PlayStyle = "SOLO",           -- Default playstyle ("SOLO" or "GROUP")
     UseAH = false,                -- Default Auction House setting (true/false)
@@ -180,6 +180,12 @@ local options = {
             type = "execute",
             func = function() AegisPathfinder:UseActiveItem(1) end,
         },
+        Share = {
+            name = "Share",
+            desc = "Share the guide you are on with your party, or stop sharing (beta)",
+            type = "execute",
+            func = function() AegisPathfinder:ToggleSharing() end,
+        },
         Craft = {
             name = "Craft",
             desc = "The crafting route window: the cheapest way to level a profession at today's prices",
@@ -197,18 +203,6 @@ local options = {
             desc = "Put every window back where it opens by default, at its default size",
             type = "execute",
             func = function() AegisPathfinder:ResetWindowLayout() end,
-        },
-        Server = {
-            name = "Server",
-            desc = "Which server you play on, and whether guide data is verified there",
-            type = "execute",
-            func = function() AegisPathfinder:CycleServer() end,
-        },
-        ServerStatus = {
-            name = "Server Status",
-            desc = "Show guide data provenance for each server",
-            type = "execute",
-            func = function() AegisPathfinder:PrintServerStatus() end,
         },
         DiagNav = {
             name = "Navigation Diag",
@@ -948,7 +942,7 @@ function AegisPathfinder:LoadNextGuide()
     -- reset by UpdateStatusFrame once the chain lands on a guide with real work.
     self.autoadvancecount = (self.autoadvancecount or 0) + 1
     if self.autoadvancecount > 20 then
-        self:Print("|cffff9900Stopped auto-advancing after 20 completed guides - is this guide meant for a different server?|r")
+        self:Print("|cffff9900Stopped auto-advancing after 20 completed guides. Pick the guide you want from the guide list.|r")
         return false
     end
 
