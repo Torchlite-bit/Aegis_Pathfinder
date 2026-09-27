@@ -428,10 +428,11 @@ def check_texture_paths(rep):
 
 # GameTooltip is shared with the whole UI -- restyling it restyles every other
 # addon's tooltips -- so the addon's hints use Theme:ShowTip, its own card.
-# Only the Active Items buttons may reach for GameTooltip: only it can show an
-# item.
+# Only rows that are game items -- the Active Items buttons, the Gear finder's
+# list -- may reach for GameTooltip: only it can show an item.
 GAMETOOLTIP = re.compile(r"\bGameTooltip\s*:\s*SetOwner\b")
-GAMETOOLTIP_ALLOWED = {"ActiveFrames.lua"}
+# Files whose rows are game items: only GameTooltip can show one.
+GAMETOOLTIP_ALLOWED = {"ActiveFrames.lua", "GearFinder.lua"}
 
 
 def check_tooltips(rep):

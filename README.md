@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.4.1)
+# Aegis: Pathfinder (v0.4.2)
 
 A Classic+ leveling guide for the Turtle WoW-lineage 1.12 client family —
 OctoWoW, Capybara Paradise and RavenCraft. Part of the Aegis addon suite.
@@ -50,6 +50,7 @@ too — the old `TurtleGuide` global is still an alias.
 | `/apg craft` | The crafting route window: the cheapest way to level a profession at today's prices |
 | `/apg share` | Share the guide you are on with your party, or stop sharing (beta) |
 | `/apg gear` | The Gear window: the stat weights behind the item score |
+| `/apg finder` | The Gear finder: upgrades that drop in the dungeons you run |
 | `/apg ssf` | Solo Self-Found on or off |
 | `/apg setup` | Run the first-time setup again: your guide, its features and your dungeons |
 | `/apg target` | Target and mark the step's next active target (put it in a macro) |
@@ -306,7 +307,17 @@ under **Gear** in the options:
 - **Your bags.** Upgrades get a border in the default bag frames.
 - It can be switched off, or off at level 60.
 
-The Gear Finder (upgrades from the dungeons you run) is coming next.
+**Gear finder.** Upgrades waiting in the dungeons you run (`/apg finder`, or
+**Gear finder** in the options): for each slot, the best few drops that beat
+what you wear, with who drops them, where, and how often.
+
+- It looks in the dungeons that start no more than three levels above you, on
+  your side, and ticked under **Dungeons** — and in raids, at 60, if you switch
+  them on. Items up to three levels above you count, marked with their level.
+- Each drop is weighed with the item score, for your spec, as tooltips are.
+- Walking into a dungeon names its upgrades in chat.
+- The loot tables are the CMaNGOS database's: every vanilla dungeon and raid.
+  Turtle WoW's own dungeons are not in them yet.
 
 ## Professions
 
@@ -387,7 +398,7 @@ Reports welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options panel's About section (`v0.4.1`) — quote it.
+1. Check the **version** in the load message or the options panel's About section (`v0.4.2`) — quote it.
 2. Open the **Error log** (options panel → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 
@@ -453,7 +464,7 @@ so `git log` and `git blame` still attribute each line to whoever wrote it.
 | The authors of MetaMap, MetaMapBWP and Cartographer | Supported waypoint providers |
 | **Kitymeowmeow** | [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) — the recipe data behind the priced crafting routes: skill thresholds, reagents, learn costs, recipe sources, vendor prices; and the Engineering route |
 | **iGreed** | [OctoPawn](https://github.com/iGreed1993/OctoPawn) (MIT) — the stat weights for every class and spec, the tooltip stat patterns and soft caps behind the item score |
-| **The CMaNGOS team** | [classic-db](https://github.com/cmangos/classic-db) — which trainers teach each Engineering, Herbalism, Skinning and Fishing rank; the ore each vein yields, what quest rewards sell for, the skinnable beasts, each zone's fishing skill, the Expert fishing book and Nat Pagle's quest |
+| **The CMaNGOS team** | [classic-db](https://github.com/cmangos/classic-db) — which trainers teach each Engineering, Herbalism, Skinning and Fishing rank; the ore each vein yields, what quest rewards sell for, what drops in each dungeon and raid, the skinnable beasts, each zone's fishing skill, the Expert fishing book and Nat Pagle's quest |
 | **Indian Type Foundry** | Rajdhani (SIL OFL 1.1) |
 | **The Inter Project Authors** | Inter (SIL OFL 1.1) |
 

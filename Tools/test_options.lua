@@ -92,6 +92,9 @@ function AegisPathfinder:ForceWaypointUpdate() self.__resent = true end
 local scoreSettings = { tooltips = true }
 AegisPathfinder.ItemScore = { Settings = function() return scoreSettings end }
 local advisorSettings = { enabled = true, popups = true, questmark = true, bagmark = true }
+local finderSettings = { enabled = true, announce = true, raids = false }
+AegisPathfinder.GearFinder = { Settings = function() return finderSettings end }
+function AegisPathfinder:ToggleGearFinder() self.__finder = (self.__finder or 0) + 1 end
 AegisPathfinder.GearAdvisor = {
 	Settings = function() return advisorSettings end,
 	Dirty = function() end,
@@ -243,6 +246,12 @@ click(frame.advisor.enabled)
 check(frame.advisor.popups:IsEnabled(), "and let go when it is back on")
 click(frame.clearDeclined)
 check(AegisPathfinder.__declinedCleared, "Clear declined items clears them")
+check(frame.finder.enabled:IsOn() and frame.finder.announce:IsOn(), "the gear finder is on, and names upgrades")
+click(frame.finder.enabled)
+check(finderSettings.enabled == false and not frame.finder.announce:IsEnabled(), "off, its other switch is held")
+click(frame.finder.enabled)
+click(frame.openFinder)
+check(AegisPathfinder.__finder == 1, "the Gear finder button opens it")
 
 -- Solo Self-Found holds the Auction House switch off, and lets it go again.
 check(not frame.ssfSwitch:IsOn(), "Solo Self-Found is off by default")

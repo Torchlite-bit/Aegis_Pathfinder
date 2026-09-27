@@ -42,6 +42,7 @@ That runs everything that can run without a WoW client:
 | `Tools/test_craftplanner.lua` | The crafting route planner: reading the recipe data, the skill-up chance, the route against brute force, learning fees, make-or-buy, pricing at depth, stock carried between steps, selling back, unpriced reagents; the auction scan against the suite's auction house rules; every profession planned from the real data |
 | `Tools/test_itemscore.lua` | The item score: reading 1.12 tooltips (stats, weapon DPS, school spell damage, set bonuses and procs ignored, red lines meaning unusable or later), soft caps, the spec from your talents, your own weights and sharing them in OctoPawn's string, comparing by slot (rings, two-handers, dual wield), and the tooltip line |
 | `Tools/test_gearadvisor.lua` | The Gear Advisor: upgrades found in the bags, offered biggest first and once a session, Equip into the right slot (waiting out a fight, finding an item that moved), Decline remembered across reloads, equip-for-me never binding an item, off at 60; the best quest reward (upgrade, else sell price, waiting for items to load) marked and picked; upgrades bordered in the bags |
+| `Tools/test_gearfinder.lua` | The Gear finder: the dungeons it looks in (level, side, your ticks, raids), the drops it weighs (level, class), loading the ones not cached, the best three a slot in the character sheet's order, the window, and naming upgrades on walking into a dungeon; and that the real loot data is there |
 | `Tools/test_gearframe.lua` | The Gear window: the spec picker, the weights listed and edited, show all, export, import and reset |
 | `Tools/test_craftroute.lua` | The crafting route window and planned guides: rank steps placed where the skill cap runs out, crafts contiguous and parsed as skill steps, saving and restoring, the window's totals, rows, status line, re-planning only on change, and the scan button |
 | `Tools/test_partysync.lua` | Sharing a guide with the party: step names that survive different step numbering, holding a finished step for the slowest partner without pulling anyone back, skipping out of a hold, the messages both ways, the throttle and heartbeat, the popups, the members under the step, and the group changing |
@@ -139,7 +140,8 @@ python3 Tools/import_octopawn.py <path to OctoPawn>
 
 **`GearData.lua` is generated** from the CMaNGOS classic-db dump by
 `Tools/build_gear_data.py --cmangos <dump>`: what each quest reward sells for,
-which the Gear Advisor falls back on when no reward is an upgrade.
+which the Gear Advisor falls back on when no reward is an upgrade, and what
+drops in each dungeon and raid, for the Gear finder.
 
 **Recipe data in `Crafting/` is generated** from
 [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute)'s data files, with

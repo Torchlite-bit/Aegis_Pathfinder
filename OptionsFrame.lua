@@ -389,8 +389,31 @@ function AegisPathfinder:CreateConfigPanel()
 		AegisPathfinder.GearAdvisor:ClearDeclined()
 		AegisPathfinder:Print("Declined upgrades cleared: they will be offered again.")
 	end)
-	place(clearDeclined, 26, SECTION_GAP)
+	place(clearDeclined, 26, 10)
+	-- The Gear Finder (GearFinder.lua): upgrades in the dungeons you run.
+	frame.finder = {}
+	for _, def in ipairs({
+		{ key = "enabled",  label = "Gear finder: upgrades from the dungeons I run" },
+		{ key = "announce", label = "Name the upgrades when I walk into a dungeon" },
+	}) do
+		local key = def.key
+		local sw = Theme:Switch(body, def.label, function(on)
+			AegisPathfinder.GearFinder.Settings()[key] = on
+			AegisPathfinder:RefreshConfigPanel()
+		end)
+		sw:SetWidth(BODY_W)
+		place(sw, 22, 6)
+		frame.finder[key] = sw
+	end
+	local openFinder = Theme:Pill(body, "Gear finder", 110, 26)
+	openFinder:SetScript("OnClick", function() AegisPathfinder:ToggleGearFinder() end)
+	place(openFinder, 26, 6)
+	note("It looks in the dungeons at or a little above your level that are "
+		.. "ticked under Dungeons, and in raids if you ask it to. Turtle WoW's own "
+		.. "dungeons are not in its data yet.")
+	y = y + SECTION_GAP
 	frame.scoreTips, frame.weightsButton, frame.clearDeclined = scoreTips, weights, clearDeclined
+	frame.openFinder = openFinder
 
 	-- Beyond the concept: the addon's own settings, in the same language. -------
 	table.insert(frame.sections, section("Guide behaviour"))
@@ -580,6 +603,11 @@ function AegisPathfinder:RefreshConfigPanel()
 	frame.ahSwitch:SetLocked(db.SelfFound)
 	frame.ssfSwitch:SetOn(db.SelfFound)
 	frame.scoreTips:SetOn(self.ItemScore.Settings().tooltips)
+	local finder = self.GearFinder.Settings()
+	for key, sw in pairs(frame.finder) do
+		sw:SetOn(finder[key])
+		sw:SetLocked(key ~= "enabled" and not finder.enabled)
+	end
 	local advisor = self.GearAdvisor.Settings()
 	for key, sw in pairs(frame.advisor) do
 		sw:SetOn(advisor[key])
