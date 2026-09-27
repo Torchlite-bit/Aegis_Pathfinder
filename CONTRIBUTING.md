@@ -68,7 +68,7 @@ public release, when MAJOR becomes 1.
   new [`CHANGELOG.md`](CHANGELOG.md) entry with its link reference at the
   bottom. `Tools/verify.py` checks they agree.
 - Mark a release **restart** in the changelog when it adds or removes a `.lua`
-  file in the `.toc`.
+  file in the `.toc`, or a texture in `media/`.
 - Nothing under `Tools/` or `docs/` ships, so a change there alone is not a
   release and takes no bump.
 

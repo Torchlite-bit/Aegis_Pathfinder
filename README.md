@@ -1,59 +1,143 @@
-# Aegis: Pathfinder (v0.6.0)
+# Aegis: Pathfinder (v0.6.1)
 
-**A levelling guide for 1.12 servers in the Turtle WoW family** — Turtle WoW,
-OctoWoW, Capybara Paradise and RavenCraft. Part of the Aegis addon suite.
+**Your levelling guide, on screen, all the way to 60.**
 
-Your next objective on screen, an arrow pointing at it, and a guide that moves
-on by itself as you accept, complete and turn in quests: the Zygor and RestedXP
-experience, on a client older than both.
+[![Discord](https://img.shields.io/badge/Discord-join%20us-5865F2?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/hsgPTNkSX)
+[![Turtle WoW](https://img.shields.io/badge/Turtle%20WoW-1.18.1-2E8B57?style=flat-square&labelColor=555)](https://turtle-wow.org/)
+[![RavenCraft](https://img.shields.io/badge/RavenCraft-1.18.1-1e1e1e?style=flat-square&labelColor=555)](https://ravencraft.io/)
+[![CapyCraft](https://img.shields.io/badge/CapyCraft-1.18.1-8B5A2B?style=flat-square&labelColor=555)](https://capycraft.io/)
+[![Octo WoW](https://img.shields.io/badge/Octo%20WoW-1.18.1-8A2BE2?style=flat-square&labelColor=555)](https://octowow.st/)
 
-> **In development.** Not released yet.
+[![ClassicAPI](https://img.shields.io/badge/ClassicAPI-Required-C41E3A?style=flat-square&labelColor=555)](https://github.com/brues-code/ClassicAPI)
+[![TomTom-TWOW](https://img.shields.io/badge/TomTom--TWOW-Recommended-ff8c00?style=flat-square&labelColor=555)](https://github.com/laytya/TomTom-TWOW)
+[![pfQuest](https://img.shields.io/badge/pfQuest-Recommended-ff8c00?style=flat-square&labelColor=555)](https://github.com/shagu/pfQuest)
 
-<!-- IMAGE: the guide window in game, with the arrow -->
+[![AEGIS: Exchange](https://img.shields.io/badge/AEGIS:Exchange-Companion%20Addon-ff8c00?style=flat-square&labelColor=555)](https://github.com/Torchlite-bit/Aegis_Exchange)
 
-## What you get
+Vanilla questing is a quest log, a map and a lot of alt-tabbing. Pathfinder
+keeps your next objective on screen, points an arrow at it, and moves on by
+itself as you accept, complete and turn in quests — the Zygor and RestedXP
+experience, on a client older than both. Gear, professions and your party come
+along for the ride.
 
-- **Guides that follow you.** 1–60 for every race: Optimized (Joana's routes),
-  RestedXP, RXP Hardcore, and Kamisayo Speedrun for Horde warriors. Steps tick
-  themselves off, and a short setup on your first login picks your guide.
-- **An arrow to every objective**, with waypoints through TomTom or pfQuest.
-- **Filters that fit how you play.** Solo or group, Auction House steps on or
-  off, Solo Self-Found, and only the dungeons you mean to run.
-- **Gear.** An item score on every tooltip; a Gear Advisor that offers upgrades
-  as you loot them and marks the best quest reward; a Gear finder that lists
-  the upgrades waiting in your dungeons.
-- **Fourteen professions, 1–300**, with trainers, reagents and a shopping list —
-  and the cheapest route to 300 at today's auction house prices.
-- **Quest helpers.** Buttons for the step's quest items and targets, raid marks
-  on the mobs your quests want, and macros that follow the guide.
-- **Play together** (beta). Share a guide with your party; a finished step
-  waits for everyone.
-- **Your server's colours.** Themes for Turtle WoW, OctoWoW, RavenCraft and
-  Capybara Paradise, plus Day and Night.
+> Built for **1.18.1** servers (Turtle WoW, Octo WoW, Capy WoW, RavenCraft),
+> which run the original **WoW 1.12 (vanilla)** client on **Lua 5.0**. Not
+> Classic. Not retail. Real vanilla.
 
-<!-- IMAGE: an item tooltip with the item score, and the Gear Advisor pop-up -->
+> ⚠️ **In development.** Not released yet. Tell us what misbehaves — which
+> guide, which step, which server.
 
-<!-- IMAGE: the options window, with its pages down the left -->
+**[💬 Join the Discord](https://discord.gg/hsgPTNkSX)** for help, bug reports,
+and feature ideas.
 
-Every feature in detail: [docs/FEATURES.md](docs/FEATURES.md).
+---
+
+<p align="center">
+  <img src="docs/images/aegis-pathfinder-logo.png" width="300" alt="Aegis: Pathfinder logo"><br>
+  <b>Aegis: Pathfinder — levelling, gear and professions for vanilla WoW</b>
+</p>
+
+---
+
+<!-- Screenshots: put them in docs/images/ with these names and uncomment.
+
+### 📷 Interface Overview
+
+| The guide & arrow | Options |
+| :---: | :---: |
+| <img src="docs/images/screenshot-guide.png" width="400"> | <img src="docs/images/screenshot-options.png" width="400"> |
+
+| Item score | Gear Advisor | Gear finder |
+| :---: | :---: | :---: |
+| <img src="docs/images/screenshot-itemscore.png" width="280"> | <img src="docs/images/screenshot-advisor.png" width="280"> | <img src="docs/images/screenshot-finder.png" width="280"> |
+
+---
+-->
+
+## Contents
+
+- [What it does](#what-it-does) — guides, arrow, filters, gear, professions
+- [Install](#install) · [Using it](#using-it)
+- [Something broken?](#something-broken) · [Contributing](#contributing)
+- [Credits](#credits) · [License](#license)
+
+Every feature in full detail: **[docs/FEATURES.md](docs/FEATURES.md)**.
+
+---
+
+## What it does
+
+### 🧭 Guides that follow you
+
+1–60 for every race: **Optimized** (Joana's routes), **RestedXP**, **RXP
+Hardcore**, and **Kamisayo Speedrun** for Horde warriors. Steps tick themselves
+off as you accept, complete and turn in quests; a short setup on your first
+login picks your guide. Finish a guide and it offers the next — or one of your
+server's custom zones, if one fits your level.
+
+### 🎯 An arrow to every objective
+
+A navigation arrow floats on the world with the distance and time to the step.
+Waypoints and map pins go through **TomTom** or **pfQuest**.
+
+### 🎛️ Play it your way
+
+**Solo** or **group**, **Auction House** steps on or off, **Solo Self-Found**,
+and only the dungeons you mean to run. Every switch applies to every guide.
+
+### 🛡️ Gear
+
+- **Item score** on every tooltip: what an item is worth to your spec, and how
+  it compares with what you wear. Weights from OctoPawn, yours to change.
+- **Gear Advisor** offers upgrades as you loot them and marks the best quest
+  reward.
+- **Gear finder** lists the upgrades waiting in the dungeons you run — who
+  drops them, where, and how often.
+
+### ⚒️ Professions
+
+All fourteen, 1–300, with trainers, reagents and a shopping list — and the
+**cheapest route to 300** at today's auction house prices. With
+[Aegis: Exchange](https://github.com/Torchlite-bit/Aegis_Exchange), the shopping
+list goes straight onto its Crafting tab.
+
+### 🗡️ Quest helpers
+
+Buttons for the step's quest items and targets, raid marks on the mobs your
+quests want, and two macros that follow the guide from an action bar.
+
+### 🤝 Play together *(beta)*
+
+Share a guide with your party: everyone's progress under the step, and a
+finished step waits for the slowest.
+
+### 🎨 Your server's colours
+
+Themes for Turtle WoW, Octo WoW, RavenCraft and Capybara Paradise, plus Day and
+Night — applied at once, no reload.
+
+---
 
 ## Install
 
 1. Install **[ClassicAPI](https://github.com/brues-code/ClassicAPI) v1.5.9 or
    newer**. It is required; the addon will not load without it.
 2. Put the addon in `Interface/AddOns/`, in a folder named `Aegis_Pathfinder`.
-3. Restart the client.
+3. **Restart the client.** A `/reload` does not pick up new files.
 
 Recommended: [TomTom-TWOW](https://github.com/laytya/TomTom-TWOW) for
 waypoints, and [pfQuest](https://github.com/shagu/pfQuest) with your server's
-database (`pfQuest-turtle`, or `pfQuest-octo` on OctoWoW) for quest givers and
+database (`pfQuest-turtle`, or `pfQuest-octo` on Octo WoW) for quest givers and
 targets.
 
 Coming from TurtleGuide or VanillaGuide+? Your progress carries over.
 
-## Commands
+## Using it
 
-| | |
+The logo on the minimap's edge: **click** to show or hide the guide,
+**right-click** for the options, **drag** to move it.
+
+| Command | |
 |---|---|
 | `/apg` | Open the guide |
 | `/apg setup` | Run the first-time setup again |
@@ -63,16 +147,29 @@ Coming from TurtleGuide or VanillaGuide+? Your progress carries over.
 | `/apg share` | Share your guide with your party |
 | `/apg ssf` | Solo Self-Found on or off |
 
-Right-click the shield on the minimap for the options. `/pathfinder` works
-too. [All commands](docs/FEATURES.md#commands).
+`/pathfinder` works too. [All commands](docs/FEATURES.md#commands).
+
+---
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.6.0`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.6.1`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
+4. Tell us on **[Discord](https://discord.gg/hsgPTNkSX)** or open an
+   [issue](https://github.com/Torchlite-bit/Aegis_Pathfinder/issues).
+   Screenshots help enormously.
 
-What changed between versions: [CHANGELOG.md](CHANGELOG.md).
+Recent changes are in [CHANGELOG.md](CHANGELOG.md).
+
+---
+
+## Contributing
+
+PRs welcome — say hi on **[Discord](https://discord.gg/hsgPTNkSX)** first if
+you're planning something big. [CONTRIBUTING.md](CONTRIBUTING.md) has the
+checks, the 1.12 / Lua 5.0 code rules and how versions work;
+[docs/GUIDE_AUTHORING.md](docs/GUIDE_AUTHORING.md) covers writing guides.
 
 ## Credits
 
@@ -94,15 +191,19 @@ A fan project, not affiliated with or endorsed by Blizzard Entertainment, Zygor
 Guides LLC, RestedXP, or any server team. The interface follows conventions set
 by Zygor and RestedXP; no art or code from either was used.
 
-## Licence
+## License
 
 GNU General Public License v3.0 — see [LICENSE](LICENSE). The item score's
 weights come from OctoPawn under its MIT licence, carried in
 `ItemScoreData.lua`; the Ace2 libraries and the fonts keep their own licences
 (see [media/README.md](media/README.md)).
 
-## Contributing
+---
 
-[CONTRIBUTING.md](CONTRIBUTING.md) covers the checks, the code rules and
-versions; [docs/GUIDE_AUTHORING.md](docs/GUIDE_AUTHORING.md) covers writing
-guides.
+<div align="center">
+
+**[💬 Discord](https://discord.gg/hsgPTNkSX)** · **[📜 Changelog](CHANGELOG.md)** · **[🐛 Issues](https://github.com/Torchlite-bit/Aegis_Pathfinder/issues)**
+
+*Aegis: Pathfinder is part of the Aegis addon series. Happy questing.* 🧭
+
+</div>

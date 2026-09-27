@@ -4,8 +4,9 @@
 	It used to be FuBarPlugin's: Blizzard's quest-log book in the stock round
 	minimap border, with a right-click that opened a Dewdrop menu of every
 	setting -- the same settings the options panel now shows properly. This is
-	the addon's own, drawn like the rest of it: the Aegis shield in accent on a
-	dark disc with a hairline ring.
+	the addon's own: the Aegis: Pathfinder logo, in its own colours -- a dark
+	disc with a red and gold rune ring, so it needs no border of ours. Hovering
+	puts the accent ring round it.
 
 	Click shows or hides the guide, right-click opens the options panel, and
 	dragging walks it round the minimap's edge. The Guide behaviour section of
@@ -15,7 +16,7 @@
 local AegisPathfinder = AegisPathfinder
 local Theme = AegisPathfinder.Theme
 
-local SIZE = 28
+local SIZE = 32              -- the stock minimap buttons' size, so the logo reads
 local RADIUS = 80           -- from the minimap's centre, where its buttons sit
 local DEFAULT_ANGLE = 215   -- degrees anticlockwise from east: lower left
 
@@ -29,24 +30,22 @@ button:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 button:RegisterForDrag("LeftButton")
 button:Hide()
 
-local disc = button:CreateTexture(nil, "BACKGROUND")
-disc:SetTexture(Theme.texture.circleFill)
-disc:SetAllPoints(button)
-Theme:Tint(disc, "panel2")
-
-local ring = button:CreateTexture(nil, "BORDER")
-ring:SetTexture(Theme.texture.circleBorder)
-ring:SetAllPoints(button)
-Theme:Tint(ring, "subtle")
-
+-- The logo in its own colours: never tinted, whatever the theme.
 local icon = button:CreateTexture(nil, "ARTWORK")
-icon:SetTexture(Theme.texture.logo)
-icon:SetWidth(16)
-icon:SetHeight(16)
+icon:SetTexture(Theme.texture.minimapLogo)
+icon:SetWidth(SIZE)
+icon:SetHeight(SIZE)
 icon:SetPoint("CENTER", button, "CENTER", 0, 0)
-Theme:Tint(icon, "accent")
 
-button.disc, button.ring, button.icon = disc, ring, icon
+-- On hover, a ring in the theme's accent just outside the logo's own.
+local ring = button:CreateTexture(nil, "OVERLAY")
+ring:SetTexture(Theme.texture.circleBorder)
+ring:SetPoint("TOPLEFT", button, "TOPLEFT", -2, 2)
+ring:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
+Theme:Tint(ring, "accent")
+ring:Hide()
+
+button.ring, button.icon = ring, icon
 
 --- Put the button at `angle` degrees round the minimap's edge.
 local function Place(angle)
@@ -82,13 +81,12 @@ button:SetScript("OnClick", function()
 	end
 end)
 
--- Pressed: the shield sinks a pixel, as a button face would.
+-- Pressed: the logo sinks a pixel, as a button face would.
 button:SetScript("OnMouseDown", function() icon:SetPoint("CENTER", button, "CENTER", 1, -1) end)
 button:SetScript("OnMouseUp", function() icon:SetPoint("CENTER", button, "CENTER", 0, 0) end)
 
 button:SetScript("OnEnter", function()
-	Theme:Tint(ring, "accent")
-	Theme:Tint(icon, "accentGlow")
+	ring:Show()
 	Theme:ShowTip(this, "LEFT", "Aegis: Pathfinder v" .. (AegisPathfinder.version or "?"), {
 		"Click to show or hide the guide",
 		"Right-click for settings",
@@ -96,8 +94,7 @@ button:SetScript("OnEnter", function()
 	})
 end)
 button:SetScript("OnLeave", function()
-	Theme:Tint(ring, "subtle")
-	Theme:Tint(icon, "accent")
+	ring:Hide()
 	Theme:HideTip(this)
 end)
 

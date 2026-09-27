@@ -28,7 +28,8 @@ is caught before it is committed.
 Colour is **not** baked into most files. Shapes are white masks that
 `Theme.lua` tints with `SetVertexColor`, which is why a single 32×32
 rounded-rectangle serves every panel, tab, pill and band. Only genuinely
-multi-colour art bakes colour in: `nav-arrow.tga` and `progress-fill.tga`.
+multi-colour art bakes colour in: `nav-arrow.tga`, `progress-fill.tga`, and
+`minimap-logo.tga`, which is the owner's logo art scaled down.
 
 ## Contents
 
@@ -48,7 +49,7 @@ multi-colour art bakes colour in: `nav-arrow.tga` and `progress-fill.tga`.
 | `nav-arrow.tga` | 64×64 | Navigation arrow, three-stop gradient, colour baked in |
 | `scroll-thumb.tga` | 32×32 | Scrollbar knob, stadium |
 | `switch-track.tga` | 64×32 | Options toggle track, stadium |
-| `logo.tga` | 64×64 | The Aegis shield: the minimap button's icon |
+| `minimap-logo.tga` | 64×64 | The minimap button: the Aegis: Pathfinder logo in full colour, from `Tools/data/aegis-pathfinder-logo.webp` |
 | `wordmark.tga` | 256×32 | PATHFINDER wordmark, pre-rendered |
 | `icons/*.tga` | 32×32 | One glyph per guide action code (17) |
 | `icons/{menu,close,plus,tick,bang,pin,expand}.tga` | 32×32 | Chrome glyphs the 1.12 font cannot render |

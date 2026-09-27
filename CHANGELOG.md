@@ -7,14 +7,26 @@ The version here matches `## Version` in `Aegis_Pathfinder.toc` and the number
 in the load message and the options window's About page — quote it in bug
 reports.
 
-> ⚠️ Releases marked **restart** add or remove a `.lua` file. WoW 1.12 reads the
-> file list at startup, so `/reload` won't pick them up — you need to fully
-> restart the client. Everything else is `/reload`-safe.
+> ⚠️ Releases marked **restart** add or remove a `.lua` file or a texture. WoW
+> 1.12 reads the file list at startup, so `/reload` won't pick them up — you
+> need to fully restart the client. Everything else is `/reload`-safe.
 
 > **One push, one MINOR.** A body of work that lands in one merge takes a
 > single MINOR bump, and every change inside it — each phase, each fix found
 > along the way — is a PATCH under it. The MINOR moves again at the next body
 > of work, not at the next feature within this one.
+
+---
+
+## [0.6.1] — restart
+
+### Changed
+- **The minimap button is the Aegis: Pathfinder logo**, in its own colours,
+  at the stock minimap buttons' size, with the theme's accent ring round it on
+  hover. It replaces the green shield. The logo is a new texture file, so
+  restart the client rather than `/reload`.
+- **The README matches the rest of the Aegis series**: badges for the servers
+  and what the addon needs, the logo, a Discord link, and a section a feature.
 
 ---
 
@@ -204,6 +216,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.6.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.6.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.5.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.4.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
