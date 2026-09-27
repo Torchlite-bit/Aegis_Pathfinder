@@ -559,7 +559,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.6.3"
+AegisPathfinder.version = "0.7.0"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -891,10 +891,11 @@ function AegisPathfinder:GetAvailableRoutePacks()
 end
 
 -- Switch to a route pack, replacing self.routes with the pack's routes
---[[ Solo Self-Found: a character that never trades and never uses the
-    Auction House. Steps tagged |AH| or |TRADE| are left out whatever the
-    Auction House switch says, and that switch is held off while it is on.
-    Per character, like the other filters. ]]
+--[[ Solo Self-Found: a character that plays alone, never trades and never
+    uses the Auction House. While it is on, steps tagged |AH| or |TRADE|, group
+    quests and dungeon quests are left out whatever their switches say, and
+    those switches are held off. What they were set to is kept, and comes back
+    when it goes off. Per character, like the other filters. ]]
 function AegisPathfinder:UsesAuctionHouse()
     local db = self.db and self.db.char
     return db and db.UseAH and not db.SelfFound and true or false
@@ -902,7 +903,7 @@ end
 
 function AegisPathfinder:SetSelfFound(on)
     self.db.char.SelfFound = on and true or false
-    self:Print(on and "Solo Self-Found on: steps that trade or use the Auction House are hidden."
+    self:Print(on and "Solo Self-Found on: group quests, dungeons, and steps that trade or use the Auction House are hidden."
         or "Solo Self-Found off.")
     if not self:HasNoGuide() then
         self:LoadGuide(self.db.char.currentguide)

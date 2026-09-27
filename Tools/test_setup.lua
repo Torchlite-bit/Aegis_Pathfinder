@@ -150,6 +150,21 @@ check(f.stepText:GetText() == "STEP 2 OF 2" and f.next:GetText() == "FINISH",
 	"with dungeons off, two, got %s / %s", tostring(f.stepText:GetText()), f.next:GetText())
 toggleDungeons()
 
+-- Solo Self-Found holds the Auction House, group quests and dungeons off, and
+-- gives them back as they were.
+click(f.features.group)
+click(f.features.ssf)
+check(f.features.ssf:IsOn(), "Solo Self-Found switches on")
+for _, key in ipairs({ "ah", "group", "dungeons" }) do
+	check(not f.features[key]:IsOn() and not f.features[key]:IsEnabled(), "and holds %s off", key)
+end
+check(f.stepText:GetText() == "STEP 2 OF 2" and f.next:GetText() == "FINISH", "with no dungeons step")
+click(f.features.ssf)
+check(f.features.group:IsOn() and f.features.group:IsEnabled() and f.features.dungeons:IsOn()
+	and f.features.dungeons:IsEnabled(), "off again, group quests and dungeons are back as they were")
+check(f.stepText:GetText() == "STEP 2 OF 3", "and so is the dungeons step")
+click(f.features.group)
+
 -- Step 3: the dungeons -------------------------------------------------------------------
 
 click(f.back); click(shown(f.cards)[2]); click(f.next)   -- RestedXP again
@@ -223,6 +238,22 @@ toggleDungeons()
 check(not f.features.dungeons:IsOn(), "dungeons can be switched off")
 click(f.next)
 check(db.Dungeons.WC == false, "dungeons off leaves none ticked")
+
+-- Finishing with Self-Found on keeps the choices underneath, and says so.
+AegisPathfinder:ShowSetup()
+click(f.next)
+click(f.features.ssf)
+printed = {}
+click(f.next)
+check(db.SelfFound == true and db.UseAH == true and db.PlayStyle == "GROUP",
+	"Self-Found is saved, and the choices it holds off are kept")
+check(string.find(printed[table.getn(printed)] or "", "Solo Self-Found (no group quests, dungeons, trading or Auction House)", 1, true),
+	"and it says what that means, got '%s'", tostring(printed[table.getn(printed)]))
+AegisPathfinder:ShowSetup()
+click(f.next)
+click(f.features.ssf)
+click(f.next)
+check(db.SelfFound == false, "and it can be switched off again")
 
 -- Horde's list.
 faction, race = "Horde", "Orc"

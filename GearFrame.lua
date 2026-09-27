@@ -103,9 +103,8 @@ function AegisPathfinder:CreateItemScorePage(body, width, top, bottom)
 		AegisPathfinder.ItemScore.Settings().showall = on
 		AegisPathfinder:UpdateItemScorePage()
 	end)
-	showAll:SetWidth(width)
 	showAll:SetPoint("TOPLEFT", body, "TOPLEFT", 0, -y)
-	y = y + 22 + 12
+	y = y + showAll:Fit(width) + 12
 	page.listTop = y
 
 	-- Beside the weights: the weights as a string, to import or export.
@@ -152,6 +151,16 @@ function AegisPathfinder:CreateItemScorePage(body, width, top, bottom)
 
 	page.spec, page.class, page.note, page.showAll = spec, class, note, showAll
 	page.share, page.import, page.export, page.status, page.reset = share, import, export, status, reset
+	--- The page at another width, as the window is resized: the note, and
+	--- the share column out to the new edge.
+	function page:Resize(w)
+		self.width = w
+		self.note:SetWidth(w)
+		self.showAll:Fit(w)
+		local cw = w - L.LIST_W - L.GAP
+		for _, r in ipairs({ self.share, self.import, self.export, self.status }) do r:SetWidth(cw) end
+	end
+
 	-- Drawn afresh whenever the page is turned to, last time's word gone.
 	body.refresh = function()
 		page.said = nil

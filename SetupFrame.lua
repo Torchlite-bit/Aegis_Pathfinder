@@ -198,10 +198,14 @@ function AegisPathfinder:ApplySetup(c)
 	local n = 0
 	for _ in pairs(c.dungeons and c.picked or {}) do n = n + 1 end
 	local pack = self.routepacks[c.pack]
-	self:Print(string.format("Set up: %s, %s, Auction House steps %s, %s.",
-		PACK_TEXT[c.pack] and PACK_TEXT[c.pack].title or (pack and pack.displayName) or tostring(c.pack),
+	local title = PACK_TEXT[c.pack] and PACK_TEXT[c.pack].title or (pack and pack.displayName) or tostring(c.pack)
+	if c.ssf then
+		self:Print(string.format("Set up: %s, Solo Self-Found (no group quests, dungeons, trading or Auction House).", title))
+		return
+	end
+	self:Print(string.format("Set up: %s, %s, Auction House steps %s, %s.", title,
 		c.group and "group quests" or "solo",
-		c.ssf and "off (Solo Self-Found)" or (c.ah and "on" or "off"),
+		c.ah and "on" or "off",
 		n == 0 and "no dungeons" or (n .. " dungeon" .. (n == 1 and "" or "s"))))
 end
 
@@ -324,8 +328,6 @@ local function Build()
 	local function feature(key, label, text)
 		local sw = Theme:Switch(frame, label, function(on)
 			choice[key] = on
-			-- Self-Found means no Auction House: its switch goes off with it.
-			if key == "ssf" and on then choice.ah = false end
 			AegisPathfinder:PaintSetup()
 		end)
 		sw:SetWidth(WIDTH - PAD * 2)
@@ -336,7 +338,7 @@ local function Build()
 		return sw
 	end
 	feature("ah", "Auction House", "Includes steps that buy what a quest needs from the auction house instead of farming it.")
-	feature("ssf", "Solo Self-Found", "No trading and no Auction House: leaves out every step that needs either.")
+	feature("ssf", "Solo Self-Found", "Play alone: no group quests, no dungeons, no trading and no Auction House.")
 	feature("group", "Group quests", "Includes elite and group quests, which are hard alone. Leave off to level solo.")
 	feature("dungeons", "Dungeons", "Adds dungeon quests to your route. Choose which on the next step.")
 	frame.featureNote = Body(frame, WIDTH - PAD * 2)
@@ -407,7 +409,7 @@ end
 
 --- Forward or back a step; forward from the last one finishes.
 function AegisPathfinder:SetupStep(delta)
-	local last = choice.dungeons and 3 or 2
+	local last = (choice.dungeons and not choice.ssf) and 3 or 2
 	local nextPage = page + delta
 	if nextPage < 1 then return end
 	if nextPage > last then
@@ -433,7 +435,7 @@ end
 function AegisPathfinder:PaintSetup()
 	if not frame then return end
 	HideAll()
-	local last = choice.dungeons and 3 or 2
+	local last = (choice.dungeons and not choice.ssf) and 3 or 2
 	frame.stepText:SetText(string.format("STEP %d OF %d", page, last))
 	frame.back:SetText("Back")
 	if page == 1 then frame.back:Hide() else frame.back:Show() end
@@ -468,8 +470,10 @@ function AegisPathfinder:PaintSetup()
 		local tags = self:GetPackTags(choice.pack)
 		for _, key in ipairs({ "ah", "ssf", "group", "dungeons" }) do
 			local sw = frame.features[key]
-			sw:SetOn(choice[key] and not (key == "ah" and choice.ssf))
-			sw:SetLocked(key == "ah" and choice.ssf)
+			-- Solo Self-Found holds the rest off, and keeps what they were.
+			local held = key ~= "ssf" and choice.ssf
+			sw:SetOn(choice[key] and not held)
+			sw:SetLocked(held)
 			sw:ClearAllPoints()
 			sw:SetPoint("TOPLEFT", frame, "TOPLEFT", PAD, -y)
 			sw:Show()

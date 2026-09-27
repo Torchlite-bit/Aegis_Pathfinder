@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.6.3)
+# Aegis: Pathfinder (v0.7.0)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -82,8 +82,9 @@ Waypoints and map pins go through **TomTom** or **pfQuest**.
 
 ### 🎛️ Play it your way
 
-**Solo** or **group**, **Auction House** steps on or off, **Solo Self-Found**,
-and only the dungeons you mean to run. Every switch applies to every guide.
+**Solo** or **group**, **Auction House** steps on or off, and only the dungeons
+you mean to run. **Solo Self-Found** holds all three off: no group quests, no
+dungeons, no trading, no Auction House. Every switch applies to every guide.
 
 ### 🛡️ Gear
 
@@ -154,7 +155,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.6.3`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.7.0`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/hsgPTNkSX)** or open an

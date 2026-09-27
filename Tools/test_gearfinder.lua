@@ -183,6 +183,10 @@ check(not codes().ZG, "a raid only at its level, even when asked")
 GF.Settings().raids = false
 check(GF.ForClass(128, "MAGE") and not GF.ForClass(128, "WARRIOR") and GF.ForClass(0, "WARRIOR"),
 	"class masks read")
+A.db.char.SelfFound = true
+check(table.getn(GF:Dungeons()) == 0, "Solo Self-Found runs no dungeons, so none are looked in")
+A.db.char.SelfFound = nil
+check(codes().DM, "and off again, they are")
 
 -- What it finds -----------------------------------------------------------------------
 
@@ -243,6 +247,12 @@ check(row.where:GetText() == "Lady Anacondra, Wailing Caverns \194\183 20%", "an
 	tostring(row.where:GetText()))
 check(frame.rows[2].slot:GetText() == "", "the slot is named once")
 check(string.find(frame.note:GetText(), "The Deadmines", 1, true), "the note names where it looked")
+A.db.char.SelfFound = true
+GF:Refresh()
+check(frame.note:GetText() == "Solo Self-Found is on, so it looks in no dungeons.", "with Self-Found on it says why it is empty, got %s",
+	tostring(frame.note:GetText()))
+A.db.char.SelfFound = nil
+GF:Refresh()
 run(row, "OnEnter")
 check(GameTooltip.__link == "item:112:0:0:0", "hovering a row shows the item")
 run(frame.raids, "OnClick")

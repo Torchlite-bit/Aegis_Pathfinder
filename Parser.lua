@@ -201,8 +201,9 @@ local function StepParse(guide)
 			local code = isNegation and string.sub(sp, 2) or sp
 			code = string.upper(code)
 
-			local isSelected = AegisPathfinder.db and AegisPathfinder.db.char and AegisPathfinder.db.char.Dungeons and
-			AegisPathfinder.db.char.Dungeons[code]
+			-- Solo Self-Found runs no dungeons, whichever are ticked.
+			local db = AegisPathfinder.db and AegisPathfinder.db.char
+			local isSelected = db and not db.SelfFound and db.Dungeons and db.Dungeons[code]
 
 			if isNegation then
 				hasNegations = true
@@ -218,7 +219,9 @@ local function StepParse(guide)
 
 	local function matchPlayStyleFilter(playstyle)
 		if not playstyle then return true end
-		local setting = AegisPathfinder.db and AegisPathfinder.db.char and AegisPathfinder.db.char.PlayStyle or "SOLO"
+		local db = AegisPathfinder.db and AegisPathfinder.db.char
+		-- Solo Self-Found is solo, whatever group mode says.
+		local setting = db and not db.SelfFound and db.PlayStyle or "SOLO"
 		return string.upper(playstyle) == string.upper(setting)
 	end
 

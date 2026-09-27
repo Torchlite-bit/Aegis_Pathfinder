@@ -366,21 +366,32 @@ click(frame.finder.enabled)
 click(frame.openFinder)
 check(AegisPathfinder.__finder == 1, "the Gear finder button opens it")
 
--- Solo Self-Found holds the Auction House switch off, and lets it go again.
+-- Solo Self-Found holds group mode, the Auction House and the dungeons off,
+-- and lets them go again as they were.
 check(not frame.ssfSwitch:IsOn(), "Solo Self-Found is off by default")
 fire(frame.ssfSwitch, "OnEnter")
 check(AegisPathfinder.Theme.tip and AegisPathfinder.Theme.tip:IsShown(), "hovering it explains it, without an error")
 fire(frame.ssfSwitch, "OnLeave")
+check(db.PlayStyle == "GROUP" and db.UseAH and db.Dungeons.DM, "group mode, the Auction House and Deadmines are on")
 click(frame.ssfSwitch)
 check(db.SelfFound == true, "the Self-Found switch turns it on")
 check(not frame.ahSwitch:IsOn(), "with Self-Found on, the Auction House switch reads off")
 check(not frame.ahSwitch:IsEnabled(), "and cannot be clicked")
-check(frame.filterNote:GetText() == "Group mode \194\183 Self-Found: no trading or Auction House steps",
+check(not frame.groupSwitch:IsOn() and not frame.groupSwitch:IsEnabled(), "group mode reads off and cannot be clicked")
+check(not dm:IsActive() and not dm:IsEnabled(), "the dungeons read off and cannot be clicked")
+click(dm)
+check(db.Dungeons.DM == true and not dm:IsActive(), "a click on a held dungeon does nothing")
+check(frame.wiredHint:GetText() == "Solo Self-Found is on: no dungeons until it is off.",
+	"the dungeons page says why, got '%s'", tostring(frame.wiredHint:GetText()))
+check(frame.filterNote:GetText() == "Solo Self-Found \194\183 no group quests, dungeons, trading or Auction House steps",
 	"the summary says so, got '%s'", tostring(frame.filterNote:GetText()))
-check(db.UseAH == true, "Self-Found does not forget the Auction House choice underneath")
+check(db.UseAH == true and db.PlayStyle == "GROUP" and db.Dungeons.DM == true,
+	"Self-Found does not forget the choices underneath")
 click(frame.ssfSwitch)
 check(db.SelfFound == false and frame.ahSwitch:IsOn() and frame.ahSwitch:IsEnabled(),
 	"turning Self-Found off gives the Auction House switch back as it was")
+check(frame.groupSwitch:IsOn() and frame.groupSwitch:IsEnabled(), "and group mode")
+check(dm:IsActive() and dm:IsEnabled(), "and the dungeons")
 
 -- The knob slides: left when off, right when on.
 local _, _, _, onX = frame.groupSwitch.knob:GetPoint()
@@ -501,6 +512,56 @@ click(frame.rescan)
 check(AegisPathfinder.__rescanned, "Rescan progress asks the server")
 click(frame.errorlog)
 check(AegisPathfinder.__errorlog, "Error log opens the log")
+
+-- A label too long for its line wraps; it does not run off the edge -------------
+
+local long = Theme:Switch(UIParent, string.rep("Pick it for me when quests turn in ", 3))
+check(long:Fit(354) > 22 and long.label:GetWidth() == 354 - 45,
+	"a long switch label wraps within the row, and the row grows (%s)", tostring(long:GetHeight()))
+local short = Theme:Switch(UIParent, "Group mode")
+check(short:Fit(354) == 22, "a short one stays one line")
+for key, sw in pairs(frame.advisor) do
+	check(sw.label:GetWidth() == sw:GetWidth() - 45, "the %s switch's label stops at the row's edge", key)
+end
+check(frame.switches.questicons.label:GetWidth() == frame.switches.questicons:GetWidth() - 45,
+	"and the quest icons one")
+
+-- The resize grip ---------------------------------------------------------------
+
+check(frame.grip ~= nil and frame.grip:GetScript("OnMouseDown") ~= nil, "the window has a resize grip")
+local _, _, gripPoint = frame.grip:GetPoint()
+check(gripPoint == "BOTTOMRIGHT", "in its bottom right corner")
+click(frame.navButtons[5])                -- Gear, the long page
+local _, gearRange = frame.scrollbar:GetMinMaxValues()
+stub.cursor, stub.mouseDown = { 500, 300 }, true
+fire(frame.grip, "OnMouseDown")
+stub.cursor = { 600, 200 }                -- 100 right, 100 down
+fire(frame.grip, "OnUpdate")
+check(frame:GetWidth() == 546 + 100 and frame:GetHeight() == 560 + 100,
+	"dragging it right and down makes the window wider and taller, got %sx%s", frame:GetWidth(), frame:GetHeight())
+local _, tallerRange = frame.scrollbar:GetMinMaxValues()
+check(gearRange > 0 and tallerRange == math.max(0, gearRange - 100) and not frame.scrollbar:IsShown() == (tallerRange == 0),
+	"the page scrolls that much less, or not at all (%s from %s)", tallerRange, gearRange)
+check(frame.holder:GetWidth() == frame.bodyW and frame.bodyW == 396 - 28 - 10 - 4 + 100,
+	"the pane widens with it, got %s", tostring(frame.bodyW))
+check(frame.advisor.enabled:GetWidth() == frame.bodyW and frame.sections[1]:GetWidth() == frame.bodyW,
+	"and what is on it: switches and section rules")
+check(frame.race:GetWidth() == frame.bodyW and frame.race.list:GetWidth() == frame.bodyW, "dropdowns and their lists")
+check(AegisPathfinder.itemscorepage.share:GetWidth() == frame.bodyW - 186 - 16,
+	"and the Item Score page's share column, out to the new edge")
+stub.mouseDown = false
+fire(frame.grip, "OnUpdate")
+check(frame.grip.sizing == nil, "letting go ends it")
+check(AegisPathfinder.db.profile.optionswidth == 646 and AegisPathfinder.db.profile.optionsheight == 660,
+	"and the size is kept for next time")
+AegisPathfinder:SizeConfigWindow(100, 100, true)
+check(frame:GetWidth() == 546 and frame:GetHeight() == 360, "never narrower than it opens, nor very short")
+AegisPathfinder:SizeConfigWindow(5000, 5000)
+check(frame:GetWidth() == 1024 - 40 and frame:GetHeight() == 768 - 40, "nor bigger than the screen")
+AegisPathfinder:SizeConfigWindow()
+check(frame:GetWidth() == 546 and frame:GetHeight() == 560 and frame.bodyW == 396 - 28 - 10 - 4,
+	"and back to its first size")
+click(frame.navButtons[1])
 
 -- Credits ---------------------------------------------------------------------
 
