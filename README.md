@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.1.0)
+# Aegis: Pathfinder (v0.2.0)
 
 A Classic+ leveling guide for the Turtle WoW-lineage 1.12 client family —
 OctoWoW, Capybara Paradise and RavenCraft. Part of the Aegis addon suite.
@@ -263,8 +263,8 @@ pins either way.
 
 | Authored | |
 |---|---|
-| Alchemy, Blacksmithing, Cooking, Enchanting, Engineering, First Aid, Jewelcrafting, Leatherworking, Mining, Survival, Tailoring | Full 1–300 routes |
-| Herbalism, Skinning, Fishing | Placeholders — see below |
+| Alchemy, Blacksmithing, Cooking, Enchanting, Engineering, First Aid, Jewelcrafting, Leatherworking, Mining, Survival, Tailoring | Full 1–300 crafting routes |
+| Herbalism, Skinning, Fishing | 1–300 by where to go — see **Gathering** below |
 
 Each authored guide is a fixed route, chosen once. For one planned from today's
 prices instead, see **Cheapest crafting route** above — it keeps the authored
@@ -296,13 +296,29 @@ Steps complete themselves on the numbers the game reports: a craft or
 gathering step when your skill reaches its target, a rank when your skill cap
 does. Open a guide part-way through and it goes straight to where you are.
 
-The three placeholders are listed but unauthored, and carry a grey `TPL` badge
-in the guide list: the reference these guides were converted from does not
-cover them. They appear in the list so the
-Professions tab matches the design, and are labelled so an unauthored guide is
-obviously unauthored rather than silently missing. Herbalism, Skinning and
-Fishing are gathering professions and need a different kind of guide anyway:
-where to gather at each skill band, not what to craft.
+### Gathering
+
+Herbalism, Skinning and Fishing level by going somewhere, not by making
+something, so each skill band is one step naming the best places for it — for
+your faction, with the levels this addon's own zone guides spend there, so you
+can pick one your character suits:
+
+- **Herbalism** — the zones with most of the herbs that can still raise your
+  skill in that band, counted from pfQuest's node database (Turtle WoW's new
+  zones included), and which herbs to look for there.
+- **Skinning** — the levels of beast worth skinning in the band, and the zones
+  with most of them (normal creatures, no elites), from the CMaNGOS database.
+- **Fishing** — the zones where nothing gets away at your skill (every catch
+  can raise it, wherever you fish). Expert is a book, *Expert Fishing - The
+  Bass and You*, from Old Man Heming in Booty Bay; Artisan is Nat Pagle's quest
+  in Dustwallow Marsh, with where each of the four fish is caught — or, for
+  the Horde, Katoom the Angler in The Hinterlands trains it.
+
+Each rank is a step with your faction's trainers, capital cities first; with
+pfQuest the arrow points at the nearest. Gathering ranks mostly need no
+character level; where the trainer data says one does — Artisan Skinning at
+35, Fishing at 5 to start and 35 for Artisan — a "Reach level N" step waits
+for it.
 
 Where the reference had no recipe for a skill range, the guide says so rather
 than inventing one. Mining's mid-range gaps are real, and it tells you to go
@@ -320,7 +336,7 @@ Reports welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options panel's About section (`v0.1.0`) — quote it.
+1. Check the **version** in the load message or the options panel's About section (`v0.2.0`) — quote it.
 2. Open the **Error log** (options panel → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 
@@ -381,11 +397,11 @@ so `git log` and `git blame` still attribute each line to whoever wrote it.
 | | |
 |---|---|
 | **The Ace Development Team** | Ace2 (`AceAddon-2.0`, `AceEvent-2.0`, `AceDB-2.0`, `AceLibrary`, `AceOO-2.0`, `AceConsole-2.0`, `AceDebug-2.0`, `AceHook-2.1`) |
-| **shagu** | [pfQuest](https://github.com/shagu/pfQuest), pfQuest-turtle, pfQuest-octo |
+| **shagu** | [pfQuest](https://github.com/shagu/pfQuest), pfQuest-turtle, pfQuest-octo — and the herb node counts behind the Herbalism guide |
 | **Cladhaire**; the TWOW port by **laytya** and others | [TomTom-TWOW](https://github.com/laytya/TomTom-TWOW) |
 | The authors of MetaMap, MetaMapBWP and Cartographer | Supported waypoint providers |
 | **Kitymeowmeow** | [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) — the recipe data behind the priced crafting routes: skill thresholds, reagents, learn costs, recipe sources, vendor prices; and the Engineering route |
-| **The CMaNGOS team** | [classic-db](https://github.com/cmangos/classic-db) — which trainers teach each Engineering rank |
+| **The CMaNGOS team** | [classic-db](https://github.com/cmangos/classic-db) — which trainers teach each Engineering, Herbalism, Skinning and Fishing rank; the skinnable beasts, each zone's fishing skill, the Expert fishing book and Nat Pagle's quest |
 | **Indian Type Foundry** | Rajdhani (SIL OFL 1.1) |
 | **The Inter Project Authors** | Inter (SIL OFL 1.1) |
 

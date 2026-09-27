@@ -12,6 +12,12 @@ Tools/import_recipes.py), with each recipe's reagents and source from the
 recipe data in Crafting/ and its trainers from profession_training.json --
 the same step shapes as every other guide here.
 
+Herbalism, Skinning and Fishing are not in it either, and do not level by
+crafting. Their guides are built by Tools/gathering_guides.py from
+Tools/data/gathering.json (pfQuest's node counts and CMaNGOS's creatures,
+fishing skill, trainers, book and quest, extracted by
+Tools/build_gathering.py): where to go at each skill band.
+
 Output is QuestShell+ (structured Lua tables), not the pipe-delimited DSL:
 these guides are generated, and a generated corpus wants a format that diffs
 and validates cleanly. QuestShellPlusParser turns the tables into the tag
@@ -28,6 +34,8 @@ import re
 import sys
 import zipfile
 
+import gathering_guides
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOCX = os.path.join(ROOT, "Tools", "data", "Professions_Reference.docx")
 # Rank levels and costs, the secondary professions' books and quests, and
@@ -41,14 +49,11 @@ ROUTES = os.path.join(ROOT, "Tools", "data", "craftroute_routes.json")
 RECIPES = os.path.join(ROOT, "Crafting")
 FROM_CRAFTROUTE = ["Engineering"]
 
-# Professions the concept's Professions tab lists but the document has no route
+# Professions the concept's Professions tab lists but nothing here has a route
 # for. They ship as visibly-unauthored templates rather than being dropped, so
 # the tab matches the concept and nobody mistakes an empty guide for a real one.
-UNSOURCED = [
-    ("Herbalism", "gathering"),
-    ("Skinning", "gathering"),
-    ("Fishing", "gathering"),
-]
+# Every profession has a guide now; the machinery stays for the next one.
+UNSOURCED = []
 
 MAX_SKILL = 300
 
@@ -593,11 +598,32 @@ ROUTED_HEADER = """-- %(name)s (1-300)
 """
 
 
+GATHERED_HEADER = """-- %(name)s (1-300)
+--
+-- GENERATED FILE -- do not edit by hand.
+-- Source:    Tools/data/gathering.json -- pfQuest's gathering nodes (with
+--            pfQuest-turtle) and CMaNGOS classic-db's creatures, fishing
+--            skill, trainers, book and quest, extracted by
+--            Tools/build_gathering.py; zone sides and levels from this
+--            addon's own zone guides
+-- Generator: Tools/convert_professions.py, via Tools/gathering_guides.py
+--
+-- Regenerate with:  python3 Tools/convert_professions.py
+"""
+
+
 def emit_guide(p):
-    steps = emit_steps(p)
     header = ROUTED_HEADER if p.get("routed") else HEADER
-    lua = [header % {"name": p["name"]}, ""]
-    lua.append('AegisPathfinder:RegisterQuestShellPlusGuide("%s (1-300)", {' % p["name"])
+    return emit_lua(p["name"], header, emit_steps(p))
+
+
+def emit_gathered(name, steps):
+    return emit_lua(name, GATHERED_HEADER, steps)
+
+
+def emit_lua(name, header, steps):
+    lua = [header % {"name": name}, ""]
+    lua.append('AegisPathfinder:RegisterQuestShellPlusGuide("%s (1-300)", {' % name)
     lua.append('\tfaction = "Both",')
     lua.append('\tcategory = "Profession",')
     lua.append("\tsteps = {")
@@ -789,6 +815,14 @@ def main():
         print("  %-16s %2d ranges  from CraftRoute's route                   ~%d crafts"
               % (p["name"], len(ranges), p["crafts"]))
         problems += validate_routed(p, training)
+    data, zones = gathering_guides.load(), gathering_guides.zone_table(ROOT)
+    gathered, unbuilt = {}, []
+    for name in gathering_guides.GATHERED:
+        gathered[name] = gathering_guides.build(name, data, zones)
+        bands = [s for s in gathered[name] if s.get("skill")]
+        print("  %-16s %2d bands   from Tools/data/gathering.json (both factions)"
+              % (name, len(bands)))
+        unbuilt += gathering_guides.validate(name, gathered[name])
     print("")
     if problems:
         print("%d consistency issue(s) in the source document:" % len(problems))
@@ -797,6 +831,15 @@ def main():
         print("\nThese are reported, not repaired -- the document is the authority.")
     else:
         print("Source document is internally consistent.")
+
+    # The gathering guides are this repository's own work, not a document's:
+    # a band that leaves a gap or names nowhere is a bug here, and stops the
+    # run rather than being reported and shipped.
+    if unbuilt:
+        print("\n%d problem(s) in the gathering guides:" % len(unbuilt))
+        for msg in unbuilt:
+            print("  ! " + msg)
+        return 1
 
     # Every rank a player trains at a trainer has somewhere to go.
     gaps = []
@@ -827,6 +870,12 @@ def main():
             on_disk = open(path, encoding="utf-8").read() if os.path.exists(path) else None
             if on_disk != emit_guide(p):
                 stale.append(fn)
+        for name, steps in gathered.items():
+            fn = re.sub(r"[^A-Za-z0-9]+", "_", name) + ".lua"
+            path = os.path.join(OUTDIR, fn)
+            on_disk = open(path, encoding="utf-8").read() if os.path.exists(path) else None
+            if on_disk != emit_gathered(name, steps):
+                stale.append(fn)
         if stale:
             print("\nOut of date -- run python3 Tools/convert_professions.py:")
             for fn in stale:
@@ -843,6 +892,12 @@ def main():
             fh.write(emit_guide(p))
         written.append(fn)
 
+    for name, steps in gathered.items():
+        fn = re.sub(r"[^A-Za-z0-9]+", "_", name) + ".lua"
+        with open(os.path.join(OUTDIR, fn), "w", encoding="utf-8") as fh:
+            fh.write(emit_gathered(name, steps))
+        written.append(fn)
+
     for name, kind in UNSOURCED:
         fn = re.sub(r"[^A-Za-z0-9]+", "_", name) + ".lua"
         with open(os.path.join(OUTDIR, fn), "w", encoding="utf-8") as fh:
@@ -857,8 +912,8 @@ def main():
 
     print("\nWrote %d guides (+ Guides.xml) to %s"
           % (len(written), os.path.relpath(OUTDIR, ROOT)))
-    print("  authored: %d (%d from CraftRoute's routes)    templates: %d"
-          % (len(professions) + len(routed), len(routed), len(UNSOURCED)))
+    print("  authored: %d (%d from CraftRoute's routes, %d gathering)    templates: %d"
+          % (len(professions) + len(routed) + len(gathered), len(routed), len(gathered), len(UNSOURCED)))
     return 0
 
 

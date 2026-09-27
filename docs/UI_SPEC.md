@@ -428,7 +428,8 @@ comes off the guide table instead.
 
 Placeholder guides carry the concept's grey `TPL` badge (`Theme:Badge`). In a
 list where an unauthored guide looks exactly like an authored one, that badge
-is the only thing distinguishing them.
+is the only thing distinguishing them. Every profession has a guide now, so
+none ships with it; the badge stays for the next placeholder.
 
 Custom-zone guides are the **Custom** tab: `GetGuideCategory` matches a
 guide's name against `TURTLE_ZONES` in `Core.lua`, which has to name every
