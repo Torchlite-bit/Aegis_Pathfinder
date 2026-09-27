@@ -18,6 +18,18 @@ reports.
 
 ---
 
+## [0.6.3]
+
+### Added
+- **Right-click the step arrows to jump to your place.** Clicked round the
+  guide to look back or ahead? Right-click the arrow pointing where you were
+  and you're there, with every tick the arrows changed on the way put back
+  (and any quest you finished meanwhile kept). Without clicking round, a
+  right-click goes to where the guide would open — the quest your log shows
+  work at, else the first step not done. The arrows' tooltips say so.
+
+---
+
 ## [0.6.2]
 
 ### Added
@@ -229,6 +241,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.6.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.6.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.6.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.6.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

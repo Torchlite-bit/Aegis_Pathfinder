@@ -513,9 +513,24 @@ function AegisPathfinder:UpdateObjectivePanel()
 	Theme:Strip(navrow, "tabbg")
 	Theme:Divider(navrow, navrow, "BOTTOMLEFT", 0, 0)
 
-	local prevArrow = Theme:GlyphButton(navrow, "arrowLeft", 11, 20)
+	--[[ The arrows: a step back or on with a click; a right-click takes you
+		back or on to your place in the guide (Core.lua's ReturnToPlace). ]]
+	local function StepArrow(glyph, direction, move)
+		local b = Theme:GlyphButton(navrow, glyph, 11, 20)
+		b:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+		b:SetScript("OnClick", function()
+			if arg1 == "RightButton" then
+				AegisPathfinder:ReturnToPlace(direction)
+			else
+				AegisPathfinder:RememberPlace()
+				move()
+			end
+		end)
+		return b
+	end
+
+	local prevArrow = StepArrow("arrowLeft", -1, function() AegisPathfinder:GoToPreviousObjective() end)
 	prevArrow:SetPoint("LEFT", navrow, "LEFT", G.ROWPAD - 4, 0)
-	prevArrow:SetScript("OnClick", function() AegisPathfinder:GoToPreviousObjective() end)
 
 	navStepNum = navrow:CreateFontString(nil, "OVERLAY")
 	Theme:SetFont(navStepNum, "display", 15)
@@ -524,9 +539,8 @@ function AegisPathfinder:UpdateObjectivePanel()
 	navStepNum:SetWidth(44)
 	Theme:TextColor(navStepNum, "text")
 
-	local nextArrow = Theme:GlyphButton(navrow, "arrowRight", 11, 20)
+	local nextArrow = StepArrow("arrowRight", 1, function() AegisPathfinder:SkipToNextObjective() end)
 	nextArrow:SetPoint("LEFT", navStepNum, "RIGHT", 6, 0)
-	nextArrow:SetScript("OnClick", function() AegisPathfinder:SkipToNextObjective() end)
 
 	-- Marking the step done and moving on is a third action, and one the
 	-- concept reaches by ticking the step. Kept here as well because the panel
@@ -538,18 +552,18 @@ function AegisPathfinder:UpdateObjectivePanel()
 		AegisPathfinder:UpdateStatusFrame()
 	end)
 
-	local function ArrowTip(btn, tip)
+	local function ArrowTip(btn, tip, detail)
 		btn:SetScript("OnEnter", function()
 			Theme:Tint(this.glyph, "text")
-			Theme:ShowTip(this, "BOTTOM", tip)
+			Theme:ShowTip(this, "BOTTOM", tip, detail)
 		end)
 		btn:SetScript("OnLeave", function()
 			Theme:Tint(this.glyph, "textDim")
 			Theme:HideTip(this)
 		end)
 	end
-	ArrowTip(prevArrow, "Previous objective")
-	ArrowTip(nextArrow, "Skip to next objective")
+	ArrowTip(prevArrow, "Previous objective", { "Right-click: back to your place in the guide" })
+	ArrowTip(nextArrow, "Skip to next objective", { "Right-click: on to your place in the guide" })
 	ArrowTip(doneArrow, "Mark complete and advance")
 	navrow.stepControls = { prevArrow, nextArrow, doneArrow }
 

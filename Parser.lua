@@ -320,6 +320,8 @@ end
 
 function AegisPathfinder:LoadGuide(name, complete)
 	if not name then return end
+	-- Your place (Core.lua's RememberPlace) belongs to the guide you leave.
+	self.place = nil
 	-- Record how far through the outgoing guide the player got. With every
 	-- tab closed there is no outgoing guide -- no step, nothing parsed -- and
 	-- nothing to record.

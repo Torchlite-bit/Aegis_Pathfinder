@@ -236,6 +236,15 @@ that for the whole guide when you want to look ahead. The panel sizes itself
 to what it shows; the grip in its corner sets the width, and how tall it may
 grow.
 
+**Your place in the guide.** The arrows beside the step number move a step
+back or skip one, and they change what is ticked as they go. Right-click them
+to get back: after clicking round, a right-click on the arrow that points at
+where you were takes you there and puts back every tick (and quest completion)
+the arrows changed on the way -- a quest you finished in the meantime stays
+finished. Without clicking round, a right-click takes you to where the guide
+would open: the quest your log shows work at, else the first step not done.
+If your place is the other way, it says which arrow to right-click.
+
 **A navigation arrow.** It points at the current objective and says how far and
 how long, floating on the world with no window around it. It needs a waypoint
 provider; with none, or with no waypoint for this step, it hides rather than
