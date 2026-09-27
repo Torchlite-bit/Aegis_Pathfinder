@@ -60,6 +60,10 @@ end
 function AegisPathfinder:SetWaypointProvider(n) self.db.char.waypointprovider = n end
 function AegisPathfinder:GetGuideDungeons() return { DM = true } end
 function AegisPathfinder:HasNoGuide() return false end
+function AegisPathfinder:SetSelfFound(on)
+	self.db.char.SelfFound = on and true or false
+	self:RefreshConfigPanel()
+end
 function AegisPathfinder:LoadGuide() self.__reloaded = (self.__reloaded or 0) + 1 end
 function AegisPathfinder:UpdateStatusFrame() end
 function AegisPathfinder:UpdateNavCallout() self.__arrowRefreshed = true end
@@ -208,6 +212,19 @@ click(frame.ahSwitch)
 check(db.UseAH == true, "the Auction House switch turns those steps on")
 check(frame.filterNote:GetText() == "Group mode \194\183 Auction House steps shown",
 	"and the summary follows, got '%s'", tostring(frame.filterNote:GetText()))
+
+-- Solo Self-Found holds the Auction House switch off, and lets it go again.
+check(not frame.ssfSwitch:IsOn(), "Solo Self-Found is off by default")
+click(frame.ssfSwitch)
+check(db.SelfFound == true, "the Self-Found switch turns it on")
+check(not frame.ahSwitch:IsOn(), "with Self-Found on, the Auction House switch reads off")
+check(not frame.ahSwitch:IsEnabled(), "and cannot be clicked")
+check(frame.filterNote:GetText() == "Group mode \194\183 Self-Found: no trading or Auction House steps",
+	"the summary says so, got '%s'", tostring(frame.filterNote:GetText()))
+check(db.UseAH == true, "Self-Found does not forget the Auction House choice underneath")
+click(frame.ssfSwitch)
+check(db.SelfFound == false and frame.ahSwitch:IsOn() and frame.ahSwitch:IsEnabled(),
+	"turning Self-Found off gives the Auction House switch back as it was")
 
 -- The knob slides: left when off, right when on.
 local _, _, _, onX = frame.groupSwitch.knob:GetPoint()

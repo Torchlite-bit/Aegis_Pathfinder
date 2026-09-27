@@ -315,9 +315,21 @@ function AegisPathfinder:CreateConfigPanel()
 	end)
 	ah:SetWidth(BODY_W)
 	place(ah, 22, 6)
+	-- RestedXP's Solo Self-Found mode: no trading, no Auction House. It
+	-- holds the Auction House switch off while it is on.
+	local ssf = Theme:Switch(body, "Solo Self-Found", function(on)
+		AegisPathfinder:SetSelfFound(on)
+	end)
+	ssf:SetWidth(BODY_W)
+	ssf:SetScript("OnEnter", function()
+		Theme:ShowTip(this, "RIGHT", "Solo Self-Found",
+			"Hides every step that trades with other players or uses the Auction House.")
+	end)
+	ssf:SetScript("OnLeave", function() Theme:HideTip(this) end)
+	place(ssf, 22, 6)
 	local filterNote = Theme:FinePrint(body, BODY_W)
 	place(filterNote, 16, SECTION_GAP)
-	frame.groupSwitch, frame.ahSwitch, frame.filterNote = group, ah, filterNote
+	frame.groupSwitch, frame.ahSwitch, frame.ssfSwitch, frame.filterNote = group, ah, ssf, filterNote
 
 	--[[ Server theme: the colours of your server, or Day or Night. Colours
 		only -- the guides are the same on every server. It took the place of
@@ -520,9 +532,12 @@ function AegisPathfinder:RefreshConfigPanel()
 	-- Filters, and the one-line summary the concept prints under them.
 	local grouped = (db.PlayStyle or "SOLO") == "GROUP"
 	frame.groupSwitch:SetOn(grouped)
-	frame.ahSwitch:SetOn(db.UseAH)
-	frame.filterNote:SetText((grouped and "Group mode" or "Solo mode")
-		.. " \194\183 Auction House steps " .. (db.UseAH and "shown" or "hidden"))
+	frame.ahSwitch:SetOn(db.UseAH and not db.SelfFound)
+	frame.ahSwitch:SetLocked(db.SelfFound)
+	frame.ssfSwitch:SetOn(db.SelfFound)
+	frame.filterNote:SetText((grouped and "Group mode" or "Solo mode") .. " \194\183 "
+		.. (db.SelfFound and "Self-Found: no trading or Auction House steps"
+			or ("Auction House steps " .. (db.UseAH and "shown" or "hidden"))))
 
 	-- The theme, and what it looks like.
 	local def = Theme.themeByKey[self:GetTheme()]

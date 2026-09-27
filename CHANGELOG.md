@@ -18,6 +18,25 @@ reports.
 
 ---
 
+## [0.3.1]
+
+### Added
+- **Solo Self-Found mode**, as RestedXP has: for a character that never
+  trades and never uses the Auction House, every step that needs either is
+  left out, and the Auction House switch is held off while it is on. A switch
+  under **Filters**, a choice in the first-time setup, and `/apg ssf`. Guide
+  authors can mark a step that needs another player with `|TRADE|`.
+
+### Changed
+- **Some filter tags come off again, on a second look:**
+  - The paladin *Tome of Divinity* and the druid *Gathering the Cure* chains
+    no longer count as Auction House quests. Linen Cloth drops from
+    humanoids; Earthroot, Lunar Fungus and Kodo Horns are gathered or drop.
+  - Westfall's trip to Stormwind for *Shipment to Stormwind* is no longer a
+    group step. Its note mentions Hogger, but the step isn't his.
+
+---
+
 ## [0.3.0]
 
 ### Added
@@ -81,6 +100,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.3.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.3.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.2.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.1.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

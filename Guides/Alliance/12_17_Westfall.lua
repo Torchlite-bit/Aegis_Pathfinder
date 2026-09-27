@@ -3,7 +3,7 @@ AegisPathfinder:RegisterGuide("Westfall (12-17)", "Loch Modan (17-18)", "Allianc
 return [[
 
 N Level 12 Required |N|You need to be at least level 12 to continue this guide; Grind until you reach level 12|
-N Linen Cloth |QID|1644| |N|You need at least 10 Linen Cloth to complete the Paladin quest line. Grind any Humanoid mobs or purchase from the auction house for later| |OID|1778| |L|2589 10| |C|Paladin| |AH|
+N Linen Cloth |QID|1644| |N|You need at least 10 Linen Cloth to complete the Paladin quest line. Grind any Humanoid mobs or purchase from the auction house for later| |OID|1778| |L|2589 10| |C|Paladin|
 
 A Tome of Divinity (Part 1) |QID|3681| |N|Brandur Ironhammer in Hall of Mysteries. You need to be level 12 to get this quest (23.25, 6.34)| |C|Paladin| |R|Human| |O| |Z|Ironforge|
 A Tome of Divinity (Part 1) |QID|2998| |N|Brother Wilhelm in Goldshire. You need to be level 12 to get this quest (41.09, 66.05)| |C|Paladin| |R|Human| |O|
@@ -17,25 +17,25 @@ A The Tome of Divinity (Part 3) |QID|1642| |N|Duthorian Rall in Cathedral of Lig
 T The Tome of Divinity (Part 3) |QID|1642| |N|Duthorian Rall in Cathedral of Light (39.83, 29.82)| |C|Paladin| |R|Human| |Z|Stormwind City|
 A The Tome of Divinity (Part 4) |QID|1643| |N|Duthorian Rall in Cathedral of Light (39.83, 29.82)| |C|Paladin| |R|Human| |Z|Stormwind City|
 T The Tome of Divinity (Part 4) |QID|1643| |N|Stephanie Turner in Trade District (57.01, 61.73)| |C|Paladin| |R|Human| |Z|Stormwind City|
-A The Tome of Divinity (Part 5) |QID|1644| |N|Stephanie Turner in Trade District (57.01, 61.73)| |C|Paladin| |R|Human| |AH| |Z|Stormwind City|
-C The Tome of Divinity (Part 5) |QID|1644| |N|Bring 10 Linen Cloth to Stephanie Turner in Stormwind. You can purchase it from the auction house| |C|Paladin| |R|Human| |AH|
-T The Tome of Divinity (Part 5) |QID|1644| |N|Stephanie Turner in Trade District (57.12, 61.89)| |C|Paladin| |R|Human| |AH| |Z|Stormwind City|
-A The Tome of Divinity (Part 6) |QID|1780| |N|Stephanie Turner in Trade District (57.12, 61.89)| |C|Paladin| |R|Human| |AH| |Z|Stormwind City|
-T The Tome of Divinity (Part 6) |QID|1780| |N|Duthorian Rall in Cathedral of Light (39.89, 29.73)| |C|Paladin| |R|Human| |AH| |Z|Stormwind City|
-A The Tome of Divinity (Part 7) |QID|1781| |N|Duthorian Rall in Cathedral of Light (39.89, 29.73)| |C|Paladin| |R|Human| |AH| |Z|Stormwind City|
-T The Tome of Divinity (Part 7) |QID|1781| |N|Gazin Tenorm in Cathedral of Light (38.63, 26.66)| |C|Paladin| |R|Human| |AH| |Z|Stormwind City|
-A The Tome of Divinity (Part 8) |QID|1786| |N|Gazin Tenorm in Cathedral of Light (38.63, 26.66)| |C|Paladin| |R|Human| |AH| |Z|Stormwind City|
+A The Tome of Divinity (Part 5) |QID|1644| |N|Stephanie Turner in Trade District (57.01, 61.73)| |C|Paladin| |R|Human| |Z|Stormwind City|
+C The Tome of Divinity (Part 5) |QID|1644| |N|Bring 10 Linen Cloth to Stephanie Turner in Stormwind. You can purchase it from the auction house| |C|Paladin| |R|Human|
+T The Tome of Divinity (Part 5) |QID|1644| |N|Stephanie Turner in Trade District (57.12, 61.89)| |C|Paladin| |R|Human| |Z|Stormwind City|
+A The Tome of Divinity (Part 6) |QID|1780| |N|Stephanie Turner in Trade District (57.12, 61.89)| |C|Paladin| |R|Human| |Z|Stormwind City|
+T The Tome of Divinity (Part 6) |QID|1780| |N|Duthorian Rall in Cathedral of Light (39.89, 29.73)| |C|Paladin| |R|Human| |Z|Stormwind City|
+A The Tome of Divinity (Part 7) |QID|1781| |N|Duthorian Rall in Cathedral of Light (39.89, 29.73)| |C|Paladin| |R|Human| |Z|Stormwind City|
+T The Tome of Divinity (Part 7) |QID|1781| |N|Gazin Tenorm in Cathedral of Light (38.63, 26.66)| |C|Paladin| |R|Human| |Z|Stormwind City|
+A The Tome of Divinity (Part 8) |QID|1786| |N|Gazin Tenorm in Cathedral of Light (38.63, 26.66)| |C|Paladin| |R|Human| |Z|Stormwind City|
 
-R Heroes' Vigil |QID|1786| |N|Travel to Heroes' Vigil (72.53, 51.40)| |AH| |Z|Elwynn Forest| |C|Paladin| |R|Human|
-C The Tome of Divinity (Part 8) |QID|1786| |N|Use Defias Bodyguard to resurrect Henze Faulk in Heroes' Vigil (72.53, 51.40)| |AH| |Z|Elwynn Forest| |C|Paladin| |R|Human|
-T The Tome of Divinity (Part 8) |QID|1786| |N|Henze Faulk in Heroes' Vigil (72.53, 51.40)| |AH| |Z|Elwynn Forest| |C|Paladin| |R|Human|
-A The Tome of Divinity (Part 9) |QID|1787| |N|Henze Faulk in Heroes' Vigil (72.53, 51.40)| |AH| |Z|Elwynn Forest| |C|Paladin| |R|Human|
-C The Tome of Divinity (Part 9) |QID|1787| |N|Kill Defias Rogue Wizard and collect Defias Script in Heroes' Vigil (73.61, 51.14)| |AH| |Z|Elwynn Forest| |C|Paladin| |R|Human|
+R Heroes' Vigil |QID|1786| |N|Travel to Heroes' Vigil (72.53, 51.40)| |Z|Elwynn Forest| |C|Paladin| |R|Human|
+C The Tome of Divinity (Part 8) |QID|1786| |N|Use Defias Bodyguard to resurrect Henze Faulk in Heroes' Vigil (72.53, 51.40)| |Z|Elwynn Forest| |C|Paladin| |R|Human|
+T The Tome of Divinity (Part 8) |QID|1786| |N|Henze Faulk in Heroes' Vigil (72.53, 51.40)| |Z|Elwynn Forest| |C|Paladin| |R|Human|
+A The Tome of Divinity (Part 9) |QID|1787| |N|Henze Faulk in Heroes' Vigil (72.53, 51.40)| |Z|Elwynn Forest| |C|Paladin| |R|Human|
+C The Tome of Divinity (Part 9) |QID|1787| |N|Kill Defias Rogue Wizard and collect Defias Script in Heroes' Vigil (73.61, 51.14)| |Z|Elwynn Forest| |C|Paladin| |R|Human|
 
-R Cathedral of Light |QID|1788| |N|Travel to Cathedral of Light (38.49, 26.38)| |C|Paladin| |R|Human| |AH| |Z|Stormwind City|
-T The Tome of Divinity (Part 9) |QID|1787| |N|Gazin Tenorm in Cathedral of Light (38.49, 26.38)| |C|Paladin| |R|Human| |AH| |Z|Stormwind City|
-A The Tome of Divinity (Part 10) |QID|1788| |N|Gazin Tenorm in Cathedral of Light (38.49, 26.38)| |C|Paladin| |R|Human| |AH| |Z|Stormwind City|
-T The Tome of Divinity (Part 10) |QID|1788| |N|Duthorian Rall in Cathedral of Light (72.53, 51.40)| |C|Paladin| |R|Human| |AH| |Z|Stormwind City|
+R Cathedral of Light |QID|1788| |N|Travel to Cathedral of Light (38.49, 26.38)| |C|Paladin| |R|Human| |Z|Stormwind City|
+T The Tome of Divinity (Part 9) |QID|1787| |N|Gazin Tenorm in Cathedral of Light (38.49, 26.38)| |C|Paladin| |R|Human| |Z|Stormwind City|
+A The Tome of Divinity (Part 10) |QID|1788| |N|Gazin Tenorm in Cathedral of Light (38.49, 26.38)| |C|Paladin| |R|Human| |Z|Stormwind City|
+T The Tome of Divinity (Part 10) |QID|1788| |N|Duthorian Rall in Cathedral of Light (72.53, 51.40)| |C|Paladin| |R|Human| |Z|Stormwind City|
 
 A Tome of Divinity |QID|2997| |N|Azar Stronghammer in Thunderbrew Distillery (47.58, 52.04)| |C|Paladin| |R|Dwarf| |Z|Dun Morogh| |O|
 T Tome of Divinity |QID|2997| |N|Tiza Battleforge in Hall of Mysteries (27.63, 12.25)| |C|Paladin| |R|Dwarf| |Z|Ironforge| |O|
@@ -45,25 +45,25 @@ A The Tome of Divinity (Part 2) |QID|1646| |N|Use Tome of Divinity to begin ques
 T The Tome of Divinity (Part 2) |QID|1646| |N|Tiza Battleforge in Hall of Mysteries (27.63, 12.25)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
 A The Tome of Divinity (Part 3) |QID|1647| |N|Tiza Battleforge in Hall of Mysteries (27.63, 12.25)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
 T The Tome of Divinity (Part 3) |QID|1647| |N|John Turner in Ironforge; He patrols around the outer ring of Ironforge (23.35, 62.64)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
-A The Tome of Divinity (Part 4) |QID|1648| |N|John Turner in Ironforge (23.35, 62.64)| |C|Paladin| |R|Dwarf| |AH| |Z|Ironforge|
-C The Tome of Divinity (Part 4) |QID|1648| |N|Buy 10 Linen Cloth from the Auction House in Ironforge (23.35, 62.64)| |C|Paladin| |R|Dwarf| |AH| |Z|Ironforge|
-T The Tome of Divinity (Part 4) |QID|1648| |N|John Turner in Ironforge (23.35, 62.64)| |C|Paladin| |R|Dwarf| |AH| |Z|Ironforge|
-A The Tome of Divinity (Part 5) |QID|1778| |N|John Turner in Ironforge (23.51, 62.47)| |C|Paladin| |R|Dwarf| |AH| |Z|Ironforge|
-T The Tome of Divinity (Part 5) |QID|1778| |N|Tiza Battleforge in Hall of Mysteries (27.73, 12.15)| |C|Paladin| |R|Dwarf| |AH| |Z|Ironforge|
-A The Tome of Divinity (Part 6) |QID|1779| |N|Tiza Battleforge in Hall of Mysteries (27.73, 12.15)| |C|Paladin| |R|Dwarf| |AH| |Z|Ironforge|
-T The Tome of Divinity (Part 6) |QID|1779| |N|Muiredon Battleforge in Hall of Mysteries (23.55, 8.33)| |C|Paladin| |R|Dwarf| |AH| |Z|Ironforge|
-A The Tome of Divinity (Part 7) |QID|1783| |N|Muiredon Battleforge in Hall of Mysteries (23.55, 8.33)| |C|Paladin| |R|Dwarf| |AH| |Z|Ironforge|
+A The Tome of Divinity (Part 4) |QID|1648| |N|John Turner in Ironforge (23.35, 62.64)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
+C The Tome of Divinity (Part 4) |QID|1648| |N|Buy 10 Linen Cloth from the Auction House in Ironforge (23.35, 62.64)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
+T The Tome of Divinity (Part 4) |QID|1648| |N|John Turner in Ironforge (23.35, 62.64)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
+A The Tome of Divinity (Part 5) |QID|1778| |N|John Turner in Ironforge (23.51, 62.47)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
+T The Tome of Divinity (Part 5) |QID|1778| |N|Tiza Battleforge in Hall of Mysteries (27.73, 12.15)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
+A The Tome of Divinity (Part 6) |QID|1779| |N|Tiza Battleforge in Hall of Mysteries (27.73, 12.15)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
+T The Tome of Divinity (Part 6) |QID|1779| |N|Muiredon Battleforge in Hall of Mysteries (23.55, 8.33)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
+A The Tome of Divinity (Part 7) |QID|1783| |N|Muiredon Battleforge in Hall of Mysteries (23.55, 8.33)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
 
-R Ironband's Compound |QID|1783| |N|Travel to Ironband's Compound (51.54, 40.12) (78.33, 58.06)| |C|Paladin| |R|Dwarf| |AH| |Z|Dun Morogh|
-N Narm Faulk |QID|1783| |N|Use Symbol of Life to resurrect Narm Faulk| |C|Paladin| |R|Dwarf| |AH| |Z|Dun Morogh|
-T The Tome of Divinity (Part 7) |QID|1783| |N|Narm Faulk in Ironband's Compound (78.33, 58.06)| |C|Paladin| |R|Dwarf| |AH| |Z|Dun Morogh|
-A The Tome of Divinity (Part 8) |QID|1784| |N|Narm Faulk in Ironband's Compound (78.33, 58.06)| |C|Paladin| |R|Dwarf| |AH| |Z|Dun Morogh|
-C The Tome of Divinity (Part 8) |QID|1784| |N|Kill a Dark Iron Spy and collect Dark Iron Script in Ironband's Compound (78.10, 59.98)| |C|Paladin| |R|Dwarf| |AH| |Z|Dun Morogh|
+R Ironband's Compound |QID|1783| |N|Travel to Ironband's Compound (51.54, 40.12) (78.33, 58.06)| |C|Paladin| |R|Dwarf| |Z|Dun Morogh|
+N Narm Faulk |QID|1783| |N|Use Symbol of Life to resurrect Narm Faulk| |C|Paladin| |R|Dwarf| |Z|Dun Morogh|
+T The Tome of Divinity (Part 7) |QID|1783| |N|Narm Faulk in Ironband's Compound (78.33, 58.06)| |C|Paladin| |R|Dwarf| |Z|Dun Morogh|
+A The Tome of Divinity (Part 8) |QID|1784| |N|Narm Faulk in Ironband's Compound (78.33, 58.06)| |C|Paladin| |R|Dwarf| |Z|Dun Morogh|
+C The Tome of Divinity (Part 8) |QID|1784| |N|Kill a Dark Iron Spy and collect Dark Iron Script in Ironband's Compound (78.10, 59.98)| |C|Paladin| |R|Dwarf| |Z|Dun Morogh|
 
-R Hall of Mysteries |QID|1785| |N|Travel to Hall of Mysteries (23.56, 8.38)| |C|Paladin| |R|Dwarf| |AH| |Z|Ironforge|
-T The Tome of Divinity (Part 8) |QID|1784| |N|Muiredon Battleforge in Hall of Mysteries (23.56, 8.38)| |C|Paladin| |R|Dwarf| |AH| |Z|Ironforge|
-A The Tome of Divinity (Part 9) |QID|1785| |N|Muiredon Battleforge in Hall of Mysteries (23.72, 8.61)| |C|Paladin| |R|Dwarf| |AH| |Z|Ironforge|
-T The Tome of Divinity (Part 9) |QID|1785| |N|Tiza Battleforge in Hall of Mysteries (27.51, 12.18)| |C|Paladin| |R|Dwarf| |AH| |Z|Ironforge|
+R Hall of Mysteries |QID|1785| |N|Travel to Hall of Mysteries (23.56, 8.38)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
+T The Tome of Divinity (Part 8) |QID|1784| |N|Muiredon Battleforge in Hall of Mysteries (23.56, 8.38)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
+A The Tome of Divinity (Part 9) |QID|1785| |N|Muiredon Battleforge in Hall of Mysteries (23.72, 8.61)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
+T The Tome of Divinity (Part 9) |QID|1785| |N|Tiza Battleforge in Hall of Mysteries (27.51, 12.18)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
 
 R Stormwind |QID|109| |N|Travel to Stormwind  (28, 41)| |Z|Elwynn Forest|
 R The Jansen Stead |QID|109| |N|Travel to The Jansen Stead (60.00, 19.37)|

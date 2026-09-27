@@ -146,7 +146,8 @@ carried them. The Optimized and zone guides carry the ones the owner approved:
 (`docs/review/filter_candidates.json`), the answers are in
 `docs/review/filter_decisions.json`, and `Tools/apply_filter_tags.py` applies
 them. A "yes" on a quest's own step tags every step of that quest; a "yes" on
-a note or buy step that merely carries a quest id tags only that step. Quests
+a note or buy step that merely carries a quest id tags only that step; an
+answer changed to "no" takes the tag off again. Quests
 you can only reach through a tagged one inherit its tag (worked out from
 pfQuest's prerequisites with `--pfquest`, and kept in the decisions file).
 When you add a step for a tagged quest, give it the same tag --

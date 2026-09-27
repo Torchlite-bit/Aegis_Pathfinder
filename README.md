@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.3.0)
+# Aegis: Pathfinder (v0.3.1)
 
 A Classic+ leveling guide for the Turtle WoW-lineage 1.12 client family —
 OctoWoW, Capybara Paradise and RavenCraft. Part of the Aegis addon suite.
@@ -89,13 +89,18 @@ Solo mode the Optimized and zone guides leave out elite and group quests, and
 the quests that follow on from them; with Auction House steps off they leave
 out quests that need an item most players buy there.
 
+**Solo Self-Found.** For a character that never trades and never uses the
+Auction House: every step that needs either is left out, and the Auction House
+switch is held off while it is on. It is a switch under **Filters**, a choice
+in the first-time setup, and `/apg ssf`.
+
 **First-time setup.** The first time the addon loads on a character, a short
 setup asks three things, as RestedXP does:
 
 1. **Your guide**: Optimized (quest-optimized 1-60, every race), RestedXP
    Speedrun, Hardcore Survival, or Kamisayo Speedrun for a Horde Warrior. Only
    guides with a route for your race are offered.
-2. **Features**: Auction House steps, group quests, dungeons.
+2. **Features**: Auction House steps, Solo Self-Found, group quests, dungeons.
 3. **Dungeons** (when dungeons are on): the dungeons your faction can run, with
    level ranges and how many steps each adds to your route, plus
    **Recommended**, **All** and **None**. Recommended picks the dungeons whose
@@ -341,7 +346,7 @@ Reports welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options panel's About section (`v0.3.0`) — quote it.
+1. Check the **version** in the load message or the options panel's About section (`v0.3.1`) — quote it.
 2. Open the **Error log** (options panel → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 

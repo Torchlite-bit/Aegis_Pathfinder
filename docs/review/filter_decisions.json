@@ -1,5 +1,6 @@
 {
  "_about": "The repository owner's answers to docs/review/filter_candidates.json, given on the review page on 2026-09-27: for each item, each suggested tag and whether to add it. Tools/apply_filter_tags.py applies them.",
+ "_revised": "2026-09-27, by the owner: q1644/q1648 (Tome of Divinity -- 10 Linen Cloth, which humanoids drop) and q6123/q6128 (Gathering the Cure -- Earthroot, and Lunar Fungus or Kodo Horns, all gathered or dropped) can be done without the Auction House; q61's tagged step is the trip to Stormwind for Shipment to Stormwind, not part of Hogger.",
  "_followups": "Quests you can only pick up after a quest tagged whole, with the tag they inherit and the quest they follow -- derived from pfQuest's prerequisites by Tools/apply_filter_tags.py --pfquest, not answered by anyone.",
  "decisions": {
   "q45": {
@@ -21,7 +22,7 @@
    "GROUP": "yes"
   },
   "q61": {
-   "GROUP": "yes"
+   "GROUP": "no"
   },
   "q1141": {
    "AH": "yes"
@@ -30,7 +31,7 @@
    "GROUP": "yes"
   },
   "q6123": {
-   "AH": "yes"
+   "AH": "no"
   },
   "q219": {
    "GROUP": "yes"
@@ -168,10 +169,10 @@
    "GROUP": "yes"
   },
   "q1644": {
-   "AH": "yes"
+   "AH": "no"
   },
   "q1648": {
-   "AH": "yes"
+   "AH": "no"
   },
   "q136": {
    "AH": "yes"
@@ -285,7 +286,7 @@
    "GROUP": "yes"
   },
   "q6128": {
-   "AH": "yes"
+   "AH": "no"
   },
   "q450": {
    "GROUP": "yes"
@@ -470,36 +471,6 @@
   "q1469": {
    "ST": "q1448"
   },
-  "q1778": {
-   "AH": "q1648"
-  },
-  "q1779": {
-   "AH": "q1648"
-  },
-  "q1780": {
-   "AH": "q1644"
-  },
-  "q1781": {
-   "AH": "q1644"
-  },
-  "q1783": {
-   "AH": "q1648"
-  },
-  "q1784": {
-   "AH": "q1648"
-  },
-  "q1785": {
-   "AH": "q1648"
-  },
-  "q1786": {
-   "AH": "q1644"
-  },
-  "q1787": {
-   "AH": "q1644"
-  },
-  "q1788": {
-   "AH": "q1644"
-  },
   "q2879": {
    "GROUP": "q2944"
   },
@@ -553,18 +524,6 @@
   },
   "q5846": {
    "GROUP": "q5781"
-  },
-  "q6124": {
-   "AH": "q6123"
-  },
-  "q6125": {
-   "AH": "q6123"
-  },
-  "q6129": {
-   "AH": "q6128"
-  },
-  "q6130": {
-   "AH": "q6128"
   },
   "q40731": {
    "AH": "q40730"

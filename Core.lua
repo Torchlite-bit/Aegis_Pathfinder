@@ -125,6 +125,7 @@ local defaults = {
     routepack = nil,              -- Active route pack name (e.g., "VanillaGuide", "RestedXP")
     PlayStyle = "SOLO",           -- Default playstyle ("SOLO" or "GROUP")
     UseAH = false,                -- Default Auction House setting (true/false)
+    SelfFound = false,            -- Solo Self-Found: no trading, no Auction House (overrides UseAH)
     -- Starting zone selection (branch-and-rejoin)
     startingzoneselected = false, -- has player picked a starting zone?
     selectedstartingzone = nil,   -- which starting zone was selected (e.g., "Human", "Dwarf")
@@ -179,6 +180,13 @@ local options = {
             desc = "Use the first active item",
             type = "execute",
             func = function() AegisPathfinder:UseActiveItem(1) end,
+        },
+        SSF = {
+            name = "Solo Self-Found",
+            desc = "Solo Self-Found mode: hide every step that trades with other players or uses the Auction House",
+            type = "toggle",
+            get = function() return AegisPathfinder.db.char.SelfFound end,
+            set = function(on) AegisPathfinder:SetSelfFound(on) end,
         },
         Share = {
             name = "Share",
@@ -539,7 +547,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.3.0"
+AegisPathfinder.version = "0.3.1"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -868,6 +876,26 @@ function AegisPathfinder:GetAvailableRoutePacks()
 end
 
 -- Switch to a route pack, replacing self.routes with the pack's routes
+--[[ Solo Self-Found: a character that never trades and never uses the
+    Auction House. Steps tagged |AH| or |TRADE| are left out whatever the
+    Auction House switch says, and that switch is held off while it is on.
+    Per character, like the other filters. ]]
+function AegisPathfinder:UsesAuctionHouse()
+    local db = self.db and self.db.char
+    return db and db.UseAH and not db.SelfFound and true or false
+end
+
+function AegisPathfinder:SetSelfFound(on)
+    self.db.char.SelfFound = on and true or false
+    self:Print(on and "Solo Self-Found on: steps that trade or use the Auction House are hidden."
+        or "Solo Self-Found off.")
+    if not self:HasNoGuide() then
+        self:LoadGuide(self.db.char.currentguide)
+        self:UpdateStatusFrame()
+    end
+    if self.optionsframe and self.RefreshConfigPanel then self:RefreshConfigPanel() end
+end
+
 function AegisPathfinder:SelectRoutePack(packName)
     local pack = self.routepacks[packName]
     if not pack then
