@@ -785,8 +785,14 @@ function AegisPathfinder:SmartSkipToStep()
 		end
 	end
 
-	-- Find the furthest step that has incomplete work
+	--[[ Where you are: the first step your quest log shows work at (a quest in
+		progress, or ready to hand in), else the first step not done.
+
+		It used to keep the last step not done instead of the first, so with
+		nothing in your log -- a new character -- it put you at the end of the
+		guide, and every step before counted as done. ]]
 	local furthestStep = 1
+	local firstOpen
 	for i, quest in ipairs(self.quests) do
 		local action = self.actions[i]
 		local cleanQuest = string.gsub(quest, "@.*@", "")
@@ -845,7 +851,8 @@ function AegisPathfinder:SmartSkipToStep()
 			end
 		end
 
-		if not stepTurnedIn then
+		if not stepTurnedIn and not firstOpen then
+			firstOpen = i
 			furthestStep = i
 		end
 	end

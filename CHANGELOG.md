@@ -4,7 +4,7 @@ All notable changes to **Aegis: Pathfinder**.
 
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 The version here matches `## Version` in `Aegis_Pathfinder.toc` and the number
-in the load message and the options panel's About section — quote it in bug
+in the load message and the options window's About page — quote it in bug
 reports.
 
 > ⚠️ Releases marked **restart** add or remove a `.lua` file. WoW 1.12 reads the
@@ -15,6 +15,34 @@ reports.
 > single MINOR bump, and every change inside it — each phase, each fix found
 > along the way — is a PATCH under it. The MINOR moves again at the next body
 > of work, not at the next feature within this one.
+
+---
+
+## [0.5.0]
+
+### Changed
+- **The options window has pages**, with the categories down the left as
+  Zygor's options have them: Route, Dungeons, Filters, Appearance, Gear,
+  Behaviour, Navigation, Maintenance, About. One page at a time, scrolling
+  only when it is taller than the window; the **Credits** button is on About.
+- **The README is short**: what you get, installing, the main commands. Every
+  feature in detail is in [docs/FEATURES.md](docs/FEATURES.md).
+
+### Fixed
+- **A new character opened at the end of the guide** — far into the High Elf
+  quests, say — with every step before it counted as done. Where a guide
+  opens kept the last step not done rather than the first. It now opens at
+  the step your quest log shows work at, else the first step not done.
+  Progress was always saved per character; this only made a fresh one look
+  far along.
+- The guide no longer paints a hand-in further down as done because you have
+  not picked that quest up yet.
+- Hovering **Solo Self-Found** raised an error (`Theme.lua:1270: bad argument
+  #1 to 'ipairs'`).
+- `/apg trackquests` and `/apg skipfollowups` raised an error while the
+  options window was open.
+- The **Arrow** list stayed on screen when the options window closed with it
+  open.
 
 ---
 
@@ -165,6 +193,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.5.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.4.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.4.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.4.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

@@ -1266,6 +1266,8 @@ function Theme:ShowTip(owner, side, text, detail, color)
 	end
 	if not text or text == "" then return self:HideTip() end
 
+	-- One line of detail may come as itself rather than in a list.
+	if type(detail) == "string" then detail = { detail } end
 	local all = { text }
 	for _, line in ipairs(detail or {}) do table.insert(all, line) end
 

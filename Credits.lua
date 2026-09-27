@@ -52,7 +52,7 @@ AegisPathfinder.creditsData = CREDITS
 
 --[[ The credits window.
 
-	Opened from the button at the bottom of the options panel, and built the
+	Opened from the button on the options panel's About page, and built the
 	first time it is: the same chrome as every other window, a scrolling body,
 	and a section per heading above -- the options panel's own layout, so it
 	reads as part of the same product rather than a dump into chat.

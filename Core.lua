@@ -298,7 +298,7 @@ local options = {
             set = function(newValue)
                 AegisPathfinder.db.char.trackquests = newValue
                 if AegisPathfinder.optionsframe then
-                    AegisPathfinder.optionsframe.qtrack:SetChecked(AegisPathfinder.db.char.trackquests)
+                    AegisPathfinder:RefreshConfigPanel()
                 end
             end,
             order = 1,
@@ -311,7 +311,7 @@ local options = {
             set = function(newValue)
                 AegisPathfinder.db.char.skipfollowups = newValue
                 if AegisPathfinder.optionsframe then
-                    AegisPathfinder.optionsframe.qskipfollowups:SetChecked(AegisPathfinder.db.char.skipfollowups)
+                    AegisPathfinder:RefreshConfigPanel()
                 end
             end,
             order = 2,
@@ -559,7 +559,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.4.2"
+AegisPathfinder.version = "0.5.0"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -1995,7 +1995,7 @@ end
 function AegisPathfinder:ShowRouteSelector()
     if not self.optionsframe then self:CreateConfigPanel() end
     self.optionsframe:Show()
-    if self.optionsframe.scrollbar then self.optionsframe.scrollbar:SetValue(0) end
+    self:ShowConfigPage("Route")
 end
 
 function AegisPathfinder:SelectRoute(race)

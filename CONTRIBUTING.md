@@ -8,8 +8,8 @@ if none fits. Nobody will do this for you, and a contribution that goes
 uncredited because the list was not updated is a bug in our process, not yours
 — so if you forget and notice later, send a PR that just adds you.
 
-The in-game credits window (the **Credits** button at the bottom of the
-options panel) reads from `Credits.lua`, which mirrors `CONTRIBUTORS.md`.
+The in-game credits window (the **Credits** button on the options window's
+**About** page) reads from `Credits.lua`, which mirrors `CONTRIBUTORS.md`.
 Update both.
 
 ## Branching
@@ -30,6 +30,7 @@ That runs everything that can run without a WoW client:
 | `Tools/verify.py` | Lua syntax, Lua 5.0 compatibility for shipped files, `.toc` paths, `Guides.xml` completeness, TGA validity, no Blizzard chrome, the 32-upvalue ceiling |
 | `Tools/convert_professions.py --check` | The profession source document still parses and is internally consistent; the gathering guides cover 1–300 for each faction with somewhere named in every band; the committed guides are what the generator writes |
 | `Tools/test_theme.lua` | The theme layer against a stubbed 1.12 API |
+| `Tools/test_smartskip.lua` | Where a guide opens: a new character at the top, a quest in progress or ready to hand in at its step, otherwise the first step not done |
 | `Tools/test_filtertags.lua` | The filter tags in the Optimized and zone guides through the real parser: group quests and their follow-ups hide in Solo mode, Auction House steps with Auction House steps off, dungeon quests with the dungeon unticked; and every approved tag is still in place |
 | `Tools/test_professions.lua` | Generated guides through the real parsers: skill bands tile 1–300 for each faction, every rank is reached, and a gathering guide never sends a faction into the other side's starting zones or capitals |
 | `Tools/test_statusframe.lua` | The status card's layout and population |
