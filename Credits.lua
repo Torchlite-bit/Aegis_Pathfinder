@@ -29,6 +29,8 @@ local CREDITS = {
 		"The Turtle WoW team and the servers continuing it",
 		"ryanmr82 and the Hydra guild -- the Moonwhisper Coast quest data",
 		"rivi-s -- pfQuest-turtle-HDB, filling its gaps",
+		"Arthur-Helias -- InstanceJournal: every dungeon's quests, its entrance, and Windhorn Canyon's and Frostmane Hollow's loot",
+		"The Kludge Bureau -- pfQuest-turtle's patch 1.18.1 quests",
 	} },
 	{ "Libraries and data", {
 		"The Ace Development Team -- Ace2",

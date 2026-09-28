@@ -152,11 +152,12 @@ local CATEGORY_TABS = {
     { key = "rxp",        label = "RestedXP" },
     { key = "rxp_hc",     label = "Hardcore" },
     { key = "zone",       label = "Zones" },
+    { key = "dungeon",    label = "Dungeons" },
     { key = "profession", label = "Professions" },
 }
 
 local categoryTabs = {}
-local TAB_W, TAB_H, TAB_GAP = 84, 22, 2
+local TAB_W, TAB_H, TAB_GAP = 78, 22, 2
 
 for idx, def in ipairs(CATEGORY_TABS) do
     local tab = Theme:Tab(frame, def.label, TAB_W, TAB_H)

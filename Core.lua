@@ -562,7 +562,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.13.0"
+AegisPathfinder.version = "0.13.1"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -2085,6 +2085,10 @@ function AegisPathfinder:GetGuideCategory(guideName)
         return "profession"
     end
 
+    -- Before the custom zones: "Dungeons/Gilneas City" is no zone guide.
+    if string.find(guideName, "^Dungeons/") then
+        return "dungeon"
+    end
     if string.find(guideName, "^Optimized/") then
         return "optimized"
     end

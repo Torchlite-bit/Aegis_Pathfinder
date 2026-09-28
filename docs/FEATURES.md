@@ -62,6 +62,34 @@ panel waits, empty, for you to pick one.
 their setup and prerequisite steps to mandatory; opting out hides them. A blue
 dot marks the dungeons the guide you are currently on actually has steps for.
 
+**Dungeon guides.** The guide list's **Dungeons** tab has a guide for each
+dungeon, for your side: every leveling dungeon from Ragefire Chasm to
+Blackrock Depths, and Turtle WoW's own -- Frostmane Hollow, Windhorn Canyon
+(new in patch 1.18.1), Dragonmaw Retreat, Crescent Grove, Stormwrought Ruins,
+Gilneas City and Hateforge Quarry. Pick one and it:
+
+- goes round the towns that give the dungeon's quests, picking each up, and
+  does the quests before them on the way -- the Alliance's Sunken Temple
+  starts in Stormwind and goes by the Hinterlands, Un'Goro, Feralas, Tanaris
+  and Ratchet;
+- puts the arrow on the entrance, with how to find it;
+- inside, has you do what each quest wants, and picks up and hands in what is
+  given and taken there;
+- on the way back, hands in the rest, and picks up what they lead to. A chain
+  that needs another visit -- Uldaman's necklace, Gnomeregan's formulas --
+  gets another run.
+
+A quest whose chain starts somewhere the guide does not go (another dungeon's,
+a class chain in a far zone) is in it but optional: it shows once you have
+the quest before it done. Class quests show only for that class. Quests given
+where the guide does not go are named in a note at the top. Frostmane Hollow
+has a Horde guide too, for cross-faction groups: its one quest is given and
+taken inside.
+
+Which quests belong to a dungeon comes from InstanceJournal, a Turtle WoW
+addon that lists every instance's quests, and the quests themselves from
+pfQuest-turtle, patch 1.18.1's included (`Tools/build_dungeon_guides.py`).
+
 **Filters.** Solo or group mode, and whether Auction House steps appear.
 Defaults follow the route pack you chose. They act on every route pack: in
 Solo mode the Optimized and zone guides leave out elite and group quests, and
@@ -355,7 +383,9 @@ what you wear, with who drops them, where, and how often.
   raid, and pfQuest-turtle's for Turtle WoW's own: Dragonmaw Retreat,
   Crescent Grove, Stormwrought Ruins, Gilneas City, Hateforge Quarry, Karazhan
   Crypt, The Black Morass, Stormwind Vault, and the Emerald Sanctum and Tower
-  of Karazhan raids. Their levels are read off their creatures. pfQuest-turtle
+  of Karazhan raids. Their levels are read off their creatures. Frostmane
+  Hollow and Windhorn Canyon are newer than that data: theirs are
+  InstanceJournal's, with its levels and each boss's chances. pfQuest-turtle
   does not say what Turtle's own items are, so the game is asked the first
   time -- a list may fill in over a few seconds, once.
 - The vanilla dungeons and raids are as Turtle WoW has them: pfQuest-turtle's

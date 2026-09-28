@@ -52,6 +52,7 @@ function AegisPathfinder:GetGuideCategory(guideName)
 	if qsp and qsp.category == "Profession" then
 		return "profession"
 	end
+	if string.find(guideName, "^Dungeons/") then return "dungeon" end
 	if string.find(guideName, "^Optimized/") then return "optimized" end
 	if string.find(guideName, "^RXP/") then return "rxp" end
 	if string.find(guideName, "^RXP_Hardcore/") then return "rxp_hc" end
@@ -78,6 +79,9 @@ check(AegisPathfinder:GetGuideCategory("Thalassian Highlands (1-10)") == "turtle
 	"custom zones are detected by zone name")
 check(AegisPathfinder:GetGuideCategory("Westfall (12-17)") == "zone",
 	"anything else is a zone guide")
+check(AegisPathfinder:GetGuideCategory("Dungeons/Uldaman (41-51)") == "dungeon", "a dungeon guide")
+check(AegisPathfinder:GetGuideCategory("Dungeons/Gilneas City (38-46)") == "dungeon",
+	"a dungeon guide named for a custom zone's dungeon is still a dungeon guide")
 
 -- Every custom zone guide belongs under the Custom tab: the ones the
 -- guide list has always had, and the newer Scarlet Enclave and Hyjal, which
@@ -144,6 +148,8 @@ check(xp.bg.__color[1] < 0.35, "SetKind should switch a badge's appearance")
 -- The two functions above are copies. If Core.lua's versions change shape,
 -- this catches it rather than letting the copies quietly go stale.
 local core = io.open("Core.lua"):read("*a")
+check(string.find(core, 'string.find(guideName, "^Dungeons/")', 1, true) ~= nil,
+	"Core.lua no longer puts the dungeon guides under Dungeons the way this test assumes")
 check(string.find(core, 'qsp.category == "Profession"', 1, true) ~= nil,
 	"Core.lua no longer categorises professions the way this test assumes")
 check(string.find(core, "function AegisPathfinder:IsTemplateGuide", 1, true) ~= nil,
