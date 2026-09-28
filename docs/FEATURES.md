@@ -236,7 +236,10 @@ and mark it for what the quest wants with them (see **Quest icons**).
 with just that line works like RestedXP's; both also have key bindings under
 *Aegis: Pathfinder* in the key bindings menu. Targets come from pfQuest's
 database, so quest steps need pfQuest; profession steps name their trainers
-themselves. Either window can be dragged anywhere, or switched off under
+themselves. What the quest wants killed or looted is looked for where the step
+is: Crocolisk Hunting in Loch Modan targets Loch Crocolisks, not the likelier
+crocolisks of the Wetlands. With none there, it is those where you are, then
+everyone. Either window can be dragged anywhere, or switched off under
 **Behaviour** in the options.
 
 **Quest icons.** Mouse over or target anyone a quest wants and the right raid

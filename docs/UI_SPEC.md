@@ -760,7 +760,11 @@ a USE step for this item.
 **Targets**: a tile per NPC or enemy the current step wants found, up to four.
 From the step's `|NPC|` tag, and from pfQuest's database by the step's quest
 id: an ACCEPT's starters, a TURNIN's enders, a COMPLETE's objective units then
-the units that drop its objective items, likeliest drop first. pfQuest's
+the units that drop its objective items, likeliest drop first. A COMPLETE's
+units are narrowed to those with a pfQuest spawn in the first of the step's
+`|Z|` zone, the guide's zone, then the player's (`Nearby`) that has any, and
+are left whole when none does: by drop chance alone Crocolisk Hunting targeted
+Wetlands and Stranglethorn crocolisks, never a Loch Crocolisk. pfQuest's
 `fac` string says who is friendly to the player's faction. The tile shows the
 step's action glyph (the kill glyph in `danger` for an enemy) and, in its
 corner, the raid mark it will apply -- the one piece of Blizzard art here,

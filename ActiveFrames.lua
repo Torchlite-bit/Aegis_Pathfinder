@@ -20,8 +20,8 @@
 
 	The names come from the step's |NPC| tag, and from pfQuest's database by
 	the step's quest id: its starters, enders, objective units, and the units
-	that drop its objective items. Without pfQuest, only |NPC| steps have
-	targets.
+	that drop its objective items -- those that live where the step is, when
+	any do (Nearby). Without pfQuest, only |NPC| steps have targets.
 
 	Both windows hide when they have nothing to show. Each drags by its title
 	and remembers where it was left; until then Items hangs under the guide
@@ -164,11 +164,39 @@ local function TargetList(action, max)
 	return out, add
 end
 
+-- Whether pfQuest has unit `id` spawning in zone `zone` (by name).
+local function SpawnsIn(id, zone)
+	local data = pfDB.units and pfDB.units.data and pfDB.units.data[id]
+	local loc = pfDB.zones and pfDB.zones.loc
+	if not zone or not loc or not data or not data.coords then return false end
+	for _, c in pairs(data.coords) do
+		if loc[c[3]] == zone then return true end
+	end
+	return false
+end
+
+--[[ The ids in `ids` that live in the first of `zones` any of them live in,
+	in the same order; all of them when none does, or pfQuest has no spawn
+	points for them. Crocolisk Meat drops from every crocolisk in the world,
+	and likelier from the Wetlands' and Stranglethorn's, so by drop chance
+	alone Loch Modan's Crocolisk Hunting targeted those and never a Loch
+	Crocolisk. ]]
+local function Nearby(ids, zones)
+	for _, zone in ipairs(zones or {}) do
+		local here = {}
+		for _, id in ipairs(ids) do
+			if SpawnsIn(id, zone) then table.insert(here, id) end
+		end
+		if table.getn(here) > 0 then return here end
+	end
+	return ids
+end
+
 -- Who quest `qid` sends you to, by what the step does with it: its givers
 -- to ACCEPT, its takers to TURNIN, and for COMPLETE its objective units
 -- (friends to interact with, enemies to kill) then whoever drops its
--- objective items, likeliest first.
-local function QuestTargets(qid, action, add)
+-- objective items, likeliest first -- of those in `zones` (Nearby).
+local function QuestTargets(qid, action, add, zones)
 	local quests = pfDB and pfDB.quests and pfDB.quests.data
 	local quest = qid and quests and quests[qid]
 	if not quest then return end
@@ -186,7 +214,7 @@ local function QuestTargets(qid, action, add)
 	elseif action == "TURNIN" then
 		units(quest["end"] and quest["end"].U, "talk")
 	elseif action == "COMPLETE" then
-		units(quest.obj and quest.obj.U)
+		units(Nearby(quest.obj and quest.obj.U or {}, zones))
 		local items = pfDB.items and pfDB.items.data
 		for _, itemId in ipairs(quest.obj and quest.obj.I or {}) do
 			local drops = items and items[itemId] and items[itemId].U
@@ -200,7 +228,7 @@ local function QuestTargets(qid, action, add)
 			end)
 			local ids = {}
 			for _, d in ipairs(sorted) do table.insert(ids, d.id) end
-			units(ids, "loot")
+			units(Nearby(ids, zones), "loot")
 		end
 	end
 end
@@ -216,7 +244,13 @@ function AegisPathfinder:GetActiveTargets(i)
 	local out, add = TargetList(action, MAX_TARGETS)
 
 	for _, name in ipairs(self:GetObjectiveTag("NPC", i) or {}) do add(name, "npc", "talk") end
-	QuestTargets(tonumber((self:GetObjectiveTag("QID", i))), action, add)
+	-- The step's zone, the guide's, then the one you are in.
+	local zones = {}
+	local function zone(z) if z and z ~= "" then table.insert(zones, z) end end
+	zone((self:GetObjectiveTag("Z", i)))
+	zone(self.zonename)
+	zone(GetRealZoneText and GetRealZoneText())
+	QuestTargets(tonumber((self:GetObjectiveTag("QID", i))), action, add, zones)
 	return out
 end
 
@@ -250,7 +284,7 @@ function AegisPathfinder:GetQuestIconTargets(stepTargets)
 		if qid then
 			local action = isComplete == 1 and "TURNIN" or "COMPLETE"
 			local list, add = TargetList(action, MAX_TARGETS)
-			QuestTargets(qid, action, add)
+			QuestTargets(qid, action, add, { GetRealZoneText and GetRealZoneText() })
 			for _, t in ipairs(list) do keep(t) end
 		end
 	end

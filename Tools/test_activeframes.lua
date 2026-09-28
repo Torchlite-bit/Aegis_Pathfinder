@@ -330,6 +330,52 @@ t = AegisPathfinder:GetActiveTargets(6)
 check(names(t) == "Kobold Tunneler, Murloc Streamrunner",
 	"equal drop chances are in a steady order, got '%s'", names(t))
 
+--[[ Where they live. Crocolisk Hunting, in Loch Modan, wants Crocolisk Meat
+	and Skin -- which drop from every crocolisk in the world, likelier from the
+	Wetlands' and Stranglethorn's. By drop chance alone the targets were those,
+	and never a Loch Crocolisk. Those in the step's zone come first: the |Z|
+	tag's, the guide's, then the one you are in; everyone when none is. ]]
+do
+	pfDB.zones = { loc = { [38] = "Loch Modan", [11] = "Wetlands", [33] = "Stranglethorn Vale" } }
+	local loc, data = pfDB.units.loc, pfDB.units.data
+	loc[20], data[20] = "Elder Saltwater Crocolisk", { coords = { { 30, 20, 33, 300 } } }
+	loc[21], data[21] = "Wetlands Crocolisk", { coords = { { 40, 30, 11, 300 } } }
+	loc[22], data[22] = "Saltwater Crocolisk", { coords = { { 31, 22, 33, 300 } } }
+	loc[23], data[23] = "Venture Co. Mechanic", { coords = { { 60, 60, 33, 300 } } }
+	loc[24], data[24] = "Loch Crocolisk", { coords = { { 54, 38, 38, 300 }, { 50, 40, 38, 300 } } }
+	pfDB.items.data[910] = { U = { [20] = 80, [21] = 60, [22] = 50, [24] = 40 } }   -- Crocolisk Meat
+	pfDB.items.data[911] = { U = { [23] = 90, [21] = 55, [24] = 35 } }              -- Crocolisk Skin
+	pfDB.quests.data[385] = { obj = { I = { 910, 911 } } }
+	AegisPathfinder.actions[8], AegisPathfinder.quests[8] = "COMPLETE", "Crocolisk Hunting@8@"
+	AegisPathfinder.tags[8] = "|QID|385| |N|Kill Loch Crocolisk in the lake (54, 38)|"
+	local oldZone, oldReal = AegisPathfinder.zonename, GetRealZoneText
+
+	AegisPathfinder.zonename = "Loch Modan"
+	t = AegisPathfinder:GetActiveTargets(8)
+	check(names(t) == "Loch Crocolisk", "in Loch Modan's guide, the Loch Crocolisk, got '%s'", names(t))
+	check(t[1] and t[1].mark == MARK.CROSS, "marked to loot")
+
+	AegisPathfinder.tags[8] = "|QID|385| |Z|Wetlands|"
+	t = AegisPathfinder:GetActiveTargets(8)
+	check(names(t) == "Wetlands Crocolisk", "a step's |Z| tag comes first, got '%s'", names(t))
+
+	AegisPathfinder.tags[8] = "|QID|385|"
+	AegisPathfinder.zonename = "Dun Morogh"                   -- none live there
+	GetRealZoneText = function() return "Stranglethorn Vale" end
+	t = AegisPathfinder:GetActiveTargets(8)
+	check(names(t) == "Elder Saltwater Crocolisk, Saltwater Crocolisk, Venture Co. Mechanic",
+		"none in the guide's zone: the ones where you are, got '%s'", names(t))
+
+	GetRealZoneText = function() return "Elwynn Forest" end
+	t = AegisPathfinder:GetActiveTargets(8)
+	check(names(t) == "Elder Saltwater Crocolisk, Wetlands Crocolisk, Saltwater Crocolisk, Loch Crocolisk",
+		"none nearby at all: everyone, likeliest first, got '%s'", names(t))
+
+	AegisPathfinder.actions[8], AegisPathfinder.quests[8], AegisPathfinder.tags[8] = nil, nil, nil
+	AegisPathfinder.zonename, GetRealZoneText = oldZone, oldReal
+	pfDB.zones = nil
+end
+
 t = AegisPathfinder:GetActiveTargets(4)
 check(names(t) == "Telina Shadehand, Milla Fairancora", "a profession step's |NPC| names, got '%s'", names(t))
 check(t[1].mark == MARK.STAR and t[2].mark == MARK.STAR, "trainers are friends")
