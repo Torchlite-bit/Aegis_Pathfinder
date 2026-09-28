@@ -122,7 +122,7 @@ B Scimitar |L|2027 2| |N|Marda Weller - (57.4, 56.8)| |C|Rogue| |Z|Stormwind Cit
 T Dungar Longdrink |QID|6261| |N|Dungar Longdrink - (66.3, 62.1)| |Z|Stormwind City|
 A Return to Lewis |QID|6285| |N|Dungar Longdrink - (66.3, 62.1)| |Z|Stormwind City|
 F Fly to Westfall |N|Dungar Longdrink - (66.3, 62.1)| |Z|Stormwind City|
-T Road to Salvation |QID|2218| |N|Hulfdan Blackbeard downstairs - (52.0, 14.8)| |O| |C|Rogue/Dwarf/Rogue| |R|Gnome| |Z|Ironforge|
+T Road to Salvation |QID|2218| |N|Hulfdan Blackbeard downstairs - (52.0, 14.8)| |O| |C|Rogue| |R|Gnome/Dwarf| |Z|Ironforge|
 
 ]]
 end)

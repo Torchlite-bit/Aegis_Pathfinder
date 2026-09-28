@@ -314,14 +314,14 @@ t Train your class spells |N|Ur'kyo - (35.6, 87.8)| |C|Priest| |R|Troll| |Z|Orgr
 t Train your class spells |N|Pephredo - (38.3, 85.5)| |C|Mage| |Z|Orgrimmar|
 f Get the Orgrimmar flight path |N|Doras - (45.1, 63.9)| |R|Undead| |Z|Orgrimmar|
 T The Admiral's Orders |QID|831| |N|Nazgrel - (32.3, 35.8)| |Z|Orgrimmar|
-A The Shattered Hand |QID|1963| |N|Therzok - (42.8, 53.5)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Orgrimmar|
+A The Shattered Hand |QID|1963| |N|Therzok - (42.8, 53.5)| |C|Rogue| |R|Orc/Troll| |Z|Orgrimmar|
 T Neeru Fireblade |QID|829| |N|[Group] Neeru - (49.5, 50.6)| |P|GROUP| |Z|Orgrimmar|
 A Ak'Zeloth |QID|809| |N|[Group] Neeru - (49.5, 50.6)| |P|GROUP| |Z|Orgrimmar|
 t Train your class spells |N|Mirket - (48.6, 47.0)| |C|Warlock| |Z|Orgrimmar|
-R the Valley of Honor |N|(68.0, 38.7)| |O| |C|Warrior/Undead/Warrior| |R|Troll| |Z|Orgrimmar|
+R the Valley of Honor |N|(68.0, 38.7)| |O| |C|Warrior| |R|Troll/Undead| |Z|Orgrimmar|
 t Train your class spells |N|Grezz - (79.9, 31.3)| |C|Warrior| |Z|Orgrimmar|
-t Train Staves |N|Hanashi - (81.5, 19.6)| |C|Warrior/Undead/Warrior| |R|Troll| |Z|Orgrimmar|
-B Collect Quarter Staff (1) |L|854 1| |N|Zendo'jian. Buy a [Quarter Staff] from him - (81.2, 18.7)| |C|Warrior/Undead/Warrior| |R|Troll| |Z|Orgrimmar|
+t Train Staves |N|Hanashi - (81.5, 19.6)| |C|Warrior| |R|Troll/Undead| |Z|Orgrimmar|
+B Collect Quarter Staff (1) |L|854 1| |N|Zendo'jian. Buy a [Quarter Staff] from him - (81.2, 18.7)| |C|Warrior| |R|Troll/Undead| |Z|Orgrimmar|
 B Vendor trash. Sell your weapon if it gives you enough money for a [Tabar] (22s 14c). You'll come back later if you don't have enough yet |N|Urtharo - (47.5, 68.4)| |C|Warrior| |R|Orc| |Z|Orgrimmar|
 B Collect Tabar (1) |L|1196 1| |N|Urtharo. Buy a [Tabar] from him - (47.5, 68.4)| |C|Warrior| |R|Orc| |Z|Orgrimmar|
 R Go up the Zeppelin Tower |N|(50.8, 13.8)| |Z|Durotar|
@@ -571,7 +571,9 @@ B Collect Cutlass (1) |L|851 1| |N|Charles  in the Rogue's Quarter. Buy a [Cutla
 R Enter Undercity |N|(61.8, 65.1)| |O| |C|Warrior| |R|Undead| |Z|Tirisfal Glades|
 R Travel to Undercity |N|(64.2, 39.8)| |O| |C|Warrior| |R|Undead| |Z|Undercity|
 R Take the lift down to the Undercity |N|(65.5, 43.6)| |O| |C|Warrior| |R|Undead| |Z|Undercity|
-B Collect Quarter Staff (1) |L|854 1| |N|Benijah. Buy a [Quarter Staff] from him - (58.8, 32.8)| |C|Warrior/Undead/Warrior/Tauren/Shaman/Troll/Shaman/Orc/Shaman| |R|Troll| |Z|Undercity|
+B Collect Quarter Staff (1) |L|854 1| |N|Benijah. Buy a [Quarter Staff] from him - (58.8, 32.8)| |C|Shaman| |R|Tauren/Orc| |Z|Undercity|
+B Collect Quarter Staff (1) |L|854 1| |N|Benijah. Buy a [Quarter Staff] from him - (58.8, 32.8)| |C|Warrior/Shaman| |R|Troll| |Z|Undercity|
+B Collect Quarter Staff (1) |L|854 1| |N|Benijah. Buy a [Quarter Staff] from him - (58.8, 32.8)| |C|Warrior| |R|Undead| |Z|Undercity|
 N Buy Six [Discolored Worg Hearts] from the Auction House |N|(64.2, 49.6)| |O| |AH| |Z|Undercity|
 N Skip this if you want, it's only a small time saver |N|(64.2, 49.6)| |O| |AH| |Z|Undercity|
 B Collect Discolored Worg Heart (x6) |L|3164 6| |N|Auctioneer Rhyker - (64.2, 49.6)| |O| |AH| |Z|Undercity|

@@ -232,7 +232,8 @@ the footer's tooltip carries the whole of it.
 `max-height: min(70vh, 600px)`, with `.steps-list` `flex:0 0 auto` in focus
 mode and `flex:1 1 auto` in overview. So `LayoutPanelHeight` makes the panel
 exactly as tall as what it shows, up to a cap: in focus mode, the one step
-(with its note in full) and the meter; in overview, the list, which for any
+(its title and its note in full, both wrapped to the width) and the meter;
+in overview, the list, one line of title a step, which for any
 real guide means the cap. The height is never saved -- only the width and the
 cap are the player's.
 
@@ -350,7 +351,7 @@ needs no second scroll frame inside its own.
 | `.pill-group` | `Theme:Pill`, sized to its label and wrapping |
 | `.route-preview` | Level range in accent, zone in dim, one row per leg of the route this race takes under the selected pack; scrolls on the wheel |
 | `.dchip` grid | `Theme:Chip`, four across |
-| `.toggle-row` + `.switch` | `Theme:Switch` — `switch-track.tga` (a stadium) and a circle knob that slides from left to right |
+| `.toggle-row` + `.switch` | `Theme:Switch` — `switch-track.tga` (a stadium) and a circle knob that slides from left to right. The track is green when on and red when off in every theme (`Theme.SWITCH_ON` / `SWITCH_OFF`), not the theme's accent |
 | `.fine-print` | `Theme:FinePrint` |
 | `overflow-y:auto` | A ScrollFrame, the theme's scroll bar, and the wheel anywhere on the panel; the bar hides on a page that fits |
 
@@ -503,10 +504,15 @@ title and a line of intro per step, Back and Continue/Finish at the foot.
 3. **Dungeons**: the faction's dungeons (`DUNGEON_INFO`: Ragefire Chasm is
    Horde-only, the Stockade Alliance-only) in level order, each a
    `Theme:StepCheck`, the name, the level range (accent while it is your
-   level, gold ahead, dim once past) and how many steps it adds to the route
-   ("not in this route" for none). Recommended / All / None above. Reaching
-   the step with none ticked starts from the recommended ones: per faction,
-   the dungeons with 55 or more dungeon steps in the RestedXP guides.
+   level, gold ahead, dim once past) and how many quests it adds to the route
+   (`GetDungeonQuestCount`, from DungeonQuests.lua: "12 quests", "1 quest (+4
+   with Deadmines)" while a quest's chain waits on another dungeon, "none in
+   this route"), in the accent colour when recommended. Recommended / All /
+   None above. Reaching the step with none ticked starts from the recommended
+   ones (`GetRecommendedDungeons`): for the pack picked and your race, each
+   that adds five quests or more, counting the ones it shares with the others
+   recommended. With no quests for any dungeon, a note says the guides take
+   you through none yet.
 
 Finish (`ApplySetup`) switches pack only when a different one was chosen --
 `SelectRoutePack` re-routes, which would lose your place -- writes the three

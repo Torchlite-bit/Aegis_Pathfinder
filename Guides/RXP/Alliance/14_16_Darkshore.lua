@@ -4,17 +4,17 @@ return [[
 
 N 14-16 Darkshore |N|Converted from RestedXP guide|
 
-A Washed Ashore |QID|3524| |N|Gwennyth Bly'Leggonde - (36.6, 45.6)| |R|NightElf| |Z|Darkshore|
-R Jump off the boat when it's closest to Auberdine's shore |N|(37.0, 44.1)| |O| |R|!NightElf| |Z|Darkshore|
-A Fruit of the Sea |QID|1138| |N|Gubber Blump - (36.1, 44.9)| |O| |C|!sod/Hunter/Druid| |AH| |Z|Darkshore|
+A Washed Ashore |QID|3524| |N|Gwennyth Bly'Leggonde - (36.6, 45.6)| |R|Night Elf| |Z|Darkshore|
+R Jump off the boat when it's closest to Auberdine's shore |N|(37.0, 44.1)| |O| |R|!Night Elf| |Z|Darkshore|
+A Fruit of the Sea |QID|1138| |N|Gubber Blump - (36.1, 44.9)| |O| |AH| |Z|Darkshore|
 A The Family and the Fishing Pole |QID|1141| |N|Gubber Blump - (36.1, 44.9)| |O| |AH| |Z|Darkshore|
 T The Family and the Fishing Pole |QID|1141| |N|Gubber Blump - (36.1, 44.9)| |O| |AH| |Z|Darkshore|
 A The Family and the Fishing Pole |QID|1141| |N|Gubber Blump - (36.1, 44.9)| |AH| |Z|Darkshore|
 T The Family and the Fishing Pole |QID|1141| |N|Gubber Blump - (36.1, 44.9)| |AH| |Z|Darkshore|
 A Fruit of the Sea |QID|1138| |N|Gubber Blump - (36.1, 44.9)| |O| |Z|Darkshore|
-T Flight to Auberdine |QID|6342| |N|Laird - (36.8, 44.3)| |R|NightElf| |Z|Darkshore|
-N Buy up to 40 [Longjaw Mud Snappers] from him. Sell all your other level 5 or below food |N|(36.8, 44.3)| |O| |R|!NightElf| |Z|Darkshore|
-B Longjaw Mud Snapper (40) |L|4592 40| |N|Laird - (36.8, 44.3)| |O| |R|!NightElf| |Z|Darkshore|
+T Flight to Auberdine |QID|6342| |N|Laird - (36.8, 44.3)| |R|Night Elf| |Z|Darkshore|
+N Buy up to 40 [Longjaw Mud Snappers] from him. Sell all your other level 5 or below food |N|(36.8, 44.3)| |O| |R|!Night Elf| |Z|Darkshore|
+B Longjaw Mud Snapper (40) |L|4592 40| |N|Laird - (36.8, 44.3)| |O| |R|!Night Elf| |Z|Darkshore|
 R Shaussiy downstairs |N|(37.0, 44.1)| |O| |Z|Darkshore|
 h Auberdine |N|Set hearth in Auberdine (37.0, 44.1)| |O| |Z|Darkshore|
 R Travel up stairs toward Wizbang Cranktoggle |N|(36.7, 44.0)| |O| |Z|Darkshore|
@@ -23,8 +23,8 @@ A Cave Mushrooms |QID|947| |N|Barithras Moonshade - (37.3, 43.6)| |O| |Z|Darksho
 A The Red Crystal |QID|4811| |N|Sentinel Glynda Nal'Shea - (37.7, 43.4)| |O| |Z|Darkshore|
 A Plagued Lands |QID|2118| |N|Tharnariun Treetender - (38.8, 43.4)| |Z|Darkshore|
 A How Big a Threat? |QID|984| |N|Terenthis - (39.4, 43.5)| |Z|Darkshore|
-A Washed Ashore |QID|3524| |N|Gwennyth Bly'Leggonde - (36.6, 45.6)| |R|!NightElf| |Z|Darkshore|
-f Get the Auberdine flight path |N|Caylais Moonfeather - (36.3, 45.6)| |R|!NightElf| |Z|Darkshore|
+A Washed Ashore |QID|3524| |N|Gwennyth Bly'Leggonde - (36.6, 45.6)| |R|!Night Elf| |Z|Darkshore|
+f Get the Auberdine flight path |N|Caylais Moonfeather - (36.3, 45.6)| |R|!Night Elf| |Z|Darkshore|
 R Send your pet to attack a Thistle Bear. Once your pet is stunned by the Thistle Bear, abandon your pet and start taming it |N|(38.2, 73.3)| |O| |C|Hunter| |R|Dwarf| |Z|Darkshore|
 N Be careful as they [Flee] at <30% health |N|(43.5, 33.2)| |O| |Z|Darkshore|
 C Strider Meat (5) |QID|2178| |L|5469 5| |N|Foreststrider Fledglings. Loot them for their Strider Meat (43.5, 33.2)| |O| |Z|Darkshore|
@@ -54,16 +54,17 @@ A Cleansing of the Infected |QID|2138| |N|Tharnariun Treetender - (38.8, 43.4)| 
 T How Big a Threat? |QID|984| |N|Terenthis - (39.4, 43.5)| |Z|Darkshore|
 A How Big a Threat? |QID|985| |N|Terenthis - (39.4, 43.5)| |Z|Darkshore|
 A Thundris Windweaver |QID|4761| |N|Terenthis - (39.4, 43.5)| |Z|Darkshore|
-A Deep Ocean, Vast Sea |QID|982| |N|Gorbold Steelhand - (38.1, 41.2)| |C|Warrior/NightElf/Rogue| |R|NightElf| |Z|Darkshore|
-N Buy a [Mining Pick] from her |N|(38.1, 41.1)| |O| |C|Warrior/NightElf/Rogue| |R|NightElf| |Z|Darkshore|
-B Mining Pick (1) |L|2901 1| |N|Elisa Steelhand - (38.1, 41.1)| |O| |C|Warrior/NightElf/Rogue| |R|NightElf| |Z|Darkshore|
-t Mining Trained |N|Elisa Steelhand - (38.1, 41.1)| |O| |C|Warrior/NightElf/Rogue| |R|NightElf| |Z|Darkshore|
-t Mining Trained |N|Cast [Find Minerals]| |O| |C|Warrior/NightElf/Rogue| |R|NightElf| |Z|Darkshore|
-A Deep Ocean, Vast Sea |QID|982| |N|Gorbold Steelhand - (38.1, 41.2)| |C|!Rogue| |R|!NightElf/!Warrior| |Z|Darkshore|
+A Deep Ocean, Vast Sea |QID|982| |N|Gorbold Steelhand - (38.1, 41.2)| |C|Warrior/Rogue| |R|Night Elf| |Z|Darkshore|
+N Buy a [Mining Pick] from her |N|(38.1, 41.1)| |O| |C|Warrior/Rogue| |R|Night Elf| |Z|Darkshore|
+B Mining Pick (1) |L|2901 1| |N|Elisa Steelhand - (38.1, 41.1)| |O| |C|Warrior/Rogue| |R|Night Elf| |Z|Darkshore|
+t Mining Trained |N|Elisa Steelhand - (38.1, 41.1)| |O| |C|Warrior/Rogue| |R|Night Elf| |Z|Darkshore|
+t Mining Trained |N|Cast [Find Minerals]| |O| |C|Warrior/Rogue| |R|Night Elf| |Z|Darkshore|
+A Deep Ocean, Vast Sea |QID|982| |N|Gorbold Steelhand - (38.1, 41.2)| |R|!Night Elf| |Z|Darkshore|
+A Deep Ocean, Vast Sea |QID|982| |N|Gorbold Steelhand - (38.1, 41.2)| |C|!Warrior/!Rogue| |R|Night Elf| |Z|Darkshore|
 A Easy Strider Living |QID|2178| |N|Alanndarian Nightsong - (37.7, 40.7)| |O| |Z|Darkshore|
 T Easy Strider Living |QID|2178| |N|Alanndarian Nightsong - (37.7, 40.7)| |O| |Z|Darkshore|
-B Buy a [Jambiya] from him if you can afford it |N|Naram Longclaw - (37.6, 40.3)| |C|Rogue| |R|NightElf| |Z|Darkshore|
-B Jambiya (1) |L|2207 1| |N|Naram Longclaw - (37.6, 40.3)| |C|Rogue| |R|NightElf| |Z|Darkshore|
+B Buy a [Jambiya] from him if you can afford it |N|Naram Longclaw - (37.6, 40.3)| |C|Rogue| |R|Night Elf| |Z|Darkshore|
+B Jambiya (1) |L|2207 1| |N|Naram Longclaw - (37.6, 40.3)| |C|Rogue| |R|Night Elf| |Z|Darkshore|
 B Buy as many [Small Brown Pouches] or [Brown Leather Satchels] as you need from him |N|Dalmond inside - (37.5, 40.5)| |O| |Z|Darkshore|
 N Buy [Sharp Arrows] or [Heavy Shots] from him until your Quiver/Ammo Pouch is full |N|(37.5, 40.5)| |O| |C|Hunter| |Z|Darkshore|
 T Thundris Windweaver |QID|4761| |N|Thundris Windweaver - (37.4, 40.1)| |Z|Darkshore|
@@ -120,34 +121,58 @@ C The Red Crystal |QID|4811| |OIDX|1| |N|Be careful of the two group of 2 Raging
 R Enter the Moonkin Stone cave |N|(43.1, 45.6)| |O| |C|Druid| |Z|Darkshore|
 N Use the [Cenarion Moondust] at the Moonkin Stone inside the cave to summon Lunaclaw at the entrance of the cave |N|(43.5, 46.0)| |O| |C|Druid| |Z|Darkshore|
 C Lunaclaw |QID|6001| |OIDX|1| |N|Lunaclaw - (43.1, 45.5)| |C|Druid| |Z|Darkshore|
-H Auberdine |N|Hearth to Auberdine| |O| |C|NightElf/Hunter/Warrior/Druid| |Z|Darkshore|
-T The Red Crystal |QID|4811| |N|Sentinel Glynda Nal'Shea - (37.7, 43.4)| |O| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
-A As Water Cascades |QID|4812| |N|Sentinel Glynda Nal'Shea - (37.7, 43.4)| |O| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
+H Auberdine |N|Hearth to Auberdine| |O| |C|Hunter/Warrior/Druid| |R|!Night Elf| |Z|Darkshore|
+H Auberdine |N|Hearth to Auberdine| |O| |R|Night Elf| |Z|Darkshore|
+T The Red Crystal |QID|4811| |N|Sentinel Glynda Nal'Shea - (37.7, 43.4)| |O| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+T The Red Crystal |QID|4811| |N|Sentinel Glynda Nal'Shea - (37.7, 43.4)| |O| |R|Night Elf| |Z|Darkshore|
+A As Water Cascades |QID|4812| |N|Sentinel Glynda Nal'Shea - (37.7, 43.4)| |O| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+A As Water Cascades |QID|4812| |N|Sentinel Glynda Nal'Shea - (37.7, 43.4)| |O| |R|Night Elf| |Z|Darkshore|
 T The Red Crystal |QID|4811| |N|Sentinel Glynda Nal'Shea - (37.7, 43.4)| |C|Hunter/Druid/Warrior| |Z|Darkshore|
 A As Water Cascades |QID|4812| |N|Sentinel Glynda Nal'Shea - (37.7, 43.4)| |C|Hunter/Druid/Warrior| |Z|Darkshore|
-A As Water Cascades |QID|4812| |N|Sentinel Glynda Nal'Shea - (37.7, 43.4)| |O| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
-N Buy up to 40 [Longjaw Mud Snappers] from him. Sell all your other level 5 or below food |N|(36.8, 44.3)| |O| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
-B Longjaw Mud Snapper (40) |L|4592 40| |N|Laird - (36.8, 44.3)| |O| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
-N Buy up to 40 [Ice Cold Milk] from her. Sell all your other level 5 or below water |N|(37.0, 43.6)| |O| |C|NightElf/Hunter/Druid| |Z|Darkshore|
-B Ice Cold Milk (35) |L|1179 35| |N|Allyndia - (37.0, 43.6)| |O| |C|NightElf/Hunter/Druid| |Z|Darkshore|
-C As Water Cascades |QID|4812| |OIDX|1| |N|Use the [Empty Water Tube] at the Auberdine moonwell Moonwell Water Tube (1)| |O| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
-N Buy up to 2000 [Sharp Arrows] from him. You will need them for a grinding section soon |N|(37.4, 40.6)| |O| |C|Hunter| |R|NightElf| |Z|Darkshore|
-B Sharp Arrow (35) |L|2515 2000| |N|Dalmond - (37.4, 40.6)| |O| |C|Hunter| |R|NightElf| |Z|Darkshore|
-N Be careful as they [Flee] at <30% health |O| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
-C Strider Meat (5) |QID|2178| |L|5469 5| |N|Kill Foreststrider Fledglings. Loot them for their Strider Meat| |O| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
-N This will be used to level your [Cooking] to 10 later |O| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
-C x20,cooking --Small Egg (1-9) |QID|2178| |L|6889 10| |N|Kill Moonkin. Loot them for their [Small Eggs]| |O| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
-N This will be used to level your [Cooking] to 50 later |O| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
-N Don't go out of your way to farm this now. Just remember to hold onto the eggs and start thinking how many skillups u still need to reach 50 cooking |O| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
-C x20,cooking --Small Egg (10-49) |QID|90| |L|6889 50| |N|Kill Moonkin. Loot them for their [Small Eggs]| |O| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
-C Buzzbox 323 |QID|1002| |OIDX|1| |N|Kill Moonstalker Runts. Loot them for their Moonstalker Fangs Moonstalker Fang (6)| |O| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
-N Be careful of the two group of 2 Raging Moonkins west of the Mysterious Red Crystal as the duos closest to each other are leashed together |N|(47.3, 48.7)| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
-T As Water Cascades |QID|4812| |N|Click the Mysterious Red Crystal - (47.3, 48.7)| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
-A The Fragments Within |QID|4813| |N|Click the Mysterious Red Crystal - (47.3, 48.7)| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
-N This will be used to level your [Cooking] to 10 later |N|(45.3, 44.8)| |O| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
-C x20,cooking --Small Egg (1-9) |QID|2178| |L|6889 10| |N|Moonkin. Loot them for their [Small Eggs] (45.3, 44.8)| |O| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
-H Auberdine |N|Hearth to Auberdine| |O| |C|NightElf/Hunter/Warrior/Druid| |Z|Darkshore|
-T The Fragments Within |QID|4813| |N|Sentinel Glynda Nal'Shea - (37.7, 43.4)| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
+A As Water Cascades |QID|4812| |N|Sentinel Glynda Nal'Shea - (37.7, 43.4)| |O| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+A As Water Cascades |QID|4812| |N|Sentinel Glynda Nal'Shea - (37.7, 43.4)| |O| |R|Night Elf| |Z|Darkshore|
+N Buy up to 40 [Longjaw Mud Snappers] from him. Sell all your other level 5 or below food |N|(36.8, 44.3)| |O| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+N Buy up to 40 [Longjaw Mud Snappers] from him. Sell all your other level 5 or below food |N|(36.8, 44.3)| |O| |R|Night Elf| |Z|Darkshore|
+B Longjaw Mud Snapper (40) |L|4592 40| |N|Laird - (36.8, 44.3)| |O| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+B Longjaw Mud Snapper (40) |L|4592 40| |N|Laird - (36.8, 44.3)| |O| |R|Night Elf| |Z|Darkshore|
+N Buy up to 40 [Ice Cold Milk] from her. Sell all your other level 5 or below water |N|(37.0, 43.6)| |O| |C|Hunter/Druid| |R|!Night Elf| |Z|Darkshore|
+N Buy up to 40 [Ice Cold Milk] from her. Sell all your other level 5 or below water |N|(37.0, 43.6)| |O| |R|Night Elf| |Z|Darkshore|
+B Ice Cold Milk (35) |L|1179 35| |N|Allyndia - (37.0, 43.6)| |O| |C|Hunter/Druid| |R|!Night Elf| |Z|Darkshore|
+B Ice Cold Milk (35) |L|1179 35| |N|Allyndia - (37.0, 43.6)| |O| |R|Night Elf| |Z|Darkshore|
+C As Water Cascades |QID|4812| |OIDX|1| |N|Use the [Empty Water Tube] at the Auberdine moonwell Moonwell Water Tube (1)| |O| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+C As Water Cascades |QID|4812| |OIDX|1| |N|Use the [Empty Water Tube] at the Auberdine moonwell Moonwell Water Tube (1)| |O| |R|Night Elf| |Z|Darkshore|
+N Buy up to 2000 [Sharp Arrows] from him. You will need them for a grinding section soon |N|(37.4, 40.6)| |O| |C|Hunter| |R|Night Elf| |Z|Darkshore|
+B Sharp Arrow (35) |L|2515 2000| |N|Dalmond - (37.4, 40.6)| |O| |C|Hunter| |R|Night Elf| |Z|Darkshore|
+N Be careful as they [Flee] at <30% health |O| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+N Be careful as they [Flee] at <30% health |O| |R|Night Elf| |Z|Darkshore|
+C Strider Meat (5) |QID|2178| |L|5469 5| |N|Kill Foreststrider Fledglings. Loot them for their Strider Meat| |O| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+C Strider Meat (5) |QID|2178| |L|5469 5| |N|Kill Foreststrider Fledglings. Loot them for their Strider Meat| |O| |R|Night Elf| |Z|Darkshore|
+N This will be used to level your [Cooking] to 10 later |O| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+N This will be used to level your [Cooking] to 10 later |O| |R|Night Elf| |Z|Darkshore|
+C x20,cooking --Small Egg (1-9) |QID|2178| |L|6889 10| |N|Kill Moonkin. Loot them for their [Small Eggs]| |O| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+C x20,cooking --Small Egg (1-9) |QID|2178| |L|6889 10| |N|Kill Moonkin. Loot them for their [Small Eggs]| |O| |R|Night Elf| |Z|Darkshore|
+N This will be used to level your [Cooking] to 50 later |O| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+N This will be used to level your [Cooking] to 50 later |O| |R|Night Elf| |Z|Darkshore|
+N Don't go out of your way to farm this now. Just remember to hold onto the eggs and start thinking how many skillups u still need to reach 50 cooking |O| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+N Don't go out of your way to farm this now. Just remember to hold onto the eggs and start thinking how many skillups u still need to reach 50 cooking |O| |R|Night Elf| |Z|Darkshore|
+C x20,cooking --Small Egg (10-49) |QID|90| |L|6889 50| |N|Kill Moonkin. Loot them for their [Small Eggs]| |O| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+C x20,cooking --Small Egg (10-49) |QID|90| |L|6889 50| |N|Kill Moonkin. Loot them for their [Small Eggs]| |O| |R|Night Elf| |Z|Darkshore|
+C Buzzbox 323 |QID|1002| |OIDX|1| |N|Kill Moonstalker Runts. Loot them for their Moonstalker Fangs Moonstalker Fang (6)| |O| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+C Buzzbox 323 |QID|1002| |OIDX|1| |N|Kill Moonstalker Runts. Loot them for their Moonstalker Fangs Moonstalker Fang (6)| |O| |R|Night Elf| |Z|Darkshore|
+N Be careful of the two group of 2 Raging Moonkins west of the Mysterious Red Crystal as the duos closest to each other are leashed together |N|(47.3, 48.7)| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+N Be careful of the two group of 2 Raging Moonkins west of the Mysterious Red Crystal as the duos closest to each other are leashed together |N|(47.3, 48.7)| |R|Night Elf| |Z|Darkshore|
+T As Water Cascades |QID|4812| |N|Click the Mysterious Red Crystal - (47.3, 48.7)| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+T As Water Cascades |QID|4812| |N|Click the Mysterious Red Crystal - (47.3, 48.7)| |R|Night Elf| |Z|Darkshore|
+A The Fragments Within |QID|4813| |N|Click the Mysterious Red Crystal - (47.3, 48.7)| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+A The Fragments Within |QID|4813| |N|Click the Mysterious Red Crystal - (47.3, 48.7)| |R|Night Elf| |Z|Darkshore|
+N This will be used to level your [Cooking] to 10 later |N|(45.3, 44.8)| |O| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+N This will be used to level your [Cooking] to 10 later |N|(45.3, 44.8)| |O| |R|Night Elf| |Z|Darkshore|
+C x20,cooking --Small Egg (1-9) |QID|2178| |L|6889 10| |N|Moonkin. Loot them for their [Small Eggs] (45.3, 44.8)| |O| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+C x20,cooking --Small Egg (1-9) |QID|2178| |L|6889 10| |N|Moonkin. Loot them for their [Small Eggs] (45.3, 44.8)| |O| |R|Night Elf| |Z|Darkshore|
+H Auberdine |N|Hearth to Auberdine| |O| |C|Hunter/Warrior/Druid| |R|!Night Elf| |Z|Darkshore|
+H Auberdine |N|Hearth to Auberdine| |O| |R|Night Elf| |Z|Darkshore|
+T The Fragments Within |QID|4813| |N|Sentinel Glynda Nal'Shea - (37.7, 43.4)| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+T The Fragments Within |QID|4813| |N|Sentinel Glynda Nal'Shea - (37.7, 43.4)| |R|Night Elf| |Z|Darkshore|
 A Return to Nessa |QID|6343| |N|Laird - (36.8, 44.3)| |C|Druid| |Z|Darkshore|
 F Fly to Teldrassil |N|Caylais Moonfeather - (36.3, 45.6)| |C|Druid| |Z|Darkshore|
 R Travel to Teldrassil |N|(56.2, 92.4)| |C|Druid| |Z|Teldrassil|
@@ -164,13 +189,20 @@ A The Principal Source |QID|6122| |N|Dendrite Starblaze up stairs - (56.2, 30.6)
 H Darkshore |N|Hearth to Darkshore| |O| |C|Druid| |Z|Moonglade|
 N Be careful as they [Flee] at <30% health |O| |C|Druid| |Z|Moonglade|
 C Strider Meat (5) |QID|2178| |L|5469 5| |N|Kill Foreststrider Fledglings. Loot them for their Strider Meat| |O| |C|Druid| |Z|Moonglade|
-C Buzzbox 323 |QID|1002| |OIDX|1| |N|Kill Moonstalker Runts. Loot them for their Moonstalker Fangs Moonstalker Fang (6)| |O| |C|NightElf/Hunter/Druid/Warrior| |Z|Moonglade|
-R Travel to Darkshore |N|(40.0, 55.3)| |O| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
-C How Big a Threat? |QID|985| |OIDX|1| |N|Blackwood Pathfinders and Blackwood Windtalkers Blackwood Pathfinder (8)| |O| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
-C Buzzbox 323 |QID|1002| |OIDX|1| |N|Kill Moonstalkers. Loot them for their Moonstalker Fangs Moonstalker Fang (6)| |O| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
-N Be careful as they cast [Rabies] if you dont kill them fast enough (Instant Melee: Reduces ALL health regen by 50% for 10 Minutes) |O| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
-C Cleansing of the Infected |QID|2138| |OIDX|1| |N|Kill Rabid Thistle Bears Rabid Thistle Bear slain (20)| |O| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
-A Beached Sea Turtle |QID|4722| |N|the Beached Sea Turtle - (37.1, 62.2)| |O| |C|NightElf/Hunter/Druid/Warrior| |Z|Darkshore|
+C Buzzbox 323 |QID|1002| |OIDX|1| |N|Kill Moonstalker Runts. Loot them for their Moonstalker Fangs Moonstalker Fang (6)| |O| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Moonglade|
+C Buzzbox 323 |QID|1002| |OIDX|1| |N|Kill Moonstalker Runts. Loot them for their Moonstalker Fangs Moonstalker Fang (6)| |O| |R|Night Elf| |Z|Moonglade|
+R Travel to Darkshore |N|(40.0, 55.3)| |O| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+R Travel to Darkshore |N|(40.0, 55.3)| |O| |R|Night Elf| |Z|Darkshore|
+C How Big a Threat? |QID|985| |OIDX|1| |N|Blackwood Pathfinders and Blackwood Windtalkers Blackwood Pathfinder (8)| |O| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+C How Big a Threat? |QID|985| |OIDX|1| |N|Blackwood Pathfinders and Blackwood Windtalkers Blackwood Pathfinder (8)| |O| |R|Night Elf| |Z|Darkshore|
+C Buzzbox 323 |QID|1002| |OIDX|1| |N|Kill Moonstalkers. Loot them for their Moonstalker Fangs Moonstalker Fang (6)| |O| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+C Buzzbox 323 |QID|1002| |OIDX|1| |N|Kill Moonstalkers. Loot them for their Moonstalker Fangs Moonstalker Fang (6)| |O| |R|Night Elf| |Z|Darkshore|
+N Be careful as they cast [Rabies] if you dont kill them fast enough (Instant Melee: Reduces ALL health regen by 50% for 10 Minutes) |O| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+N Be careful as they cast [Rabies] if you dont kill them fast enough (Instant Melee: Reduces ALL health regen by 50% for 10 Minutes) |O| |R|Night Elf| |Z|Darkshore|
+C Cleansing of the Infected |QID|2138| |OIDX|1| |N|Kill Rabid Thistle Bears Rabid Thistle Bear slain (20)| |O| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+C Cleansing of the Infected |QID|2138| |OIDX|1| |N|Kill Rabid Thistle Bears Rabid Thistle Bear slain (20)| |O| |R|Night Elf| |Z|Darkshore|
+A Beached Sea Turtle |QID|4722| |N|the Beached Sea Turtle - (37.1, 62.2)| |O| |C|Hunter/Druid/Warrior| |R|!Night Elf| |Z|Darkshore|
+A Beached Sea Turtle |QID|4722| |N|the Beached Sea Turtle - (37.1, 62.2)| |O| |R|Night Elf| |Z|Darkshore|
 A The Fall of Ameth'Aran |QID|953| |N|Sentinel Tysha Moonblade - (40.3, 59.7)| |O| |Z|Darkshore|
 C Buzzbox 323 |QID|1002| |OIDX|1| |N|Kill Moonstalker Runts. Loot them for their Moonstalker Fangs Moonstalker Fang (6)| |O| |Z|Darkshore|
 N This will be used to level your [Cooking] to 10 later |N|(45.3, 44.8)| |Z|Darkshore|
@@ -178,11 +210,11 @@ C x20,cooking --Small Egg (1-9) |QID|2178| |L|6889 10| |N|Moonkin. Loot them for
 C Tools of the Highborne |QID|958| |OIDX|1| |N|Kill Wailing Highborne Highborne Relic (7)| |Z|Darkshore|
 A The Fall of Ameth'Aran |QID|953| |N|Sentinel Tysha Moonblade - (40.3, 59.7)| |Z|Darkshore|
 C The Fall of Ameth'Aran |QID|953| |OIDX|2| |N|the The Fall of Ameth'Aran Read The Fall of Ameth'Aran (1)| |Z|Darkshore|
-C Bashal'Aran |QID|957| |OIDX|1| |N|the Ancient Flame Destroy the seal at the ancient flame (1)| |C|!sod/Warrior/Rogue/Priest| |Z|Darkshore|
+C Bashal'Aran |QID|957| |OIDX|1| |N|the Ancient Flame Destroy the seal at the ancient flame (1)| |Z|Darkshore|
 C The Fall of Ameth'Aran |QID|953| |OIDX|1| |N|the The Lay of Ameth'Aran Read The Lay of Ameth'Aran (1)| |Z|Darkshore|
 T The Fall of Ameth'Aran |QID|953| |N|Sentinel Tysha Moonblade - (40.3, 59.7)| |Z|Darkshore|
-N Be careful as they [Flee] at <30% health |O| |C|!sod/Warrior/Rogue| |Z|Darkshore|
-C Strider Meat (5) |QID|2178| |L|5469 5| |N|Kill Foreststrider Fledglings. Loot them for their Strider Meat| |O| |C|!sod/Warrior/Rogue| |Z|Darkshore|
+N Be careful as they [Flee] at <30% health |O| |Z|Darkshore|
+C Strider Meat (5) |QID|2178| |L|5469 5| |N|Kill Foreststrider Fledglings. Loot them for their Strider Meat| |O| |Z|Darkshore|
 C Buzzbox 323 |QID|1002| |OIDX|1| |N|Kill Moonstalker Runts and Moonstalkers. Loot them for their Moonstalker Fangs Moonstalker Fang (6)| |O| |Z|Darkshore|
 N Be careful as they cast [Rabies] if you dont kill them fast enough (Instant Melee: Reduces ALL health regen by 50% for 10 Minutes) |O| |Z|Darkshore|
 C Cleansing of the Infected |QID|2138| |OIDX|1| |N|Kill Rabid Thistle Bears Rabid Thistle Bear slain (20)| |O| |Z|Darkshore|
@@ -286,7 +318,7 @@ C The Principal Source |QID|6122| |OIDX|1| |N|Use the [Empty Cliffspring Falls S
 N Stay on the upper section. If there is not a Death Cap at the end of the top side, drop down and get one from the southern room below |N|(55.9, 35.4)| |Z|Darkshore|
 N Be careful as Stormscale Wave Riders cast [Aqua Jet] (Ranged Instant: Deals damage to nearby enemies and knocks them back) - make sure you're not in a position to get knocked off the upper level of the cave |N|(55.9, 35.4)| |Z|Darkshore|
 C Cave Mushrooms |QID|947| |OIDX|1| |N|Loot the Scaber Stalks and a Death Cap on the ground Scaber Stalk (5)| |Z|Darkshore|
-N Die and respawn at the Spirit Healer |O| |C|!Druid| |R|NightElf| |Z|Darkshore|
+N Die and respawn at the Spirit Healer |O| |C|!Druid| |R|Night Elf| |Z|Darkshore|
 T The Cliffspring River |QID|4762| |N|Thundris Windweaver - (37.4, 40.1)| |Z|Darkshore|
 A The Blackwood Corrupted |QID|4763| |N|Thundris Windweaver - (37.4, 40.1)| |Z|Darkshore|
 A Easy Strider Living |QID|2178| |N|Alanndarian Nightsong - (37.7, 40.7)| |Z|Darkshore|
@@ -295,9 +327,9 @@ T The Principal Source |QID|6122| |N|Alanndarian Nightsong - (37.7, 40.7)| |C|Dr
 A Gathering the Cure |QID|6123| |N|Alanndarian Nightsong - (37.7, 40.7)| |C|Druid| |Z|Darkshore|
 T The Principal Source |QID|6122| |N|Alanndarian Nightsong - (37.7, 40.7)| |O| |C|Druid| |Z|Darkshore|
 A Gathering the Cure |QID|6123| |N|Alanndarian Nightsong - (37.7, 40.7)| |O| |C|Druid| |Z|Darkshore|
-A The Absent Minded Prospector |QID|729| |N|Archaeologist Hollee - (37.4, 41.8)| |O| |R|!NightElf| |Z|Darkshore|
+A The Absent Minded Prospector |QID|729| |N|Archaeologist Hollee - (37.4, 41.8)| |O| |R|!Night Elf| |Z|Darkshore|
 T Deep Ocean, Vast Sea |QID|982| |N|Gorbold Steelhand - (38.1, 41.2)| |Z|Darkshore|
-A The Absent Minded Prospector |QID|729| |N|Archaeologist Hollee - (37.4, 41.8)| |R|!NightElf| |Z|Darkshore|
+A The Absent Minded Prospector |QID|729| |N|Archaeologist Hollee - (37.4, 41.8)| |R|!Night Elf| |Z|Darkshore|
 T Cleansing of the Infected |QID|2138| |N|Tharnariun Treetender - (38.8, 43.4)| |Z|Darkshore|
 A Tharnariun's Hope |QID|2139| |N|Tharnariun Treetender - (38.8, 43.4)| |Z|Darkshore|
 N Choose the [Curvewood Dagger] as you should try to save a [Dagger] for your [Poisons] quest later |N|(37.7, 43.4)| |C|Rogue| |Z|Darkshore|
@@ -306,7 +338,7 @@ C Filled Cleansing Bowl (1) |QID|4763| |L|12347 1| |N|Use the [Empty Cleansing B
 T Cave Mushrooms |QID|947| |N|Barithras Moonshade - (37.3, 43.6)| |Z|Darkshore|
 A Onu |QID|948| |N|Barithras Moonshade - (37.3, 43.6)| |Z|Darkshore|
 A WANTED: Murkdeep! |QID|4740| |N|Click the The Wanted Poster - (37.2, 44.2)| |Z|Darkshore|
-A Return to Nessa |QID|6343| |N|Laird - (36.8, 44.3)| |O| |C|!Druid| |R|NightElf| |Z|Darkshore|
+A Return to Nessa |QID|6343| |N|Laird - (36.8, 44.3)| |O| |C|!Druid| |R|Night Elf| |Z|Darkshore|
 T Fruit of the Sea |QID|1138| |N|Gubber Blump - (36.1, 44.9)| |O| |Z|Darkshore|
 T Beached Sea Creature |QID|4723| |N|Gwennyth Bly'Leggonde - (36.6, 45.6)| |O| |Z|Darkshore|
 T Beached Sea Turtle |QID|4725| |N|Gwennyth Bly'Leggonde - (36.6, 45.6)| |O| |Z|Darkshore|

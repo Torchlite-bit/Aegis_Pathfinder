@@ -74,18 +74,18 @@ B Buy a [Horse] |N|Katie Hunter and Randal Hunter - (84.2, 65.5)| |C|Mage| |R|Hu
 R Travel to Elwynn Forest |N|(84.2, 65.5)| |C|Mage| |R|Human| |Z|Elwynn Forest|
 t Train [Horse Riding] |N|Katie Hunter and Randal Hunter - (84.2, 65.5)| |C|Mage| |R|Human| |Z|Elwynn Forest|
 R Travel to Elwynn Forest |N|(84.3, 64.9)| |C|Mage| |R|Human| |Z|Elwynn Forest|
-F Fly to Teldrassil |N|Baritanas Skyriver - (64.7, 10.5)| |R|NightElf| |Z|Desolace|
-R Travel to Teldrassil |N|(55.9, 89.5)| |R|NightElf| |Z|Teldrassil|
-t Train [Tiger Riding] |N|Jartsam and Lelanai - (38.7, 15.9)| |R|NightElf| |Z|Teldrassil|
-R Travel to Darnassus |N|(38.7, 15.9)| |R|NightElf| |Z|Darnassus|
-B Buy a [Frostsaber] or [Nightsaber] |N|Jartsam and Lelanai - (38.7, 15.9)| |R|NightElf| |Z|Darnassus|
-R Travel to Darnassus |N|(38.3, 15.4)| |R|NightElf| |Z|Darnassus|
-t Train your class spells |N|Arias'ta Bladesinger - (58.7, 34.9)| |C|Warrior| |R|NightElf| |Z|Darnassus|
-t Train your class spells |N|Jandria - (37.9, 82.7)| |C|Priest| |R|NightElf| |Z|Darnassus|
-N Syurna |N|(31.8, 16.7)| |C|Rogue| |R|NightElf| |Z|Darnassus|
-t Train your class spells |N|(37.0, 21.9)| |C|Rogue| |R|NightElf| |Z|Darnassus|
-t Train your class spells |N|Jocaste - (40.4, 8.5)| |C|Hunter| |R|NightElf| |Z|Darnassus|
-F Fly to Theramore |N|Vesprystus - (58.4, 94.0)| |R|NightElf| |Z|Teldrassil|
+F Fly to Teldrassil |N|Baritanas Skyriver - (64.7, 10.5)| |R|Night Elf| |Z|Desolace|
+R Travel to Teldrassil |N|(55.9, 89.5)| |R|Night Elf| |Z|Teldrassil|
+t Train [Tiger Riding] |N|Jartsam and Lelanai - (38.7, 15.9)| |R|Night Elf| |Z|Teldrassil|
+R Travel to Darnassus |N|(38.7, 15.9)| |R|Night Elf| |Z|Darnassus|
+B Buy a [Frostsaber] or [Nightsaber] |N|Jartsam and Lelanai - (38.7, 15.9)| |R|Night Elf| |Z|Darnassus|
+R Travel to Darnassus |N|(38.3, 15.4)| |R|Night Elf| |Z|Darnassus|
+t Train your class spells |N|Arias'ta Bladesinger - (58.7, 34.9)| |C|Warrior| |R|Night Elf| |Z|Darnassus|
+t Train your class spells |N|Jandria - (37.9, 82.7)| |C|Priest| |R|Night Elf| |Z|Darnassus|
+N Syurna |N|(31.8, 16.7)| |C|Rogue| |R|Night Elf| |Z|Darnassus|
+t Train your class spells |N|(37.0, 21.9)| |C|Rogue| |R|Night Elf| |Z|Darnassus|
+t Train your class spells |N|Jocaste - (40.4, 8.5)| |C|Hunter| |R|Night Elf| |Z|Darnassus|
+F Fly to Theramore |N|Vesprystus - (58.4, 94.0)| |R|Night Elf| |Z|Teldrassil|
 F Fly to Theramore |N|Baritanas Skyriver - (64.7, 10.5)| |C|!Mage| |Z|Desolace|
 A Triage |QID|6624| |N|Doctor Gustaf VanHowzen - (67.8, 49.0)| |C|!Mage| |Z|Dustwallow Marsh|
 C Triage |QID|6624| |OIDX|1| |N|Channel the [Triage Bandage] on the Alliance Soldiers. Prioritize Critically Injured Soldiers first (67.8, 49.0)| |C|!Mage| |Z|Dustwallow Marsh|
@@ -100,8 +100,10 @@ A Returning the Cleansed Orb |QID|4976| |N|Tabetha - (46.0, 57.1)| |C|Warlock| |
 R Swim to Theramore Isle |N|(69.4, 53.3)| |O| |C|Warlock| |Z|Dustwallow Marsh|
 t Train your class spells |N|Captain Evencane up stairs in the Keep - (67.9, 48.4)| |C|Warrior| |Z|Dustwallow Marsh|
 t Train your class spells |N|Brother Karman - (67.4, 47.4)| |C|Paladin| |Z|Dustwallow Marsh|
-F Fly to Arathi |N|Shellei - (9.5, 59.7) (!SM Dungeon Quest)| |C|Druid/NightElf/Warrior| |D|!SM| |Z|Wetlands|
-F Fly to Ironforge |N|Shellei - (9.5, 59.7)| |O| |C|!Warlock/!Mage/Dwarf/!Paladin| |R|Gnome| |Z|Wetlands|
+F Fly to Arathi |N|Shellei - (9.5, 59.7) (!SM Dungeon Quest)| |C|Druid| |R|!Night Elf| |D|!SM| |Z|Wetlands|
+F Fly to Arathi |N|Shellei - (9.5, 59.7) (!SM Dungeon Quest)| |C|Druid/Warrior| |R|Night Elf| |D|!SM| |Z|Wetlands|
+F Fly to Ironforge |N|Shellei - (9.5, 59.7)| |O| |C|!Paladin| |R|Dwarf| |Z|Wetlands|
+F Fly to Ironforge |N|Shellei - (9.5, 59.7)| |O| |C|!Warlock/!Mage| |R|Gnome| |Z|Wetlands|
 N Travel to Kharanos and buy your [Mechanostrider] |N|(9.5, 59.7)| |O| |C|!Warlock| |R|Gnome| |Z|Wetlands|
 N Travel to Amberstill Ranch and buy your [Ram] |N|(9.5, 59.7)| |O| |C|!Paladin| |R|Dwarf| |Z|Wetlands|
 t Train your class spells |N|Dink - (27.2, 8.6)| |C|Mage| |R|Gnome| |Z|Ironforge|
@@ -152,7 +154,7 @@ T The Completed Orb of Dar'Orahil |QID|4964| |N|Menara Voidrender - (62.5, 35.4)
 F Fly to Theramore |N|Bragok - (63.1, 37.2)| |C|Warlock| |Z|The Barrens|
 R Travel to Dustwallow Marsh |N|(71.5, 56.3)| |C|Warlock| |Z|Dustwallow Marsh|
 F Fly to Arathi |N|Shellei - (9.5, 59.7)| |C|Warlock| |Z|Wetlands|
-F Fly to Arathi |N|Shellei - (9.5, 59.7)| |C|Warrior/Gnome/Warrior/Dwarf/Warrior| |R|Human| |P|SOLO| |Z|Wetlands|
+F Fly to Arathi |N|Shellei - (9.5, 59.7)| |C|Warrior| |R|!Night Elf| |P|SOLO| |Z|Wetlands|
 F Fly to Arathi |N|Gryth Thurden - (55.5, 47.7)| |Z|Ironforge|
 
 ]]

@@ -36,14 +36,15 @@ FuBar is no longer supported: the button is the addon's own now.
 The options window can be resized from its bottom-right corner, wider or
 taller, and keeps the size; `/apg resetpanels` puts it back. It lists its
 pages down the left: **Route** (race and route
-pack), **Dungeons**, **Filters**, **Appearance** (server theme), **Gear** and
+pack), **Dungeons**, **Filters**, **Appearance** (server theme, window scale), **Gear** and
 under it **Item Score** (the stat weights), **Behaviour**, **Navigation** (waypoints and arrow), **Maintenance** (rescan,
 error log, setup) and **About** (version and credits).
 
 ## What it does
 
 **Routes.** Pick a route pack on the options window's **Route** page: Optimized (Joana's
-routes), RestedXP, or RXP Hardcore — plus Kamisayo Speedrun for Horde warriors.
+routes), RestedXP, or RXP Hardcore. (Kamisayo Speedrun, a Horde Warrior pack, is
+hidden until its guides are added; a character that had it moves to RestedXP.)
 A preview underneath shows the route your race takes under it. Your race's
 starting zone is selected for you, and all races merge into a shared route
 after level 12.
@@ -80,19 +81,32 @@ It is a switch under **Filters**, a choice in the first-time setup, and
 setup asks three things, as RestedXP does:
 
 1. **Your guide**: Optimized (quest-optimized 1-60, every race), RestedXP
-   Speedrun, Hardcore Survival, or Kamisayo Speedrun for a Horde Warrior. Only
-   guides with a route for your race are offered.
+   Speedrun, or Hardcore Survival. Only guides with a route for your race are
+   offered.
 2. **Features**: Auction House steps, Solo Self-Found, group quests, dungeons.
 3. **Dungeons** (when dungeons are on): the dungeons your faction can run, with
-   level ranges and how many steps each adds to your route, plus
-   **Recommended**, **All** and **None**. Recommended picks the dungeons whose
-   quests the guides use most.
+   level ranges and how many quests each adds to your route, plus
+   **Recommended**, **All** and **None**. A quest counts only if the guide you
+   picked takes you all the way through it on your race's route: sends you to
+   pick it up, has you do first whatever the server wants done before it, and
+   sends you to hand it in. A quest whose chain runs through another dungeon
+   counts once that one is ticked too -- "1 quest (+4 with Deadmines)" for the
+   Stockade until the Deadmines is. **Recommended** picks the dungeons that add
+   five quests or more, for the guide you picked: RestedXP and RXP Hardcore
+   take you through many, the Optimized guides through few, so each has its
+   own.
 
 It starts from what the character already has, so an existing character can
 finish it without changing anything, and it keeps your place in your guide
 unless you pick a different one. Where the chosen guides do not mark a kind of
 step yet, it says so. Closing it keeps your current settings. Run it again with
 `/apg setup` or **Run setup** on the options window's **Maintenance** page.
+
+**Your route decides what comes next.** Finish a guide on your route and the
+next is the route's next leg for your guide pack and race -- RestedXP, for
+one, sends the Eastern Kingdoms races through Redridge at 19 and Night Elves
+through Darkshore. A guide you picked off the route goes on where its own
+next guide says.
 
 **Custom zones between guides.** When you finish a guide and a custom zone
 fits your level, a small **Where next?** window asks whether to carry on with
@@ -240,6 +254,13 @@ Paradise tan, Aegis red, and Day (amber, lighter panels) and Night (moonlight
 blue, deeper panels). It applies at once, arrow and progress bars included, with
 no reload. Themes are colours only. Every theme is checked for readability:
 accents and text keep a WCAG contrast of at least 4.5:1 against the panels.
+Switches are the exception: green when on, red when off, in every theme.
+
+**Window scale.** The same page has a **Scale** slider, 60% to 150%, for every
+Pathfinder window at once -- the guide, the options, the shopping list, the
+Active Items and Targets windows and the rest. In focus mode the guide's step
+title wraps to the window's width, so dragging the grip narrower shows the whole
+title on more lines instead of cutting it off.
 
 **Automatic advancement.** Accepting, completing and turning in quests, binding
 a hearthstone, and collecting tagged items all resolve themselves. So do travel
@@ -291,6 +312,19 @@ low for says the level it becomes an upgrade at.
   weights** on the Gear page), lists them down the left with a box each, as
   Zygor's does. Change any of them, pick another spec, reset, or import and
   export them as a string OctoPawn reads too.
+- **More than one spec, as Pawn does.** The Item Score page has a switch for
+  each spec of your class. Yours is always on; switch on another -- the tank
+  set you carry, the healing set -- and every tooltip gets a line for it too,
+  with its score and upgrade percentage. Each spec that is on remembers the
+  best items you have worn in each slot (the best two rings and trinkets), as
+  your gear changes, and an item is weighed against those rather than what you
+  happen to have on: the healing set in your bags does not hide a tank upgrade.
+  **Forget best items** starts again from what you wear.
+- **Drops for your other specs.** When something new in your bags beats the
+  best you have worn for another spec that is on, the chat says so once:
+  "*[Tower Shield]* is an upgrade for your Protection gear (+12%)." (What is in
+  your bags at login is not new.) Your own spec's upgrades go to the Gear
+  Advisor's window, as before. Switch it off on the same page.
 
 **Gear Advisor.** It watches for upgrades, as Zygor's does, and is switched
 under **Gear** in the options:

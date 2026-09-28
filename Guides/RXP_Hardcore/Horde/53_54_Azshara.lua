@@ -26,6 +26,7 @@ T Ripple Delivery |QID|81| |N|Dran - (59.4, 36.9)| |Z|Orgrimmar|
 N He is located at the top of the building |N|(55.6, 34.2)| |Z|Orgrimmar|
 T Bone-Bladed Weapons |QID|4300| |N|Jes'rimon - (55.6, 34.2)| |Z|Orgrimmar|
 A Betrayed |QID|3504| |N|Belgrom - (75.0, 34.3)| |Z|Orgrimmar|
+T Shadowshard Fragments |QID|7068| |N|Uthel'nay in the Valley of Spirits - (39.2, 86.3) (MARA Dungeon Quest)| |D|MARA| |Z|Orgrimmar|
 t Train your class spells |N|Ormak - (66.0, 18.5)| |C|Hunter| |Z|Orgrimmar|
 A The Hunter's Charm |QID|8151| |N|Ormak - (66.0, 18.5)| |C|Hunter| |Z|Orgrimmar|
 t Train your pet spells |N|Xao'tsu - (66.3, 14.8)| |C|Hunter| |Z|Orgrimmar|

@@ -42,8 +42,8 @@ t Train Daggers |N|Woo Ping - (57.1, 57.7)| |C|Mage/Druid/Priest| |Z|Stormwind C
 t Train 2h Swords |N|Woo Ping - (57.1, 57.7)| |C|Warrior/Paladin/Hunter| |Z|Stormwind City|
 B Buy a [Rune of Teleportation] from her |N|Kyra Boucher - (56.1, 65.2)| |O| |C|Mage| |Z|Stormwind City|
 B Buy Rune of Teleportation (x1) |L|17031 1| |N|Kyra Boucher - (56.1, 65.2)| |O| |C|Mage| |Z|Stormwind City|
-F Fly to Redridge Mountains |N|Dungar Longdrink - (66.3, 62.1) (DM Dungeon Quest)| |R|NightElf| |D|DM| |Z|Stormwind City|
-F Fly to Redridge Mountains |N|Dungar Longdrink - (66.3, 62.1)| |O| |R|!NightElf| |Z|Stormwind City|
+F Fly to Redridge Mountains |N|Dungar Longdrink - (66.3, 62.1) (DM Dungeon Quest)| |R|Night Elf| |D|DM| |Z|Stormwind City|
+F Fly to Redridge Mountains |N|Dungar Longdrink - (66.3, 62.1)| |O| |R|!Night Elf| |Z|Stormwind City|
 F Fly to Westfall |N|Dungar Longdrink - (66.3, 62.1) (DM Dungeon Quest)| |R|!Human| |D|DM| |Z|Stormwind City|
 F Fly to Westfall |N|Dungar Longdrink - (66.3, 62.1)| |O| |R|Human| |Z|Stormwind City|
 N Do NOT accept the quest Sven's Revenge from Sven Yorgen |N|(7.7, 33.3)| |Z|Duskwood|

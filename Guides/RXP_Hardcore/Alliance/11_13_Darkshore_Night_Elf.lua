@@ -4,17 +4,17 @@ return [[
 
 N 11-13 Darkshore (Night Elf) |N|Converted from RestedXP guide|
 
-T Nessa Shadowsong |QID|6344| |N|Nessa Shadowsong - (56.2, 92.4)| |R|NightElf| |Z|Teldrassil|
-A The Bounty of Teldrassil |QID|6341| |N|Nessa Shadowsong - (56.2, 92.4)| |R|NightElf| |Z|Teldrassil|
-T The Bounty of Teldrassil |QID|6341| |N|Vesprystus - (58.4, 94.0)| |R|NightElf| |Z|Teldrassil|
-A Flight to Auberdine |QID|6342| |N|Vesprystus - (58.4, 94.0)| |R|NightElf| |Z|Teldrassil|
-F Fly to Darkshore |N|Vesprystus - (58.4, 94.0)| |O| |R|NightElf| |Z|Teldrassil|
-R Travel to Darkshore |N|(36.7, 45.0)| |O| |R|!NightElf| |Z|Darkshore|
-f Get the Auberdine flight path |N|Gwennyth Bly'Leggonde - (19.1, 20.6)| |O| |R|!NightElf| |Z|Felwood|
-A Washed Ashore |QID|3524| |N|Gwennyth Bly'Leggonde - (19.1, 20.6)| |R|NightElf| |Z|Felwood|
-R Travel to Darkshore |N|(36.7, 45.0)| |R|!NightElf| |Z|Darkshore|
-A Washed Ashore |QID|3524| |N|Gwennyth Bly'Leggonde - (19.1, 20.6)| |R|!NightElf| |Z|Felwood|
-T Flight to Auberdine |QID|6342| |N|Laird - (19.3, 19.1)| |R|NightElf| |Z|Felwood|
+T Nessa Shadowsong |QID|6344| |N|Nessa Shadowsong - (56.2, 92.4)| |R|Night Elf| |Z|Teldrassil|
+A The Bounty of Teldrassil |QID|6341| |N|Nessa Shadowsong - (56.2, 92.4)| |R|Night Elf| |Z|Teldrassil|
+T The Bounty of Teldrassil |QID|6341| |N|Vesprystus - (58.4, 94.0)| |R|Night Elf| |Z|Teldrassil|
+A Flight to Auberdine |QID|6342| |N|Vesprystus - (58.4, 94.0)| |R|Night Elf| |Z|Teldrassil|
+F Fly to Darkshore |N|Vesprystus - (58.4, 94.0)| |O| |R|Night Elf| |Z|Teldrassil|
+R Travel to Darkshore |N|(36.7, 45.0)| |O| |R|!Night Elf| |Z|Darkshore|
+f Get the Auberdine flight path |N|Gwennyth Bly'Leggonde - (19.1, 20.6)| |O| |R|!Night Elf| |Z|Felwood|
+A Washed Ashore |QID|3524| |N|Gwennyth Bly'Leggonde - (19.1, 20.6)| |R|Night Elf| |Z|Felwood|
+R Travel to Darkshore |N|(36.7, 45.0)| |R|!Night Elf| |Z|Darkshore|
+A Washed Ashore |QID|3524| |N|Gwennyth Bly'Leggonde - (19.1, 20.6)| |R|!Night Elf| |Z|Felwood|
+T Flight to Auberdine |QID|6342| |N|Laird - (19.3, 19.1)| |R|Night Elf| |Z|Felwood|
 N Buy food if needed |N|(19.3, 19.1)| |O| |Z|Felwood|
 B [Longjaw Mud Snapper] is very cheap |N|Laird - (19.3, 19.1)| |O| |Z|Felwood|
 R Travel up stairs toward Wizbang Cranktoggle |N|(36.7, 43.8)| |O| |Z|Darkshore|
@@ -62,21 +62,21 @@ R Travel to Darkshore |N|(43.0, 45.5)| |O| |C|Druid| |Z|Darkshore|
 R Enter the Moonkin Cave |N|(43.5, 46.0)| |O| |C|Druid| |Z|Darkshore|
 N Use the [Cenarion Moondust] at the Moonkin Stone inside the cave to summon Lunaclaw |N|(43.5, 46.0)| |O| |C|Druid| |Z|Darkshore|
 C Kill Lunaclaw. Talk to the Lunaclaw Spirit |QID|6001| |OIDX|1| |N|Kill Lunaclaw. Talk to the Lunaclaw Spirit - (43.5, 46.0)| |C|Druid| |Z|Darkshore|
-A Return to Nessa |QID|6343| |N|Laird - (19.3, 19.1)| |R|NightElf| |Z|Felwood|
-R Travel to Darkshore |N|(36.7, 45.0)| |O| |R|NightElf| |Z|Darkshore|
-F Fly to Teldrassil --Train 12 |N|Caylais Moonfeather - (36.3, 45.6)| |O| |R|NightElf| |Z|Darkshore|
-T Return to Nessa |QID|6343| |N|Nessa Shadowsong - (56.2, 92.4)| |R|NightElf| |Z|Teldrassil|
+A Return to Nessa |QID|6343| |N|Laird - (19.3, 19.1)| |R|Night Elf| |Z|Felwood|
+R Travel to Darkshore |N|(36.7, 45.0)| |O| |R|Night Elf| |Z|Darkshore|
+F Fly to Teldrassil --Train 12 |N|Caylais Moonfeather - (36.3, 45.6)| |O| |R|Night Elf| |Z|Darkshore|
+T Return to Nessa |QID|6343| |N|Nessa Shadowsong - (56.2, 92.4)| |R|Night Elf| |Z|Teldrassil|
 T Body and Heart |QID|6001| |N|Mathrengyl Bearwalker - (35.4, 8.4)| |C|Druid| |Z|Darnassus|
 t Train your class spells |N|Mathrengyl Bearwalker - (35.4, 8.4)| |C|Druid| |Z|Darnassus|
-t Train your class spells |N|Arias'ta Bladesinger - (58.7, 34.9)| |O| |C|Warrior| |R|NightElf| |Z|Darnassus|
-t Train Thrown |N|Ilyenia Moonfire - (57.6, 46.7)| |C|Warrior| |R|NightElf| |Z|Darnassus|
-R Buy a stack of [Keen Throwing Knives] |N|(58.8, 44.5)| |O| |C|Warrior| |R|NightElf| |Z|Darnassus|
-B Buy Keen Throwing Knife (x200) |L|3107 200| |N|Ariyell Skyshadow - (58.8, 44.5)| |O| |C|Warrior| |R|NightElf| |Z|Darnassus|
-t Train your class spells |N|Jandria - (37.9, 82.7)| |C|Priest| |R|NightElf| |Z|Darnassus|
-N Enter the Cenarion Enclave |N|(31.8, 16.7)| |C|Rogue| |R|NightElf| |Z|Darnassus|
-N Syurna |N|(31.8, 16.7)| |C|Rogue| |R|NightElf| |Z|Darnassus|
-t Train your class spells |N|(37.0, 21.9)| |C|Rogue| |R|NightElf| |Z|Darnassus|
-t Train your class spells |N|Jocaste - (40.4, 8.5)| |O| |C|Hunter| |R|NightElf| |Z|Darnassus|
+t Train your class spells |N|Arias'ta Bladesinger - (58.7, 34.9)| |O| |C|Warrior| |R|Night Elf| |Z|Darnassus|
+t Train Thrown |N|Ilyenia Moonfire - (57.6, 46.7)| |C|Warrior| |R|Night Elf| |Z|Darnassus|
+R Buy a stack of [Keen Throwing Knives] |N|(58.8, 44.5)| |O| |C|Warrior| |R|Night Elf| |Z|Darnassus|
+B Buy Keen Throwing Knife (x200) |L|3107 200| |N|Ariyell Skyshadow - (58.8, 44.5)| |O| |C|Warrior| |R|Night Elf| |Z|Darnassus|
+t Train your class spells |N|Jandria - (37.9, 82.7)| |C|Priest| |R|Night Elf| |Z|Darnassus|
+N Enter the Cenarion Enclave |N|(31.8, 16.7)| |C|Rogue| |R|Night Elf| |Z|Darnassus|
+N Syurna |N|(31.8, 16.7)| |C|Rogue| |R|Night Elf| |Z|Darnassus|
+t Train your class spells |N|(37.0, 21.9)| |C|Rogue| |R|Night Elf| |Z|Darnassus|
+t Train your class spells |N|Jocaste - (40.4, 8.5)| |O| |C|Hunter| |R|Night Elf| |Z|Darnassus|
 H Auberdine |N|Hearth to Auberdine| |O| |Z|Darnassus|
 R Travel to Darkshore |N|(36.9, 44.1)| |O| |Z|Darkshore|
 R Travel toward Cerellean Whiteclaw on the dock |N|(36.0, 43.8)| |O| |Z|Darkshore|

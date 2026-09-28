@@ -75,7 +75,8 @@ C The Trogg Threat |QID|267| |OIDX|1| |N|Stonesplinter Troggs and Stonesplinter 
 R Run up the dirt path then drop down into the bunker |N|(23.7, 75.5)| |O| |Z|Loch Modan|
 T The Trogg Threat |QID|267| |N|Captain Rugelfuss - (23.2, 73.7)| |Z|Loch Modan|
 T In Defense of the King's Lands |QID|224| |N|Mountaineer Cobbleflint - (22.1, 73.1)| |Z|Loch Modan|
-F Fly to Ironforge |N|Thorgrum Borrelson - (33.9, 51.0)| |R|!Dwarf/!Paladin| |Z|Loch Modan|
+F Fly to Ironforge |N|Thorgrum Borrelson - (33.9, 51.0)| |R|!Dwarf| |Z|Loch Modan|
+F Fly to Ironforge |N|Thorgrum Borrelson - (33.9, 51.0)| |C|!Paladin| |R|Dwarf| |Z|Loch Modan|
 R Travel to Dun Morogh |N|(86.1, 51.1)| |O| |C|Paladin| |R|Dwarf| |Z|Dun Morogh|
 N Use the [Symbol of Life] on Narm Faulk |N|(78.3, 58.1)| |O| |C|Paladin| |R|Dwarf| |Z|Dun Morogh|
 T The Tome of Divinity |QID|1783| |N|Narm Faulk - (78.3, 58.1)| |C|Paladin| |R|Dwarf| |Z|Dun Morogh|

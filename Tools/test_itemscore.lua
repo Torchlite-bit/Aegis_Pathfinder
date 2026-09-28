@@ -240,6 +240,83 @@ IS:HookTooltip(tip)
 tip:SetBagItem(0, 1)
 check(table.getn(added) == 2, "hooking twice adds the line once")
 
+-- More than one spec, and the best you have worn for each (Pawn's way) --------------
+
+--[[ A Retribution paladin who tanks now and then: Protection is switched on
+	too. Each spec remembers the best it has seen worn in each slot, and an
+	item is weighed against that, so the tank helm in the bank still sets the
+	bar for Protection while the Retribution helm is on. ]]
+do
+	worn = {}
+	talents[1][2], talents[2][2], talents[3][2] = 0, 0, 11
+	local ret, prot = IS:Weights("PALADIN", "Retribution"), IS:Weights("PALADIN", "Protection")
+	check(IS:Spec() == "Retribution", "scored as Retribution")
+	check(table.concat(IS:ActiveSpecs(), ",") == "Retribution", "only your spec to begin with")
+
+	ITEMS[60] = { loc = "INVTYPE_HEAD", lines = { "Tank Helm", "Head", "+20 Stamina", "+4 Strength" } }
+	ITEMS[61] = { loc = "INVTYPE_HEAD", lines = { "Ret Helm", "Head", "+14 Strength", "+3 Stamina" } }
+	ITEMS[62] = { loc = "INVTYPE_HEAD", lines = { "Better Tank Helm", "Head", "+24 Stamina", "+4 Strength" } }
+	local function sc(id, w) return IS:Score("item:" .. id .. ":0:0:0", w) end
+	check(sc(60, prot) > sc(61, prot) and sc(61, ret) > sc(60, ret), "the tank helm is Protection's, the other Retribution's")
+
+	IS:SetSpecActive("Protection", true)
+	check(table.concat(IS:ActiveSpecs(), ",") == "Retribution,Protection", "Protection is scored too, after yours")
+	check(IS:IsSpecActive("Protection") and IS:IsSpecActive("Retribution") and not IS:IsSpecActive("Holy"),
+		"and says so")
+
+	worn[1] = 60; IS:RecordWorn()           -- tanking
+	worn[1] = 61; IS:RecordWorn()           -- back to Retribution
+	local c = IS:CompareBest("item:62:0:0:0", "Protection")
+	check(near(c.equipped, sc(60, prot)), "a tank helm is weighed against the best tank helm you have worn, not the one on (%s, not %s)",
+		tostring(c.equipped), tostring(sc(61, prot)))
+	check(c.delta > 0 and near(c.pct, (sc(62, prot) - sc(60, prot)) / sc(60, prot) * 100), "and is a small upgrade")
+	c = IS:CompareBest("item:62:0:0:0", "Retribution")
+	check(near(c.equipped, sc(61, ret)), "for Retribution the bar is the Retribution helm")
+
+	local lines = IS:TooltipLines("item:62:0:0:0")
+	check(lines and table.getn(lines) == 2 and lines[1][1] == "Pathfinder (Retribution)" and lines[2][1] == "Pathfinder (Protection)",
+		"the tooltip has a line for each spec, yours first")
+	check(string.find(lines[2][2], "|cff40ff40", 1, true), "Protection's in green, an upgrade: %s", tostring(lines[2][2]))
+
+	local ups = IS:SpecUpgrades("item:62:0:0:0")
+	check(table.getn(ups) == 1 and ups[1].spec == "Protection", "it is an upgrade for Protection alone, the drop notice says")
+	check(table.getn(IS:SpecUpgrades("item:61:0:0:0")) == 0, "the helm you wear is nobody's upgrade")
+
+	-- Rings keep the best two.
+	for id, str in pairs({ [70] = 20, [71] = 15, [72] = 10, [73] = 12 }) do
+		ITEMS[id] = { loc = "INVTYPE_FINGER", lines = { "Ring " .. id, "+" .. str .. " Strength" } }
+	end
+	worn[11], worn[12] = 70, 71; IS:RecordWorn()
+	worn[11], worn[12] = 72, nil; IS:RecordWorn()
+	c = IS:CompareBest("item:73:0:0:0", "Retribution")
+	check(near(c.equipped, sc(71, ret)), "a ring is weighed against the second best you have worn (%s)", tostring(c.equipped))
+	check(c.delta < 0, "so a 12 is not an upgrade over a 20 and a 15")
+
+	-- A two-hander against the best two-hander, or both hands together.
+	ITEMS[80] = { loc = "INVTYPE_WEAPONMAINHAND", lines = { "Mace", { "Main Hand", "Mace" }, "+10 Strength" } }
+	ITEMS[81] = { loc = "INVTYPE_SHIELD", lines = { "Shield", "Off Hand", "+6 Strength" } }
+	ITEMS[82] = { loc = "INVTYPE_2HWEAPON", lines = { "Greatsword", "Two-Hand", "+14 Strength" } }
+	worn[16], worn[17] = 80, 81; IS:RecordWorn()
+	worn[16], worn[17] = 82, nil; IS:RecordWorn()
+	c = IS:CompareBest("item:82:0:0:0", "Retribution")
+	check(near(c.equipped, sc(80, ret) + sc(81, ret)), "a two-hander against the best main hand and off hand together (%s)", tostring(c.equipped))
+	check(not IS:CompareBest("item:81:0:0:0", "Retribution").noCompare, "an off hand you have had has something to compare with")
+
+	-- Forgetting starts again from what you wear.
+	IS:ForgetBest()
+	worn[1] = 61
+	c = IS:CompareBest("item:62:0:0:0", "Protection")
+	check(near(c.equipped, sc(61, prot)), "forgotten, the bar is the helm you wear")
+
+	-- An empty slot, never filled.
+	ITEMS[90] = { loc = "INVTYPE_CLOAK", lines = { "Cloak", "Back", "+5 Stamina" } }
+	check(IS:CompareBest("item:90:0:0:0", "Protection").emptySlot, "a slot never filled is empty")
+
+	IS:SetSpecActive("Protection", false)
+	check(table.concat(IS:ActiveSpecs(), ",") == "Retribution", "switched off, only your spec")
+	check(table.getn(IS:TooltipLines("item:62:0:0:0")) == 1, "and one tooltip line")
+end
+
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end
 print(string.format("ItemScore: %d checks", checks))
 if table.getn(failures) == 0 then

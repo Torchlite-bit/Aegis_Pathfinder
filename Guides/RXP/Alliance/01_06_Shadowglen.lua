@@ -9,8 +9,8 @@ A The Balance of Nature |QID|456| |N|Conservator Ilthalaine - (58.7, 44.3)| |Z|T
 C The Balance of Nature |QID|456| |OIDX|1| |N|Kill Young Nightsabers and Young Thistle Boars Kill Young Nightsaber (x7)| |O| |Z|Teldrassil|
 N Loot the mobs you kill, make sure you have at least 10 copper worth of vendor trash, you will need it to train [Battle Shout] |C|Warrior| |Z|Teldrassil|
 G Grind to level 2 |Z|Teldrassil|
-A A Good Friend |QID|4495| |N|Dirania Silvershine and Melithar Staghelm - (60.9, 42.0)| |C|!sod/Warrior| |Z|Teldrassil|
-A The Woodland Protector |QID|458| |N|Dirania Silvershine and Melithar Staghelm - (60.9, 42.0)| |C|!sod/Warrior| |Z|Teldrassil|
+A A Good Friend |QID|4495| |N|Dirania Silvershine and Melithar Staghelm - (60.9, 42.0)| |Z|Teldrassil|
+A The Woodland Protector |QID|458| |N|Dirania Silvershine and Melithar Staghelm - (60.9, 42.0)| |Z|Teldrassil|
 C The Balance of Nature |QID|456| |OIDX|1| |N|Kill Young Nightsabers and Young Thistle Boars Kill Young Nightsaber (x7)| |Z|Teldrassil|
 T A Good Friend |QID|4495| |N|Iverron - (54.6, 33.0)| |C|Hunter| |Z|Teldrassil|
 A A Friend in Need |QID|3519| |N|Iverron - (54.6, 33.0)| |C|Hunter| |Z|Teldrassil|

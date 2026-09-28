@@ -2,7 +2,7 @@
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
-AegisPathfinder:RegisterGuide("Optimized/Westfall (10-12)", "Optimized/Westfall (12-14)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Westfall (10-12)", "Optimized/Darkshore (12-14)", "Alliance", function()
 
 return [[
 

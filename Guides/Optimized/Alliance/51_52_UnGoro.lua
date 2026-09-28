@@ -35,6 +35,7 @@ B Mithril Casing |QID|4243| |N|Craft or purchase a Mithril Casing from the Gadge
 
 R Broken Pillar |QID|3444| |N|Travel to Broken Pillar (52.73, 45.93)| |D|ST| |Z|Tanaris| |O|
 T The Stone Circle |QID|3444| |N|Marvon Rivetseeker in Broken Pillar (52.73, 45.93)| |D|ST| |Z|Tanaris| |O|
+A Into the Depths |QID|3446| |N|Marvon Rivetseeker in Broken Pillar (52.73, 45.93)| |D|ST| |Z|Tanaris|
 R Thistleshrub Valley |N|Run towards Thistleshrub Valley and into Un'Goro Crater (27.1, 57.3)| |Z|Tanaris|
 
 R Un'Goro Crater |QID|4290| |N|Travel to Un'Goro (71.63, 75.95)|

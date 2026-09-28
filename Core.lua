@@ -22,6 +22,9 @@ AegisPathfinder.manuallyUnchecked = {}
 
 -- Route pack registry (named collections of per-race routes)
 AegisPathfinder.routepacks = {}
+-- Route packs that were offered once and are not now, and the pack their
+-- characters move to.
+AegisPathfinder.RETIRED_PACKS = { ["Kamisayo Speedrun"] = "RestedXP" }
 
 -- Turtle WoW custom race support
 -- Keyed by the locale-independent ChrRaces.dbc token from UnitRaceBase
@@ -559,7 +562,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.11.1"
+AegisPathfinder.version = "0.12.8"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -581,6 +584,7 @@ function AegisPathfinder:OnInitialize()
     -- The saved theme, before anything else paints: windows built as the
     -- files loaded are re-tinted to it (Theme.lua).
     self.Theme:ApplyTheme(self.db.profile.theme)
+    self.Theme:SetWindowScale(self.db.profile.windowscale or 1)
 
     self.db.char.Dungeons = self.db.char.Dungeons or {}
     for k, v in pairs(defaults.Dungeons) do
@@ -673,6 +677,7 @@ function AegisPathfinder:InitializeRoute()
     if not self.db.char.routepack and self.db.char.routeselected then
         self.db.char.routepack = "VanillaGuide"
     end
+    self:MoveOffRetiredPack()
 
     -- Load active route pack's routes into self.routes
     local activePack = self:GetCurrentRoutePack()
@@ -862,6 +867,16 @@ function AegisPathfinder:IsRoutePackGuide(guideName)
     return false
 end
 
+-- A pack that is no longer offered hands its characters on: Kamisayo
+-- Speedrun is hidden until its guides are added (Routes/Routes.lua).
+function AegisPathfinder:MoveOffRetiredPack()
+    local db = self.db.char
+    local to = db.routepack and self.RETIRED_PACKS[db.routepack]
+    if to and not self.routepacks[db.routepack] then
+        db.routepack = to
+    end
+end
+
 -- Get the currently active route pack (or nil)
 function AegisPathfinder:GetCurrentRoutePack()
     local packName = self.db.char.routepack
@@ -981,7 +996,8 @@ function AegisPathfinder:SelectRoutePack(packName)
 end
 
 function AegisPathfinder:LoadNextGuide()
-    local nextname = self.nextzones[self.db.char.currentguide]
+    local nextname = self:GetRouteSuccessor(self.db.char.currentguide)
+        or self.nextzones[self.db.char.currentguide]
     -- End of the route: no next zone, or it points at an unregistered guide
     -- ("No Guide"). Stop instead of letting LoadGuide fall back to guidelist[1],
     -- which would wrap the auto-advance chain around to the start.
@@ -1002,6 +1018,33 @@ function AegisPathfinder:LoadNextGuide()
     self:LoadGuide(nextname, true)
     self:UpdateGuideListPanel()
     return true
+end
+
+--[[ The guide after `guide` on your route: the next leg of the active pack's
+    route for your race (or the race whose route the options gave you), when
+    `guide` is on it, else nil.
+
+    A guide's own next link names one successor for everyone, but a pack's
+    routes part ways -- RestedXP takes the Eastern Kingdoms races through
+    Redridge at 19 and Night Elves through Darkshore -- so where you go next is
+    the route's to say. Off the route (a custom zone, a guide picked from the
+    list) the guide's next link still decides. ]]
+function AegisPathfinder:GetRouteSuccessor(guide)
+    if not guide or not self.routes then return nil end
+    -- The route you follow: your race's, unless the options gave you another.
+    local chosen = self.db and self.db.char and self.db.char.currentroute
+    local route = (chosen and self.routes[chosen]) or self.routes[self:GetRouteForRace()]
+    if not route then return nil end
+    for i, leg in ipairs(route) do
+        if leg.guide == guide then
+            for j = i + 1, table.getn(route) do
+                local nextguide = route[j].guide
+                if nextguide ~= guide and self.guides[nextguide] then return nextguide end
+            end
+            return nil
+        end
+    end
+    return nil
 end
 
 function AegisPathfinder:IsProfessionLearned(skillName)
@@ -2207,7 +2250,7 @@ AegisPathfinder.startingZones = {
         { race = "Tauren",   zone = "RXP (Tauren)",      guide = "RXP/1-6 Tauren",             levels = "1-23", rejoinLevel = 23 },
         { race = "Undead",   zone = "RXP (Undead)",      guide = "RXP/1-6 Undead",             levels = "1-23", rejoinLevel = 23 },
 
-        ---
+        --- Not offered while its guide is missing (the pack is hidden, Routes/Routes.lua).
         { race = "Warrior",  zone = "Kamisayo Speedrun", guide = "RXP/Kamisayo Speedrun 1-13", levels = "1-60", rejoinLevel = 60, class = "Warrior", isSpeedrun = true },
     },
 }

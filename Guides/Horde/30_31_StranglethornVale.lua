@@ -4,7 +4,7 @@ AegisPathfinder:RegisterGuide("Stranglethorn (30-31)", "Thousand Needles (31-32)
 return [[
 
 A Call of Air |QID|1532| |N|Xanis Flameweaver in Spirit Rise (25.20, 20.65)| |C|Shaman| |R|Tauren| |Z|Thunder Bluff| |OID|1531|
-A Call of Air |QID|1531| |N|Searn Firewarder in Grommash Hold (38.00, 37.70)| |C|Shaman| |R|Orc, Troll| |Z|Orgrimmar| |OID|1532|
+A Call of Air |QID|1531| |N|Searn Firewarder in Grommash Hold (38.00, 37.70)| |C|Shaman| |R|Orc/Troll| |Z|Orgrimmar| |OID|1532|
 
 T Call of Air |QID|1532| |N|Prate Cloudseer in The Weathered Nook (54.62, 44.97)  (53.53, 42.66)| |Z|Thousand Needles| |C|Shaman| |O| |OID|1531|
 T Call of Air |QID|1531| |N|Prate Cloudseer in The Weathered Nook (54.62, 44.97)  (53.53, 42.66)| |Z|Thousand Needles| |C|Shaman| |O| |OID|1532|

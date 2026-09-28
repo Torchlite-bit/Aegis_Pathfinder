@@ -73,7 +73,10 @@ local function settings()
 	db.itemscore = db.itemscore or {}
 	local s = db.itemscore
 	if s.tooltips == nil then s.tooltips = true end
+	if s.notify == nil then s.notify = true end
 	s.custom = s.custom or {}
+	s.active = s.active or {}      -- spec -> true: scored as well as yours
+	s.best = s.best or {}          -- spec -> group -> { { item, score }, ... }
 	return s
 end
 IS.Settings = settings
@@ -440,6 +443,171 @@ function IS:IsUpgrade(link, later)
 	return c.delta > 0.0001, c
 end
 
+--[[ Your specs, Pawn's way.
+
+	Pawn scores an item for every spec you tell it about, not only the one
+	you play, and weighs it against the best item you have worn in that slot
+	for that spec -- so the healing set in your bags does not stop a tooltip
+	saying a drop is a tank upgrade. The same here. The spec you are scored as
+	is always on, and any other spec of your class can be switched on, on the
+	Item Score page. Whenever what you wear changes, each spec that is on
+	remembers the best it has seen you wear in each slot, and an item is
+	weighed against that, or what you wear now if that is better. With
+	nothing remembered that is what you wear, as Compare has it.
+
+	Rings and trinkets keep the best two, as you wear two. A two-hander is
+	weighed against the best two-hander, or the best main hand and off hand
+	together, whichever is more; a one-hander against the best main hand, or
+	either hand once you can dual wield. What a spec remembers is weighed
+	again with the weights of the day, so changing them does not leave stale
+	scores behind. ]]
+
+local GROUP_OF_SLOT = {
+	[1] = "HEAD", [2] = "NECK", [3] = "SHOULDER", [5] = "CHEST", [6] = "WAIST", [7] = "LEGS",
+	[8] = "FEET", [9] = "WRIST", [10] = "HAND", [11] = "FINGER", [12] = "FINGER", [13] = "TRINKET",
+	[14] = "TRINKET", [15] = "BACK", [16] = "MAINHAND", [17] = "OFFHAND", [18] = "RANGED",
+}
+IS.GROUP_OF_SLOT = GROUP_OF_SLOT
+IS.REMEMBER = 4        -- items kept a group, so a change of weights can reorder them
+
+--- The group a worn item counts in: its slot's, and a two-hander apart.
+local function wornGroup(slot, info)
+	if slot == MAINHAND and info.equipLoc == "INVTYPE_2HWEAPON" then return "TWOHAND" end
+	return GROUP_OF_SLOT[slot]
+end
+
+--- The specs scored: yours first, then those switched on, in order.
+function IS:ActiveSpecs()
+	local class, main = self:Class(), self:Spec()
+	local out = { main }
+	local have = Data.weights[class] or {}
+	for _, spec in ipairs(self:Specs(class)) do
+		if spec ~= main and have[spec] and settings().active[spec] then table.insert(out, spec) end
+	end
+	return out
+end
+
+function IS:IsSpecActive(spec)
+	return spec == self:Spec() or settings().active[spec] == true
+end
+
+function IS:SetSpecActive(spec, on)
+	settings().active[spec] = on and true or nil
+	if on then self:RecordWorn({ spec }) end
+	self:Changed()
+end
+
+local function remember(spec, group, item, score)
+	local best = settings().best
+	best[spec] = best[spec] or {}
+	local pool = best[spec][group] or {}
+	local known = false
+	for _, e in ipairs(pool) do
+		if e.item == item then e.score, known = score, true end
+	end
+	if not known then table.insert(pool, { item = item, score = score }) end
+	table.sort(pool, function(a, b) return a.score > b.score end)
+	while table.getn(pool) > IS.REMEMBER do table.remove(pool) end
+	best[spec][group] = pool
+end
+
+--- Remember what you wear, for each spec that is on (or those given).
+function IS:RecordWorn(specs)
+	specs = specs or self:ActiveSpecs()
+	local class = self:Class()
+	for _, spec in ipairs(specs) do
+		local weights = self:Weights(class, spec)
+		for slot in pairs(GROUP_OF_SLOT) do
+			local link = GetInventoryItemLink("player", slot)
+			if link then
+				local score, info = self:Score(link, weights)
+				if score then remember(spec, wornGroup(slot, info), info.item, score) end
+			end
+		end
+	end
+end
+
+--- Start remembering afresh, from what you wear now.
+function IS:ForgetBest()
+	settings().best = {}
+	self:RecordWorn()
+	self:Changed()
+end
+
+--- A group's scores for a spec, best first: what it remembers and what you
+--- wear, each item once, weighed with `weights`.
+function IS:BestScores(spec, group, weights)
+	local seen, out = {}, {}
+	local function add(item, fallback)
+		if not item or seen[item] then return end
+		seen[item] = true
+		table.insert(out, self:Score(item, weights) or fallback or 0)
+	end
+	for _, e in ipairs((settings().best[spec] or {})[group] or {}) do add(e.item, e.score) end
+	for slot in pairs(GROUP_OF_SLOT) do
+		local link = GetInventoryItemLink("player", slot)
+		local info = link and self:Read(link)
+		if info and wornGroup(slot, info) == group then add(info.item) end
+	end
+	table.sort(out, function(a, b) return a > b end)
+	return out
+end
+
+--- How an item compares, for a spec (yours if none), with the best you have
+--- had for it: Compare's answer, `equipped` being that best.
+function IS:CompareBest(link, spec)
+	local class = self:Class()
+	spec = spec or self:Spec()
+	local weights = self:Weights(class, spec)
+	local score, info = self:Score(link, weights)
+	if not score or not info.equipLoc or not SLOTS[info.equipLoc] then return nil end
+	local out = { score = score, usable = info.usable, later = info.later, level = info.level, spec = spec }
+	local function top(group, n) return self:BestScores(spec, group, weights)[n or 1] end
+
+	local loc, base = info.equipLoc, nil
+	if loc == "INVTYPE_FINGER" or loc == "INVTYPE_TRINKET" then
+		base = top(loc == "INVTYPE_FINGER" and "FINGER" or "TRINKET", 2)
+	elseif loc == "INVTYPE_2HWEAPON" then
+		local two, main, off = top("TWOHAND"), top("MAINHAND"), top("OFFHAND")
+		if two or main or off then base = math.max(two or 0, (main or 0) + (off or 0)) end
+	elseif loc == "INVTYPE_WEAPONOFFHAND" or loc == "INVTYPE_SHIELD" or loc == "INVTYPE_HOLDABLE" then
+		base = top("OFFHAND")
+		if not base and top("TWOHAND") and not top("MAINHAND") then
+			-- An off hand is only half of what would replace a two-hander.
+			out.noCompare = true
+			return out
+		end
+	elseif GROUP_OF_SLOT[SLOTS[loc][1]] == "MAINHAND" then
+		base = top("MAINHAND") or top("TWOHAND")
+		if loc == "INVTYPE_WEAPON" and self:CanDualWield() then
+			local off = top("OFFHAND")
+			if off and (not base or off < base) then base = off end
+		end
+	else
+		base = top(GROUP_OF_SLOT[SLOTS[loc][1]])
+	end
+	out.emptySlot = base == nil
+	out.equipped = base or 0
+	out.delta = score - out.equipped
+	if out.equipped > 0 then out.pct = out.delta / out.equipped * 100 end
+	return out
+end
+
+--- The specs, other than yours, an item beats your best for, now:
+--- { { spec, compare }, ... }.
+function IS:SpecUpgrades(link)
+	local out, main = {}, self:Spec()
+	for _, spec in ipairs(self:ActiveSpecs()) do
+		if spec ~= main then
+			local c = self:CompareBest(link, spec)
+			if c and c.usable and not c.later and not c.noCompare and c.delta > 0.0001 then
+				table.insert(out, { spec = spec, compare = c })
+			end
+		end
+	end
+	return out
+end
+
 --[[ Keeping it current ]]
 
 local listeners = {}
@@ -459,19 +627,16 @@ end
 
 --[[ Tooltips ]]
 
---- The line added under an item: its score, and against what you wear.
-function IS:TooltipText(link)
-	if not settings().tooltips then return nil end
-	local ok, c = pcall(function() return self:Compare(link) end)
-	if not ok or not c then return nil end
-	local spec = self:SpecLabel((self:Spec()))
-	local left = "Pathfinder (" .. spec .. ")"
+--- One spec's line under an item: its score, and against the best you have
+--- had for that spec.
+local function specLine(c)
+	local left = "Pathfinder (" .. IS:SpecLabel(c.spec) .. ")"
 	local right = string.format("%.1f", c.score)
 	local color = "|cffd0d0d0"
 	if not c.usable then
 		right, color = "not for you", "|cff9d9d9d"
 	elseif c.noCompare then
-		right = right .. " (with a two-hander on)"
+		right = right .. " (with a two-hander)"
 	elseif c.emptySlot then
 		right, color = right .. "  empty slot", "|cff40ff40"
 	elseif c.pct then
@@ -483,13 +648,33 @@ function IS:TooltipText(link)
 	return left, color .. right .. "|r"
 end
 
+--- The lines added under an item, one for each spec that is on, yours
+--- first: { { left, right }, ... }, or nil.
+function IS:TooltipLines(link)
+	if not settings().tooltips then return nil end
+	local lines = {}
+	for _, spec in ipairs(self:ActiveSpecs()) do
+		local ok, c = pcall(function() return self:CompareBest(link, spec) end)
+		if ok and c then
+			local left, right = specLine(c)
+			table.insert(lines, { left, right })
+		end
+	end
+	return table.getn(lines) > 0 and lines or nil
+end
+
+--- Your spec's line alone.
+function IS:TooltipText(link)
+	local lines = self:TooltipLines(link)
+	if lines then return lines[1][1], lines[1][2] end
+end
+
 local function addLine(tip, link)
 	if not link then return end
-	local left, right = IS:TooltipText(link)
-	if left then
-		tip:AddDoubleLine(left, right, 0.62, 0.84, 0.43, 1, 1, 1)
-		tip:Show()
-	end
+	local lines = IS:TooltipLines(link)
+	if not lines then return end
+	for _, l in ipairs(lines) do tip:AddDoubleLine(l[1], l[2], 0.62, 0.84, 0.43, 1, 1, 1) end
+	tip:Show()
 end
 
 -- Each way the client fills a tooltip with an item, and how to get its link.
@@ -529,8 +714,11 @@ events:RegisterEvent("PLAYER_LEVEL_UP")
 events:RegisterEvent("SKILL_LINES_CHANGED")
 events:RegisterEvent("SPELLS_CHANGED")
 events:RegisterEvent("CHARACTER_POINTS_CHANGED")
+events:RegisterEvent("UNIT_INVENTORY_CHANGED")
 events:SetScript("OnEvent", function()
-	if event == "CHARACTER_POINTS_CHANGED" then
+	if event == "UNIT_INVENTORY_CHANGED" then
+		if arg1 == "player" then IS:RecordWorn() end
+	elseif event == "CHARACTER_POINTS_CHANGED" then
 		IS:Changed()
 	else
 		IS:Forget()
@@ -540,4 +728,5 @@ end)
 function IS:Initialize()
 	self:HookTooltip(GameTooltip)
 	self:HookTooltip(ItemRefTooltip)
+	self:RecordWorn()
 end

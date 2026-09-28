@@ -432,6 +432,24 @@ check(string.find(frame.themeNote:GetText(), "RavenCraft's dark grey", 1, true) 
 	and not string.find(frame.themeNote:GetText(), "guide data", 1, true), "and nothing about guide data")
 pickTheme("Night")
 check(frame.themeNote:GetText() == "Moonlight blue on deeper panels.", "Night says only what it looks like")
+
+-- Window scale -------------------------------------------------------------------------
+
+check(frame.scale and frame.scale.value:GetText() == "100%", "the scale starts at 100%%, got '%s'",
+	tostring(frame.scale and frame.scale.value:GetText()))
+frame.scale.slider:SetValue(1.25)            -- the player drags it
+check(AegisPathfinder.db.profile.windowscale == 1.25, "dragging the scale saves it, got %s",
+	tostring(AegisPathfinder.db.profile.windowscale))
+check(math.abs(frame:GetScale() - 1.25) < 1e-6, "and scales this window, got %s", tostring(frame:GetScale()))
+check(frame.scale.value:GetText() == "125%", "and says so, got '%s'", tostring(frame.scale.value:GetText()))
+frame.scale.slider:SetValue(3)
+check(AegisPathfinder.db.profile.windowscale == Theme.SCALE_MAX, "no bigger than the most it allows, got %s",
+	tostring(AegisPathfinder.db.profile.windowscale))
+local later = CreateFrame("Frame", nil, UIParent)
+Theme:RegisterWindow(later)
+check(math.abs(later:GetScale() - Theme.SCALE_MAX) < 1e-6, "a window built later takes the scale too")
+AegisPathfinder:SetWindowScale(1)
+check(math.abs(frame:GetScale() - 1) < 1e-6 and math.abs(later:GetScale() - 1) < 1e-6, "and back to 100%%")
 pickTheme("Turtle WoW")
 check(Theme.color.accent[1] == green[1] and Theme.color.accent[2] == green[2], "and Turtle WoW is green again")
 

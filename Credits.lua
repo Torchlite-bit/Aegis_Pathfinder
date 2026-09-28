@@ -36,7 +36,7 @@ local CREDITS = {
 		"Cladhaire, laytya and the TWOW porters -- TomTom-TWOW",
 		"Kitymeowmeow -- CraftRoute, the recipe data behind crafting routes",
 		"iGreed -- OctoPawn, the stat weights behind the item score (MIT)",
-		"The CMaNGOS team -- classic-db, trainers and gathering data",
+		"The CMaNGOS team -- classic-db, trainers, gathering data and quest rules",
 	} },
 	{ "Fonts", {
 		"Rajdhani -- (c) 2014 Indian Type Foundry, SIL OFL 1.1",

@@ -32,7 +32,7 @@ C Blood Feeders |QID|6461| |OIDX|2| |N|Kill Deepmoss Venomspitters Kill Deepmoss
 N Be careful! The Deepmoss Hatchlings have a chance of summoning a level 22 Deepmoss Matriarch |N|(60.2, 63.2)| |Z|Stonetalon Mountains|
 C Deepmoss Spider Eggs |QID|1069| |OIDX|1| |N|the Spider Eggs near the trees Collect Deepmoss Egg (x15)| |Z|Stonetalon Mountains|
 C Blood Feeders |QID|6461| |OIDX|2| |N|Deepmoss Venomspitters Kill Deepmoss Venomspitter (x7)| |Z|Stonetalon Mountains|
-B Collect Long Staff (1) |L|928 1| |N|Veenix. Buy a [Long Staff] from him - (58.2, 51.7)| |C|Warrior/Undead/Warrior| |R|Troll| |Z|Stonetalon Mountains|
+B Collect Long Staff (1) |L|928 1| |N|Veenix. Buy a [Long Staff] from him - (58.2, 51.7)| |C|Warrior| |R|Troll/Undead| |Z|Stonetalon Mountains|
 B Collect Battle Axe (1) |L|926 1| |N|Veenix. Buy a [Battle Axe] from him - (58.2, 51.7)| |C|Warrior| |R|Orc| |Z|Stonetalon Mountains|
 B Collect Maul (1) |L|924 1| |N|Veenix. Buy a [Maul] from him - (58.2, 51.7)| |C|Warrior| |R|Tauren| |Z|Stonetalon Mountains|
 B Collect Long Staff (1) |L|928 1| |N|Veenix. Buy a [Long Staff] from him - (58.2, 51.7)| |C|Shaman| |Z|Stonetalon Mountains|
@@ -175,8 +175,10 @@ R Travel to Mulgore |N|(68.7, 60.3)| |O| |R|!Tauren| |Z|Mulgore|
 R Travel to Thunder Bluff |N|(31.8, 65.9)| |O| |R|!Tauren| |Z|Thunder Bluff|
 N If you have the Thunder Bluff flight path, fly there instead |N|(31.8, 65.9)| |O| |R|!Tauren| |Z|Thunder Bluff|
 F Fly to Thunder Bluff |N|Omusa - (44.5, 59.2)| |O| |R|Tauren| |Z|The Barrens|
-t Train Two-Handed Maces & Staves |N|Ansekhwa - (40.9, 62.7)| |C|Warrior/Orc/Warrior/Troll/Warrior| |R|Undead| |Z|Thunder Bluff|
-t Train Staves |N|Ansekhwa - (40.9, 62.7)| |C|Hunter/Orc/Hunter/Undead/Warrior/Warlock/Priest| |R|Troll| |Z|Thunder Bluff|
+t Train Two-Handed Maces & Staves |N|Ansekhwa - (40.9, 62.7)| |C|Warrior| |R|!Tauren| |Z|Thunder Bluff|
+t Train Staves |N|Ansekhwa - (40.9, 62.7)| |C|Hunter/Warlock/Priest| |R|Troll/Orc| |Z|Thunder Bluff|
+t Train Staves |N|Ansekhwa - (40.9, 62.7)| |C|Warlock/Priest| |R|Tauren| |Z|Thunder Bluff|
+t Train Staves |N|Ansekhwa - (40.9, 62.7)| |C|Warrior/Warlock/Priest| |R|Undead| |Z|Thunder Bluff|
 t Train Maces |N|Ansekhwa - (40.9, 62.7)| |C|Rogue| |Z|Thunder Bluff|
 B Deadly Throwing Axe (200) |L|3137 200| |N|Kuruk. Buy  [Deadly Throwing Axe] from him - (39.0, 64.6)| |C|Rogue| |Z|Thunder Bluff|
 R Chesmu |N|(47.1, 57.9)| |Z|Thunder Bluff|
@@ -456,7 +458,7 @@ B Collect Dust of Decay (20) |L|2928 20| |N|Rekkul. Buy  [Dust of Decay] and [Em
 B Collect Empty Vial (20) |L|3371 20| |N|Rekkul. Buy  [Dust of Decay] and [Empty Vials] from him - (42.1, 49.5)| |C|Rogue| |Z|Orgrimmar|
 t Train your class spells |N|Kardris - (38.8, 36.4)| |C|Shaman| |Z|Orgrimmar|
 T Samophlange Manual |QID|3924| |N|Rilli - (76.5, 24.4)| |Z|Orgrimmar|
-t Train Two-Handed Axes |N|Hanashi - (81.5, 19.6)| |C|Warrior/Undead/Warrior/Tauren/Warrior| |R|Troll| |Z|Orgrimmar|
+t Train Two-Handed Axes |N|Hanashi - (81.5, 19.6)| |C|Warrior| |R|!Orc| |Z|Orgrimmar|
 t Train your class spells |N|Grezz - (79.9, 31.4)| |C|Warrior| |Z|Orgrimmar|
 t Train your class spells |N|Ormak - (66.0, 18.5)| |C|Hunter| |Z|Orgrimmar|
 t Train your pet spells |N|Xao'tsu - (66.3, 14.8)| |C|Hunter| |Z|Orgrimmar|

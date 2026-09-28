@@ -47,7 +47,7 @@ A Dreadmaul Rock |QID|3821| |N|Thal'trak Proudtusk in Kargath (3.36, 48.05)| |Z|
 R Flame Crest |QID|4726| |N|Travel to Flame Crest in Burning Steppes (65.20, 23.89)| |Z|Burning Steppes|
 A Broodling Essence |QID|4726| |N|Tinkee Steamboil in Flame Crest (65.20, 23.89)| |Z|Burning Steppes|
 A Tablet of the Seven |QID|4296| |N|Maxwort Uberglint in Flame Crest (65.20, 23.89)| |Z|Burning Steppes|
-T Yuka Screwspigot |QID|4324| |N|Yuka Screwspigot in Flame Crest (66.04, 21.94)| |Z|Burning Steppes| |O|
+T Yuka Screwspigot |QID|4324| |N|Yuka Screwspigot in Flame Crest (66.04, 21.94)| |D|BRD| |Z|Burning Steppes| |O|
 
 C Broodling Essence |QID|4726| |N|Use Draco-Incarcinatrix 900 on 8 Black Broodling BEFORE you kill them (78.49, 27.51)| |Z|Burning Steppes| |U|12284|
 
@@ -72,8 +72,12 @@ T Broodling Essence |QID|4726| |N|Tinkee Steamboil in Flame Crest (65.25, 23.98)
 A Felnok Steelspring |QID|4808| |N|Tinkee Steamboil in Flame Crest (65.24, 23.88)| |Z|Burning Steppes|
 T Tablet of the Seven |QID|4296| |N|Maxwort Uberglint in Flame Crest (65.19, 23.90)| |Z|Burning Steppes|
 
+R Blackrock Depths |QID|4134| |N|With your group, enter Blackrock Depths from Blackrock Mountain, west of Flame Crest| |D|BRD| |Z|Burning Steppes|
+C Lost Thunderbrew Recipe |QID|4134| |N|In the Grim Guzzler, kill Hurley Blackbreath and his Blackbreath Cronies for the Lost Thunderbrew Recipe| |D|BRD|
+
 T Krom'Grul |QID|3822| |N|Thal'trak Proudtusk in Kargath (3.38, 48.04)| |Z|Badlands|
 T The Rise of the Machines |QID|4061| |N|Hierophant Theodora Mulvadania in Kargath (3.06, 47.85)| |D|BRD| |Z|Badlands|
+T Lost Thunderbrew Recipe |QID|4134| |N|Shadowmage Vivian Lagrave in Kargath (2.91, 47.78)| |D|BRD| |Z|Badlands|
 A The Rise of the Machines |QID|4062| |N|Hierophant Theodora Mulvadania in Kargath (3.09, 47.89)| |D|BRD| |Z|Badlands|
 T The Rise of the Machines |QID|4062| |N|Lotwil Veriatus in The Dustbowl (25.95, 44.91)| |D|BRD| |Z|Badlands|
 

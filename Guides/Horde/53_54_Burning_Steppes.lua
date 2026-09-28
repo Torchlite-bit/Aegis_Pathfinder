@@ -40,7 +40,7 @@ A Dreadmaul Rock |QID|3821| |N|Thal'trak Proudtusk in Kargath, he sometimes patr
 R Flame Crest |QID|4726| |N|Travel to Flame Crest (65.20, 23.89)| |Z|Burning Steppes|
 A Broodling Essence |QID|4726| |N|Tinkee Steamboil in Flame Crest (65.20, 23.89)| |Z|Burning Steppes|
 A Tablet of the Seven |QID|4296| |N|Maxwort Uberglint in Flame Crest (65.20, 23.89)| |Z|Burning Steppes|
-T Yuka Screwspigot |QID|4324| |N|Yuka Screwspigot in Flame Crest (66.04, 21.94)| |Z|Burning Steppes| |O|
+T Yuka Screwspigot |QID|4324| |N|Yuka Screwspigot in Flame Crest (66.04, 21.94)| |D|BRD| |Z|Burning Steppes| |O|
 C Broodling Essence |QID|4726| |N|Use Draco-Incarcinatrix 900 on 8 Black Broodling before you kill them in Dreadmaul Rock (78.49, 27.51)| |Z|Burning Steppes| |U|12284|
 N Black Dragonflight Molt |QID|4022| |N|This is found inside Hoard of the Black Dragonflight quest reward from an earlier quest 'Trinkets...', you need this to complete the next quest 'A Taste of Flame', if you don't have it you will need to kill a level 54 elite that will spawn if you talk to the quest giver| |L|10575| |U|10569| |OID|4023| |P|GROUP|
 

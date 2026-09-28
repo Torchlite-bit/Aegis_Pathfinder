@@ -151,7 +151,7 @@ A Encroaching Gnolls |QID|244| |N|Guard Parker in Three Corners (15.32, 71.42)| 
 
 T Encroaching Gnolls |QID|244| |N|Deputy Feldon in Redridge Mountains (30.74, 60.15)| |Z|Redridge Mountains|
 A Assessing the Threat |QID|246| |N|Deputy Feldon in Redridge Mountains (30.68, 59.81)| |Z|Redridge Mountains|
-F Lakeshire |QID|246| |N|Speak to Ariena Stormfeather and grab flight path for Lakeshire (30.59, 59.47)| |Z|Redridge Mountains| |R|Night Elf, Gnome, Dwarf|
+F Lakeshire |QID|246| |N|Speak to Ariena Stormfeather and grab flight path for Lakeshire (30.59, 59.47)| |Z|Redridge Mountains| |R|Night Elf/Gnome/Dwarf|
 A Hilary's Necklace |QID|3741| |N|Shawn in Lake Everstill (29.30, 53.62)| |Z|Redridge Mountains|
 C Hilary's Necklace |QID|3741| |N|Find Hilary's Necklace inside a mud pile underwater in the lake; Check around each waypoint (19.3, 51.8) (24.1, 54.6) (26.6, 51.4) (28,56) (33.7, 55.4) (36.7, 54.3)| |Z|Redridge Mountains|
 T Hilary's Necklace |QID|3741| |N|Hilary in Lake Everstill (29.18, 53.49)| |Z|Redridge Mountains|

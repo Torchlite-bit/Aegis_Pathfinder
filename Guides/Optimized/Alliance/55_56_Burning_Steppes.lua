@@ -2,7 +2,7 @@
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
-AegisPathfinder:RegisterGuide("Optimized/Burning Steppes (55-56)", "Optimized/Silithus (56-57)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Burning Steppes (55-56)", "Optimized/Sunken Temple (56-56)", "Alliance", function()
 
 return [[
 
@@ -36,7 +36,7 @@ A Dragonkin Menace |QID|4182| |N|Helendis Riverhorn in Morgan's Vigil (85.82, 68
 R Flame Crest |QID|4726| |N|Travel to Flame Crest (65.14, 23.83)| |Z|Burning Steppes|
 A Broodling Essence |QID|4726| |N|Tinkee Steamboil in Flame Crest (65.14, 23.83)| |Z|Burning Steppes|
 A Tablet of the Seven |QID|4296| |N|Maxwort Uberglint in Flame Crest (65.17, 23.92)| |Z|Burning Steppes|
-T Yuka Screwspigot |QID|4324| |N|Yuka Screwspigot in Flame Crest (66.04, 21.94)| |Z|Burning Steppes| |O|
+T Yuka Screwspigot |QID|4324| |N|Yuka Screwspigot in Flame Crest (66.04, 21.94)| |D|BRD| |Z|Burning Steppes| |O|
 N Black Dragonflight Molt |N|This is found inside Hoard of the Black Dragonflight reward from 'Trinkets...' - need for A Taste of Flame| |L|10575|
 
 N As you go |N|Kill Ember Worg and collect 50 Blackrock Medallion while in the zone|
@@ -112,6 +112,11 @@ C The True Masters (Part 6) |QID|4224| |N|Speak to Ragged John (65.02, 23.73)| |
 
 R Morgan's Vigil |QID|4224| |N|Travel to Morgan's Vigil (84.75, 69.01)| |Z|Burning Steppes|
 T The True Masters (Part 6) |QID|4224| |N|Marshal Maxwell in Morgan's Vigil (84.73, 69.03)| |Z|Burning Steppes|
+
+R Blackrock Depths |QID|4024| |N|With your group, ride west to Blackrock Mountain and enter Blackrock Depths| |D|BRD| |Z|Burning Steppes|
+C A Taste of Flame (Part 2) |QID|4024| |N|Kill Bael'Gar and use the Altered Black Dragonflight Molt on his remains| |U|11231| |D|BRD|
+R Slither Rock |QID|4024| |N|Travel to Slither Rock (95.05, 31.57)| |D|BRD| |Z|Burning Steppes|
+T A Taste of Flame (Part 2) |QID|4024| |N|Cyrus Therepentous in Slither Rock (95.05, 31.57)| |D|BRD| |Z|Burning Steppes|
 
 R The High Seat |QID|3701| |N|Travel to The High Seat in Ironforge (38.34, 55.33)| |Z|Ironforge|
 T The Smoldering Ruins of Thaurissan |QID|3701| |N|Royal Historian Archesonus (38.34, 55.33)| |Z|Ironforge|

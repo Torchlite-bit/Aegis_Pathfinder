@@ -4,19 +4,19 @@ return [[
 
 N 10-12 Tirisfal |N|Converted from RestedXP guide|
 
-R Travel to Tirisfal Glades |N|(61.8, 65.1)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Tirisfal Glades|
-R Travel to Undercity |N|(64.2, 39.8)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Undercity|
-R Take the lift down to the Undercity |N|(65.5, 43.6)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Undercity|
-f Get the Undercity flight path |N|(63.2, 48.6)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Undercity|
-t Train 1h Swords |N|Archibald in the War Quarter - (57.3, 32.7)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Undercity|
-N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Undercity|
-B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Undercity|
-N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |AH| |Z|Undercity|
-N Alternatively, check the Auction House for something better or cheaper |N|(61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |AH| |Z|Undercity|
-B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |AH| |Z|Undercity|
-N Buy Six [Discolored Worg Hearts] from the Auction House |N|(64.2, 49.6)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |AH| |Z|Undercity|
-N Skip this if you want, it's only a small time saver |N|(64.2, 49.6)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |AH| |Z|Undercity|
-B Collect Discolored Worg Heart (x6) |L|3164 6| |N|Auctioneer Rhyker - (64.2, 49.6)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |AH| |Z|Undercity|
+R Travel to Tirisfal Glades |N|(61.8, 65.1)| |O| |C|Rogue| |R|Orc/Troll| |Z|Tirisfal Glades|
+R Travel to Undercity |N|(64.2, 39.8)| |O| |C|Rogue| |R|Orc/Troll| |Z|Undercity|
+R Take the lift down to the Undercity |N|(65.5, 43.6)| |O| |C|Rogue| |R|Orc/Troll| |Z|Undercity|
+f Get the Undercity flight path |N|(63.2, 48.6)| |C|Rogue| |R|Orc/Troll| |Z|Undercity|
+t Train 1h Swords |N|Archibald in the War Quarter - (57.3, 32.7)| |C|Rogue| |R|Orc/Troll| |Z|Undercity|
+N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |Z|Undercity|
+B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |Z|Undercity|
+N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |AH| |Z|Undercity|
+N Alternatively, check the Auction House for something better or cheaper |N|(61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |AH| |Z|Undercity|
+B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |AH| |Z|Undercity|
+N Buy Six [Discolored Worg Hearts] from the Auction House |N|(64.2, 49.6)| |O| |C|Rogue| |R|Orc/Troll| |AH| |Z|Undercity|
+N Skip this if you want, it's only a small time saver |N|(64.2, 49.6)| |O| |C|Rogue| |R|Orc/Troll| |AH| |Z|Undercity|
+B Collect Discolored Worg Heart (x6) |L|3164 6| |N|Auctioneer Rhyker - (64.2, 49.6)| |O| |C|Rogue| |R|Orc/Troll| |AH| |Z|Undercity|
 R Brill |N|(61.5, 53.2)| |O| |Z|Tirisfal Glades|
 N Gretchen is on the second floor |N|(61.7, 52.3)| |Z|Tirisfal Glades|
 A Deaths in the Family |QID|354| |N|Coleman and Gretchen inside the inn - (61.7, 52.3)| |Z|Tirisfal Glades|
@@ -90,11 +90,11 @@ R Travel to Tirisfal Glades |N|(61.8, 65.1)| |O| |C|Rogue| |Z|Tirisfal Glades|
 R Travel to Undercity |N|(64.2, 39.8)| |O| |C|Rogue| |Z|Undercity|
 R Take the lift down to the Undercity |N|(65.5, 43.6)| |O| |C|Rogue| |Z|Undercity|
 f Get the Undercity flight path |N|(63.2, 48.6)| |C|Rogue| |Z|Undercity|
-N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Undercity|
-B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Undercity|
-N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |AH| |Z|Undercity|
-N Alternatively, check the Auction House for something better or cheaper |N|(61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |AH| |Z|Undercity|
-B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |AH| |Z|Undercity|
+N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |Z|Undercity|
+B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |Z|Undercity|
+N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |AH| |Z|Undercity|
+N Alternatively, check the Auction House for something better or cheaper |N|(61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |AH| |Z|Undercity|
+B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |AH| |Z|Undercity|
 T Mennet Carkad |QID|1885| |N|Mennet - (83.5, 69.1)| |C|Rogue| |R|Undead| |Z|Undercity|
 A The Deathstalkers |QID|1886| |N|Mennet - (83.5, 69.1)| |C|Rogue| |R|Undead| |Z|Undercity|
 t Train 1h Swords |N|Archibald in the War Quarter - (57.3, 32.7)| |C|Rogue| |Z|Undercity|
@@ -233,11 +233,11 @@ R Take the lift down to the Undercity |N|(65.5, 43.6)| |O| |C|Rogue| |Z|Undercit
 R Travel to Tirisfal Glades |N|(61.8, 65.1)| |O| |C|!Rogue/!Mage| |Z|Tirisfal Glades|
 R Travel to Undercity |N|(64.2, 39.8)| |O| |C|!Rogue/!Mage| |Z|Undercity|
 R Take the lift down to the Undercity |N|(65.5, 43.6)| |O| |C|!Rogue/!Mage| |Z|Undercity|
-N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Undercity|
-B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Undercity|
-N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |AH| |Z|Undercity|
-N Alternatively, check the Auction House for something better or cheaper |N|(61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |AH| |Z|Undercity|
-B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |AH| |Z|Undercity|
+N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |Z|Undercity|
+B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |Z|Undercity|
+N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |AH| |Z|Undercity|
+N Alternatively, check the Auction House for something better or cheaper |N|(61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |AH| |Z|Undercity|
+B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |AH| |Z|Undercity|
 T Mennet Carkad |QID|1885| |N|Mennet - (83.5, 69.1)| |C|Rogue| |R|Undead| |Z|Undercity|
 A The Deathstalkers |QID|1886| |N|Mennet - (83.5, 69.1)| |C|Rogue| |R|Undead| |Z|Undercity|
 t Train 1h Swords |N|Archibald in the War Quarter - (57.3, 32.7)| |C|Rogue| |Z|Undercity|
@@ -245,7 +245,9 @@ t Train your class spells |O| |C|Rogue| |Z|Undercity|
 R Travel to Tirisfal Glades |N|(61.8, 65.1)| |O| |C|Warrior| |R|Undead| |Z|Tirisfal Glades|
 R Travel to Undercity |N|(64.2, 39.8)| |O| |C|Warrior| |R|Undead| |Z|Undercity|
 R Take the lift down to the Undercity |N|(65.5, 43.6)| |O| |C|Warrior| |R|Undead| |Z|Undercity|
-B Collect Quarter Staff (1) |L|854 1| |N|Benijah. Buy a [Quarter Staff] from him - (58.8, 32.8)| |C|Warrior/Undead/Warrior/Tauren/Shaman/Troll/Shaman/Orc/Shaman| |R|Troll| |Z|Undercity|
+B Collect Quarter Staff (1) |L|854 1| |N|Benijah. Buy a [Quarter Staff] from him - (58.8, 32.8)| |C|Shaman| |R|Tauren/Orc| |Z|Undercity|
+B Collect Quarter Staff (1) |L|854 1| |N|Benijah. Buy a [Quarter Staff] from him - (58.8, 32.8)| |C|Warrior/Shaman| |R|Troll| |Z|Undercity|
+B Collect Quarter Staff (1) |L|854 1| |N|Benijah. Buy a [Quarter Staff] from him - (58.8, 32.8)| |C|Warrior| |R|Undead| |Z|Undercity|
 N Buy Six [Discolored Worg Hearts] from the Auction House |N|(64.2, 49.6)| |O| |AH| |Z|Undercity|
 N Skip this if you want, it's only a small time saver |N|(64.2, 49.6)| |O| |AH| |Z|Undercity|
 B Collect Discolored Worg Heart (x6) |L|3164 6| |N|Auctioneer Rhyker - (64.2, 49.6)| |O| |AH| |Z|Undercity|

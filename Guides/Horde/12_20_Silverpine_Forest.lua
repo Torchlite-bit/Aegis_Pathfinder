@@ -116,8 +116,8 @@ R Brill Town Hall |QID|441| |N|Travel to Brill Town Hall (61.26, 50.85)| |Z|Tiri
 T The Engraved Ring |QID|440| |N|Magistrate Sevren in Brill Town Hall (61.26, 50.85)| |Z|Tirisfal|
 A Raleigh and the Undercity |QID|441| |N|Magistrate Sevren in Brill Town Hall (61.21, 50.85)| |Z|Tirisfal|
 
-R Orgimmar |QID|840| |N|Travel to Orgimmar  (45.23, 63.84)|  |Z|Orgrimmar| |R|Scourge, Undead|
-f Orgimmar |QID|840| |N|Speak to Doras and grab flight path for Orgimmar  (45.23, 63.84)| |Z|Orgrimmar| |R|Scourge, Undead|
+R Orgimmar |QID|840| |N|Travel to Orgimmar  (45.23, 63.84)|  |Z|Orgrimmar| |R|Undead|
+f Orgimmar |QID|840| |N|Speak to Doras and grab flight path for Orgimmar  (45.23, 63.84)| |Z|Orgrimmar| |R|Undead|
 
 R Razor Hill |QID|840| |N|Travel to Razor Hill in Durotar (47.08, 22.36) (49.55, 29.37) (52.28, 39.28) (50.75, 44.16)| |Z|Durotar|
 A Conscript of the Horde |QID|840| |N|Takrin Pathseeker in Razor Hill (50.75, 44.16)| |Z|Durotar|
@@ -273,7 +273,7 @@ R Southern Barrens |QID|4921| |N|Travel to Southern Barrens (49.34, 50.37)| |Z|T
 C Lost in Battle |QID|4921| |N|Find Beaten Corpse in Southern Barrens (49.34, 50.37)| |Z|The Barrens|
 
 R Camp Taurajo |QID|878| |N|Travel to Camp Taurajo (44.6, 59.2)| |Z|The Barrens|
-f Camp Taurajo |QID|878| |N|Speak to Omusa Thunderhorn and grab flight path for Camp Taurajo (44.5, 59.1)| |Z|The Barrens| |R|Orc, Troll, Undead|
+f Camp Taurajo |QID|878| |N|Speak to Omusa Thunderhorn and grab flight path for Camp Taurajo (44.5, 59.1)| |Z|The Barrens| |R|Orc/Troll/Undead|
 A Weapons of Choice |QID|893| |N|Tatternack Steelforge in Camp Taurajo (45.10, 57.74)| |Z|The Barrens|
 A Tribes at War |QID|878| |N|Mangletooth in Camp Taurajo (44.56, 59.22)| |Z|The Barrens|
 A Lakota'mani |QID|883| |N|Use Hoof of Lakota'mani to accept quest (45.74, 49.24)| |Z|The Barrens| |O| |U|5099|
@@ -320,7 +320,7 @@ A Apothecary Zamah |QID|853| |N|Apothecary Helbrim in The Crossroads (51.49, 30.
 
 R Spirit Rise |TID|853| |N|Travel to Spirit Rise in Thunder Bluff (30.04, 29.79) (22.9, 20.9| |Z|Thunder Bluff|
 T Apothecary Zamah |QID|853| |N|Apothecary Zamah in Spirit Rise (30.04, 29.79) (22.9, 20.9)| |Z|Thunder Bluff|
-f Thunder Bluff |QID|1490| |N|Speak to Tal and grab flight path for Thunder Bluff (46.8, 50.2)| |R|Orc, Undead, Scourge, Troll| |Z|Thunder Bluff|
+f Thunder Bluff |QID|1490| |N|Speak to Tal and grab flight path for Thunder Bluff (46.8, 50.2)| |R|Orc/Undead/Troll| |Z|Thunder Bluff|
 T Hamuul Runetotem |QID|1489| |N|Arch Druid Hamuul Runetotem in Elder Rise (78.53, 28.62)| |Z|Thunder Bluff|
 A Nara Wildmane |QID|1490| |N|Arch Druid Hamuul Runetotem in Elder Rise (78.53, 28.62)| |Z|Thunder Bluff|
 T Nara Wildmane |QID|1490| |N|Arch Druid Hamuul Runetotem in Elder Rise (75.69, 31.53)| |Z|Thunder Bluff|

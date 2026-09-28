@@ -1,5 +1,5 @@
 -- Converted from RestedXP format: 20-21 Darkshore/Ashenvale
-AegisPathfinder:RegisterGuide("RXP/20-21 Darkshore/Ashenvale", "RXP/RestedXP Alliance 20-30\21-23 Stonetalon/Ashenvale", "Alliance", function()
+AegisPathfinder:RegisterGuide("RXP/20-21 Darkshore/Ashenvale", "RXP/21-23 Stonetalon/Ashenvale", "Alliance", function()
 return [[
 
 N 20-21 Darkshore/Ashenvale |N|Converted from RestedXP guide|
@@ -17,7 +17,7 @@ N If you equip the [Enchanted Moonstalker Cloak], make sure you save your curren
 N Be careful as they cast [Ravage] an instant attack dealing 20-40 damage and knocking you down for 2s |N|(40.2, 81.3)| |O| |Z|Darkshore|
 C Buzzbox 525 |QID|1003| |OIDX|1| |N|Grizzled Thistle Bears. Loot them for their Scalps (40.2, 81.3)| |O| |Z|Darkshore|
 R the Grove of the Ancients |N|(43.6, 76.3)| |O| |Z|Darkshore|
-T Grove of the Ancients |QID|952| |N|Onu - (43.6, 76.3)| |R|NightElf| |Z|Darkshore|
+T Grove of the Ancients |QID|952| |N|Onu - (43.6, 76.3)| |R|Night Elf| |Z|Darkshore|
 T Onu |QID|948| |N|Onu - (43.6, 76.3)| |Z|Darkshore|
 A The Master's Glaive |QID|944| |N|Onu - (43.6, 76.3)| |Z|Darkshore|
 R The Master's Glaive |N|(38.5, 86.0)| |Z|Darkshore|

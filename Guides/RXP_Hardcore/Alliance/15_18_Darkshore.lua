@@ -7,10 +7,10 @@ N 15-18 Darkshore |N|Converted from RestedXP guide|
 N Gwennyth Bly'Leggonde |N|(36.7, 45.0)|
 R Travel to Felwood |N|(19.1, 20.6)| |Z|Felwood|
 A Washed Ashore |QID|3524| |N|(19.1, 20.6)| |Z|Felwood|
-R Travel to Darkshore |N|(36.3, 45.6)| |R|!NightElf| |Z|Darkshore|
-f Get the Auberdine flight path |N|Caylais Moonfeather - (36.3, 45.6)| |R|!NightElf| |Z|Darkshore|
-R Shaussiy |N|(37.0, 44.1)| |R|!NightElf| |Z|Darkshore|
-h Auberdine |N|Set hearth in Auberdine (37.0, 44.1)| |R|!NightElf| |Z|Darkshore|
+R Travel to Darkshore |N|(36.3, 45.6)| |R|!Night Elf| |Z|Darkshore|
+f Get the Auberdine flight path |N|Caylais Moonfeather - (36.3, 45.6)| |R|!Night Elf| |Z|Darkshore|
+R Shaussiy |N|(37.0, 44.1)| |R|!Night Elf| |Z|Darkshore|
+h Auberdine |N|Set hearth in Auberdine (37.0, 44.1)| |R|!Night Elf| |Z|Darkshore|
 R Travel up stairs toward Wizbang Cranktoggle |N|(36.7, 43.8)| |O| |Z|Darkshore|
 A Buzzbox 827 |QID|983| |N|Wizbang Cranktoggle - (19.5, 19.0)| |Z|Felwood|
 A Plagued Lands |QID|2118| |N|Tharnariun Treetender - (21.6, 18.1)| |Z|Felwood|
@@ -81,10 +81,10 @@ R Travel to Darkshore |N|(47.7, 36.7)| |Z|Darkshore|
 C Bashal'Aran |QID|956| |OIDX|1| |N|Deth'ryll Satyr. Loot them for the Moonstone Seal (45.1, 36.8)| |Z|Darkshore|
 T Bashal'Aran |QID|956| |N|Asterion - (27.7, 10.0)| |Z|Felwood|
 A Bashal'Aran |QID|957| |N|Asterion - (27.7, 10.0)| |Z|Felwood|
-N You will level [Cooking] to 10 later using [Small Eggs] |N|(31.3, 24.1)| |R|!NightElf| |Z|Felwood|
-C x21,cooking -- Small Egg |QID|2178| |L|6889 10| |N|Moonkin. Loot them for their [Small Eggs] (31.3, 24.1)| |R|!NightElf| |Z|Felwood|
-C The Red Crystal |QID|4811| |OIDX|1| |N|Moonkin. Loot them for their [Small Eggs] (31.3, 24.1)| |R|!NightElf| |Z|Felwood|
-C The Red Crystal |QID|4811| |OIDX|1| |N|The Red Crystal - (31.3, 24.1)| |R|NightElf| |Z|Felwood|
+N You will level [Cooking] to 10 later using [Small Eggs] |N|(31.3, 24.1)| |R|!Night Elf| |Z|Felwood|
+C x21,cooking -- Small Egg |QID|2178| |L|6889 10| |N|Moonkin. Loot them for their [Small Eggs] (31.3, 24.1)| |R|!Night Elf| |Z|Felwood|
+C The Red Crystal |QID|4811| |OIDX|1| |N|Moonkin. Loot them for their [Small Eggs] (31.3, 24.1)| |R|!Night Elf| |Z|Felwood|
+C The Red Crystal |QID|4811| |OIDX|1| |N|The Red Crystal - (31.3, 24.1)| |R|Night Elf| |Z|Felwood|
 R Travel to Darkshore |N|(45.5, 45.2)| |Z|Darkshore|
 C x20,cooking -- Small Egg |QID|2178| |L|6889 10| |N|Moonkin. Loot them for their [Small Eggs] (42.7, 45.7)| |Z|Darkshore|
 R Travel south toward Sentinel Tysha Moonblade at Ameth'Aran |N|(40.3, 59.7)| |O| |Z|Darkshore|
@@ -120,15 +120,15 @@ R Travel to Darkshore |N|(36.9, 44.1)| |O| |Z|Darkshore|
 R Travel toward Cerellean Whiteclaw on the dock |N|(36.0, 43.8)| |O| |Z|Darkshore|
 R Travel to Felwood |N|(18.1, 18.5)| |Z|Felwood|
 T For Love Eternal |QID|963| |N|(18.1, 18.5)| |Z|Felwood|
-R Travel to Darkshore |N|(33.2, 40.2)| |C|!Mage/!Paladin/!Warlock| |R|!NightElf| |Z|Darkshore|
-R Travel to Teldrassil |N|(55.9, 89.5)| |O| |C|!Mage/!Paladin/!Warlock| |R|!NightElf| |Z|Teldrassil|
-t Train your class spells |N|Jocaste - (40.4, 8.5)| |C|Hunter| |R|!NightElf| |Z|Darnassus|
-t Train your class spells |N|Jandria - (37.9, 82.7)| |C|Priest| |R|!NightElf| |Z|Darnassus|
-t Train your class spells |N|Darnath Bladesinger - (58.9, 35.3)| |C|Warrior| |R|!NightElf| |Z|Darnassus|
-t Train your class spells |N|Syurna inside the tree house - (37.0, 21.9)| |C|Rogue| |R|!NightElf| |Z|Darnassus|
-t Train Bows & Staves |N|Ilyenia Moonfire - (57.6, 46.7)| |C|Hunter/!NightElf/Warrior| |R|!NightElf| |Z|Darnassus|
-R Take the purple portal back to Rut'theran |N|(30.7, 41.3)| |C|!Mage/!Paladin/!Warlock| |R|!NightElf| |Z|Darnassus|
-F Fly to Darkshore |N|Vesprystus - (58.4, 94.0)| |C|!Mage/!Paladin/!Warlock| |R|!NightElf| |Z|Teldrassil|
+R Travel to Darkshore |N|(33.2, 40.2)| |C|!Mage/!Paladin/!Warlock| |R|!Night Elf| |Z|Darkshore|
+R Travel to Teldrassil |N|(55.9, 89.5)| |O| |C|!Mage/!Paladin/!Warlock| |R|!Night Elf| |Z|Teldrassil|
+t Train your class spells |N|Jocaste - (40.4, 8.5)| |C|Hunter| |R|!Night Elf| |Z|Darnassus|
+t Train your class spells |N|Jandria - (37.9, 82.7)| |C|Priest| |R|!Night Elf| |Z|Darnassus|
+t Train your class spells |N|Darnath Bladesinger - (58.9, 35.3)| |C|Warrior| |R|!Night Elf| |Z|Darnassus|
+t Train your class spells |N|Syurna inside the tree house - (37.0, 21.9)| |C|Rogue| |R|!Night Elf| |Z|Darnassus|
+t Train Bows & Staves |N|Ilyenia Moonfire - (57.6, 46.7)| |C|Hunter/Warrior| |R|!Night Elf| |Z|Darnassus|
+R Take the purple portal back to Rut'theran |N|(30.7, 41.3)| |C|!Mage/!Paladin/!Warlock| |R|!Night Elf| |Z|Darnassus|
+F Fly to Darkshore |N|Vesprystus - (58.4, 94.0)| |C|!Mage/!Paladin/!Warlock| |R|!Night Elf| |Z|Teldrassil|
 R Travel to Darkshore |N|(38.1, 41.2)| |O| |Z|Darkshore|
 R Gorbold Steelhand |N|(37.5, 41.7)| |O| |Z|Darkshore|
 R Travel to Felwood |N|(20.8, 15.6)| |Z|Felwood|

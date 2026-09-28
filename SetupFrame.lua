@@ -6,9 +6,9 @@
 	the same, over the settings the options panel already has -- nothing here
 	is a new setting, only a friendlier way in.
 
-	  1. Your guide     the route pack: Optimized, RestedXP Speedrun, Hardcore
-	                    Survival (and Kamisayo for a Horde Warrior). Packs with
-	                    no route for your race are not offered.
+	  1. Your guide     the route pack: Optimized, RestedXP Speedrun or Hardcore
+	                    Survival. Packs with no route for your race are not
+	                    offered.
 	  2. Features       Auction House steps, Solo Self-Found, group quests,
 	                    dungeons.
 	  3. Dungeons       which ones, with their level ranges, and quick picks
@@ -40,9 +40,8 @@ local FOOT_H = 26 + PAD * 2
 	RestedXP gives them. Ragefire Chasm is Horde-only and the Stockade
 	Alliance-only; the rest are for both.
 
-	Recommended: the dungeons whose quests the guides use most -- counted
-	from the RestedXP guides' dungeon steps for each faction, the ones with
-	55 or more. ]]
+	What each is worth to you, and so which to recommend, depends on the
+	guides you follow: see GetDungeonQuestCount. ]]
 local DUNGEONS = {
 	{ code = "RFC",       name = "Ragefire Chasm",    lo = 13, hi = 18, faction = "Horde" },
 	{ code = "WC",        name = "Wailing Caverns",   lo = 18, hi = 25 },
@@ -62,10 +61,6 @@ local DUNGEONS = {
 }
 AegisPathfinder.DUNGEON_INFO = DUNGEONS
 
-local RECOMMENDED = {
-	Alliance = { DM = true, WC = true, GNOMER = true, ULDA = true, ZF = true, MARA = true, ST = true, BRD = true },
-	Horde = { RFC = true, WC = true, BFD = true, ULDA = true, MARA = true, ST = true, BRD = true },
-}
 
 -- What each route pack is, in the words the first page uses.
 local PACK_TEXT = {
@@ -75,16 +70,13 @@ local PACK_TEXT = {
 		text = "The fastest routes, from the RestedXP speedrun guides." },
 	["RXP Hardcore"] = { title = "Hardcore Survival",
 		text = "Routes chosen to keep a hardcore character alive: safer quests in a safer order." },
-	["Kamisayo Speedrun"] = { title = "Kamisayo Speedrun",
-		text = "A Horde Warrior speedrun, 1-60." },
 }
 -- The order the first page offers them in.
-local PACK_ORDER = { "VanillaGuide", "RestedXP", "RXP Hardcore", "Kamisayo Speedrun" }
+local PACK_ORDER = { "VanillaGuide", "RestedXP", "RXP Hardcore" }
 
 -- The features a pack starts with, as SelectRoutePack sets them.
 local PACK_DEFAULTS = {
 	RestedXP = { ah = true, group = true },
-	["Kamisayo Speedrun"] = { ah = true, group = true },
 	["RXP Hardcore"] = { ah = false, group = false },
 	VanillaGuide = { ah = false, group = false },
 }
@@ -151,6 +143,51 @@ function AegisPathfinder:GetPackTags(packName)
 	end
 	tagCache[key] = tags
 	return tags
+end
+
+--[[ How many quests ticking a dungeon adds, for a route pack and your race.
+
+	Only the quests the pack's route takes you all the way through count:
+	with that dungeon ticked, the guide sends you to pick each up, has you
+	hand in first whatever the server wants done before it, and sends you to
+	hand it in -- Tools/build_dungeon_quests.py works that out from the
+	guides and the server's quest rules, into DungeonQuests.lua. A quest
+	whose chain runs through another dungeon's quests -- the Stockade's
+	Onyxia chain starts with the Deadmines' Bazil Thredd -- counts once that
+	one is picked too. The second value is how many more would with the rest
+	ticked, and the third the dungeons they need. ]]
+function AegisPathfinder:GetDungeonQuestCount(pack, code, picked)
+	local byRace = self.DUNGEON_QUESTS and self.DUNGEON_QUESTS[pack]
+	local list = byRace and byRace[self:GetRouteForRace()]
+	list = list and list[code]
+	local now, more, needs = 0, 0, {}
+	for _, q in ipairs(list or {}) do
+		local ok = true
+		if type(q) == "table" then
+			for i = 2, table.getn(q) do
+				if not (picked and picked[q[i]]) then ok = false; needs[q[i]] = true end
+			end
+		end
+		if ok then now = now + 1 else more = more + 1 end
+	end
+	return now, more, needs
+end
+
+--- The dungeons to recommend for a pack: each that adds DUNGEON_RECOMMEND
+--- quests or more, counting those it shares with the others recommended.
+function AegisPathfinder:GetRecommendedDungeons(pack)
+	local picked, changed = {}, true
+	local least = self.DUNGEON_RECOMMEND or 5
+	while changed do
+		changed = false
+		for _, d in ipairs(self:GetSetupDungeons()) do
+			if not picked[d.code] and self:GetDungeonQuestCount(pack, d.code, picked) >= least then
+				picked[d.code] = true
+				changed = true
+			end
+		end
+	end
+	return picked
 end
 
 --- What the setup starts with: this character's settings as they are now.
@@ -271,8 +308,22 @@ local function PackCard(parent)
 	return b
 end
 
--- A dungeon's row: a tick, the name, the level range, how much of the route
--- it adds.
+-- What a dungeon's row says it adds: "12 quests", "4 quests (+10 with
+-- Deadmines)", "none in this route".
+local DUNGEON_ALL = setmetatable({}, { __index = function() return true end })
+local function QuestCount(now, more, needs)
+	local function quests(n) return n .. (n == 1 and " quest" or " quests") end
+	if now + more == 0 then return "none in this route" end
+	if more == 0 then return quests(now) end
+	local names = {}
+	for _, d in ipairs(DUNGEONS) do
+		if needs[d.code] then table.insert(names, (string.gsub(d.name, "^The ", ""))) end
+	end
+	return string.format("%s (+%d with %s)", quests(now), more, table.concat(names, "/"))
+end
+
+-- A dungeon's row: a tick, the name, the level range, how many quests it
+-- adds.
 local function DungeonRow(parent)
 	local b = CreateFrame("Button", nil, parent)
 	b:SetWidth(WIDTH - PAD * 2)
@@ -399,8 +450,9 @@ end
 
 function AegisPathfinder:PickSetupDungeons(which)
 	choice.picked = {}
+	local recommended = which == "recommended" and self:GetRecommendedDungeons(choice.pack) or {}
 	for _, d in ipairs(self:GetSetupDungeons()) do
-		if which == "all" or (which == "recommended" and RECOMMENDED[Faction()][d.code]) then
+		if which == "all" or recommended[d.code] then
 			choice.picked[d.code] = true
 		end
 	end
@@ -497,15 +549,16 @@ function AegisPathfinder:PaintSetup()
 			y = y + TextHeight(frame.featureNote, width) + 10
 		end
 	else
-		intro("Choose your dungeons", "Add the dungeons you want to run. The guide adds their quests to your route.")
+		intro("Choose your dungeons", "Add the dungeons you want to run. Each says how many quests it adds to your route.")
 		for i, b in ipairs(frame.quick) do
 			b:ClearAllPoints()
 			b:SetPoint("TOPLEFT", frame, "TOPLEFT", PAD + (i - 1) * 116, -y)
 			b:Show()
 		end
 		y = y + 24 + 10
-		local tags = self:GetPackTags(choice.pack)
 		local level = UnitLevel("player") or 1
+		local recommended = self:GetRecommendedDungeons(choice.pack)
+		local any = false
 		for i, d in ipairs(self:GetSetupDungeons()) do
 			local r = frame.rows[i]
 			if not r then r = DungeonRow(frame); frame.rows[i] = r end
@@ -515,15 +568,16 @@ function AegisPathfinder:PaintSetup()
 			r.range:SetText(string.format("%d-%d", d.lo, d.hi))
 			-- Green while it is your level, gold ahead of you, dim once past.
 			Theme:TextColor(r.range, level > d.hi and "textDim" or level >= d.lo and "accent" or "gold")
-			local n = tags.dungeons[d.code]
-			r.steps:SetText(n and (n .. " step" .. (n == 1 and "" or "s")) or "not in this route")
+			r.steps:SetText(QuestCount(self:GetDungeonQuestCount(choice.pack, d.code, choice.picked)))
+			Theme:TextColor(r.steps, recommended[d.code] and "accent" or "textDim")
+			if self:GetDungeonQuestCount(choice.pack, d.code, DUNGEON_ALL) > 0 then any = true end
 			r:ClearAllPoints()
 			r:SetPoint("TOPLEFT", frame, "TOPLEFT", PAD, -y)
 			r:Show()
 			y = y + ROW_H
 		end
-		if not next(tags.dungeons) then
-			frame.dungeonNote:SetText("These guides do not mark dungeon quests yet, so this list changes nothing in them for now.")
+		if not any then
+			frame.dungeonNote:SetText("These guides take you through no dungeon's quests yet, so this list changes nothing in them for now.")
 			frame.dungeonNote:ClearAllPoints()
 			frame.dungeonNote:SetPoint("TOPLEFT", frame, "TOPLEFT", PAD, -(y + 8))
 			frame.dungeonNote:Show()

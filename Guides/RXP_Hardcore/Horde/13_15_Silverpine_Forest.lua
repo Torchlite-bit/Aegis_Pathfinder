@@ -109,7 +109,7 @@ f Get the Sepulcher flight path |N|Karos - (45.6, 42.6)| |O| |R|!Undead| |Z|Silv
 F Fly to the Undercity |N|Karos - (45.6, 42.6)| |O| |Z|Silverpine Forest|
 T Ride to the Undercity |QID|6323| |N|Gordon - (61.5, 41.8)| |R|Undead| |Z|Undercity|
 A Michael Garrett |QID|6322| |N|Gordon - (61.5, 41.8)| |R|Undead| |Z|Undercity|
-B Collect Gnarled Staff (1) |L|2030 1| |N|Louis. Buy a [Gnarled Staff] from him - (61.1, 40.9)| |C|Warrior/Undead/Warrior| |R|Troll| |Z|Undercity|
+B Collect Gnarled Staff (1) |L|2030 1| |N|Louis. Buy a [Gnarled Staff] from him - (61.1, 40.9)| |C|Warrior| |R|Troll/Undead| |Z|Undercity|
 B Collect Bearded Axe (1) |L|2025 1| |N|Louis. Buy a [Bearded Axe] from him - (61.1, 40.9)| |C|Warrior| |R|Orc| |Z|Undercity|
 B Collect Rock Hammer (1) |L|2026 1| |N|Louis. Buy a [Rock Hammer] from him - (61.1, 40.9)| |C|Warrior| |R|Tauren| |Z|Undercity|
 B Collect Gnarled Staff (1) |L|2030 1| |N|Louis. Buy a [Gnarled Staff] from him - (61.1, 40.9)| |C|Shaman| |Z|Undercity|
@@ -168,7 +168,8 @@ B Fine Longbow (1) |L|11304 1| |N|[Group] Nadia - (45.0, 39.3)| |C|Hunter| |P|GR
 B Buy Sharp Arrow (x1200) |L|2515 1200| |N|[Group] Nadia - (45.0, 39.3)| |C|Hunter| |P|GROUP| |Z|Silverpine Forest|
 N Cast [Teleport: Moonglade] |O| |C|Druid| |Z|Silverpine Forest|
 t Train your class spells |N|Loganaar - (52.5, 40.6)| |C|Druid| |Z|Moonglade|
-H Crossroads |N|Hearth to Crossroads| |C|Tauren/Shaman/Hunter| |Z|Moonglade|
+H Crossroads |N|Hearth to Crossroads| |C|Shaman/Hunter| |R|!Tauren| |Z|Moonglade|
+H Crossroads |N|Hearth to Crossroads| |R|Tauren| |Z|Moonglade|
 H Razor Hill |N|Hearth to Razor Hill| |C|!Shaman/!Hunter| |R|!Tauren| |Z|Moonglade|
 
 ]]

@@ -108,8 +108,8 @@ C The Night Watch (Part 3) |QID|58| |N|Kill 20 Plague Spreader underground in Da
 T Sven's Camp |QID|230| |N|Sven Yorgen in The Hushed Bank (7.82, 34.06)|
 A The Shadowy Figure |QID|262| |N|Sven Yorgen in The Hushed Bank (7.82, 34.06)|
 
-R Sentinel Hill |QID|265| |N|Travel to Sentinel Hill (56.54, 52.64)| |Z|Westfall| |R|Dwarf, Gnome, Night Elf|
-f Sentinel Hill |QID|265| |N|Speak to Thor and grab flight path for Sentinel Hill (56.54, 52.64)| |Z|Westfall| |R|Dwarf, Gnome, Night Elf|
+R Sentinel Hill |QID|265| |N|Travel to Sentinel Hill (56.54, 52.64)| |Z|Westfall| |R|Dwarf/Gnome/Night Elf|
+f Sentinel Hill |QID|265| |N|Speak to Thor and grab flight path for Sentinel Hill (56.54, 52.64)| |Z|Westfall| |R|Dwarf/Gnome/Night Elf|
 
 R Moonbrook |QID|68| |N|Travel to Moonbrook (41.52, 66.72)| |Z|Westfall|
 T The Legend of Stalvan (Part 2) |QID|67| |N|Old footlocker in Moonbrook (41.52, 66.72)| |Z|Westfall|

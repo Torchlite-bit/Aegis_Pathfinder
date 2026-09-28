@@ -4,7 +4,7 @@ AegisPathfinder:RegisterGuide("Hillsbrad Foothills (29-30)", "Arathi Highlands (
 return [[
 
 R Undercity |QID|493| |N|Travel to Undercity (61.9, 68.1)| |Z|Tirisfal|
-f Undercity |QID|493| |N|Speak to Michael Garrett and grab flight path for Undercity (63.5, 48.7)| |Z|Undercity| |R|Orc, Troll, Tauren|
+f Undercity |QID|493| |N|Speak to Michael Garrett and grab flight path for Undercity (63.5, 48.7)| |Z|Undercity| |R|Orc/Troll/Tauren|
 N Kodo Skin Scroll |N|Store Kodo Skin Scroll at the bank (66.0, 45.2)| |Z|Undercity| |L| |Z|5838| |O|
 
 R Tirisfal Glades |QID|493| |N|Exit through the sewers to Tirisfal Glades (15.2, 32.4)| |Z|Undercity|

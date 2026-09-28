@@ -7,7 +7,7 @@ N 15-19 The Barrens |N|Converted from RestedXP guide|
 T Encroachment |QID|837| |N|Gar'Thok - (52.0, 43.5)| |C|!Hunter/!Shaman| |R|!Tauren|
 R Travel to Durotar |N|(52.0, 43.5)| |C|!Hunter/!Shaman| |R|!Tauren| |Z|Durotar|
 t Train your class spells |N|Tai'jin - (54.3, 42.9)| |C|Priest| |Z|Durotar|
-t Train your class spells |N|Tarshaw - (54.2, 42.5)| |C|Warrior/Troll/Warrior| |R|Orc| |Z|Durotar|
+t Train your class spells |N|Tarshaw - (54.2, 42.5)| |C|Warrior| |R|Orc/Troll| |Z|Durotar|
 t Train your class spells |N|Kaplak - (52.0, 43.7)| |C|Rogue| |Z|Durotar|
 t Train your class spells |N|Dhugru - (54.4, 41.2)| |C|Warlock| |Z|Durotar|
 B Grimoire of Sacrifice (Rank 1) (1) |L|16351 1| |N|Kitha and buy [Grimoire of Sacrifice] - (54.7, 41.5)| |C|Warlock| |Z|Durotar|
@@ -138,7 +138,7 @@ A Southsea Freebooters |QID|887| |N|Gazlowe - (62.7, 36.2)| |Z|The Barrens|
 f Get the Ratchet flight path |N|Bragok - (63.1, 37.2)| |O| |Z|The Barrens|
 A Samophlange |QID|894| |N|Sputtervalve and Wanted poster - (63.0, 37.2)| |Z|The Barrens|
 A WANTED: Baron Longshore |QID|895| |N|Sputtervalve and Wanted poster - (63.0, 37.2)| |Z|The Barrens|
-B Collect Gnarled Staff (1) |L|2030 1| |N|Ironzar. Buy a [Gnarled Staff] from him - (62.2, 37.5)| |C|Warrior/Undead/Warrior| |R|Troll| |Z|The Barrens|
+B Collect Gnarled Staff (1) |L|2030 1| |N|Ironzar. Buy a [Gnarled Staff] from him - (62.2, 37.5)| |C|Warrior| |R|Troll/Undead| |Z|The Barrens|
 B Collect Bearded Axe (1) |L|2025 1| |N|Ironzar.Buy a [Bearded Axe] from him - (62.2, 37.5)| |C|Warrior| |R|Orc| |Z|The Barrens|
 B Collect Rock Hammer (1) |L|2026 1| |N|Ironzar. Buy a [Rock Hammer] from him - (62.2, 37.5)| |C|Warrior| |R|Tauren| |Z|The Barrens|
 B Collect Gnarled Staff (1) |L|2030 1| |N|Ironzar. Buy a [Gnarled Staff] from him - (62.2, 37.5)| |C|Shaman| |Z|The Barrens|
@@ -154,15 +154,15 @@ B Longjaw Mud Snapper (40) |L|4592 40| |N|Innkeeper Wiley - (62.0, 39.4)| |Z|The
 B Buy Melon Juice (x20) |L|1205 20| |N|Innkeeper Wiley - (62.0, 39.4)| |C|Mage/Warlock/Priest/Shaman/Druid| |Z|The Barrens|
 h Ratchet |N|Set hearth in Ratchet (62.0, 39.4)| |Z|The Barrens|
 C Southsea Freebooters |QID|887| |OIDX|1| |N|Kill Southsea Brigands and Southsea Cannoneers Southsea Brigand (12)| |O| |Z|The Barrens|
-N He patrols up and down the hill |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|The Barrens|
-C Kill Tazan. Loot him for his Satchel |QID|1963| |OIDX|1| |N|Kill Tazan. Loot him for his Satchel| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|The Barrens|
+N He patrols up and down the hill |O| |C|Rogue| |R|Orc/Troll| |Z|The Barrens|
+C Kill Tazan. Loot him for his Satchel |QID|1963| |OIDX|1| |N|Kill Tazan. Loot him for his Satchel| |O| |C|Rogue| |R|Orc/Troll| |Z|The Barrens|
 N He can be found in one of the camps |N|(62.6, 49.7)| |Z|The Barrens|
 C WANTED: Baron Longshore |QID|895| |OIDX|1| |N|Baron Longshore. Loot him for his Head Baron Longshore's Head (1)| |Z|The Barrens|
-N He patrols up and down the hill |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|The Barrens|
-C Kill Tazan. Loot him for his Satchel |QID|1963| |OIDX|1| |N|Kill Tazan. Loot him for his Satchel| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|The Barrens|
+N He patrols up and down the hill |O| |C|Rogue| |R|Orc/Troll| |Z|The Barrens|
+C Kill Tazan. Loot him for his Satchel |QID|1963| |OIDX|1| |N|Kill Tazan. Loot him for his Satchel| |O| |C|Rogue| |R|Orc/Troll| |Z|The Barrens|
 C Southsea Freebooters |QID|887| |OIDX|1| |N|Southsea Brigands and Southsea Cannoneers Southsea Brigand (12)| |Z|The Barrens|
-N He patrols up and down the hill |N|(62.2, 44.5)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|The Barrens|
-C Tazan. Loot him for his Satchel |QID|1963| |OIDX|1| |N|Tazan. Loot him for his Satchel - (62.2, 44.5)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|The Barrens|
+N He patrols up and down the hill |N|(62.2, 44.5)| |C|Rogue| |R|Orc/Troll| |Z|The Barrens|
+C Tazan. Loot him for his Satchel |QID|1963| |OIDX|1| |N|Tazan. Loot him for his Satchel - (62.2, 44.5)| |C|Rogue| |R|Orc/Troll| |Z|The Barrens|
 T Southsea Freebooters |QID|887| |N|Gazlowe - (62.7, 36.2)| |Z|The Barrens|
 T WANTED: Baron Longshore |QID|895| |N|Gazlowe - (62.7, 36.2)| |Z|The Barrens|
 A The Missing Shipment |QID|890| |N|Gazlowe - (62.7, 36.2)| |Z|The Barrens|
@@ -172,7 +172,7 @@ A The Missing Shipment |QID|892| |N|Dizzywig - (63.4, 38.5)| |Z|The Barrens|
 A Miner's Fortune |QID|896| |N|Dizzywig - (63.4, 38.5)| |Z|The Barrens|
 T The Missing Shipment |QID|892| |N|Gazlowe - (62.7, 36.2)| |Z|The Barrens|
 A Stolen Booty |QID|888| |N|Gazlowe - (62.7, 36.2)| |Z|The Barrens|
-B Collect Gnarled Staff (1) |L|2030 1| |N|Ironzar. Buy a [Gnarled Staff] from him - (62.2, 37.5)| |C|Warrior/Undead/Warrior| |R|Troll| |Z|The Barrens|
+B Collect Gnarled Staff (1) |L|2030 1| |N|Ironzar. Buy a [Gnarled Staff] from him - (62.2, 37.5)| |C|Warrior| |R|Troll/Undead| |Z|The Barrens|
 B Collect Bearded Axe (1) |L|2025 1| |N|Ironzar. Buy a [Bearded Axe] from him - (62.2, 37.5)| |C|Warrior| |R|Orc| |Z|The Barrens|
 B Collect Rock Hammer (1) |L|2026 1| |N|Ironzar. Buy a [Rock Hammer] from him - (62.2, 37.5)| |C|Warrior| |R|Tauren| |Z|The Barrens|
 B Collect Gnarled Staff (1) |L|2030 1| |N|Ironzar. Buy a [Gnarled Staff] from him - (62.2, 37.5)| |C|Shaman| |Z|The Barrens|
@@ -261,16 +261,16 @@ t Train your class spells |N|Kardris - (38.8, 36.4)| |C|Shaman| |Z|Orgrimmar|
 A The Spirits of Stonetalon |QID|1061| |N|Zor - (38.9, 38.4)| |Z|Orgrimmar|
 t Train [Pick Lock] & [Pick Pocket] |N|Shenthul - (43.0, 53.7)| |C|Rogue| |Z|Orgrimmar|
 A Zando'Zan |QID|2379| |N|Shenthul - (43.0, 53.7)| |C|Rogue| |Z|Orgrimmar|
-T The Shattered Hand |QID|1963| |N|Therzok - (42.7, 53.5)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Orgrimmar|
-A The Shattered Hand |QID|1858| |N|Therzok - (42.7, 53.5)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Orgrimmar|
+T The Shattered Hand |QID|1963| |N|Therzok - (42.7, 53.5)| |C|Rogue| |R|Orc/Troll| |Z|Orgrimmar|
+A The Shattered Hand |QID|1858| |N|Therzok - (42.7, 53.5)| |C|Rogue| |R|Orc/Troll| |Z|Orgrimmar|
 T Zando'zan |QID|2379| |N|Zando'zan - (42.7, 53.0)| |C|Rogue| |Z|Orgrimmar|
 A Wrenix of Ratchet |QID|2382| |N|Zando'zan - (42.7, 53.0)| |C|Rogue| |Z|Orgrimmar|
-B Collect Thieves' Tools (1) |L|5060 1| |N|Rekkul. Buy a [Thieves' Tools] from him - (42.1, 49.5)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Orgrimmar|
-C The Shattered Hand |QID|1858| |OIDX|1| |N|Use [Pick Lock] to open [Tazan's Satchel] Tazan's Logbook (1)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Orgrimmar|
-T The Shattered Hand |QID|1858| |N|Therzok - (42.7, 53.5)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Orgrimmar|
-C Tazan's Key |QID|1858| |L|7208 1| |N|Use [Pick Pocket] on Gamon in the Inn. Use his key to open [Tazan's Satchel] (54.0, 68.0)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Orgrimmar|
-C The Shattered Hand |QID|1858| |OIDX|1| |N|Use [Pick Pocket] on Gamon in the Inn. Use his key to open [Tazan's Satchel] Tazan's Logbook (1)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Orgrimmar|
-T The Shattered Hand |QID|1858| |N|Therzok - (42.7, 53.5)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Orgrimmar|
+B Collect Thieves' Tools (1) |L|5060 1| |N|Rekkul. Buy a [Thieves' Tools] from him - (42.1, 49.5)| |O| |C|Rogue| |R|Orc/Troll| |Z|Orgrimmar|
+C The Shattered Hand |QID|1858| |OIDX|1| |N|Use [Pick Lock] to open [Tazan's Satchel] Tazan's Logbook (1)| |C|Rogue| |R|Orc/Troll| |Z|Orgrimmar|
+T The Shattered Hand |QID|1858| |N|Therzok - (42.7, 53.5)| |C|Rogue| |R|Orc/Troll| |Z|Orgrimmar|
+C Tazan's Key |QID|1858| |L|7208 1| |N|Use [Pick Pocket] on Gamon in the Inn. Use his key to open [Tazan's Satchel] (54.0, 68.0)| |C|Rogue| |R|Orc/Troll| |Z|Orgrimmar|
+C The Shattered Hand |QID|1858| |OIDX|1| |N|Use [Pick Pocket] on Gamon in the Inn. Use his key to open [Tazan's Satchel] Tazan's Logbook (1)| |C|Rogue| |R|Orc/Troll| |Z|Orgrimmar|
+T The Shattered Hand |QID|1858| |N|Therzok - (42.7, 53.5)| |C|Rogue| |R|Orc/Troll| |Z|Orgrimmar|
 t Train your class spells |N|Mirket - (48.6, 47.0)| |C|Warlock| |Z|Orgrimmar|
 B Grimoire of Sacrifice (Rank 1) (1) |L|16351 1| |N|Kurgul and buy [Grimoire of Sacrifice] - (47.5, 46.8)| |C|Warlock| |Z|Orgrimmar|
 B Grimoire of Firebolt (Rank 3) (Rank 1) (1) |L|16316 1| |N|Kurgul and buy [Grimoire of Firebolt (Rank 3)] - (47.5, 46.8)| |C|Warlock| |Z|Orgrimmar|

@@ -163,6 +163,41 @@ function AegisPathfinder:ScheduleStatusUpdate()
 	end)
 end
 
+--[[ Whether a step's |PRE| prerequisite has been handed in. An optional
+	accept is offered once it has: the next quest in a chain you may or may
+	not be on. The guides write it as a quest id, or a comma-separated list of
+	ids that are all needed ("|PRE|836, 2767, 648|": all three OOX rescues),
+	and a few as the quest's name. An id counts as handed in when the server
+	says so, or when this guide's turn-in step for it is ticked; a name when
+	its step in this guide is. ]]
+function AegisPathfinder:IsPrereqTurnedIn(prereq)
+	if not prereq or prereq == "" then return false end
+	if string.find(prereq, "^[%d%s,]+$") then
+		local any = false
+		for id in string.gfind(prereq, "%d+") do
+			any = true
+			if not self:IsQuestIDTurnedIn(tonumber(id)) then return false end
+		end
+		return any
+	end
+	if self.turnedin[prereq] then return true end
+	for k, v in pairs(self.turnedin) do
+		if v and string.sub(k, 1, string.len(prereq) + 1) == prereq .. "@" then return true end
+	end
+	return false
+end
+
+function AegisPathfinder:IsQuestIDTurnedIn(qid)
+	if self:IsQuestCompletedOnServer(qid) then return true end
+	for j, action in ipairs(self.actions or {}) do
+		if action == "TURNIN" and self.turnedin[self.quests[j]]
+			and tonumber((self:GetObjectiveTag("QID", j))) == qid then
+			return true
+		end
+	end
+	return false
+end
+
 local lastmapped, lastmappedaction, lastmappedquest
 function AegisPathfinder:UpdateStatusFrame()
 	--[[ Nothing to scan until a guide has been parsed. At login the guide
@@ -208,19 +243,7 @@ function AegisPathfinder:UpdateStatusFrame()
 			local needlevel = level and level > UnitLevel("player")
 			local hasuseitem = useitem and self:FindBagSlot(useitem)
 			local haslootitem = lootitem and C_Item.GetItemCount(tonumber(lootitem)) >= lootqty
-			local prereqturnedin = false
-			if prereq then
-				if self.turnedin[prereq] then
-					prereqturnedin = true
-				else
-					for k, v in pairs(self.turnedin) do
-						if v and string.sub(k, 1, string.len(prereq) + 1) == prereq .. "@" then
-							prereqturnedin = true
-							break
-						end
-					end
-				end
-			end
+			local prereqturnedin = prereq and self:IsPrereqTurnedIn(prereq)
 
 			-- Test for completed objectives and mark them done
 			if action == "SETHEARTH" and self.db.char.hearth == name then return self:SetTurnedIn(i, true) end

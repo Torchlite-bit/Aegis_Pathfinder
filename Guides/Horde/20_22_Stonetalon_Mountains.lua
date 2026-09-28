@@ -2,36 +2,36 @@ AegisPathfinder:RegisterGuide("Stonetalon Mountains (20-22)", "The Barrens (22-2
 
 return [[
 
-A Devourer of Souls |QID|1507| |N|Gan'rul Bloodeye in Cleft of Shadow (48.23, 45.34)| |C|Warlock| |R|Orc, Troll| |Z|Orgrimmar|
-T Devourer of Souls |QID|1507| |N|in Cleft of Shadow (47.21, 46.58)| |C|Warlock| |R|Orc, Troll| |Z|Orgrimmar|
-A Blind Cazul |QID|1508| |N|Cazul in Cleft of Shadow (47.21, 46.58)| |C|Warlock| |R|Orc, Troll| |Z|Orgrimmar|
-T Blind Cazul |QID|1508| |N|Zankaja in Orgrimmar (37.10, 59.55)| |C|Warlock| |R|Orc, Troll| |Z|Orgrimmar|
-A News of Dogran |QID|1509| |N|Zankaja in Orgrimmar (37.10, 59.55)| |C|Warlock| |R|Orc, Troll| |Z|Orgrimmar|
-T News of Dogran |QID|1509| |N|Gazrog in The Crossroads (51.91, 30.32)| |C|Warlock| |R|Orc, Troll| |Z|The Barrens|
-A News of Dogran |QID|1510| |N|Gazrog in The Crossroads (51.91, 30.32)| |C|Warlock| |R|Orc, Troll| |Z|The Barrens|
-T News of Dogran |QID|1510| |N|Ken'zigla in Malaka'jin (73.16, 94.96)| |C|Warlock| |R|Orc, Troll| |Z|Stonetalon Mountains|
-A Ken'zigla's Draught |QID|1511| |N|Ken'zigla in Malaka'jin (73.16, 94.96)| |C|Warlock| |R|Orc, Troll| |Z|Stonetalon Mountains|
-T Ken'zigla's Draught |QID|1511| |N|Grunt Logmar in Camp Taurajo (44.63, 59.25)| |C|Warlock| |R|Orc, Troll| |Z|The Barrens|
-A Dogran's Captivity |QID|1515| |N|Grunt Logmar in Camp Taurajo (44.63, 59.25)| |C|Warlock| |R|Orc, Troll| |Z|The Barrens|
-T Dogran's Captivity |QID|1515| |N|Grunt Dogran in Agama'gor (43.32, 47.90)| |C|Warlock| |R|Orc, Troll| |Z|The Barrens|
-A Love's Gift |QID|1512| |N|Grunt Dogran in Agama'gor (43.32, 47.90)| |C|Warlock| |R|Orc, Troll| |Z|The Barrens|
-T Love's Gift |QID|1512| |N|Gan'rul Bloodeye in Cleft of Shadow (48.16, 45.44)| |C|Warlock| |R|Orc, Troll| |Z|Orgrimmar|
-A The Binding |QID|1513| |N|Gan'rul Bloodeye in Cleft of Shadow (48.16, 45.44)| |C|Warlock| |R|Orc, Troll| |Z|Orgrimmar|
-C The Binding |QID|1513| |N|Using Dogran's Pendant, summon and subdue Summoned Succubus in Cleft of Shadow (49.47, 50.09)| |C|Warlock| |R|Orc, Troll| |Z|Orgrimmar|
-T The Binding |QID|1513| |N|Gan'rul Bloodeye in Cleft of Shadow (48.17, 45.40)| |C|Warlock| |R|Orc, Troll| |Z|Orgrimmar|
+A Devourer of Souls |QID|1507| |N|Gan'rul Bloodeye in Cleft of Shadow (48.23, 45.34)| |C|Warlock| |R|Orc/Troll| |Z|Orgrimmar|
+T Devourer of Souls |QID|1507| |N|in Cleft of Shadow (47.21, 46.58)| |C|Warlock| |R|Orc/Troll| |Z|Orgrimmar|
+A Blind Cazul |QID|1508| |N|Cazul in Cleft of Shadow (47.21, 46.58)| |C|Warlock| |R|Orc/Troll| |Z|Orgrimmar|
+T Blind Cazul |QID|1508| |N|Zankaja in Orgrimmar (37.10, 59.55)| |C|Warlock| |R|Orc/Troll| |Z|Orgrimmar|
+A News of Dogran |QID|1509| |N|Zankaja in Orgrimmar (37.10, 59.55)| |C|Warlock| |R|Orc/Troll| |Z|Orgrimmar|
+T News of Dogran |QID|1509| |N|Gazrog in The Crossroads (51.91, 30.32)| |C|Warlock| |R|Orc/Troll| |Z|The Barrens|
+A News of Dogran |QID|1510| |N|Gazrog in The Crossroads (51.91, 30.32)| |C|Warlock| |R|Orc/Troll| |Z|The Barrens|
+T News of Dogran |QID|1510| |N|Ken'zigla in Malaka'jin (73.16, 94.96)| |C|Warlock| |R|Orc/Troll| |Z|Stonetalon Mountains|
+A Ken'zigla's Draught |QID|1511| |N|Ken'zigla in Malaka'jin (73.16, 94.96)| |C|Warlock| |R|Orc/Troll| |Z|Stonetalon Mountains|
+T Ken'zigla's Draught |QID|1511| |N|Grunt Logmar in Camp Taurajo (44.63, 59.25)| |C|Warlock| |R|Orc/Troll| |Z|The Barrens|
+A Dogran's Captivity |QID|1515| |N|Grunt Logmar in Camp Taurajo (44.63, 59.25)| |C|Warlock| |R|Orc/Troll| |Z|The Barrens|
+T Dogran's Captivity |QID|1515| |N|Grunt Dogran in Agama'gor (43.32, 47.90)| |C|Warlock| |R|Orc/Troll| |Z|The Barrens|
+A Love's Gift |QID|1512| |N|Grunt Dogran in Agama'gor (43.32, 47.90)| |C|Warlock| |R|Orc/Troll| |Z|The Barrens|
+T Love's Gift |QID|1512| |N|Gan'rul Bloodeye in Cleft of Shadow (48.16, 45.44)| |C|Warlock| |R|Orc/Troll| |Z|Orgrimmar|
+A The Binding |QID|1513| |N|Gan'rul Bloodeye in Cleft of Shadow (48.16, 45.44)| |C|Warlock| |R|Orc/Troll| |Z|Orgrimmar|
+C The Binding |QID|1513| |N|Using Dogran's Pendant, summon and subdue Summoned Succubus in Cleft of Shadow (49.47, 50.09)| |C|Warlock| |R|Orc/Troll| |Z|Orgrimmar|
+T The Binding |QID|1513| |N|Gan'rul Bloodeye in Cleft of Shadow (48.17, 45.40)| |C|Warlock| |R|Orc/Troll| |Z|Orgrimmar|
 
-A Devourer of Souls |QID|1472| |N|Carendin Halgar in Magic Quarter (84.97, 25.92)| |C|Warlock| |R|Scourge, Undead| |Z|Undercity|
-T Devourer of Souls |QID|1472| |N|Godrick Farsan in Magic Quarter (84.97, 14.83)| |C|Warlock| |R|Scourge, Undead| |Z|Undercity|
-A Hearts of the Pure |QID|1476| |N|Godrick Farsan in Magic Quarter (84.97, 14.83)| |C|Warlock| |R|Scourge, Undead| |Z|Undercity|
-C Dalin Forgewright |QID|1476| |OIDX|1| |N|Kill Dalin Forgewright in The Greymane Wall (46.47, 84.58)| |C|Warlock| |R|Scourge, Undead| |Z|Silverpine Forest|
-C Comar Villard |QID|1476| |OIDX|2| |N|Kill Comar Villard in Thandol Span (49.90, 12.60)| |C|Warlock| |R|Scourge, Undead| |Z|Wetlands|
-T Hearts of the Pure |QID|1476| |N|Carendin Halgar in Magic Quarter (85.15, 26.00)| |C|Warlock| |R|Scourge, Undead| |Z|Undercity|
-A The Binding |QID|1474| |N|Carendin Halgar in Magic Quarter (85.15, 26.00)| |C|Warlock| |R|Scourge, Undead| |Z|Undercity|
-C The Binding |QID|1474| |N|Using the Pure Hearts summon and subdue a Summoned Succubus in Magic Quarter (86.43, 27.03)| |C|Warlock| |R|Scourge, Undead| |Z|Undercity|
-T The Binding |QID|1474| |N|Carendin Halgar in Magic Quarter (85.20, 26.13)| |C|Warlock| |R|Scourge, Undead| |Z|Undercity|
+A Devourer of Souls |QID|1472| |N|Carendin Halgar in Magic Quarter (84.97, 25.92)| |C|Warlock| |R|Undead| |Z|Undercity|
+T Devourer of Souls |QID|1472| |N|Godrick Farsan in Magic Quarter (84.97, 14.83)| |C|Warlock| |R|Undead| |Z|Undercity|
+A Hearts of the Pure |QID|1476| |N|Godrick Farsan in Magic Quarter (84.97, 14.83)| |C|Warlock| |R|Undead| |Z|Undercity|
+C Dalin Forgewright |QID|1476| |OIDX|1| |N|Kill Dalin Forgewright in The Greymane Wall (46.47, 84.58)| |C|Warlock| |R|Undead| |Z|Silverpine Forest|
+C Comar Villard |QID|1476| |OIDX|2| |N|Kill Comar Villard in Thandol Span (49.90, 12.60)| |C|Warlock| |R|Undead| |Z|Wetlands|
+T Hearts of the Pure |QID|1476| |N|Carendin Halgar in Magic Quarter (85.15, 26.00)| |C|Warlock| |R|Undead| |Z|Undercity|
+A The Binding |QID|1474| |N|Carendin Halgar in Magic Quarter (85.15, 26.00)| |C|Warlock| |R|Undead| |Z|Undercity|
+C The Binding |QID|1474| |N|Using the Pure Hearts summon and subdue a Summoned Succubus in Magic Quarter (86.43, 27.03)| |C|Warlock| |R|Undead| |Z|Undercity|
+T The Binding |QID|1474| |N|Carendin Halgar in Magic Quarter (85.20, 26.13)| |C|Warlock| |R|Undead| |Z|Undercity|
 
 A Call of Water (Part 1) |QID|1529| |N|Xanis Flameweaver in Spirit Rise (25.68, 21.25)| |C|Shaman| |Z|Thunder Bluff| |OID|1528| |R|Tauren|
-A Call of Water (Part 1) |QID|1528| |N|Searn Firewarder in Grommash Hold (38.06, 37.36)| |C|Shaman| |Z|Orgrimmar| |OID|1529| |R|Orc, Troll|
+A Call of Water (Part 1) |QID|1528| |N|Searn Firewarder in Grommash Hold (38.06, 37.36)| |C|Shaman| |R|Orc/Troll| |Z|Orgrimmar| |OID|1529|
 
 R Ratchet |QID|1483| |N|Travel to Ratchet (62.6, 37.5)| |Z|The Barrens|
 A Deepmoss Spider Eggs |QID|1069| |N|Mebok Mizzyrix in Ratchet (62.36, 37.67)| |Z|The Barrens|

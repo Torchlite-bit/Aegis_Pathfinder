@@ -55,6 +55,8 @@ G.DEFAULT_ANCHOR = { "TOPRIGHT", "TOPRIGHT", -40, -180 }  -- top:180px; right:40
 G.MIN_WIDTH, G.MAX_WIDTH = 320, 1200                         -- makeResizable minWidth
 G.DEFAULT_CAP, G.MIN_CAP = 600, 260                          -- max-height, minHeight
 G.NOTE_TOP = 31      -- where the note starts in a row: title's top, its line, a gap
+G.TITLE_H = 16       -- one line of title
+G.TITLE_LINE = 15    -- each line a wrapped title adds
 G.NOTE_BOTTOM = 8
 G.MAX_ROWS = 30
 local NUMROWS = 1
@@ -710,14 +712,16 @@ function AegisPathfinder:UpdateObjectivePanel()
 		icon:SetWidth(G.ICONSIZE); icon:SetHeight(G.ICONSIZE)
 		icon:SetPoint("LEFT", check, "RIGHT", 9, 0)
 
-		-- Title over note, both clipped to one line: the concept stacks them,
-		-- and a fixed row height is what lets a 268-step guide scroll.
+		-- Title over note. In the list both are clipped to one line: the
+		-- concept stacks them, and a fixed row height is what lets a 268-step
+		-- guide scroll. Focus mode gives the title the lines it needs.
 		local text = row:CreateFontString(nil, "OVERLAY")
 		Theme:SetFont(text, "body", 12)
 		text:SetPoint("TOPLEFT", icon, "TOPRIGHT", 9, 1)
 		text:SetPoint("RIGHT", row, "RIGHT", -G.ROWPAD, 0)
 		text:SetJustifyH("LEFT")
-		text:SetHeight(16)
+		text:SetJustifyV("TOP")
+		text:SetHeight(G.TITLE_H)
 		Theme:TextColor(text, "text")
 
 		local detail = row:CreateFontString(nil, "OVERLAY")
@@ -1370,8 +1374,20 @@ function AegisPathfinder:UpdateOHPanel(value)
 				if overview then
 					row.note:Hide()
 					row.detail:Show()
+					row.text:SetHeight(G.TITLE_H)
 					row:SetHeight(G.ROWHEIGHT)
 				else
+					--[[ The title wraps to the panel's width, so a narrow panel
+						shows all of it rather than "This has 4 different possible
+						spawn...". The lines are counted from its unwrapped width,
+						with a little slack for where the words break, as a switch
+						label's are: a wrapped font string's own height is not to
+						be trusted on 1.12. ]]
+					local room = NoteWidth()
+					local sw = row.text:GetStringWidth() or 0
+					local lines = sw <= room and 1 or math.ceil(sw / (room * 0.95))
+					local titleH = G.TITLE_H + (lines - 1) * G.TITLE_LINE
+					row.text:SetHeight(titleH)
 					row.detail:Hide()
 					row.note:SetWidth(NoteWidth())
 					row.note:SetText(note or "")
@@ -1385,7 +1401,7 @@ function AegisPathfinder:UpdateOHPanel(value)
 							noteH = math.ceil(row.note:GetStringWidth() / NoteWidth()) * 14
 						end
 					end
-					row:SetHeight(math.max(G.ROWHEIGHT, G.NOTE_TOP + noteH + G.NOTE_BOTTOM))
+					row:SetHeight(math.max(G.ROWHEIGHT, G.NOTE_TOP + (titleH - G.TITLE_H) + noteH + G.NOTE_BOTTOM))
 				end
 
 				if (self.current > idx) and optional and not checked then

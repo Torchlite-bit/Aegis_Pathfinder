@@ -57,7 +57,7 @@ C The Altar of Zul |QID|2989| |N|Run to the top of the altar stairs (48.76, 68.3
 
 N Grind Trolls |N|Grind on trolls and wolves around The Altar of Zul until about 1 bar from 47|
 
-A Jammal'an the Prophet |QID|3528| |N|If planning Sunken Temple, accept from Fallen Hero (33, 75)| |D|ST| |Z|The Hinterlands| |O|
+A Jammal'an the Prophet |QID|1446| |N|If planning Sunken Temple, accept from the Atal'ai Exile in Shadra'Alor (33.74, 75.16)| |D|ST| |Z|The Hinterlands|
 
 A Find OOX-09/HL! |QID|485| |N|Use OOX-09/HL Distress Beacon if found while grinding| |Z|The Hinterlands| |U|8704| |O|
 T Find OOX-09/HL! |QID|485| |N|Homing Robot OOX-09/HL (49.35, 37.68)| |Z|The Hinterlands| |O|

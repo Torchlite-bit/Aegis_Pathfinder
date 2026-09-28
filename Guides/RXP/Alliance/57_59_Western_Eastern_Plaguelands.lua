@@ -7,6 +7,9 @@ N 57-59 Western/Eastern Plaguelands |N|Converted from RestedXP guide|
 F Fly to Southshore |N|Gryth Thurden - (55.5, 47.7)| |Z|Ironforge|
 R Innkeeper Anderson |N|(51.2, 58.9)| |Z|Hillsbrad Foothills|
 h Southshore |N|Set hearth in Southshore (51.2, 58.9)| |Z|Hillsbrad Foothills|
+F Fly to The Hinterlands |N|Darla Harris - (49.3, 52.3) (ST Dungeon Quest)| |D|ST| |Z|Hillsbrad Foothills|
+T Jammal'an the Prophet |QID|1446| |N|the Atal'ai Exile - (33.8, 75.2) (ST Dungeon Quest)| |D|ST| |Z|The Hinterlands|
+H Southshore |N|Hearth to Southshore (ST Dungeon Quest)| |D|ST| |Z|The Hinterlands|
 R Travel to Alterac Mountains |N|(86.0, 78.9) (ST Dungeon Quest)| |C|Rogue| |D|ST| |Z|Alterac Mountains|
 T The Azure Key |QID|8236| |N|Lord Jorach Ravenholdt upstairs - (86.0, 78.9) (ST Dungeon Quest)| |C|Rogue| |D|ST| |Z|Alterac Mountains|
 R Travel towards Lieutenant Haggerdin in Alterac Mountains |N|(39.5, 81.2)| |O| |Z|Alterac Mountains|

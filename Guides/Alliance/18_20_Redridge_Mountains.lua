@@ -21,15 +21,15 @@ C Alther's Mill |QID|2282| |N|Use (spell:1804) on the practice boxes until you r
 R Lake Everstill |TID|2282| |N|Travel to Lake Everstill (28.17, 52.08)| |Z|Redridge Mountains| |C|Rogue|
 T Alther's Mill |QID|2282| |N|Lucius in Lake Everstill (28.17, 52.08)| |C|Rogue|
 
-R Stormwind City |TID|1338| |N|Travel to Stormwind City (58.01, 16.57)| |Z|Stormwind City| |R|Night Elf, Gnome, Dwarf|
+R Stormwind City |TID|1338| |N|Travel to Stormwind City (58.01, 16.57)| |Z|Stormwind City| |R|Night Elf/Gnome/Dwarf|
 T Stormpike's Order |QID|1338| |N|Furen Longbeard in Dwarven District (58.01, 16.57)| |Z|Stormwind City| |O|
-F Stormwind City |QID|244| |N|Speak to Dungar Longdrink to grab flight path for Stormwind City (71.0, 72.4)| |Z|Stormwind City| |R|Night Elf, Gnome, Dwarf|
+F Stormwind City |QID|244| |N|Speak to Dungar Longdrink to grab flight path for Stormwind City (71.0, 72.4)| |Z|Stormwind City| |R|Night Elf/Gnome/Dwarf|
 
 R Three Corners |QID|244| |N|Travel to Three Corners in Redridge Mountains (15.32, 71.42)| |REACH|
 A Encroaching Gnolls |QID|244| |N|Guard Parker in Three Corners (15.32, 71.42)|
 T Encroaching Gnolls |QID|244| |N|Deputy Feldon in Redridge Mountains (30.74, 60.15)|
 A Assessing the Threat |QID|246| |N|Deputy Feldon in Redridge Mountains (30.74, 60.15)|
-F Lakeshire |QID|246| |N|Speak to Ariena Stormfeather to and grab flight path for Lakeshire (30.59, 59.47)| |Z|Redridge Mountains| |R|Night Elf, Gnome, Dwarf|
+F Lakeshire |QID|246| |N|Speak to Ariena Stormfeather to and grab flight path for Lakeshire (30.59, 59.47)| |Z|Redridge Mountains| |R|Night Elf/Gnome/Dwarf|
 A The Lost Tools |QID|125| |N|Foreman Oslow in Lakeshire (32.18, 48.84)|
 A Hilary's Necklace |QID|3741| |N|Shawn in Lake Everstill (29.33, 53.49)|
 A Selling Fish |QID|127| |N|Dockmaster Baren in Lakeshire (27.68, 47.38)|

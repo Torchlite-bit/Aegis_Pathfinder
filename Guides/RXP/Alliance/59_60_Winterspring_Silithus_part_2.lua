@@ -150,6 +150,8 @@ T The Great Masquerade |QID|6403| |N|Highlord Bolvar Fordragon - (77.6, 18.9) (B
 A The Dragon's Eye |QID|6501| |N|Highlord Bolvar Fordragon - (77.6, 18.9) (BRD Dungeon Quest)| |D|BRD| |Z|Stormwind City|
 N You can either turn this in now or the next time you are in Blackrock Mountain |N|(48.4, 63.8) (BRD Dungeon Quest)| |D|BRD| |Z|Westfall|
 T Attunement to the Core |QID|7848| |N|Lothos Riftwaker - (48.4, 63.8) (BRD Dungeon Quest)| |D|BRD| |Z|Westfall|
+R Haleh |N|Hearth to Everlook, then go to Haleh on the peak above Mazthoril (54.5, 51.2): the rune deep in the Mazthoril cave takes you up (BRD Dungeon Quest)| |D|BRD| |Z|Winterspring|
+T The Dragon's Eye |QID|6501| |N|Haleh - (54.5, 51.2). The blue circle in front of her takes you back down into the cave (BRD Dungeon Quest)| |D|BRD| |Z|Winterspring|
 F Fly to Felwood |N|Sindrayl - (48.1, 67.3)| |Z|Moonglade|
 F Fly to Felwood |N|Maethrya - (62.3, 36.6)| |Z|Winterspring|
 R Travel to Felwood |N|(62.8, 10.6)| |C|!Mage| |Z|Felwood|

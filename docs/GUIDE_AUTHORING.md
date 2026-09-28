@@ -289,6 +289,24 @@ from [ryanmr82's fork](https://github.com/ryanmr82/pfQuest-turtle); its data
 grows as players send in captures, so run it again now and then.
 `Tools/test_zoneguide.lua` checks what it writes.
 
+## Routes and Dungeon Quests
+
+A route pack's route (`Routes/Routes.lua`) decides what comes after a guide on
+it: the next leg for the character's pack and race. A guide's own next guide
+(`RegisterGuide`'s second argument) is only the way on for a guide picked off
+the route, so keep the two in step; `Tools/test_routes.lua` fails on a leg or
+a next guide that does not exist.
+
+The first-time setup counts each dungeon's quests along a route, and a quest
+counts only if the guide takes you all the way through it.
+`python3 Tools/build_dungeon_quests.py --report` says which dungeon-tagged
+quests do not count and why -- never picked up, handed in before it is
+picked up, what the server wants done before it missing -- and without
+`--report` it writes `DungeonQuests.lua`, which `Tools/test_routes.lua` checks
+is up to date. After editing a guide's dungeon steps or a route, run it.
+(Remember that Parser.lua keeps only the first accept and the first hand-in
+of a quest in a guide: a later duplicate is dropped.)
+
 ## Registering Your Guide
 
 After creating the guide file, add it to the appropriate `Guides.xml`:
@@ -440,8 +458,23 @@ To create a guide entry for quest 41188:
 2. **Use precise coordinates** - Helps TomTom navigation
 3. **Specify zone with |Z|** - Prevents wrong-zone waypoints
 4. **Group nearby quests** - Minimize travel time
-5. **Note class/race restrictions** - Use |C| and |R| tags
-6. **Mark optional quests** - Use |O| tag
+5. **Note class/race restrictions** - Use |C| and |R| tags. `|C|` takes class
+   names and `|R|` race names exactly as the client gives them ("Night Elf",
+   "High Elf", "Undead" -- not "NightElf" or "Scourge"), separated by `/`:
+   `|C|Warrior/Rogue|` is either class, `|C|!Mage/!Warlock|` any class but
+   those two. A step shows when its class tag and its race tag both match, so
+   one step can't say "a Warrior, or any Undead": write two steps that don't
+   overlap (`|C|!Warrior| |R|!Undead|` and `|R|Undead|`) -- an accept or hand-in
+   written twice is kept once. `python3 Tools/verify.py` rejects a name the
+   client never gives.
+6. **Mark optional quests** - Use |O| tag. An optional accept is offered only
+   when it has something to go on: a `|U|` item in your bags, a `|L|` item,
+   or a `|PRE|` quest handed in. Without one it is never shown, so a dungeon
+   chain gated by `|D|` should not also be `|O|`, or nobody picks it up.
+   `|PRE|` takes the prerequisite's quest id (`|PRE|2766|`), or several that
+   are all needed (`|PRE|836, 2767, 648|`); the server's record of the quest,
+   or this guide's ticked turn-in step for it, counts. A quest name works
+   too, matched against the steps of the loaded guide.
 7. **Test your guide** - Play through it on a character
 
 ## Troubleshooting

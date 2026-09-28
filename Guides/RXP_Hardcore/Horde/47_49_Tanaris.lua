@@ -213,10 +213,12 @@ B Upgrade your pet's abilities |N|Kurgul - (47.5, 46.7)| |C|Warlock| |Z|Orgrimma
 N He is located on the upper level in the Drag |N|(56.4, 46.5)| |Z|Orgrimmar|
 T Rise of the Silithid |QID|32| |N|Zilzibin - (56.4, 46.5)| |Z|Orgrimmar|
 A Ripple Recovery |QID|649| |N|Dran - (59.4, 36.7)| |Z|Orgrimmar|
+T Necklace Recovery |QID|2283| |N|Dran - (59.4, 36.7), with the [Shattered Necklace] from Uldaman (ULDA Dungeon Quest)| |D|ULDA| |Z|Orgrimmar| |O|
 T Ripple Recovery |QID|649| |N|Malton - (59.5, 36.8)| |Z|Orgrimmar|
 A Ripple Recovery |QID|650| |N|Malton - (59.5, 36.8)| |Z|Orgrimmar|
 N He is located at the top of the building |N|(55.5, 34.1)| |Z|Orgrimmar|
 A Bone-Bladed Weapons |QID|4300| |N|Jes'rimon - (55.5, 34.1)| |Z|Orgrimmar|
+A Shadowshard Fragments |QID|7068| |N|Uthel'nay in the Valley of Spirits - (39.2, 86.3) (MARA Dungeon Quest)| |D|MARA| |Z|Orgrimmar|
 t Train your class spells |N|Ormak - (66.0, 18.5)| |C|Hunter| |Z|Orgrimmar|
 t Train your pet spells |N|Xao'tsu - (66.3, 14.8)| |O| |C|Hunter| |Z|Orgrimmar|
 t Train your class spells |N|Grezz - (79.9, 31.4)| |C|Warrior| |Z|Orgrimmar|
