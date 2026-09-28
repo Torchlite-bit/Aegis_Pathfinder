@@ -152,6 +152,19 @@ bar:SetProgress(-1)
 check(not bar.fill:IsShown(), "negative progress should clamp to empty")
 bar:SetProgress(nil)
 check(not bar.fill:IsShown(), "nil progress should be treated as empty, not error")
+-- 4 of 5, painted before the bar had its width (hidden, or anchored to a
+-- window not laid out yet): it fills to 80% once the width comes.
+local late = Theme:ProgressBar(UIParent, 6)
+late:SetProgress(4 / 5)
+check(not late.fill:IsShown(), "no width yet: nothing drawn rather than a sliver")
+late:SetWidth(300)
+late:GetScript("OnUpdate")()
+check(late.fill:IsShown() and math.abs(late.fill:GetWidth() - 240) < 1e-6,
+	"4 of 5 fills 80%% of the bar once it has its width, got %s", tostring(late.fill:GetWidth()))
+late:SetWidth(200)                              -- the window dragged narrower
+late:GetScript("OnUpdate")()
+check(math.abs(late.fill:GetWidth() - 160) < 1e-6, "and stays at 80%% when the bar is resized, got %s",
+	tostring(late.fill:GetWidth()))
 
 -- Step check -----------------------------------------------------------------
 
@@ -361,17 +374,34 @@ Theme:Tint(accentTex, "gold")
 Theme:ApplyTheme("octowow")
 local ar = accentTex:GetVertexColor()
 check(math.abs(ar - 1) < 1e-6, "a texture re-tinted to a colour that no theme changes is left as it is")
--- A switch is green when on and red when off, in every theme, and a theme
--- change leaves it that way.
+-- A switch takes the theme's colours, and a theme change repaints it; or,
+-- asked for, it is green when on and red when off whatever the theme.
 do
 	local function same(tex, c)
 		local r, g, b = tex:GetVertexColor()
 		return math.abs(r - c[1]) < 1e-6 and math.abs(g - c[2]) < 1e-6 and math.abs(b - c[3]) < 1e-6
 	end
+	check(Theme.switchColours == "theme", "switches take the theme's colours to start with")
 	local sw = Theme:Switch(host, "Accept quests")
-	check(same(sw.track, Theme.SWITCH_OFF), "a switch starts off, and red")
+	local _, _, _, fa = sw.track:GetVertexColor()
+	check(same(sw.track, Theme.color.text) and math.abs(fa - 0.10) < 1e-6 and same(sw.knob, Theme.color.text),
+		"a switch starts off: a faint track, a white knob")
 	sw:SetOn(true)
-	check(same(sw.track, Theme.SWITCH_ON), "on, it is green")
+	for _, def in ipairs(Theme.THEMES) do
+		Theme:ApplyTheme(def.key)
+		check(same(sw.track, Theme.color.switchOn) and same(sw.knob, Theme.SWITCH_KNOB_ON),
+			"%s repaints an on switch in its own colour, the knob dark", def.key)
+	end
+	Theme:ApplyTheme("ravencraft")
+	local wr, wg, wb = sw.track:GetVertexColor()
+	check(wr > 0.9 and wg > 0.9 and wb > 0.9, "RavenCraft's on switch is near white, not grey on grey")
+	Theme:ApplyTheme("turtle")
+	check(same(sw.track, { 0x2e / 255, 0x85 / 255, 0x0e / 255 }), "Turtle WoW's is the concept's deep green")
+
+	local later = Theme:Switch(host, "Made after")
+	check(Theme:SetSwitchColours("redgreen") == "redgreen", "red and green, asked for")
+	check(same(sw.track, Theme.SWITCH_ON) and same(sw.knob, Theme.SWITCH_KNOB), "an on switch already drawn turns green")
+	check(same(later.track, Theme.SWITCH_OFF), "an off one turns red")
 	check(Theme.SWITCH_ON[2] > Theme.SWITCH_ON[1] and Theme.SWITCH_OFF[1] > Theme.SWITCH_OFF[2],
 		"green is green and red is red")
 	for _, def in ipairs(Theme.THEMES) do
@@ -381,6 +411,12 @@ do
 	sw:SetOn(false)
 	Theme:ApplyTheme("night")
 	check(same(sw.track, Theme.SWITCH_OFF) and same(sw.knob, Theme.SWITCH_KNOB), "and an off one red, its knob light")
+	sw:SetOn(true)
+	check(Theme:SetSwitchColours("anything else") == "theme", "anything else is the theme's colours")
+	check(same(sw.track, Theme.color.switchOn), "back in the theme's colours")
+	Theme:ApplyTheme("octowow")
+	check(same(sw.track, Theme.color.switchOn), "and following the theme again")
+	Theme:SetSwitchColours("theme")
 end
 
 -- The baked-green art: exact in the concept's theme, a tinted grey elsewhere.

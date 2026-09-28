@@ -549,6 +549,36 @@ check(frame.meter.bar.fill:GetWidth() == 75,
 	"the bar should be three eighths of 200px, got %s",
 	tostring(frame.meter.bar.fill:GetWidth()))
 
+local oneHigh = frame.meter:GetHeight()
+check(oneHigh == 38, "one objective is the concept's 38px meter, got %s", tostring(oneHigh))
+
+-- Two things to gather: a line and a bar for each, the finished one full.
+GetNumQuestLeaderBoards = function() return 2 end
+GetQuestLogLeaderBoard = function(j)
+	if j == 1 then return "Crocolisk Meat: 5/5", "item", 1 end
+	return "Crocolisk Skin: 3/6", "item", nil
+end
+AegisPathfinder:UpdateOHPanel()
+local lines = frame.meter.lines
+check(frame.meter:IsShown() and lines[2] and lines[2].bar:IsShown(), "Crocolisk Hunting gets two bars")
+check(lines[1].label:GetText() == "Crocolisk Meat" and lines[1].count:GetText() == "5 / 5"
+	and lines[2].label:GetText() == "Crocolisk Skin" and lines[2].count:GetText() == "3 / 6",
+	"meat, then skins, got %s %s, %s %s", tostring(lines[1].label:GetText()), tostring(lines[1].count:GetText()),
+	tostring(lines[2].label:GetText()), tostring(lines[2].count:GetText()))
+check(lines[1].bar.ratio == 1 and lines[2].bar.ratio == 0.5, "the meat's bar full, the skins' half, got %s and %s",
+	tostring(lines[1].bar.ratio), tostring(lines[2].bar.ratio))
+check(frame.meter:GetHeight() == 68, "and the meter grows a line, got %s", tostring(frame.meter:GetHeight()))
+local _, anchor = lines[2].bar:GetPoint(1)
+check(anchor == frame.meter, "each bar sits in the meter")
+
+-- Back to one: the second line goes, and the meter shrinks.
+GetNumQuestLeaderBoards = function() return 1 end
+GetQuestLogLeaderBoard = function() return "Kobold Vermin slain: 4/5", "monster", nil end
+AegisPathfinder:UpdateOHPanel()
+check(not lines[2].bar:IsShown() and not lines[2].label:IsShown(), "one objective, one line")
+check(frame.meter:GetHeight() == oneHigh, "and the meter one line high again")
+check(lines[1].bar.ratio == 0.8, "4 of 5 is 80%%, got %s", tostring(lines[1].bar.ratio))
+
 -- An objective with no numbers in it is not a meter.
 GetQuestLogLeaderBoard = function() return "Speak to Marshal Dughan", "event", nil end
 AegisPathfinder:UpdateOHPanel()

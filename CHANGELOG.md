@@ -18,6 +18,48 @@ reports.
 
 ---
 
+## [0.14.0]
+
+### Added
+- **Dungeons along the way.** Switch on *Offer dungeon guides along the way*
+  on the options' **Dungeons** page, and finishing a guide asks **Where next?**
+  with the guides of the dungeons you ticked that fit your level, under the
+  custom zones: up to four, lowest first. One opens in a tab beside your
+  route. It is off to start with, and Solo Self-Found holds it off.
+- **Turtle WoW's own dungeons on the Dungeons page**, as chips of their own:
+  Frostmane Hollow, Windhorn Canyon, Dragonmaw Retreat, Stormwrought Ruins,
+  Crescent Grove, Gilneas City and Hateforge Quarry. No route guide has steps
+  for them; ticked, the Gear finder looks in them, and their guides can be
+  offered along the way.
+- **Red and green switches**, on the **Appearance** page: every switch green
+  when on and red when off, whatever the theme.
+- **A bar for each objective.** The meter under the step has a line for each
+  thing the quest wants, each with its count and its own bar. Crocolisk
+  Hunting shows the meat and the skins.
+
+### Changed
+- **Switches take the theme's colours again**, as they did before 0.12.7;
+  red and green is now the switch above. RavenCraft's on switch is a near
+  white, since grey on grey did not say whether a switch was on.
+- **The route preview fills the Route page**, down to the bottom, and shows
+  more legs as the window is made taller.
+
+### Fixed
+- **The Scale slider jumped to 60% at a touch and would not move.** It sits in
+  the options window it scales, so each step rescaled the window under the
+  cursor and the slider chased itself to the bottom. While you drag, only its
+  number moves; the windows take the size when you let go.
+- **A guide went back to step 1.** Opened partway, it went to the quest your
+  log shows work at, such as Loch Modan's Crocolisk Hunting, 27 steps in. The
+  next update then went back to the guide's first note, which the log cannot
+  tick: "1 of 58, 0 done". Now the notes, runs, flight paths and hearths
+  before a quest you have picked up or finished count as done. One before a
+  quest you have not picked up still waits for you.
+- **An objective's bar showed less than its count**: 4 of 5 Crocolisk Meat
+  was a third full. The bar was sized from its width at the moment it was
+  drawn, which can be stale. It now keeps the count and sizes itself again
+  when its width changes.
+
 ## [0.13.1] — restart
 
 ### Added
@@ -628,6 +670,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.14.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.13.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.13.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.8]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

@@ -145,7 +145,7 @@ check(frame.subhead.label:GetText() == "CONFIG \194\183 ROUTE",
 
 local order = {}
 for _, h in ipairs(frame.sections) do table.insert(order, h.label:GetText()) end
-local want = { "RACE", "ROUTE PACK", "DUNGEONS", "FILTERS", "SERVER THEME" }
+local want = { "RACE", "ROUTE PACK", "DUNGEONS", "TURTLE WOW'S OWN", "ALONG THE WAY", "FILTERS", "SERVER THEME" }
 for i, name in ipairs(want) do
 	check(order[i] == name, "section %d should be %s, got %s", i, name, tostring(order[i]))
 end
@@ -271,7 +271,19 @@ check(not frame.preview.rows[3]:IsShown(), "and nothing past the end of it")
 
 -- Dungeons ------------------------------------------------------------------------------
 
-check(table.getn(frame.chips) == 15, "fifteen dungeon chips, got %d", table.getn(frame.chips))
+check(table.getn(frame.chips) == 22, "fifteen dungeon chips and Turtle's seven, got %d", table.getn(frame.chips))
+local whc
+for _, c in ipairs(frame.chips) do if c.dungeonCode == "WHC" then whc = c end end
+check(whc ~= nil, "Windhorn Canyon has a chip")
+click(whc)
+check(db.Dungeons.WHC == true and whc:IsActive(), "and it ticks like any other")
+click(whc)
+check(db.Dungeons.WHC == false and not whc:IsActive(), "and unticks")
+check(not frame.alongSwitch:IsOn(), "dungeon guides along the way start off")
+click(frame.alongSwitch)
+check(db.offerdungeons == true and frame.alongSwitch:IsOn(), "and the switch turns them on")
+click(frame.alongSwitch)
+check(db.offerdungeons == false, "and off")
 local dm
 for _, c in ipairs(frame.chips) do if c.dungeonCode == "DM" then dm = c end end
 check(dm.dot:IsShown(), "the dungeon this guide has steps for carries the blue dot")
@@ -433,6 +445,22 @@ check(string.find(frame.themeNote:GetText(), "RavenCraft's dark grey", 1, true) 
 pickTheme("Night")
 check(frame.themeNote:GetText() == "Moonlight blue on deeper panels.", "Night says only what it looks like")
 
+-- Switch colours: the theme's, or red and green.
+check(frame.redGreen and not frame.redGreen:IsOn() and Theme.switchColours == "theme",
+	"switches take the theme's colours to start with")
+click(frame.redGreen)
+check(AegisPathfinder.db.profile.switchcolours == "redgreen" and Theme.switchColours == "redgreen",
+	"the switch turns them red and green, and it is saved, got %s", tostring(AegisPathfinder.db.profile.switchcolours))
+do
+	local r, g = frame.redGreen.track:GetVertexColor()
+	check(g > r, "and it is green itself now it is on")
+end
+AegisPathfinder:RefreshConfigPanel()
+check(frame.redGreen:IsOn(), "the panel shows it on")
+click(frame.redGreen)
+check(AegisPathfinder.db.profile.switchcolours == "theme" and Theme.switchColours == "theme",
+	"and off, the theme's again")
+
 -- Window scale -------------------------------------------------------------------------
 
 check(frame.scale and frame.scale.value:GetText() == "100%", "the scale starts at 100%%, got '%s'",
@@ -450,6 +478,24 @@ Theme:RegisterWindow(later)
 check(math.abs(later:GetScale() - Theme.SCALE_MAX) < 1e-6, "a window built later takes the scale too")
 AegisPathfinder:SetWindowScale(1)
 check(math.abs(frame:GetScale() - 1) < 1e-6 and math.abs(later:GetScale() - 1) < 1e-6, "and back to 100%%")
+-- A drag: the scale slider sits in a window it scales, so while the mouse is
+-- held only the number follows it. Rescaling on every step moved the slider
+-- out from under the cursor and chased it to 60%, stuck there.
+frame.scale.slider:GetScript("OnMouseDown")()
+frame.scale.slider:SetValue(0.6)              -- where the window's shift would pull it
+frame.scale.slider:SetValue(1.2)
+check(AegisPathfinder.db.profile.windowscale == 1, "a drag in progress saves nothing yet, got %s",
+	tostring(AegisPathfinder.db.profile.windowscale))
+check(math.abs(frame:GetScale() - 1) < 1e-6, "nor scales the window under the cursor, got %s", tostring(frame:GetScale()))
+check(frame.scale.value:GetText() == "120%", "but the number follows the thumb, got '%s'",
+	tostring(frame.scale.value:GetText()))
+frame.scale.slider:GetScript("OnMouseUp")()
+check(math.abs(AegisPathfinder.db.profile.windowscale - 1.2) < 1e-6 and math.abs(frame:GetScale() - 1.2) < 1e-6,
+	"letting go applies where it was let go, got %s", tostring(AegisPathfinder.db.profile.windowscale))
+frame.scale.slider:GetScript("OnMouseUp")()
+check(math.abs(AegisPathfinder.db.profile.windowscale - 1.2) < 1e-6, "and a second release changes nothing")
+AegisPathfinder:SetWindowScale(1)
+frame.scale:SetValue(1)
 pickTheme("Turtle WoW")
 check(Theme.color.accent[1] == green[1] and Theme.color.accent[2] == green[2], "and Turtle WoW is green again")
 
@@ -616,6 +662,23 @@ check(gearPage.contentHeight > -lowest, "the page's height follows")
 pick.label.GetStringWidth = stringWidth
 AegisPathfinder:SizeConfigWindow()
 click(frame.navButtons[1])
+
+-- The route preview takes the room down to the foot of the window, and
+-- more as the window is made taller: the route, not empty panel.
+local preview, routePage = frame.preview, frame.pages[1]
+local opened = preview.visibleRows
+check(opened > 7, "the preview fills the Route page, more than its old seven rows, got %d", opened)
+check(routePage.contentHeight <= frame.visible, "and the page still fits without scrolling (%s of %s)",
+	tostring(routePage.contentHeight), tostring(frame.visible))
+AegisPathfinder:SizeConfigWindow(546, 700)
+check(preview.visibleRows == opened + 7, "140 taller, it shows seven rows more, got %d from %d", preview.visibleRows, opened)
+check(routePage.contentHeight <= frame.visible, "and still fits")
+local legs = table.getn(preview.entries)
+local shown = 0
+for _, row in ipairs(preview.rows) do if row:IsShown() then shown = shown + 1 end end
+check(shown == math.min(legs, preview.visibleRows), "as many rows shown as fit or as the route has, got %d", shown)
+AegisPathfinder:SizeConfigWindow()
+check(preview.visibleRows == opened, "and back to what it opened with")
 
 -- Credits ---------------------------------------------------------------------
 

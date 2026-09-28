@@ -241,6 +241,67 @@ check(not f.route:IsShown() and not f.routeHeader:IsShown(), "with no route row,
 f.chosen = true
 f:Hide()
 
+-- Dungeons along the way ------------------------------------------------------------------
+
+-- The dungeons ticked on the options window's Dungeons page, offered when
+-- one fits your level: its dungeon guide opens beside the route.
+guide("Dungeons/Shadowfang Keep (22-30)")
+guide("Dungeons/Blackfathom Deeps (24-32)")
+guide("Dungeons/Windhorn Canyon (26-30)")
+guide("Dungeons/Uldaman (41-51)")
+AegisPathfinder.DUNGEON_INFO = {
+	{ code = "SFK", name = "Shadowfang Keep" }, { code = "BFD", name = "Blackfathom Deeps" },
+	{ code = "ULDA", name = "Uldaman" },
+}
+AegisPathfinder.TURTLE_DUNGEON_INFO = { { code = "WHC", name = "Windhorn Canyon" } }
+local char = AegisPathfinder.db.char
+char.Dungeons = { SFK = true, BFD = false, WHC = true, ULDA = true }
+level = 28
+check(table.getn(AegisPathfinder:GetDungeonGuideChoices(28)) == 0, "with dungeons along the way off, none")
+char.offerdungeons = true
+check(names(AegisPathfinder:GetDungeonGuideChoices(28)) == "Dungeons/Shadowfang Keep (22-30), Dungeons/Windhorn Canyon (26-30)",
+	"on: the ticked ones at your level, Turtle's own included, not Blackfathom, unticked; got '%s'",
+	names(AegisPathfinder:GetDungeonGuideChoices(28)))
+check(names(AegisPathfinder:GetDungeonGuideChoices(40)) == "Dungeons/Uldaman (41-51)", "Uldaman a level early")
+char.completion["Dungeons/Shadowfang Keep (22-30)"] = 1
+check(names(AegisPathfinder:GetDungeonGuideChoices(28)) == "Dungeons/Windhorn Canyon (26-30)", "not one finished")
+char.completion["Dungeons/Shadowfang Keep (22-30)"] = nil
+char.SelfFound = true
+check(table.getn(AegisPathfinder:GetDungeonGuideChoices(28)) == 0, "and none in Solo Self-Found")
+char.SelfFound = nil
+
+-- Finishing Redridge at 28, with custom zones off: only the dungeons.
+char.currentguide, char.tabs, char.activetab, char.isbranching = "Optimized/Redridge (27-28)", nil, nil, false
+AegisPathfinder.offered = {}
+char.offercustomzones = false
+AegisPathfinder:EnsureTabs()
+check(AegisPathfinder:OfferNextGuide() == true, "with custom zones off, the dungeons are still offered")
+check(string.find(f.done:GetText(), "run a dungeon", 1, true) ~= nil, "asked as such, got '%s'", f.done:GetText())
+check(not f.zoneHeader:IsShown() and not f.zones[1]:IsShown(), "no custom zones")
+check(f.dungeonHeader:IsShown() and f.dungeons[1]:GetText() == "SHADOWFANG KEEP (22-30)"
+	and f.dungeons[2]:GetText() == "WINDHORN CANYON (26-30)" and not f.dungeons[3]:IsShown(),
+	"the dungeons, by the names of their guides")
+this = f.dungeons[2]
+f.dungeons[2]:GetScript("OnClick")()
+check(char.currentguide == "Dungeons/Windhorn Canyon (26-30)", "picking one loads its guide")
+check(tabs() == "Optimized/Duskwood (28-29) | Dungeons/Windhorn Canyon (26-30)",
+	"beside the route, which waits at its next guide; got %s", tabs())
+
+-- Both on: the zones, then the dungeons.
+char.offercustomzones = nil
+char.currentguide, char.tabs, char.activetab, char.isbranching = "Optimized/Redridge (27-28)", nil, nil, false
+AegisPathfinder.offered = {}
+AegisPathfinder:EnsureTabs()
+check(AegisPathfinder:OfferNextGuide() == true and f.zones[1]:IsShown() and f.dungeons[1]:IsShown(),
+	"custom zones and dungeons together")
+check(string.find(f.done:GetText(), "custom zone or a dungeon", 1, true) ~= nil, "and says so")
+local _, _, _, _, zoneY = f.zones[1]:GetPoint()
+local _, _, _, _, dungeonY = f.dungeonHeader:GetPoint()
+check(dungeonY < zoneY, "the dungeons under the custom zones")
+f.chosen = true
+f:Hide()
+char.offerdungeons = nil
+
 -- Report ----------------------------------------------------------------------------------
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end

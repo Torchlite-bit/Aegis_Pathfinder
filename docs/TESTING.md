@@ -42,6 +42,12 @@ are only found at startup.
 ## 3. The guide
 
 - [ ] A new character opens at step 1, not at the end.
+- [ ] A guide opened partway -- Loch Modan (17-18) with Crocolisk Hunting in
+      the log -- opens at that quest and stays there as the log updates and
+      after `/reload`; it does not drop back to step 1, 0 done.
+- [ ] A quest with two things to collect (Crocolisk Hunting: meat and skins)
+      shows a bar for each under the step, each filled to its count (4 of 5
+      is four fifths full); a finished one stays, full.
 - [ ] Accepting, completing and handing in a quest ticks its steps by itself.
 - [ ] ◀ and ▶ step back and on; the tick marks the step done.
 - [ ] Click ◀ a few times, then **right-click ▶**: back at your place, with the
@@ -79,6 +85,18 @@ are only found at startup.
       and every dungeon chip off (dimmed, unclickable), and the Dungeons page
       says why; off again, they are as they were.
 - [ ] **Appearance**: each theme recolours everything at once, no reload.
+- [ ] Switches follow the theme; RavenCraft's on switch is near white. Turn on
+      **Red and green switches**: every switch is green when on and red when
+      off, in every theme; off again, they follow the theme. It is kept after
+      `/reload`.
+- [ ] Drag the **Scale** slider: only its number moves while you hold it; let
+      go and every window takes that size. It never jumps to 60%.
+- [ ] **Route**: the preview reaches the bottom of the page; drag the window
+      taller and it shows more legs.
+- [ ] **Dungeons**: Turtle WoW's own dungeons have chips. Turn on *Offer
+      dungeon guides along the way*, tick one at your level, and finish a
+      guide: Where next? lists its dungeon guide under the custom zones, and
+      it opens in a tab beside the route.
 
 ## 6. Gear
 

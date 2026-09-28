@@ -93,6 +93,8 @@ AegisPathfinder.db.char.completedquestsbyid[1] = true
 log = { { "Second Quest", 2, false } }
 AegisPathfinder.db.char.turnins = {}
 check(open() == 6, "a quest in progress: its step, got %s", tostring(AegisPathfinder.current))
+check(AegisPathfinder.turnedin[AegisPathfinder.quests[1]],
+	"the welcome note before it is ticked: the log shows you are past it, and the status update would go back to it")
 
 -- The second quest ready to hand in.
 log = { { "Second Quest", 2, true } }
@@ -116,6 +118,77 @@ check(AegisPathfinder.current == 8, "with it ticked, the run after the second qu
 AegisPathfinder.db.char = { completion = {}, turnins = {}, Dungeons = {}, completedquests = {}, completedquestsbyid = {} }
 log = {}
 check(open() == 1, "another character starts from the top")
+
+-- Early on, with a quest from elsewhere ready to hand in at the end: the run
+-- to it is ticked, but not the welcome, nor anything before a quest you have
+-- not picked up.
+log = { { "Third Quest", 3, true } }
+check(open() == 10, "the hand-in the log shows is ready, got %s", tostring(AegisPathfinder.current))
+check(AegisPathfinder.turnedin[AegisPathfinder.quests[8]], "the run to it is ticked")
+check(not AegisPathfinder.turnedin[AegisPathfinder.quests[1]], "the welcome is not: nothing after it has been reached")
+
+-- Only finding the place ticks nothing.
+AegisPathfinder.db.char.turnins = {}
+AegisPathfinder:LoadGuide("Test Zone (1-10)")
+AegisPathfinder.turnedin[AegisPathfinder.quests[8]] = nil
+AegisPathfinder:SmartSkipToStep(true)
+check(AegisPathfinder.current == 10 and not AegisPathfinder.turnedin[AegisPathfinder.quests[8]],
+	"looking for the place leaves the run as it was")
+
+--[[ Through the status update, on the guide it happened in.
+
+	Loch Modan (17-18) opened at Crocolisk Hunting, step 28, with 27 done.
+	The next status update starts from step 1 and stops at the first step
+	not done, which was the guide's opening note, never ticked: the guide
+	went back to 1 of 58, 0 done. ]]
+do
+	local A = AegisPathfinder
+	local server = {}
+	C_Item = { RequestLoadItemDataByID = function() end, GetItemCount = function() return 0 end }
+	GetZoneText = function() return "Loch Modan" end
+	GetSubZoneText = function() return "" end
+	UnitLevel = function() return 17 end
+	QuestLog_Update = function() end
+	QuestWatch_Update = function() end
+	A.manuallyUnchecked, A.icons, A.turninskipwarned = {}, {}, {}
+	A.db.char = { completion = {}, turnins = {}, Dungeons = {}, completedquests = {}, completedquestsbyid = {},
+		petskills = {} }
+	function A:IsQuestCompletedOnServer(q) return server[tonumber(q)] end
+	function A:GetUnmetPrerequisites() return {} end
+	function A:TrackCurrentQuest() end
+	function A:GetQuestDetails(_, _, qid)
+		for i, q in ipairs(log) do if q[2] == qid then return i, q[3] end end
+	end
+	function A:ForceWaypointUpdate() end
+	function A:UpdateOHPanel() end
+	function A:UpdateNavCallout() end
+	function A:RedriveQuestAutomation() end
+	function A:LoadNextGuide() return false end
+	function A:GetWaypointProvider() return nil end
+	function A:FindBagSlot() return nil end
+	function A:GetLootRequirement() return nil end
+	dofile("GuideEngine.lua")
+	local core = io.open("Core.lua"):read("*a")
+	local a = string.find(core, "function AegisPathfinder:GetObjectiveInfo(", 1, true)
+	local b = string.find(core, "function AegisPathfinder:CompleteQuest(", a, true)
+	assert(loadstring(string.sub(core, a, b - 1)))()
+	dofile("Guides/Optimized/Alliance/17_18_Loch_Modan.lua")
+
+	-- Handed in so far; in the log, Crocolisk Hunting, 4 of 5 meat.
+	for _, q in ipairs({ 307, 436, 297, 257, 258 }) do server[q] = true; A.db.char.completedquestsbyid[q] = true end
+	log = { { "Stormpike's Order", 1338 }, { "Excavation Progress Report", 298 }, { "Crocolisk Hunting", 385 },
+		{ "Vyrin's Revenge", 271 }, { "Bingles' Missing Supplies", 2038 } }
+	A:LoadGuide("Optimized/Loch Modan (17-18)")
+	check(A.current == 28 and A.actions[28] == "COMPLETE", "Loch Modan opens at Crocolisk Hunting, got %s",
+		tostring(A.current))
+	A:UpdateStatusFrame()
+	check(A.current == 28, "and the status update keeps it there, not back to the opening note, got %s",
+		tostring(A.current))
+	A:LoadGuide("Optimized/Loch Modan (17-18)")
+	A:UpdateStatusFrame()
+	check(A.current == 28, "a reload too, got %s", tostring(A.current))
+	check(not A.turnedin[A.quests[29]], "and nothing after it is ticked")
+end
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end
 print(string.format("SmartSkip: %d checks", checks))

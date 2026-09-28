@@ -47,6 +47,7 @@ Theme.color = {
 	textDim    = hex("c7c7bd"),
 	border     = hex("050505"),
 	subtle     = hex("545454"),   -- unchecked control outlines
+	switchOn   = hex("2e850e"),   -- an on switch's track, in the theme's colours
 }
 
 --[[ Themes.
@@ -64,24 +65,26 @@ Theme.color = {
 ]]
 Theme.THEMES = {
 	{ key = "day", label = "Day", note = "Warm amber on lighter panels.",
-		colors = { accent = "f0b43c", accentDeep = "a8740f", accentGlow = "ffd98a",
+		colors = { accent = "f0b43c", accentDeep = "a8740f", accentGlow = "ffd98a", switchOn = "a8740f",
 			panel = "2b2925", panel2 = "1c1a17", panel3 = "24221f", tabbg = "4a463e",
 			bg1 = "1f1c16", bg2 = "15130f" } },
 	{ key = "night", label = "Night", note = "Moonlight blue on deeper panels.",
-		colors = { accent = "6fa8ff", accentDeep = "2f5fae", accentGlow = "a9cbff",
+		colors = { accent = "6fa8ff", accentDeep = "2f5fae", accentGlow = "a9cbff", switchOn = "2f5fae",
 			panel = "171b25", panel2 = "0c0f16", panel3 = "12151e", tabbg = "2b3242",
 			bg1 = "0e1119", bg2 = "080a10" } },
 	{ key = "turtle", label = "Turtle WoW", note = "The original green.", colors = {} },
 	{ key = "octowow", label = "OctoWoW", note = "OctoWoW's purple.",
-		colors = { accent = "a970ff", accentDeep = "6526c4", accentGlow = "cfb0ff" } },
+		colors = { accent = "a970ff", accentDeep = "6526c4", accentGlow = "cfb0ff", switchOn = "6526c4" } },
 	{ key = "ravencraft", label = "RavenCraft",
 		note = "RavenCraft's dark grey, with a lighter grey where the green was so it stays readable.",
-		colors = { accent = "a3aab3", accentDeep = "474d55", accentGlow = "d2d6db",
+		-- An on switch is near white: in the dark grey, grey against grey
+		-- did not say whether a switch was on.
+		colors = { accent = "a3aab3", accentDeep = "474d55", accentGlow = "d2d6db", switchOn = "eceff2",
 			panel = "1a1a1c", panel2 = "0d0d0f", panel3 = "151517", tabbg = "323235" } },
 	{ key = "capybara", label = "Capybara Paradise", note = "Capybara Paradise's tan.",
-		colors = { accent = "cfa77c", accentDeep = "8b5a2b", accentGlow = "ead0b0" } },
+		colors = { accent = "cfa77c", accentDeep = "8b5a2b", accentGlow = "ead0b0", switchOn = "8b5a2b" } },
 	{ key = "aegis", label = "Aegis", note = "The Aegis suite's red.",
-		colors = { accent = "ea5f56", accentDeep = "9e2a22", accentGlow = "f4958e" } },
+		colors = { accent = "ea5f56", accentDeep = "9e2a22", accentGlow = "f4958e", switchOn = "9e2a22" } },
 }
 Theme.DEFAULT_THEME = "turtle"
 
@@ -458,19 +461,31 @@ function Theme:ProgressBar(parent, height)
 	fill:SetWidth(1)
 
 	bar.track, bar.fill = track, fill
+	bar.ratio = 0
 
-	-- ratio in 0..1
+	--[[ ratio in 0..1. The fill is sized from the bar's width, and a bar
+		sized by its anchors can give a stale width, or none, at the moment
+		it is painted: hidden, or its window just resized. That drew 4 of 5
+		Crocolisk Meat a third full. So the ratio is kept, and the fill is
+		sized again whenever the bar is not the width it was drawn at. ]]
 	function bar:SetProgress(ratio)
 		if not ratio or ratio < 0 then ratio = 0 elseif ratio > 1 then ratio = 1 end
+		self.ratio = ratio
+		self:Refit()
+	end
+	function bar:Refit()
 		local w = self:GetWidth()
-		if not w or w <= 0 then w = 1 end
-		if ratio <= 0 then
+		self.drawnAt = w
+		if self.ratio <= 0 or not w or w <= 0 then
 			self.fill:Hide()
 		else
 			self.fill:Show()
-			self.fill:SetWidth(w * ratio)
+			self.fill:SetWidth(w * self.ratio)
 		end
 	end
+	bar:SetScript("OnUpdate", function()
+		if bar:GetWidth() ~= bar.drawnAt then bar:Refit() end
+	end)
 
 	return bar
 end
@@ -1014,17 +1029,30 @@ end
 --[[ The concept's `.toggle-row`: a sliding switch and its label, the whole
 	row clickable.
 
-	Off: a faint track with a white knob on the left. On: an accent-deep
-	track with a near-black knob on the right. `onChange(on)` fires on click.
+	Off: a faint track with a white knob on the left. On: a track in the
+	theme's switchOn colour with a near-black knob on the right.
+	`onChange(on)` fires on click.
+
+	Or, if the player asks for it in the Appearance page, green when on and
+	red when off whatever the theme (`Theme:SetSwitchColours("redgreen")`).
+	Those colours are fixed: tinting with a colour rather than a name keeps a
+	theme change from re-tinting them.
 ]]
---[[ A switch reads green when it is on and red when it is off, whatever the
-	theme: its colours are fixed, not the theme's, because in some themes the
-	accent and the off track were near enough the same grey that a switch did
-	not say which it was. Tinting with a colour rather than a name keeps a
-	theme change from re-tinting them. ]]
 Theme.SWITCH_ON = { 0.22, 0.68, 0.32 }     -- #38ad52
 Theme.SWITCH_OFF = { 0.76, 0.24, 0.20 }    -- #c23d33
 Theme.SWITCH_KNOB = { 0.96, 0.96, 0.94 }
+Theme.SWITCH_KNOB_ON = { 0.04, 0.05, 0.04 }
+
+Theme.switchColours = "theme"
+local switches = setmetatable({}, { __mode = "k" })
+
+--- "theme" (the theme's colours) or "redgreen"; every switch already made
+--- is repainted.
+function Theme:SetSwitchColours(style)
+	self.switchColours = style == "redgreen" and "redgreen" or "theme"
+	for row in pairs(switches) do row:SetOn(row.__on) end
+	return self.switchColours
+end
 
 function Theme:Switch(parent, label, onChange)
 	local row = CreateFrame("Button", nil, parent)
@@ -1050,14 +1078,17 @@ function Theme:Switch(parent, label, onChange)
 	function row:SetOn(on)
 		self.__on = on and true or false
 		self.knob:ClearAllPoints()
-		if self.__on then
-			Theme:Tint(self.track, Theme.SWITCH_ON)
-			self.knob:SetPoint("LEFT", self.track, "LEFT", 18, 0)
+		self.knob:SetPoint("LEFT", self.track, "LEFT", self.__on and 18 or 2, 0)
+		if Theme.switchColours == "redgreen" then
+			Theme:Tint(self.track, self.__on and Theme.SWITCH_ON or Theme.SWITCH_OFF)
+			Theme:Tint(self.knob, Theme.SWITCH_KNOB)
+		elseif self.__on then
+			Theme:Tint(self.track, "switchOn")
+			Theme:Tint(self.knob, Theme.SWITCH_KNOB_ON)
 		else
-			Theme:Tint(self.track, Theme.SWITCH_OFF)
-			self.knob:SetPoint("LEFT", self.track, "LEFT", 2, 0)
+			Theme:Tint(self.track, "text", 0.10)
+			Theme:Tint(self.knob, "text")
 		end
-		Theme:Tint(self.knob, Theme.SWITCH_KNOB)
 	end
 	function row:IsOn() return self.__on end
 	-- Held by another setting: shown, dimmed, and not clickable.
@@ -1090,6 +1121,7 @@ function Theme:Switch(parent, label, onChange)
 		if onChange then onChange(this.__on) end
 	end)
 
+	switches[row] = true
 	row:SetOn(false)
 	return row
 end
@@ -1139,11 +1171,31 @@ function Theme:Slider(parent, label, lo, hi, step, onChange, format)
 	local function Show(v)
 		val:SetText(format and format(v) or tostring(v))
 	end
+	-- The change is reported once it settles. While the mouse is held on
+	-- the slider only the number follows it, and the value is reported on
+	-- release: a change that moves the slider itself -- the window scale
+	-- scales the window the slider sits in -- would slide it out from under
+	-- the cursor on every step, and it would chase itself to one end.
+	local pending
 	s:SetScript("OnValueChanged", function()
 		local v = math.floor(this:GetValue() / step + 0.5) * step
 		Show(v)
-		if not this.__quiet and onChange then onChange(v) end
+		if this.__quiet or not onChange then return end
+		local held = this.__held or (IsMouseButtonDown and IsMouseButtonDown("LeftButton") and MouseIsOver
+			and MouseIsOver(this))
+		if held then pending = v else pending = nil; onChange(v) end
 	end)
+	local function release()
+		s.__held = nil
+		if pending ~= nil and onChange then
+			local v = pending
+			pending = nil
+			onChange(v)
+		end
+	end
+	s:SetScript("OnMouseDown", function() s.__held = true end)
+	s:SetScript("OnMouseUp", release)
+	s:SetScript("OnHide", release)
 
 	row.slider, row.label, row.value, row.track = s, fs, val, track
 	--- Set the value from code: shown, but not reported to onChange.
@@ -1626,6 +1678,13 @@ end
 function AegisPathfinder:SetWindowScale(scale)
 	self.db.profile.windowscale = Theme:SetWindowScale(scale)
 	return self.db.profile.windowscale
+end
+
+--- Switches in the theme's colours ("theme") or green and red
+--- ("redgreen"), and remember it.
+function AegisPathfinder:SetSwitchColours(style)
+	self.db.profile.switchcolours = Theme:SetSwitchColours(style)
+	return self.db.profile.switchcolours
 end
 
 function AegisPathfinder:SetTheme(key)

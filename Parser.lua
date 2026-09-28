@@ -668,7 +668,7 @@ function AegisPathfinder:GetUnmetPrerequisites(stepIndex)
 end
 
 -- Smart guide switching: scan quest log and skip completed content
-function AegisPathfinder:SmartSkipToStep()
+function AegisPathfinder:SmartSkipToStep(look)
 	if not self.actions or not self.quests then return end
 
 	-- Name-keyed maps serve steps without a |QID| tag; QID-keyed maps are
@@ -797,7 +797,7 @@ function AegisPathfinder:SmartSkipToStep()
 		nothing in your log -- a new character -- it put you at the end of the
 		guide, and every step before counted as done. ]]
 	local furthestStep = 1
-	local firstOpen
+	local firstOpen, byLog
 	for i, quest in ipairs(self.quests) do
 		local action = self.actions[i]
 		local cleanQuest = string.gsub(quest, "@.*@", "")
@@ -824,7 +824,7 @@ function AegisPathfinder:SmartSkipToStep()
 		elseif action == "TURNIN" then
 			-- If quest is complete and in log, we need to turn it in
 			if logComplete and not self.turnedin[quest] then
-				furthestStep = i
+				furthestStep, byLog = i, true
 				break
 			elseif isCompleted then
 				self.turnedin[quest] = true
@@ -832,7 +832,7 @@ function AegisPathfinder:SmartSkipToStep()
 		elseif action == "COMPLETE" then
 			-- If quest is in progress but not complete, this is our step
 			if logInProgress and not logComplete and not isCompleted then
-				furthestStep = i
+				furthestStep, byLog = i, true
 				break
 			elseif logComplete or isCompleted then
 				self.turnedin[quest] = true
@@ -864,6 +864,50 @@ function AegisPathfinder:SmartSkipToStep()
 
 	if furthestStep > 1 then
 		self:Debug(string.format(AegisPathfinder.Locale["Skipping to step %d (completed content detected)"], furthestStep))
+	end
+
+	--[[ The steps on the way that the quest log cannot vouch for.
+
+		A note, a run, a flight path, a hearth: nothing in the log says
+		whether you did them. When the log puts you further on, they were
+		left unticked, and the next status update, which starts from step 1
+		and stops at the first step not done, went back to the first of them.
+		Loch Modan's opened at Crocolisk Hunting, step 28, then fell back to
+		its opening note, step 1, 0 done.
+
+		So each is ticked when the next quest step after it is one the log
+		shows you have reached: accepted, done, handed in, or where the log
+		put you. A flight path before a quest you have not picked up yet
+		stays, and the guide still takes you there. `look` only finds the
+		place (FindPlace) and ticks nothing. ]]
+	if not look then
+		local function reached(j)
+			if j == furthestStep or self.turnedin[self.quests[j]] then return true end
+			local qid = tonumber((self:GetObjectiveTag("QID", j)))
+			if qid then
+				return inProgressQuestIDs[qid] or completedQuestIDs[qid] or self.db.char.completedquestsbyid[qid]
+					or (self.IsQuestCompletedOnServer and self:IsQuestCompletedOnServer(qid))
+			end
+			local name = string.gsub(string.gsub(self.quests[j], "@.*@", ""), AegisPathfinder.Locale.PART_GSUB, "")
+			return inProgressQuests[name] or completedQuests[name] or self.db.char.completedquests[name]
+		end
+		local QUEST_STEP = { ACCEPT = true, COMPLETE = true, TURNIN = true }
+		local nextReached = byLog          -- the next quest step after i, reached?
+		for i = furthestStep - 1, 1, -1 do
+			local action = self.actions[i]
+			if QUEST_STEP[action] then
+				if reached(i) then
+					nextReached = true
+				elseif action ~= "TURNIN" and not self:GetObjectiveTag("O", i) then
+					nextReached = false
+				end
+				-- A hand-in for a quest never picked up, and an optional
+				-- quest not taken, the status update passes over: they say
+				-- nothing either way.
+			elseif nextReached and not self.turnedin[self.quests[i]] then
+				self.turnedin[self.quests[i]] = true
+			end
+		end
 	end
 
 	-- Set initial current position

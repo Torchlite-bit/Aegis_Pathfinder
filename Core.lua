@@ -123,6 +123,7 @@ local defaults = {
     branchsavedstep = nil,
     setupdone = false,            -- has this character been through the first-time setup?
     offercustomzones = true,      -- offer custom zones when a guide finishes (NextGuideFrame.lua)
+    offerdungeons = false,        -- and the ticked dungeons' guides, at your level (NextGuideFrame.lua)
     craftsellback = true,         -- crafting routes sell what is left over to a merchant (CraftPlanner.lua)
     sharenowarn = false,          -- skip the "share this guide with your party?" question (PartySync.lua)
     routepack = nil,              -- Active route pack name (e.g., "VanillaGuide", "RestedXP")
@@ -155,6 +156,10 @@ local defaults = {
         ["MARA"] = true,
         ["ST"] = true,
         ["BRD"] = true,
+        -- Turtle WoW's own: no route steps, but the Gear finder and the
+        -- dungeon guides along the way go by them.
+        ["FH"] = true, ["WHC"] = true, ["DMR"] = true, ["SWR"] = true,
+        ["CG"] = true, ["GC"] = true, ["HQ"] = true,
     },
 }
 
@@ -562,7 +567,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.13.1"
+AegisPathfinder.version = "0.14.0"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -585,6 +590,7 @@ function AegisPathfinder:OnInitialize()
     -- files loaded are re-tinted to it (Theme.lua).
     self.Theme:ApplyTheme(self.db.profile.theme)
     self.Theme:SetWindowScale(self.db.profile.windowscale or 1)
+    self.Theme:SetSwitchColours(self.db.profile.switchcolours)
 
     self.db.char.Dungeons = self.db.char.Dungeons or {}
     for k, v in pairs(defaults.Dungeons) do
@@ -1646,7 +1652,7 @@ end
 --- Where the guide would open, without going there.
 function AegisPathfinder:FindPlace()
     local was = self.current
-    self:SmartSkipToStep()
+    self:SmartSkipToStep(true)
     local found = self.current
     self.current = was
     return found

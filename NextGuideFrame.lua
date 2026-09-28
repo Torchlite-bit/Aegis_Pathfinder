@@ -20,6 +20,12 @@
 	that fit, nothing is asked and the guide moves on as it always has.
 	Closing the window without choosing carries on with the route. The
 	options panel can switch the question off.
+
+	Dungeons along the way: with that switched on (the options window's
+	Dungeons page), the dungeons you have ticked there are offered the same
+	way, when one fits your level by the same rule -- its dungeon guide
+	(Guides/Dungeons/) opens beside the route, picks up its quests, takes you
+	in, and when it is done asks where next, the route first.
 ]]
 
 local AegisPathfinder = AegisPathfinder
@@ -30,6 +36,7 @@ local PAD = 14
 local ROW_H = 26
 local ROW_GAP = 6
 local MAX_ZONES = 5
+local MAX_DUNGEONS = 4
 local CHROME_TOP = 30 + 18
 
 -- "Optimized/Duskwood (28-29)" reads as "Duskwood (28-29)".
@@ -57,6 +64,41 @@ function AegisPathfinder:GetCustomZoneChoices(level, except)
 		return a.guide < b.guide
 	end)
 	while table.getn(out) > MAX_ZONES do table.remove(out) end
+	return out
+end
+
+--- The dungeon guides to offer at `level`, lowest first: the ticked
+--- dungeons', for this side, that fit as a custom zone does. None with
+--- dungeons along the way off, or in Solo Self-Found. `except` is the guide
+--- just finished.
+function AegisPathfinder:GetDungeonGuideChoices(level, except)
+	local db = self.db.char
+	local out = {}
+	if not db.offerdungeons or db.SelfFound then return out end
+	local ticked = db.Dungeons or {}
+	local completion = db.completion or {}
+	local function consider(list)
+		for _, d in ipairs(list or {}) do
+			if ticked[d.code] then
+				local prefix = "Dungeons/" .. d.name .. " ("
+				for _, name in ipairs(self.guidelist or {}) do
+					if name ~= except and self.guides[name] and string.sub(name, 1, string.len(prefix)) == prefix then
+						local lo, hi = self:ParseGuideLevelRange(name)
+						if lo and hi and (completion[name] or 0) < 1 and level >= lo - 1 and level < hi then
+							table.insert(out, { guide = name, lo = lo, hi = hi, code = d.code })
+						end
+					end
+				end
+			end
+		end
+	end
+	consider(self.DUNGEON_INFO)
+	consider(self.TURTLE_DUNGEON_INFO)
+	table.sort(out, function(a, b)
+		if a.lo ~= b.lo then return a.lo < b.lo end
+		return a.guide < b.guide
+	end)
+	while table.getn(out) > MAX_DUNGEONS do table.remove(out) end
 	return out
 end
 
@@ -98,6 +140,7 @@ local function Build()
 
 	frame.routeHeader = Theme:SectionHeader(frame, "The route", WIDTH - PAD * 2)
 	frame.zoneHeader = Theme:SectionHeader(frame, "Custom zones", WIDTH - PAD * 2)
+	frame.dungeonHeader = Theme:SectionHeader(frame, "Dungeons", WIDTH - PAD * 2)
 
 	frame.route = Theme:PanelButton(frame, "", WIDTH - PAD * 2, ROW_H)
 	frame.route:SetScript("OnClick", function() AegisPathfinder:ContinueRoute() end)
@@ -107,6 +150,13 @@ local function Build()
 		local b = Theme:PanelButton(frame, "", WIDTH - PAD * 2, ROW_H)
 		b:SetScript("OnClick", function() AegisPathfinder:TakeCustomZone(this.guide) end)
 		frame.zones[i] = b
+	end
+	-- A dungeon guide opens beside the route as a custom zone does.
+	frame.dungeons = {}
+	for i = 1, MAX_DUNGEONS do
+		local b = Theme:PanelButton(frame, "", WIDTH - PAD * 2, ROW_H)
+		b:SetScript("OnClick", function() AegisPathfinder:TakeCustomZone(this.guide) end)
+		frame.dungeons[i] = b
 	end
 
 	-- Closing without a choice carries on, as finishing a guide always did.
@@ -131,22 +181,26 @@ end
 --- guide should wait for the answer; false when there is nothing to ask.
 function AegisPathfinder:OfferNextGuide(finished)
 	finished = finished or self.db.char.currentguide
-	if not finished or self.db.char.offercustomzones == false then return false end
+	if not finished then return false end
 	if frame and frame:IsShown() and frame.finished == finished then return true end
 	-- Asked once per finished guide: a closed window has had its answer.
 	self.offered = self.offered or {}
 	if self.offered[finished] then return false end
 
-	local zones = self:GetCustomZoneChoices(UnitLevel("player"), finished)
-	if table.getn(zones) == 0 then return false end
+	local level = UnitLevel("player")
+	local zones = self.db.char.offercustomzones ~= false and self:GetCustomZoneChoices(level, finished) or {}
+	local dungeons = self:GetDungeonGuideChoices(level, finished)
+	if table.getn(zones) == 0 and table.getn(dungeons) == 0 then return false end
 	local route = self:GetRouteContinuation(finished)
 
 	if not frame then Build() end
 	self.offered[finished] = true
 	frame.finished, frame.chosen, frame.routeGuide = finished, nil, route
 
-	frame.done:SetText(string.format("You finished %s. Carry on with the route, or take a custom zone at your level?",
-		DisplayName(finished)))
+	local other = table.getn(zones) > 0 and table.getn(dungeons) > 0 and "take a custom zone or a dungeon"
+		or table.getn(zones) > 0 and "take a custom zone" or "run a dungeon"
+	frame.done:SetText(string.format("You finished %s. Carry on with the route, or %s at your level?",
+		DisplayName(finished), other))
 	-- However many lines that wrapped to; a client that will not measure
 	-- wrapped text is answered by counting them.
 	local textH = frame.done:GetHeight() or 0
@@ -164,19 +218,29 @@ function AegisPathfinder:OfferNextGuide(finished)
 		frame.route:Hide()
 	end
 
-	y = Put(frame.zoneHeader, y, 20 + 6)
-	for i, b in ipairs(frame.zones) do
-		local z = zones[i]
-		if z then
-			b.guide = z.guide
-			b:SetText(DisplayName(z.guide))
-			y = Put(b, y, ROW_H + (zones[i + 1] and ROW_GAP or 0))
+	-- A heading and a button per choice; nothing at all where there is none.
+	local function list(header, buttons, choices)
+		if table.getn(choices) == 0 then
+			header:Hide()
 		else
-			b.guide = nil
-			b:Hide()
+			y = Put(header, y, 20 + 6)
 		end
+		for i, b in ipairs(buttons) do
+			local c = choices[i]
+			if c then
+				b.guide = c.guide
+				b:SetText(DisplayName(c.guide))
+				y = Put(b, y, ROW_H + (choices[i + 1] and ROW_GAP or 0))
+			else
+				b.guide = nil
+				b:Hide()
+			end
+		end
+		if table.getn(choices) > 0 then y = y + 12 end
 	end
-	frame:SetHeight(y + PAD)
+	list(frame.zoneHeader, frame.zones, zones)
+	list(frame.dungeonHeader, frame.dungeons, dungeons)
+	frame:SetHeight(y - 12 + PAD)
 
 	-- Beside the guide, like every window that opens from it.
 	local guide = self.objectiveframe
