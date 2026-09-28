@@ -163,7 +163,14 @@ end
 local myclass, myrace = UnitClass("player"), UnitRace("player")
 local function StepParse(guide)
 	local accepts, turnins, completes = {}, {}, {}
-	local uniqueid = 1
+	--[[ A step's key is its name and its place among ALL the guide's steps,
+		whatever the filters keep. It was its place among the steps kept, so
+		switching group mode, the Auction House, a dungeon chip or Solo
+		Self-Found renumbered every step after the first one it added or took
+		away, and the ticks saved against those keys landed on other steps.
+		For a guide with nothing filtered the two are the same numbers.
+		Ticks saved the old way are moved over once (MigrateStepKeys). ]]
+	local place = 0
 	local actions, quests, tags = {}, {}, {}
 	local i, haserrors = 1, false
 	local guidet = AegisPathfinder.split("\r\n", guide)
@@ -235,6 +242,8 @@ local function StepParse(guide)
 	end
 
 	for _, text in pairs(guidet) do
+		local _, _, action, quest, tag = string.find(text, "^(%a) ([^|]*)(.*)")
+		if action and actiontypes[action] then place = place + 1 end
 		local _, _, class = string.find(text, "|C|([^|]+)|")
 		local _, _, race = string.find(text, "|R|([^|]+)|")
 		local _, _, dungeon = string.find(text, "|D|([^|]+)|")
@@ -244,7 +253,6 @@ local function StepParse(guide)
 		if text ~= "" and matchFilter(class, myclass) and matchFilter(race, myrace)
 			and matchDungeonFilter(dungeon) and matchPlayStyleFilter(playstyle)
 			and matchAHFilter(hasAH, hasTrade) then
-			local _, _, action, quest, tag = string.find(text, "^(%a) ([^|]*)(.*)")
 			if action and actiontypes[action] then
 				quest = AegisPathfinder.trim(quest)
 				
@@ -273,8 +281,7 @@ local function StepParse(guide)
 				end
 				
 				if not isDuplicate then
-					quest = quest .. "@" .. uniqueid .. "@"
-					uniqueid = uniqueid + 1
+					quest = quest .. "@" .. place .. "@"
 					actions[i], quests[i], tags[i] = actiontypes[action], quest, tag
 					i = i + 1
 					haserrors = DebugQuestObjective(text, action, quest, accepts, turnins, completes) or haserrors
@@ -319,6 +326,30 @@ function AegisPathfinder:WarmCaches(queue)
 		if idx <= n then C_Timer.After(WARM_INTERVAL, drain) end
 	end
 	drain()
+end
+
+--[[ Move a guide's saved ticks to the keys StepParse gives now, once.
+
+	They were saved as name@N@ with N the step's place among the steps kept,
+	which is its index here; they are now name@P@ with P its place among all
+	the guide's steps. A guide ticked under the filters it was saved with
+	maps step for step. Nothing is lost that was right: a tick saved under
+	other filters was already on the wrong step. `db.char.stepkeys[guide]`
+	says it is done, and a guide first opened now has nothing to move. ]]
+function AegisPathfinder:MigrateStepKeys(name)
+	local db = self.db.char
+	db.stepkeys = db.stepkeys or {}
+	if db.stepkeys[name] then return end
+	db.stepkeys[name] = 2
+	local saved = db.turnins[name]
+	if not saved or not next(saved) then return end
+	local moved = {}
+	for i, quest in ipairs(self.quests or {}) do
+		local old = string.gsub(quest, "@%d+@$", "") .. "@" .. i .. "@"
+		if saved[old] then moved[quest] = saved[old] end
+	end
+	for k in pairs(saved) do saved[k] = nil end
+	for k, v in pairs(moved) do saved[k] = v end
 end
 
 function AegisPathfinder:LoadGuide(name, complete)
@@ -413,6 +444,7 @@ function AegisPathfinder:LoadGuide(name, complete)
 
 	if not self.db.char.turnins[name] then self.db.char.turnins[name] = {} end
 	self.turnedin = self.db.char.turnins[name]
+	self:MigrateStepKeys(name)
 
 	-- Step keys restart per guide, so the skipped-turnin warnings reset too
 	self.turninskipwarned = {}

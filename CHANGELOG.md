@@ -18,6 +18,29 @@ reports.
 
 ---
 
+## [0.16.0]
+
+### Added
+- **Badges that say what a guide is**, on its tab. `XP` for a leveling guide
+  as before, plus:
+  - `PF` (blue) for a profession guide or crafting route;
+  - `DG` (violet) for a dungeon guide;
+  - `HC` (red) for a hardcore guide.
+
+  A placeholder guide still says `TPL`.
+
+### Fixed
+- **Ticks moved to other steps when a filter changed.** The addon remembers a
+  tick by the step's name and its place in the guide.
+  - That place was counted among the steps the filters kept. Switching group
+    mode, Auction House steps, a dungeon or Solo Self-Found added or removed
+    steps, so every later step's place changed, and the ticks saved against
+    the old places landed on other steps.
+  - A step's place is now counted among all the guide's steps, so filters
+    don't move it.
+  - Your ticks move over to the new places once, the first time each guide
+    loads. A guide with nothing filtered keeps the places it always had.
+
 ## [0.15.5]
 
 ### Fixed
@@ -770,6 +793,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.16.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.15.5]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.15.4]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.15.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

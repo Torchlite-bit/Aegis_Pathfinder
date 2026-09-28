@@ -56,7 +56,19 @@ function AegisPathfinder:IsAutoDetectable() return false end
 function AegisPathfinder:ParseGuideLevelRange() return nil, nil end
 function AegisPathfinder:UpdateStatusFrame() end
 function AegisPathfinder:UpdateGuideListPanel() end
-function AegisPathfinder:GetGuideCategory() return "zone" end
+function AegisPathfinder:GetGuideCategory(name)
+	local qsp = self.qsplusguides[name]
+	if qsp and qsp.category == "Profession" then return "profession" end
+	if string.find(name or "", "^Dungeons/") then return "dungeon" end
+	return "zone"
+end
+AegisPathfinder.qsplusguides["Alchemy (1-300)"] = { category = "Profession", steps = {} }
+do
+	local src = io.open("Core.lua"):read("*a")
+	local from = string.find(src, "function AegisPathfinder:GuideBadge", 1, true)
+	local to = string.find(src, "function AegisPathfinder:GetGuideCategory", from, true)
+	assert(loadstring(string.sub(src, from, to - 1)))()
+end
 function AegisPathfinder:GetOptimizedGuideForLevel() return nil end
 function AegisPathfinder:ToggleMaterialsPanel() end
 function AegisPathfinder:GuideHasMaterials() return false end
@@ -136,6 +148,9 @@ check(AegisPathfinder.db.char.tabs[1] and AegisPathfinder.db.char.tabs[1].step =
 check(AegisPathfinder.db.char.activetab == 2, "the new tab is the active one")
 check(frame.guideTabs[2]:IsShown(), "the second tab is drawn")
 check(frame.guideTabs[2].close:IsShown(), "and it can be closed")
+check(frame.guideTabs[2].badge.label:GetText() == "PF", "a profession guide's tab says PF, got '%s'",
+	tostring(frame.guideTabs[2].badge.label:GetText()))
+check(frame.guideTabs[1].badge.label:GetText() == "XP", "while the leveling guide's still says XP")
 
 -- The old branch flags are answered from the tabs, so everything that reads
 -- them keeps working.

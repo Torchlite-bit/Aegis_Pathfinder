@@ -62,6 +62,7 @@ function AegisPathfinder.select(index, ...)
 end
 function AegisPathfinder.GetQuadrant() return "TOPRIGHT", "TOP", "RIGHT" end
 function AegisPathfinder:IsTemplateGuide() return false end
+function AegisPathfinder:GuideBadge() return "xp", "XP" end
 function AegisPathfinder:GoToObjective() end
 function AegisPathfinder:GoToPreviousObjective() end
 function AegisPathfinder:SkipToNextObjective() end

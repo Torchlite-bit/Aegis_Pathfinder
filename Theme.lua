@@ -655,6 +655,19 @@ end
 	whether a guide is authored content or a placeholder, which matters most in
 	a list where the two sit side by side and otherwise look identical.
 ]]
+--[[ What a guide is, on its tab: XP a leveling guide, PF a profession guide
+	(a crafting route included), DG a dungeon guide, HC a hardcore one, TPL a
+	placeholder. The same colours in every theme, the way the step bands keep
+	theirs, except XP's gold and TPL's grey, which were always the theme's. ]]
+local DARK, LIGHT = { 0.08, 0.07, 0.06 }, { 0.93, 0.93, 0.93 }
+Theme.BADGES = {
+	xp  = { bg = "goldDeep", text = DARK },
+	pf  = { bg = { 0.36, 0.62, 0.84 }, text = DARK },   -- blue
+	dg  = { bg = { 0.60, 0.48, 0.86 }, text = DARK },   -- violet
+	hc  = { bg = { 0.85, 0.30, 0.30 }, text = LIGHT },  -- red
+	tpl = { bg = "subtle", text = LIGHT },
+}
+
 function Theme:Badge(parent, text, kind)
 	local f = CreateFrame("Frame", nil, parent)
 	f:SetHeight(12)
@@ -671,13 +684,9 @@ function Theme:Badge(parent, text, kind)
 
 	function f:SetKind(kind, text)
 		self.label:SetText(string.upper(text or kind or ""))
-		if kind == "tpl" then
-			Theme:Tint(self.bg, "subtle")
-			self.label:SetTextColor(0.93, 0.93, 0.93)
-		else
-			Theme:Tint(self.bg, "goldDeep")
-			self.label:SetTextColor(0.08, 0.07, 0.06)
-		end
+		local look = Theme.BADGES[kind] or Theme.BADGES.xp
+		Theme:Tint(self.bg, look.bg)
+		self.label:SetTextColor(look.text[1], look.text[2], look.text[3])
 		self:SetWidth(math.max(22, self.label:GetStringWidth() + 10))
 	end
 

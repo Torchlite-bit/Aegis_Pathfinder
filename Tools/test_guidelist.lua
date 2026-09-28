@@ -143,6 +143,40 @@ check(xp:GetWidth() >= 22, "a badge has a minimum width so short labels still re
 xp:SetKind("tpl", "TPL")
 check(xp.bg.__color[1] < 0.35, "SetKind should switch a badge's appearance")
 
+--[[ What a guide is, on its tab: XP for leveling, PF a profession (a
+	crafting route included), DG a dungeon, HC hardcore, TPL a placeholder.
+	GuideBadge is lifted from Core.lua as it is. ]]
+do
+	local src = io.open("Core.lua"):read("*a")
+	local from = string.find(src, "function AegisPathfinder:GuideBadge", 1, true)
+	local to = string.find(src, "function AegisPathfinder:GetGuideCategory", from, true)
+	assert(from and to, "could not find GuideBadge in Core.lua")
+	assert(loadstring(string.sub(src, from, to - 1)))()
+	AegisPathfinder.qsplusguides["Alchemy (cheapest route)"] = { category = "Profession", planned = true, steps = {} }
+	local function badge(name)
+		local kind, text = AegisPathfinder:GuideBadge(name)
+		return kind .. ":" .. text
+	end
+	check(badge("Alchemy (1-300)") == "pf:PF", "a profession guide is PF, got %s", badge("Alchemy (1-300)"))
+	check(badge("Alchemy (cheapest route)") == "pf:PF", "so is a crafting route")
+	check(badge("Fishing (1-300)") == "tpl:TPL", "a placeholder is TPL, whatever it is")
+	check(badge("Dungeons/Uldaman (41-51)") == "dg:DG", "a dungeon guide is DG")
+	check(badge("RXP_Hardcore/Durotar (1-12)") == "hc:HC", "a hardcore guide is HC")
+	check(badge("Optimized/Loch Modan (17-18)") == "xp:XP" and badge("RXP/Elwynn Forest (6-11)") == "xp:XP"
+		and badge("Thalassian Highlands (1-10)") == "xp:XP", "leveling guides are XP")
+
+	local b = Theme:Badge(UIParent, "XP", "xp")
+	b:SetKind("pf", "PF")
+	check(b.label:GetText() == "PF" and b.bg.__color[3] > b.bg.__color[1], "PF is blue")
+	b:SetKind("dg", "DG")
+	check(b.label:GetText() == "DG" and b.bg.__color[3] > b.bg.__color[2] and b.bg.__color[1] > b.bg.__color[2],
+		"DG is violet")
+	b:SetKind("hc", "HC")
+	check(b.bg.__color[1] > 0.8 and b.bg.__color[2] < 0.4 and b.label.__color[1] > 0.9, "HC is red, its text light")
+	b:SetKind("xp", "XP")
+	check(b.bg.__color[1] > 0.88 and b.label.__color[1] < 0.2, "and back to gold")
+end
+
 -- Drift check ----------------------------------------------------------------
 
 -- The two functions above are copies. If Core.lua's versions change shape,

@@ -868,8 +868,15 @@ moves the view one tab and dims at its end. The view follows the active tab
 when that changes — opening a guide, switching from the guide list, closing
 one — and otherwise stays where the arrows left it, so a repaint does not
 yank it back. Tab labels drop the pack prefix (`Optimized/`) that every tab
-shares; the tooltip keeps the full name. Below 130px a tab drops its XP/TPL
-badge so the width goes to the name.
+shares; the tooltip keeps the full name. Below 130px a tab drops its badge so
+the width goes to the name.
+
+**Substitution: the badge says what the guide is** (`GuideBadge`,
+`Theme.BADGES`). The concept has the one gold `XP`. Here it's `XP` for a leveling
+guide, `PF` (blue) for a profession guide, a crafting route included, `DG`
+(violet) for a dungeon guide, `HC` (red, light text) for a hardcore guide, and
+the grey `TPL` for a placeholder, whatever else it is. PF, DG and HC keep
+their colours in every theme, as the step bands do.
 
 The model is `db.char.tabs` (a list of `{guide, step}`) plus `activetab`, in
 `Core.lua`. It replaced a one-deep branch — main plus at most one branch off

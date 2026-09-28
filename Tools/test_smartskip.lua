@@ -119,6 +119,69 @@ AegisPathfinder.db.char = { completion = {}, turnins = {}, Dungeons = {}, comple
 log = {}
 check(open() == 1, "another character starts from the top")
 
+--[[ Filters change which steps a guide has; they do not change a step's key.
+
+	A step's key was its name and its place among the steps the filters kept,
+	so turning the dungeons or group mode off renumbered every step after the
+	first one that went, and the ticks saved against the old keys landed on
+	other steps. It is now its place among all the guide's steps. ]]
+AegisPathfinder:RegisterGuide("Filtered Zone (10-20)", nil, "Alliance", function()
+	return [[
+N Welcome |N|Start here|
+A Dungeon Quest |QID|10| |D|DM| |N|For the Deadmines|
+A Group Quest |QID|11| |P|GROUP| |N|Needs a group|
+A Solo Quest |QID|12| |N|Anyone|
+C Solo Quest |QID|12| |N|Kill things|
+T Solo Quest |QID|12| |N|Hand it in|
+R Somewhere |N|Walk there|
+]]
+end)
+do
+	local A = AegisPathfinder
+	local keep = A.db.char
+	local function fresh()
+		A.db.char = { completion = {}, turnins = {}, Dungeons = { DM = true }, PlayStyle = "GROUP",
+			completedquests = {}, completedquestsbyid = {} }
+	end
+	fresh()
+	log = {}
+	A:LoadGuide("Filtered Zone (10-20)")
+	check(table.getn(A.quests) == 7 and A.quests[4] == "Solo Quest@4@", "every step, the Solo Quest's accept at 4")
+	A.turnedin[A.quests[1]] = true
+	A.turnedin[A.quests[4]] = true                   -- Solo Quest picked up
+
+	A.db.char.Dungeons.DM, A.db.char.PlayStyle = false, "SOLO"
+	A:LoadGuide("Filtered Zone (10-20)")
+	check(table.getn(A.quests) == 5 and A.actions[2] == "ACCEPT" and A.quests[2] == "Solo Quest@4@",
+		"dungeons and group mode off: two steps fewer, and the Solo Quest's accept keeps its key, got %s",
+		tostring(A.quests[2]))
+	check(A.turnedin[A.quests[1]] and A.turnedin[A.quests[2]], "so its tick is still on it")
+	check(not A.turnedin[A.quests[3]], "and not on the step after it")
+
+	-- A guide with nothing filtered keeps the keys it always had.
+	A:LoadGuide("Test Zone (1-10)")
+	check(A.quests[3] == "First Quest@3@" and A.quests[10] == "Third Quest@10@",
+		"nothing filtered: the same keys as before, got %s", tostring(A.quests[3]))
+
+	--[[ Ticks saved the old way move over once: saved with the dungeons and
+		group mode off, the accept was the 2nd step kept, the objectives the
+		3rd. ]]
+	fresh()
+	A.db.char.Dungeons.DM, A.db.char.PlayStyle = false, "SOLO"
+	A.db.char.turnins["Filtered Zone (10-20)"] = { ["Welcome@1@"] = true, ["Solo Quest@2@"] = true,
+		["Solo Quest@3@"] = true }
+	A:LoadGuide("Filtered Zone (10-20)")
+	local t = A.db.char.turnins["Filtered Zone (10-20)"]
+	check(t["Welcome@1@"] and t["Solo Quest@4@"] and t["Solo Quest@5@"] and not t["Solo Quest@2@"]
+		and not t["Solo Quest@3@"], "old ticks move to the new keys: the accept, the objectives")
+	check(A.db.char.stepkeys["Filtered Zone (10-20)"] == 2, "and the guide is marked done")
+	t["Solo Quest@2@"] = true                        -- nothing the second time
+	A:LoadGuide("Filtered Zone (10-20)")
+	check(A.db.char.turnins["Filtered Zone (10-20)"]["Solo Quest@2@"] and t["Solo Quest@4@"],
+		"once only: a second load moves nothing")
+	A.db.char = keep
+end
+
 -- Early on, with a quest from elsewhere ready to hand in at the end: the run
 -- to it is ticked, but not the welcome, nor anything before a quest you have
 -- not picked up.
