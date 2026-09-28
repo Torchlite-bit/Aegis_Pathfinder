@@ -18,6 +18,23 @@ reports.
 
 ---
 
+## [0.12.5] — restart
+
+### Added
+- **The Optimized Alliance route runs the Sunken Temple.** A new leg after the
+  Burning Steppes, *Sunken Temple (56-56)*, picks up Into The Temple of
+  Atal'Hakkar in Stormwind, runs the temple -- the Atal'ai tablets, Into the
+  Depths, Secret of the Circle, Jammal'an and the Essence of Eranikus -- and
+  hands in Jammal'an at Shadra'Alor and the tablets in Stormwind before
+  Silithus. Into the Depths is picked up from Marvon after The Stone Circle,
+  and the Hinterlands now offers Jammal'an the Prophet, which was optional and
+  so never offered. The Sunken Temple adds 13 quests to the route. Without
+  the Sunken Temple ticked, the leg is a single note.
+
+### Fixed
+- RestedXP Alliance: Jammal'an the Prophet is picked up at the Altar of Zul
+  and handed in on the way to the Plaguelands, by way of the Hinterlands.
+
 ## [0.12.4]
 
 ### Fixed
@@ -505,6 +522,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.12.5]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.4]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

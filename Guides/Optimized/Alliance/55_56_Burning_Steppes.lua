@@ -2,7 +2,7 @@
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
-AegisPathfinder:RegisterGuide("Optimized/Burning Steppes (55-56)", "Optimized/Silithus (56-57)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Optimized/Burning Steppes (55-56)", "Optimized/Sunken Temple (56-56)", "Alliance", function()
 
 return [[
 

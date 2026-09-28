@@ -57,6 +57,7 @@ local AllianceSharedPath = {
     { zone = "Felwood",              levels = "53-54", guide = "Optimized/Felwood (53-54)" },
     { zone = "Winterspring",         levels = "54-55", guide = "Optimized/Winterspring (54-55)" },
     { zone = "Burning Steppes",      levels = "55-56", guide = "Optimized/Burning Steppes (55-56)" },
+    { zone = "Sunken Temple",        levels = "56-56", guide = "Optimized/Sunken Temple (56-56)" },
     { zone = "Silithus",             levels = "56-57", guide = "Optimized/Silithus (56-57)" },
     { zone = "Western Plaguelands",  levels = "57-58", guide = "Optimized/Western Plaguelands (57-58)" },
     { zone = "Eastern Plaguelands",  levels = "58-59", guide = "Optimized/Eastern Plaguelands (58-59)" },

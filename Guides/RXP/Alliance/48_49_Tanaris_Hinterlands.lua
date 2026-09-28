@@ -52,6 +52,7 @@ A The Altar of Zul |QID|2989| |N|Gryphon Master Talonaxe - (9.8, 44.5)| |Z|The H
 N Run to the exploration location, then jump off to the side to evade the Elites at the top. Wait on the ledge until you have dropped Combat. Watch the video below for an example |N|(48.8, 68.4)| |Z|The Hinterlands|
 C The Altar of Zul |QID|2989| |OIDX|1| |N|Clear your way to the top of The Altar of Zul. Ensure you are on full HP before you reach the top! (48.8, 68.4)| |Z|The Hinterlands|
 N Click here for video reference |N|(48.8, 68.4)| |Z|The Hinterlands|
+A Jammal'an the Prophet |QID|1446| |N|the Atal'ai Exile - (33.8, 75.2) (ST Dungeon Quest)| |D|ST| |Z|The Hinterlands|
 C Skulk Rock Clean-up |QID|2877| |OIDX|1| |N|Green Sludges and Jade Oozes (57.6, 42.8)| |Z|The Hinterlands|
 N These are scattered on the ground throughout all of The Hinterlands |N|(28.1, 58.1)| |Z|The Hinterlands|
 C Favored of Elune? |QID|3661| |OIDX|1| |N|the Wildkin Feathers on the ground (28.1, 58.1)| |Z|The Hinterlands|

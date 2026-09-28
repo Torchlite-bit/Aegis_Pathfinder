@@ -124,6 +124,9 @@ check(n("RestedXP", "NightElf", "DM") == 0, "and not a Night Elf, who never goes
 check(n("RestedXP", "Human", "GNOMER") >= 12, "Gnomeregan's quests are handed in, got %d", n("RestedXP", "Human", "GNOMER"))
 check(n("VanillaGuide", "Orc", "BRD") < 5, "the Optimized guides take the Horde through few")
 check(n("VanillaGuide", "Human", "ULDA") >= 20, "the Optimized Alliance route runs Uldaman, got %d", n("VanillaGuide", "Human", "ULDA"))
+check(after("VanillaGuide", "Human", "Optimized/Burning Steppes (55-56)") == "Optimized/Sunken Temple (56-56)",
+	"the Optimized Alliance route runs the Sunken Temple after the Burning Steppes")
+check(n("VanillaGuide", "Human", "ST") >= 12, "and hands in its quests, Jammal'an included, got %d", n("VanillaGuide", "Human", "ST"))
 
 print(string.format("Routes: %d checks", checks))
 if table.getn(failures) == 0 then
