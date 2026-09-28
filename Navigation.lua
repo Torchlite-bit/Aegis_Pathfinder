@@ -129,8 +129,12 @@ end
 providers.pfquest = {
 	label = "pfQuest",
 
+	-- Every part of pfQuest this uses, so a fork without one of them is left
+	-- alone rather than erroring on the first waypoint.
 	IsAvailable = function()
-		return pfMap and pfMap.AddNode and pfQuest and pfQuest.route and true or nil
+		return pfMap and pfMap.AddNode and pfMap.DeleteNode and pfMap.GetMapIDByName
+			and pfQuest and pfQuest.route and pfQuest.route.SetTarget and pfQuest.route.IsTarget
+			and true or nil
 	end,
 
 	Add = function(wp)
@@ -673,10 +677,14 @@ function AegisPathfinder:MapPfQuestNPC(qid, action)
 	local unitId, objectId = "UNKNOWN", "UNKNOWN"
 	local loc, qid = GetLocale(), tonumber(qid)
 
-	local qLookup = pfDB["quests"]["data"]
+	-- Each table looked for before it is read: pfQuest's forks do not all
+	-- carry every one of them.
+	local quests, units, objects, zones = pfDB.quests, pfDB.units, pfDB.objects, pfDB.zones
+	local qLookup = quests and quests.data
 	if not qLookup or not qLookup[qid] then return false end
 
-	local title = pfDB.quests.loc[qid] and pfDB.quests.loc[qid]["T"] or "Unknown Quest"
+	local questLoc = quests.loc and quests.loc[qid]
+	local title = type(questLoc) == "table" and questLoc["T"] or "Unknown Quest"
 
 	if action == "ACCEPT" then
 		if qLookup[qid]["start"] then
@@ -706,23 +714,23 @@ function AegisPathfinder:MapPfQuestNPC(qid, action)
 	self:Debug(string.format("pfQuest lookup A:%s U:%s O:%s", action, unitId, objectId))
 
 	if unitId ~= "UNKNOWN" then
-		local unitLookup = pfDB["units"]["data"]
-		if unitLookup[unitId] and unitLookup[unitId]["coords"] then
+		local unitLookup = units and units.data
+		if unitLookup and unitLookup[unitId] and unitLookup[unitId]["coords"] then
 			for _, data in pairs(unitLookup[unitId]["coords"]) do
 				local x, y, zone, _ = unpack(data)
-				local zoneName = pfDB.zones.loc and pfDB.zones.loc[zone] or nil
-				local unitName = pfDB.units.loc and pfDB.units.loc[unitId] or "NPC"
+				local zoneName = zones and zones.loc and zones.loc[zone] or nil
+				local unitName = units.loc and units.loc[unitId] or "NPC"
 				MapPoint(zoneName, x, y, title .. " (" .. unitName .. ")")
 				return true
 			end
 		end
 	elseif objectId ~= "UNKNOWN" then
-		local objectLookup = pfDB["objects"]["data"]
-		if objectLookup[objectId] and objectLookup[objectId]["coords"] then
+		local objectLookup = objects and objects.data
+		if objectLookup and objectLookup[objectId] and objectLookup[objectId]["coords"] then
 			for _, data in pairs(objectLookup[objectId]["coords"]) do
 				local x, y, zone, _ = unpack(data)
-				local zoneName = pfDB.zones.loc and pfDB.zones.loc[zone] or nil
-				local objName = pfDB.objects.loc and pfDB.objects.loc[objectId] or "Object"
+				local zoneName = zones and zones.loc and zones.loc[zone] or nil
+				local objName = objects.loc and objects.loc[objectId] or "Object"
 				MapPoint(zoneName, x, y, title .. " (" .. objName .. ")")
 				return true
 			end

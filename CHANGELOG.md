@@ -18,6 +18,18 @@ reports.
 
 ---
 
+## [0.16.1]
+
+### Fixed
+- **Errors with some forks of pfQuest.** Pathfinder reads pfQuest's quest,
+  NPC and object tables to place quest-giver waypoints, and uses pfQuest's
+  map to put waypoints and its arrow on the step. It assumed every one of
+  those tables and functions was there, and a fork without one gave errors.
+  - Each table is now checked before it's read; a missing one just means no
+    waypoint from it.
+  - pfQuest is only used for waypoints when all the map functions Pathfinder
+    needs are there. Otherwise another waypoint addon takes them.
+
 ## [0.16.0]
 
 ### Added
@@ -793,6 +805,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.16.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.16.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.15.5]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.15.4]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
