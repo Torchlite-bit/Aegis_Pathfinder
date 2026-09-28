@@ -15,8 +15,7 @@ t Train your class spells |N|Ormak - (66.0, 18.5)| |C|Hunter| |Z|Orgrimmar|
 t Train your pet spells |N|Xao'tsu - (66.3, 14.8)| |C|Hunter| |Z|Orgrimmar|
 B Buy a [Massive Longbow] from him if it's available |N|Jin'sora - (78.1, 38.5)| |C|Hunter| |Z|Orgrimmar|
 t Train your class spells |N|Ur'kyo - (35.6, 87.8)| |C|Priest| |Z|Orgrimmar|
-A Necklace Recovery |QID|2283| |N|Dran - (59.4, 36.8)| |Z|Orgrimmar|
-T Necklace Recovery |QID|2283| |N|Dran - (59.4, 36.8)| |Z|Orgrimmar|
+A Necklace Recovery |QID|2283| |N|Dran - (59.4, 36.8) (ULDA Dungeon Quest)| |D|ULDA| |Z|Orgrimmar|
 t Train your class spells |N|Grezz - (79.9, 31.4)| |C|Warrior| |Z|Orgrimmar|
 A A Threat in Feralas |QID|2981| |N|Belgrom Rockmaul - (75.2, 34.2)| |Z|Orgrimmar|
 t Train [Wolf Riding] |N|Kildar and Ogunaro - (69.4, 13.1)| |O| |C|!Warlock| |R|Orc| |Z|Orgrimmar|
@@ -133,7 +132,6 @@ F Fly to Badlands |N|Breyk - (46.1, 54.8)| |O| |Z|Swamp of Sorrows|
 A Study of the Elements: Rock |QID|712| |N|Lotwil - (25.9, 44.9)| |Z|Badlands|
 C Study of the Elements: Rock |QID|712| |OIDX|1| |N|Greater Rock Elementals. Loot them for their Bracers (6.7, 81.7)| |Z|Badlands|
 A The Lost Fragments |QID|692| |N|[Group] Theldurin - (51.4, 76.9)| |P|GROUP| |Z|Badlands|
-A To the Undercity for Yagyin's Digest |QID|728| |N|[Group] Theldurin - (51.4, 76.9)| |P|GROUP| |Z|Badlands|
 C The Lost Fragments |QID|692| |OIDX|1| |N|[Group] Enraged Rock Elementals. Loot them for their Scrolls (56.1, 82.8)| |P|GROUP| |Z|Badlands|
 T The Lost Fragments |QID|692| |N|[Group] Return to Theldurin - (51.4, 76.9)| |P|GROUP| |Z|Badlands|
 A Summoning the Princess |QID|656| |N|[Group] Return to Theldurin - (51.4, 76.9)| |P|GROUP| |Z|Badlands|
@@ -180,7 +178,6 @@ A The Crown of Will |QID|521| |N|[Group] Melisara - (62.6, 20.6)| |P|GROUP| |Z|H
 F Fly to Undercity |N|Zarise - (60.1, 18.6)| |O| |Z|Hillsbrad Foothills|
 T Reclaimed Treasures |QID|2342| |N|[Group] Patrick - (62.3, 48.6)| |P|GROUP| |Z|Undercity|
 A Reclaimed Treasures |QID|2342| |N|Patrick - (62.3, 48.6) (ULDA Dungeon Quest)| |D|ULDA| |Z|Undercity|
-T To the Undercity for Yagyin's Digest |QID|728| |N|[Group] Bel'dugur - (53.8, 54.5)| |P|GROUP| |Z|Undercity|
 A Into the Field |QID|243| |N|[Group] Zinge - (50.1, 68.0)| |P|GROUP| |Z|Undercity|
 T The Crown of Will |QID|521| |N|[Group] Sharlindra - (57.6, 93.8)| |P|GROUP| |Z|Undercity|
 t Train your class spells |N|[Group] Angela - (48.3, 16.0)| |C|Warrior| |P|GROUP| |Z|Undercity|

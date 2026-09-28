@@ -18,6 +18,39 @@ reports.
 
 ---
 
+## [0.12.4]
+
+### Fixed
+- **Dungeon quest chains the guides started and never finished.** With the
+  dungeon ticked, each now gets its missing pick-up, dungeon step or hand-in
+  where the route already passes the quest's NPC:
+  - RestedXP Alliance: Into the Depths and Secret of the Circle in the Sunken
+    Temple; Mortality Wanes handed in in Darnassus on the Feralas leg; The
+    Dragon's Eye handed in to Haleh above Mazthoril after the last guide
+    hearths to Everlook (RXP Hardcore too).
+  - RXP Hardcore Horde: a stop in Thunder Bluff between the Swamp of Sorrows
+    and Tanaris for the Platinum Discs, Portents of Uldum and Seeing What
+    Happens, so the Uldum Pedestal chain in Tanaris can start; Deadmire is
+    handed in on the same stop. The Badlands detour at 42 no longer offers To
+    the Undercity for Yagyin's Digest, which needs Solution to Doom first, and
+    Necklace Recovery is handed in after Uldaman instead of straight after it
+    is accepted. Shadowshard Fragments is picked up and handed in in
+    Orgrimmar around Maraudon.
+  - RestedXP Horde: Necklace Recovery (once you have looted the necklace in
+    Uldaman) and Shadowshard Fragments in Orgrimmar; The Power to Destroy...
+    for Undead, from Varimathras on the way to Ragefire Chasm.
+  - Optimized: the Burning Steppes guides take a Blackrock Depths group in
+    for A Taste of Flame (Alliance) and Lost Thunderbrew Recipe (Horde) and
+    hand them in; the Horde picks up Yuka Screwspigot in Tanaris too.
+- Left as they are, because the route cannot finish them: The Prophecy of
+  Mosh'aru, Nekrum's Medallion and The God Hakkar (their first step is only
+  handed in after the Zul'Farrak run), Tiara of the Deep (a mage quest's
+  follow-up), Jammal'an and Zapper Fuel where the route never returns to the
+  Hinterlands or never runs the Sunken Temple, Going, Going, Guano! (its
+  guano drops only with the quest, which needs level 30, after the Razorfen
+  Kraul run), and Badlands Reagent Run on the Hardcore route, which does no
+  Badlands questing.
+
 ## [0.12.3]
 
 ### Added
@@ -472,6 +505,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.12.4]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

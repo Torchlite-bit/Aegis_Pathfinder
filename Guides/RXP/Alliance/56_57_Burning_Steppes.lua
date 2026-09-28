@@ -149,6 +149,7 @@ N Atal'alarion is on the lower level of Sunken Temple and is summoned by clickin
 C A Better Ingredient |QID|9053| |OIDX|1| |N|Kill Atal'alarion. Loot him for the Putrid Vine (ST Dungeon Quest)| |C|Druid| |D|ST| |Z|Westfall|
 N The Altar of Hakkar is located on the lower level of Sunken Temple |N|(ST Dungeon Quest)| |D|ST| |Z|Westfall|
 T Into the Depths |QID|3446| |N|Click on the Altar of Hakkar (ST Dungeon Quest)| |D|ST| |Z|Westfall|
+A Secret of the Circle |QID|3447| |N|Click on the Altar of Hakkar again (ST Dungeon Quest)| |D|ST|
 N The Idol of Hakkar is located on the lower level of Sunken Temple |N|(ST Dungeon Quest)| |D|ST| |Z|Westfall|
 T Secret of the Circle |QID|3447| |N|Clicking all of the Atal'ai Statues on the platforms will activate the Idol of Hakkar (ST Dungeon Quest)| |D|ST| |Z|Westfall|
 N The Altar of Hakkar is located on the lower level of Sunken Temple |N|(ST Dungeon Quest)| |D|ST| |Z|Westfall|

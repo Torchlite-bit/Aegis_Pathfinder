@@ -60,6 +60,7 @@ A Tooga's Quest |QID|1560| |N|Tooga - moves around (32, 72) (29.4, 74.2)|
 C Tooga's Quest |QID|1560| |N|Escort Tooga to Steamwheedle Port (66.57, 25.69)| |Z|Tanaris|
 T Tooga's Quest |QID|1560| |N|Torta in Steamwheedle Port (66.57, 25.69)| |Z|Tanaris|
 T Screecher Spirits |QID|3520| |N|Yeh'kinya in Steamwheedle Port (66.99, 22.36)| |Z|Tanaris| |O|
+A Yuka Screwspigot |QID|4324| |N|Yorba Screwspigot in Steamwheedle Port (67, 24)| |D|BRD| |Z|Tanaris|
 
 T The Dunemaul Compound |QID|5863| |N|Andi Lynn in Gadgetzan (52.81, 27.40)| |Z|Tanaris|
 T The Thirsty Goblin |QID|2605| |N|Marin Noggenfogger in Gadgetzan (51.80, 28.65)| |Z|Tanaris|

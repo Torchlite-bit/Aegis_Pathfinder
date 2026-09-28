@@ -22,6 +22,7 @@ N Buy [Turtle Meat] from the Auction House |N|(64.2, 49.6)| |AH| |Z|Undercity|
 B Buy Turtle Meat (x10) |L|3712 10| |N|Auctioneer Rhyker - (64.2, 49.6)| |AH| |Z|Undercity|
 R Travel toward Varimathras |N|(51.9, 64.7) (RFK Dungeon Quest)| |D|RFK| |Z|Undercity|
 T An Unholy Alliance |QID|6522| |N|Varimathras - (56.2, 92.2) (RFK Dungeon Quest)| |D|RFK| |Z|Undercity|
+T The Power to Destroy... |QID|5725| |N|Varimathras - (56.2, 92.2) (RFC Dungeon Quest)| |D|RFC| |Z|Undercity| |O|
 R Travel toward Faranell |N|(45.2, 71.7) (RFK Dungeon Quest)| |D|RFK| |Z|Undercity|
 T Going, Going, Guano! |QID|1109| |N|Faranell - (48.8, 69.3) (RFK Dungeon Quest)| |D|RFK| |Z|Undercity|
 A To Steal From Thieves |QID|1164| |N|Genavie - (64.2, 49.6)| |Z|Undercity|

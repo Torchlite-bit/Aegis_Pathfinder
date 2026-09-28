@@ -117,6 +117,7 @@ R Travel toward Faranell in The Apothecarium |N|(48.8, 69.2)| |O| |Z|Undercity|
 T A Recipe For Death |QID|447| |N|Faranell and Zinge in The Apothecarium - (48.8, 69.2)| |Z|Undercity|
 T Zinge's Delivery |QID|1359| |N|Faranell and Zinge in The Apothecarium - (48.8, 69.2)| |Z|Undercity|
 A Sample for Helbrim |QID|1358| |N|Faranell and Zinge in The Apothecarium - (48.8, 69.2)| |Z|Undercity|
+A The Power to Destroy... |QID|5725| |N|Varimathras in the Royal Quarter - (56.2, 92.2) (RFC Dungeon Quest)| |D|RFC| |Z|Undercity|
 T The Deathstalkers |QID|1899| |N|Mennet - (83.5, 69.1)| |C|Rogue| |R|Undead| |Z|Undercity|
 A The Deathstalkers |QID|1978| |N|Mennet - (83.5, 69.1)| |C|Rogue| |R|Undead| |Z|Undercity|
 t Train your class spells |N|Carolyn - (83.9, 72.1) (RFC Dungeon Quest)| |C|Rogue| |R|Undead| |D|RFC| |Z|Undercity|

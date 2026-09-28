@@ -121,6 +121,7 @@ t Train Teleport: Darnassus |N|Elissa Dumas - (40.6, 82.1)| |C|Mage| |Z|Darnassu
 t Train your class spells |N|Jandria - (37.9, 82.7)| |C|Priest| |Z|Darnassus|
 T Rise of the Silithid |QID|4267| |N|Gracina Spiritmight up stairs - (41.8, 85.6)| |Z|Darnassus|
 T Doling Justice |QID|2972| |N|Tyrande Whisperwind - (39.1, 81.6)| |Z|Darnassus|
+T Mortality Wanes |QID|1142| |N|Treshala Fallowbrook in the Tradesmen's Terrace - (69.5, 67.8) (RFK Dungeon Quest)| |D|RFK| |Z|Darnassus|
 t Train your class spells |N|Arias'ta Bladesinger - (58.7, 34.9)| |C|Warrior| |Z|Darnassus|
 N Syurna |N|(31.8, 16.7)| |C|Rogue| |Z|Darnassus|
 t Train your class spells |N|(37.0, 21.9)| |C|Rogue| |Z|Darnassus|

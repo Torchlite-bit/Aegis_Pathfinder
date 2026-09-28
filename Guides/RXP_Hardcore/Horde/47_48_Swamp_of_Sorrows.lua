@@ -53,7 +53,16 @@ t Train your class spells |N|Jannos - (76.0, 42.3)| |C|Druid| |Z|Feralas|
 T Return to Witch Doctor Uzer'i |QID|3122| |N|Uzer'i - (74.5, 43.4)| |Z|Feralas|
 A Testing the Vessel |QID|3123| |N|Uzer'i - (74.5, 43.4)| |Z|Feralas|
 A The Sunken Temple |QID|3380| |N|Uzer'i - (74.5, 43.4)| |Z|Feralas|
-F Fly to Tanaris |N|Shyn - (75.5, 44.4)| |Z|Feralas|
+F Fly to Tanaris |N|Shyn - (75.5, 44.4) (!ULDA Dungeon Quest)| |D|!ULDA| |Z|Feralas|
+F Fly to Thunder Bluff |N|Shyn - (75.5, 44.4) (ULDA Dungeon Quest)| |D|ULDA| |Z|Thunder Bluff|
+T Deadmire |QID|1205| |N|Melor - (61.5, 80.9) (ULDA Dungeon Quest)| |D|ULDA| |Z|Thunder Bluff|
+T The Platinum Discs |QID|2280| |N|Sage Truthseeker - (34.4, 46.9) (ULDA Dungeon Quest)| |D|ULDA| |Z|Thunder Bluff|
+A The Platinum Discs |QID|2440| |N|Sage Truthseeker - (34.4, 46.9) (ULDA Dungeon Quest)| |D|ULDA| |Z|Thunder Bluff|
+T The Platinum Discs |QID|2440| |N|Bena Winterhoof - (46.6, 33.2) (ULDA Dungeon Quest)| |D|ULDA| |Z|Thunder Bluff|
+A Portents of Uldum |QID|2965| |N|Sage Truthseeker - (34.4, 46.9) (ULDA Dungeon Quest)| |D|ULDA| |Z|Thunder Bluff|
+T Portents of Uldum |QID|2965| |N|Nara Wildmane - (75.7, 31.6) (ULDA Dungeon Quest)| |D|ULDA| |Z|Thunder Bluff|
+A Seeing What Happens |QID|2966| |N|Nara Wildmane - (75.7, 31.6) (ULDA Dungeon Quest)| |D|ULDA| |Z|Thunder Bluff|
+F Fly to Tanaris |N|Tal - (47.0, 49.8) (ULDA Dungeon Quest)| |D|ULDA| |Z|Tanaris|
 
 ]]
 end)
