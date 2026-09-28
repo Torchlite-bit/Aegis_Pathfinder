@@ -30,17 +30,28 @@ AegisPathfinder.RETIRED_PACKS = { ["Kamisayo Speedrun"] = "RestedXP" }
 -- Keyed by the locale-independent ChrRaces.dbc token from UnitRaceBase
 -- (ClassicAPI); Turtle's custom races arrive as their DBC filenames, so
 -- High Elf is BloodElf (raceID 10)
+--
+-- Only races with a side: ChrRaces also lists creature races, and ClassicAPI's
+-- GetFactionInfo is nil for a race with no faction group. Indexing that nil
+-- here stopped Core.lua loading at this line, so nothing after it existed --
+-- no OnInitialize, so no saved settings ("ItemScore.lua:72: attempt to index
+-- field 'db'"), no GetObjectiveInfo ("QuestTracker.lua:177"). Without
+-- ClassicAPI at all the table stays empty and OnEnable says what is missing.
 AegisPathfinder.turtleRaces = {}
 do
+    local info = C_CreatureInfo
     local i = 1
-    local raceInfo = C_CreatureInfo.GetRaceInfo(i)
+    local raceInfo = info and info.GetRaceInfo and info.GetRaceInfo(i)
     while raceInfo ~= nil do
-        AegisPathfinder.turtleRaces[raceInfo.clientFileString] = {
-            route = string.gsub(raceInfo.raceName, "%s+", ""),
-            faction = C_CreatureInfo.GetFactionInfo(i).groupTag,
-        }
+        local faction = info.GetFactionInfo and info.GetFactionInfo(i)
+        if faction and faction.groupTag and raceInfo.clientFileString then
+            AegisPathfinder.turtleRaces[raceInfo.clientFileString] = {
+                route = string.gsub(raceInfo.raceName or "", "%s+", ""),
+                faction = faction.groupTag,
+            }
+        end
         i = i + 1
-        raceInfo = C_CreatureInfo.GetRaceInfo(i)
+        raceInfo = info.GetRaceInfo(i)
     end
 end
 
@@ -567,7 +578,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.15.1"
+AegisPathfinder.version = "0.15.2"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be

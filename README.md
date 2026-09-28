@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.15.1)
+# Aegis: Pathfinder (v0.15.2)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -117,8 +117,12 @@ offered beside the next zone.
   and crafted gear within your reach. At 60 that is every dungeon, and the
   raids too if you ask it.
 
-<!-- Screenshots to come: the Item Score page, the Gear Advisor pop-up and the
-     Gear finder. Put them in docs/images/ and add them here. -->
+| Stat weights, per spec | The Gear finder |
+| :---: | :---: |
+| <img src="docs/images/options-itemscore.png" width="380" alt="Options, Item Score page: a Retribution Paladin's stat weights, with Holy and Protection scored as well and Share weights to import or export"> | <img src="docs/images/gear-finder.png" width="380" alt="The Gear finder: upgrades for Retribution by slot, from the Deadmines, Wailing Caverns, quests and crafting, with who drops each, the chance, and how much better it is"> |
+
+<!-- Screenshot to come: the Gear Advisor pop-up. Put it in docs/images/ and
+     add it here. -->
 
 ### ⚒️ Professions
 
@@ -206,7 +210,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.15.1`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.15.2`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)** or open an
