@@ -117,8 +117,12 @@ offered beside the next zone.
   and crafted gear within your reach. At 60 that is every dungeon, and the
   raids too if you ask it.
 
-<!-- Screenshots to come: the Item Score page, the Gear Advisor pop-up and the
-     Gear finder. Put them in docs/images/ and add them here. -->
+| Stat weights, per spec | The Gear finder |
+| :---: | :---: |
+| <img src="docs/images/options-itemscore.png" width="380" alt="Options, Item Score page: a Retribution Paladin's stat weights, with Holy and Protection scored as well and Share weights to import or export"> | <img src="docs/images/gear-finder.png" width="380" alt="The Gear finder: upgrades for Retribution by slot, from the Deadmines, Wailing Caverns, quests and crafting, with who drops each, the chance, and how much better it is"> |
+
+<!-- Screenshot to come: the Gear Advisor pop-up. Put it in docs/images/ and
+     add it here. -->
 
 ### ⚒️ Professions
 
