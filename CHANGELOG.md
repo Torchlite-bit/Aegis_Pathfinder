@@ -18,6 +18,19 @@ reports.
 
 ---
 
+## [0.12.6]
+
+### Fixed
+- **Optional quests that follow another are offered once it is done.** A
+  step like "A Rescue OOX-22/FE! |PRE|2766| |O|" waits for its prerequisite,
+  but the guides give that as a quest id and the addon looked for it among
+  the steps' names, so it never found it and the step was never offered.
+  Now the id is checked against the server's record of your quests and the
+  guide's own turn-ins, and a list of ids needs all of them. Affected: Rescue
+  OOX-22/FE!, The Newest Member of the Family and An OOX of Your Own
+  (Optimized Alliance), Proof of Deed, At Last! and Further Mysteries (zone
+  guides). Prerequisites given by name work as before.
+
 ## [0.12.5] — restart
 
 ### Added
@@ -522,6 +535,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.12.6]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.5]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.4]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

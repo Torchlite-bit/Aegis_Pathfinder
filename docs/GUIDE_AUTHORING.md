@@ -471,6 +471,10 @@ To create a guide entry for quest 41188:
    when it has something to go on: a `|U|` item in your bags, a `|L|` item,
    or a `|PRE|` quest handed in. Without one it is never shown, so a dungeon
    chain gated by `|D|` should not also be `|O|`, or nobody picks it up.
+   `|PRE|` takes the prerequisite's quest id (`|PRE|2766|`), or several that
+   are all needed (`|PRE|836, 2767, 648|`); the server's record of the quest,
+   or this guide's ticked turn-in step for it, counts. A quest name works
+   too, matched against the steps of the loaded guide.
 7. **Test your guide** - Play through it on a character
 
 ## Troubleshooting

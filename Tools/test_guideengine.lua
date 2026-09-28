@@ -275,6 +275,61 @@ do
 	AegisPathfinder.ShareHold = nil
 end
 
+-- An optional accept waits for its |PRE| --------------------------------------------
+
+--[[ "A Rescue OOX-22/FE! ... |PRE|2766| |O|" is offered once Find OOX-22/FE!
+	is handed in, and skipped until then. The guides give the prerequisite as a
+	quest id; it was looked up among the steps' names and never found, so the
+	step was never offered at all. ]]
+do
+	AegisPathfinder.Locale = AegisPathfinder.Locale or { PART_GSUB = "%s%(Part %d+%)" }
+	AegisPathfinder.db.char.completedquests = {}
+	AegisPathfinder.db.char.completedquestsbyid = {}
+	function AegisPathfinder:IsQuestCompletedOnServer(qid)
+		return qid and self.db.char.completedquestsbyid[tonumber(qid)] == true or false
+	end
+	local function stepAfterUpdate(actions, quests, tags, turnedin)
+		AegisPathfinder.actions, AegisPathfinder.quests, AegisPathfinder.tags = actions, quests, tags
+		AegisPathfinder.turnedin = turnedin or {}
+		AegisPathfinder.current = 1
+		AegisPathfinder:UpdateStatusFrame()
+		return AegisPathfinder.current
+	end
+	local rescue = { { "ACCEPT", "NOTE" }, { "Rescue OOX-22/FE!@1@", "After@2@" },
+		{ "|QID|2767| |PRE|2766| |O|", "|N|after|" } }
+
+	check(stepAfterUpdate(rescue[1], rescue[2], rescue[3]) == 2,
+		"before Find OOX-22/FE! is handed in, the rescue is skipped")
+	AegisPathfinder.db.char.completedquestsbyid[2766] = true
+	check(stepAfterUpdate(rescue[1], rescue[2], rescue[3]) == 1,
+		"once the server has it handed in, the rescue is offered")
+	AegisPathfinder.db.char.completedquestsbyid[2766] = nil
+
+	check(stepAfterUpdate({ "TURNIN", "ACCEPT", "NOTE" },
+		{ "Find OOX-22/FE!@1@", "Rescue OOX-22/FE!@2@", "After@3@" },
+		{ "|QID|2766|", "|QID|2767| |PRE|2766| |O|", "|N|after|" },
+		{ ["Find OOX-22/FE!@1@"] = true }) == 2,
+		"so is it when this guide's own turn-in for it is ticked")
+
+	local oox = { { "ACCEPT", "NOTE" }, { "An OOX of Your Own@1@", "After@2@" },
+		{ "|QID|3721| |PRE|836, 2767, 648| |O|", "|N|after|" } }
+	AegisPathfinder.db.char.completedquestsbyid[836] = true
+	AegisPathfinder.db.char.completedquestsbyid[2767] = true
+	check(stepAfterUpdate(oox[1], oox[2], oox[3]) == 2, "a list of prerequisites needs all of them")
+	AegisPathfinder.db.char.completedquestsbyid[648] = true
+	check(stepAfterUpdate(oox[1], oox[2], oox[3]) == 1, "and with all three the step is offered")
+
+	local named = { { "TURNIN", "ACCEPT", "NOTE" },
+		{ "Contracts in Moonwhisper Coast@1@", "Zalwan's Cut@2@", "After@3@" },
+		{ "|O|", "|QID|41975| |PRE|Contracts in Moonwhisper Coast| |O|", "|N|after|" } }
+	check(stepAfterUpdate(named[1], named[2], named[3]) == 3, "a prerequisite named, not numbered, still waits")
+	check(stepAfterUpdate(named[1], named[2], named[3], { ["Contracts in Moonwhisper Coast@1@"] = true }) == 2,
+		"and is found by its name")
+
+	check(not AegisPathfinder:IsPrereqTurnedIn("") and not AegisPathfinder:IsPrereqTurnedIn(nil),
+		"no prerequisite is never handed in")
+end
+
 -- Report ---------------------------------------------------------------------
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end
