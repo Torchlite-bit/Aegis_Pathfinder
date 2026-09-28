@@ -18,6 +18,23 @@ reports.
 
 ---
 
+## [0.15.5]
+
+### Fixed
+- **The AegisTarget macro had a blank icon**, in the Macros window and on
+  an action bar.
+  - The stock macro functions pick an icon by its place in the game's
+    macro-icon list. The game fills that list only when something asks for
+    it.
+  - The addon read the list once, while it was still empty, and saved the
+    macro with an icon from an empty list: nothing.
+  - Macros are now written through ClassicAPI's macro functions, which take
+    the icon by name. AegisTarget wears Hunter's Mark's icon, and AegisItem
+    the quest item's own icon, which the stock list doesn't have.
+  - A macro already made blank gets its icon at the next update.
+  - Without ClassicAPI's macro functions, the list is read again until the
+    game has filled it.
+
 ## [0.15.4]
 
 ### Fixed
@@ -753,6 +770,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.15.5]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.15.4]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.15.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.15.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

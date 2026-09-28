@@ -797,15 +797,25 @@ current -- RestedXP's generated targeting macro, plus one for the quest item:
   (`/target` keeps the last name it finds), then `/script
   AegisPathfinder:MarkTarget()`, which marks the current target if it is one
   of the step's. Kept to 255 letters by dropping the least wanted names. With
-  no targets it is `/apg target`, which says there is nobody. Its icon is the
-  first of Hunter's Mark's, the town watch's or a spyglass that the macro icon
-  list has.
+  no targets it is `/apg target`, which says there is nobody. Its icon is
+  Hunter's Mark's (`Ability_Hunter_SniperShot`).
 - **AegisItem**: `/apg useitem` (1.12 has no `/use`), wearing the first active
-  item's icon when the macro icon list has that texture, else the question
-  mark. The stock action bars repaint a button when its slot changes, not
+  item's icon. The stock action bars repaint a button when its slot changes, not
   when the macro in it does, so after an edit the addon repaints any stock
   button holding it (`ActionButton_Update`); other bar addons repaint on
   their own schedule.
+
+**Icons by name.** ClassicAPI's `C_Macro.CreateMacro` / `C_Macro.EditMacro`
+take the icon as a texture name, so both macros are written through them when
+they are there: no list is involved, and AegisItem gets its item's own icon,
+which the stock list lacks. The stock `CreateMacro` / `EditMacro` take a place
+in the macro icon list instead, and the client fills that list lazily: read
+while it was still empty, and kept, it left AegisTarget with the first place
+of an empty list, a blank icon. Without `C_Macro` the list is read again
+until it is the one the client reports, and the icon is left alone while it
+is empty; the targeting icon is then the first of Hunter's Mark's, the town
+watch's or a spyglass the list has, and AegisItem's the item's icon when the
+list has it, else the question mark.
 
 Both are made as character macros the first time there is something for them
 to do, and rewritten (`EditMacro`, only when the text or icon changed) on
