@@ -44,7 +44,7 @@ end
 function AegisPathfinder:SelectRoutePack(name)
 	table.insert(packCalls, name)
 	self.db.char.routepack = name
-	local rxp = name == "RestedXP" or name == "Kamisayo Speedrun"
+	local rxp = name == "RestedXP"
 	self.db.char.PlayStyle = rxp and "GROUP" or "SOLO"
 	self.db.char.UseAH = rxp
 end
@@ -66,7 +66,7 @@ AegisPathfinder.routepacks = {
 			Orc = { { guide = "RXP/Northshire (1-6)" } } } },
 	["RXP Hardcore"] = { name = "RXP Hardcore", displayName = "RXP Hardcore", description = "Survival",
 		routes = { Human = { { guide = "HC/Elwynn (1-10)" } } } },
-	["Kamisayo Speedrun"] = { name = "Kamisayo Speedrun", displayName = "Kamisayo", description = "Warrior",
+	["Warrior Pack"] = { name = "Warrior Pack", displayName = "Speedrun Pack", description = "Warrior",
 		factionRestriction = "Horde", classRestriction = "WARRIOR", routes = { Orc = { { guide = "RXP/Northshire (1-6)" } } } },
 }
 
@@ -133,8 +133,8 @@ AegisPathfinder:ShowSetup()
 check(titles() == "Optimized", "a High Elf only gets guides with a High Elf route, got %s", titles())
 race, faction, class = "Orc", "Horde", "WARRIOR"
 AegisPathfinder:ShowSetup()
-check(titles() == "Optimized, RestedXP Speedrun, Kamisayo Speedrun",
-	"a Horde warrior sees Kamisayo, got %s", titles())
+check(titles() == "Optimized, RestedXP Speedrun, Speedrun Pack",
+	"a Horde warrior also sees a Horde Warrior pack, by its own name, got %s", titles())
 race, faction, class = "Human", "Alliance", "MAGE"
 AegisPathfinder:ShowSetup()
 

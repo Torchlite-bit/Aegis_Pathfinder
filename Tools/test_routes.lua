@@ -41,29 +41,39 @@ local function has(faction, name)
 	return (guides[faction] and guides[faction][name]) or (guides.Both and guides.Both[name])
 end
 
--- Guides a pack names that were never added.
-local MISSING = { ["Kamisayo Speedrun"] = "its guides were never added to the addon" }
-
 local legs = 0
 for pack, info in pairs(packs) do
 	for race, route in pairs(info.routes) do
 		local faction = ALLIANCE[race] and "Alliance" or "Horde"
 		for i, leg in ipairs(route) do
 			legs = legs + 1
-			if not MISSING[pack] then
-				check(has(faction, leg.guide), "%s / %s leg %d: no %s guide %q", pack, race, i, faction, leg.guide)
-			end
+			check(has(faction, leg.guide), "%s / %s leg %d: no %s guide %q", pack, race, i, faction, leg.guide)
 		end
 	end
 end
 check(legs > 300, "the packs' routes are all read, got %d legs", legs)
-for pack, why in pairs(MISSING) do
-	local any = false
-	for race, route in pairs(packs[pack].routes) do
-		local faction = ALLIANCE[race] and "Alliance" or "Horde"
-		for _, leg in ipairs(route) do if has(faction, leg.guide) then any = true end end
+-- Kamisayo Speedrun is hidden until its guides are added, and a character
+-- that had picked it moves to RestedXP (Core.lua's MoveOffRetiredPack).
+check(not packs["Kamisayo Speedrun"], "Kamisayo Speedrun is not offered: none of its guides exist")
+do
+	local core = io.open("Core.lua"):read("*a")
+	local function lift(from, to)
+		local a = string.find(core, from, 1, true)
+		local b = string.find(core, to, a or 1, true)
+		assert(a and b, "could not find " .. from .. " in Core.lua")
+		assert(loadstring(string.sub(core, a, b - 1)))()
 	end
-	check(not any, "%s is listed as missing (%s) but has guides now: take it off the list", pack, why)
+	lift("AegisPathfinder.RETIRED_PACKS =", "\n")
+	lift("function AegisPathfinder:MoveOffRetiredPack()", "-- Get the currently active route pack")
+	AegisPathfinder.routepacks = packs
+	local function after(saved)
+		AegisPathfinder.db = { char = { routepack = saved } }
+		AegisPathfinder:MoveOffRetiredPack()
+		return AegisPathfinder.db.char.routepack
+	end
+	check(after("Kamisayo Speedrun") == "RestedXP", "a Kamisayo character moves to RestedXP, got %s", tostring(after("Kamisayo Speedrun")))
+	check(packs[after("Kamisayo Speedrun")], "which is a pack")
+	check(after("RXP Hardcore") == "RXP Hardcore" and after(nil) == nil, "and nobody else moves")
 end
 
 -- The next links.

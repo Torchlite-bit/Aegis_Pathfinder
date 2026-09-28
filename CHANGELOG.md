@@ -18,6 +18,16 @@ reports.
 
 ---
 
+## [0.12.1]
+
+### Removed
+- **Kamisayo Speedrun is hidden until its guides are added.** None of the
+  pack's guides were ever in the addon -- the guide is only shared on
+  Kamisayo's Discord -- so picking it stopped on its first leg. It is no
+  longer offered in the setup, the options window or `/vg RoutePack`, and a
+  character that had it moves to **RestedXP** when it logs in. The route is
+  kept in `Routes/Routes.lua`, ready for when the guides come.
+
 ## [0.12.0] — restart
 
 ### Changed
@@ -419,6 +429,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.12.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.11.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.11.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

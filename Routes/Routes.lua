@@ -520,7 +520,13 @@ AegisPathfinder:RegisterRoutePack("RXP Hardcore", {
     },
 })
 
--- Kamisayo Speedrun Route Pack - Horde Warrior speedrun 1-60
+-- Kamisayo Speedrun Route Pack - Horde Warrior speedrun 1-60.
+-- Hidden until its guides are added: none of the "(Speedrun)" guides below
+-- exist in the addon (the guide is only shared on Kamisayo's Discord), so the
+-- pack could only ever stop on its first leg. Characters that had picked it
+-- are moved to RestedXP when they log in (Core.lua's InitializeRoute). To
+-- bring it back, add the guides and take the comment brackets off.
+--[[
 local KamisayoRoute = {
     { zone = "Durotar",              levels = "1-13",  guide = "RXP/1-13 Durotar (Speedrun)" },
     { zone = "The Barrens",          levels = "13-16", guide = "RXP/13-16 The Barrens (Speedrun)" },
@@ -563,6 +569,7 @@ AegisPathfinder:RegisterRoutePack("Kamisayo Speedrun", {
         Goblin = KamisayoRoute,
     },
 })
+]]
 
 
 -- ============================================================================

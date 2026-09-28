@@ -6,9 +6,9 @@
 	the same, over the settings the options panel already has -- nothing here
 	is a new setting, only a friendlier way in.
 
-	  1. Your guide     the route pack: Optimized, RestedXP Speedrun, Hardcore
-	                    Survival (and Kamisayo for a Horde Warrior). Packs with
-	                    no route for your race are not offered.
+	  1. Your guide     the route pack: Optimized, RestedXP Speedrun or Hardcore
+	                    Survival. Packs with no route for your race are not
+	                    offered.
 	  2. Features       Auction House steps, Solo Self-Found, group quests,
 	                    dungeons.
 	  3. Dungeons       which ones, with their level ranges, and quick picks
@@ -70,16 +70,13 @@ local PACK_TEXT = {
 		text = "The fastest routes, from the RestedXP speedrun guides." },
 	["RXP Hardcore"] = { title = "Hardcore Survival",
 		text = "Routes chosen to keep a hardcore character alive: safer quests in a safer order." },
-	["Kamisayo Speedrun"] = { title = "Kamisayo Speedrun",
-		text = "A Horde Warrior speedrun, 1-60." },
 }
 -- The order the first page offers them in.
-local PACK_ORDER = { "VanillaGuide", "RestedXP", "RXP Hardcore", "Kamisayo Speedrun" }
+local PACK_ORDER = { "VanillaGuide", "RestedXP", "RXP Hardcore" }
 
 -- The features a pack starts with, as SelectRoutePack sets them.
 local PACK_DEFAULTS = {
 	RestedXP = { ah = true, group = true },
-	["Kamisayo Speedrun"] = { ah = true, group = true },
 	["RXP Hardcore"] = { ah = false, group = false },
 	VanillaGuide = { ah = false, group = false },
 }

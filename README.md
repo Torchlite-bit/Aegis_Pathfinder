@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.12.0)
+# Aegis: Pathfinder (v0.12.1)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -62,11 +62,10 @@ Every feature in full detail: **[docs/FEATURES.md](docs/FEATURES.md)**.
 
 ### 🧭 Guides that follow you
 
-1–60 for every race: **Optimized** (Joana's routes), **RestedXP**, **RXP
-Hardcore**, and **Kamisayo Speedrun** for Horde warriors. Steps tick themselves
-off as you accept, complete and turn in quests. Finish a guide and it offers
-the next — or one of your server's custom zones, if one fits your level:
-Moonwhisper Coast, new in 1.18.1, included.
+1–60 for every race: **Optimized** (Joana's routes), **RestedXP** and **RXP
+Hardcore**. Steps tick themselves off as you accept, complete and turn in
+quests. Finish a guide and it offers the next — or one of your server's custom
+zones, if one fits your level: Moonwhisper Coast, new in 1.18.1, included.
 
 **First-time setup.** The first time you log in, three quick steps pick your
 guide, what it includes, and the dungeons you mean to run -- each with how
@@ -193,7 +192,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.12.0`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.12.1`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)** or open an

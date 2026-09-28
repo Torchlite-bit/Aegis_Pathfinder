@@ -22,6 +22,9 @@ AegisPathfinder.manuallyUnchecked = {}
 
 -- Route pack registry (named collections of per-race routes)
 AegisPathfinder.routepacks = {}
+-- Route packs that were offered once and are not now, and the pack their
+-- characters move to.
+AegisPathfinder.RETIRED_PACKS = { ["Kamisayo Speedrun"] = "RestedXP" }
 
 -- Turtle WoW custom race support
 -- Keyed by the locale-independent ChrRaces.dbc token from UnitRaceBase
@@ -559,7 +562,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.12.0"
+AegisPathfinder.version = "0.12.1"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -673,6 +676,7 @@ function AegisPathfinder:InitializeRoute()
     if not self.db.char.routepack and self.db.char.routeselected then
         self.db.char.routepack = "VanillaGuide"
     end
+    self:MoveOffRetiredPack()
 
     -- Load active route pack's routes into self.routes
     local activePack = self:GetCurrentRoutePack()
@@ -860,6 +864,16 @@ end
 -- Now we also allow Optimized guides to be shown as requested by the user
 function AegisPathfinder:IsRoutePackGuide(guideName)
     return false
+end
+
+-- A pack that is no longer offered hands its characters on: Kamisayo
+-- Speedrun is hidden until its guides are added (Routes/Routes.lua).
+function AegisPathfinder:MoveOffRetiredPack()
+    local db = self.db.char
+    local to = db.routepack and self.RETIRED_PACKS[db.routepack]
+    if to and not self.routepacks[db.routepack] then
+        db.routepack = to
+    end
 end
 
 -- Get the currently active route pack (or nil)
@@ -2235,7 +2249,7 @@ AegisPathfinder.startingZones = {
         { race = "Tauren",   zone = "RXP (Tauren)",      guide = "RXP/1-6 Tauren",             levels = "1-23", rejoinLevel = 23 },
         { race = "Undead",   zone = "RXP (Undead)",      guide = "RXP/1-6 Undead",             levels = "1-23", rejoinLevel = 23 },
 
-        ---
+        --- Not offered while its guide is missing (the pack is hidden, Routes/Routes.lua).
         { race = "Warrior",  zone = "Kamisayo Speedrun", guide = "RXP/Kamisayo Speedrun 1-13", levels = "1-60", rejoinLevel = 60, class = "Warrior", isSpeedrun = true },
     },
 }

@@ -43,7 +43,8 @@ error log, setup) and **About** (version and credits).
 ## What it does
 
 **Routes.** Pick a route pack on the options window's **Route** page: Optimized (Joana's
-routes), RestedXP, or RXP Hardcore — plus Kamisayo Speedrun for Horde warriors.
+routes), RestedXP, or RXP Hardcore. (Kamisayo Speedrun, a Horde Warrior pack, is
+hidden until its guides are added; a character that had it moves to RestedXP.)
 A preview underneath shows the route your race takes under it. Your race's
 starting zone is selected for you, and all races merge into a shared route
 after level 12.
@@ -80,8 +81,8 @@ It is a switch under **Filters**, a choice in the first-time setup, and
 setup asks three things, as RestedXP does:
 
 1. **Your guide**: Optimized (quest-optimized 1-60, every race), RestedXP
-   Speedrun, Hardcore Survival, or Kamisayo Speedrun for a Horde Warrior. Only
-   guides with a route for your race are offered.
+   Speedrun, or Hardcore Survival. Only guides with a route for your race are
+   offered.
 2. **Features**: Auction House steps, Solo Self-Found, group quests, dungeons.
 3. **Dungeons** (when dungeons are on): the dungeons your faction can run, with
    level ranges and how many quests each adds to your route, plus
