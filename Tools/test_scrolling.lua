@@ -29,6 +29,7 @@ function AegisPathfinder:IsRoutePackGuide() return false end
 function AegisPathfinder:GetGuideCategory() return "zone" end
 function AegisPathfinder:ParseGuideLevelRange() return nil, nil end
 function AegisPathfinder:IsTemplateGuide() return false end
+function AegisPathfinder:GuideBadge() return "xp", "XP" end
 function AegisPathfinder:ReturnFromBranch() end
 
 -- Two columns' worth more guides than the list shows at once.

@@ -94,6 +94,7 @@ local defaults = {
     debug = false,
     hearth = UNKNOWN,
     turnins = {},
+    stepkeys = {},                -- guide -> 2 once its ticks use Parser's place keys (MigrateStepKeys)
     cachedturnins = {},
     trackquests = true,
     completion = {},
@@ -578,7 +579,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.15.4"
+AegisPathfinder.version = "0.16.0"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -2091,6 +2092,18 @@ function AegisPathfinder:IsTemplateGuide(guideName)
     local qsp = self.qsplusguides and self.qsplusguides[guideName]
 
     return (qsp and qsp.template) and true or false
+end
+
+--- A guide's tab badge: its kind and text. TPL for a placeholder, PF for a
+--- profession guide (a crafting route included), DG a dungeon guide, HC a
+--- hardcore one, XP any other.
+function AegisPathfinder:GuideBadge(guideName)
+    if self:IsTemplateGuide(guideName) then return "tpl", "TPL" end
+    local category = self:GetGuideCategory(guideName)
+    if category == "profession" then return "pf", "PF" end
+    if category == "dungeon" then return "dg", "DG" end
+    if category == "rxp_hc" then return "hc", "HC" end
+    return "xp", "XP"
 end
 
 function AegisPathfinder:GetGuideCategory(guideName)

@@ -47,6 +47,13 @@ are only found at startup.
 - [ ] Loch Modan (17-18), Crocolisk Hunting: Active Targets and the
       AegisTarget macro name Loch Crocolisk, not the Wetlands or Stranglethorn
       crocolisks.
+- [ ] The Macros window's AegisTarget tile, and the macro on an action bar,
+      show Hunter's Mark's icon, not a blank square; AegisItem shows the quest
+      item's own icon.
+- [ ] Tick a few steps, then switch group mode or a dungeon chip: the ticks
+      stay on the same steps, and after `/reload` too.
+- [ ] Tabs: a leveling guide says XP, a profession guide or crafting route PF,
+      a dungeon guide DG, a hardcore guide HC.
 - [ ] A guide opened partway -- Loch Modan (17-18) with Crocolisk Hunting in
       the log -- opens at that quest and stays there as the log updates and
       after `/reload`; it does not drop back to step 1, 0 done.

@@ -57,7 +57,8 @@ mouse wheel over the bar) scroll through the rest; the tab you are on is
 always brought into view. The first is your main route — what the addon
 advances along on its own. Left-click a guide in the list to open it beside
 what you are reading, or right-click to load it into the tab you are on; each
-tab remembers its own place. Every tab can be closed; close them all and the
+tab remembers its own place. A badge on each tab says what the guide is: XP
+for leveling, PF for a profession, DG for a dungeon, HC for hardcore. Every tab can be closed; close them all and the
 panel waits, empty, for you to pick one.
 
 **Dungeons.** Toggle which of 15 dungeons you intend to run. Opting in promotes
@@ -108,7 +109,9 @@ pfQuest-turtle, patch 1.18.1's included (`Tools/build_dungeon_guides.py`).
 Defaults follow the route pack you chose. They act on every route pack: in
 Solo mode the Optimized and zone guides leave out elite and group quests, and
 the quests that follow on from them; with Auction House steps off they leave
-out quests that need an item most players buy there.
+out quests that need an item most players buy there. Changing a filter keeps
+your ticks on the steps they were on: a step is known by its place among all
+the guide's steps, not only the ones the filters keep.
 
 **Solo Self-Found.** For a character that plays alone, never trades and never
 uses the Auction House: group quests, dungeon quests and every step that trades

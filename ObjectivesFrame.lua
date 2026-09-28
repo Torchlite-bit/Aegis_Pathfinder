@@ -385,9 +385,9 @@ function AegisPathfinder:UpdateObjectivePanel()
 		at most -- with ‹ › to scroll the rest into view. Switching guides
 		never creates a frame.
 
-		The badge marks whether a guide is authored (XP) or a placeholder
-		(TPL) -- the same signal the guide list carries, in the one place you
-		are looking while you follow it.
+		The badge says what the guide is (GuideBadge): XP for leveling, PF a
+		profession, DG a dungeon, HC hardcore, TPL a placeholder -- in the one
+		place you are looking while you follow it.
 	]]
 	local tabbar = CreateFrame("Frame", nil, frame)
 	tabbar:SetHeight(G.TABBAR_H)
@@ -953,8 +953,7 @@ function AegisPathfinder:UpdateObjectiveTabs()
 			-- The pack prefix ("Optimized/") is the same on every tab and
 			-- costs a third of a narrow one; the tooltip keeps the full name.
 			button.label:SetText((string.gsub(tab.guide, "^.*/", "")))
-			button.badge:SetKind(self:IsTemplateGuide(tab.guide) and "tpl" or "xp",
-				self:IsTemplateGuide(tab.guide) and "TPL" or "XP")
+			button.badge:SetKind(self:GuideBadge(tab.guide))
 			button:SetActive(i == active)
 			prev = button
 		end

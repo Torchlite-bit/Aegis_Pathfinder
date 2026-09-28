@@ -40,6 +40,7 @@ function AegisPathfinder.select(index, ...)
 	return arg[index]
 end
 function AegisPathfinder:IsTemplateGuide() return false end
+function AegisPathfinder:GuideBadge() return "xp", "XP" end
 function AegisPathfinder:ReturnFromBranch() end
 function AegisPathfinder:GoToObjective(i) self.__wentTo = i end
 function AegisPathfinder:GoToPreviousObjective() end

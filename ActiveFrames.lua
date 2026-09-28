@@ -425,7 +425,7 @@ local TARGET_MACRO, ITEM_MACRO = "AegisTarget", "AegisItem"
 AegisPathfinder.MACROS = { TARGET = TARGET_MACRO, ITEM = ITEM_MACRO }
 -- Icons by name: the macro icon list is read at run time, and the first of
 -- these it has is the targeting macro's.
-local TARGET_ICONS = { "ability_hunter_snipershot", "ability_townwatch", "inv_misc_spyglass_02" }
+local TARGET_ICONS = { "Ability_Hunter_SniperShot", "Ability_TownWatch", "INV_Misc_Spyglass_02" }
 local QUESTION_MARK = 1        -- the first macro icon
 
 --- The macro index of `name`, among the account's and this character's.
@@ -440,27 +440,50 @@ local function FindMacro(name)
 end
 AegisPathfinder.FindMacro = FindMacro
 
--- Macro icon indices by texture file name, lower case, built on first use.
-local iconIndex
+-- A texture's file name, lower case: what a macro's icon comes down to.
+local function IconBase(path)
+	local _, _, base = string.find(string.lower(path or ""), "([^\\/]+)$")
+	return base
+end
+
+--[[ How the macros are written.
+
+	The stock CreateMacro and EditMacro take the icon as a place in the macro
+	icon list, which the client fills lazily: until something asks for it,
+	the list is empty. Read then, and kept, it made AegisTarget with the
+	first place of an empty list -- no icon at all, a blank tile and a blank
+	button. ClassicAPI's C_Macro takes the icon by name instead, so no list
+	is involved, and an item's own icon can be set, which the list does not
+	have. So C_Macro when it is there; the stock ones, with a list read again
+	until it has something in it, when it is not. ]]
+local function ByName()
+	return C_Macro and C_Macro.CreateMacro and C_Macro.EditMacro and true or false
+end
+
+-- Macro icon places by file name, lower case; read again while the list
+-- the client reports is not the one read.
+local iconIndex, iconCount
 local function MacroIcon(file)
 	if not file then return QUESTION_MARK end
-	if not iconIndex then
-		iconIndex = {}
-		for i = 1, GetNumMacroIcons() or 0 do
-			local _, _, base = string.find(string.lower(GetMacroIconInfo(i) or ""), "([^\\]+)$")
+	local n = GetNumMacroIcons() or 0
+	if not iconIndex or iconCount ~= n then
+		iconIndex, iconCount = {}, n
+		for i = 1, n do
+			local base = IconBase(GetMacroIconInfo(i))
 			if base and not iconIndex[base] then iconIndex[base] = i end
 		end
 	end
-	local _, _, base = string.find(string.lower(file), "([^\\]+)$")
+	local base = IconBase(file)
 	return base and iconIndex[base] or nil
 end
 
+-- The targeting macro's icon: the first of TARGET_ICONS, by name for
+-- C_Macro, else the first the icon list has.
 local function TargetIcon()
+	if ByName() then return TARGET_ICONS[1] end
 	for _, file in ipairs(TARGET_ICONS) do
-		local i = MacroIcon(file)
-		if i then return i end
+		if MacroIcon(file) then return file end
 	end
-	return QUESTION_MARK
 end
 
 --- AegisTarget's text for `targets`.
@@ -501,14 +524,24 @@ local function RepaintBars(name)
 	this = saved
 end
 
--- Rewrite one macro, or make it when `create`. Returns its index, and true
+-- Rewrite one macro, or make it when `create`. `icon` is a texture, by
+-- name or path, or nil for the question mark. Returns its index, and true
 -- when it was made; nil when there is no such macro and none was made.
 local function WriteMacro(name, icon, body, create)
+	local byName = ByName()
+	local place = not byName and (MacroIcon(icon) or QUESTION_MARK)
+	-- The icon it should wear, as GetMacroInfo will say it: unknown when the
+	-- stock list is still empty, and then left alone rather than rewritten.
+	local want = byName and IconBase(icon or "INV_Misc_QuestionMark") or IconBase(GetMacroIconInfo(place))
 	local index = FindMacro(name)
 	if index then
 		local _, texture, old = GetMacroInfo(index)
-		if old ~= body or texture ~= GetMacroIconInfo(icon) then
-			index = EditMacro(index, name, icon, body) or index
+		if old ~= body or (want and IconBase(texture) ~= want) then
+			if byName then
+				index = C_Macro.EditMacro(index, name, icon or "INV_Misc_QuestionMark", body) or index
+			else
+				index = EditMacro(index, name, place, body) or index
+			end
 			RepaintBars(name)
 		end
 		return index
@@ -516,7 +549,8 @@ local function WriteMacro(name, icon, body, create)
 	if not create then return nil end
 	local _, character = GetNumMacros()
 	if (character or 0) >= MACRO_SLOTS then return nil end
-	return CreateMacro(name, icon, body, nil, 1), true
+	if byName then return C_Macro.CreateMacro(name, icon or "INV_Misc_QuestionMark", body, true), true end
+	return CreateMacro(name, place, body, nil, 1), true
 end
 
 --- Bring AegisTarget and AegisItem up to date -- always, so one on an action
@@ -526,7 +560,7 @@ function AegisPathfinder:SyncMacros(create)
 	if MacroFrame and MacroFrame:IsVisible() then return false end
 	local item = activeItems[1]
 	local t, newT = WriteMacro(TARGET_MACRO, TargetIcon(), self:TargetMacroBody(activeTargets), create)
-	local i, newI = WriteMacro(ITEM_MACRO, item and MacroIcon(item.texture) or QUESTION_MARK, "/apg useitem", create)
+	local i, newI = WriteMacro(ITEM_MACRO, item and item.texture, "/apg useitem", create)
 	if newT or newI then
 		local made = (newT and newI) and "macros AegisTarget and AegisItem"
 			or newT and "macro AegisTarget" or "macro AegisItem"

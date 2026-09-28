@@ -18,6 +18,46 @@ reports.
 
 ---
 
+## [0.16.0]
+
+### Added
+- **Badges that say what a guide is**, on its tab. `XP` for a leveling guide
+  as before, plus:
+  - `PF` (blue) for a profession guide or crafting route;
+  - `DG` (violet) for a dungeon guide;
+  - `HC` (red) for a hardcore guide.
+
+  A placeholder guide still says `TPL`.
+
+### Fixed
+- **Ticks moved to other steps when a filter changed.** The addon remembers a
+  tick by the step's name and its place in the guide.
+  - That place was counted among the steps the filters kept. Switching group
+    mode, Auction House steps, a dungeon or Solo Self-Found added or removed
+    steps, so every later step's place changed, and the ticks saved against
+    the old places landed on other steps.
+  - A step's place is now counted among all the guide's steps, so filters
+    don't move it.
+  - Your ticks move over to the new places once, the first time each guide
+    loads. A guide with nothing filtered keeps the places it always had.
+
+## [0.15.5]
+
+### Fixed
+- **The AegisTarget macro had a blank icon**, in the Macros window and on
+  an action bar.
+  - The stock macro functions pick an icon by its place in the game's
+    macro-icon list. The game fills that list only when something asks for
+    it.
+  - The addon read the list once, while it was still empty, and saved the
+    macro with an icon from an empty list: nothing.
+  - Macros are now written through ClassicAPI's macro functions, which take
+    the icon by name. AegisTarget wears Hunter's Mark's icon, and AegisItem
+    the quest item's own icon, which the stock list doesn't have.
+  - A macro already made blank gets its icon at the next update.
+  - Without ClassicAPI's macro functions, the list is read again until the
+    game has filled it.
+
 ## [0.15.4]
 
 ### Fixed
@@ -753,6 +793,8 @@ on, each change gets its own entry.
 
 ---
 
+[0.16.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.15.5]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.15.4]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.15.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.15.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

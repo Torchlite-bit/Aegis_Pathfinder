@@ -68,9 +68,16 @@ local function macroAt(i)
 	if i <= 18 then return book.account[i] end
 	return book.character[i - 18]
 end
+-- A macro written by ClassicAPI's C_Macro keeps its icon by name, and reads
+-- back as Interface\Icons\<name>, as the client has it.
 GetMacroInfo = function(i)
 	local m = macroAt(i)
-	if m then return m.name, ICONS[m.icon], m.body, nil end
+	if not m then return end
+	if m.iconName then
+		local _, _, base = string.find(m.iconName, "([^\\]+)$")
+		return m.name, "Interface\\Icons\\" .. base, m.body, nil
+	end
+	return m.name, ICONS[m.icon], m.body, nil
 end
 CreateMacro = function(name, icon, body, isLocal, perCharacter)
 	local list = perCharacter and book.character or book.account
@@ -804,6 +811,65 @@ picked = nil
 mw.targetTile:GetScript("OnDragStart")()
 check(picked == nil and string.find(lastPrint(), "no free character macro slot", 1, true),
 	"dragging it explains instead, got '%s'", lastPrint())
+book = { account = {}, character = {} }
+
+--[[ The macro icon list is the client's, filled lazily: until something asks
+	for it, it is empty. Read then, and kept, it left AegisTarget with the
+	first place of an empty list -- no icon at all, a blank tile. Now the list
+	is read again until it has something in it, and the icon follows. ]]
+local fullList = ICONS
+ICONS = {}
+AegisPathfinder.current = 3
+AegisPathfinder:PaintActiveFrames()
+check(macro("AegisTarget") and macro("AegisTarget").icon == 1, "made while the icon list is empty: its first place")
+edits = macroEdits
+AegisPathfinder:PaintActiveFrames()
+check(macroEdits == edits, "and not rewritten over and over while the list stays empty")
+ICONS = fullList
+AegisPathfinder:PaintActiveFrames()
+check(macro("AegisTarget").icon == 3, "once the list is there, the targeting icon, got %s",
+	tostring(macro("AegisTarget").icon))
+book = { account = {}, character = {} }
+
+--[[ With ClassicAPI's C_Macro the icon is written by name: no list is
+	involved, and an item gets its own icon, which the list does not have. ]]
+C_Macro = {
+	CreateMacro = function(name, icon, body, isCharacter)
+		local list = isCharacter and book.character or book.account
+		table.insert(list, { name = name, iconName = icon, body = body })
+		return (isCharacter and 18 or 0) + table.getn(list)
+	end,
+	EditMacro = function(i, name, icon, body)
+		macroEdits = macroEdits + 1
+		local m = macroAt(i)
+		if name then m.name = name end
+		if icon then m.iconName, m.icon = icon, nil end
+		if body then m.body = body end
+		return i
+	end,
+}
+ICONS = {}                                   -- the list not read yet: no matter now
+AegisPathfinder.current = 3
+AegisPathfinder:PaintActiveFrames()
+tm, im = macro("AegisTarget"), macro("AegisItem")
+check(tm and tm.iconName == "Ability_Hunter_SniperShot" and table.getn(book.character) == 2,
+	"C_Macro: AegisTarget, a character macro, with the targeting icon by name, got %s", tostring(tm and tm.iconName))
+check(im and im.iconName == "rod", "AegisItem with its item's own icon, got %s", tostring(im and im.iconName))
+check(mw.targetTile.icon:GetTexture() == "Interface\\Icons\\Ability_Hunter_SniperShot",
+	"and the tile shows it, got %s", tostring(mw.targetTile.icon:GetTexture()))
+edits = macroEdits
+AegisPathfinder:PaintActiveFrames()
+check(macroEdits == edits, "a repaint that changes nothing edits nothing")
+stub.bags[0][1].texture = "Interface\\Icons\\INV_Misc_Horn_01"   -- an item icon the list never has
+AegisPathfinder:PaintActiveFrames()
+check(macro("AegisItem").iconName == "Interface\\Icons\\INV_Misc_Horn_01", "an item icon too, got %s",
+	tostring(macro("AegisItem").iconName))
+stub.bags[0][1].texture = "rod"
+-- One already made blank, as in game, gets its icon.
+book = { account = {}, character = { { name = "AegisTarget", icon = 99, body = "/apg target" } } }
+AegisPathfinder:PaintActiveFrames()
+check(macro("AegisTarget").iconName == "Ability_Hunter_SniperShot", "a blank AegisTarget gets its icon")
+C_Macro, ICONS = nil, fullList
 book = { account = {}, character = {} }
 
 -- Nothing to do: no window.
