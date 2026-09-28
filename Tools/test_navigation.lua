@@ -278,6 +278,35 @@ AegisPathfinder:ParseAndMapCoords(nil, "TRAIN", "Needs skill 125.", "Train Exper
 check(AegisPathfinder.waypointtarget and AegisPathfinder.waypointtarget.x == 64.5,
 	"a training step with no coordinates gets its trainer's")
 
+-- pfQuest's forks ------------------------------------------------------------
+
+--[[ Not every fork of pfQuest carries every table and function this uses.
+	One without them is left alone: no pfQuest waypoints from a fork missing
+	part of the map API, and a quest-giver lookup that finds nothing where a
+	table is missing, rather than an error. ]]
+do
+	local keepMap, keepDB = pfMap.GetMapIDByName, pfDB
+	pfMap.GetMapIDByName = nil
+	db.waypointprovider = "pfquest"
+	local ok, err = pcall(travel)
+	check(ok, "a fork without GetMapIDByName: no error, got %s", tostring(err))
+	check(AegisPathfinder:GetWaypointProvider() ~= nil and AegisPathfinder:GetWaypointProvider().label ~= "pfQuest",
+		"and pfQuest is passed over for the waypoints")
+	pfMap.GetMapIDByName = keepMap
+
+	db.mapquestgivers = true
+	pfDB = { quests = { data = { [7] = { start = { U = { 5 } } } } } }   -- no loc, no units
+	local found
+	ok, found = pcall(AegisPathfinder.MapPfQuestNPC, AegisPathfinder, 7, "ACCEPT")
+	check(ok and found == false, "a quest-giver lookup with tables missing finds nothing, got %s", tostring(found))
+	pfDB = { quests = { data = { [7] = { start = { U = { 5 } } } } },
+		units = { data = { [5] = { coords = { { 42, 65, 12, 0 } } } } } }            -- no names, no zones
+	ok, err = pcall(AegisPathfinder.MapPfQuestNPC, AegisPathfinder, 7, "ACCEPT")
+	check(ok, "or with names and zones missing, got %s", tostring(err))
+	db.mapquestgivers, pfDB = nil, keepDB
+	db.waypointprovider = "tomtom"
+end
+
 -- Report ---------------------------------------------------------------------
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end
