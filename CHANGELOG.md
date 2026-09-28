@@ -18,6 +18,49 @@ reports.
 
 ---
 
+## [0.15.1]
+
+### Fixed
+- **"ItemScore.lua:72: attempt to index field 'db' (a nil value)"**, around
+  login. The item score, the Gear Advisor and the Gear finder listen for
+  your gear arriving and for zoning in from the moment their files load,
+  which can be before the addon has loaded its saved settings. They went
+  looking for the settings and stopped with that error. Those events are now
+  ignored until the settings are loaded, and your worn gear is recorded then
+  instead.
+
+## [0.15.0] — restart
+
+### Added
+- **A switch for each arrow.** The **Arrows** section on the **Navigation**
+  page has one each for Pathfinder's, TomTom's and pfQuest's arrow, in place
+  of the one-choice dropdown. Turn on any combination: each arrow that is on
+  points at the step, even when another addon is the one taking the
+  waypoints.
+  - pfQuest's switch is pfQuest's own arrow setting, the one `/db arrow`
+    changes. Off, pfQuest's arrow is off altogether, so it no longer points at
+    the nearest quest objective as a second arrow.
+  - TomTom's switch keeps its arrow off the guide's waypoints; waypoints you
+    make yourself still use it.
+  - An addon that isn't loaded has its switch dimmed, and the note names it.
+
+### Changed
+- **Steps the addon ticks for you have a small ⟳ inside their circle**, in
+  place of a glow that looked like the circle was out of focus. An empty
+  circle is one only you can tick; a filled one is done. The ⟳ is a new
+  texture, hence the restart.
+- **The step's accent bar runs down past its objectives.** The bar down the
+  left edge, and the faint wash, now reach past the objective bars to the
+  footer, so the bars read as part of the step.
+
+### Fixed
+- **Objective bars were still short in game.** 4 of 5 Crocolisk Meat was
+  about half full, and 4 of 6 skins about two fifths. The width the client
+  reports for these bars isn't the width it draws them at, so any fill sized
+  from it comes out wrong. They're now the client's own status bars, which
+  fill to the count themselves. The guide's progress bar under the step
+  number gets the same fix.
+
 ## [0.14.0]
 
 ### Added
@@ -670,6 +713,8 @@ on, each change gets its own entry.
 
 ---
 
+[0.15.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.15.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.14.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.13.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.13.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

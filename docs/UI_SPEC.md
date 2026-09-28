@@ -122,13 +122,17 @@ With no provider, no waypoint, or no way to measure, the callout hides; an
 arrow that is confidently wrong is worse than no arrow. `/apg diagnav` says
 which of those it is.
 
-**Whose arrow.** Out of the box there were two: ours, and the waypoint addon's,
-aimed at the same waypoint. Ours reads the waypoint the addon records for
-itself, not the provider's arrow, so the two are independent, and the options
-panel's **Arrow** section picks: Pathfinder's, the waypoint addon's, both or
-none (`GetArrowMode` / `SetArrowMode` in `Navigation.lua`). The default is
-ours alone; a character who had turned ours off keeps the waypoint addon's.
-TomTom is told `crazy = false` outright -- TomTom-TWOW fills a nil `crazy`
+**Which arrows.** Out of the box there were two: ours, and the waypoint
+addon's, aimed at the same waypoint. Ours reads the waypoint the addon records
+for itself, not the provider's arrow, so they are independent, and the options
+panel's **Arrows** section has a switch for each of Pathfinder's, TomTom's and
+pfQuest's, any combination (`IsArrowOn` / `SetArrow` in `Navigation.lua`). An
+arrow that is on gets the step's waypoint even when its addon is not the one
+taking them, so TomTom's and pfQuest's can both point. pfQuest's switch reads
+and writes pfQuest's own `pfQuest_config.arrow` (what `/db arrow` flips), and
+hides `pfQuest.route.arrow` when turned off. An addon not loaded has its switch
+held off. The default is ours alone; a character who had turned ours off keeps
+TomTom's. TomTom is told `crazy = false` outright -- TomTom-TWOW fills a nil `crazy`
 from its own autoqueue setting, which is on -- and pfQuest's route target is
 simply not set. That is not enough for TomTom on its own: its
 `GoToNextWayPoint`, run when its arrow's target is reached or cleared, hands
@@ -136,7 +140,7 @@ the arrow to the last waypoint in its list, usually ours. So the arrow's
 driver takes TomTom's arrow back off any of *our* waypoints each tick while
 the setting says so (`EnforceArrowMode`); the player's own TomTom waypoints
 are never touched. Cartographer and MetaMap BWP have no waypoint but their arrow,
-so they point whatever is picked, and the setting's note says so.
+so they point whatever is switched, and the section's note says so.
 
 ### The status card -- deleted
 
@@ -222,9 +226,11 @@ meter rather than an empty one. **Substitution:** the concept draws one
 objective; a quest with more has a line each (`PaintMeter`), label, count and
 bar stacked 8px apart, and the meter grows a line at a time from the
 concept's 38px -- Crocolisk Hunting's meat and skins are two bars. A finished
-objective stays, its bar full. A bar keeps its ratio and sizes its fill again
-whenever it is not the width it was drawn at (`Theme:ProgressBar`), so a bar
-painted while hidden, or before a resize, still reads 4 of 5 as four fifths.
+objective stays, its bar full. A bar is a StatusBar (`Theme:ProgressBar`):
+the client fills it to the value, where a texture sized from the bar's
+reported width drew 4 of 5 about half full in game. The step's accent bar and
+wash reach down beside the meter to the footer (`ReachActiveRow`), so the
+objectives read as part of the step.
 Overview mode folds the same text into the step's note line instead, as the
 concept does.
 

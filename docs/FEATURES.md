@@ -37,7 +37,7 @@ The options window can be resized from its bottom-right corner, wider or
 taller, and keeps the size; `/apg resetpanels` puts it back. It lists its
 pages down the left: **Route** (race and route
 pack), **Dungeons**, **Filters**, **Appearance** (server theme, switch colours, window scale), **Gear** and
-under it **Item Score** (the stat weights), **Behaviour**, **Navigation** (waypoints and arrow), **Maintenance** (rescan,
+under it **Item Score** (the stat weights), **Behaviour**, **Navigation** (waypoints and arrows), **Maintenance** (rescan,
 error log, setup) and **About** (version and credits).
 
 ## What it does
@@ -309,14 +309,16 @@ options window does not shrink out from under the cursor.
 
 **Automatic advancement.** Accepting, completing and turning in quests, binding
 a hearthstone, and collecting tagged items all resolve themselves. So do travel
-steps, once a waypoint provider is active. The checkbox wears a halo on steps
-the addon can finish for you, so you know when not to reach for it.
+steps, once a waypoint provider is active. A step the addon can finish for you
+has a small ⟳ inside its circle, so you know when not to reach for it; an
+empty circle is one only you can tick, and a filled one is done.
 
 **One step, or all of them.** The panel opens on the step you are on and
 nothing else, with its note in full and a meter underneath: a line for each
 thing the quest wants killed or collected, with its count and a bar filled to
 it -- Crocolisk Hunting's 4 of 5 meat is a bar four fifths full, with its
-skins on a bar of their own. The expand button in the header swaps
+skins on a bar of their own. The step's accent bar down the left runs on
+beside them, so they read as part of the step. The expand button in the header swaps
 that for the whole guide when you want to look ahead. The panel sizes itself
 to what it shows; the grip in its corner sets the width, and how tall it may
 grow.
@@ -339,10 +341,17 @@ you have not picked up stays, and the guide still takes you there.
 **A navigation arrow.** It points at the current objective and says how far and
 how long, floating on the world with no window around it. It needs a waypoint
 provider; with none, or with no waypoint for this step, it hides rather than
-pointing somewhere arbitrary. The **Arrow** setting picks whose arrow points at
-the step: this one, the waypoint addon's (TomTom's, pfQuest's), both, or
-neither. By default it is this one alone, and the waypoint addon keeps its map
-pins either way.
+pointing somewhere arbitrary.
+
+**Which arrows.** The **Arrows** section on the options' **Navigation** page
+has a switch for each: Pathfinder's, TomTom's and pfQuest's. Turn on one, two,
+all three or none; each one that is on points at the step, whichever addon
+takes the waypoints. pfQuest's switch is pfQuest's own arrow setting, the one
+`/db arrow` changes, so off is off in pfQuest too, and pfQuest stops pointing
+at the nearest quest objective as well. TomTom's off keeps its arrow off the
+guide's waypoints; waypoints you make yourself still use it. An addon that
+isn't loaded has its switch held off. By default it is Pathfinder's alone,
+and the waypoint addon keeps its map pins either way.
 
 ## Gear
 

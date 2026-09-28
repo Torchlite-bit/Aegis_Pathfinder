@@ -66,6 +66,38 @@ local function check(cond, fmt, ...)
 	checks = checks + 1
 	if not cond then table.insert(failures, string.format(fmt, ...)) end
 end
+--[[ Before the addon has its settings. The item score, the Gear Advisor and
+	the Gear finder register their events as their files load, so some come
+	before OnInitialize: your gear arriving at login, zoning in. The item
+	score's reached for the settings and stopped with "attempt to index field
+	'db' (a nil value)". They wait now. ]]
+do
+	local saved = A.db
+	A.db = nil
+	local function fire(f, ev, a1, script)
+		local oldThis, oldEvent, oldArg = this, event, arg1
+		this, event, arg1 = f, ev, a1
+		local ok, err = pcall(f:GetScript(script or "OnEvent"))
+		this, event, arg1 = oldThis, oldEvent, oldArg
+		return ok, err
+	end
+	for _, case in ipairs({
+		{ IS.events, "UNIT_INVENTORY_CHANGED", "player" },
+		{ IS.events, "SPELLS_CHANGED" },
+		{ IS.events, "CHARACTER_POINTS_CHANGED" },
+		{ GF.events, "ZONE_CHANGED_NEW_AREA" },
+		{ A.GearAdvisor.events, "UNIT_INVENTORY_CHANGED", "player" },
+	}) do
+		local ok, err = fire(case[1], case[2], case[3])
+		check(ok, "%s before the settings are there: nothing happens, got %s", case[2], tostring(err))
+	end
+	A.GearAdvisor.events.dirty = -100             -- a scan long overdue
+	local ok, err = fire(A.GearAdvisor.events, nil, nil, "OnUpdate")
+	check(ok, "and the Gear Advisor's scan waits too, got %s", tostring(err))
+	A.GearAdvisor.events.dirty = nil
+	A.db = saved
+end
+
 local function run(f, script)
 	local h = f:GetScript(script)
 	assert(h, "no " .. script .. " script")

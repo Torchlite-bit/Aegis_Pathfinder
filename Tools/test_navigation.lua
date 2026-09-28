@@ -1,5 +1,5 @@
 --[[
-	Tests for the waypoint providers and the arrow setting.
+	Tests for the waypoint providers and the arrow switches.
 
 	The fake TomTom below behaves as TomTom-TWOW (github.com/laytya/TomTom-TWOW)
 	does where it matters here:
@@ -75,8 +75,8 @@ end
 
 -- Pathfinder's arrow alone, the default -------------------------------------------
 
-check(AegisPathfinder:GetArrowMode() == "pathfinder", "ours alone by default, got %s",
-	AegisPathfinder:GetArrowMode())
+check(AegisPathfinder:IsArrowOn("pathfinder") and not AegisPathfinder:IsArrowOn("tomtom"),
+	"ours alone by default")
 local wp = travel()
 check(wp ~= nil, "the step's waypoint still goes to TomTom")
 check(wp and wp.crazy == false,
@@ -94,19 +94,19 @@ check(wp and wp.callbacks.minimap == DEFAULT_CALLBACKS.minimap
 check(wp and wp.callbacks.distance and wp.callbacks.distance[15],
 	"and add the arrival callback that completes the step")
 
--- Both -----------------------------------------------------------------------------
+-- Ours and TomTom's -----------------------------------------------------------------
 
--- SetArrowMode re-sends the current step; stand in for the engine.
+-- SetArrow re-sends the current step; stand in for the engine.
 function AegisPathfinder:ForceWaypointUpdate() travel() end
-AegisPathfinder:SetArrowMode("both")
+AegisPathfinder:SetArrow("tomtom", true)
 wp = TomTom.waypoints[table.getn(TomTom.waypoints)]
 check(table.getn(TomTom.waypoints) == 1, "changing the setting replaces the waypoint rather than adding one")
-check(TomTom.active_waypoint == wp and wp.crazy == true, "Both aims TomTom's arrow at it")
-check(db.shownavcallout == true, "and keeps ours")
+check(TomTom.active_waypoint == wp and wp.crazy == true, "TomTom's switch aims its arrow at it")
+check(AegisPathfinder:IsArrowOn("pathfinder"), "and ours stays on")
 
 -- And back: TomTom lets it go.
-AegisPathfinder:SetArrowMode("pathfinder")
-check(TomTom.active_waypoint == nil, "switching back takes TomTom's arrow off our waypoint")
+AegisPathfinder:SetArrow("tomtom", false)
+check(TomTom.active_waypoint == nil, "switching it off takes TomTom's arrow off our waypoint")
 
 -- pfQuest ----------------------------------------------------------------------------
 
@@ -120,15 +120,41 @@ pfQuest = { route = {
 	SetTarget = function(t) target = t end,
 	IsTarget = function(t) return target and t and target.title == t.title end,
 } }
+local pfArrow = CreateFrame("Frame", nil, UIParent)
+pfQuest.route.arrow = pfArrow
+pfQuest_config = { arrow = "0" }                 -- pfQuest's own arrow off
 db.waypointprovider = "pfquest"
-AegisPathfinder:SetArrowMode("pathfinder")
+AegisPathfinder:SetArrow("tomtom", false)
 check(table.getn(nodes) == 1 and nodes[1].arrow == false,
 	"pfQuest gets the pin without its arrow flag")
 check(target == nil, "and its arrow is not aimed at it")
-AegisPathfinder:SetArrowMode("provider")
-check(nodes[table.getn(nodes)].arrow == true and target ~= nil,
-	"the waypoint addon's arrow aims pfQuest's")
-check(db.shownavcallout == false, "and turns ours off")
+AegisPathfinder:SetArrow("pfquest", true)
+check(pfQuest_config.arrow == "1", "pfQuest's switch turns pfQuest's own arrow on")
+check(nodes[table.getn(nodes)].arrow == true and target ~= nil, "and aims it at the step")
+AegisPathfinder:SetArrow("pathfinder", false)
+check(db.shownavcallout == false and target ~= nil, "ours can go off and pfQuest's stay")
+AegisPathfinder:SetArrow("pfquest", false)
+check(pfQuest_config.arrow == "0" and not pfArrow:IsShown(), "off, pfQuest's arrow is off in pfQuest, and hidden")
+check(target == nil, "and no longer aimed at the step")
+AegisPathfinder:SetArrow("pathfinder", true)
+
+--[[ Several arrows at once, whichever addon takes the waypoints: TomTom
+	takes them, and pfQuest's arrow, switched on, is sent the waypoint as
+	well so it can point at it. ]]
+db.waypointprovider = "tomtom"
+AegisPathfinder:SetArrow("tomtom", true)
+AegisPathfinder:SetArrow("pfquest", true)
+wp = TomTom.waypoints[table.getn(TomTom.waypoints)]
+check(wp and wp.crazy == true and TomTom.active_waypoint == wp, "TomTom's arrow points at the step")
+check(table.getn(nodes) == 1 and nodes[1].arrow == true and target ~= nil,
+	"and so does pfQuest's, though TomTom takes the waypoints")
+check(AegisPathfinder:IsArrowOn("pathfinder"), "with ours: three arrows")
+check(AegisPathfinder:DescribeArrows() == "Pathfinder, TomTom, pfQuest", "diagnav names them, got %s",
+	AegisPathfinder:DescribeArrows())
+AegisPathfinder:SetArrow("pfquest", false)
+check(table.getn(nodes) == 0, "pfQuest's off: it is sent nothing it did not ask for")
+AegisPathfinder:SetArrow("tomtom", false)
+pfQuest_config = nil
 
 -- Pointing -------------------------------------------------------------------
 
@@ -138,7 +164,7 @@ check(db.shownavcallout == false, "and turns ours off")
 	same-zone code read that as "the waypoint is in another zone" and hid,
 	while TomTom's arrow -- through Astrolabe -- kept pointing. ]]
 db.waypointprovider = "tomtom"
-AegisPathfinder:SetArrowMode("pathfinder")
+AegisPathfinder:SetArrow("pathfinder", true)
 check(AegisPathfinder.waypointtarget ~= nil, "the step has a waypoint to point at")
 
 GetPlayerFacing = function() return 0 end        -- facing north
@@ -192,17 +218,17 @@ function TomTom:ClearCrazyArrow() self.active_waypoint = nil end
 local ours = TomTom.waypoints[table.getn(TomTom.waypoints)]
 TomTom.active_waypoint = ours                     -- GoToNextWayPoint's doing
 AegisPathfinder:EnforceArrowMode()
-check(TomTom.active_waypoint == nil, "set to Pathfinder's, TomTom's arrow is taken off our waypoint")
+check(TomTom.active_waypoint == nil, "TomTom's switch off, its arrow is taken off our waypoint")
 
 local theirs = { title = "The player's own waypoint" }
 TomTom.active_waypoint = theirs
 AegisPathfinder:EnforceArrowMode()
 check(TomTom.active_waypoint == theirs, "but never off a waypoint the player made themselves")
 
-AegisPathfinder:SetArrowMode("both")
+AegisPathfinder:SetArrow("tomtom", true)
 TomTom.active_waypoint = ours
 AegisPathfinder:EnforceArrowMode()
-check(TomTom.active_waypoint == ours, "and with Both it is left pointing")
+check(TomTom.active_waypoint == ours, "and with TomTom's switch on it is left pointing")
 
 -- Trainers by name, from pfQuest ---------------------------------------------------
 

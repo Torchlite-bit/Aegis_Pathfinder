@@ -532,6 +532,8 @@ events:RegisterEvent("PLAYER_LEVEL_UP")
 events:RegisterEvent("UNIT_INVENTORY_CHANGED")
 events:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 events:SetScript("OnEvent", function()
+	-- Zoning in at login comes before the addon has its settings.
+	if not AegisPathfinder.db then return end
 	if event == "ZONE_CHANGED_NEW_AREA" then
 		GF:Announce(GetRealZoneText())
 	elseif GF.frame and GF.frame:IsShown() and (event ~= "UNIT_INVENTORY_CHANGED" or arg1 == "player") then

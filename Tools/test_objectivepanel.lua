@@ -543,11 +543,8 @@ check(frame.meter.label:GetText() == "Kobold Vermin slain",
 check(frame.meter.count:GetText() == "3 / 8",
 	"the count reads as the concept prints it, got '%s'",
 	tostring(frame.meter.count:GetText()))
-frame.meter.bar:SetWidth(200)
-frame.meter.bar:SetProgress(3 / 8)
-check(frame.meter.bar.fill:GetWidth() == 75,
-	"the bar should be three eighths of 200px, got %s",
-	tostring(frame.meter.bar.fill:GetWidth()))
+check(frame.meter.bar:GetValue() == 3 / 8,
+	"the bar is filled to three eighths, got %s", tostring(frame.meter.bar:GetValue()))
 
 local oneHigh = frame.meter:GetHeight()
 check(oneHigh == 38, "one objective is the concept's 38px meter, got %s", tostring(oneHigh))
@@ -570,6 +567,13 @@ check(lines[1].bar.ratio == 1 and lines[2].bar.ratio == 0.5, "the meat's bar ful
 check(frame.meter:GetHeight() == 68, "and the meter grows a line, got %s", tostring(frame.meter:GetHeight()))
 local _, anchor = lines[2].bar:GetPoint(1)
 check(anchor == frame.meter, "each bar sits in the meter")
+-- The step's accent bar and wash reach down over the meter, to the footer.
+local stepRow = built[1]
+local p2, to2, _, x2, y2 = stepRow.activebar:GetPoint(2)
+check(p2 == "BOTTOMLEFT" and to2 == frame.meter and x2 == -14 and y2 == -8,
+	"the accent bar reaches the meter's foot and on to the footer, got %s %s %s", tostring(p2), tostring(x2), tostring(y2))
+local _, bgTo = stepRow.bg:GetPoint(2)
+check(bgTo == frame.meter, "and so does the wash")
 
 -- Back to one: the second line goes, and the meter shrinks.
 GetNumQuestLeaderBoards = function() return 1 end
@@ -584,6 +588,8 @@ GetQuestLogLeaderBoard = function() return "Speak to Marshal Dughan", "event", n
 AegisPathfinder:UpdateOHPanel()
 check(not frame.meter:IsShown(),
 	"an objective with nothing to count gets no meter rather than a broken one")
+local _, backTo = stepRow.activebar:GetPoint(2)
+check(backTo == stepRow, "with no meter the accent bar fits the step again")
 
 -- Overview mode folds the objective into the note line instead, as the
 -- concept does, and hides the meter.

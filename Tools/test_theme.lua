@@ -137,34 +137,20 @@ check(not tip:IsShown(), "a tooltip does not outlive its owner")
 -- Progress bar ---------------------------------------------------------------
 
 local bar = Theme:ProgressBar(UIParent, 5)
-bar:SetWidth(100)
+check(bar.__kind == "StatusBar", "a progress bar is a StatusBar: the client fills it, nothing is measured")
+local lo, hi = bar:GetMinMaxValues()
+check(lo == 0 and hi == 1, "from 0 to 1")
+check(bar.__barTexture == Theme.texture.progress, "with the gradient as its fill")
 bar:SetProgress(0.5)
-check(bar.fill:GetWidth() == 50, "50%% of a 100px bar should be 50px, got %s",
-	tostring(bar.fill:GetWidth()))
-bar:SetProgress(0)
-check(not bar.fill:IsShown(), "a zero-progress fill should be hidden, not zero-width")
-bar:SetProgress(1)
-check(bar.fill:GetWidth() == 100, "full progress should fill the bar")
+check(bar:GetValue() == 0.5, "half is half, got %s", tostring(bar:GetValue()))
+bar:SetProgress(4 / 5)
+check(math.abs(bar:GetValue() - 0.8) < 1e-9, "4 of 5 is 80%%, whatever width the bar reports")
 bar:SetProgress(5)
-check(bar.fill:GetWidth() == 100, "out-of-range progress should clamp, got %s",
-	tostring(bar.fill:GetWidth()))
+check(bar:GetValue() == 1, "out-of-range progress clamps, got %s", tostring(bar:GetValue()))
 bar:SetProgress(-1)
-check(not bar.fill:IsShown(), "negative progress should clamp to empty")
+check(bar:GetValue() == 0, "negative progress clamps to empty")
 bar:SetProgress(nil)
-check(not bar.fill:IsShown(), "nil progress should be treated as empty, not error")
--- 4 of 5, painted before the bar had its width (hidden, or anchored to a
--- window not laid out yet): it fills to 80% once the width comes.
-local late = Theme:ProgressBar(UIParent, 6)
-late:SetProgress(4 / 5)
-check(not late.fill:IsShown(), "no width yet: nothing drawn rather than a sliver")
-late:SetWidth(300)
-late:GetScript("OnUpdate")()
-check(late.fill:IsShown() and math.abs(late.fill:GetWidth() - 240) < 1e-6,
-	"4 of 5 fills 80%% of the bar once it has its width, got %s", tostring(late.fill:GetWidth()))
-late:SetWidth(200)                              -- the window dragged narrower
-late:GetScript("OnUpdate")()
-check(math.abs(late.fill:GetWidth() - 160) < 1e-6, "and stays at 80%% when the bar is resized, got %s",
-	tostring(late.fill:GetWidth()))
+check(bar:GetValue() == 0 and bar.ratio == 0, "nil progress is empty, not an error")
 
 -- Step check -----------------------------------------------------------------
 
@@ -180,16 +166,21 @@ check(chk:GetChecked() == true, "SetChecked(true) should be readable back")
 chk:SetChecked(false)
 check(not chk.fill:IsShown(), "SetChecked(false) should hide the fill")
 
-check(not chk.halo:IsShown(), "the auto-detect halo starts hidden")
+check(not chk.auto:IsShown(), "the auto-detect mark starts hidden")
 chk:SetAutoEligible(true)
-check(chk.halo:IsShown(), "SetAutoEligible(true) should reveal the halo")
--- A completed step has nothing left to auto-detect, so the halo must go.
+check(chk.auto:IsShown() and chk.auto.__texture == Theme.glyph.auto,
+	"SetAutoEligible(true) shows the small arrow inside the ring")
+local aw = chk.auto:GetWidth()
+check(aw > 0 and aw < chk:GetWidth(), "and it is inside the ring, not a glow round it (%s of %s)",
+	tostring(aw), tostring(chk:GetWidth()))
+-- A completed step has nothing left to auto-detect, so the mark must go.
 chk:SetChecked(true)
 chk:SetAutoEligible(true)
-check(not chk.halo:IsShown(), "a checked step should not advertise auto-detection")
+check(not chk.auto:IsShown(), "a checked step should not advertise auto-detection")
 chk:SetChecked(false)
+check(chk.auto:IsShown(), "unticked again, the mark comes back")
 chk:SetAutoEligible(false)
-check(not chk.halo:IsShown(), "SetAutoEligible(false) should hide the halo")
+check(not chk.auto:IsShown(), "SetAutoEligible(false) should hide the mark")
 
 -- Pill -----------------------------------------------------------------------
 
@@ -255,7 +246,7 @@ end
 -- The concept draws its chrome with characters the 1.12 font cannot render,
 -- so each one has to exist as a mask.
 local GLYPHS = {
-	"menu", "close", "plus", "arrowLeft", "arrowRight",
+	"auto", "menu", "close", "plus", "arrowLeft", "arrowRight",
 	"chevronLeft", "chevronRight", "tick", "bang", "pin",
 }
 for _, name in ipairs(GLYPHS) do
@@ -430,7 +421,10 @@ local ar2 = arrowTex:GetVertexColor()
 check(arrowTex.__texture == Theme.texture.navArrowMask and math.abs(ar2 - 0xcf / 255) < 1e-6,
 	"another theme swaps in the grey arrow, tinted its glow")
 local bar = Theme:ProgressBar(host, 4)
-check(bar.fill.__texture == Theme.texture.progressMask, "a progress bar made under a theme takes its art")
+check(bar.fill.__texture == Theme.texture.progressMask and bar.__barTexture == Theme.texture.progressMask,
+	"a progress bar made under a theme takes its art")
+local br = bar:GetStatusBarColor()
+check(math.abs(br - Theme.color.accentGlow[1]) < 1e-6, "tinted its accent glow, got %s", tostring(br))
 Theme:ApplyTheme("turtle")
 check(arrowTex.__texture == Theme.texture.navArrow and bar.fill.__texture == Theme.texture.progress,
 	"and back to the concept's art with the concept's theme")

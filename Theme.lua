@@ -131,6 +131,7 @@ Theme.texture = {
 	them, so each is a generated mask like every other shape here.
 ]]
 Theme.glyph = {
+	auto         = MEDIA .. "icons\\auto",
 	menu         = MEDIA .. "icons\\menu",
 	close        = MEDIA .. "icons\\close",
 	plus         = MEDIA .. "icons\\plus",
@@ -444,55 +445,46 @@ function Theme:Divider(parent, anchor, relPoint, x, y, width)
 	return t
 end
 
--- Progress track + gradient fill. SetWidth on the returned fill drives it.
+--[[ Progress track + gradient fill: a StatusBar, so the client fills it to
+	the value itself.
+
+	The fill used to be a texture sized to the bar's width times the ratio.
+	In game the width an anchored bar reports is not the width it is drawn
+	at -- 4 of 5 Crocolisk Meat drew about half full, 4 of 6 skins about two
+	fifths, even measured again every frame -- so nothing here measures
+	anything any more. The bar's own texture is the fill; `bar.fill` stands
+	in for it so Theme:Skin can swap its art and tint with the theme. ]]
 function Theme:ProgressBar(parent, height)
-	local bar = CreateFrame("Frame", nil, parent)
+	local bar = CreateFrame("StatusBar", nil, parent)
 	bar:SetHeight(height or 5)
+	bar:SetMinMaxValues(0, 1)
+	bar:SetValue(0)
 
 	local track = bar:CreateTexture(nil, "BACKGROUND")
 	track:SetTexture(self.texture.solid)
 	track:SetAllPoints(bar)
 	track:SetVertexColor(0, 0, 0, 0.4)
 
-	local fill = bar:CreateTexture(nil, "ARTWORK")
+	local fill = {}
+	function fill:SetTexture(path) self.__texture = path; bar:SetStatusBarTexture(path) end
+	function fill:SetVertexColor(r, g, b, a) bar:SetStatusBarColor(r, g, b, a or 1) end
 	self:Skin(fill, "progress")
-	fill:SetPoint("TOPLEFT", bar, "TOPLEFT", 0, 0)
-	fill:SetPoint("BOTTOMLEFT", bar, "BOTTOMLEFT", 0, 0)
-	fill:SetWidth(1)
 
 	bar.track, bar.fill = track, fill
 	bar.ratio = 0
 
-	--[[ ratio in 0..1. The fill is sized from the bar's width, and a bar
-		sized by its anchors can give a stale width, or none, at the moment
-		it is painted: hidden, or its window just resized. That drew 4 of 5
-		Crocolisk Meat a third full. So the ratio is kept, and the fill is
-		sized again whenever the bar is not the width it was drawn at. ]]
+	-- ratio in 0..1
 	function bar:SetProgress(ratio)
 		if not ratio or ratio < 0 then ratio = 0 elseif ratio > 1 then ratio = 1 end
 		self.ratio = ratio
-		self:Refit()
+		self:SetValue(ratio)
 	end
-	function bar:Refit()
-		local w = self:GetWidth()
-		self.drawnAt = w
-		if self.ratio <= 0 or not w or w <= 0 then
-			self.fill:Hide()
-		else
-			self.fill:Show()
-			self.fill:SetWidth(w * self.ratio)
-		end
-	end
-	bar:SetScript("OnUpdate", function()
-		if bar:GetWidth() ~= bar.drawnAt then bar:Refit() end
-	end)
 
 	return bar
 end
 
--- The step checkbox: a ring that fills with accent when complete. Distinct
--- states for auto-detected vs manually ticked completion are handled by
--- SetAutoEligible / the glow, not by the check itself.
+-- The step checkbox: a ring that fills with accent when complete. A step the
+-- addon ticks for you shows a small ⟳ inside the ring (SetAutoEligible).
 -- Built as a CheckButton, not a Button, so it keeps the widget API the old
 -- Blizzard checkbox exposed (SetChecked, SetButtonState, Enable/Disable) and
 -- existing call sites keep working. Only the artwork is ours.
@@ -512,21 +504,23 @@ function Theme:StepCheck(parent, size)
 	self:Tint(fill, "accent")
 	fill:Hide()
 
-	-- Ring shown behind the check while ClassicAPI can complete this step for
-	-- the player. The concept uses it to say "you do not have to tick this".
-	local halo = b:CreateTexture(nil, "BACKGROUND")
-	halo:SetTexture(self.texture.glow)
-	halo:SetPoint("CENTER", b, "CENTER", 0, 0)
-	halo:SetWidth(size * 2.6); halo:SetHeight(size * 2.6)
-	self:Tint(halo, "accent", 0.32)
-	halo:Hide()
+	--[[ A ⟳ inside the ring while the addon can complete this step for the
+		player: "you do not have to tick this". It was a soft glow behind the
+		ring, the concept's, which read as the ring drawn out of focus. ]]
+	local auto = b:CreateTexture(nil, "OVERLAY")
+	auto:SetTexture(self.glyph.auto)
+	auto:SetPoint("CENTER", b, "CENTER", 0, 0)
+	auto:SetWidth(math.floor(size * 0.72 + 0.5)); auto:SetHeight(math.floor(size * 0.72 + 0.5))
+	self:Tint(auto, "accent")
+	auto:Hide()
 
-	b.ring, b.fill, b.halo = ring, fill, halo
+	b.ring, b.fill, b.auto = ring, fill, auto
 
 	-- Shadows the widget method so the artwork follows the checked state.
 	function b:SetChecked(done)
 		self.__checked = done and true or false
 		if self.__checked then self.fill:Show() else self.fill:Hide() end
+		if self.__checked or not self.__auto then self.auto:Hide() else self.auto:Show() end
 		Theme:Tint(self.ring, self.__checked and "accent" or "subtle")
 	end
 	function b:GetChecked() return self.__checked end
@@ -535,11 +529,13 @@ function Theme:StepCheck(parent, size)
 
 		ClassicAPI's ID-keyed events are what make Zygor-style advancement
 		possible on this client, and the UI says so: a step the addon can
-		complete on its own wears a halo, so the player knows not to bother
-		ticking it. A step only they can confirm has none.
+		complete on its own shows a ⟳, so the player knows not to bother
+		ticking it. A step only they can confirm has an empty ring. Once
+		ticked, the fill covers it.
 	]]
 	function b:SetAutoEligible(eligible)
-		if eligible and not self.__checked then self.halo:Show() else self.halo:Hide() end
+		self.__auto = eligible and true or false
+		if self.__auto and not self.__checked then self.auto:Show() else self.auto:Hide() end
 	end
 
 	b:SetChecked(false)
