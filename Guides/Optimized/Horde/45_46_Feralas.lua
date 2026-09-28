@@ -2,7 +2,7 @@
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
-AegisPathfinder:RegisterGuide("Optimized/Feralas (45-46)", "Optimized/Azshara (46-46)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Feralas (45-46)", "Optimized/Uldaman (46-46)", "Horde", function()
 
 return [[
 

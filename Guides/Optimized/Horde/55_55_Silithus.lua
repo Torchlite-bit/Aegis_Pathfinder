@@ -23,6 +23,8 @@ A A Reliquary of Purity |QID|5527| |N|Rabine Saturna in Nighthaven (51.72, 45.07
 R Camp Mojache |TID|4120| |N|Travel to Camp Mojache in Feralas (76.17, 43.81)| |Z|Feralas| |O|
 T The Strength of Corruption |QID|4120| |N|Talo Thornhoof in Camp Mojache (76.17, 43.81)| |Z|Feralas| |O|
 
+F Marshal's Refuge |QID|4146| |N|Fly to Marshal's Refuge in Un'Goro Crater| |D|ST| |Z|Un'Goro Crater|
+T Zapper Fuel |QID|4146| |N|Larion in Marshal's Refuge (45.5, 8.7)| |D|ST| |Z|Un'Goro Crater|
 R Silithus |QID|1125| |N|Travel to Silithus (30.06, 10.41)| |Z|Silithus|
 N Watch out! |QID|1125| |N|Watch out for Twilight elites patrolling the roads| |Z|Silithus|
 

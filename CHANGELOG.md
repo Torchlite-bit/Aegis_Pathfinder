@@ -18,6 +18,29 @@ reports.
 
 ---
 
+## [0.13.0] — restart
+
+### Added
+- **The Optimized Horde route runs Uldaman and the Sunken Temple**, as the
+  Alliance route already does, so the first-time setup now recommends both
+  for the Horde.
+  - *Uldaman (46-46)*, after Feralas, picks up Necklace Recovery in
+    Orgrimmar, Reclaimed Treasures in the Undercity, Uldaman Reagent Run in
+    Kargath and Solution to Doom from Theldurin, runs the dig site and the
+    instance, and hands everything in on the way back, the Platinum Discs to
+    Thunder Bluff included. Tanaris (49-50) takes the discs to the Uldum
+    Pedestal, and the Burning Steppes' stop in Thunder Bluff finishes the
+    chain. That is 13 quests.
+  - *Sunken Temple (53-53)*, after the Burning Steppes, hands in Return to
+    Fel'Zerul in Stonard, picks up The Temple of Atal'Hakkar and runs the
+    temple: Into the Depths, Secret of the Circle, Zapper Fuel, Jammal'an and
+    the Essence of Eranikus. Then it hands in the Fetishes in Stonard and
+    Jammal'an at Shadra'Alor. Into the Depths is now picked up from Marvon
+    after The Stone Circle. Zapper Fuel, which the route picked up and never
+    handed in, goes back to Larion in Marshal's Refuge on the way to
+    Silithus. That is 9 quests.
+  - Without the dungeon ticked, each leg is a single note.
+
 ## [0.12.8]
 
 ### Added
@@ -568,6 +591,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.13.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.8]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.7]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.6]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

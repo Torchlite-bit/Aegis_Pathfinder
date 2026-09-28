@@ -46,6 +46,7 @@
 	<Script file="43_44_Dustwallow_Marsh.lua"/>
 	<Script file="44_45_Tanaris.lua"/>
 	<Script file="45_46_Feralas.lua"/>
+	<Script file="46_46_Uldaman.lua"/>
 	<Script file="46_46_Azshara.lua"/>
 	<Script file="46_47_Hinterlands.lua"/>
 	<Script file="47_47_Stranglethorn_Vale.lua"/>
@@ -60,6 +61,7 @@
 	<Script file="51_51_Blasted_Lands.lua"/>
 	<Script file="51_52_UnGoro_Crater.lua"/>
 	<Script file="52_53_Burning_Steppes.lua"/>
+	<Script file="53_53_Sunken_Temple.lua"/>
 	<Script file="53_54_Azshara.lua"/>
 	<Script file="54_54_Felwood.lua"/>
 	<Script file="54_55_Winterspring.lua"/>

@@ -2,7 +2,7 @@
 -- Quest order follows VanillaGuide (mrmr) for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
-AegisPathfinder:RegisterGuide("Optimized/Burning Steppes (52-53)", "Optimized/Azshara (53-54)", "Horde", function()
+AegisPathfinder:RegisterGuide("Optimized/Burning Steppes (52-53)", "Optimized/Sunken Temple (53-53)", "Horde", function()
 
 return [[
 
@@ -17,6 +17,9 @@ T Un'Goro Soil |QID|3761| |N|Ghede in Elder Rise (77.34, 22.09)| |Z|Thunder Bluf
 A Morrowgrain Research (Part 1) |QID|3782| |N|Arch Druid Hamuul Runetotem in Elder Rise (79.30, 28.45)| |Z|Thunder Bluff| |PRE|3761|
 T Morrowgrain Research (Part 1) |QID|3782| |N|Bashana Runetotem in Elder Rise (70.99, 34.09)| |Z|Thunder Bluff| |PRE|3761|
 A Morrowgrain Research (Part 2) |QID|3786| |N|Bashana Runetotem in Elder Rise (70.98, 34.03)| |Z|Thunder Bluff| |PRE|3761|
+T Return to Thunder Bluff |QID|2967| |N|Nara Wildmane in Elder Rise (75.6, 31.6)| |D|ULDA| |Z|Thunder Bluff|
+A A Future Task |QID|2968| |N|Nara Wildmane (75.6, 31.6)| |D|ULDA| |Z|Thunder Bluff|
+T A Future Task |QID|2968| |N|Sage Truthseeker in the Lower Rise (34.4, 46.9)| |D|ULDA| |Z|Thunder Bluff|
 N As you go... |AYG|4726| |QID|3786| |N|Use Evergreen Pouch every 10 mins to create Evergreen Herb Casing - need 10 Morrowgrain| |U|11020| |PRE|3764|
 
 R Ratchet |TID|4147| |N|Travel to Ratchet (62.48, 38.66)| |Z|The Barrens| |O|
