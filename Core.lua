@@ -240,7 +240,7 @@ local options = {
                 AegisPathfinder:Print("--- Navigation Status ---")
                 AegisPathfinder:Print("Setting: " .. (AegisPathfinder.db.char.waypointprovider or "auto"))
                 AegisPathfinder:Print("Active: " .. AegisPathfinder:GetWaypointProviderLabel())
-                AegisPathfinder:Print("Arrow: " .. AegisPathfinder:GetArrowMode())
+                AegisPathfinder:Print("Arrows: " .. AegisPathfinder:DescribeArrows())
                 local wp = AegisPathfinder.waypointtarget
                 AegisPathfinder:Print(wp and string.format("Waypoint: continent %d zone %d at %.1f, %.1f",
                     wp.continent, wp.zoneindex, wp.x, wp.y) or "Waypoint: none")
@@ -567,7 +567,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.14.0"
+AegisPathfinder.version = "0.15.0"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be

@@ -720,10 +720,12 @@ function AegisPathfinder:UpdateObjectivePanel()
 		local row = CreateFrame("Button", nil, frame)
 		row:SetHeight(G.ROWHEIGHT)
 
-		-- Faint wash on the active step, plus the left accent bar.
+		-- Faint wash on the active step, plus the left accent bar. Both
+		-- reach down over the objective meter when it shows (ReachActiveRow).
 		row.bg = row:CreateTexture(nil, "BACKGROUND")
 		row.bg:SetTexture(Theme.texture.solid)
-		row.bg:SetAllPoints(row)
+		row.bg:SetPoint("TOPRIGHT", row, "TOPRIGHT", 0, 0)
+		row.bg:SetPoint("BOTTOMLEFT", row, "BOTTOMLEFT", 0, 0)
 		row.bg:SetVertexColor(1, 1, 1, 0.035)
 		row.bg:Hide()
 
@@ -1192,6 +1194,26 @@ local function ReadLeaderboard(logi)
 end
 AegisPathfinder.ReadLeaderboard = ReadLeaderboard
 
+--[[ The step's accent bar and wash reach down over the meter under it, so its
+	objectives read as part of the step, to the footer (the panel's 8px below
+	its content) or, with the party block under the meter, to the meter's
+	edge. Without a meter they fit the row again. ]]
+function AegisPathfinder:ReachActiveRow(toMeter)
+	local row = rows[1]
+	if not row then return end
+	local to, x, y = row, 0, 0
+	if toMeter then
+		local party = frame.partyblock and frame.partyblock:IsShown()
+		to, x, y = meter, -G.ROWPAD, party and 0 or -8
+	end
+	row.activebar:ClearAllPoints()
+	row.activebar:SetPoint("TOPLEFT", row, "TOPLEFT", 0, 0)
+	row.activebar:SetPoint("BOTTOMLEFT", to, "BOTTOMLEFT", x, y)
+	row.bg:ClearAllPoints()
+	row.bg:SetPoint("TOPRIGHT", row, "TOPRIGHT", 0, 0)
+	row.bg:SetPoint("BOTTOMLEFT", to, "BOTTOMLEFT", x, y)
+end
+
 --- Fill the meter from quest log entry `logi`: a line for each objective
 --- with a count, finished ones full. Returns whether there was anything to
 --- count; the meter is as tall as its lines.
@@ -1270,6 +1292,7 @@ function AegisPathfinder:UpdateOHPanel(value)
 	if self.PaintPartyBlock then
 		if showMeter then self:PaintPartyBlock(frame, meter, 0) else self:PaintPartyBlock(frame, rows[1], G.ROWPAD) end
 	end
+	self:ReachActiveRow(showMeter)
 	if self.PaintShareButton then self:PaintShareButton() end
 	self:LayoutPanelHeight()
 

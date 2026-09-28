@@ -621,20 +621,26 @@ function AegisPathfinder:CreateConfigPanel()
 	wide(waypoints)
 	frame.waypoints = waypoints
 
-	--[[ Whose arrow points at the step: ours, the waypoint addon's, both, or
-		neither. It replaced a lone "Navigation arrow" switch, which left the
-		waypoint addon's arrow pointing too -- two arrows, one place. ]]
-	table.insert(frame.sections, section("Arrow"))
-	local arrow = Theme:Dropdown(body, BODY_W, function(mode)
-		AegisPathfinder:SetArrowMode(mode)
-		AegisPathfinder:RefreshConfigPanel()
-	end)
-	arrow:SetItems(AegisPathfinder.ARROW_MODES)
-	place(arrow, 30, 6)
-	wide(arrow)
+	--[[ Which arrows point at the step: a switch each for ours, TomTom's and
+		pfQuest's, so any of them, all or none. They replaced a dropdown of
+		ours, the waypoint addon's, both or neither, which could not turn
+		pfQuest's arrow off when TomTom took the waypoints, nor have three. An
+		addon that is not loaded has its switch held off. ]]
+	table.insert(frame.sections, section("Arrows"))
+	frame.arrows = {}
+	for _, def in ipairs(AegisPathfinder.ARROWS or {}) do
+		local key = def.key
+		local sw = Theme:Switch(body, def.label, function(on)
+			AegisPathfinder:SetArrow(key, on)
+			AegisPathfinder:RefreshConfigPanel()
+		end)
+		sw.arrowKey = key
+		place(sw, function(w) return sw:Fit(w) end, 8)
+		frame.arrows[key] = sw
+	end
 	local arrowNote = fine(Theme:FinePrint(body, BODY_W))
-	place(arrowNote, 30, SECTION_GAP)
-	frame.arrow, frame.arrowNote = arrow, arrowNote
+	place(arrowNote, 58, SECTION_GAP)
+	frame.arrowNote = arrowNote
 
 	page("Maintenance")
 	table.insert(frame.sections, section("Maintenance"))
@@ -673,7 +679,7 @@ function AegisPathfinder:CreateConfigPanel()
 	frame.scroll, frame.holder, frame.scrollbar = scroll, holder, bar
 	-- Their lists hang off UIParent, so they are closed by hand when the
 	-- page or the window goes.
-	frame.dropdowns = { race, theme, waypoints, arrow, scorePage.spec }
+	frame.dropdowns = { race, theme, waypoints, scorePage.spec }
 
 	--[[ The categories, down the left: Zygor's list, in this style -- a
 		quieter column than the page, the page shown marked with an accent
@@ -1006,15 +1012,27 @@ function AegisPathfinder:RefreshConfigPanel()
 	frame.waypoints:SetItems(wp)
 	frame.waypoints:SetValue(db.waypointprovider or "auto")
 
-	frame.arrow:SetValue(self:GetArrowMode())
-	local provider = self:GetWaypointProvider()
-	if provider and provider.arrowIsWaypoint then
-		frame.arrowNote:SetText(provider.label .. "'s waypoint is its arrow, so it points "
-			.. "whichever you pick here.")
-	else
-		frame.arrowNote:SetText("Pathfinder's floats at the top of the screen. The waypoint "
-			.. "addon keeps its map pins either way.")
+	-- The arrows: a switch each, held off for an addon that is not loaded.
+	local missing = {}
+	for _, def in ipairs(self.ARROWS or {}) do
+		local sw, available = frame.arrows[def.key], self:IsArrowAvailable(def.key)
+		sw:SetOn(available and self:IsArrowOn(def.key))
+		sw:SetLocked(not available)
+		if not available and def.addon then table.insert(missing, def.addon) end
 	end
+	local provider = self:GetWaypointProvider()
+	local text
+	if provider and provider.arrowIsWaypoint then
+		text = provider.label .. "'s waypoint is its arrow, so it points whatever is switched here."
+	else
+		text = "As many as you like. pfQuest's off is off in pfQuest too, as /db arrow does. "
+			.. "The waypoint addon keeps its map pins either way."
+	end
+	if table.getn(missing) > 0 then
+		text = text .. " " .. table.concat(missing, " and ")
+			.. (table.getn(missing) > 1 and " are" or " is") .. " not loaded."
+	end
+	frame.arrowNote:SetText(text)
 end
 
 --- Sync the dungeon chips with saved settings and with the loaded guide.

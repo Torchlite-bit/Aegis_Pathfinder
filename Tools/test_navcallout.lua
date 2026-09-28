@@ -31,7 +31,7 @@ dofile("NavCallout.lua")
 -- enumerates the world map as it loads; lift just that block.
 do
 	local nav = io.open("Navigation.lua"):read("*a")
-	local from = string.find(nav, "--[[ Whose arrow points", 1, true)
+	local from = string.find(nav, "--[[ Which arrows point", 1, true)
 	local to = string.find(nav, "-- Helper to get valid zone data", 1, true)
 	assert(from and to, "could not find the arrow block in Navigation.lua")
 	assert(loadstring(string.sub(nav, from, to - 1)))()
@@ -204,14 +204,13 @@ AegisPathfinder:ToggleNavCallout()
 check(AegisPathfinder.db.char.shownavcallout == true, "toggling switches it back on")
 check(frame:IsShown(), "and it reappears")
 -- Ours was switched off with no arrow setting saved: a character from before
--- the setting, who was following the waypoint addon's arrow. Toggling ours
--- back on leaves theirs as it was, so both point.
-check(AegisPathfinder:GetArrowMode() == "both",
-	"toggling ours leaves the waypoint addon's arrow as it was, got %s",
-	AegisPathfinder:GetArrowMode())
+-- the setting, who was following TomTom's arrow. Toggling ours back on
+-- leaves TomTom's as it was, so both point.
+check(AegisPathfinder:IsArrowOn("pathfinder") and AegisPathfinder:IsArrowOn("tomtom"),
+	"toggling ours leaves TomTom's arrow as it was")
 AegisPathfinder:ToggleNavCallout()
-check(AegisPathfinder:GetArrowMode() == "provider" and not frame:IsShown(),
-	"and toggling ours off again leaves theirs alone too")
+check(not AegisPathfinder:IsArrowOn("pathfinder") and AegisPathfinder:IsArrowOn("tomtom") and not frame:IsShown(),
+	"and toggling ours off again leaves TomTom's alone too")
 
 -- Report ---------------------------------------------------------------------
 

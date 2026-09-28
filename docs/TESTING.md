@@ -47,7 +47,13 @@ are only found at startup.
       after `/reload`; it does not drop back to step 1, 0 done.
 - [ ] A quest with two things to collect (Crocolisk Hunting: meat and skins)
       shows a bar for each under the step, each filled to its count (4 of 5
-      is four fifths full); a finished one stays, full.
+      is four fifths full, 4 of 6 two thirds); a finished one stays, full.
+      The guide's own progress bar under the step number matches "N of M".
+- [ ] The step's accent bar down the left edge runs on past the bars to the
+      footer.
+- [ ] A step the addon ticks itself (a quest objective, travel with a waypoint
+      addon) has a small ⟳ in its circle; a note has an empty circle; a done
+      step is filled, with no ⟳.
 - [ ] Accepting, completing and handing in a quest ticks its steps by itself.
 - [ ] ◀ and ▶ step back and on; the tick marks the step done.
 - [ ] Click ◀ a few times, then **right-click ▶**: back at your place, with the
@@ -67,8 +73,12 @@ are only found at startup.
 
 - [ ] With TomTom or pfQuest, the arrow points at the step and counts down the
       distance.
-- [ ] Options → Navigation → Arrow: each choice (ours, theirs, both, neither)
-      does what it says.
+- [ ] Options → Navigation → Arrows: each switch turns its arrow on and off,
+      and any two or all three can point at once. With TomTom taking the
+      waypoints, pfQuest's arrow still points at the step when it is on.
+- [ ] pfQuest's switch off hides pfQuest's arrow altogether; `/db arrow` turns
+      it back on and the switch shows it on. An addon that isn't loaded has
+      its switch dimmed, and the note names it.
 
 ## 5. Options window
 

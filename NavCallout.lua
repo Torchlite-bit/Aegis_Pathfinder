@@ -173,11 +173,10 @@ function AegisPathfinder:UpdateNavCallout()
 	frame:Show()
 end
 
---- Show or hide the callout, remembering the choice.
---- Turn our arrow on or off, leaving the waypoint addon's as it is.
+--- Turn our arrow on or off, remembering the choice, and leaving the
+--- waypoint addons' as they are.
 function AegisPathfinder:ToggleNavCallout()
-	local flip = { pathfinder = "none", both = "provider", provider = "both", none = "pathfinder" }
-	self:SetArrowMode(flip[self:GetArrowMode()])
+	self:SetArrow("pathfinder", not self:IsArrowOn("pathfinder"))
 end
 
 

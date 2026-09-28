@@ -361,6 +361,18 @@ local function newFrame(frameType, name, parent)
 		end
 	end
 	function f:GetValue() return self.__value or 0 end
+	-- StatusBar: the client fills its texture to the value; the stub keeps
+	-- the texture and colour it was given.
+	function f:SetStatusBarTexture(path) self.__barTexture = path end
+	function f:GetStatusBarTexture() return nil end   -- not relied on: 1.12 may lack it
+	function f:SetStatusBarColor(r, g, b, a)
+		checkColor("SetStatusBarColor", r, g, b, a)
+		self.__barColor = { r, g, b, a }
+	end
+	function f:GetStatusBarColor()
+		local c = self.__barColor or { 1, 1, 1, 1 }
+		return c[1], c[2], c[3], c[4]
+	end
 	-- ScrollFrame: a child that is offset by the vertical scroll.
 	function f:SetScrollChild(child) self.__scrollChild = child end
 	function f:GetScrollChild() return self.__scrollChild end

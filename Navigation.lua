@@ -46,7 +46,7 @@ end
 -- A provider is { label, IsAvailable(), Add(wp), Clear() }, where wp is
 --   { zone, continent, zoneindex, x, y, title, description, onArrival, arrow }
 -- `arrow` says whether the provider's own arrow should point at this
--- waypoint (see GetArrowMode). A provider whose waypoint *is* its arrow --
+-- waypoint (see IsArrowOn). A provider whose waypoint *is* its arrow --
 -- Cartographer, MetaMap BWP -- marks itself `arrowIsWaypoint` and ignores it.
 -- x and y are map coordinates in 0-100 space. Add() returns true when it
 -- actually created a waypoint. Clear() removes everything that provider created
@@ -329,59 +329,98 @@ function AegisPathfinder:SetWaypointProvider(name)
 	self:ForceWaypointUpdate()
 end
 
---[[ Whose arrow points at the current step.
+--[[ Which arrows point at the current step.
 
-	The addon draws its own arrow (NavCallout.lua), and the waypoint addon
-	usually has one too -- TomTom's, pfQuest's -- so out of the box there were
-	two, pointing at the same place. Ours reads the waypoint the addon keeps
-	for itself, not the provider's arrow, so the two are independent: either,
-	both or neither can point.
+	The addon draws its own arrow (NavCallout.lua), and the waypoint addons
+	have theirs, TomTom's and pfQuest's. Each is a switch of its own on the
+	Navigation page, so one, some, all or none of them point at the step.
 
-	Two settings underneath: `shownavcallout` for ours (which predates this),
-	and `providerarrow` for theirs. A character from before `providerarrow`
-	existed had the provider's arrow on regardless; they keep it only if they
-	had turned ours off, and otherwise get ours alone.
+	- Pathfinder's: `shownavcallout`.
+	- TomTom's: `providerarrow`, whether our waypoints take TomTom's arrow.
+	  TomTom-TWOW has no switch for its arrow as a whole, so a waypoint the
+	  player makes still takes it.
+	- pfQuest's: pfQuest's own setting, pfQuest_config.arrow, which is what
+	  `/db arrow` sets, so the two never disagree. Off is off altogether, not
+	  only off our waypoint: left alone it points at the nearest quest
+	  objective, a second arrow somewhere else.
+
+	An arrow that is on is aimed at the step even when its addon is not the one
+	taking the waypoints (the Waypoints setting): the waypoint is sent to it as
+	well. A character from before `providerarrow` existed had TomTom's arrow on
+	regardless; it keeps it only if it had turned ours off.
 ]]
-AegisPathfinder.ARROW_MODES = {
-	{ value = "pathfinder", label = "Pathfinder's arrow" },
-	{ value = "provider",   label = "The waypoint addon's arrow" },
-	{ value = "both",       label = "Both arrows" },
-	{ value = "none",       label = "No arrow" },
+AegisPathfinder.ARROWS = {
+	{ key = "pathfinder", label = "Pathfinder's arrow" },
+	{ key = "tomtom",     label = "TomTom's arrow",  addon = "TomTom" },
+	{ key = "pfquest",    label = "pfQuest's arrow", addon = "pfQuest" },
 }
 
-function AegisPathfinder:GetArrowMode()
-	local db = self.db.char
-	local ours = db.shownavcallout ~= false
-	local theirs = db.providerarrow
-	if theirs == nil then theirs = not ours end
-	if ours and theirs then return "both" end
-	if ours then return "pathfinder" end
-	if theirs then return "provider" end
-	return "none"
+--- Whether an arrow's addon is loaded (ours always is).
+function AegisPathfinder:IsArrowAvailable(key)
+	if key == "pathfinder" then return true end
+	if key == "pfquest" and not pfQuest_config then return false end
+	return providers[key] ~= nil and providers[key].IsAvailable() and true or false
 end
 
---- Whether the waypoint addon's own arrow should be aimed at our waypoints.
-function AegisPathfinder:WantsProviderArrow()
-	local mode = self:GetArrowMode()
-	return mode == "provider" or mode == "both"
+function AegisPathfinder:IsArrowOn(key)
+	local db = self.db.char
+	if key == "pathfinder" then return db.shownavcallout ~= false end
+	if key == "tomtom" then
+		local on = db.providerarrow
+		if on == nil then on = db.shownavcallout == false end
+		return on and true or false
+	end
+	if key == "pfquest" then return pfQuest_config ~= nil and pfQuest_config["arrow"] == "1" end
+	return false
+end
+
+function AegisPathfinder:SetArrow(key, on)
+	on = on and true or false
+	local db = self.db.char
+	-- TomTom's, unsaved, follows from ours (above); saved now, so turning
+	-- ours on or off leaves it as it was.
+	if db.providerarrow == nil then db.providerarrow = self:IsArrowOn("tomtom") end
+	if key == "pathfinder" then
+		db.shownavcallout = on
+	elseif key == "tomtom" then
+		db.providerarrow = on
+	elseif key == "pfquest" then
+		if not pfQuest_config then return end
+		pfQuest_config["arrow"] = on and "1" or "0"
+		if not on and pfQuest and pfQuest.route and pfQuest.route.arrow then pfQuest.route.arrow:Hide() end
+	else
+		return
+	end
+	-- Re-send the step's waypoint so each arrow takes it, or lets it go --
+	-- removing a TomTom waypoint also clears its arrow.
+	self:ClearWaypoint()
+	self:ForceWaypointUpdate()
+	if self.UpdateNavCallout then self:UpdateNavCallout() end
+end
+
+--- The arrows pointing at the step, for /apg diagnav: "Pathfinder, TomTom",
+--- or "none".
+function AegisPathfinder:DescribeArrows()
+	local on = {}
+	for _, a in ipairs(self.ARROWS) do
+		if self:IsArrowAvailable(a.key) and self:IsArrowOn(a.key) then
+			table.insert(on, (string.gsub(a.label, "'s arrow$", "")))
+		end
+	end
+	return table.getn(on) > 0 and table.concat(on, ", ") or "none"
 end
 
 --- True when the active provider has no waypoint but its arrow, so the
---- arrow setting cannot take it away.
+--- arrow switches cannot take it away.
 function AegisPathfinder:ProviderArrowIsWaypoint()
 	local provider = self:GetWaypointProvider()
 	return provider and provider.arrowIsWaypoint and true or false
 end
 
-function AegisPathfinder:SetArrowMode(mode)
-	local db = self.db.char
-	db.shownavcallout = (mode == "pathfinder" or mode == "both")
-	db.providerarrow = (mode == "provider" or mode == "both")
-	-- Re-send the step's waypoint so the provider's arrow takes it, or lets
-	-- it go -- removing a TomTom waypoint also clears its arrow.
-	self:ClearWaypoint()
-	self:ForceWaypointUpdate()
-	if self.UpdateNavCallout then self:UpdateNavCallout() end
+-- Which arrow switch a provider's arrow answers to, if it has one.
+local function ArrowKey(provider)
+	if provider == providers.tomtom then return "tomtom" end
+	if provider == providers.pfquest then return "pfquest" end
 end
 
 -- Helper to get valid zone data (ensures map is set to player location)
@@ -431,17 +470,29 @@ local function MapPoint(zone, x, y, desc, onArrival)
 	local provider = AegisPathfinder:GetWaypointProvider()
 	if not provider then return end
 
-	local created = provider.Add({
-		zone = zone,
-		continent = zc,
-		zoneindex = zi,
-		x = x,
-		y = y,
-		title = "Pathfinder: " .. desc,
-		description = desc,
-		onArrival = onArrival,
-		arrow = AegisPathfinder:WantsProviderArrow(),
-	})
+	local function send(to, arrow)
+		return to.Add({
+			zone = zone,
+			continent = zc,
+			zoneindex = zi,
+			x = x,
+			y = y,
+			title = "Pathfinder: " .. desc,
+			description = desc,
+			onArrival = onArrival,
+			arrow = arrow,
+		})
+	end
+	local key = ArrowKey(provider)
+	local created = send(provider, key ~= nil and AegisPathfinder:IsArrowOn(key))
+	-- An arrow that is on, of an addon that is not taking the waypoints: it
+	-- gets the waypoint too, to point at.
+	for _, other in ipairs({ "tomtom", "pfquest" }) do
+		if providers[other] ~= provider and AegisPathfinder:IsArrowOn(other)
+			and AegisPathfinder:IsArrowAvailable(other) then
+			created = send(providers[other], true) or created
+		end
+	end
 
 	if created then
 		AegisPathfinder.lastwaypoint = true
@@ -554,7 +605,7 @@ function AegisPathfinder:GetWaypointBearing()
 	return bearing + facing, yards
 end
 
---[[ Keep the waypoint addon's arrow off our waypoint when it is not wanted.
+--[[ Keep TomTom's arrow off our waypoint when it is switched off.
 
 	Telling TomTom `crazy = false` keeps it from taking the waypoint when it
 	is added, but not later: TomTom-TWOW's GoToNextWayPoint -- run whenever
@@ -562,9 +613,10 @@ end
 	hands the arrow to the last waypoint in its list, which is usually ours.
 	So this runs with the arrow's ticks and takes it back off. Only ever off
 	one of our own waypoints: the player's own TomTom waypoints are theirs.
+	(pfQuest's needs nothing like it: switched off, it is off in pfQuest.)
 ]]
 function AegisPathfinder:EnforceArrowMode()
-	if self:WantsProviderArrow() then return end
+	if self:IsArrowOn("tomtom") then return end
 	if not (TomTom and TomTom.active_waypoint and TomTom.ClearCrazyArrow) then return end
 	for _, uid in ipairs(tomtomuids) do
 		if TomTom.active_waypoint == uid then

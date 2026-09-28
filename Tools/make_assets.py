@@ -489,7 +489,29 @@ def _party(d, s):            # nav row -- share the guide with your party
     d.pieslice([s * .06, s * .62, s * .60, s * 1.16], 180, 360, fill=W)
 
 
+def _auto(d, s):             # step check -- the addon ticks this one itself
+    """A clockwise open-circle arrow, the ⟳ the 1.12 font cannot draw. It sits
+    inside the step's ring at about 9px, so the stroke is heavy and the head
+    is a filled triangle, not a stroked one."""
+    import math
+    cx = cy = s * .5
+    r = s * .30
+    w = int(s * .15)
+    start, end = -20, 225          # degrees, clockwise from three o'clock
+    d.arc([cx - r, cy - r, cx + r, cy + r], start, end, fill=W, width=w)
+    # The head at the arc's end, pointing the way it turns.
+    t = math.radians(end)
+    px, py = cx + (r - w / 2) * math.cos(t), cy + (r - w / 2) * math.sin(t)
+    tx, ty = -math.sin(t), math.cos(t)          # clockwise tangent
+    nx, ny = math.cos(t), math.sin(t)           # outward normal
+    head, half = s * .24, s * .21
+    d.polygon([(px + tx * head, py + ty * head),
+               (px + nx * half, py + ny * half),
+               (px - nx * half, py - ny * half)], fill=W)
+
+
 CHROME = {
+    "auto": _auto,
     "menu": _menu,
     "close": _close,
     "plus": _plus,
