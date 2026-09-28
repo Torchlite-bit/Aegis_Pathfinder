@@ -312,6 +312,19 @@ low for says the level it becomes an upgrade at.
   weights** on the Gear page), lists them down the left with a box each, as
   Zygor's does. Change any of them, pick another spec, reset, or import and
   export them as a string OctoPawn reads too.
+- **More than one spec, as Pawn does.** The Item Score page has a switch for
+  each spec of your class. Yours is always on; switch on another -- the tank
+  set you carry, the healing set -- and every tooltip gets a line for it too,
+  with its score and upgrade percentage. Each spec that is on remembers the
+  best items you have worn in each slot (the best two rings and trinkets), as
+  your gear changes, and an item is weighed against those rather than what you
+  happen to have on: the healing set in your bags does not hide a tank upgrade.
+  **Forget best items** starts again from what you wear.
+- **Drops for your other specs.** When something new in your bags beats the
+  best you have worn for another spec that is on, the chat says so once:
+  "*[Tower Shield]* is an upgrade for your Protection gear (+12%)." (What is in
+  your bags at login is not new.) Your own spec's upgrades go to the Gear
+  Advisor's window, as before. Switch it off on the same page.
 
 **Gear Advisor.** It watches for upgrades, as Zygor's does, and is switched
 under **Gear** in the options:

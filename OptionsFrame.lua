@@ -463,7 +463,7 @@ function AegisPathfinder:CreateConfigPanel()
 	place(weights, 26, 6)
 	note("Each item's tooltip shows what it is worth to your spec and how it "
 		.. "compares with what you wear. The weights come from OctoPawn; change "
-		.. "them, or pick another spec, under Item Score.")
+		.. "them, pick another spec, or score your other specs too, under Item Score.")
 	space(10)
 	-- The Gear Advisor's switches (GearAdvisor.lua), Zygor's in this style.
 	frame.advisor = {}

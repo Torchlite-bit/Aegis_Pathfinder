@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.12.7)
+# Aegis: Pathfinder (v0.12.8)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -96,6 +96,9 @@ dungeons, no trading, no Auction House. Every switch applies to every guide.
 
 - **Item score** on every tooltip: what an item is worth to your spec, and how
   it compares with what you wear. Weights from OctoPawn, yours to change.
+  Switch on your other specs and each gets its own line, weighed against the
+  best you have worn for it, with a chat notice when a drop beats it — as Pawn
+  does.
 - **Gear Advisor** offers upgrades as you loot them and marks the best quest
   reward.
 - **Gear finder** lists the upgrades waiting in the dungeons you run — who
@@ -192,7 +195,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.12.7`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.12.8`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)** or open an

@@ -18,6 +18,23 @@ reports.
 
 ---
 
+## [0.12.8]
+
+### Added
+- **More than one spec, as Pawn does.** The Item Score page has a switch for
+  each spec of your class; yours is always on. Every spec that is on gets its
+  own line on item tooltips, with its score and upgrade percentage.
+- **The best you have worn, per spec.** Each spec that is on remembers the
+  best items you have worn in each slot -- the best two rings and trinkets --
+  as your gear changes, and an item is weighed against those rather than what
+  you have on, so the healing set in your bags does not hide a tank upgrade.
+  **Forget best items** starts again from what you wear. With nothing
+  remembered yet, the comparison is with what you wear, as before.
+- **Drops for your other specs.** When something new in your bags beats your
+  best for another spec that is on, the chat names it once, with the gain.
+  Your own spec's upgrades still go to the Gear Advisor's window. There is a
+  switch for it on the same page.
+
 ## [0.12.7]
 
 ### Added
@@ -551,6 +568,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.12.8]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.7]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.6]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.5]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

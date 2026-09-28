@@ -169,6 +169,36 @@ body:Show()
 body.refresh()
 check(page.spec.items[1].label == "Auto (Protection)", "until it is turned to")
 
+-- Pawn's specs: a switch for each, yours locked on ----------------------------------------
+
+do
+	GetInventoryItemLink = function() return nil end
+	talents[1][2], talents[2][2], talents[3][2] = 0, 0, 0     -- the levelling spec: Retribution
+	IS:SetSpec(nil)
+	body.refresh()
+	local byspec = {}
+	for _, sw in ipairs(page.specSwitches) do byspec[sw.spec] = sw end
+	check(table.getn(page.specSwitches) == 3 and byspec.Holy and byspec.Protection and byspec.Retribution,
+		"a switch for each Paladin spec")
+	check(byspec.Retribution:IsOn() and not byspec.Retribution:IsEnabled(), "your spec is on, and cannot be switched off")
+	check(string.find(byspec.Retribution.label:GetText(), "your spec", 1, true), "and says it is yours")
+	check(not byspec.Protection:IsOn() and byspec.Protection:IsEnabled(), "another spec starts off, and can be switched on")
+	run(byspec.Protection, "OnClick")
+	check(IS:IsSpecActive("Protection") and table.concat(IS:ActiveSpecs(), ",") == "Retribution,Protection",
+		"switching it on scores Protection too")
+	check(byspec.Protection:IsOn(), "and the page shows it on")
+	check(page.notify:IsOn(), "the drop notice starts on")
+	run(page.notify, "OnClick")
+	check(IS.Settings().notify == false, "and can be switched off")
+	run(page.forget, "OnClick")
+	check(string.find(page.status:GetText(), "Forgotten", 1, true), "forgetting says so")
+	IS:SetSpec("Protection")
+	check(byspec.Protection:IsOn() and not byspec.Protection:IsEnabled(), "a spec picked as yours is locked on")
+	IS:SetSpec(nil)
+	run(byspec.Protection, "OnClick")
+	check(not IS:IsSpecActive("Protection"), "and off again")
+end
+
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end
 print(string.format("ItemScorePage: %d checks", checks))
 if table.getn(failures) == 0 then

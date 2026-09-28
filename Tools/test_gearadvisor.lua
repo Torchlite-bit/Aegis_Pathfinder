@@ -301,6 +301,41 @@ GA.Settings().bagmark = false
 ContainerFrame_Update(bagFrame)
 check(not ContainerFrame1Item1.__aegisMark:IsShown(), "switched off, no borders")
 
+-- Upgrades for another spec are named in the chat ------------------------------------------
+
+--[[ An Arms warrior with Protection switched on: a new shield-hand item that
+	beats the best Protection has had is named once, in the chat. What was
+	in the bags at the first look is not new. ]]
+do
+	ITEMS[500] = { loc = "INVTYPE_SHIELD", lines = { "Old Shield", "Off Hand", "+4 Stamina", "12 Block" } }
+	ITEMS[501] = { loc = "INVTYPE_SHIELD", lines = { "Tower Shield", "Off Hand", "+14 Stamina", "40 Block" } }
+	ITEMS[502] = { loc = "INVTYPE_SHIELD", lines = { "Kite Shield", "Off Hand", "+10 Stamina", "30 Block" } }
+	for bag = 0, 4 do bags[bag] = {} end
+	worn = { [17] = 500 }
+	IS:SetSpecActive("Protection", true)
+	GA:ResetSession()
+	bags[0][1] = 502                        -- already in the bags
+	local before = table.getn(printed)
+	GA:NotifySpecs()
+	check(table.getn(printed) == before, "the first look takes stock without a word")
+	bags[0][2] = 501                        -- looted
+	GA:NotifySpecs()
+	local said = printed[table.getn(printed)] or ""
+	check(table.getn(printed) == before + 1 and string.find(said, "Item 501", 1, true)
+		and string.find(said, "upgrade for your Protection gear", 1, true), "a new Protection upgrade is named: %s", said)
+	GA:NotifySpecs()
+	check(table.getn(printed) == before + 1, "once")
+	IS.Settings().notify = false
+	bags[0][3] = 501
+	bags[1][1] = 502
+	ITEMS[503] = { loc = "INVTYPE_SHIELD", lines = { "Wall", "Off Hand", "+30 Stamina" } }
+	bags[1][2] = 503
+	GA:NotifySpecs()
+	check(table.getn(printed) == before + 1, "and not at all with the notice off")
+	IS.Settings().notify = true
+	IS:SetSpecActive("Protection", false)
+end
+
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end
 print(string.format("GearAdvisor: %d checks", checks))
 if table.getn(failures) == 0 then

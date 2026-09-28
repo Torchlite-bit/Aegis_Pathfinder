@@ -18,6 +18,12 @@
 	                          easy to find (the default bag frames).
 
 	The advisor can be switched off, or off once you are level 60.
+
+	Other specs     With more than one spec scored (Item Score page), a
+	                new item in your bags that beats the best you have worn
+	                for one of the others is named in the chat, once: "...
+	                is an upgrade for your Protection gear (+12%)". What was
+	                in your bags when you logged in is not new.
 ]]
 
 local AegisPathfinder = AegisPathfinder
@@ -69,6 +75,8 @@ local found = {}       -- "bag:slot" -> upgrade
 local offered = {}     -- item string -> true: already shown this session
 local queue = {}       -- upgrades waiting for the window
 local pending          -- an upgrade to equip once combat ends
+local stocked          -- link -> true: in the bags already (NotifySpecs)
+local told = {}        -- "spec|link" -> true: named in the chat
 
 --- Every upgrade in your bags you can wear now.
 function GA:Scan()
@@ -134,6 +142,7 @@ end
 --- declined stays declined.
 function GA:ResetSession()
 	offered, queue, pending = {}, {}, nil
+	stocked, told = nil, {}
 end
 
 function GA:ClearDeclined()
@@ -142,8 +151,40 @@ function GA:ClearDeclined()
 	self:Dirty()
 end
 
+--[[ Upgrades for your other specs.
+
+	Said in the chat, not offered: you are not wearing that spec's gear, so
+	there is nothing to swap. Only for what is new in your bags -- the first
+	look after logging in takes stock without a word -- and each item once
+	a spec. ]]
+function GA:NotifySpecs()
+	local IS = AegisPathfinder.ItemScore
+	local first = stocked == nil
+	stocked = stocked or {}
+	local quiet = first or not IS.Settings().notify
+	for bag = 0, 4 do
+		for slot = 1, GetContainerNumSlots(bag) or 0 do
+			local link = GetContainerItemLink(bag, slot)
+			if link and not stocked[link] then
+				stocked[link] = true
+				if not quiet then
+					for _, up in ipairs(IS:SpecUpgrades(link)) do
+						local key = up.spec .. "|" .. link
+						if not told[key] then
+							told[key] = true
+							AegisPathfinder:Print(string.format("%s is an upgrade for your %s gear (%s).",
+								link, IS:SpecLabel(up.spec), GA.Gain(up.compare)))
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
 --- After a scan: equip what may be equipped for you, offer the rest.
 function GA:Process()
+	self:NotifySpecs()
 	self:Scan()
 	local s = settings()
 	local fresh = {}

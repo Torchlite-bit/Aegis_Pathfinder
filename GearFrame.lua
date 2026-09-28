@@ -8,6 +8,11 @@
 	are listed until "Show all stats" is on. Beside them, the weights as a
 	string in OctoPawn's format, to import or export; under them, Reset.
 
+	Above the weights, Pawn's specs: a switch for each spec of your class to
+	score as well as yours -- a line each on tooltips, weighed against the
+	best you have worn for it -- the chat notice for their upgrades, and
+	"Forget best items" to start remembering again.
+
 	It used to be a window of its own. The page grows with the list, and the
 	options window scrolls it.
 ]]
@@ -107,6 +112,45 @@ function AegisPathfinder:CreateItemScorePage(body, width, top, bottom)
 	end)
 	showAll:SetPoint("TOPLEFT", body, "TOPLEFT", 0, -y)
 	y = y + showAll:Fit(width) + 12
+
+	-- Pawn's specs: which to score, the notice, and forgetting.
+	local IS = AegisPathfinder.ItemScore
+	local specsCaption = body:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(specsCaption, "display", 11)
+	specsCaption:SetPoint("TOPLEFT", body, "TOPLEFT", 0, -y)
+	specsCaption:SetText("SCORE FOR THESE SPECS")
+	Theme:TextColor(specsCaption, "accent")
+	y = y + 18
+	page.specSwitches = {}
+	for _, spec in ipairs(IS:Specs(IS:Class())) do
+		local key = spec
+		local sw = Theme:Switch(body, IS:SpecLabel(key), function(on)
+			AegisPathfinder.ItemScore:SetSpecActive(key, on)
+		end)
+		sw.spec = key
+		sw:SetPoint("TOPLEFT", body, "TOPLEFT", 0, -y)
+		y = y + sw:Fit(width) + 4
+		table.insert(page.specSwitches, sw)
+	end
+	local notify = Theme:Switch(body, "Tell me when a drop beats my best for another spec", function(on)
+		AegisPathfinder.ItemScore.Settings().notify = on
+	end)
+	notify:SetPoint("TOPLEFT", body, "TOPLEFT", 0, -(y + 4))
+	y = y + 4 + notify:Fit(width) + 6
+	local specsNote = Theme:FinePrint(body, width)
+	specsNote:SetPoint("TOPLEFT", body, "TOPLEFT", 0, -y)
+	specsNote:SetText("Each spec on gets a line on item tooltips, weighed against the best you "
+		.. "have worn for it, as Pawn does: it remembers as you change gear.")
+	y = y + L.NOTE_H - 10
+	local forget = Theme:PanelButton(body, "Forget best items", 150, L.BUTTON_H)
+	forget:SetPoint("TOPLEFT", body, "TOPLEFT", 0, -y)
+	forget:SetScript("OnClick", function()
+		AegisPathfinder.ItemScore:ForgetBest()
+		page.said = "Forgotten: remembering again from what you wear now."
+		AegisPathfinder:UpdateItemScorePage()
+	end)
+	y = y + L.BUTTON_H + 16
+	page.notify, page.specsNote, page.forget = notify, specsNote, forget
 	page.listTop = y
 
 	-- Beside the weights: the weights as a string, to import or export.
@@ -159,6 +203,9 @@ function AegisPathfinder:CreateItemScorePage(body, width, top, bottom)
 		self.width = w
 		self.note:SetWidth(w)
 		self.showAll:Fit(w)
+		for _, sw in ipairs(self.specSwitches) do sw:Fit(w) end
+		self.notify:Fit(w)
+		self.specsNote:SetWidth(w)
 		local cw = w - L.LIST_W - L.GAP
 		for _, r in ipairs({ self.share, self.import, self.export, self.status }) do r:SetWidth(cw) end
 	end
@@ -238,6 +285,14 @@ function AegisPathfinder:UpdateItemScorePage()
 		.. (IS:IsCustom(class, spec) and "You are using your own weights." or "These are the default weights."))
 	page.status:SetText(page.said or "")
 	page.showAll:SetOn(IS.Settings().showall)
+	-- Your spec is always scored; the others are yours to switch on.
+	for _, sw in ipairs(page.specSwitches) do
+		local mine = sw.spec == spec
+		sw.label:SetText(IS:SpecLabel(sw.spec) .. (mine and "  (your spec)" or ""))
+		sw:SetOn(IS:IsSpecActive(sw.spec))
+		sw:SetLocked(mine)
+	end
+	page.notify:SetOn(IS.Settings().notify)
 
 	-- The weights, one to a row down the left.
 	for _, cell in pairs(page.cells) do cell:Hide() end
