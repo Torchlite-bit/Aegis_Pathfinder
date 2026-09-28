@@ -102,7 +102,7 @@ N Alternatively, check the Auction House for something better or cheaper |N|(61.
 B Collect Scimitar (1) |L|2027 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |C|Rogue| |AH| |Z|Undercity|
 T Michael Garrett |QID|6322| |N|Michael - (63.3, 48.5)| |R|Undead| |Z|Undercity|
 t Train your class spells |N|Baltus Fowler - (47.4, 17.3) (RFC Dungeon Quest)| |C|Warrior| |R|Undead| |D|RFC| |Z|Undercity|
-T The Prodigal Lich Returns |QID|411| |N|Bethor - (84.1, 17.5)| |C|Rogue/Undead/Warrior| |R|Undead| |Z|Undercity|
+T The Prodigal Lich Returns |QID|411| |N|Bethor - (84.1, 17.5)| |C|Rogue/Warrior| |R|Undead| |Z|Undercity|
 t Train [First Aid] |N|Mary in the Rogues' Quarter - (73.2, 55.2)| |C|Rogue/Warrior| |Z|Undercity|
 t Train [Heavy Linen Bandage] |N|Mary in the Rogues' Quarter - (73.2, 55.2)| |O| |C|Rogue/Warrior| |Z|Undercity|
 t Train Journeyman First Aid |N|Mary in the Rogues' Quarter - (73.2, 55.2)| |C|Rogue/Warrior| |Z|Undercity|

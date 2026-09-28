@@ -4,29 +4,29 @@ return [[
 
 N 16-19 Darkshore |N|Converted from RestedXP guide|
 
-F Fly to Teldrassil |N|Caylais Moonfeather - (36.3, 45.6)| |O| |C|!Druid| |R|NightElf| |Z|Darkshore|
-R Travel to Teldrassil |N|(56.2, 92.4)| |C|!Druid| |R|NightElf| |Z|Teldrassil|
-T Return to Nessa |QID|6343| |N|Nessa Shadowsong - (56.2, 92.4)| |C|!Druid| |R|NightElf| |Z|Teldrassil|
-R Travel to Darnassus |N|(58.7, 34.9)| |C|Warrior| |R|NightElf| |Z|Darnassus|
-t Train your class spells |N|Arias'ta Bladesinger - (58.7, 34.9)| |C|Warrior| |R|NightElf| |Z|Darnassus|
-t Train Thrown |N|Ilyenia Moonfire - (57.6, 46.7)| |C|Warrior| |R|NightElf| |Z|Darnassus|
-t Train your class spells |N|Jocaste - (40.4, 8.5)| |O| |C|Hunter| |R|NightElf| |Z|Darnassus|
-N Buy a [Heavy Recurve Bow] if you can afford it. If not then buy a [Reinforced Bow] |N|(63.3, 66.3)| |O| |C|Hunter| |R|NightElf| |Z|Darnassus|
-N Stock up on [Sharp Arrows] |N|(63.3, 66.3)| |O| |C|Hunter| |R|NightElf| |Z|Darnassus|
-B Buy Heavy Recurve Bow (x1) |L|3027 1| |N|Landria - (63.3, 66.3)| |O| |C|Hunter| |R|NightElf| |Z|Darnassus|
-N Enter the Cenarion Enclave |N|(31.8, 16.7)| |C|Rogue| |R|NightElf| |Z|Darnassus|
-N Syurna |N|(31.8, 16.7)| |C|Rogue| |R|NightElf| |Z|Darnassus|
-t Train your class spells |N|(37.0, 21.9)| |C|Rogue| |R|NightElf| |Z|Darnassus|
-R Travel to Teldrassil |N|(23.7, 64.5)| |C|!Druid| |R|NightElf| |Z|Teldrassil|
-A Trouble In Darkshore? |QID|730| |N|Chief Archaeologist Greywhisker - (23.7, 64.5)| |C|!Druid| |R|NightElf| |Z|Teldrassil|
-R Travel to Darnassus |N|(37.9, 82.7)| |C|Priest| |R|NightElf| |Z|Darnassus|
-t Train your class spells |N|Jandria - (37.9, 82.7)| |C|Priest| |R|NightElf| |Z|Darnassus|
-H Auberdine |N|Hearth to Auberdine| |C|!Druid| |R|NightElf| |Z|Darnassus|
+F Fly to Teldrassil |N|Caylais Moonfeather - (36.3, 45.6)| |O| |C|!Druid| |R|Night Elf| |Z|Darkshore|
+R Travel to Teldrassil |N|(56.2, 92.4)| |C|!Druid| |R|Night Elf| |Z|Teldrassil|
+T Return to Nessa |QID|6343| |N|Nessa Shadowsong - (56.2, 92.4)| |C|!Druid| |R|Night Elf| |Z|Teldrassil|
+R Travel to Darnassus |N|(58.7, 34.9)| |C|Warrior| |R|Night Elf| |Z|Darnassus|
+t Train your class spells |N|Arias'ta Bladesinger - (58.7, 34.9)| |C|Warrior| |R|Night Elf| |Z|Darnassus|
+t Train Thrown |N|Ilyenia Moonfire - (57.6, 46.7)| |C|Warrior| |R|Night Elf| |Z|Darnassus|
+t Train your class spells |N|Jocaste - (40.4, 8.5)| |O| |C|Hunter| |R|Night Elf| |Z|Darnassus|
+N Buy a [Heavy Recurve Bow] if you can afford it. If not then buy a [Reinforced Bow] |N|(63.3, 66.3)| |O| |C|Hunter| |R|Night Elf| |Z|Darnassus|
+N Stock up on [Sharp Arrows] |N|(63.3, 66.3)| |O| |C|Hunter| |R|Night Elf| |Z|Darnassus|
+B Buy Heavy Recurve Bow (x1) |L|3027 1| |N|Landria - (63.3, 66.3)| |O| |C|Hunter| |R|Night Elf| |Z|Darnassus|
+N Enter the Cenarion Enclave |N|(31.8, 16.7)| |C|Rogue| |R|Night Elf| |Z|Darnassus|
+N Syurna |N|(31.8, 16.7)| |C|Rogue| |R|Night Elf| |Z|Darnassus|
+t Train your class spells |N|(37.0, 21.9)| |C|Rogue| |R|Night Elf| |Z|Darnassus|
+R Travel to Teldrassil |N|(23.7, 64.5)| |C|!Druid| |R|Night Elf| |Z|Teldrassil|
+A Trouble In Darkshore? |QID|730| |N|Chief Archaeologist Greywhisker - (23.7, 64.5)| |C|!Druid| |R|Night Elf| |Z|Teldrassil|
+R Travel to Darnassus |N|(37.9, 82.7)| |C|Priest| |R|Night Elf| |Z|Darnassus|
+t Train your class spells |N|Jandria - (37.9, 82.7)| |C|Priest| |R|Night Elf| |Z|Darnassus|
+H Auberdine |N|Hearth to Auberdine| |C|!Druid| |R|Night Elf| |Z|Darnassus|
 R Travel to Darkshore |N|(37.2, 44.2)| |Z|Darkshore|
 A WANTED: Murkdeep! |QID|4740| |N|Click on The Wanted Poster - (37.2, 44.2)| |Z|Darkshore|
-T Trouble In Darkshore? |QID|730| |N|Archaeologist Hollee - (37.4, 41.8)| |R|NightElf| |Z|Darkshore|
-A The Absent Minded Prospector |QID|729| |N|Archaeologist Hollee - (37.4, 41.8)| |R|NightElf| |Z|Darkshore|
-A The Absent Minded Prospector |QID|729| |N|Archaeologist Hollee - (37.4, 41.8)| |O| |R|NightElf| |Z|Darkshore|
+T Trouble In Darkshore? |QID|730| |N|Archaeologist Hollee - (37.4, 41.8)| |R|Night Elf| |Z|Darkshore|
+A The Absent Minded Prospector |QID|729| |N|Archaeologist Hollee - (37.4, 41.8)| |R|Night Elf| |Z|Darkshore|
+A The Absent Minded Prospector |QID|729| |N|Archaeologist Hollee - (37.4, 41.8)| |O| |R|Night Elf| |Z|Darkshore|
 T The Cliffspring River |QID|4762| |N|Thundris Windweaver - (37.4, 40.1)| |Z|Darkshore|
 A The Blackwood Corrupted |QID|4763| |N|Thundris Windweaver - (37.4, 40.1)| |Z|Darkshore|
 C Collect Filled Cleansing Bowl (x1) |QID|4763| |L|12347 1| |N|Use the [Empty Cleansing Bowl] at the Auberdine Moonwell (37.8, 44.1)| |Z|Darkshore|
@@ -38,7 +38,7 @@ C Cleansing of the Infected |QID|2138| |OIDX|1| |N|Be careful as they cast [Rabi
 C Gathering the Cure |QID|6123| |OIDX|1| |N|Collect 5 [Earthroot] as you quest Earthroot (5)| |C|Druid| |Z|Darkshore|
 C Gathering the Cure |QID|6123| |OIDX|2| |N|Lunar Fungi on the ground throughout caves (45.7, 50.3)| |C|Druid| |Z|Darkshore|
 R the Grove of the Ancients |N|(43.6, 76.3)| |O| |Z|Darkshore|
-T Grove of the Ancients |QID|952| |N|Onu - (43.6, 76.3)| |R|NightElf| |Z|Darkshore|
+T Grove of the Ancients |QID|952| |N|Onu - (43.6, 76.3)| |R|Night Elf| |Z|Darkshore|
 T Onu |QID|948| |N|Onu - (43.6, 76.3)| |Z|Darkshore|
 A The Master's Glaive |QID|944| |N|Onu - (43.6, 76.3)| |Z|Darkshore|
 N Care as they can cast [Exploit Weakness] a backstab attack dealing 20-40 damage if you turn your back to them |O| |Z|Darkshore|
@@ -151,19 +151,19 @@ N This quest is VERY difficult |N|(55.8, 18.3)| |O| |Z|Darkshore|
 A Beached Sea Turtle |QID|4727| |N|the Beached Sea Turtle - (53.1, 18.1)| |Z|Darkshore|
 T Gyromast's Revenge |QID|2078| |N|Gelkak Gyromast - (56.7, 13.5)| |O| |Z|Darkshore|
 C Fruit of the Sea |QID|1138| |OIDX|1| |N|Kill Encrusted Tide Crawlers. Loot them for their Fine Crab Chunks Fine Crab Chunks (6)| |O| |C|Druid| |Z|Darkshore|
-R Auberdine |N|(18.5, 19.9)| |O| |C|Hunter/!Druid| |R|!NightElf/!Dwarf| |Z|Felwood|
-H Auberdine |N|Hearth to Auberdine| |O| |C|Hunter/!Druid| |R|!NightElf/!Dwarf| |Z|Felwood|
+R Auberdine |N|(18.5, 19.9)| |O| |C|Hunter| |R|!Night Elf/!Dwarf| |Z|Felwood|
+H Auberdine |N|Hearth to Auberdine| |O| |C|Hunter| |R|!Night Elf/!Dwarf| |Z|Felwood|
 A Beached Sea Turtle |QID|4727| |N|the Beached Sea Turtle - (53.1, 18.1)| |C|Druid| |Z|Darkshore|
 C Curing the Sick |QID|6124| |OIDX|1| |N|Use the [Curative Animal Salve] on Sickly Deer Sickly Deer cured (10)| |C|Druid| |Z|Darkshore|
 N Open the Strange Lockbox. Loot it for the Half Pendant of Aquatic Agility |N|(48.9, 11.3)| |C|Druid| |Z|Darkshore|
 C Collect Half Pendant of Aquatic Agility (x1) |QID|272| |L|15883 1| |N|Swim out in the water (48.9, 11.3)| |C|Druid| |Z|Darkshore|
 N Grind until your HS cooldown is <6 minutes. Die and respawn at the Spirit Healer |O| |C|Hunter| |R|Dwarf| |Z|Darkshore|
-N Die and respawn at the Spirit Healer |O| |C|!Hunter| |R|!NightElf| |Z|Darkshore|
-T The Blackwood Corrupted |QID|4763| |N|Thundris Windweaver - (37.4, 40.1)| |R|!NightElf| |Z|Darkshore|
-T Tharnariun's Hope |QID|2139| |N|Tharnariun Treetender - (38.8, 43.4)| |R|!NightElf| |Z|Darkshore|
-T A Lost Master |QID|986| |N|Terenthis - (39.4, 43.5)| |R|!NightElf| |Z|Darkshore|
-A A Lost Master |QID|993| |N|Terenthis - (39.4, 43.5)| |R|!NightElf| |Z|Darkshore|
-N If you equip the [Enchanted Moonstalker Cloak], make sure you save your current cloak for later as the [Enchanted Moonstalker Cloak] is lost upon a later turn in |O| |R|!NightElf| |Z|Darkshore|
+N Die and respawn at the Spirit Healer |O| |C|!Hunter| |R|!Night Elf| |Z|Darkshore|
+T The Blackwood Corrupted |QID|4763| |N|Thundris Windweaver - (37.4, 40.1)| |R|!Night Elf| |Z|Darkshore|
+T Tharnariun's Hope |QID|2139| |N|Tharnariun Treetender - (38.8, 43.4)| |R|!Night Elf| |Z|Darkshore|
+T A Lost Master |QID|986| |N|Terenthis - (39.4, 43.5)| |R|!Night Elf| |Z|Darkshore|
+A A Lost Master |QID|993| |N|Terenthis - (39.4, 43.5)| |R|!Night Elf| |Z|Darkshore|
+N If you equip the [Enchanted Moonstalker Cloak], make sure you save your current cloak for later as the [Enchanted Moonstalker Cloak] is lost upon a later turn in |O| |R|!Night Elf| |Z|Darkshore|
 R the dock of the Darnassus boat |N|(33.2, 40.2)| |O| |C|Hunter| |R|Dwarf| |Z|Darkshore|
 N On the Boat if it just arrived or on the dock if the boat just left: |O| |C|Hunter| |R|Dwarf| |Z|Darkshore|
 N Create a [Basic Campfire] (under the General Tab of your Spellbook) |O| |C|Hunter| |R|Dwarf| |Z|Darkshore|
@@ -182,17 +182,19 @@ N Dendrite Starblaze |N|(56.2, 30.4)| |C|Druid| |Z|Moonglade|
 T Curing the Sick |QID|6124| |N|Moonglade - (56.2, 30.4)| |C|Druid| |Z|Moonglade|
 A Power over Poison |QID|6125| |N|Moonglade - (56.2, 30.4)| |C|Druid| |Z|Moonglade|
 t Train your class spells |N|Loganaar - (52.5, 40.6)| |C|Druid| |Z|Moonglade|
-R Auberdine |N|(18.5, 19.9)| |O| |C|Hunter| |R|NightElf/Dwarf| |Z|Felwood|
-H Auberdine |N|Hearth to Auberdine| |O| |C|Hunter| |R|NightElf/Dwarf| |Z|Felwood|
+R Auberdine |N|(18.5, 19.9)| |O| |C|Hunter| |R|Dwarf| |Z|Felwood|
+R Auberdine |N|(18.5, 19.9)| |O| |R|Night Elf| |Z|Felwood|
+H Auberdine |N|Hearth to Auberdine| |O| |C|Hunter| |R|Dwarf| |Z|Felwood|
+H Auberdine |N|Hearth to Auberdine| |O| |R|Night Elf| |Z|Felwood|
 R Travel to Darkshore |N|(36.7, 45.1)| |Z|Darkshore|
 T Beached Sea Turtle |QID|4727| |N|Gwennyth Bly'Leggonde - (36.6, 45.6)| |Z|Darkshore|
 T Fruit of the Sea |QID|1138| |N|Gubber Blump - (36.1, 44.9)| |Z|Darkshore|
-T The Blackwood Corrupted |QID|4763| |N|Thundris Windweaver - (37.4, 40.1)| |R|NightElf| |Z|Darkshore|
-B Stock up on [Sharp Arrows] |N|Dalmond - (37.5, 40.5)| |C|Hunter| |R|NightElf| |Z|Darkshore|
-T Tharnariun's Hope |QID|2139| |N|Tharnariun Treetender - (38.8, 43.4)| |R|NightElf| |Z|Darkshore|
-T A Lost Master |QID|986| |N|Terenthis - (39.4, 43.5)| |R|NightElf| |Z|Darkshore|
-A A Lost Master |QID|993| |N|Terenthis - (39.4, 43.5)| |R|NightElf| |Z|Darkshore|
-N If you equip the [Enchanted Moonstalker Cloak], make sure you save your current cloak for later as the [Enchanted Moonstalker Cloak] is lost upon a later turn in |O| |R|NightElf| |Z|Darkshore|
+T The Blackwood Corrupted |QID|4763| |N|Thundris Windweaver - (37.4, 40.1)| |R|Night Elf| |Z|Darkshore|
+B Stock up on [Sharp Arrows] |N|Dalmond - (37.5, 40.5)| |C|Hunter| |R|Night Elf| |Z|Darkshore|
+T Tharnariun's Hope |QID|2139| |N|Tharnariun Treetender - (38.8, 43.4)| |R|Night Elf| |Z|Darkshore|
+T A Lost Master |QID|986| |N|Terenthis - (39.4, 43.5)| |R|Night Elf| |Z|Darkshore|
+A A Lost Master |QID|993| |N|Terenthis - (39.4, 43.5)| |R|Night Elf| |Z|Darkshore|
+N If you equip the [Enchanted Moonstalker Cloak], make sure you save your current cloak for later as the [Enchanted Moonstalker Cloak] is lost upon a later turn in |O| |R|Night Elf| |Z|Darkshore|
 R the dock of the Menethil Harbor boat |N|(32.4, 43.7) (DM Dungeon Quest)| |D|DM| |Z|Darkshore|
 N On the Boat if it just arrived or on the dock if the boat just left: |N|(DM Dungeon Quest)| |D|DM| |Z|Darkshore|
 N Create a [Basic Campfire] (under the General Tab of your Spellbook) |N|(DM Dungeon Quest)| |D|DM| |Z|Darkshore|
@@ -212,22 +214,22 @@ N Create a [Basic Campfire] (under the General Tab of your Spellbook) |O| |C|!Hu
 N You need 50 [Cooking] for a quest in Duskwood later |O| |C|!Hunter| |Z|Darkshore|
 N [Cook] the [Small Eggs] and [Mild Spices] into [Herb Baked Eggs] |O| |C|!Hunter| |Z|Darkshore|
 R Level your [First Aid] while waiting for the boat to Menethil Harbor if needed |N|(32.3, 44.0)| |C|!Hunter| |Z|Darkshore|
-F Fly to Ironforge |N|Shellei - (9.5, 59.7)| |C|!Hunter| |R|!NightElf| |Z|Wetlands|
-A Young Crocolisk Skins |QID|484| |N|James Halloran - (8.5, 55.7)| |C|!Hunter| |R|NightElf| |Z|Wetlands|
-f Get the Wetlands flight path |N|Shellei - (9.5, 59.7)| |C|!Hunter| |R|NightElf| |Z|Wetlands|
-C Young Crocolisk Skins |QID|484| |OIDX|1| |N|Kill Young Wetlands Crocolisks. Loot them for their Young Crocolisk Skin| |O| |C|!Hunter/!Warrior| |R|NightElf| |Z|Wetlands|
-R Travel east toward Einar Stonegrip |N|(49.9, 39.4)| |O| |C|!Hunter| |R|NightElf| |Z|Wetlands|
-A Daily Delivery |QID|469| |N|Einar Stonegrip - (49.9, 39.4)| |C|!Hunter| |R|NightElf| |Z|Wetlands|
-C Young Crocolisk Skins |QID|484| |OIDX|1| |N|Young Wetlands Crocolisks. Loot them for their Young Crocolisk Skin (64.0, 72.2)| |C|!Hunter/!Warrior| |R|NightElf| |Z|Wetlands|
-R Loch Modan |N|(25.4, 10.6)| |O| |C|!Hunter| |R|NightElf| |Z|Loch Modan|
-A A Dark Threat Looms |QID|250| |N|Chief Engineer Hinderweir VII - (46.0, 13.6)| |C|!Hunter| |R|NightElf| |Z|Loch Modan|
-T A Dark Threat Looms |QID|250| |N|the Suspicious Barrel - (56.0, 13.2)| |C|!Hunter| |R|NightElf| |Z|Loch Modan|
-A A Dark Threat Looms |QID|199| |N|the Suspicious Barrel - (56.0, 13.2)| |C|!Hunter| |R|NightElf| |Z|Loch Modan|
-T A Dark Threat Looms |QID|199| |N|Chief Engineer Hinderweir VII - (46.0, 13.6)| |C|!Hunter| |R|NightElf| |Z|Loch Modan|
-N Die and respawn at the Spirit Healer |O| |C|!Hunter| |R|NightElf| |Z|Loch Modan|
-f Get the Thelsamar flight path |N|Thorgrum - (33.9, 51.0)| |C|!Hunter| |R|NightElf| |Z|Loch Modan|
-R Dun Morogh |N|(86.0, 51.0)| |C|!Hunter| |R|NightElf| |Z|Dun Morogh|
-f Get the Ironforge flight path |N|Gryth - (55.5, 47.8)| |C|!Hunter| |R|NightElf| |Z|Ironforge|
+F Fly to Ironforge |N|Shellei - (9.5, 59.7)| |C|!Hunter| |R|!Night Elf| |Z|Wetlands|
+A Young Crocolisk Skins |QID|484| |N|James Halloran - (8.5, 55.7)| |C|!Hunter| |R|Night Elf| |Z|Wetlands|
+f Get the Wetlands flight path |N|Shellei - (9.5, 59.7)| |C|!Hunter| |R|Night Elf| |Z|Wetlands|
+C Young Crocolisk Skins |QID|484| |OIDX|1| |N|Kill Young Wetlands Crocolisks. Loot them for their Young Crocolisk Skin| |O| |C|!Hunter/!Warrior| |R|Night Elf| |Z|Wetlands|
+R Travel east toward Einar Stonegrip |N|(49.9, 39.4)| |O| |C|!Hunter| |R|Night Elf| |Z|Wetlands|
+A Daily Delivery |QID|469| |N|Einar Stonegrip - (49.9, 39.4)| |C|!Hunter| |R|Night Elf| |Z|Wetlands|
+C Young Crocolisk Skins |QID|484| |OIDX|1| |N|Young Wetlands Crocolisks. Loot them for their Young Crocolisk Skin (64.0, 72.2)| |C|!Hunter/!Warrior| |R|Night Elf| |Z|Wetlands|
+R Loch Modan |N|(25.4, 10.6)| |O| |C|!Hunter| |R|Night Elf| |Z|Loch Modan|
+A A Dark Threat Looms |QID|250| |N|Chief Engineer Hinderweir VII - (46.0, 13.6)| |C|!Hunter| |R|Night Elf| |Z|Loch Modan|
+T A Dark Threat Looms |QID|250| |N|the Suspicious Barrel - (56.0, 13.2)| |C|!Hunter| |R|Night Elf| |Z|Loch Modan|
+A A Dark Threat Looms |QID|199| |N|the Suspicious Barrel - (56.0, 13.2)| |C|!Hunter| |R|Night Elf| |Z|Loch Modan|
+T A Dark Threat Looms |QID|199| |N|Chief Engineer Hinderweir VII - (46.0, 13.6)| |C|!Hunter| |R|Night Elf| |Z|Loch Modan|
+N Die and respawn at the Spirit Healer |O| |C|!Hunter| |R|Night Elf| |Z|Loch Modan|
+f Get the Thelsamar flight path |N|Thorgrum - (33.9, 51.0)| |C|!Hunter| |R|Night Elf| |Z|Loch Modan|
+R Dun Morogh |N|(86.0, 51.0)| |C|!Hunter| |R|Night Elf| |Z|Dun Morogh|
+f Get the Ironforge flight path |N|Gryth - (55.5, 47.8)| |C|!Hunter| |R|Night Elf| |Z|Ironforge|
 N Level your [First Aid] and [Cooking] if needed while waiting for the tram |N|(78.0, 52.0)| |C|!Hunter| |Z|Ironforge|
 N You will need your [First Aid] to be 80 for a quest at level 24 |N|(78.0, 52.0)| |C|Rogue| |R|!Dwarf| |Z|Ironforge|
 

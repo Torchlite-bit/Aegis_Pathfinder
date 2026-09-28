@@ -83,7 +83,7 @@ C Bloodscalp Ears |QID|189| |OIDX|1| |N|Bloodscalp Trolls. Loot them for their T
 C Bloody Bone Necklaces |QID|596| |OIDX|1| |N|Bloodscalp Trolls. Loot them for their Tusks, Ears and Necklaces (33.9, 15.6)| |Z|Stranglethorn Vale|
 C Bloodscalp Trolls. Loot them for their Tusks, Ears and Necklaces |QID|9436| |OIDX|1| |N|Bloodscalp Trolls. Loot them for their Tusks, Ears and Necklaces - (33.9, 15.6)| |Z|Stranglethorn Vale|
 C Tiger Mastery |QID|187| |OIDX|1| |N|Elder Stranglethorn Tigers (34.2, 17.6)| |Z|Stranglethorn Vale|
-N Be careful. Lashtail Raptors can stun and [Disarm] you |N|(31.9, 20.9)| |C|Rogue/Warrior/Shaman/Pala| |Z|Stranglethorn Vale|
+N Be careful. Lashtail Raptors can stun and [Disarm] you |N|(31.9, 20.9)| |C|Rogue/Warrior/Shaman/Paladin| |Z|Stranglethorn Vale|
 N Be careful. Lashtail Raptors can stun you |N|(31.9, 20.9)| |C|!Rogue/!Warrior/!Shaman| |Z|Stranglethorn Vale|
 C The Defense of Grom'gol |QID|568| |OIDX|1| |N|Lashtail Raptors (31.9, 20.9)| |Z|Stranglethorn Vale|
 C Raptor Mastery |QID|195| |OIDX|1| |N|Lashtail Raptors (31.9, 20.9)| |Z|Stranglethorn Vale|

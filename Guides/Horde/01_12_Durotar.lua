@@ -14,16 +14,16 @@ T Vile Familiars (Part 2) |QID|1499| |N|Zureetha Fargaze in Valley of Trials (42
 T Cutting Teeth |QID|788| |N|Gornek in The Den (42.08, 68.35)|
 A Sting of the Scorpid |QID|789| |N|Gornek in The Den (42.08, 68.35)|
 
-A Etched Parchment |QID|3087| |N|Gornek in The Den (42.08, 68.35)| |C|Hunter| |R|Orc, Troll|
+A Etched Parchment |QID|3087| |N|Gornek in The Den (42.08, 68.35)| |C|Hunter| |R|Orc/Troll|
 A Etched Tablet |QID|3082| |N|Gornek in The Den (42.08, 68.35)| |C|Hunter| |R|Troll|
 A Rune-Inscribed Tablet |QID|3084| |N|Gornek in The Den (42.08, 68.35)| |C|Shaman| |R|Troll|
-A Rune-Inscribed Parchment |QID|3089| |N|Gornek in The Den (42.08, 68.35)| |C|Shaman| |R|Orc, Troll|
+A Rune-Inscribed Parchment |QID|3089| |N|Gornek in The Den (42.08, 68.35)| |C|Shaman| |R|Orc/Troll|
 A Glyphic Tablet |QID|3086| |N|Gornek in The Den (42.08, 68.35)| |C|Mage|
-A Encrypted Parchment |QID|3088| |N|Gornek in The Den (42.08, 68.35)| |C|Rogue| |R|Orc, Troll|
+A Encrypted Parchment |QID|3088| |N|Gornek in The Den (42.08, 68.35)| |C|Rogue| |R|Orc/Troll|
 A Encrypted Tablet |QID|3083| |N|Gornek in The Den (42.08, 68.35)| |C|Rogue| |R|Troll|
 A Hallowed Tablet |QID|3085| |N|Gornek in The Den (42.08, 68.35)| |C|Priest|
 A Simple Tablet |QID|3065| |N|Gornek in The Den (42.08, 68.35)| |C|Warrior| |R|Troll|
-A Simple Parchment |QID|2383| |N|Gornek in The Den (42.08, 68.35)| |C|Warrior| |R|Orc, Troll|
+A Simple Parchment |QID|2383| |N|Gornek in The Den (42.08, 68.35)| |C|Warrior| |R|Orc/Troll|
 A Tainted Parchment |QID|3090| |N|Gornek in The Den (42.08, 68.35)| |C|Warlock|
 
 A Vile Familiars |QID|792| |N|Zureetha Fargaze in Valley of Trials (42.83, 69.10)| |OID|1485|

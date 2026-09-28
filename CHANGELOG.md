@@ -18,6 +18,27 @@ reports.
 
 ---
 
+## [0.12.2]
+
+### Fixed
+- **Steps meant for a race now reach it.** About 500 steps in the RestedXP,
+  RXP Hardcore and zone guides had class or race tags that no character
+  could match, so they were hidden from everyone they were written for:
+  - `|R|NightElf|` (the client says "Night Elf"): some 150 steps every Night
+    Elf skipped.
+  - Races inside class tags, where the RestedXP converter folded "Orc Rogue
+    or Troll Rogue" into `|C|Rogue/Troll/Rogue| |R|Orc|`, and "not a Shaman
+    or Warrior, or any Undead" into `|C|!Shaman/!Warrior/Undead|`. An Undead
+    Warrior never saw The Forgotten Pools, and with it Wailing Caverns'
+    Leaders of the Fang and Nara Wildmane, which now count in the setup.
+    Night Elf mages, priests and rogues missed 27 Darkshore steps the same
+    way.
+  - Comma lists: `|R|Orc, Troll|`, `|R|Scourge, Undead|`, `|C|Warlock, Mage|`.
+  Each was rewritten from the filter in RestedXP's own guide. Where it reads
+  "class A, or race B", the step is now two steps that never overlap.
+- `Tools/verify.py` checks that every class tag names classes and every race
+  tag races, as the client gives them.
+
 ## [0.12.1]
 
 ### Removed
@@ -429,6 +450,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.12.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.11.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

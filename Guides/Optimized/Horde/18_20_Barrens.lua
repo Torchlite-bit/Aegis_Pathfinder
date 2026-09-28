@@ -61,7 +61,7 @@ T Jorn Skyseer |QID|3261| |N|Jorn Skyseer in Camp Taurajo (44.84, 59.09)|
 R Thunder Bluff |TID|853| |N|Travel to Thunder Bluff|
 R Spirit Rise |TID|853| |N|Travel to Spirit Rise in Thunder Bluff (30.04, 29.79)| |Z|Thunder Bluff|
 T Apothecary Zamah |QID|853| |N|Apothecary Zamah in Spirit Rise (22.9, 20.9)| |Z|Thunder Bluff|
-f Thunder Bluff |QID|1490| |N|Speak to Tal and grab flight path for Thunder Bluff (46.8, 50.2)| |R|Orc, Undead, Scourge, Troll| |Z|Thunder Bluff|
+f Thunder Bluff |QID|1490| |N|Speak to Tal and grab flight path for Thunder Bluff (46.8, 50.2)| |R|Orc/Undead/Troll| |Z|Thunder Bluff|
 T Hamuul Runetotem |QID|1489| |N|Arch Druid Hamuul Runetotem in Elder Rise (78.53, 28.62)| |Z|Thunder Bluff|
 A Nara Wildmane |QID|1490| |N|Arch Druid Hamuul Runetotem in Elder Rise (78.53, 28.62)| |Z|Thunder Bluff|
 T Nara Wildmane |QID|1490| |N|Nara Wildmane in Elder Rise (75.69, 31.53)| |Z|Thunder Bluff|

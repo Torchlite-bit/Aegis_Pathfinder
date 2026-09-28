@@ -157,7 +157,7 @@ T The Admiral's Orders |QID|831| |N|Nazgrel - (32.3, 35.8)| |C|!Warrior/!Shaman/
 T Hidden Enemies |QID|5726| |N|Thrall - (31.7, 37.8) (RFC Dungeon Quest)| |C|Warrior/Shaman/Hunter| |D|RFC| |Z|Orgrimmar|
 A Hidden Enemies |QID|5727| |N|Thrall - (31.7, 37.8) (RFC Dungeon Quest)| |C|Warrior/Shaman/Hunter| |D|RFC| |Z|Orgrimmar|
 T Hidden Enemies |QID|5726| |N|Thrall - (31.7, 37.8) (!RFC Dungeon Quest)| |C|Warrior/Shaman/Hunter| |D|!RFC| |Z|Orgrimmar|
-A The Shattered Hand |QID|1963| |N|Therzok - (42.8, 53.5)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Orgrimmar|
+A The Shattered Hand |QID|1963| |N|Therzok - (42.8, 53.5)| |C|Rogue| |R|Orc/Troll| |Z|Orgrimmar|
 T Finding the Antidote |QID|813| |N|Kor'ghan - (47.2, 53.6)| |C|Warrior/Shaman/Hunter| |Z|Orgrimmar|
 t Train your class spells |N|Mirket - (48.6, 47.0)| |C|Warlock| |Z|Orgrimmar|
 T Neeru Fireblade |QID|829| |N|Neeru - (49.5, 50.6)| |Z|Orgrimmar|

@@ -38,11 +38,11 @@ N Buy a [Longsword] and [Kris] |N|(57.4, 56.8)| |C|Rogue| |Z|Stormwind City|
 N Equip the [Longsword] in your Mainhand when you are 21 and [Kris] in your Offhand |N|(57.4, 56.8)| |C|Rogue| |Z|Stormwind City|
 B Longsword |L|923 1| |N|Marda Weller - (57.4, 56.8)| |C|Rogue| |Z|Stormwind City|
 B Kris |L|2209 1| |N|Marda Weller - (57.4, 56.8)| |C|Rogue| |Z|Stormwind City|
-F Fly to Redridge |N|Dungar Longdrink - (66.3, 62.1)| |R|!NightElf| |Z|Stormwind City|
-R Travel to Redridge Mountains |N|(15.3, 71.5)| |O| |R|NightElf| |Z|Redridge Mountains|
-A Encroaching Gnolls |QID|244| |N|Guard Parker - (15.3, 71.5)| |R|NightElf| |Z|Redridge Mountains|
-T Encroaching Gnolls |QID|244| |N|Deputy Feldon - (30.7, 60.0)| |R|NightElf| |Z|Redridge Mountains|
-A Assessing the Threat |QID|246| |N|Deputy Feldon - (30.7, 60.0)| |R|NightElf| |Z|Redridge Mountains|
+F Fly to Redridge |N|Dungar Longdrink - (66.3, 62.1)| |R|!Night Elf| |Z|Stormwind City|
+R Travel to Redridge Mountains |N|(15.3, 71.5)| |O| |R|Night Elf| |Z|Redridge Mountains|
+A Encroaching Gnolls |QID|244| |N|Guard Parker - (15.3, 71.5)| |R|Night Elf| |Z|Redridge Mountains|
+T Encroaching Gnolls |QID|244| |N|Deputy Feldon - (30.7, 60.0)| |R|Night Elf| |Z|Redridge Mountains|
+A Assessing the Threat |QID|246| |N|Deputy Feldon - (30.7, 60.0)| |R|Night Elf| |Z|Redridge Mountains|
 A The Lost Tools |QID|125| |N|Foreman Oslow - (32.1, 48.6)| |Z|Redridge Mountains|
 A The Price of Shoes |QID|118| |N|Verner Osgood - (31.0, 47.3)| |Z|Redridge Mountains|
 A Messenger to Stormwind |QID|120| |N|Magistrate Solomon - (30.0, 44.5)| |Z|Redridge Mountains|

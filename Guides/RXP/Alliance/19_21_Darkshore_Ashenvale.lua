@@ -62,8 +62,10 @@ A On Guard in Stonetalon |QID|1070| |N|Sentinel Thenysil - (34.9, 49.8)| |Z|Ashe
 A Journey to Stonetalon Peak |QID|1056| |N|Faldreas Goeth'Shael - (35.8, 49.1)| |Z|Ashenvale|
 A Raene's Cleansing |QID|991| |N|Raene Wolfrunner - (36.6, 49.6)| |Z|Ashenvale|
 A Culling the Threat |QID|1054| |N|Raene Wolfrunner - (36.6, 49.6)| |Z|Ashenvale|
-R Innkeeper Kimlya |N|(37.0, 49.2)| |R|!Dwarf/!Hunter| |Z|Ashenvale|
-h Astranaar |N|Set hearth in Astranaar (37.0, 49.2)| |R|!Dwarf/!Hunter| |Z|Ashenvale|
+R Innkeeper Kimlya |N|(37.0, 49.2)| |R|!Dwarf| |Z|Ashenvale|
+R Innkeeper Kimlya |N|(37.0, 49.2)| |C|!Hunter| |R|Dwarf| |Z|Ashenvale|
+h Astranaar |N|Set hearth in Astranaar (37.0, 49.2)| |R|!Dwarf| |Z|Ashenvale|
+h Astranaar |N|Set hearth in Astranaar (37.0, 49.2)| |C|!Hunter| |R|Dwarf| |Z|Ashenvale|
 B Buy food and water if necessary |N|Maliynn - (36.6, 49.8)| |Z|Ashenvale|
 T Orendil's Cure |QID|1020| |N|Pelturas Whitemoon - (37.4, 51.8)| |Z|Ashenvale|
 A Elune's Tear |QID|1033| |N|Pelturas Whitemoon - (37.4, 51.8)| |Z|Ashenvale|
@@ -109,8 +111,10 @@ C Murloc Fin(8) |L|1468 8| |N|Keep any [Murloc Fins] you might loot. You will ne
 N Be careful as the Oracles can heal, and have a 90 damage instant-cast shock spell every few seconds |N|(20.3, 42.3)| |Z|Ashenvale|
 C Raene's Cleansing |QID|1023| |OIDX|1| |N|Saltspittle Murlocs. Loot them for the Glowing Gem (20.3, 42.3)| |Z|Ashenvale|
 H Auberdine |N|Hearth to Auberdine| |C|Hunter| |R|Dwarf| |Z|Ashenvale|
-N Die on the eastern side of the lake and spirit res at Astranaar |O| |R|!Dwarf/!Hunter| |Z|Ashenvale|
-F Fly to Darkshore |N|Daelyshia - (34.4, 48.0)| |R|!Dwarf/!Hunter| |Z|Ashenvale|
+N Die on the eastern side of the lake and spirit res at Astranaar |O| |R|!Dwarf| |Z|Ashenvale|
+N Die on the eastern side of the lake and spirit res at Astranaar |O| |C|!Hunter| |R|Dwarf| |Z|Ashenvale|
+F Fly to Darkshore |N|Daelyshia - (34.4, 48.0)| |R|!Dwarf| |Z|Ashenvale|
+F Fly to Darkshore |N|Daelyshia - (34.4, 48.0)| |C|!Hunter| |R|Dwarf| |Z|Ashenvale|
 T The Absent Minded Prospector |QID|731| |N|Archaeologist Hollee - (37.4, 41.8)| |Z|Darkshore|
 A The Absent Minded Prospector |QID|741| |N|Archaeologist Hollee - (37.4, 41.8)| |Z|Darkshore|
 B Restock/Resupply |O| |Z|Darkshore|
@@ -132,7 +136,8 @@ R Travel to Teldrassil |N|(23.7, 64.5)| |Z|Teldrassil|
 T The Absent Minded Prospector |QID|741| |N|Chief Archaeologist Greywhisker - (23.7, 64.5)| |Z|Teldrassil|
 A The Absent Minded Prospector |QID|942| |N|Chief Archaeologist Greywhisker - (23.7, 64.5)| |Z|Teldrassil|
 A The Absent Minded Prospector |QID|942| |N|Chief Archaeologist Greywhisker - (23.7, 64.5)| |O| |Z|Teldrassil|
-H Astranaar |N|Hearth to Astranaar| |R|!Dwarf/!Hunter| |Z|Teldrassil|
+H Astranaar |N|Hearth to Astranaar| |R|!Dwarf| |Z|Teldrassil|
+H Astranaar |N|Hearth to Astranaar| |C|!Hunter| |R|Dwarf| |Z|Teldrassil|
 R Travel to Darnassus |N|(29.5, 41.4)| |C|Hunter| |R|Dwarf| |Z|Darnassus|
 F Fly to Ashenvale |N|Vesprystus - (58.4, 94.0)| |C|Hunter| |R|Dwarf| |Z|Teldrassil|
 

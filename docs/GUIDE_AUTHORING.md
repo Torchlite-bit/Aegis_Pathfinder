@@ -458,7 +458,15 @@ To create a guide entry for quest 41188:
 2. **Use precise coordinates** - Helps TomTom navigation
 3. **Specify zone with |Z|** - Prevents wrong-zone waypoints
 4. **Group nearby quests** - Minimize travel time
-5. **Note class/race restrictions** - Use |C| and |R| tags
+5. **Note class/race restrictions** - Use |C| and |R| tags. `|C|` takes class
+   names and `|R|` race names exactly as the client gives them ("Night Elf",
+   "High Elf", "Undead" -- not "NightElf" or "Scourge"), separated by `/`:
+   `|C|Warrior/Rogue|` is either class, `|C|!Mage/!Warlock|` any class but
+   those two. A step shows when its class tag and its race tag both match, so
+   one step can't say "a Warrior, or any Undead": write two steps that don't
+   overlap (`|C|!Warrior| |R|!Undead|` and `|R|Undead|`) -- an accept or hand-in
+   written twice is kept once. `python3 Tools/verify.py` rejects a name the
+   client never gives.
 6. **Mark optional quests** - Use |O| tag
 7. **Test your guide** - Play through it on a character
 

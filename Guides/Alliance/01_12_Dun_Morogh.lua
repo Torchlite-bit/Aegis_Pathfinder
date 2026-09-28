@@ -176,8 +176,8 @@ A Ironband's Compound |QID|1681| |N|Tormus Deepforge in The Great Forge (48.74, 
 R Ironband's Compound |QID|1681| |N|Travel to Ironband's Compound (57.32, 51.83) (74.79, 56.02) (77.95, 62.21)| |C|Warrior|
 C Ironband's Compound |QID|1681| |N|Collect Umbral Ore from the Ironband lockbox in Ironband's Compound (77.95, 62.21)| |C|Warrior|
 
-R The Great Forge |QID|2238| |N|Travel to The Great Forge<br/><b>You can die on purpose and resurrect to get there quicker (47.20, 42.18) (51.48, 39.74) (53.87, 34.44) (48.65, 43.07)| |D|GNOMER| |Z|Ironforge| |C|Warrior, Hunter, Rogue|
-R The Great Forge |QID|2238| |N|Travel to The Great Forge<br/><b>You can die on purpose and resurrect to get there quicker (47.20, 42.18) (51.48, 39.74) (53.87, 34.44) (48.65, 43.07)| |D|GNOMER| |Z|Ironforge| |C|Warlock, Mage|
+R The Great Forge |QID|2238| |N|Travel to The Great Forge<br/><b>You can die on purpose and resurrect to get there quicker (47.20, 42.18) (51.48, 39.74) (53.87, 34.44) (48.65, 43.07)| |D|GNOMER| |Z|Ironforge| |C|Warrior/Hunter/Rogue|
+R The Great Forge |QID|2238| |N|Travel to The Great Forge<br/><b>You can die on purpose and resurrect to get there quicker (47.20, 42.18) (51.48, 39.74) (53.87, 34.44) (48.65, 43.07)| |D|GNOMER| |Z|Ironforge| |C|Warlock/Mage|
 T Ironband's Compound |QID|1681| |N|Tormus Deepforge in The Great Forge (48.65, 43.07)| |Z|Ironforge| |C|Warrior|
 T Training the Beast |QID|6086| |N|Belia Thundergranite in Hall of Arms (70.93, 85.66)| |C|Hunter| |Z|Ironforge|
 T Road to Salvation |QID|2218| |N|Hulfdan Blackbeard in The Forlorn Cavern (51.88, 14.66)| |C|Rogue| |Z|Ironforge|

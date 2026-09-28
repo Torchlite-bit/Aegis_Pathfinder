@@ -130,11 +130,11 @@ T Doling Justice |QID|2972| |N|Tyrande Whisperwind - (39.1, 81.6)| |Z|Darnassus|
 t Train Teleport: Darnassus |N|Elissa Dumas - (40.6, 82.1)| |C|Mage| |Z|Darnassus|
 t Train your class spells |N|Dink - (27.2, 8.6)| |C|Mage| |Z|Ironforge|
 F Fly to Arathi Highlands |N|Gryth - (55.5, 47.7)| |C|Mage| |Z|Ironforge|
-N Lelanai and Jartsam |N|(38.3, 15.4)| |R|NightElf| |Z|Ironforge|
-B Buy a [Frostsaber] or [Nightsaber] |N|Buy your Mount if you can afford it! - (38.3, 15.4)| |R|NightElf| |Z|Ironforge|
-R Travel to Darnassus |N|(38.3, 15.4)| |R|NightElf| |Z|Darnassus|
-t Train [Tiger Riding] |N|Buy your Mount if you can afford it! - (38.3, 15.4)| |R|NightElf| |Z|Darnassus|
-R Travel to Darnassus |N|(38.7, 15.9)| |R|NightElf| |Z|Darnassus|
+N Lelanai and Jartsam |N|(38.3, 15.4)| |R|Night Elf| |Z|Ironforge|
+B Buy a [Frostsaber] or [Nightsaber] |N|Buy your Mount if you can afford it! - (38.3, 15.4)| |R|Night Elf| |Z|Ironforge|
+R Travel to Darnassus |N|(38.3, 15.4)| |R|Night Elf| |Z|Darnassus|
+t Train [Tiger Riding] |N|Buy your Mount if you can afford it! - (38.3, 15.4)| |R|Night Elf| |Z|Darnassus|
+R Travel to Darnassus |N|(38.7, 15.9)| |R|Night Elf| |Z|Darnassus|
 t Train your class spells |N|Arias'ta Bladesinger - (58.7, 34.9)| |C|Warrior| |Z|Darnassus|
 t Train your class spells |N|Jandria - (37.9, 82.7)| |C|Priest| |Z|Darnassus|
 N Syurna |N|(31.8, 16.7)| |C|Rogue| |Z|Darnassus|

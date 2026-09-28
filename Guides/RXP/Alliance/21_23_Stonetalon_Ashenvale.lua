@@ -62,11 +62,11 @@ T Escape Through Stealth |QID|995| |N|Terenthis - (39.4, 43.5)| |C|!Warlock| |Z|
 T The Corruption Abroad |QID|3765| |N|Gershala Nightwhisper - (38.3, 43.0)| |C|!Warlock| |Z|Darkshore|
 T The Absent Minded Prospector |QID|731| |N|Archaeologist Hollee - (37.4, 41.8)| |C|!Warlock| |Z|Darkshore|
 A The Absent Minded Prospector |QID|741| |N|Archaeologist Hollee - (37.4, 41.8)| |C|!Warlock| |Z|Darkshore|
-F Fly to Teldrassil |N|Caylais Moonfeather - (36.3, 45.6)| |O| |R|NightElf| |Z|Darkshore|
-R the Auberdine Docks. Wait for the Rut'theran Village boat |N|(32.8, 42.2)| |O| |C|!Warlock| |R|!NightElf| |Z|Darkshore|
-f Get the Rut'theran Village Flight Path |N|Vesprystus - (58.4, 94.0)| |C|!Warlock| |R|!NightElf| |Z|Teldrassil|
-R Travel to Darnassus |N|(57.6, 46.7)| |C|Warrior| |R|NightElf| |Z|Darnassus|
-t Train Thrown |N|Ilyenia Moonfire - (57.6, 46.7)| |C|Warrior| |R|NightElf| |Z|Darnassus|
+F Fly to Teldrassil |N|Caylais Moonfeather - (36.3, 45.6)| |O| |R|Night Elf| |Z|Darkshore|
+R the Auberdine Docks. Wait for the Rut'theran Village boat |N|(32.8, 42.2)| |O| |C|!Warlock| |R|!Night Elf| |Z|Darkshore|
+f Get the Rut'theran Village Flight Path |N|Vesprystus - (58.4, 94.0)| |C|!Warlock| |R|!Night Elf| |Z|Teldrassil|
+R Travel to Darnassus |N|(57.6, 46.7)| |C|Warrior| |R|Night Elf| |Z|Darnassus|
+t Train Thrown |N|Ilyenia Moonfire - (57.6, 46.7)| |C|Warrior| |R|Night Elf| |Z|Darnassus|
 T Power over Poison |QID|6125| |N|Mathrengyl Bearwalker - (35.4, 8.4)| |C|Druid| |Z|Darnassus|
 t Train your class spells |N|Mathrengyl Bearwalker - (35.4, 8.4)| |C|Druid| |Z|Darnassus|
 t Train your class spells |N|Arias'ta Bladesinger - (58.7, 34.9)| |C|Warrior| |Z|Darnassus|

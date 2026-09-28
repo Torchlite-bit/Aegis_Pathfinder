@@ -3,15 +3,15 @@ AegisPathfinder:RegisterGuide("The Barrens (12-20)", "Stonetalon Mountains (20-2
 return [[
 
 A Veteran Uzzek |QID|1505| |N|Krang Stonehoof in Bloodhoof Village (49.52, 60.60)| |C|Warrior| |R|Tauren| |OID|1498| |Z|Mulgore|
-A Veteran Uzzek |QID|1505| |N|Tarshaw Jaggedscar, in Razor Hill Barracks (73.41, 19.44)| |C|Warrior| |R|Orc, Troll| |OID|1498| |Z|The Barrens|
-A Call of Fire (Part 1) |QID|2983| |N|Swart in Razor Hill Barracks (54.41, 42.58)| |C|Shaman| |R|Orc, Troll| |Z|Durotar|
+A Veteran Uzzek |QID|1505| |N|Tarshaw Jaggedscar, in Razor Hill Barracks (73.41, 19.44)| |C|Warrior| |R|Orc/Troll| |OID|1498| |Z|The Barrens|
+A Call of Fire (Part 1) |QID|2983| |N|Swart in Razor Hill Barracks (54.41, 42.58)| |C|Shaman| |R|Orc/Troll| |Z|Durotar|
 A Call of Fire (Part 1) |QID|2984| |N|Swart in Bloodhoof Village (48.4, 59.2)| |C|Shaman| |R|Tauren| |Z|Mulgore|
 
-R Orgimmar |QID|840| |N|Travel to Orgimmar (45.23, 63.84)|  |Z|Orgrimmar| |R|Scourge, Undead|
-f Orgimmar |QID|840| |N|Speak to Doras and grab flight path for Orgimmar (45.23, 63.84)| |Z|Orgrimmar| |R|Scourge, Undead|
+R Orgimmar |QID|840| |N|Travel to Orgimmar (45.23, 63.84)|  |Z|Orgrimmar| |R|Undead|
+f Orgimmar |QID|840| |N|Speak to Doras and grab flight path for Orgimmar (45.23, 63.84)| |Z|Orgrimmar| |R|Undead|
 
-R Razor Hill |QID|840| |N|Run South to Razor Hill (50.9, 43.6)| |Z|Durotar| |R|Orc, Troll, Scourge, Undead|
-A Conscript of the Horde |QID|840| |N|Takrin Pathseeker in Razor Hill (50.9, 43.6)| |Z|Durotar| |R|Orc, Troll, Scourge, Undead|
+R Razor Hill |QID|840| |N|Run South to Razor Hill (50.9, 43.6)| |Z|Durotar| |R|Orc/Troll/Undead|
+A Conscript of the Horde |QID|840| |N|Takrin Pathseeker in Razor Hill (50.9, 43.6)| |Z|Durotar| |R|Orc/Troll/Undead|
 
 R Camp Taurajo |QID|854| |N|Run east to Camp Taurajo (44.9, 58.7)| |R|Tauren|
 A Journey to the Crossroads |QID|854| |N|Kirge Sternhorn (44.9, 58.7)| |R|Tauren|
@@ -26,11 +26,11 @@ T A Bundle of Hides |QID|6361| |N|Devrak in The Crossroads (51.52, 30.36)|
 A Ride to Thunder Bluff |QID|6362| |N|Devrak in The Crossroads (51.52, 30.36)|
 h The Crossroads |QID|6363| |N|Speak to Innkeeper Boorand Plainswind and set hearth in The Crossroads (52.0, 29.9)| |R|Tauren|
 
-T Conscript of the Horde |QID|840| |N|Kargal Battlescar in Far Watch Post (62.27, 19.37)| |R|Orc, Troll, Scourge, Undead|
-A Crossroads Conscription |QID|842| |N|Kargal Battlescar in Far Watch Post (62.27, 19.37)| |PRE|840| |R|Orc, Troll, Scourge, Undead|
-T Ak'Zeloth |QID|809| |N|Ak'Zeloth in Far Watch Post (62.35, 20.08)| |O| |R|Orc, Troll|
-A The Demon Seed |QID|924| |N|Ak'Zeloth in Far Watch Post (62.35, 20.08)| |PRE|809| |R|Orc, Troll|
-N Flawed Power Stone |QID|924| |N|Grab the Flawed Power Stone from the table next to the quest giver Ak'Zeloth (62.35, 20.08)| |PRE|809| |L|4986| |R|Orc, Troll|
+T Conscript of the Horde |QID|840| |N|Kargal Battlescar in Far Watch Post (62.27, 19.37)| |R|Orc/Troll/Undead|
+A Crossroads Conscription |QID|842| |N|Kargal Battlescar in Far Watch Post (62.27, 19.37)| |PRE|840| |R|Orc/Troll/Undead|
+T Ak'Zeloth |QID|809| |N|Ak'Zeloth in Far Watch Post (62.35, 20.08)| |O| |R|Orc/Troll|
+A The Demon Seed |QID|924| |N|Ak'Zeloth in Far Watch Post (62.35, 20.08)| |PRE|809| |R|Orc/Troll|
+N Flawed Power Stone |QID|924| |N|Grab the Flawed Power Stone from the table next to the quest giver Ak'Zeloth (62.35, 20.08)| |PRE|809| |L|4986| |R|Orc/Troll|
 
 F Thunder Bluff |QID|6363| |N|Speak to Devrak and fly to Thunder Bluff (51.5, 30.3)| |R|Tauren|
 T Ride to Thunder Bluff |QID|6362| |N|Ahanu in Thunder Bluff (45.6, 55.9)| |Z|Thunder Bluff| |R|Tauren|
@@ -40,21 +40,21 @@ A Return to Jahan |QID|6364| |N|Tal in Thunder Bluff (46.8, 50.2)| |R|Tauren| |Z
 F The Crossroads |QID|844| |N|Speak to Tal and fly to The Crossroads (46.8, 50.2)| |R|Tauren| |Z|Thunder Bluff|
 T Return to Jahan |QID|6364| |N|Jahan Hawkwing in The Crossroads (51.19, 29.09)| |R|Tauren|
 
-R The Crossroads |QID|844| |N|Follow the road, taking a left turn to the Crossroads (52, 30)| |R|Orc, Troll, Scourge, Undead|
-T Crossroads Conscription |QID|842| |N|Sergra Darkthorn in The Crossroads (52.21, 30.99)| |PRE|840| |R|Orc, Troll, Scourge, Undead|
+R The Crossroads |QID|844| |N|Follow the road, taking a left turn to the Crossroads (52, 30)| |R|Orc/Troll/Undead|
+T Crossroads Conscription |QID|842| |N|Sergra Darkthorn in The Crossroads (52.21, 30.99)| |PRE|840| |R|Orc/Troll/Undead|
 
-A Meats to Orgrimmar |QID|6365| |N|Zargh in The Crossroads (52.58, 29.86)| |R|Orc, Troll|
-T Meats to Orgrimmar |QID|6365| |N|Devrak in The Crossroads (51.52, 30.36)| |R|Orc, Troll|
-A Ride to Orgrimmar |QID|6384| |N|Devrak in The Crossroads (51.52, 30.36)| |R|Orc, Troll|
+A Meats to Orgrimmar |QID|6365| |N|Zargh in The Crossroads (52.58, 29.86)| |R|Orc/Troll|
+T Meats to Orgrimmar |QID|6365| |N|Devrak in The Crossroads (51.52, 30.36)| |R|Orc/Troll|
+A Ride to Orgrimmar |QID|6384| |N|Devrak in The Crossroads (51.52, 30.36)| |R|Orc/Troll|
 h The Crossroads |QID|871| |N|Speak to Innkeeper Boorand Plainswind in and set hearth for The Crossroads (52.0, 29.9)|
-F Orgrimmar |QID|6385| |N|Speak to Devrak and fly to Orgrimmar (51.5, 30.3)| |R|Orc, Troll|
-T Ride to Orgrimmar |QID|6384| |N|Innkeeper Gryshka in Valley of Strength (54.21, 68.41)| |Z|Orgrimmar| |R|Orc, Troll|
-A Doras the Wind Rider Master |QID|6385| |N|Innkeeper Gryshka in Valley of Strength (54.21, 68.41)| |Z|Orgrimmar| |R|Orc, Troll|
-T Doras the Wind Rider Master |QID|6385| |N|Doras in Valley of Strength (45.40, 63.89)| |Z|Orgrimmar| |R|Orc, Troll|
-A Return to the Crossroads. |QID|6386| |N|Doras in Valley of Strength (45.40, 63.89)| |Z|Orgrimmar| |R|Orc, Troll|
+F Orgrimmar |QID|6385| |N|Speak to Devrak and fly to Orgrimmar (51.5, 30.3)| |R|Orc/Troll|
+T Ride to Orgrimmar |QID|6384| |N|Innkeeper Gryshka in Valley of Strength (54.21, 68.41)| |Z|Orgrimmar| |R|Orc/Troll|
+A Doras the Wind Rider Master |QID|6385| |N|Innkeeper Gryshka in Valley of Strength (54.21, 68.41)| |Z|Orgrimmar| |R|Orc/Troll|
+T Doras the Wind Rider Master |QID|6385| |N|Doras in Valley of Strength (45.40, 63.89)| |Z|Orgrimmar| |R|Orc/Troll|
+A Return to the Crossroads. |QID|6386| |N|Doras in Valley of Strength (45.40, 63.89)| |Z|Orgrimmar| |R|Orc/Troll|
 
-R The Crossroads |QID|844| |N|Doras in Valley of Strength (52.58, 29.86)| |R|Orc, Troll|
-T Return to the Crossroads. |QID|6386| |N|Zargh in The Crossroads (52.58, 29.86)| |R|Orc, Troll|
+R The Crossroads |QID|844| |N|Doras in Valley of Strength (52.58, 29.86)| |R|Orc/Troll|
+T Return to the Crossroads. |QID|6386| |N|Zargh in The Crossroads (52.58, 29.86)| |R|Orc/Troll|
 
 A Raptor Thieves |QID|869| |N|Gazrog in The Crossroads (51.95, 30.32)|
 A Disrupt the Attacks |QID|871| |N|Thork in The Crossroads (51.53, 30.85)|
@@ -82,7 +82,7 @@ T Forged Steel |QID|1503| |N|Thun'grim Firegaze in The Barrens (54.56, 27.96) (5
 
 R Grol'dom Farm |QID|1524| |N|Travel to Grol'dom Farm (56.04, 19.88)| |C|Shaman|
 T Call of Fire (Part 1) |QID|2984| |N|Kranal Fiss in Grol'dom Farm (56.04, 19.88)| |C|Shaman| |R|Tauren|
-T Call of Fire (Part 1) |QID|2983| |N|Kranal Fiss in Grol'dom Farm (56.04, 19.88)| |C|Shaman| |R|Orc, Troll|
+T Call of Fire (Part 1) |QID|2983| |N|Kranal Fiss in Grol'dom Farm (56.04, 19.88)| |C|Shaman| |R|Orc/Troll|
 A Call of Fire (Part 2) |QID|1524| |N|Kranal Fiss in Grol'dom Farm (56.04, 19.88)| |C|Shaman|
 
 R Shrine of the Dormant Flame |OID|1525| |N|Travel to Shrine of the Dormant Flame (36.60, 57.10) (36.58, 58.25) (36.86, 59.05)| |C|Shaman| |Z|Durotar|
@@ -108,8 +108,8 @@ R Grol'dom Farm |QID|1527| |N|Travel to Grol'dom Farm (56.04, 19.89)| |C|Shaman|
 T Call of Fire (Part 5) |QID|1527| |N|Kranal Fiss in Grol'dom Farm (56.04, 19.89)| |C|Shaman|
 
 N As you go... |AYG|924| |QID|844| |N|Kill any Raptors for 12 Raptor Head and Greater Plainstrider for 7 Plainstrider Beak| |PRE|809| |EQID|869|
-R Dreadmist Den |QID|924| |N|Travel to Dreadmist Den (51.10, 22.70) (50.42, 21.96) (47.96, 19.12)| |PRE|809| |R|Orc, Troll|
-C The Demon Seed |QID|924| |N|Grab a Flawed Power Stone on the table next to the quest giver and bring it to the Altar of Fire before the stone expires, in Dreadmist Den (47.96, 19.12)| |PRE|809| |R|Orc, Troll|
+R Dreadmist Den |QID|924| |N|Travel to Dreadmist Den (51.10, 22.70) (50.42, 21.96) (47.96, 19.12)| |PRE|809| |R|Orc/Troll|
+C The Demon Seed |QID|924| |N|Grab a Flawed Power Stone on the table next to the quest giver and bring it to the Altar of Fire before the stone expires, in Dreadmist Den (47.96, 19.12)| |PRE|809| |R|Orc/Troll|
 
 N As you go... |AYG|871| |QID|871| |N|Kill Greater Plainstrider and collect 7 Plainstrider Beak|
 R Thorn Hill |QID|871| |N|Travel to Thorn Hill (54, 26)|
@@ -176,7 +176,7 @@ T The Principal Source |QID|6127| |N|Tonga Runetotem in The Crossroads (52.25, 3
 A Gathering the Cure |QID|6128| |N|Tonga Runetotem in The Crossroads (52.25, 31.92)| |C|Druid| |Z|The Barrens|
 
 N As you go... |AYG|870| |QID|845| |N|<b>Kill Zhevra Runner for 4 Zhevra Hooves<br/><b>Kill any raptors for 12 Raptor Head<br/><b>Kill Lost Barrens Kodo and collect 5 Kodo Horn| |C|Druid|
-N As you go... |AYG|870| |QID|845| |N|<b>Kill Zhevra Runner for 4 Zhevra Hooves<br/><b>Kill any raptors for 12 Raptor Head| |C|Warrior, Hunter, Mage, Warlock, Druid, Priest, Shaman, Rogue|
+N As you go... |AYG|870| |QID|845| |N|<b>Kill Zhevra Runner for 4 Zhevra Hooves<br/><b>Kill any raptors for 12 Raptor Head| |C|Warrior/Hunter/Mage/Warlock/Druid/Priest/Shaman/Rogue|
 A Kolkar Leaders |QID|850| |N|Regthar Deathgate in the bunkers west of The Crossroads (45.33, 28.45)|
 A Centaur Bracers |QID|855| |N|Regthar Deathgate in the bunkers west of The Crossroads (45.33, 28.45)|
 
@@ -382,7 +382,7 @@ T Jorn Skyseer |QID|3261| |N|Jorn Skyseer in Camp Taurajo (44.84, 59.09)|
 
 R Spirit Rise |TID|853| |N|Travel to Spirit Rise in Thunder Bluff (30.04, 29.79) (22.9, 20.9| |Z|Thunder Bluff|
 T Apothecary Zamah |QID|853| |N|Apothecary Zamah in Spirit Rise (30.04, 29.79) (22.9, 20.9)| |Z|Thunder Bluff|
-f Thunder Bluff |QID|1490| |N|Speak to Tal and grab flight path for Thunder Bluff (46.8, 50.2)| |R|Orc, Undead, Scourge, Troll| |Z|Thunder Bluff|
+f Thunder Bluff |QID|1490| |N|Speak to Tal and grab flight path for Thunder Bluff (46.8, 50.2)| |R|Orc/Undead/Troll| |Z|Thunder Bluff|
 T Hamuul Runetotem |QID|1489| |N|Arch Druid Hamuul Runetotem in Elder Rise (78.53, 28.62)| |Z|Thunder Bluff|
 A Nara Wildmane |QID|1490| |N|Arch Druid Hamuul Runetotem in Elder Rise (78.53, 28.62)| |Z|Thunder Bluff|
 T Nara Wildmane |QID|1490| |N|Arch Druid Hamuul Runetotem in Elder Rise (75.69, 31.53)| |Z|Thunder Bluff|

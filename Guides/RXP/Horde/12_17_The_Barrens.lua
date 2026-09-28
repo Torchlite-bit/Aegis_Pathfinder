@@ -15,24 +15,34 @@ A Forged Steel |QID|1503| |N|Thun'grim - (57.2, 30.3)| |C|Warrior| |R|!Undead| |
 C Forged Steel |QID|1503| |OIDX|1| |N|the Stolen Iron Chest for its Forged Steel Bars Forged Steel Bars (1)| |C|Warrior| |R|!Undead| |Z|The Barrens|
 R the top of the mountain |N|(56.6, 28.6)| |O| |C|Warrior| |R|!Undead| |Z|The Barrens|
 T Forged Steel |QID|1503| |N|Thun'grim - (57.2, 30.3)| |C|Warrior| |R|!Undead| |Z|The Barrens|
-N Die and respawn at the Spirit Healer |N|(50.7, 32.6)| |O| |C|!Shaman/!Warrior/Undead| |Z|The Barrens|
-A The Forgotten Pools |QID|870| |N|Tonga - (52.3, 31.9)| |C|!Shaman/!Warrior/Undead| |Z|The Barrens|
+N Die and respawn at the Spirit Healer |N|(50.7, 32.6)| |O| |C|!Shaman/!Warrior| |R|!Undead| |Z|The Barrens|
+N Die and respawn at the Spirit Healer |N|(50.7, 32.6)| |O| |R|Undead| |Z|The Barrens|
+A The Forgotten Pools |QID|870| |N|Tonga - (52.3, 31.9)| |C|!Shaman/!Warrior| |R|!Undead| |Z|The Barrens|
+A The Forgotten Pools |QID|870| |N|Tonga - (52.3, 31.9)| |R|Undead| |Z|The Barrens|
 T Crossroads Conscription |QID|842| |N|Sergra - (52.2, 31.0)| |C|!Druid| |Z|The Barrens|
-A Plainstrider Menace |QID|844| |N|Sergra - (52.2, 31.0)| |C|!Shaman/!Warrior/Undead| |Z|The Barrens|
-A Disrupt the Attacks |QID|871| |N|Thork - (51.5, 30.9)| |C|!Shaman/!Warrior/Undead| |Z|The Barrens|
-A Supplies for the Crossroads |QID|5041| |N|Thork - (51.5, 30.9)| |C|!Shaman/!Warrior/Undead| |Z|The Barrens|
+A Plainstrider Menace |QID|844| |N|Sergra - (52.2, 31.0)| |C|!Shaman/!Warrior| |R|!Undead| |Z|The Barrens|
+A Plainstrider Menace |QID|844| |N|Sergra - (52.2, 31.0)| |R|Undead| |Z|The Barrens|
+A Disrupt the Attacks |QID|871| |N|Thork - (51.5, 30.9)| |C|!Shaman/!Warrior| |R|!Undead| |Z|The Barrens|
+A Disrupt the Attacks |QID|871| |N|Thork - (51.5, 30.9)| |R|Undead| |Z|The Barrens|
+A Supplies for the Crossroads |QID|5041| |N|Thork - (51.5, 30.9)| |C|!Shaman/!Warrior| |R|!Undead| |Z|The Barrens|
+A Supplies for the Crossroads |QID|5041| |N|Thork - (51.5, 30.9)| |R|Undead| |Z|The Barrens|
 f Get the The Crossroads flight path |N|Devrak - (51.5, 30.3)| |R|Undead| |Z|The Barrens|
 A Wharfmaster Dizzywig |QID|1492| |N|Helbrim - (51.4, 30.1)| |Z|The Barrens|
 A Fungal Spores |QID|848| |N|Helbrim - (51.4, 30.1)| |Z|The Barrens|
-T Sample for Helbrim |QID|1358| |N|Helbrim - (51.4, 30.1)| |C|Undead/Rogue/Mage/Priest/Warlock| |Z|The Barrens|
+T Sample for Helbrim |QID|1358| |N|Helbrim - (51.4, 30.1)| |C|Rogue/Mage/Priest/Warlock| |R|!Undead| |Z|The Barrens|
+T Sample for Helbrim |QID|1358| |N|Helbrim - (51.4, 30.1)| |R|Undead| |Z|The Barrens|
 A Wharfmaster Dizzywig |QID|1492| |N|Helbrim - (51.4, 30.1)| |Z|The Barrens|
-T Sample for Helbrim |QID|1358| |N|Helbrim - (51.4, 30.1)| |C|Undead/Rogue/Mage/Priest/Warlock| |Z|The Barrens|
-B Collect Laminated Recurve Bow (1) |L|2507 1| |N|Uthrok. Buy a [Laminated Recurve Bow] from him - (51.1, 29.1)| |C|Hunter/Troll/Hunter| |R|Orc| |Z|The Barrens|
+T Sample for Helbrim |QID|1358| |N|Helbrim - (51.4, 30.1)| |C|Rogue/Mage/Priest/Warlock| |R|!Undead| |Z|The Barrens|
+T Sample for Helbrim |QID|1358| |N|Helbrim - (51.4, 30.1)| |R|Undead| |Z|The Barrens|
+B Collect Laminated Recurve Bow (1) |L|2507 1| |N|Uthrok. Buy a [Laminated Recurve Bow] from him - (51.1, 29.1)| |C|Hunter| |R|Orc/Troll| |Z|The Barrens|
 B Collect Hunter's Boomstick (1) |L|2511 1| |N|Uthrok. Buy a [Hunter's Boomstick] from him - (51.1, 29.1)| |C|Hunter| |R|Tauren| |Z|The Barrens|
-A Raptor Thieves |QID|869| |N|Gazrog - (51.9, 30.3)| |C|!Shaman/!Warrior/Undead| |Z|The Barrens|
-R Innkeeper Boorand |N|(52.0, 29.9)| |C|!Shaman/!Warrior/Undead| |R|!Tauren| |Z|The Barrens|
-h Crossroads |N|Set hearth in Crossroads (52.0, 29.9)| |C|!Shaman/!Warrior/Undead| |R|!Tauren| |Z|The Barrens|
-A Meats to Orgrimmar |QID|6365| |N|Zargh - (52.6, 29.8)| |C|!Warrior/!Shaman/Troll/!Warrior/!Shaman| |R|Orc| |Z|The Barrens|
+A Raptor Thieves |QID|869| |N|Gazrog - (51.9, 30.3)| |C|!Shaman/!Warrior| |R|!Undead| |Z|The Barrens|
+A Raptor Thieves |QID|869| |N|Gazrog - (51.9, 30.3)| |R|Undead| |Z|The Barrens|
+R Innkeeper Boorand |N|(52.0, 29.9)| |C|!Shaman/!Warrior| |R|!Tauren/!Undead| |Z|The Barrens|
+R Innkeeper Boorand |N|(52.0, 29.9)| |R|Undead| |Z|The Barrens|
+h Crossroads |N|Set hearth in Crossroads (52.0, 29.9)| |C|!Shaman/!Warrior| |R|!Tauren/!Undead| |Z|The Barrens|
+h Crossroads |N|Set hearth in Crossroads (52.0, 29.9)| |R|Undead| |Z|The Barrens|
+A Meats to Orgrimmar |QID|6365| |N|Zargh - (52.6, 29.8)| |C|!Warrior/!Shaman| |R|Orc/Troll| |Z|The Barrens|
 C Plainstrider Menace |QID|844| |OIDX|1| |N|Kill Plainstriders. Loot them for their Beaks Plainstrider Beak (7)| |O| |Z|The Barrens|
 R the top of the mountain |N|(47.6, 19.2)| |O| |R|!Tauren/!Undead| |Z|The Barrens|
 R Go inside Dreadmist Den |N|(47.6, 19.2)| |O| |R|!Tauren/!Undead| |Z|The Barrens|
@@ -46,7 +56,7 @@ A Chen's Empty Keg |QID|819| |N|Loot Chen's Empty Keg from the ground and start 
 C Disrupt the Attacks |QID|871| |OIDX|1| |N|Water Seekers, Thornweavers and Hunters Razormane Water Seeker (8)| |Z|The Barrens|
 C Raptor Thieves |QID|869| |OIDX|1| |N|Kill every Raptor you see. Loot them for their Heads Raptor Head (12)| |O| |Z|The Barrens|
 C Plainstrider Menace |QID|844| |OIDX|1| |N|Plainstriders. Loot them for their Beaks Plainstrider Beak (7)| |Z|The Barrens|
-T Return to the Crossroads |QID|6386| |N|Zargh - (52.6, 29.9)| |C|Shaman/Troll/Shaman/Orc/Warrior/Orc/Warrior| |R|Troll| |Z|The Barrens|
+T Return to the Crossroads |QID|6386| |N|Zargh - (52.6, 29.9)| |C|Shaman/Warrior| |R|Troll/Orc| |Z|The Barrens|
 T Crossroads Conscription |QID|842| |N|Sergra and Thork - (52.2, 31.0)| |C|Shaman| |R|Tauren| |Z|The Barrens|
 T Plainstrider Menace |QID|844| |N|Sergra and Thork - (52.2, 31.0)| |Z|The Barrens|
 A The Zhevra |QID|845| |N|Sergra and Thork - (52.2, 31.0)| |Z|The Barrens|
@@ -54,13 +64,13 @@ T Disrupt the Attacks |QID|871| |N|Sergra and Thork - (52.2, 31.0)| |Z|The Barre
 A The Disruption Ends |QID|872| |N|Sergra and Thork - (52.2, 31.0)| |Z|The Barrens|
 N He is at the top of the tower |N|(51.6, 30.9)| |Z|The Barrens|
 A Harpy Raiders |QID|867| |N|Darsok - (51.6, 30.9)| |Z|The Barrens|
-T Meats to Orgrimmar |QID|6365| |N|Devrak - (51.5, 30.3)| |C|!Warrior/!Shaman/Troll/!Warrior/!Shaman| |R|Orc| |Z|The Barrens|
-A Ride to Orgrimmar |QID|6384| |N|Devrak - (51.5, 30.3)| |C|!Warrior/!Shaman/Troll/!Warrior/!Shaman| |R|Orc| |Z|The Barrens|
-B Collect Laminated Recurve Bow (1) |L|2507 1| |N|Uthrok. Buy a [Laminated Recurve Bow] from him - (51.1, 29.1)| |O| |C|Hunter/Troll/Hunter| |R|Orc| |Z|The Barrens|
+T Meats to Orgrimmar |QID|6365| |N|Devrak - (51.5, 30.3)| |C|!Warrior/!Shaman| |R|Orc/Troll| |Z|The Barrens|
+A Ride to Orgrimmar |QID|6384| |N|Devrak - (51.5, 30.3)| |C|!Warrior/!Shaman| |R|Orc/Troll| |Z|The Barrens|
+B Collect Laminated Recurve Bow (1) |L|2507 1| |N|Uthrok. Buy a [Laminated Recurve Bow] from him - (51.1, 29.1)| |O| |C|Hunter| |R|Orc/Troll| |Z|The Barrens|
 B Collect Hunter's Boomstick (1) |L|2511 1| |N|Uthrok. Buy a [Hunter's Boomstick] from him - (51.1, 29.1)| |O| |C|Hunter| |R|Tauren| |Z|The Barrens|
-R Innkeeper Boorand |N|(52.0, 29.9)| |C|Warrior/Troll/Warrior/Orc/Shaman/Troll/Shaman| |R|Orc| |Z|The Barrens|
-h Crossroads |N|Set hearth in Crossroads (52.0, 29.9)| |C|Warrior/Troll/Warrior/Orc/Shaman/Troll/Shaman| |R|Orc| |Z|The Barrens|
-B if Lizzarik is in the Crossroads. He sells potions and [Heavy Spiked Mace] which is a limited supply item |N|(52.5, 30.7)| |O| |C|Warrior/Troll/Warrior/Tauren/Warrior| |R|Orc| |Z|The Barrens|
+R Innkeeper Boorand |N|(52.0, 29.9)| |C|Warrior/Shaman| |R|Orc/Troll| |Z|The Barrens|
+h Crossroads |N|Set hearth in Crossroads (52.0, 29.9)| |C|Warrior/Shaman| |R|Orc/Troll| |Z|The Barrens|
+B if Lizzarik is in the Crossroads. He sells potions and [Heavy Spiked Mace] which is a limited supply item |N|(52.5, 30.7)| |O| |C|Warrior| |R|!Undead| |Z|The Barrens|
 F Fly to Orgrimmar |N|Devrak - (51.5, 30.3) (RFC Dungeon Quest)| |R|!Undead/!Tauren| |D|RFC| |Z|The Barrens|
 C Collect Chen's Empty Keg |QID|819| |L|4926 1| |N|Loot Chen's Empty Keg from the ground and start the quest. If it's not up you'll get it later (55.8, 20.0) (RFC Dungeon Quest)| |R|Tauren| |D|RFC| |Z|The Barrens|
 A Chen's Empty Keg |QID|819| |N|Loot Chen's Empty Keg from the ground and start the quest. If it's not up you'll get it later - (55.8, 20.0) (RFC Dungeon Quest)| |R|Tauren| |D|RFC| |Z|The Barrens|
@@ -114,12 +124,17 @@ A Hidden Enemies |QID|5730| |N|Neeru Fireblade - (49.6, 50.4) (RFC Dungeon Quest
 T Hidden Enemies |QID|5730| |N|Thrall - (31.7, 37.8) (RFC Dungeon Quest)| |R|!Undead| |D|RFC| |Z|Orgrimmar|
 F Fly to Thunder Bluff |N|Doras - (45.1, 63.9) (RFC Dungeon Quest)| |R|Tauren| |D|RFC| |Z|Orgrimmar|
 H Crossroads |N|Hearth to Crossroads (RFC Dungeon Quest)| |R|!Tauren| |D|RFC| |Z|Orgrimmar|
-F Fly to Thunder Bluff |N|Devrak - (51.5, 30.3) (RFC Dungeon Quest)| |C|Warrior/Troll/Warrior/Orc/Shaman/Troll/Shaman| |R|Orc| |D|RFC| |Z|The Barrens|
-R the Elder Rise |N|(69.9, 30.9) (RFC Dungeon Quest)| |C|Warrior/Troll/Warrior/Orc/Shaman/Troll/Shaman| |R|Tauren/Orc| |D|RFC| |Z|Thunder Bluff|
-T Returning the Lost Satchel |QID|5724| |N|Rahauro - (70.4, 29.6) (RFC Dungeon Quest)| |C|Warrior/Troll/Warrior/Orc/Shaman/Troll/Shaman| |R|Tauren/Orc| |D|RFC| |Z|Thunder Bluff|
-T Testing an Enemy's Strength |QID|5723| |N|Rahauro - (70.4, 29.6) (RFC Dungeon Quest)| |C|Warrior/Troll/Warrior/Orc/Shaman/Troll/Shaman| |R|Tauren/Orc| |D|RFC| |Z|Thunder Bluff|
-T Returning the Lost Satchel |QID|5724| |N|Rahauro - (70.4, 29.6) (RFC Dungeon Quest)| |C|Warrior/Troll/Warrior/Orc/Shaman/Troll/Shaman| |R|Tauren/Orc| |D|RFC| |Z|Thunder Bluff|
-T Testing an Enemy's Strength |QID|5723| |N|Rahauro - (70.4, 29.6) (RFC Dungeon Quest)| |C|Warrior/Troll/Warrior/Orc/Shaman/Troll/Shaman| |R|Tauren/Orc| |D|RFC| |Z|Thunder Bluff|
+F Fly to Thunder Bluff |N|Devrak - (51.5, 30.3) (RFC Dungeon Quest)| |C|Warrior/Shaman| |R|Orc/Troll| |D|RFC| |Z|The Barrens|
+R the Elder Rise |N|(69.9, 30.9) (RFC Dungeon Quest)| |C|Warrior/Shaman| |R|Orc/Troll| |D|RFC| |Z|Thunder Bluff|
+R the Elder Rise |N|(69.9, 30.9) (RFC Dungeon Quest)| |R|Tauren| |D|RFC| |Z|Thunder Bluff|
+T Returning the Lost Satchel |QID|5724| |N|Rahauro - (70.4, 29.6) (RFC Dungeon Quest)| |C|Warrior/Shaman| |R|Orc/Troll| |D|RFC| |Z|Thunder Bluff|
+T Returning the Lost Satchel |QID|5724| |N|Rahauro - (70.4, 29.6) (RFC Dungeon Quest)| |R|Tauren| |D|RFC| |Z|Thunder Bluff|
+T Testing an Enemy's Strength |QID|5723| |N|Rahauro - (70.4, 29.6) (RFC Dungeon Quest)| |C|Warrior/Shaman| |R|Orc/Troll| |D|RFC| |Z|Thunder Bluff|
+T Testing an Enemy's Strength |QID|5723| |N|Rahauro - (70.4, 29.6) (RFC Dungeon Quest)| |R|Tauren| |D|RFC| |Z|Thunder Bluff|
+T Returning the Lost Satchel |QID|5724| |N|Rahauro - (70.4, 29.6) (RFC Dungeon Quest)| |C|Warrior/Shaman| |R|Orc/Troll| |D|RFC| |Z|Thunder Bluff|
+T Returning the Lost Satchel |QID|5724| |N|Rahauro - (70.4, 29.6) (RFC Dungeon Quest)| |R|Tauren| |D|RFC| |Z|Thunder Bluff|
+T Testing an Enemy's Strength |QID|5723| |N|Rahauro - (70.4, 29.6) (RFC Dungeon Quest)| |C|Warrior/Shaman| |R|Orc/Troll| |D|RFC| |Z|Thunder Bluff|
+T Testing an Enemy's Strength |QID|5723| |N|Rahauro - (70.4, 29.6) (RFC Dungeon Quest)| |R|Tauren| |D|RFC| |Z|Thunder Bluff|
 H Crossroads |N|Hearth to Crossroads (RFC Dungeon Quest)| |D|RFC| |Z|Thunder Bluff|
 F Fly to Crossroads |N|Tal - (47.0, 49.8) (RFC Dungeon Quest)| |D|RFC| |Z|Thunder Bluff|
 R Travel to The Barrens |N|(55.8, 20.0)| |Z|The Barrens|
@@ -173,13 +188,13 @@ B Vendor Trash |N|Innkeeper Wiley - (62.0, 39.4)| |Z|The Barrens|
 B Longjaw Mud Snapper (20) |L|4592 20| |N|Innkeeper Wiley - (62.0, 39.4)| |Z|The Barrens|
 B Buy Melon Juice (x10) |L|1205 10| |N|Innkeeper Wiley - (62.0, 39.4)| |C|Mage/Warlock/Priest/Shaman/Druid| |Z|The Barrens|
 C Southsea Freebooters |QID|887| |OIDX|1| |N|Kill Southsea Brigands and Southsea Cannoneers Southsea Brigand (12)| |O| |Z|The Barrens|
-N He patrols up and down the hill |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|The Barrens|
-C Kill Tazan. Loot him for his Satchel |QID|1963| |OIDX|1| |N|Kill Tazan. Loot him for his Satchel| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|The Barrens|
+N He patrols up and down the hill |O| |C|Rogue| |R|Orc/Troll| |Z|The Barrens|
+C Kill Tazan. Loot him for his Satchel |QID|1963| |OIDX|1| |N|Kill Tazan. Loot him for his Satchel| |O| |C|Rogue| |R|Orc/Troll| |Z|The Barrens|
 N He can be found in one of the camps |N|(62.6, 49.7)| |Z|The Barrens|
 C WANTED: Baron Longshore |QID|895| |OIDX|1| |N|Baron Longshore. Loot him for his Head Baron Longshore's Head (1)| |Z|The Barrens|
 C Southsea Freebooters |QID|887| |OIDX|1| |N|Southsea Brigands and Southsea Cannoneers Southsea Brigand (12)| |Z|The Barrens|
-N He patrols up and down the hill |N|(62.2, 44.5)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|The Barrens|
-C Tazan. Loot him for his Satchel |QID|1963| |OIDX|1| |N|Tazan. Loot him for his Satchel - (62.2, 44.5)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|The Barrens|
+N He patrols up and down the hill |N|(62.2, 44.5)| |C|Rogue| |R|Orc/Troll| |Z|The Barrens|
+C Tazan. Loot him for his Satchel |QID|1963| |OIDX|1| |N|Tazan. Loot him for his Satchel - (62.2, 44.5)| |C|Rogue| |R|Orc/Troll| |Z|The Barrens|
 T Southsea Freebooters |QID|887| |N|Gazlowe - (62.7, 36.2)| |Z|The Barrens|
 T WANTED: Baron Longshore |QID|895| |N|Gazlowe - (62.7, 36.2)| |Z|The Barrens|
 A The Missing Shipment |QID|890| |N|Gazlowe - (62.7, 36.2)| |Z|The Barrens|
@@ -203,12 +218,12 @@ T Supplies for the Crossroads |QID|5041| |N|Thork and Sergra - (51.5, 30.9)| |Z|
 T The Disruption Ends |QID|872| |N|Thork and Sergra - (51.5, 30.9)| |Z|The Barrens|
 T The Zhevra |QID|845| |N|Thork and Sergra - (51.5, 30.9)| |Z|The Barrens|
 A Prowlers of the Barrens |QID|903| |N|Thork and Sergra - (51.5, 30.9)| |Z|The Barrens|
-N Buy [Sharp Arrows] from him |N|(51.7, 29.9)| |C|Hunter/Orc/Hunter| |R|Troll| |Z|The Barrens|
+N Buy [Sharp Arrows] from him |N|(51.7, 29.9)| |C|Hunter| |R|Troll/Orc| |Z|The Barrens|
 B Buy Sharp Arrow (x1200) |L|2515 1200| |N|Barg - (51.7, 29.9)| |C|Hunter| |R|Troll| |Z|The Barrens|
 N Buy [Heavy Shots] from him |N|(51.7, 29.9)| |C|Hunter| |R|Tauren| |Z|The Barrens|
 B Buy Heavy Shot (x1000) |L|2519 1000| |N|Barg - (51.7, 29.9)| |C|Hunter| |R|Tauren| |Z|The Barrens|
-B Buy a [Fine Longbow] from him if it's available and stock up on arrows |N|Uthrok - (51.1, 29.1)| |C|Hunter/Orc/Hunter| |R|Troll| |Z|The Barrens|
-N If it's not up, buy a [Reinforced Bow] instead |N|(51.1, 29.1)| |C|Hunter/Orc/Hunter| |R|Troll| |Z|The Barrens|
+B Buy a [Fine Longbow] from him if it's available and stock up on arrows |N|Uthrok - (51.1, 29.1)| |C|Hunter| |R|Troll/Orc| |Z|The Barrens|
+N If it's not up, buy a [Reinforced Bow] instead |N|(51.1, 29.1)| |C|Hunter| |R|Troll/Orc| |Z|The Barrens|
 B Buy Sharp Arrow (x1200) |L|2515 1200| |N|Uthrok - (51.1, 29.1)| |C|Hunter| |R|Troll| |Z|The Barrens|
 B Collect Hunter's Boomstick (1) |L|2511 1| |N|Uthrok. Buy a [Hunter's Boomstick] from him - (51.1, 29.1)| |C|Hunter| |R|Tauren| |Z|The Barrens|
 C Chen's Empty Keg |QID|821| |OIDX|2| |N|Kill Plainstriders. Loot them for their Kidneys Plainstrider Kidney (5)| |O| |Z|The Barrens|
@@ -233,7 +248,7 @@ C Raptor Thieves |QID|869| |OIDX|1| |N|Kill every Raptor you see. Loot them for 
 C Prowlers of the Barrens |QID|903| |OIDX|1| |N|Savannah Prowlers. Loot them for their Claws and Tusks Prowler Claws (7)| |Z|The Barrens|
 C Chen's Empty Keg |QID|821| |OIDX|1| |N|Savannah Prowlers. Loot them for their Claws and Tusks Savannah Lion Tusk (5)| |Z|The Barrens|
 C Harpy Raiders |QID|867| |OIDX|1| |N|Witchwing Harpies and Witchwing Roguefeathers. Loot them for their Talons Witchwing Talon (8)| |Z|The Barrens|
-N Vrang sells [Heavy Spiked Mace] which is a limited supply item |N|(43.8, 12.2)| |C|Warrior/Troll/Warrior/Tauren/Warrior| |R|Orc| |Z|The Barrens|
+N Vrang sells [Heavy Spiked Mace] which is a limited supply item |N|(43.8, 12.2)| |C|Warrior| |R|!Undead| |Z|The Barrens|
 B Vendor trash and repair |N|Vrang - (43.8, 12.2)| |Z|The Barrens|
 N Be careful! Two mobs will spawn after you shut off the Valve |N|(52.3, 11.6)| |Z|The Barrens|
 C the Valve |QID|900| |OIDX|2| |N|the Valve - (52.3, 11.6)| |Z|The Barrens|
@@ -279,25 +294,26 @@ t Train your class spells |N|Kardris - (38.8, 36.4)| |C|Shaman| |Z|Orgrimmar|
 A The Spirits of Stonetalon |QID|1061| |N|Zor - (38.9, 38.4)| |Z|Orgrimmar|
 t Train [Pick Lock] & [Pick Pocket] |N|Shenthul - (43.0, 53.7)| |C|Rogue| |Z|Orgrimmar|
 A Zando'Zan |QID|2379| |N|Shenthul - (43.0, 53.7)| |C|Rogue| |Z|Orgrimmar|
-T The Shattered Hand |QID|1963| |N|Therzok - (42.7, 53.5)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Orgrimmar|
-A The Shattered Hand |QID|1858| |N|Therzok - (42.7, 53.5)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Orgrimmar|
+T The Shattered Hand |QID|1963| |N|Therzok - (42.7, 53.5)| |C|Rogue| |R|Orc/Troll| |Z|Orgrimmar|
+A The Shattered Hand |QID|1858| |N|Therzok - (42.7, 53.5)| |C|Rogue| |R|Orc/Troll| |Z|Orgrimmar|
 T Zando'zan |QID|2379| |N|Zando'zan - (42.7, 53.0)| |C|Rogue| |Z|Orgrimmar|
 A Wrenix of Ratchet |QID|2382| |N|Zando'zan - (42.7, 53.0)| |C|Rogue| |Z|Orgrimmar|
-B Collect Thieves' Tools (1) |L|5060 1| |N|Rekkul. Buy a [Thieves' Tools] from him - (42.1, 49.5)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Orgrimmar|
-C The Shattered Hand |QID|1858| |OIDX|1| |N|Use [Pick Lock] to open [Tazan's Satchel] Tazan's Logbook (1)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Orgrimmar|
-T The Shattered Hand |QID|1858| |N|Therzok - (42.7, 53.5)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Orgrimmar|
-C Tazan's Key |QID|1858| |L|7208 1| |N|Use [Pick Pocket] on Gamon in the Inn. Use his key to open [Tazan's Satchel] (54.0, 68.0)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Orgrimmar|
-C The Shattered Hand |QID|1858| |OIDX|1| |N|Use [Pick Pocket] on Gamon in the Inn. Use his key to open [Tazan's Satchel] Tazan's Logbook (1)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Orgrimmar|
-T The Shattered Hand |QID|1858| |N|Therzok - (42.7, 53.5)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Orgrimmar|
+B Collect Thieves' Tools (1) |L|5060 1| |N|Rekkul. Buy a [Thieves' Tools] from him - (42.1, 49.5)| |O| |C|Rogue| |R|Orc/Troll| |Z|Orgrimmar|
+C The Shattered Hand |QID|1858| |OIDX|1| |N|Use [Pick Lock] to open [Tazan's Satchel] Tazan's Logbook (1)| |C|Rogue| |R|Orc/Troll| |Z|Orgrimmar|
+T The Shattered Hand |QID|1858| |N|Therzok - (42.7, 53.5)| |C|Rogue| |R|Orc/Troll| |Z|Orgrimmar|
+C Tazan's Key |QID|1858| |L|7208 1| |N|Use [Pick Pocket] on Gamon in the Inn. Use his key to open [Tazan's Satchel] (54.0, 68.0)| |C|Rogue| |R|Orc/Troll| |Z|Orgrimmar|
+C The Shattered Hand |QID|1858| |OIDX|1| |N|Use [Pick Pocket] on Gamon in the Inn. Use his key to open [Tazan's Satchel] Tazan's Logbook (1)| |C|Rogue| |R|Orc/Troll| |Z|Orgrimmar|
+T The Shattered Hand |QID|1858| |N|Therzok - (42.7, 53.5)| |C|Rogue| |R|Orc/Troll| |Z|Orgrimmar|
 t Train your class spells |N|Mirket - (48.6, 47.0)| |C|Warlock| |Z|Orgrimmar|
 B Grimoire of Sacrifice (Rank 1) (1) |L|16351 1| |N|Kurgul and buy [Grimoire of Sacrifice] - (47.5, 46.8)| |C|Warlock| |Z|Orgrimmar|
 B Grimoire of Firebolt (Rank 3) (1) |L|16316 1| |N|Kurgul and buy [Grimoire of Firebolt (Rank 3)] - (47.5, 46.8)| |C|Warlock| |Z|Orgrimmar|
 t Train your class spells |N|Grezz - (79.9, 31.4)| |C|Warrior| |Z|Orgrimmar|
 t Train your class spells |N|Ormak - (66.0, 18.5)| |C|Hunter| |Z|Orgrimmar|
 t Train your pet spells |N|Xao'tsu - (66.3, 14.8)| |C|Hunter| |Z|Orgrimmar|
-t Train Staves |N|Hanashi - (81.5, 19.6)| |C|Hunter/Orc/Hunter/Priest| |R|Troll| |Z|Orgrimmar|
+t Train Staves |N|Hanashi - (81.5, 19.6)| |C|Hunter/Priest| |R|Troll/Orc| |Z|Orgrimmar|
+t Train Staves |N|Hanashi - (81.5, 19.6)| |C|Priest| |R|!Troll/!Orc| |Z|Orgrimmar|
 t Train Bows |N|Hanashi - (81.5, 19.6)| |C|Hunter| |R|Tauren| |Z|Orgrimmar|
-t Train Two-Handed Axes & Staves |N|Hanashi - (81.5, 19.6)| |C|Warrior/Tauren/Warrior/Undead/Warrior| |R|Troll| |Z|Orgrimmar|
+t Train Two-Handed Axes & Staves |N|Hanashi - (81.5, 19.6)| |C|Warrior| |R|!Orc| |Z|Orgrimmar|
 B Collect Reinforced Bow (1) |L|3026 1| |N|Zendo'jian. Buy a [Reinforced Bow] from him - (81.2, 18.7)| |C|Hunter| |Z|Orgrimmar|
 t Train your class spells |N|Zendo'jian. Buy a [Reinforced Bow] from him - (81.2, 18.7)| |C|Hunter| |Z|Orgrimmar|
 B Collect Battle Axe (1) |L|926 1| |N|Zendo'jian. Buy a [Battle Axe] from him - (81.2, 18.7)| |C|Warrior| |Z|Orgrimmar|

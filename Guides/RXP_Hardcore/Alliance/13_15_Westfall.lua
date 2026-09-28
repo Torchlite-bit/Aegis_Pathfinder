@@ -57,11 +57,14 @@ T The People's Militia |QID|12| |N|Gryan Stoutmantle - (56.3, 47.5)| |Z|Westfall
 A The Defias Brotherhood |QID|65| |N|Gryan Stoutmantle - (56.3, 47.5)| |Z|Westfall|
 T Patrolling Westfall |QID|102| |N|Captain Danuvin - (56.4, 47.6)| |Z|Westfall|
 T Red Leather Bandanas |QID|153| |N|Scout Galiaan - (54.0, 53.0)| |Z|Westfall|
-H Thelsamar |N|Hearth to Thelsamar| |C|!Paladin/Gnome| |R|Dwarf| |Z|Westfall|
-F Fly to Ironforge |N|Thorgrum Borrelson - (33.9, 51.0)| |C|!Paladin/Gnome| |R|Dwarf| |Z|Loch Modan|
-F Fly to Ironforge |N|Thor - (56.5, 52.6)| |C|Paladin| |R|Human/Dwarf| |Z|Westfall|
-N Level up your [First Aid] |N|(55.1, 58.3)| |R|!NightElf| |Z|Ironforge|
-t Train Journeyman First Aid |N|Nissa Firestone - (55.1, 58.3)| |R|!NightElf| |Z|Ironforge|
+H Thelsamar |N|Hearth to Thelsamar| |C|!Paladin| |R|Dwarf| |Z|Westfall|
+H Thelsamar |N|Hearth to Thelsamar| |R|Gnome| |Z|Westfall|
+F Fly to Ironforge |N|Thorgrum Borrelson - (33.9, 51.0)| |C|!Paladin| |R|Dwarf| |Z|Loch Modan|
+F Fly to Ironforge |N|Thorgrum Borrelson - (33.9, 51.0)| |R|Gnome| |Z|Loch Modan|
+F Fly to Ironforge |N|Thor - (56.5, 52.6)| |R|Human| |Z|Westfall|
+F Fly to Ironforge |N|Thor - (56.5, 52.6)| |C|Paladin| |R|Dwarf| |Z|Westfall|
+N Level up your [First Aid] |N|(55.1, 58.3)| |R|!Night Elf| |Z|Ironforge|
+t Train Journeyman First Aid |N|Nissa Firestone - (55.1, 58.3)| |R|!Night Elf| |Z|Ironforge|
 t Train Thrown |N|Bixi Wobblebonk - (62.0, 89.6)| |C|Warrior| |R|Human| |Z|Ironforge|
 t Train your class spells |N|Beldruk Doombrow - (24.6, 4.5)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
 R Travel toward Muiredon upstairs |N|(24.4, 11.9)| |O| |C|Paladin| |R|Dwarf| |Z|Ironforge|
@@ -69,20 +72,20 @@ T The Tome of Divinity |QID|1784| |N|Muiredon Battleforge - (23.5, 8.3)| |C|Pala
 A The Tome of Divinity |QID|1785| |N|Muiredon Battleforge - (23.5, 8.3)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
 T The Tome of Divinity |QID|1785| |N|Tiza Battleforge - (27.6, 12.2)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
 T The Reports |QID|291| |N|Senator Barin Redstone - (39.6, 57.5)| |Z|Ironforge|
-R Travel to Dun Morogh |N|(53.5, 34.9)| |R|!NightElf| |Z|Dun Morogh|
-R the Dun Morogh -> Wetlands skip spot |N|(59.4, 42.9)| |O| |R|!NightElf| |Z|Dun Morogh|
-R Travel to Wetlands |N|(15.1, 64.0)| |R|!NightElf| |Z|Wetlands|
-R Watch the video guide for a reference on how to do the skip first! |N|(12.1, 60.3)| |R|!NightElf| |Z|Wetlands|
-N Do the Deathless Dun Morogh -> Wetlands skip |N|(12.1, 60.3)| |R|!NightElf| |Z|Wetlands|
-N Avoid the Wetlands Crocolisks and Murlocs when crossing the water |N|(12.1, 60.3)| |R|!NightElf| |Z|Wetlands|
-N Click here for a video guide |N|(12.1, 60.3)| |R|!NightElf| |Z|Wetlands|
-R Menethil Harbor |N|(12.1, 60.3)| |R|!NightElf| |Z|Wetlands|
-f Get the Wetlands flight path |N|Shellei - (9.5, 59.7)| |R|!NightElf| |Z|Wetlands|
-R the Menethil Harbor docks. Wait for the boat to Darkshore |N|(4.6, 57.3)| |O| |R|!NightElf| |Z|Wetlands|
-N Level your [First Aid] and [Cooking] while waiting for the boat to Darkshore |R|!NightElf| |Z|Wetlands|
-N Level up your [Cooking] using the [Chunks of Boar Meat] you farmed earlier. Level it to 10 ideally |R|!NightElf| |Z|Wetlands|
-f Get the Westfall flight path |N|Thor - (56.6, 52.6)| |C|!Druid| |R|NightElf| |Z|Westfall|
-F Fly to Stormwind |N|Thor - (56.6, 52.6)| |C|!Druid| |R|NightElf| |Z|Westfall|
+R Travel to Dun Morogh |N|(53.5, 34.9)| |R|!Night Elf| |Z|Dun Morogh|
+R the Dun Morogh -> Wetlands skip spot |N|(59.4, 42.9)| |O| |R|!Night Elf| |Z|Dun Morogh|
+R Travel to Wetlands |N|(15.1, 64.0)| |R|!Night Elf| |Z|Wetlands|
+R Watch the video guide for a reference on how to do the skip first! |N|(12.1, 60.3)| |R|!Night Elf| |Z|Wetlands|
+N Do the Deathless Dun Morogh -> Wetlands skip |N|(12.1, 60.3)| |R|!Night Elf| |Z|Wetlands|
+N Avoid the Wetlands Crocolisks and Murlocs when crossing the water |N|(12.1, 60.3)| |R|!Night Elf| |Z|Wetlands|
+N Click here for a video guide |N|(12.1, 60.3)| |R|!Night Elf| |Z|Wetlands|
+R Menethil Harbor |N|(12.1, 60.3)| |R|!Night Elf| |Z|Wetlands|
+f Get the Wetlands flight path |N|Shellei - (9.5, 59.7)| |R|!Night Elf| |Z|Wetlands|
+R the Menethil Harbor docks. Wait for the boat to Darkshore |N|(4.6, 57.3)| |O| |R|!Night Elf| |Z|Wetlands|
+N Level your [First Aid] and [Cooking] while waiting for the boat to Darkshore |R|!Night Elf| |Z|Wetlands|
+N Level up your [Cooking] using the [Chunks of Boar Meat] you farmed earlier. Level it to 10 ideally |R|!Night Elf| |Z|Wetlands|
+f Get the Westfall flight path |N|Thor - (56.6, 52.6)| |C|!Druid| |R|Night Elf| |Z|Westfall|
+F Fly to Stormwind |N|Thor - (56.6, 52.6)| |C|!Druid| |R|Night Elf| |Z|Westfall|
 N Cast Teleport: Moonglade |O| |C|Druid| |Z|Westfall|
 F Fly to Rut'theran Village |N|Silva Fil'naveth - (44.1, 45.2)| |C|Druid| |Z|Moonglade|
 R Travel to Teldrassil |N|(55.9, 89.5)| |O| |C|Druid| |Z|Teldrassil|
@@ -102,20 +105,20 @@ N It will be faster this way so you don't need to swim for a longer time |O| |C|
 C Trial of the Lake |QID|29| |OIDX|1| |N|Use the [Shrine Bauble] at the Shrine of Remulos tree Complete the Trial of the Lake.| |C|Druid| |Z|Moonglade|
 T Trial of the Lake |QID|29| |N|Tajarri - (36.5, 40.1)| |C|Druid| |Z|Moonglade|
 A Trial of the Sea Lion |QID|272| |N|Tajarri - (36.5, 40.1)| |C|Druid| |Z|Moonglade|
-t Train your class spells |N|Brother Joshua - (38.5, 26.9)| |C|Priest| |R|NightElf| |Z|Stormwind City|
-B Buy |T133046:0|[Rock Hammer] if you can afford it |N|Gunther Weller - (57.5, 57.1)| |C|Warrior| |R|NightElf| |Z|Stormwind City|
-B Buy |T133052:0|[Hammer] if you can afford it |N|Gunther Weller - (57.5, 57.1)| |C|Rogue| |R|NightElf| |Z|Stormwind City|
-t Train 1h Swords |N|Woo Ping - (57.1, 57.7)| |C|Rogue| |R|NightElf| |Z|Stormwind City|
-N Buy a [Reinforced Bow] |N|(50.0, 57.6)| |C|Hunter| |R|NightElf| |Z|Stormwind City|
-N Stock up on [Sharp Arrows] |N|(50.0, 57.6)| |C|Hunter| |R|NightElf| |Z|Stormwind City|
-B Buy Reinforced Bow (x1) |L|3026 1| |N|Frederick Stover - (50.0, 57.6)| |C|Hunter| |R|NightElf| |Z|Stormwind City|
-N Level up your [First Aid] |N|(43.1, 26.2)| |R|NightElf| |Z|Stormwind City|
-t Train Journeyman First Aid |N|Shaina Fuller - (43.1, 26.2)| |R|NightElf| |Z|Stormwind City|
-N Wu or Ilsa |N|(76.1, 50.1)| |C|Warrior| |R|NightElf| |Z|Stormwind City|
-t Train your class spells |N|(78.7, 45.8)| |C|Warrior| |R|NightElf| |Z|Stormwind City|
-t Train your class spells |N|Osborne - (74.6, 52.8)| |C|Rogue| |R|NightElf| |Z|Stormwind City|
-t Train your class spells |N|Einris Brightspear - (61.6, 15.3)| |C|Hunter| |R|NightElf| |Z|Stormwind City|
-H Auberdine |N|Hearth to Auberdine| |R|NightElf| |Z|Stormwind City|
+t Train your class spells |N|Brother Joshua - (38.5, 26.9)| |C|Priest| |R|Night Elf| |Z|Stormwind City|
+B Buy |T133046:0|[Rock Hammer] if you can afford it |N|Gunther Weller - (57.5, 57.1)| |C|Warrior| |R|Night Elf| |Z|Stormwind City|
+B Buy |T133052:0|[Hammer] if you can afford it |N|Gunther Weller - (57.5, 57.1)| |C|Rogue| |R|Night Elf| |Z|Stormwind City|
+t Train 1h Swords |N|Woo Ping - (57.1, 57.7)| |C|Rogue| |R|Night Elf| |Z|Stormwind City|
+N Buy a [Reinforced Bow] |N|(50.0, 57.6)| |C|Hunter| |R|Night Elf| |Z|Stormwind City|
+N Stock up on [Sharp Arrows] |N|(50.0, 57.6)| |C|Hunter| |R|Night Elf| |Z|Stormwind City|
+B Buy Reinforced Bow (x1) |L|3026 1| |N|Frederick Stover - (50.0, 57.6)| |C|Hunter| |R|Night Elf| |Z|Stormwind City|
+N Level up your [First Aid] |N|(43.1, 26.2)| |R|Night Elf| |Z|Stormwind City|
+t Train Journeyman First Aid |N|Shaina Fuller - (43.1, 26.2)| |R|Night Elf| |Z|Stormwind City|
+N Wu or Ilsa |N|(76.1, 50.1)| |C|Warrior| |R|Night Elf| |Z|Stormwind City|
+t Train your class spells |N|(78.7, 45.8)| |C|Warrior| |R|Night Elf| |Z|Stormwind City|
+t Train your class spells |N|Osborne - (74.6, 52.8)| |C|Rogue| |R|Night Elf| |Z|Stormwind City|
+t Train your class spells |N|Einris Brightspear - (61.6, 15.3)| |C|Hunter| |R|Night Elf| |Z|Stormwind City|
+H Auberdine |N|Hearth to Auberdine| |R|Night Elf| |Z|Stormwind City|
 
 ]]
 end)

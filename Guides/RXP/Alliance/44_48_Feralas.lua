@@ -125,8 +125,8 @@ t Train your class spells |N|Arias'ta Bladesinger - (58.7, 34.9)| |C|Warrior| |Z
 N Syurna |N|(31.8, 16.7)| |C|Rogue| |Z|Darnassus|
 t Train your class spells |N|(37.0, 21.9)| |C|Rogue| |Z|Darnassus|
 t Train your class spells |N|Jocaste - (40.4, 8.5)| |C|Hunter| |Z|Darnassus|
-t Train [Tiger Riding] |N|Jartsam and Lelanai - (38.7, 15.9)| |R|NightElf| |Z|Darnassus|
-B Buy a [Frostsaber] or [Nightsaber] |N|Jartsam and Lelanai - (38.7, 15.9)| |R|NightElf| |Z|Darnassus|
+t Train [Tiger Riding] |N|Jartsam and Lelanai - (38.7, 15.9)| |R|Night Elf| |Z|Darnassus|
+B Buy a [Frostsaber] or [Nightsaber] |N|Jartsam and Lelanai - (38.7, 15.9)| |R|Night Elf| |Z|Darnassus|
 R Travel to Elwynn Forest |N|(84.0, 65.4)| |O| |C|!Warlock/!Paladin| |R|Human| |Z|Elwynn Forest|
 R Travel to Dun Morogh |N|(63.4, 50.6)| |O| |C|!Paladin| |R|Dwarf| |Z|Dun Morogh|
 A The Lost Dwarves |QID|2398| |N|Prospector Stormpike - (74.6, 11.7) (Ulda Dungeon Quest)| |D|Ulda| |Z|Ironforge|

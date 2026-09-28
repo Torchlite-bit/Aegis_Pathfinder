@@ -5,15 +5,16 @@ return [[
 N 19-20 Redridge |N|Converted from RestedXP guide|
 
 A Underground Assault |QID|2040| |N|Shoni the Shilent - (55.5, 12.5) (DM Dungeon Quest)| |D|DM| |Z|Stormwind City|
-T Stormpike's Order |QID|1338| |N|Furen Longbeard - (58.1, 16.5)| |R|!NightElf| |Z|Stormwind City|
+T Stormpike's Order |QID|1338| |N|Furen Longbeard - (58.1, 16.5)| |R|!Night Elf| |Z|Stormwind City|
 A Oh Brother. . . |QID|167| |N|Wilder Thistlenettle - (65.4, 21.2) (DM Dungeon Quest)| |D|DM| |Z|Stormwind City|
 A Collecting Memories |QID|168| |N|Wilder Thistlenettle - (65.4, 21.2) (DM Dungeon Quest)| |D|DM| |Z|Stormwind City|
-T Humble Beginnings |QID|399| |N|Baros Alexston - (49.2, 30.3)| |R|!NightElf| |Z|Stormwind City|
+T Humble Beginnings |QID|399| |N|Baros Alexston - (49.2, 30.3)| |R|!Night Elf| |Z|Stormwind City|
 R the Mage Tower |N|(37.7, 82.1)| |O| |C|Mage| |Z|Stormwind City|
 t Train your class spells |N|Elsharin - (36.9, 81.1)| |C|Mage| |Z|Stormwind City|
-R the Stormwind Cathedral |N|(42.5, 33.5)| |O| |C|Paladin/Priest| |R|!NightElf| |Z|Stormwind City|
+R the Stormwind Cathedral |N|(42.5, 33.5)| |O| |C|Paladin/Priest| |R|!Night Elf| |Z|Stormwind City|
+R the Stormwind Cathedral |N|(42.5, 33.5)| |O| |C|Paladin| |R|Night Elf| |Z|Stormwind City|
 t Train your class spells |N|Arthur the Faithful - (38.7, 32.8)| |C|Paladin| |Z|Stormwind City|
-t Train your class spells |N|Brother Joshua - (38.5, 26.9)| |C|Priest| |R|!NightElf| |Z|Stormwind City|
+t Train your class spells |N|Brother Joshua - (38.5, 26.9)| |C|Priest| |R|!Night Elf| |Z|Stormwind City|
 N Ardwyn Cailen |N|(42.6, 67.2)| |C|Warlock/Priest| |Z|Stormwind City|
 N Buy a [Burning Wand] if it's an upgrade |N|(42.6, 67.2)| |C|Warlock/Priest| |Z|Stormwind City|
 N It's important to buy a non-shadow damage wand. You'll have to deal with mobs resistant to shadow damage later |N|(42.6, 67.2)| |C|Warlock/Priest| |Z|Stormwind City|
@@ -24,8 +25,8 @@ N Ensure you train [Lockpicking] as well as you will need it for your Rogue clas
 t Train [Pick Lock] |N|Osborne - (74.6, 52.8)| |C|Rogue| |Z|Stormwind City|
 R Enter the SI:7 Headquarters. Travel up stairs toward Renzik "The Shiv" |N|(78.7, 60.1)| |O| |C|Rogue| |Z|Stormwind City|
 A Redridge Rendezvous |QID|2281| |N|Renzik "The Shiv" - (75.8, 60.4)| |C|Rogue| |Z|Stormwind City|
-N Wu or Ilsa |N|(76.1, 50.1)| |C|Warrior| |R|!NightElf| |Z|Stormwind City|
-t Train your class spells |N|(78.7, 45.8)| |C|Warrior| |R|!NightElf| |Z|Stormwind City|
+N Wu or Ilsa |N|(76.1, 50.1)| |C|Warrior| |R|!Night Elf| |Z|Stormwind City|
+t Train your class spells |N|(78.7, 45.8)| |C|Warrior| |R|!Night Elf| |Z|Stormwind City|
 t Train 1h Swords |N|Woo Ping - (57.1, 57.7)| |C|Mage/Rogue/Warlock| |Z|Stormwind City|
 t Train Daggers |N|Woo Ping - (57.1, 57.7)| |C|Mage/Druid| |Z|Stormwind City|
 t Train 2h Swords |N|Woo Ping - (57.1, 57.7)| |C|Warrior/Paladin| |Z|Stormwind City|
@@ -40,18 +41,18 @@ N Buy a [Kris] |N|(57.4, 56.8)| |C|Rogue| |Z|Stormwind City|
 N Equip it once you're level 19 |N|(57.4, 56.8)| |C|Rogue| |Z|Stormwind City|
 B Kris |L|2209 1| |N|Marda Weller - (57.4, 56.8)| |C|Rogue| |Z|Stormwind City|
 f Get the Stormwind City Flight Path |N|Dungar Longdrink - (66.3, 62.1)| |O| |C|!Warlock| |R|!Human| |Z|Stormwind City|
-F Fly to Westfall |N|Dungar Longdrink - (66.3, 62.1) (DM Dungeon Quest)| |R|!NightElf| |D|DM| |Z|Stormwind City|
-A The Defias Brotherhood |QID|65| |N|(56.3, 47.5) (DM Dungeon Quest)| |R|!NightElf| |D|DM| |Z|Stormwind City|
-R Travel to Westfall |N|(56.3, 47.5) (DM Dungeon Quest)| |R|!NightElf| |D|DM| |Z|Westfall|
-F Fly to Redridge Mountains |N|Thor or Dungar Longdrink - (66.3, 62.1) (DM Dungeon Quest)| |R|!NightElf| |D|DM| |Z|Stormwind City|
-R Goldshire |N|(41.1, 65.8)| |O| |C|Warrior| |R|NightElf| |Z|Elwynn Forest|
-R Goldshire |N|(43.2, 65.7)| |O| |C|Priest| |R|NightElf| |Z|Elwynn Forest|
-t Train your class spells |N|Lyria - (41.1, 65.8)| |C|Warrior| |R|NightElf| |Z|Elwynn Forest|
-N Travel to the Inn. Go upstairs |N|(43.2, 65.7)| |C|Priest| |R|NightElf| |Z|Elwynn Forest|
-N Josetta |N|(43.2, 65.7)| |C|Priest| |R|NightElf| |Z|Elwynn Forest|
-t Train your class spells |N|(43.3, 65.7)| |C|Priest| |R|NightElf| |Z|Elwynn Forest|
-F Fly to Redridge Mountains |N|Dungar Longdrink - (66.3, 62.1) (!DM Dungeon Quest)| |R|!NightElf| |D|!DM| |Z|Stormwind City|
-A Assessing the Threat |QID|246| |N|Deputy Feldon - (30.7, 60.0)| |R|NightElf| |Z|Redridge Mountains|
+F Fly to Westfall |N|Dungar Longdrink - (66.3, 62.1) (DM Dungeon Quest)| |R|!Night Elf| |D|DM| |Z|Stormwind City|
+A The Defias Brotherhood |QID|65| |N|(56.3, 47.5) (DM Dungeon Quest)| |R|!Night Elf| |D|DM| |Z|Stormwind City|
+R Travel to Westfall |N|(56.3, 47.5) (DM Dungeon Quest)| |R|!Night Elf| |D|DM| |Z|Westfall|
+F Fly to Redridge Mountains |N|Thor or Dungar Longdrink - (66.3, 62.1) (DM Dungeon Quest)| |R|!Night Elf| |D|DM| |Z|Stormwind City|
+R Goldshire |N|(41.1, 65.8)| |O| |C|Warrior| |R|Night Elf| |Z|Elwynn Forest|
+R Goldshire |N|(43.2, 65.7)| |O| |C|Priest| |R|Night Elf| |Z|Elwynn Forest|
+t Train your class spells |N|Lyria - (41.1, 65.8)| |C|Warrior| |R|Night Elf| |Z|Elwynn Forest|
+N Travel to the Inn. Go upstairs |N|(43.2, 65.7)| |C|Priest| |R|Night Elf| |Z|Elwynn Forest|
+N Josetta |N|(43.2, 65.7)| |C|Priest| |R|Night Elf| |Z|Elwynn Forest|
+t Train your class spells |N|(43.3, 65.7)| |C|Priest| |R|Night Elf| |Z|Elwynn Forest|
+F Fly to Redridge Mountains |N|Dungar Longdrink - (66.3, 62.1) (!DM Dungeon Quest)| |R|!Night Elf| |D|!DM| |Z|Stormwind City|
+A Assessing the Threat |QID|246| |N|Deputy Feldon - (30.7, 60.0)| |R|Night Elf| |Z|Redridge Mountains|
 T The Defias Brotherhood |QID|65| |N|Wiley the Black up stairs - (26.5, 45.3) (DM Dungeon Quest)| |D|DM| |Z|Redridge Mountains|
 A The Defias Brotherhood |QID|132| |N|Wiley the Black up stairs - (26.5, 45.3) (DM Dungeon Quest)| |D|DM| |Z|Redridge Mountains|
 A Messenger to Stormwind |QID|120| |N|Magistrate Solomon - (30.0, 44.5) (DM Dungeon Quest)| |D|DM| |Z|Redridge Mountains|
@@ -240,10 +241,10 @@ t Train your class spells |N|Osborne - (74.6, 52.8) (!DM Dungeon Quest)| |C|Rogu
 R Enter the SI:7 Headquarters. Travel up stairs toward Master Mathias Shaw |N|(78.7, 60.1) (!DM Dungeon Quest)| |C|Rogue| |D|!DM| |Z|Stormwind City|
 A Mathias and the Defias |QID|2360| |N|(75.8, 59.8) (!DM Dungeon Quest)| |C|Rogue| |D|!DM| |Z|Stormwind City|
 t Train your class spells |N|(78.7, 45.8) (!DM Dungeon Quest)| |C|Warrior| |D|!DM| |Z|Stormwind City|
-R Travel to Westfall |N|(56.5, 52.6)| |C|Rogue| |R|NightElf| |Z|Westfall|
-N Fly there if you already have the Westfall Flight Path |N|(56.5, 52.6)| |C|Rogue| |R|NightElf| |Z|Westfall|
-f Get the Westfall flight path |N|Thor - (56.5, 52.6)| |C|Rogue| |R|NightElf| |Z|Westfall|
-F Fly to Westfall |N|Dungar Longdrink - (66.3, 62.1)| |C|Rogue| |R|!NightElf| |Z|Stormwind City|
+R Travel to Westfall |N|(56.5, 52.6)| |C|Rogue| |R|Night Elf| |Z|Westfall|
+N Fly there if you already have the Westfall Flight Path |N|(56.5, 52.6)| |C|Rogue| |R|Night Elf| |Z|Westfall|
+f Get the Westfall flight path |N|Thor - (56.5, 52.6)| |C|Rogue| |R|Night Elf| |Z|Westfall|
+F Fly to Westfall |N|Dungar Longdrink - (66.3, 62.1)| |C|Rogue| |R|!Night Elf| |Z|Stormwind City|
 N Check "Enable Interact Key" and bind the "Interact with Target" option to a key |O| |C|Rogue| |Z|Stormwind City|
 N Additionally, it's recommended you enable Enemy Nameplates (Default Key: V) as it allows you to see enemies behind some of the corners inside the tower |O| |C|Rogue| |Z|Stormwind City|
 N You MUST do this quest your [Poisons] |N|(68.5, 70.1)| |C|Rogue| |Z|Westfall|

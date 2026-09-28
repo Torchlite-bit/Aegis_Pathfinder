@@ -98,7 +98,8 @@ C Stonesplinter Troggs and Stonesplinter Scouts. Loot them for their Trogg Stone
 R Run up the dirt path then drop down into the bunker |N|(23.7, 75.5)| |O| |Z|Loch Modan|
 T The Trogg Threat |QID|267| |N|Captain Rugelfuss inside the bunker - (23.2, 73.7)| |Z|Loch Modan|
 T In Defense of the King's Lands |QID|224| |N|Mountaineer Cobbleflint - (22.1, 73.1)| |Z|Loch Modan|
-F Fly to Ironforge |N|Thorgrum Borrelson - (33.9, 51.0)| |R|!Dwarf/!Paladin| |Z|Loch Modan|
+F Fly to Ironforge |N|Thorgrum Borrelson - (33.9, 51.0)| |R|!Dwarf| |Z|Loch Modan|
+F Fly to Ironforge |N|Thorgrum Borrelson - (33.9, 51.0)| |C|!Paladin| |R|Dwarf| |Z|Loch Modan|
 R Travel to Ironforge |N|(84.3, 51.4)| |O| |C|Paladin| |R|Dwarf| |Z|Ironforge|
 R Travel to Dun Morogh |N|(78.3, 58.1)| |O| |C|Paladin| |R|Dwarf| |Z|Dun Morogh|
 N Use the [Symbol of Life] on Narm Faulk on the ground |N|(78.3, 58.1)| |O| |C|Paladin| |R|Dwarf| |Z|Dun Morogh|
@@ -110,7 +111,7 @@ N Buy a [Smoldering Wand] from him |N|(23.1, 15.9)| |C|Mage/Priest/Warlock| |Z|I
 B Smoldering Wand (1) |L|5208 1| |N|Harick Boulderdrum downstairs - (23.1, 15.9)| |C|Mage/Priest/Warlock| |Z|Ironforge|
 t Train your class spells |N|Dink - (27.2, 8.6)| |C|Mage| |Z|Ironforge|
 t Train your class spells |N|Toldren Deepiron - (25.2, 10.8)| |C|Priest| |Z|Ironforge|
-T Road to Salvation |QID|2218| |N|Hulfdan Blackbeard downstairs - (52.0, 14.8)| |O| |C|Rogue/Gnome/Rogue| |R|Dwarf| |Z|Ironforge|
+T Road to Salvation |QID|2218| |N|Hulfdan Blackbeard downstairs - (52.0, 14.8)| |O| |C|Rogue| |R|Dwarf/Gnome| |Z|Ironforge|
 t Train your class spells |N|Fenthwick - (51.5, 15.3)| |C|Rogue| |Z|Ironforge|
 t Train your class spells |N|Briarthorn - (50.3, 5.7)| |C|Warlock| |Z|Ironforge|
 R Enter Jubahl Corpseseeker's house |N|(53.2, 7.0)| |O| |C|Warlock/Rogue| |Z|Ironforge|
@@ -147,7 +148,7 @@ B Scimitar |L|2027 1| |N|Marda Weller - (57.4, 56.8)| |C|Rogue| |Z|Stormwind Cit
 N Buy a [Smoldering Wand] from her |N|(42.9, 65.1)| |O| |C|Mage/Priest/Warlock| |AH| |Z|Stormwind City|
 B Smoldering Wand (1) |L|5208 1| |N|Ardwyn Cailen - (42.9, 65.1)| |O| |C|Mage/Priest/Warlock| |AH| |Z|Stormwind City|
 F Fly to Westfall |N|Dungar Longdrink - (66.3, 62.1)| |Z|Stormwind City|
-T Road to Salvation |QID|2218| |N|Hulfdan Blackbeard downstairs - (52.0, 14.8)| |O| |C|Rogue/Gnome/Rogue| |R|Dwarf| |Z|Ironforge|
+T Road to Salvation |QID|2218| |N|Hulfdan Blackbeard downstairs - (52.0, 14.8)| |O| |C|Rogue| |R|Dwarf/Gnome| |Z|Ironforge|
 
 ]]
 end)

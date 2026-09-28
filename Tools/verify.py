@@ -11,6 +11,7 @@ Checks what can be checked without a WoW client:
   scope    no bare `Theme` in a file that never declares one
   media    every texture is a TGA the 1.12 client can load
   textures every path Theme.lua hands the client resolves to a real file
+  filters  every |C| names classes and every |R| races, as the client does
 
 Run from the repository root:  python3 Tools/verify.py
 Exits non-zero if any check fails.
@@ -540,6 +541,34 @@ def check_version(rep):
     rep.ok("version", len(found))
 
 
+# Parser.lua shows a step only if its |C| matches UnitClass and its |R|
+# matches UnitRace's first return, splitting each on "/" and comparing whole
+# names ("!" before a name leaves that one out). Anything else never matches:
+# "NightElf" (the client says "Night Elf"), a race in |C|, "Orc, Troll". The
+# RestedXP converter wrote all three, and every Undead Warrior lost the
+# Barrens quests behind |C|!Shaman/!Warrior/Undead|.
+CLASS_NAMES = {"Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Shaman", "Mage", "Warlock", "Druid"}
+RACE_NAMES = {"Human", "Dwarf", "Gnome", "Night Elf", "High Elf",
+              "Orc", "Troll", "Tauren", "Undead", "Goblin"}
+
+
+def check_filters(rep):
+    steps = 0
+    for path in sorted(walk({".lua"})):
+        if not rel(path).startswith("Guides" + os.sep):
+            continue
+        with open(path, encoding="utf-8", errors="replace") as f:
+            for n, line in enumerate(f, 1):
+                for tag, names, what in (("C", CLASS_NAMES, "class"), ("R", RACE_NAMES, "race")):
+                    for value in re.findall(r"\|%s\|([^|]*)\|" % tag, line):
+                        steps += 1
+                        bad = [c for c in value.split("/") if (c[1:] if c.startswith("!") else c) not in names]
+                        if bad:
+                            rep.fail("filters", path, "line %d: |%s|%s| -- %s is not a %s the client names"
+                                     % (n, tag, value, ", ".join(repr(b) for b in bad), what))
+    rep.ok("filters", steps)
+
+
 def main():
     print("Verifying %s\n" % ROOT)
     rep = Report()
@@ -555,6 +584,7 @@ def main():
     check_texture_paths(rep)
     check_upvalues(rep)
     check_version(rep)
+    check_filters(rep)
     return rep.summary()
 
 

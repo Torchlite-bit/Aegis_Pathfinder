@@ -84,13 +84,16 @@ N You need 50 [Cooking] for a quest in Duskwood later |N|(57.0, 47.2)| |Z|Westfa
 B Simple Wood (1) |L|4470 1| |N|Quartermaster Lewis - (57.0, 47.2)| |Z|Westfall|
 B Flint and Tinder (1) |L|4471 1| |N|Quartermaster Lewis - (57.0, 47.2)| |Z|Westfall|
 T Red Leather Bandanas |QID|153| |N|Scout Galiaan - (54.0, 53.0)| |Z|Westfall|
-F Fly to Stormwind |N|Thor - (56.5, 52.6)| |O| |C|Rogue/Dwarf/Rogue| |R|Gnome| |Z|Westfall|
-B Buy a [Scimitar] from her or something better from the Auction House and equip it your off-hand |N|Marda Weller - (57.4, 56.8)| |C|Rogue/Dwarf/Rogue| |R|Gnome| |AH| |Z|Stormwind City|
-B Buy a [Scimitar] from her |N|Marda Weller - (57.4, 56.8)| |C|Rogue/Dwarf/Rogue| |R|Gnome| |Z|Stormwind City|
-T Humble Beginnings |QID|399| |N|Baros Alexston - (49.2, 30.3)| |C|Rogue/Dwarf/Rogue| |R|Gnome| |Z|Stormwind City|
-H Thelsamar |N|Hearth to Thelsamar| |O| |C|!Paladin/Gnome| |R|Dwarf| |Z|Stormwind City|
-F Fly to Wetlands |N|Thorgrum Borrelson - (33.9, 51.0)| |O| |C|!Paladin/Gnome| |R|Dwarf| |Z|Loch Modan|
-F Fly to Ironforge |N|Thor - (56.5, 52.6)| |C|Paladin| |R|Human/Dwarf| |Z|Westfall|
+F Fly to Stormwind |N|Thor - (56.5, 52.6)| |O| |C|Rogue| |R|Gnome/Dwarf| |Z|Westfall|
+B Buy a [Scimitar] from her or something better from the Auction House and equip it your off-hand |N|Marda Weller - (57.4, 56.8)| |C|Rogue| |R|Gnome/Dwarf| |AH| |Z|Stormwind City|
+B Buy a [Scimitar] from her |N|Marda Weller - (57.4, 56.8)| |C|Rogue| |R|Gnome/Dwarf| |Z|Stormwind City|
+T Humble Beginnings |QID|399| |N|Baros Alexston - (49.2, 30.3)| |C|Rogue| |R|Gnome/Dwarf| |Z|Stormwind City|
+H Thelsamar |N|Hearth to Thelsamar| |O| |C|!Paladin| |R|Dwarf| |Z|Stormwind City|
+H Thelsamar |N|Hearth to Thelsamar| |O| |R|Gnome| |Z|Stormwind City|
+F Fly to Wetlands |N|Thorgrum Borrelson - (33.9, 51.0)| |O| |C|!Paladin| |R|Dwarf| |Z|Loch Modan|
+F Fly to Wetlands |N|Thorgrum Borrelson - (33.9, 51.0)| |O| |R|Gnome| |Z|Loch Modan|
+F Fly to Ironforge |N|Thor - (56.5, 52.6)| |R|Human| |Z|Westfall|
+F Fly to Ironforge |N|Thor - (56.5, 52.6)| |C|Paladin| |R|Dwarf| |Z|Westfall|
 N Bilban Tosslespanner |N|(51.1, 8.7)| |C|Warrior| |R|Human| |Z|Westfall|
 N Fenthwick |N|(51.1, 8.7)| |C|Rogue| |R|Human| |Z|Westfall|
 N Toldren Deepiron |N|(51.1, 8.7)| |C|Priest| |R|Human| |Z|Westfall|
@@ -98,7 +101,7 @@ N Dink |N|(51.1, 8.7)| |C|Mage| |R|Human| |Z|Westfall|
 N Brandur Ironhammer |N|(51.1, 8.7)| |C|Paladin| |R|Human| |Z|Westfall|
 N Briarthorn |N|(51.1, 8.7)| |C|Warlock| |R|Human| |Z|Westfall|
 R Travel to Ironforge |N|(23.1, 6.1)| |C|Paladin| |R|Human| |Z|Ironforge|
-t Train your class spells |N|(23.1, 6.1)| |C|Mage/Human/Rogue/Human/Warrior/Human/Warlock/Human/Paladin/Human/Priest| |R|Human| |Z|Ironforge|
+t Train your class spells |N|(23.1, 6.1)| |C|!Hunter/!Druid| |R|Human| |Z|Ironforge|
 t Train Thrown |N|Bixi Wobblebonk - (62.0, 89.6)| |C|Warrior| |R|Human| |Z|Ironforge|
 B Brenwyn Wintersteel down stairs |N|(62.4, 88.7)| |C|Rogue| |R|Human| |AH| |Z|Ironforge|
 R Brenwyn Wintersteel down stairs |N|(62.4, 88.7)| |C|Rogue| |R|Human| |Z|Ironforge|
@@ -115,7 +118,8 @@ R Continue following through the mountain to the deathskip location |N|(32.4, 29
 R Travel to Wetlands |N|(11.7, 43.3)| |R|Human| |Z|Wetlands|
 N Run straight off the edge to the north and drop down. Die and respawn at the Spirit Healer |N|(11.7, 43.3)| |R|Human| |Z|Wetlands|
 R Swim to Menethil Harbor |N|(12.7, 46.7)| |R|Human| |Z|Wetlands|
-f Get the Wetlands flight path |N|Shellei - (9.5, 59.7)| |C|Paladin| |R|Human/Dwarf| |Z|Wetlands|
+f Get the Wetlands flight path |N|Shellei - (9.5, 59.7)| |R|Human| |Z|Wetlands|
+f Get the Wetlands flight path |N|Shellei - (9.5, 59.7)| |C|Paladin| |R|Dwarf| |Z|Wetlands|
 R the dock of the Auberdine boat |N|(4.6, 57.3)| |O| |Z|Wetlands|
 N On the Boat if it just arrived or on the dock if the boat just left: |O| |Z|Wetlands|
 N Create a [Basic Campfire] (under the General Tab of your Spellbook) |O| |Z|Wetlands|

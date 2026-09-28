@@ -357,17 +357,17 @@ T Hex of Weakness |QID|5652| |N|Ur'kyo - (35.6, 87.8)| |O| |C|Priest| |R|Troll| 
 t Train your class spells |N|Ur'kyo - (35.6, 87.8)| |O| |C|Priest| |R|Troll| |Z|Orgrimmar|
 t Train your class spells |N|Pephredo - (38.3, 85.5)| |C|Mage| |Z|Orgrimmar|
 T The Admiral's Orders |QID|831| |N|Nazgrel - (32.3, 35.8)| |Z|Orgrimmar|
-A The Shattered Hand |QID|1963| |N|Therzok - (42.8, 53.5)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Orgrimmar|
+A The Shattered Hand |QID|1963| |N|Therzok - (42.8, 53.5)| |C|Rogue| |R|Orc/Troll| |Z|Orgrimmar|
 t Train your class spells |N|Therzok - (42.8, 53.5)| |C|Rogue| |Z|Orgrimmar|
 A Finding the Antidote |QID|813| |N|Kor'ghan - (47.2, 53.6)| |C|Shaman| |Z|Orgrimmar|
 N Abandon Need for a Cure. This will remove the timer on the quest but you will still be able to do it |O| |C|Shaman| |Z|Orgrimmar|
 T Neeru Fireblade |QID|829| |N|[Group] Neeru - (49.5, 50.6)| |P|GROUP| |Z|Orgrimmar|
 A Ak'Zeloth |QID|809| |N|[Group] Neeru - (49.5, 50.6)| |P|GROUP| |Z|Orgrimmar|
 t Train your class spells |N|Mirket - (48.6, 47.0)| |C|Warlock| |Z|Orgrimmar|
-R the Valley of Honor |N|(68.0, 38.7)| |O| |C|Warrior/Undead/Warrior| |R|Troll| |Z|Orgrimmar|
+R the Valley of Honor |N|(68.0, 38.7)| |O| |C|Warrior| |R|Troll/Undead| |Z|Orgrimmar|
 t Train your class spells |N|Grezz - (79.9, 31.3)| |C|Warrior| |Z|Orgrimmar|
-t Train Staves |N|Hanashi - (81.5, 19.6)| |C|Warrior/Undead/Warrior| |R|Troll| |Z|Orgrimmar|
-B Collect Quarter Staff (1) |L|854 1| |N|Zendo'jian. Buy a [Quarter Staff] from him - (81.2, 18.7)| |C|Warrior/Undead/Warrior| |R|Troll| |Z|Orgrimmar|
+t Train Staves |N|Hanashi - (81.5, 19.6)| |C|Warrior| |R|Troll/Undead| |Z|Orgrimmar|
+B Collect Quarter Staff (1) |L|854 1| |N|Zendo'jian. Buy a [Quarter Staff] from him - (81.2, 18.7)| |C|Warrior| |R|Troll/Undead| |Z|Orgrimmar|
 B Vendor trash. Sell your weapon if it gives you enough money for a [Tabar] (22s 14c). You'll come back later if you don't have enough yet |N|Urtharo - (47.5, 68.4)| |C|Warrior| |R|Orc| |Z|Orgrimmar|
 B Collect Tabar (1) |L|1196 1| |N|Urtharo. Buy a [Tabar] from him - (47.5, 68.4)| |C|Warrior| |R|Orc| |Z|Orgrimmar|
 B Collect Quarter Staff (1) |L|854 1| |N|Urtharo. Buy a [Quarter Staff] from him - (47.5, 68.4)| |C|Shaman| |Z|Orgrimmar|
@@ -452,18 +452,18 @@ A Need for a Cure |QID|812| |N|Rhinag - (41.5, 18.6)| |C|Shaman/Hunter| |Z|Durot
 T Need for a Cure |QID|812| |N|Rhinag - (41.5, 18.6)| |C|Shaman/Hunter| |Z|Durotar|
 R Go up the Zeppelin Tower |N|(50.8, 13.8)| |Z|Durotar|
 N Conjure water while waiting |N|(50.8, 13.8)| |C|Mage| |Z|Durotar|
-R Travel to Tirisfal Glades |N|(61.8, 65.1)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Tirisfal Glades|
-R Travel to Undercity |N|(64.2, 39.8)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Undercity|
-R Take the lift down to the Undercity |N|(65.5, 43.6)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Undercity|
-f Get the Undercity flight path |N|Michael - (63.2, 48.6)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Undercity|
-t Train 1h Swords |N|Archibald in the War Quarter - (57.3, 32.7)| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Undercity|
-N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Undercity|
-B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Undercity|
-N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |AH| |Z|Undercity|
-N Alternatively, check the Auction House for something better or cheaper |N|(61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |AH| |Z|Undercity|
-B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |AH| |Z|Undercity|
-B Buy Six [Discolored Worg Hearts] from the Auction House |L|3164 6| |N|Auctioneer Rhyker - (64.2, 49.6)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |AH| |Z|Undercity|
-N Skip this if you want, it's only a small time saver |N|(64.2, 49.6)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |AH| |Z|Undercity|
+R Travel to Tirisfal Glades |N|(61.8, 65.1)| |O| |C|Rogue| |R|Orc/Troll| |Z|Tirisfal Glades|
+R Travel to Undercity |N|(64.2, 39.8)| |O| |C|Rogue| |R|Orc/Troll| |Z|Undercity|
+R Take the lift down to the Undercity |N|(65.5, 43.6)| |O| |C|Rogue| |R|Orc/Troll| |Z|Undercity|
+f Get the Undercity flight path |N|Michael - (63.2, 48.6)| |O| |C|Rogue| |R|Orc/Troll| |Z|Undercity|
+t Train 1h Swords |N|Archibald in the War Quarter - (57.3, 32.7)| |C|Rogue| |R|Orc/Troll| |Z|Undercity|
+N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |Z|Undercity|
+B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |Z|Undercity|
+N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |AH| |Z|Undercity|
+N Alternatively, check the Auction House for something better or cheaper |N|(61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |AH| |Z|Undercity|
+B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |AH| |Z|Undercity|
+B Buy Six [Discolored Worg Hearts] from the Auction House |L|3164 6| |N|Auctioneer Rhyker - (64.2, 49.6)| |O| |C|Rogue| |R|Orc/Troll| |AH| |Z|Undercity|
+N Skip this if you want, it's only a small time saver |N|(64.2, 49.6)| |O| |C|Rogue| |R|Orc/Troll| |AH| |Z|Undercity|
 R Brill |N|(61.5, 53.2)| |O| |Z|Tirisfal Glades|
 N Gretchen is on the second floor |N|(61.7, 52.3)| |O| |Z|Tirisfal Glades|
 A Deaths in the Family |QID|354| |N|Coleman and Gretchen inside the inn - (61.7, 52.3)| |O| |Z|Tirisfal Glades|
@@ -547,11 +547,11 @@ R Travel to Tirisfal Glades |N|(61.8, 65.1)| |O| |C|Rogue| |Z|Tirisfal Glades|
 R Travel to Undercity |N|(64.2, 39.8)| |O| |C|Rogue| |Z|Undercity|
 R Take the lift down to the Undercity |N|(65.5, 43.6)| |O| |C|Rogue| |Z|Undercity|
 f Get the Undercity flight path |N|(63.2, 48.6)| |O| |C|Rogue| |Z|Undercity|
-N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Undercity|
-B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Undercity|
-N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |AH| |Z|Undercity|
-N Alternatively, check the Auction House for something better or cheaper |N|(61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |AH| |Z|Undercity|
-B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |AH| |Z|Undercity|
+N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |Z|Undercity|
+B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |Z|Undercity|
+N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |AH| |Z|Undercity|
+N Alternatively, check the Auction House for something better or cheaper |N|(61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |AH| |Z|Undercity|
+B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |AH| |Z|Undercity|
 T Mennet Carkad |QID|1885| |N|Mennet - (83.5, 69.1)| |O| |C|Rogue| |R|Undead| |Z|Undercity|
 A The Deathstalkers |QID|1886| |N|Mennet - (83.5, 69.1)| |O| |C|Rogue| |R|Undead| |Z|Undercity|
 t Train 1h Swords |N|Archibald in the War Quarter - (57.3, 32.7)| |O| |C|Rogue| |Z|Undercity|
@@ -736,17 +736,19 @@ R Take the lift down to the Undercity |N|(65.5, 43.6)| |O| |C|Rogue| |Z|Undercit
 R Travel to Tirisfal Glades |N|(61.8, 65.1)| |O| |R|!Undead| |Z|Tirisfal Glades|
 R Travel to Undercity |N|(64.2, 39.8)| |O| |R|!Undead| |Z|Undercity|
 R Take the lift down to the Undercity |N|(65.5, 43.6)| |O| |R|!Undead| |Z|Undercity|
-N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Undercity|
-B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |Z|Undercity|
-N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |AH| |Z|Undercity|
-N Alternatively, check the Auction House for something better or cheaper |N|(61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |AH| |Z|Undercity|
-B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue/Troll/Rogue| |R|Orc| |AH| |Z|Undercity|
+N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |Z|Undercity|
+B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |Z|Undercity|
+N Buy a [Cutlass] from him |N|(61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |AH| |Z|Undercity|
+N Alternatively, check the Auction House for something better or cheaper |N|(61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |AH| |Z|Undercity|
+B Collect Cutlass (1) |L|851 1| |N|Louis Warren in the Trade Quarter - (61.1, 40.9)| |O| |C|Rogue| |R|Orc/Troll| |AH| |Z|Undercity|
 t Train 1h Swords |N|Archibald in the War Quarter - (57.3, 32.7)| |C|Rogue| |Z|Undercity|
 B Collect Cutlass (1) |L|851 1| |N|Charles  in the Rogue's Quarter. Buy a [Cutlass] from him - (77.1, 49.4)| |C|Rogue| |Z|Undercity|
 R Travel to Tirisfal Glades |N|(61.8, 65.1)| |O| |C|Warrior| |R|Undead| |Z|Tirisfal Glades|
 R Travel to Undercity |N|(64.2, 39.8)| |O| |C|Warrior| |R|Undead| |Z|Undercity|
 R Take the lift down to the Undercity |N|(65.5, 43.6)| |O| |C|Warrior| |R|Undead| |Z|Undercity|
-B Collect Quarter Staff (1) |L|854 1| |N|Benijah. Buy a [Quarter Staff] from him - (58.8, 32.8)| |C|Warrior/Undead/Warrior/Tauren/Shaman/Troll/Shaman/Orc/Shaman| |R|Troll| |Z|Undercity|
+B Collect Quarter Staff (1) |L|854 1| |N|Benijah. Buy a [Quarter Staff] from him - (58.8, 32.8)| |C|Shaman| |R|Tauren/Orc| |Z|Undercity|
+B Collect Quarter Staff (1) |L|854 1| |N|Benijah. Buy a [Quarter Staff] from him - (58.8, 32.8)| |C|Warrior/Shaman| |R|Troll| |Z|Undercity|
+B Collect Quarter Staff (1) |L|854 1| |N|Benijah. Buy a [Quarter Staff] from him - (58.8, 32.8)| |C|Warrior| |R|Undead| |Z|Undercity|
 N Buy Six [Discolored Worg Hearts] from the Auction House |N|(64.2, 49.6)| |O| |AH| |Z|Undercity|
 N Skip this if you want, it's only a small time saver |N|(64.2, 49.6)| |O| |AH| |Z|Undercity|
 B Collect Discolored Worg Heart (x6) |L|3164 6| |N|Auctioneer Rhyker - (64.2, 49.6)| |O| |AH| |Z|Undercity|

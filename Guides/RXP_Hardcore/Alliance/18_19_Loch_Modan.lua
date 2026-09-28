@@ -22,7 +22,7 @@ R Travel to Loch Modan |N|[Group] (34.5, 43.7)| |P|GROUP| |Z|Loch Modan|
 A Mercenaries |QID|255| |N|[Group] Magistrate Bluntnose - (34.7, 43.2)| |P|GROUP| |Z|Loch Modan|
 A Ironband's Excavation |QID|436| |N|Jern Hornhelm - (37.2, 47.4)| |Z|Loch Modan|
 R Travel north to the Algaz Station |N|(23.9, 17.9)| |O| |Z|Loch Modan|
-T Stormpike's Delivery |QID|353| |N|Mountaineer Stormpike - (24.8, 18.4)| |R|NightElf| |Z|Loch Modan|
+T Stormpike's Delivery |QID|353| |N|Mountaineer Stormpike - (24.8, 18.4)| |R|Night Elf| |Z|Loch Modan|
 A Filthy Paws |QID|307| |N|Mountaineer Stormpike - (24.8, 18.4)| |Z|Loch Modan|
 R Enter the Silver Stream Mine |N|(35.5, 19.0)| |O| |Z|Loch Modan|
 N The Miners' League Crates can be found all throughout the Mine |N|(35.9, 22.6)| |Z|Loch Modan|
