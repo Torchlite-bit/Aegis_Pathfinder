@@ -709,13 +709,20 @@ end
 
 --[[ Events ]]
 
+--[[ Registered as the file loads, so they can come before the addon has its
+	saved settings: your gear arriving at login is UNIT_INVENTORY_CHANGED, and
+	recording it reached for settings that were not there yet ("attempt to
+	index field 'db'"). Until then they are let go; Initialize records what
+	you wear once the settings are there. ]]
 local events = CreateFrame("Frame")
+IS.events = events
 events:RegisterEvent("PLAYER_LEVEL_UP")
 events:RegisterEvent("SKILL_LINES_CHANGED")
 events:RegisterEvent("SPELLS_CHANGED")
 events:RegisterEvent("CHARACTER_POINTS_CHANGED")
 events:RegisterEvent("UNIT_INVENTORY_CHANGED")
 events:SetScript("OnEvent", function()
+	if not AegisPathfinder.db then return end
 	if event == "UNIT_INVENTORY_CHANGED" then
 		if arg1 == "player" then IS:RecordWorn() end
 	elseif event == "CHARACTER_POINTS_CHANGED" then

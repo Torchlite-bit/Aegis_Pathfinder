@@ -440,6 +440,9 @@ events:RegisterEvent("PLAYER_LEVEL_UP")
 events:RegisterEvent("QUEST_COMPLETE")
 events:RegisterEvent("QUEST_FINISHED")
 events:SetScript("OnEvent", function()
+	-- Your gear and bags arriving at login come before the addon has its
+	-- settings; Initialize starts it afresh once they are there.
+	if not AegisPathfinder.db then return end
 	if event == "PLAYER_REGEN_ENABLED" then
 		if pending then
 			local rec = pending
@@ -456,6 +459,7 @@ events:SetScript("OnEvent", function()
 	end
 end)
 events:SetScript("OnUpdate", function()
+	if not AegisPathfinder.db then return end
 	if this.dirty and GetTime() - this.dirty >= L.SCAN_DELAY then
 		this.dirty = nil
 		GA:Process()

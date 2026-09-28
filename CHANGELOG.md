@@ -18,6 +18,17 @@ reports.
 
 ---
 
+## [0.15.1]
+
+### Fixed
+- **"ItemScore.lua:72: attempt to index field 'db' (a nil value)"**, around
+  login. The item score, the Gear Advisor and the Gear finder listen for
+  your gear arriving and for zoning in from the moment their files load,
+  which can be before the addon has loaded its saved settings. They went
+  looking for the settings and stopped with that error. Those events are now
+  ignored until the settings are loaded, and your worn gear is recorded then
+  instead.
+
 ## [0.15.0] — restart
 
 ### Added
@@ -702,6 +713,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.15.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.15.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.14.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.13.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
