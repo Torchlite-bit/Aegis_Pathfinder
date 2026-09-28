@@ -18,6 +18,15 @@ reports.
 
 ---
 
+## [0.15.3]
+
+### Fixed
+- **The guide kept closing in combat.** Escape closed it. In a fight, Escape
+  is what clears your target or cancels a spell, so the guide went with it.
+  Escape no longer closes the guide; its ✕ does. Escape still closes the
+  options, the guide list, the Gear finder and the other windows opened from
+  the guide.
+
 ## [0.15.2]
 
 ### Fixed
@@ -729,6 +738,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.15.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.15.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.15.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.15.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

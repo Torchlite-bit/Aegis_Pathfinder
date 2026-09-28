@@ -207,6 +207,12 @@ than it registers.
 The concept's `#objectives`, and now the addon's only window: header, tab bar,
 nav row, a 4px progress rule, the step list, and the footer.
 
+**Escape does not close it.** It is not in `UISpecialFrames`: it stays on
+screen while you play, as the quest tracker does, and Escape is what clears a
+target or cancels a spell in a fight, so it kept closing the guide in combat.
+Its close chip closes it. The windows opened from it (options, guide list,
+Gear finder, Where next?) still close on Escape.
+
 **Panels open beside the guide, not instead of it.** The ☰ chip used to hide
 the panel before showing Config, so opening settings closed what you were
 reading; the concept has `#options` at `right:456px` and `#objectives` at

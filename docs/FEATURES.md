@@ -27,7 +27,8 @@ version.
 that belongs to another addon in the Aegis suite.
 
 The objectives panel is the addon's main window, so a bare `/apg` opens it, and
-it opens with the client. The Aegis shield on the edge of the minimap does the
+it opens with the client. Escape doesn't close it, so clearing a target in a
+fight leaves it where it is; its ✕ does. The Aegis shield on the edge of the minimap does the
 same on a click; right-click it for the options window, and drag it to move it
 round the minimap. The options window's **Behaviour** page can hide it, as can
 `/apg minimapbutton`.

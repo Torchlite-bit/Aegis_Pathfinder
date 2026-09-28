@@ -602,6 +602,16 @@ check(built[5].detail:GetText() == "Kobold Vermin slain - 3/8",
 	tostring(built[5].detail:GetText()))
 AegisPathfinder.db.char.overviewmode = false
 
+-- Escape --------------------------------------------------------------------------
+
+-- Escape clears a target or cancels a spell in a fight, and closed the guide
+-- with it: the guide kept closing in combat. It is not Escape's to close.
+local escapable = false
+for _, name in ipairs(UISpecialFrames) do
+	if name == "AegisPathfinderObjectives" then escapable = true end
+end
+check(not escapable, "Escape does not close the guide")
+
 -- The footer ------------------------------------------------------------------
 
 -- The concept replaced its slash-command hint with live state.

@@ -137,7 +137,11 @@ frame:SetPoint(G.DEFAULT_ANCHOR[1], UIParent, G.DEFAULT_ANCHOR[2], G.DEFAULT_ANC
 AegisPathfinder.objectiveskin = Theme:Panel(frame, "panel")
 frame:Hide()
 frame:SetScript("OnShow", function() AegisPathfinder:UpdateObjectivePanel() end)
-table.insert(UISpecialFrames, "AegisPathfinderObjectives")
+--[[ Not in UISpecialFrames: Escape does not close the guide. It is on screen
+	while you play, as the quest tracker is, and Escape is what clears a
+	target or cancels a spell in a fight -- so the guide kept closing in
+	combat. Its close chip closes it; the windows opened from it (options,
+	guide list, Gear finder) still close on Escape. ]]
 -- Stacks with the other windows rather than interleaving with them.
 Theme:RegisterWindow(frame)
 

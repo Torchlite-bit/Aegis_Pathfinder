@@ -42,6 +42,8 @@ are only found at startup.
 ## 3. The guide
 
 - [ ] A new character opens at step 1, not at the end.
+- [ ] In a fight, Escape clears your target and the guide stays open; its ✕
+      still closes it. Escape still closes the options and the guide list.
 - [ ] A guide opened partway -- Loch Modan (17-18) with Crocolisk Hunting in
       the log -- opens at that quest and stays there as the log updates and
       after `/reload`; it does not drop back to step 1, 0 done.
