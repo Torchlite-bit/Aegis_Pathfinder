@@ -20,9 +20,9 @@
 	a different look.
 
 	  Route         Race, Route pack
-	  Dungeons      Dungeons
+	  Dungeons      Dungeons, Turtle WoW's own, Along the way
 	  Filters       Filters
-	  Appearance    Server theme, window scale
+	  Appearance    Server theme and switch colours, window scale
 	  Gear          the item score, the Gear Advisor, the Gear finder
 	    Item Score  the stat weights (GearFrame.lua), listed under Gear
 	  Behaviour     Guide behaviour
@@ -53,6 +53,21 @@ local HEADER_GAP = 7                  -- h3 margin-bottom
 -- The dungeon grid: four across in a 396px panel.
 local CHIP_COLS, CHIP_GAP, CHIP_H = 4, 6, 34
 local CHIP_W = math.floor((BODY_W - (CHIP_COLS - 1) * CHIP_GAP) / CHIP_COLS)
+
+--[[ Turtle WoW's own dungeons, at InstanceJournal's levels. No route guide
+	has steps for them, so the first-time setup does not offer them; the
+	Dungeons page does. Ticked, the Gear finder looks in them and
+	their dungeon guides (Guides/Dungeons/, under these names) can be offered
+	along the way. ]]
+AegisPathfinder.TURTLE_DUNGEON_INFO = {
+	{ code = "FH",  name = "Frostmane Hollow",   lo = 13, hi = 20 },
+	{ code = "WHC", name = "Windhorn Canyon",    lo = 26, hi = 30 },
+	{ code = "DMR", name = "Dragonmaw Retreat",  lo = 26, hi = 35 },
+	{ code = "SWR", name = "Stormwrought Ruins", lo = 32, hi = 44 },
+	{ code = "CG",  name = "Crescent Grove",     lo = 33, hi = 39 },
+	{ code = "GC",  name = "Gilneas City",       lo = 43, hi = 52 },
+	{ code = "HQ",  name = "Hateforge Quarry",   lo = 51, hi = 60 },
+}
 
 -- The route preview: .route-preview{max-height:150px}, rows of about 20px.
 local PREVIEW_ROWS, PREVIEW_ROW_H = 7, 20
@@ -121,6 +136,27 @@ local function Reflow(p, width)
 		p.contentHeight = y + PAD_BOTTOM
 		p:SetHeight(p.contentHeight)
 	end
+end
+
+--- A row of the route preview: level range and zone.
+local function PreviewRow(preview, i)
+	local row = CreateFrame("Frame", nil, preview)
+	row:SetHeight(PREVIEW_ROW_H)
+	row:SetPoint("TOPLEFT", preview, "TOPLEFT", 10, -(4 + (i - 1) * PREVIEW_ROW_H))
+	row:SetPoint("RIGHT", preview, "RIGHT", -10, 0)
+	row.lvl = row:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(row.lvl, "body2", 11)
+	row.lvl:SetPoint("LEFT", row, "LEFT", 0, 0)
+	row.lvl:SetWidth(52)
+	row.lvl:SetJustifyH("LEFT")
+	Theme:TextColor(row.lvl, "accent")
+	row.zone = row:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(row.zone, "body", 11)
+	row.zone:SetPoint("LEFT", row.lvl, "RIGHT", 8, 0)
+	row.zone:SetPoint("RIGHT", row, "RIGHT", 0, 0)
+	row.zone:SetJustifyH("LEFT")
+	Theme:TextColor(row.zone, "textDim")
+	return row
 end
 
 --- Reload whichever guide is on screen so a filter change takes effect.
@@ -302,40 +338,24 @@ function AegisPathfinder:CreateConfigPanel()
 	place(pillRow, py + 26, 9)
 
 	--[[ The route preview: level range and zone, one row per leg of the route
-		this race takes under this pack. It scrolls on the mouse wheel, as the
-		concept's max-height:150px list does. ]]
+		this race takes under this pack. It takes the room down to the foot of
+		the page -- more rows as the window is made taller (FitRoutePreview) --
+		and scrolls on the mouse wheel for the rest. ]]
 	local preview = CreateFrame("Frame", nil, body)
 	preview:SetWidth(BODY_W)
 	preview:SetHeight(PREVIEW_H)
 	Theme:NineSlice(preview, Theme.texture.tabFill, "BACKGROUND", { 0, 0, 0 }, 0.25)
 	Theme:NineSlice(preview, Theme.texture.tabBorder, "BORDER", "border")
 	preview.rows, preview.offset, preview.entries = {}, 0, {}
-	for i = 1, PREVIEW_ROWS do
-		local row = CreateFrame("Frame", nil, preview)
-		row:SetHeight(PREVIEW_ROW_H)
-		row:SetPoint("TOPLEFT", preview, "TOPLEFT", 10, -(4 + (i - 1) * PREVIEW_ROW_H))
-		row:SetPoint("RIGHT", preview, "RIGHT", -10, 0)
-		row.lvl = row:CreateFontString(nil, "OVERLAY")
-		Theme:SetFont(row.lvl, "body2", 11)
-		row.lvl:SetPoint("LEFT", row, "LEFT", 0, 0)
-		row.lvl:SetWidth(52)
-		row.lvl:SetJustifyH("LEFT")
-		Theme:TextColor(row.lvl, "accent")
-		row.zone = row:CreateFontString(nil, "OVERLAY")
-		Theme:SetFont(row.zone, "body", 11)
-		row.zone:SetPoint("LEFT", row.lvl, "RIGHT", 8, 0)
-		row.zone:SetPoint("RIGHT", row, "RIGHT", 0, 0)
-		row.zone:SetJustifyH("LEFT")
-		Theme:TextColor(row.zone, "textDim")
-		preview.rows[i] = row
-	end
+	preview.visibleRows, preview.page = PREVIEW_ROWS, body
+	for i = 1, PREVIEW_ROWS do preview.rows[i] = PreviewRow(preview, i) end
 	preview:EnableMouseWheel(true)
 	preview:SetScript("OnMouseWheel", function()
-		local maxOffset = math.max(0, table.getn(this.entries) - PREVIEW_ROWS)
+		local maxOffset = math.max(0, table.getn(this.entries) - this.visibleRows)
 		this.offset = math.max(0, math.min(maxOffset, this.offset - (arg1 or 0)))
 		AegisPathfinder:DrawRoutePreview()
 	end)
-	place(preview, PREVIEW_H, SECTION_GAP)
+	place(preview, function() return preview.fitH or PREVIEW_H end, SECTION_GAP)
 	stretchy(function(w) preview:SetWidth(w) end)
 	frame.preview = preview
 
@@ -349,35 +369,38 @@ function AegisPathfinder:CreateConfigPanel()
 	Theme:TextColor(hint, "textDim")
 	table.insert(frame.sections, dungeonHeader)
 
-	local grid = CreateFrame("Frame", nil, body)
-	grid:SetWidth(BODY_W)
+	-- A grid of dungeon chips, four across; a chip ticks its dungeon.
 	frame.chips = {}
-	for idx, d in ipairs(DUNGEONS) do
-		local chip = Theme:Chip(grid, d.code, d.name, CHIP_W, CHIP_H)
-		local col = math.mod(idx - 1, CHIP_COLS)
-		local row = math.floor((idx - 1) / CHIP_COLS)
-		chip:SetPoint("TOPLEFT", grid, "TOPLEFT",
-			col * (CHIP_W + CHIP_GAP), -(row * (CHIP_H + CHIP_GAP)))
-		chip.dungeonCode = d.code
-		local code, name = d.code, d.name
-		chip:SetScript("OnClick", function()
-			if AegisPathfinder.db.char.SelfFound then return end
-			local on = not this:IsActive()
-			this:SetActive(on)
-			AegisPathfinder.db.char.Dungeons[code] = on
-			ReloadCurrentGuide()
-			AegisPathfinder:RefreshDungeonPanel()
-		end)
-		chip:SetScript("OnEnter", function()
-			Theme:ShowTip(this, "RIGHT", name)
-		end)
-		chip:SetScript("OnLeave", function() Theme:HideTip(this) end)
-		table.insert(frame.chips, chip)
+	local function chipGrid(list)
+		local grid = CreateFrame("Frame", nil, body)
+		grid:SetWidth(BODY_W)
+		for idx, d in ipairs(list) do
+			local chip = Theme:Chip(grid, d.code, d.name, CHIP_W, CHIP_H)
+			local col = math.mod(idx - 1, CHIP_COLS)
+			local row = math.floor((idx - 1) / CHIP_COLS)
+			chip:SetPoint("TOPLEFT", grid, "TOPLEFT",
+				col * (CHIP_W + CHIP_GAP), -(row * (CHIP_H + CHIP_GAP)))
+			chip.dungeonCode = d.code
+			local code, name = d.code, d.name
+			chip:SetScript("OnClick", function()
+				if AegisPathfinder.db.char.SelfFound then return end
+				local on = not this:IsActive()
+				this:SetActive(on)
+				AegisPathfinder.db.char.Dungeons[code] = on
+				ReloadCurrentGuide()
+				AegisPathfinder:RefreshDungeonPanel()
+			end)
+			chip:SetScript("OnEnter", function()
+				Theme:ShowTip(this, "RIGHT", name)
+			end)
+			chip:SetScript("OnLeave", function() Theme:HideTip(this) end)
+			table.insert(frame.chips, chip)
+		end
+		local gridH = math.ceil(table.getn(list) / CHIP_COLS) * (CHIP_H + CHIP_GAP) - CHIP_GAP
+		grid:SetHeight(gridH)
+		place(grid, gridH, 6)
 	end
-	local gridRows = math.ceil(table.getn(DUNGEONS) / CHIP_COLS)
-	local gridH = gridRows * (CHIP_H + CHIP_GAP) - CHIP_GAP
-	grid:SetHeight(gridH)
-	place(grid, gridH, 6)
+	chipGrid(DUNGEONS)
 
 	note("Toggling a dungeon on forces its setup and prerequisite steps to "
 		.. "mandatory and reveals them in guides that reference it; toggling "
@@ -386,6 +409,26 @@ function AegisPathfinder:CreateConfigPanel()
 	Theme:TextColor(wired, "blue")
 	place(wired, 16, SECTION_GAP)
 	frame.wiredHint = wired
+
+	-- Turtle WoW's own: no route steps, a dungeon guide each.
+	table.insert(frame.sections, section("Turtle WoW's own"))
+	chipGrid(AegisPathfinder.TURTLE_DUNGEON_INFO or {})
+	note("No route guide has steps for these. Ticked, the Gear finder looks in them, "
+		.. "and their dungeon guides can be offered along the way.")
+	space(SECTION_GAP)
+
+	--[[ Dungeons along the way: the ticked dungeons' guides, offered when a
+		guide finishes at their level (NextGuideFrame.lua). ]]
+	table.insert(frame.sections, section("Along the way"))
+	local along = Theme:Switch(body, "Offer dungeon guides along the way", function(on)
+		AegisPathfinder.db.char.offerdungeons = on
+	end)
+	place(along, function(w) return along:Fit(w) end, 6)
+	frame.alongSwitch = along
+	note("When you finish a guide, each dungeon ticked here that fits your level is offered "
+		.. "beside the route: its dungeon guide opens in a tab of its own, takes you round its "
+		.. "quests and in, and back to the route after.")
+	space(SECTION_GAP)
 
 	-- Filters ------------------------------------------------------------------------
 	page("Filters")
@@ -434,8 +477,15 @@ function AegisPathfinder:CreateConfigPanel()
 	place(theme, 30, 6)
 	wide(theme)
 	local themeNote = fine(Theme:FinePrint(body, BODY_W))
-	place(themeNote, 44, SECTION_GAP)
-	frame.theme, frame.themeNote = theme, themeNote
+	place(themeNote, 44, 6)
+	local redGreen = Theme:Switch(body, "Red and green switches", function(on)
+		AegisPathfinder:SetSwitchColours(on and "redgreen" or "theme")
+	end)
+	place(redGreen, function(w) return redGreen:Fit(w) end, 6)
+	note("Green when on and red when off, whatever the theme. Off, switches "
+		.. "take the theme's colours.")
+	space(SECTION_GAP)
+	frame.theme, frame.themeNote, frame.redGreen = theme, themeNote, redGreen
 
 	--[[ Window scale: every Pathfinder window, bigger or smaller. ]]
 	table.insert(frame.sections, section("Window scale"))
@@ -781,6 +831,7 @@ function AegisPathfinder:SizeConfigWindow(w, h, save)
 		for _, p in ipairs(frame.pages) do Reflow(p, bodyW) end
 	end
 	frame.visible = h - CHROME_TOP - PAD_TOP - PAD_BOTTOM
+	self:FitRoutePreview()
 	self:SizeConfigPage(true)
 	if save then
 		self.db.profile.optionswidth, self.db.profile.optionsheight = w, h
@@ -838,12 +889,36 @@ function AegisPathfinder:ToggleConfigPanel()
 	end
 end
 
+--- The route preview as tall as the Route page has room for: from where it
+--- starts down to the foot of the window, never shorter than it opens with.
+function AegisPathfinder:FitRoutePreview()
+	local frame = self.optionsframe
+	local preview = frame and frame.preview
+	if not preview or not frame.visible then return end
+	local width = frame.bodyW or BODY_W
+	local top = 0
+	for _, e in ipairs(preview.page.flow) do
+		if e.region == preview then break end
+		if e.region then top = top + (type(e.height) == "function" and e.height(width) or e.height) end
+		top = top + e.gap
+	end
+	local room = frame.visible - top - SECTION_GAP - PAD_BOTTOM
+	local rows = math.max(PREVIEW_ROWS, math.floor((room - 8) / PREVIEW_ROW_H))
+	for i = table.getn(preview.rows) + 1, rows do preview.rows[i] = PreviewRow(preview, i) end
+	preview.visibleRows = rows
+	preview.fitH = rows * PREVIEW_ROW_H + 8
+	preview:SetHeight(preview.fitH)
+	Reflow(preview.page, width)
+	preview.offset = math.max(0, math.min(preview.offset, table.getn(preview.entries) - rows))
+	self:DrawRoutePreview()
+end
+
 --- Draw the visible slice of the route preview.
 function AegisPathfinder:DrawRoutePreview()
 	local preview = self.optionsframe and self.optionsframe.preview
 	if not preview then return end
 	for i, row in ipairs(preview.rows) do
-		local entry = preview.entries[i + preview.offset]
+		local entry = i <= preview.visibleRows and preview.entries[i + preview.offset]
 		if entry then
 			row.lvl:SetText(entry.levels or "")
 			row.zone:SetText(entry.zone or entry.guide or "")
@@ -915,6 +990,7 @@ function AegisPathfinder:RefreshConfigPanel()
 	local def = Theme.themeByKey[self:GetTheme()]
 	frame.theme:SetValue(def.key)
 	frame.themeNote:SetText(def.note)
+	frame.redGreen:SetOn(Theme.switchColours == "redgreen")
 	frame.scale:SetValue(Theme.windowScale)
 
 	-- The addon's own switches.
@@ -962,6 +1038,9 @@ function AegisPathfinder:RefreshDungeonPanel()
 		chip:SetWired(isWired)
 		if isWired then wiredCount = wiredCount + 1 end
 	end
+
+	frame.alongSwitch:SetOn(self.db.char.offerdungeons and not ssf)
+	frame.alongSwitch:SetLocked(ssf)
 
 	if ssf then
 		frame.wiredHint:SetText("Solo Self-Found is on: no dungeons until it is off.")

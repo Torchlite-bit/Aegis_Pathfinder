@@ -218,8 +218,15 @@ says which of the two you are looking at.
 mode: what the quest wants, how much of it you have, and a bar. It is quest-log
 leaderboard text -- "Kobold Vermin slain: 3/8" -- parsed into its three parts.
 An objective with nothing countable in it ("Speak to Marshal Dughan") gets no
-meter rather than an empty one. Overview mode folds the same text into the
-step's note line instead, as the concept does.
+meter rather than an empty one. **Substitution:** the concept draws one
+objective; a quest with more has a line each (`PaintMeter`), label, count and
+bar stacked 8px apart, and the meter grows a line at a time from the
+concept's 38px -- Crocolisk Hunting's meat and skins are two bars. A finished
+objective stays, its bar full. A bar keeps its ratio and sizes its fill again
+whenever it is not the width it was drawn at (`Theme:ProgressBar`), so a bar
+painted while hidden, or before a resize, still reads 4 of 5 as four fifths.
+Overview mode folds the same text into the step's note line instead, as the
+concept does.
 
 **Width.** The concept's 396px (`.panel{width:396px}`). It used to open at
 630px, and every earlier version saved the width on any resize, the first
@@ -306,8 +313,8 @@ is sections now.
 **Substitution: pages.** With the gear, behaviour, navigation and maintenance
 sections added, one scrolling body grew too long to find anything in, so the
 sections are grouped into pages with a category list down the left, as Zygor's
-options have it: Route (Race, Route pack), Dungeons, Filters, Appearance
-(Server theme), Gear and, set in under it, Item Score, Behaviour, Navigation
+options have it: Route (Race, Route pack), Dungeons (Dungeons, Turtle WoW's
+own, Along the way), Filters, Appearance (Server theme, Window scale), Gear and, set in under it, Item Score, Behaviour, Navigation
 (Waypoints, Arrow), Maintenance, About. The concept's 396px pane is unchanged, with the 150px list beside it
 (546px in all). The list is a quieter column than the pane — a 3% text tint and
 a hairline on its right edge — and the page shown is marked with a 3px accent
@@ -349,9 +356,9 @@ needs no second scroll frame inside its own.
 | `.options-body h3` | `Theme:SectionHeader` — 12px display, accent, 1px rule under it |
 | `<select>` | `Theme:Dropdown` — a button with a caret, and a list at `FULLSCREEN_DIALOG` strata so the scrolling body cannot draw over it |
 | `.pill-group` | `Theme:Pill`, sized to its label and wrapping |
-| `.route-preview` | Level range in accent, zone in dim, one row per leg of the route this race takes under the selected pack; scrolls on the wheel |
+| `.route-preview` | Level range in accent, zone in dim, one row per leg of the route this race takes under the selected pack; scrolls on the wheel. **Substitution:** the concept's seven rows are the least; the preview takes the rest of the page's height, a row per 20px, so a taller window shows more legs (`FitRoutePreview`) |
 | `.dchip` grid | `Theme:Chip`, four across |
-| `.toggle-row` + `.switch` | `Theme:Switch` — `switch-track.tga` (a stadium) and a circle knob that slides from left to right. The track is green when on and red when off in every theme (`Theme.SWITCH_ON` / `SWITCH_OFF`), not the theme's accent |
+| `.toggle-row` + `.switch` | `Theme:Switch` — `switch-track.tga` (a stadium) and a circle knob that slides from left to right. Off: a faint track (`text` at 10%) and a white knob. On: the theme's `switchOn` (its accent deep; RavenCraft's a near white, where grey on grey did not say which it was) and a near-black knob. **Red and green switches** on the Appearance page (`Theme:SetSwitchColours("redgreen")`, saved as `switchcolours`) makes every switch green when on and red when off whatever the theme (`Theme.SWITCH_ON` / `SWITCH_OFF`), repainting those already drawn |
 | `.fine-print` | `Theme:FinePrint` |
 | `overflow-y:auto` | A ScrollFrame, the theme's scroll bar, and the wheel anywhere on the panel; the bar hides on a page that fits |
 
@@ -534,8 +541,13 @@ guide waits for the answer instead of `LoadNextGuide` or `ReturnFromBranch`.
 It is asked only when a custom zone fits (`GetCustomZoneChoices`): a guide in
 the `turtle` category, not the one just finished, not finished before
 (`db.char.completion`), with the player at least one level short of its bottom
-and below its top. Up to five, lowest first. Nothing fits, nothing is asked,
-and the old path runs. Each finished guide is asked about once a session.
+and below its top. Up to five, lowest first. With `offerdungeons` on (the
+Dungeons page's *Offer dungeon guides along the way*, off by default, held off
+by Solo Self-Found) it is also asked when a dungeon guide fits
+(`GetDungeonGuideChoices`): the guide under `Dungeons/` of a ticked dungeon,
+vanilla or Turtle WoW's own, fitting the level the same way, up to four,
+lowest first. Nothing fits, nothing is asked, and the old path runs. Each
+finished guide is asked about once a session.
 
 Chrome with a `WHERE NEXT?` subhead, a line naming what was finished, then:
 
@@ -544,6 +556,8 @@ Chrome with a `WHERE NEXT?` subhead, a line naming what was finished, then:
   zone, "Back to" the route guide for the player's level now
   (`GetOptimizedGuideForLevel`). Hidden at the end of the route.
 - **Custom zones**: a button each.
+- **Dungeons**: a button each, under the custom zones. Taken like a custom
+  zone: from the route it opens in a tab beside it.
 
 Taking a custom zone from the route opens it in a tab (`OpenGuideTab`) and
 points tab 1 at the route's next guide, so returning resumes the route rather

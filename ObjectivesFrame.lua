@@ -69,6 +69,38 @@ local navStepNum, navCount, guideProgress
 local footerQid, footerCount, meter
 local guideTabs = {}
 
+--[[ The meter's lines: an objective's name, its count and its bar, one
+	under another. One line is the concept's 38px meter. ]]
+G.METER_PAD, G.METER_LINE, G.METER_GAP = 8, 22, 8
+
+local function MeterHeight(n)
+	return G.METER_PAD * 2 + n * G.METER_LINE + (n - 1) * G.METER_GAP
+end
+
+local function MeterLine(m, i)
+	if m.lines[i] then return m.lines[i] end
+	local y = -(G.METER_PAD + (i - 1) * (G.METER_LINE + G.METER_GAP))
+
+	local label = m:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(label, "body", 12)
+	label:SetPoint("TOPLEFT", m, "TOPLEFT", 11, y)
+	label:SetJustifyH("LEFT")
+	Theme:TextColor(label, "textDim")
+
+	local count = m:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(count, "body2", 12)
+	count:SetPoint("TOPRIGHT", m, "TOPRIGHT", -11, y)
+	count:SetJustifyH("RIGHT")
+	Theme:TextColor(count, "accent")
+
+	local bar = Theme:ProgressBar(m, 6)
+	bar:SetPoint("TOPLEFT", m, "TOPLEFT", 11, y - 16)
+	bar:SetPoint("TOPRIGHT", m, "TOPRIGHT", -11, y - 16)
+
+	m.lines[i] = { label = label, count = count, bar = bar }
+	return m.lines[i]
+end
+
 --[[ Tab sizing.
 
 	The bar shows at most VISIBLE_TABS guides at once -- fewer on a panel too
@@ -792,32 +824,20 @@ function AegisPathfinder:UpdateObjectivePanel()
 		leaderboard text -- "Kobold Vermin slain: 3/8" -- which the panel used
 		to flatten into the step's note line, where the numbers were easy to
 		miss. Overview mode still does that, as the concept does.
+
+		A line for each objective with a count, so Crocolisk Hunting's meat
+		and skins get a bar each (PaintMeter).
 	]]
 	meter = CreateFrame("Frame", nil, frame)
-	meter:SetHeight(38)
 	meter:SetPoint("TOPLEFT", rows[1], "BOTTOMLEFT", G.ROWPAD, -2)
 	meter:SetPoint("RIGHT", frame, "RIGHT", -G.ROWPAD, 0)
 	Theme:NineSlice(meter, Theme.texture.tabFill, "BACKGROUND", "text", 0.04)
 	Theme:NineSlice(meter, Theme.texture.tabBorder, "BORDER", "border")
 	meter:Hide()
-
-	local meterLabel = meter:CreateFontString(nil, "OVERLAY")
-	Theme:SetFont(meterLabel, "body", 12)
-	meterLabel:SetPoint("TOPLEFT", meter, "TOPLEFT", 11, -8)
-	meterLabel:SetJustifyH("LEFT")
-	Theme:TextColor(meterLabel, "textDim")
-
-	local meterCount = meter:CreateFontString(nil, "OVERLAY")
-	Theme:SetFont(meterCount, "body2", 12)
-	meterCount:SetPoint("TOPRIGHT", meter, "TOPRIGHT", -11, -8)
-	meterCount:SetJustifyH("RIGHT")
-	Theme:TextColor(meterCount, "accent")
-
-	local meterBar = Theme:ProgressBar(meter, 6)
-	meterBar:SetPoint("BOTTOMLEFT", meter, "BOTTOMLEFT", 11, 8)
-	meterBar:SetPoint("BOTTOMRIGHT", meter, "BOTTOMRIGHT", -11, 8)
-
-	meter.label, meter.count, meter.bar = meterLabel, meterCount, meterBar
+	meter.lines = {}
+	local first = MeterLine(meter, 1)
+	meter:SetHeight(MeterHeight(1))
+	meter.label, meter.count, meter.bar = first.label, first.count, first.bar
 	frame.meter = meter
 
 	local empty = CreateFrame("Button", nil, frame)
@@ -1172,6 +1192,32 @@ local function ReadLeaderboard(logi)
 end
 AegisPathfinder.ReadLeaderboard = ReadLeaderboard
 
+--- Fill the meter from quest log entry `logi`: a line for each objective
+--- with a count, finished ones full. Returns whether there was anything to
+--- count; the meter is as tall as its lines.
+function AegisPathfinder:PaintMeter(logi)
+	local n = 0
+	for j = 1, GetNumQuestLeaderBoards(logi) do
+		local text = GetQuestLogLeaderBoard(j, logi)
+		local _, _, label, have, need = string.find(text or "", "^(.-):%s*(%d+)%s*/%s*(%d+)%s*$")
+		have, need = tonumber(have), tonumber(need)
+		if label and need and need > 0 then
+			n = n + 1
+			local line = MeterLine(meter, n)
+			line.label:SetText(label)
+			line.count:SetText(string.format("%d / %d", have, need))
+			line.bar:SetProgress(have / need)
+			line.label:Show(); line.count:Show(); line.bar:Show()
+		end
+	end
+	for k = n + 1, table.getn(meter.lines) do
+		local line = meter.lines[k]
+		line.label:Hide(); line.count:Hide(); line.bar:Hide()
+	end
+	if n > 0 then meter:SetHeight(MeterHeight(n)) end
+	return n > 0
+end
+
 local accepted = {}
 local acceptedDirty = true
 function AegisPathfinder:UpdateOHPanel(value)
@@ -1215,13 +1261,7 @@ function AegisPathfinder:UpdateOHPanel(value)
 		local curAction = self:GetObjectiveInfo(self.current)
 		local _, curLogi, curComplete = self:GetObjectiveStatus(self.current)
 		if curAction == "COMPLETE" and curLogi and not curComplete then
-			local label, have, need = ReadLeaderboard(curLogi)
-			if label and need and need > 0 then
-				meter.label:SetText(label)
-				meter.count:SetText(string.format("%d / %d", have, need))
-				meter.bar:SetProgress(have / need)
-				showMeter = true
-			end
+			showMeter = self:PaintMeter(curLogi)
 		end
 	end
 	if showMeter then meter:Show() else meter:Hide() end

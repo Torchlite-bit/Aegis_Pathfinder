@@ -36,7 +36,7 @@ FuBar is no longer supported: the button is the addon's own now.
 The options window can be resized from its bottom-right corner, wider or
 taller, and keeps the size; `/apg resetpanels` puts it back. It lists its
 pages down the left: **Route** (race and route
-pack), **Dungeons**, **Filters**, **Appearance** (server theme, window scale), **Gear** and
+pack), **Dungeons**, **Filters**, **Appearance** (server theme, switch colours, window scale), **Gear** and
 under it **Item Score** (the stat weights), **Behaviour**, **Navigation** (waypoints and arrow), **Maintenance** (rescan,
 error log, setup) and **About** (version and credits).
 
@@ -45,7 +45,8 @@ error log, setup) and **About** (version and credits).
 **Routes.** Pick a route pack on the options window's **Route** page: Optimized (Joana's
 routes), RestedXP, or RXP Hardcore. (Kamisayo Speedrun, a Horde Warrior pack, is
 hidden until its guides are added; a character that had it moves to RestedXP.)
-A preview underneath shows the route your race takes under it. Your race's
+A preview underneath shows the route your race takes under it, as many legs as
+the page has room for: a taller window shows more of it. Your race's
 starting zone is selected for you, and all races merge into a shared route
 after level 12.
 
@@ -61,6 +62,18 @@ panel waits, empty, for you to pick one.
 **Dungeons.** Toggle which of 15 dungeons you intend to run. Opting in promotes
 their setup and prerequisite steps to mandatory; opting out hides them. A blue
 dot marks the dungeons the guide you are currently on actually has steps for.
+Under them, **Turtle WoW's own**: Frostmane Hollow, Windhorn Canyon, Dragonmaw
+Retreat, Stormwrought Ruins, Crescent Grove, Gilneas City and Hateforge Quarry.
+No route guide has steps for these; ticked, the Gear finder looks in them, and
+their dungeon guides can be offered along the way.
+
+**Dungeons along the way.** Switch on *Offer dungeon guides along the way*, on
+the same page, and finishing a guide asks **Where next?** with the dungeon
+guides of the ticked dungeons that fit your level listed under the custom
+zones -- up to four, lowest first. A dungeon fits as a custom zone does: you
+are inside its level range or one short of it, below its top, and have not
+finished its guide. Pick one and it opens in a tab beside the route. It is off
+to start with, and Solo Self-Found holds it off.
 
 **Dungeon guides.** The guide list's **Dungeons** tab has a guide for each
 dungeon, for your side: every leveling dungeon from Ragefire Chasm to
@@ -282,13 +295,17 @@ Paradise tan, Aegis red, and Day (amber, lighter panels) and Night (moonlight
 blue, deeper panels). It applies at once, arrow and progress bars included, with
 no reload. Themes are colours only. Every theme is checked for readability:
 accents and text keep a WCAG contrast of at least 4.5:1 against the panels.
-Switches are the exception: green when on, red when off, in every theme.
+Switches take the theme's colours, RavenCraft's a near white when on so it
+does not read grey on grey. **Red and green switches**, on the same page, makes
+every switch green when on and red when off, whatever the theme.
 
 **Window scale.** The same page has a **Scale** slider, 60% to 150%, for every
 Pathfinder window at once -- the guide, the options, the shopping list, the
 Active Items and Targets windows and the rest. In focus mode the guide's step
 title wraps to the window's width, so dragging the grip narrower shows the whole
-title on more lines instead of cutting it off.
+title on more lines instead of cutting it off. While you drag the slider only
+its number moves; the windows take the new size when you let go, so the
+options window does not shrink out from under the cursor.
 
 **Automatic advancement.** Accepting, completing and turning in quests, binding
 a hearthstone, and collecting tagged items all resolve themselves. So do travel
@@ -296,8 +313,10 @@ steps, once a waypoint provider is active. The checkbox wears a halo on steps
 the addon can finish for you, so you know when not to reach for it.
 
 **One step, or all of them.** The panel opens on the step you are on and
-nothing else, with its note in full and a meter underneath counting whatever
-the quest wants killed or collected. The expand button in the header swaps
+nothing else, with its note in full and a meter underneath: a line for each
+thing the quest wants killed or collected, with its count and a bar filled to
+it -- Crocolisk Hunting's 4 of 5 meat is a bar four fifths full, with its
+skins on a bar of their own. The expand button in the header swaps
 that for the whole guide when you want to look ahead. The panel sizes itself
 to what it shows; the grip in its corner sets the width, and how tall it may
 grow.
@@ -310,6 +329,12 @@ the arrows changed on the way -- a quest you finished in the meantime stays
 finished. Without clicking round, a right-click takes you to where the guide
 would open: the quest your log shows work at, else the first step not done.
 If your place is the other way, it says which arrow to right-click.
+
+**Where a guide opens.** At the quest your log shows work at. The notes, runs,
+flight paths and hearths before it can't be read from the log, so each counts
+as done when the next quest after it is one you have picked up or finished;
+otherwise the guide went straight back to its first note. One before a quest
+you have not picked up stays, and the guide still takes you there.
 
 **A navigation arrow.** It points at the current objective and says how far and
 how long, floating on the world with no window around it. It needs a waypoint
