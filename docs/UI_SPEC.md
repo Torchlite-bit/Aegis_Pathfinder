@@ -480,6 +480,12 @@ custom zone -- Scarlet Enclave and Hyjal were once missing and filed under
 Zones. `Tools/test_guidelist.lua` reads that list out of `Core.lua` and checks
 every custom-zone guide against it.
 
+Dungeon guides (`Guides/Dungeons/`, named `Dungeons/<dungeon> (lo-hi)`) are
+the **Dungeons** tab, between Zones and Professions: `GetGuideCategory` takes
+the `Dungeons/` prefix before it looks for a custom zone's name, so Gilneas
+City's guide is not filed under Custom. With eight tabs the strip's tabs are
+78 wide, to fit the 660-wide panel.
+
 ### First-time setup -- `SetupFrame.lua`
 
 Not in the concept: RestedXP's first-run questions, over settings the options

@@ -23,6 +23,7 @@ lua5.1 Tools/test_professions.lua
 lua5.1 Tools/test_guideengine.lua
 lua5.1 Tools/test_navcallout.lua
 lua5.1 Tools/test_dungeons.lua
+lua5.1 Tools/test_dungeonguides.lua
 lua5.1 Tools/test_filtertags.lua
 lua5.1 Tools/test_smartskip.lua
 lua5.1 Tools/test_yourplace.lua

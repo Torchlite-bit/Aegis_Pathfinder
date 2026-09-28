@@ -122,11 +122,23 @@ local function n(pack, race, code) return table.getn((DQ[pack] and DQ[pack][race
 check(n("RestedXP", "Human", "DM") >= 20, "RestedXP takes a Human through the Deadmines' quests, got %d", n("RestedXP", "Human", "DM"))
 check(n("RestedXP", "NightElf", "DM") == 0, "and not a Night Elf, who never goes, got %d", n("RestedXP", "NightElf", "DM"))
 check(n("RestedXP", "Human", "GNOMER") >= 12, "Gnomeregan's quests are handed in, got %d", n("RestedXP", "Human", "GNOMER"))
-check(n("VanillaGuide", "Orc", "BRD") < 5, "the Optimized guides take the Horde through few")
+check(n("VanillaGuide", "Orc", "BRD") < 5, "the Optimized guides take the Horde through few of Blackrock Depths' quests")
 check(n("VanillaGuide", "Human", "ULDA") >= 20, "the Optimized Alliance route runs Uldaman, got %d", n("VanillaGuide", "Human", "ULDA"))
 check(after("VanillaGuide", "Human", "Optimized/Burning Steppes (55-56)") == "Optimized/Sunken Temple (56-56)",
 	"the Optimized Alliance route runs the Sunken Temple after the Burning Steppes")
 check(n("VanillaGuide", "Human", "ST") >= 12, "and hands in its quests, Jammal'an included, got %d", n("VanillaGuide", "Human", "ST"))
+check(after("VanillaGuide", "Orc", "Optimized/Feralas (45-46)") == "Optimized/Uldaman (46-46)",
+	"the Optimized Horde route runs Uldaman after Feralas")
+check(n("VanillaGuide", "Orc", "ULDA") >= 12, "and hands in its quests, got %d", n("VanillaGuide", "Orc", "ULDA"))
+check(after("VanillaGuide", "Tauren", "Optimized/Burning Steppes (52-53)") == "Optimized/Sunken Temple (53-53)",
+	"the Optimized Horde route runs the Sunken Temple after the Burning Steppes")
+for _, race in ipairs({ "Orc", "Troll", "Tauren", "Undead", "Goblin" }) do
+	local zapper, jammalan
+	for _, q in ipairs((DQ.VanillaGuide[race] or {}).ST or {}) do
+		if q == 4146 then zapper = true elseif q == 1446 then jammalan = true end
+	end
+	check(zapper and jammalan, "%s: Zapper Fuel and Jammal'an are handed in with the Sunken Temple ticked", race)
+end
 
 print(string.format("Routes: %d checks", checks))
 if table.getn(failures) == 0 then

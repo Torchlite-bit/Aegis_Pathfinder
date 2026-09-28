@@ -18,6 +18,66 @@ reports.
 
 ---
 
+## [0.13.1] — restart
+
+### Added
+- **Dungeon guides.** The guide list has a **Dungeons** tab with a guide for
+  every dungeon, for your side. Pick one and it:
+  - goes round the towns to pick up every quest for the dungeon, doing the
+    quests before them on the way;
+  - puts the arrow on the entrance;
+  - has you do what each quest wants inside;
+  - hands everything in after.
+
+  A chain that needs another visit, such as Uldaman's necklace, gets another
+  run. A quest whose chain starts somewhere the guide does not go, such as a
+  class chain or another dungeon's quests, is optional: it shows once you have
+  done the quest before it. Quests given where the guide does not go are named
+  in a note at the top. The guides cover Ragefire Chasm to Blackrock Depths,
+  and Turtle WoW's own dungeons:
+  - Windhorn Canyon, new in patch 1.18.1;
+  - Frostmane Hollow, which also has a Horde guide for cross-faction groups;
+  - Dragonmaw Retreat, Crescent Grove, Stormwrought Ruins, Gilneas City and
+    Hateforge Quarry.
+- **Windhorn Canyon's quests**, on both sides:
+  - Alliance: In Search of Tauren Relics, from Ironforge.
+  - Horde: Relics of the Windhorn Tribe and The Wrath of Malgan, from Sagh's
+    Refuge.
+  - Horde: Cairne's Destroy the Deathtotem, by way of Grimtotem Spying.
+  - Horde, Shaman only: Vortalus' Edict.
+- **Windhorn Canyon and Frostmane Hollow in the Gear finder**, with each
+  boss's loot and its drop chance. Windhorn Canyon is at 26-30, Frostmane
+  Hollow at 13-20.
+- The data comes from two new sources:
+  - [InstanceJournal](https://github.com/Arthur-Helias/InstanceJournal) by
+    Arthur-Helias gives each dungeon's quests, entrance and levels, and the
+    two new dungeons' loot.
+  - [The Kludge Bureau's pfQuest-turtle](https://github.com/The-Kludge-Bureau/pfQuest-turtle)
+    gives patch 1.18.1's quests.
+
+## [0.13.0] — restart
+
+### Added
+- **The Optimized Horde route runs Uldaman and the Sunken Temple**, as the
+  Alliance route already does, so the first-time setup now recommends both
+  for the Horde.
+  - *Uldaman (46-46)*, after Feralas, picks up Necklace Recovery in
+    Orgrimmar, Reclaimed Treasures in the Undercity, Uldaman Reagent Run in
+    Kargath and Solution to Doom from Theldurin, runs the dig site and the
+    instance, and hands everything in on the way back, the Platinum Discs to
+    Thunder Bluff included. Tanaris (49-50) takes the discs to the Uldum
+    Pedestal, and the Burning Steppes' stop in Thunder Bluff finishes the
+    chain. That is 13 quests.
+  - *Sunken Temple (53-53)*, after the Burning Steppes, hands in Return to
+    Fel'Zerul in Stonard, picks up The Temple of Atal'Hakkar and runs the
+    temple: Into the Depths, Secret of the Circle, Zapper Fuel, Jammal'an and
+    the Essence of Eranikus. Then it hands in the Fetishes in Stonard and
+    Jammal'an at Shadra'Alor. Into the Depths is now picked up from Marvon
+    after The Stone Circle. Zapper Fuel, which the route picked up and never
+    handed in, goes back to Larion in Marshal's Refuge on the way to
+    Silithus. That is 9 quests.
+  - Without the dungeon ticked, each leg is a single note.
+
 ## [0.12.8]
 
 ### Added
@@ -568,6 +628,8 @@ on, each change gets its own entry.
 
 ---
 
+[0.13.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.13.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.8]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.7]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.6]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

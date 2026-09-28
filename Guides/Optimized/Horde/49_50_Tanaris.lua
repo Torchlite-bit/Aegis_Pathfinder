@@ -56,6 +56,12 @@ R Thistleshrub Valley |QID|2605| |N|Travel to Thistleshrub Valley (28.18, 63.86)
 K Thistleshrub Dew Collector |QID|2605| |N|Kill Thistleshrub Dew Collector until you collect Laden Dew Gland in Thistleshrub Valley (28.18, 63.86)| |Z|Tanaris|
 C Thistleshrub Valley |QID|3362| |N|Kill 8 Gnarled Thistleshrub and 8 Thistleshrub Rootshaper in Thistleshrub Valley (28, 65)|
 
+R Uldum |QID|2966| |N|Travel south-east to the Uldum Pedestal (37.6, 81.4)| |D|ULDA| |Z|Tanaris|
+T Seeing What Happens |QID|2966| |N|Touch the Uldum Pedestal (37.6, 81.4)| |D|ULDA| |Z|Tanaris|
+A The Stone Watcher |QID|2954| |N|Stone Watcher of Norgannon - talk until complete| |D|ULDA| |Z|Tanaris|
+T The Stone Watcher |QID|2954| |N|Touch the pedestal again| |D|ULDA| |Z|Tanaris|
+A Return to Thunder Bluff |QID|2967| |N|Touch the pedestal one more time. Nara Wildmane takes it back, the next time you are in Thunder Bluff| |D|ULDA| |Z|Tanaris|
+
 A Tooga's Quest |QID|1560| |N|Tooga - moves around (32, 72) (29.4, 74.2)|
 C Tooga's Quest |QID|1560| |N|Escort Tooga to Steamwheedle Port (66.57, 25.69)| |Z|Tanaris|
 T Tooga's Quest |QID|1560| |N|Torta in Steamwheedle Port (66.57, 25.69)| |Z|Tanaris|

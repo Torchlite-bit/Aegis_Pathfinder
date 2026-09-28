@@ -35,6 +35,7 @@ A Super Sticky |QID|4504| |N|Tran'rek in Gadgetzan (51.59, 26.77)| |Z|Tanaris|
 
 R Broken Pillar |TID|3444| |N|Travel to Broken Pillar (52.73, 45.93)| |Z|Tanaris| |O|
 T The Stone Circle |QID|3444| |N|Marvon Rivetseeker at Broken Pillar (52.73, 45.93)| |D|ST| |Z|Tanaris| |O|
+A Into the Depths |QID|3446| |N|Marvon Rivetseeker at Broken Pillar (52.73, 45.93)| |D|ST| |Z|Tanaris|
 
 R Un'Goro |QID|4290| |N|Travel to Un'Goro Crater (71.63, 75.95)| |Z|Un'Goro Crater|
 A The Apes of Un'Goro |QID|4289| |N|Torwa Pathfinder in Un'Goro (71.63, 75.95)| |Z|Un'Goro Crater|

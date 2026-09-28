@@ -125,6 +125,14 @@ for _, name in ipairs({ "Dragonmaw Retreat", "Stormwrought Ruins", "Gilneas City
 	check(turtle[name] and turtle[name].kind == "dungeon" and table.getn(turtle[name].loot) > 10,
 		"%s is there, with its loot", name)
 end
+-- Newer than the pfQuest-turtle the rest is read from: InstanceJournal's.
+local whc, fh = turtle["Windhorn Canyon"], turtle["Frostmane Hollow"]
+check(whc and whc.kind == "dungeon" and whc.lo == 26 and whc.hi == 30, "Windhorn Canyon, 1.18.1's, at 26-30")
+check(sources["Chieftain Shalk Blackwind @ WHC"] and sources["Prophet Stormhoof @ WHC"], "with each boss's own drops")
+local chance = 0
+for _, drop in ipairs(whc and whc.loot or {}) do if drop[2] == "Pathun Duskhide" then chance = math.max(chance, drop[3]) end end
+check(chance == 25, "at InstanceJournal's chances, not the scrape's placeholder, got %s", tostring(chance))
+check(fh and fh.kind == "dungeon" and fh.lo == 13 and fh.hi == 20, "Frostmane Hollow, in Dun Morogh, at 13-20")
 check(turtle["Emerald Sanctum"] and turtle["Emerald Sanctum"].kind == "raid"
 	and turtle["Tower of Karazhan"] and turtle["Tower of Karazhan"].kind == "raid", "and Turtle's raids, as raids")
 for name, d in pairs(turtle) do

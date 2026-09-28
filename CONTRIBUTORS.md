@@ -34,6 +34,7 @@ whoever wrote it. As of the port, that history carries commits from
 | RestedXP speedrun and hardcore route packs | **RestedXP Guides** — Tactics and Zeroji |
 | Turtle WoW custom zone content | The **Turtle WoW** team, and the successor-server teams continuing it |
 | Moonwhisper Coast (`Guides/*/52_60_Moonwhisper_Coast.lua`) | Written by `Tools/build_zone_guide.py` from **ryanmr82**'s [pfQuest-turtle](https://github.com/ryanmr82/pfQuest-turtle) fork (the Hydra guild's, built from the captures its players send in), with a title and objective it lacks from **rivi-s**'s [pfQuest-turtle-HDB](https://github.com/rivi-s/pfQuest-turtle-HDB) |
+| Dungeon guides (`Guides/Dungeons/`) | Written by `Tools/build_dungeon_guides.py`: which quests belong to each dungeon, its levels and its entrance from **Arthur-Helias**'s [InstanceJournal](https://github.com/Arthur-Helias/InstanceJournal) (public domain); the quests themselves -- givers, takers, objectives, chains -- from pfQuest and **The Kludge Bureau**'s [pfQuest-turtle](https://github.com/The-Kludge-Bureau/pfQuest-turtle), which has patch 1.18.1's |
 | Profession routes (`Guides/Professions/`) | Converted from a reference document supplied by the repository owner; Engineering's from [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) by **Kitymeowmeow** |
 
 ## Libraries and data
@@ -47,6 +48,7 @@ whoever wrote it. As of the port, that history carries commits from
 | MetaMap, MetaMapBWP, Cartographer | Their respective authors — supported waypoint providers |
 | [ClassicAPI](https://github.com/brues-code/ClassicAPI) | **brues-code** — required at runtime |
 | [CMaNGOS classic-db](https://github.com/cmangos/classic-db) | The **CMaNGOS** team — which trainers teach each Engineering, Herbalism, Skinning and Fishing rank, from its trainer lists; the ore each vein yields, what quest rewards sell for, what drops in each dungeon and raid, the skinnable beasts, each zone's fishing skill, the Expert fishing book and Nat Pagle's quest, extracted by `Tools/build_gathering.py`; and the quest rules -- what must be done before each quest, which lock each other out -- behind the first-time setup's dungeon quest counts, extracted by `Tools/build_dungeon_quests.py` |
+| [InstanceJournal](https://github.com/Arthur-Helias/InstanceJournal) | **Arthur-Helias** — each dungeon's quests and entrance for the dungeon guides, and what Windhorn Canyon's and Frostmane Hollow's bosses drop, and how often, for the Gear finder (`Tools/build_gear_data.py`). Public domain (the Unlicense) |
 | [OctoPawn](https://github.com/iGreed1993/OctoPawn) | **iGreed** — the item score's stat weights for every class and spec, its tooltip stat patterns and soft caps, converted by `Tools/import_octopawn.py`. MIT: its notice is carried in `ItemScoreData.lua` |
 | [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) | **Kitymeowmeow** — the recipe data behind the priced crafting routes (skill thresholds, reagents, learn costs, recipe sources, vendor buy and sell prices), converted by `Tools/import_recipes.py`. CraftRoute is GPLv3, which is why this addon is too; the route planner itself is written separately |
 

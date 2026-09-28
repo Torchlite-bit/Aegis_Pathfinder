@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Extract the data behind the Gear Advisor and Gear Finder into GearData.lua.
 
-    python3 Tools/build_gear_data.py --cmangos FILE --pfquest-turtle DIR
+    python3 Tools/build_gear_data.py --cmangos FILE --pfquest-turtle DIR --instancejournal DIR
 
 Both need facts a 1.12 client will not give an addon, taken from the CMaNGOS
 classic-db dump (FILE, .sql or .sql.gz) and pfQuest-turtle (DIR, a checkout)
@@ -140,6 +140,16 @@ TURTLE_INSTANCES = [
     (5087, "SWV", "dungeon"),     # Stormwind Vault
     (5097, "ES", "raid"),         # Emerald Sanctum
     (3457, "KARA", "raid"),       # Tower of Karazhan (Lower Karazhan Halls)
+]
+
+# Turtle WoW's dungeons newer than the pfQuest-turtle the rest is read from:
+# Frostmane Hollow, and Windhorn Canyon, whose drops patch 1.18.1's scrape
+# gives all the same placeholder chance. InstanceJournal (https://github.com/Arthur-Helias/InstanceJournal,
+# public domain) has each boss's loot with its chance: its file, a code, and
+# dungeon or raid.
+JOURNAL_INSTANCES = [
+    ("fh", "FH", "dungeon"),      # Frostmane Hollow
+    ("whc", "WHC", "dungeon"),    # Windhorn Canyon
 ]
 
 PROFESSIONS = {164: "Blacksmithing", 165: "Leatherworking", 171: "Alchemy", 197: "Tailoring",
@@ -390,6 +400,60 @@ def turtle_loot(pf, db):
     return dungeons, gear
 
 
+def journal_loot(ij, db):
+    """The JOURNAL_INSTANCES' loot, from InstanceJournal, shaped as
+    dungeon_loot's: each boss's items and their chances."""
+    def read(*parts):
+        p = os.path.join(ij, *parts)
+        if not os.path.exists(p):
+            sys.exit("missing InstanceJournal file: %s" % p)
+        return open(p, encoding="utf-8").read()
+    strings = dict(re.findall(r'^(IJ_\w+) = "((?:\\.|[^"\\])*)"', read("locale", "InstanceJournal-enUS.lua"), re.M))
+    known = {num(r["entry"]): r for r in db.rows("item_template")}
+    dungeons, gear = [], {}
+    for f, code, kind in JOURNAL_INSTANCES:
+        text = read("db", "dungeons" if kind == "dungeon" else "raids", f + ".lua")
+        name = strings[re.search(r"\.Name = (IJ_\w+)", text).group(1)]
+        lo = int(re.search(r"\.MinLevel = (\d+)", text).group(1))
+        hi = int(re.search(r"\.MaxLevel = (\d+)", text).group(1))
+        best = {}
+        # Each boss's block runs from its Name to the next one's; its Loot
+        # table is matched brace by brace.
+        heads = list(re.finditer(r"Name = (IJ_DB_\w+_BOSS_NAME_\w+),", text))
+        for n, head in enumerate(heads):
+            block = text[head.end():heads[n + 1].start() if n + 1 < len(heads) else len(text)]
+            m = re.search(r"Loot = \{", block)
+            if not m:
+                continue
+            depth, end = 0, m.end() - 1
+            for end in range(m.end() - 1, len(block)):
+                depth += {"{": 1, "}": -1}.get(block[end], 0)
+                if depth == 0:
+                    break
+            who = strings.get(head.group(1), "?")
+            for item, c in re.findall(r"IJDB\.I\[(\d+)\], DropChance = ([\d.]+)", block[m.end():end]):
+                item, c = int(item), float(c)
+                if c < MIN_CHANCE:
+                    continue
+                it = known.get(item)
+                if it:
+                    slot = INVTYPE.get(num(it["InventoryType"]))
+                    if not slot or num(it["Quality"]) < 2:
+                        continue
+                    mask = num(it["AllowableClass"])
+                    gear[item] = (slot, num(it["Quality"]), num(it["RequiredLevel"]),
+                                  0 if mask <= 0 or (mask & ALL_CLASSES) == ALL_CLASSES else mask)
+                if item not in best or c > best[item][1]:
+                    best[item] = (who, c)
+        if not best:
+            sys.exit("InstanceJournal has no loot for %s" % f)
+        loot = sorted(((item, src, round(c, 1)) for item, (src, c) in best.items()),
+                      key=lambda x: (x[1], -x[2], x[0]))
+        dungeons.append({"code": code, "name": name, "lo": lo, "hi": hi, "kind": kind,
+                         "faction": None, "loot": loot, "turtle": True})
+    return dungeons, gear
+
+
 def turtle_vanilla(pf, db, dungeons, gear):
     """Turtle WoW's changes to the vanilla instances, over the CMaNGOS loot.
 
@@ -570,6 +634,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--cmangos", required=True, help="CMaNGOS classic-db full dump (.sql or .sql.gz)")
     ap.add_argument("--pfquest-turtle", required=True, help="pfQuest-turtle checkout")
+    ap.add_argument("--instancejournal", required=True, help="InstanceJournal checkout")
     args = ap.parse_args()
     db = Dump(args.cmangos)
     sell = reward_prices(db)
@@ -578,6 +643,9 @@ def main():
     turtle, turtle_gear = turtle_loot(args.pfquest_turtle, db)
     dungeons += turtle
     gear.update(turtle_gear)
+    journal, journal_gear = journal_loot(args.instancejournal, db)
+    dungeons += journal
+    gear.update(journal_gear)
     quests, repgear, crafted = other_sources(db, args.pfquest_turtle, gear)
 
     lua = [
@@ -589,7 +657,9 @@ def main():
         "--            creature_template, creature_loot_template, reference_loot_template;",
         "--            and for Turtle WoW's own dungeons, and its changes to the vanilla ones, pfQuest-turtle",
         "--            (https://github.com/shagu/pfQuest-turtle): db/units-turtle.lua,",
-        "--            db/items-turtle.lua, db/enUS/units-turtle.lua, db/enUS/zones-turtle.lua",
+        "--            db/items-turtle.lua, db/enUS/units-turtle.lua, db/enUS/zones-turtle.lua;",
+        "--            and for Frostmane Hollow and Windhorn Canyon (patch 1.18.1), InstanceJournal",
+        "--            (https://github.com/Arthur-Helias/InstanceJournal): db/dungeons, locale enUS",
         "-- Generator: Tools/build_gear_data.py",
         "",
         "AegisPathfinder.GearData = {",

@@ -6,7 +6,9 @@
 --            creature_template, creature_loot_template, reference_loot_template;
 --            and for Turtle WoW's own dungeons, and its changes to the vanilla ones, pfQuest-turtle
 --            (https://github.com/shagu/pfQuest-turtle): db/units-turtle.lua,
---            db/items-turtle.lua, db/enUS/units-turtle.lua, db/enUS/zones-turtle.lua
+--            db/items-turtle.lua, db/enUS/units-turtle.lua, db/enUS/zones-turtle.lua;
+--            and for Frostmane Hollow and Windhorn Canyon (patch 1.18.1), InstanceJournal
+--            (https://github.com/Arthur-Helias/InstanceJournal): db/dungeons, locale enUS
 -- Generator: Tools/build_gear_data.py
 
 AegisPathfinder.GearData = {
@@ -2470,6 +2472,49 @@ AegisPathfinder.GearData = {
 			{ 51326, "Phantom Cook", 1 },
 			{ 41419, "Shadowbane Alpha", 10 },
 			{ 37006, "Skitterweb Crawler", 4 },
+		} },
+		{ code = "FH", name = "Frostmane Hollow", lo = 13, hi = 20, kind = "dungeon", turtle = true, loot = {
+			{ 110, "Hailar the Frigid", 33 },
+			{ 116, "Hailar the Frigid", 33 },
+			{ 205, "Kan'za the Seer", 33 },
+			{ 213, "Kan'za the Seer", 33 },
+			{ 241, "Kan'za the Seer", 33 },
+			{ 162, "Tan'sha the Sleek", 33 },
+			{ 197, "Tan'sha the Sleek", 33 },
+		} },
+		{ code = "WHC", name = "Windhorn Canyon", lo = 26, hi = 30, kind = "dungeon", turtle = true, loot = {
+			{ 33021, "Ahgk'tos the Pure", 25 },
+			{ 33022, "Ahgk'tos the Pure", 25 },
+			{ 33023, "Ahgk'tos the Pure", 25 },
+			{ 33024, "Ahgk'tos the Pure", 25 },
+			{ 33029, "Ambassador Vortalus", 25 },
+			{ 33030, "Ambassador Vortalus", 25 },
+			{ 33031, "Ambassador Vortalus", 25 },
+			{ 33032, "Ambassador Vortalus", 25 },
+			{ 33037, "Bonespeaker Narlgom", 25 },
+			{ 33038, "Bonespeaker Narlgom", 25 },
+			{ 33040, "Bonespeaker Narlgom", 25 },
+			{ 42276, "Bonespeaker Narlgom", 25 },
+			{ 33045, "Chieftain Shalk Blackwind", 33 },
+			{ 33046, "Chieftain Shalk Blackwind", 33 },
+			{ 33047, "Chieftain Shalk Blackwind", 33 },
+			{ 33048, "Chieftain Shalk Blackwind", 25 },
+			{ 70243, "Chieftain Shalk Blackwind", 6 },
+			{ 42277, "Chieftain Shalk Blackwind", 1 },
+			{ 33025, "Pathun Duskhide", 25 },
+			{ 33026, "Pathun Duskhide", 25 },
+			{ 33027, "Pathun Duskhide", 25 },
+			{ 33028, "Pathun Duskhide", 25 },
+			{ 70242, "Pathun Duskhide", 6 },
+			{ 33041, "Prophet Stormhoof", 25 },
+			{ 33042, "Prophet Stormhoof", 25 },
+			{ 33043, "Prophet Stormhoof", 25 },
+			{ 33044, "Prophet Stormhoof", 25 },
+			{ 70244, "Prophet Stormhoof", 6 },
+			{ 33033, "Walgan Bloodcaller", 25 },
+			{ 33035, "Walgan Bloodcaller", 25 },
+			{ 33082, "Walgan Bloodcaller", 25 },
+			{ 42275, "Walgan Bloodcaller", 25 },
 		} },
 	},
 	-- Reputations that gate gear: { name, the side that can earn it ("" for both) }.

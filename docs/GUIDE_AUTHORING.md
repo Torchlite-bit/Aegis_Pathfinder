@@ -289,6 +289,32 @@ from [ryanmr82's fork](https://github.com/ryanmr82/pfQuest-turtle); its data
 grows as players send in captures, so run it again now and then.
 `Tools/test_zoneguide.lua` checks what it writes.
 
+## Dungeon Guides
+
+`Guides/Dungeons/` is written by `Tools/build_dungeon_guides.py`: do not edit
+the guides there, change the script. Each dungeon's entry in its `DUNGEONS`
+table says where the entrance is and, per side, which towns to go round and in
+what order -- a town can come twice, for a chain that goes there and back.
+Which quests are the dungeon's comes from InstanceJournal's lists; the quests
+before and after them are pulled in from their chains. `SKIP`, `ADD`, `FIX`,
+`TASK` and `FAR` correct what the data gets wrong: a repeatable quest, a quest
+it does not list, a giver or taker it lacks, an objective it has no spawns
+for, a quest that needs another dungeon first.
+
+```sh
+python3 Tools/build_dungeon_guides.py --dump ULDA      # one dungeon, and what it left out
+python3 Tools/build_dungeon_guides.py                  # write the guides
+python3 Tools/build_dungeon_guides.py --pfquest ../pfQuest --pfquest-turtle ../kludge-pfQuest-turtle \
+    --instancejournal ../InstanceJournal               # read the data again first
+```
+
+What it reads is kept in `Tools/data/dungeon_guides.json`, so it runs without
+the checkouts. `--dump` lists the quests given where the guide does not go,
+those it thinks need no more than a word with someone (check them: the data
+may lack their objectives), and any it picks up and never hands in.
+`Tools/test_dungeonguides.lua` fails if the guides are stale, or a quest is
+handed in before it is picked up, or picked up and never handed in.
+
 ## Routes and Dungeon Quests
 
 A route pack's route (`Routes/Routes.lua`) decides what comes after a guide on
