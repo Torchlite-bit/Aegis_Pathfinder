@@ -18,6 +18,7 @@ python3 Tools/convert_professions.py --check
 
 echo
 echo "== lua tests =="
+lua5.1 Tools/test_load.lua
 lua5.1 Tools/test_theme.lua
 lua5.1 Tools/test_professions.lua
 lua5.1 Tools/test_guideengine.lua

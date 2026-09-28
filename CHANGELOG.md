@@ -18,6 +18,22 @@ reports.
 
 ---
 
+## [0.15.2]
+
+### Fixed
+- **"QuestTracker.lua:177: attempt to call method 'GetObjectiveInfo'"**, and
+  the "ItemScore.lua:72 ... field 'db'" error with it. Both came from Core.lua
+  stopping part-way as it loaded.
+  - At load, Core.lua reads the game's races from ClassicAPI, and every
+    race's side with them.
+  - The game's race table also lists creature races with no side, and
+    ClassicAPI gives nothing for their side. Reading that nothing stopped
+    Core.lua at that line.
+  - Everything after that line was never set up: the saved settings, and
+    much of the guide. Every error that followed was a symptom.
+  - Races with no side are now skipped. Without ClassicAPI at all, the addon
+    now says so instead of failing.
+
 ## [0.15.1]
 
 ### Fixed
@@ -713,6 +729,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.15.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.15.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.15.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.14.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
