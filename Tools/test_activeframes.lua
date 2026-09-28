@@ -149,6 +149,10 @@ local targets = AegisPathfinder.activetargetsframe
 
 check(items ~= nil and getglobal("AegisPathfinderActiveItems") == items, "the Active Items window is built")
 check(targets ~= nil and getglobal("AegisPathfinderActiveTargets") == targets, "and the Active Targets one")
+AegisPathfinder.Theme:SetWindowScale(1.2)
+check(math.abs(items:GetScale() - 1.2) < 1e-6 and math.abs(targets:GetScale() - 1.2) < 1e-6,
+	"they follow the window scale with the other windows")
+AegisPathfinder.Theme:SetWindowScale(1)
 check(not items:IsShown() and not targets:IsShown(), "both start hidden")
 check(items.label:GetText() == "ACTIVE ITEMS" and targets.label:GetText() == "ACTIVE TARGETS",
 	"titled as RestedXP's are, got '%s' and '%s'", items.label:GetText(), targets.label:GetText())

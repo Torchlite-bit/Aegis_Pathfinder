@@ -562,7 +562,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.12.6"
+AegisPathfinder.version = "0.12.7"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -584,6 +584,7 @@ function AegisPathfinder:OnInitialize()
     -- The saved theme, before anything else paints: windows built as the
     -- files loaded are re-tinted to it (Theme.lua).
     self.Theme:ApplyTheme(self.db.profile.theme)
+    self.Theme:SetWindowScale(self.db.profile.windowscale or 1)
 
     self.db.char.Dungeons = self.db.char.Dungeons or {}
     for k, v in pairs(defaults.Dungeons) do

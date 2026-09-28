@@ -361,6 +361,28 @@ Theme:Tint(accentTex, "gold")
 Theme:ApplyTheme("octowow")
 local ar = accentTex:GetVertexColor()
 check(math.abs(ar - 1) < 1e-6, "a texture re-tinted to a colour that no theme changes is left as it is")
+-- A switch is green when on and red when off, in every theme, and a theme
+-- change leaves it that way.
+do
+	local function same(tex, c)
+		local r, g, b = tex:GetVertexColor()
+		return math.abs(r - c[1]) < 1e-6 and math.abs(g - c[2]) < 1e-6 and math.abs(b - c[3]) < 1e-6
+	end
+	local sw = Theme:Switch(host, "Accept quests")
+	check(same(sw.track, Theme.SWITCH_OFF), "a switch starts off, and red")
+	sw:SetOn(true)
+	check(same(sw.track, Theme.SWITCH_ON), "on, it is green")
+	check(Theme.SWITCH_ON[2] > Theme.SWITCH_ON[1] and Theme.SWITCH_OFF[1] > Theme.SWITCH_OFF[2],
+		"green is green and red is red")
+	for _, def in ipairs(Theme.THEMES) do
+		Theme:ApplyTheme(def.key)
+		check(same(sw.track, Theme.SWITCH_ON), "%s leaves an on switch green", def.key)
+	end
+	sw:SetOn(false)
+	Theme:ApplyTheme("night")
+	check(same(sw.track, Theme.SWITCH_OFF) and same(sw.knob, Theme.SWITCH_KNOB), "and an off one red, its knob light")
+end
+
 -- The baked-green art: exact in the concept's theme, a tinted grey elsewhere.
 Theme:ApplyTheme("turtle")
 local arrowTex = host:CreateTexture(nil, "ARTWORK")

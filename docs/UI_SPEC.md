@@ -232,7 +232,8 @@ the footer's tooltip carries the whole of it.
 `max-height: min(70vh, 600px)`, with `.steps-list` `flex:0 0 auto` in focus
 mode and `flex:1 1 auto` in overview. So `LayoutPanelHeight` makes the panel
 exactly as tall as what it shows, up to a cap: in focus mode, the one step
-(with its note in full) and the meter; in overview, the list, which for any
+(its title and its note in full, both wrapped to the width) and the meter;
+in overview, the list, one line of title a step, which for any
 real guide means the cap. The height is never saved -- only the width and the
 cap are the player's.
 
@@ -350,7 +351,7 @@ needs no second scroll frame inside its own.
 | `.pill-group` | `Theme:Pill`, sized to its label and wrapping |
 | `.route-preview` | Level range in accent, zone in dim, one row per leg of the route this race takes under the selected pack; scrolls on the wheel |
 | `.dchip` grid | `Theme:Chip`, four across |
-| `.toggle-row` + `.switch` | `Theme:Switch` — `switch-track.tga` (a stadium) and a circle knob that slides from left to right |
+| `.toggle-row` + `.switch` | `Theme:Switch` — `switch-track.tga` (a stadium) and a circle knob that slides from left to right. The track is green when on and red when off in every theme (`Theme.SWITCH_ON` / `SWITCH_OFF`), not the theme's accent |
 | `.fine-print` | `Theme:FinePrint` |
 | `overflow-y:auto` | A ScrollFrame, the theme's scroll bar, and the wheel anywhere on the panel; the bar hides on a page that fits |
 

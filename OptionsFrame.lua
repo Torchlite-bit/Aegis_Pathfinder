@@ -22,7 +22,7 @@
 	  Route         Race, Route pack
 	  Dungeons      Dungeons
 	  Filters       Filters
-	  Appearance    Server theme
+	  Appearance    Server theme, window scale
 	  Gear          the item score, the Gear Advisor, the Gear finder
 	    Item Score  the stat weights (GearFrame.lua), listed under Gear
 	  Behaviour     Guide behaviour
@@ -436,6 +436,18 @@ function AegisPathfinder:CreateConfigPanel()
 	local themeNote = fine(Theme:FinePrint(body, BODY_W))
 	place(themeNote, 44, SECTION_GAP)
 	frame.theme, frame.themeNote = theme, themeNote
+
+	--[[ Window scale: every Pathfinder window, bigger or smaller. ]]
+	table.insert(frame.sections, section("Window scale"))
+	local scale = Theme:Slider(body, "Scale", Theme.SCALE_MIN, Theme.SCALE_MAX, Theme.SCALE_STEP,
+		function(v) AegisPathfinder:SetWindowScale(v) end,
+		function(v) return string.format("%d%%", math.floor(v * 100 + 0.5)) end)
+	place(scale, function(w) return scale:Fit(w) end, 6)
+	note("Makes every Pathfinder window bigger or smaller, the guide and this "
+		.. "one included. The guide's text wraps to whatever width you drag it "
+		.. "to with the grip in its corner.")
+	space(SECTION_GAP)
+	frame.scale = scale
 
 	--[[ Gear: the item score on tooltips, and the window with its weights. ]]
 	page("Gear")
@@ -903,6 +915,7 @@ function AegisPathfinder:RefreshConfigPanel()
 	local def = Theme.themeByKey[self:GetTheme()]
 	frame.theme:SetValue(def.key)
 	frame.themeNote:SetText(def.note)
+	frame.scale:SetValue(Theme.windowScale)
 
 	-- The addon's own switches.
 	for key, sw in pairs(frame.switches) do

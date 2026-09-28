@@ -1017,6 +1017,15 @@ end
 	Off: a faint track with a white knob on the left. On: an accent-deep
 	track with a near-black knob on the right. `onChange(on)` fires on click.
 ]]
+--[[ A switch reads green when it is on and red when it is off, whatever the
+	theme: its colours are fixed, not the theme's, because in some themes the
+	accent and the off track were near enough the same grey that a switch did
+	not say which it was. Tinting with a colour rather than a name keeps a
+	theme change from re-tinting them. ]]
+Theme.SWITCH_ON = { 0.22, 0.68, 0.32 }     -- #38ad52
+Theme.SWITCH_OFF = { 0.76, 0.24, 0.20 }    -- #c23d33
+Theme.SWITCH_KNOB = { 0.96, 0.96, 0.94 }
+
 function Theme:Switch(parent, label, onChange)
 	local row = CreateFrame("Button", nil, parent)
 	row:SetHeight(22)
@@ -1042,14 +1051,13 @@ function Theme:Switch(parent, label, onChange)
 		self.__on = on and true or false
 		self.knob:ClearAllPoints()
 		if self.__on then
-			Theme:Tint(self.track, "accentDeep")
+			Theme:Tint(self.track, Theme.SWITCH_ON)
 			self.knob:SetPoint("LEFT", self.track, "LEFT", 18, 0)
-			self.knob:SetVertexColor(0.04, 0.05, 0.04, 1)     -- #0a0d09
 		else
-			Theme:Tint(self.track, "text", 0.10)
+			Theme:Tint(self.track, Theme.SWITCH_OFF)
 			self.knob:SetPoint("LEFT", self.track, "LEFT", 2, 0)
-			Theme:Tint(self.knob, "text")
 		end
+		Theme:Tint(self.knob, Theme.SWITCH_KNOB)
 	end
 	function row:IsOn() return self.__on end
 	-- Held by another setting: shown, dimmed, and not clickable.
@@ -1083,6 +1091,73 @@ function Theme:Switch(parent, label, onChange)
 	end)
 
 	row:SetOn(false)
+	return row
+end
+
+--[[ A slider, for a number: its label on the left, the value on the right,
+	and a thin track under them with a knob to drag. `format(value)` writes
+	the value (a plain number without it); `onChange(value)` hears what the
+	player drags to, snapped to `step` -- never a SetValue from code. ]]
+function Theme:Slider(parent, label, lo, hi, step, onChange, format)
+	local row = CreateFrame("Frame", nil, parent)
+	row:SetHeight(38)
+
+	local fs = row:CreateFontString(nil, "OVERLAY")
+	self:SetFont(fs, "body", 13)
+	fs:SetPoint("TOPLEFT", row, "TOPLEFT", 0, -2)
+	fs:SetJustifyH("LEFT")
+	fs:SetText(label or "")
+	self:TextColor(fs, "text")
+
+	local val = row:CreateFontString(nil, "OVERLAY")
+	self:SetFont(val, "body", 13)
+	val:SetPoint("TOPRIGHT", row, "TOPRIGHT", 0, -2)
+	val:SetJustifyH("RIGHT")
+	self:TextColor(val, "accent")
+
+	local s = CreateFrame("Slider", nil, row)
+	s:SetOrientation("HORIZONTAL")
+	s:SetHeight(16)
+	s:SetPoint("BOTTOMLEFT", row, "BOTTOMLEFT", 0, 0)
+	s:SetPoint("BOTTOMRIGHT", row, "BOTTOMRIGHT", 0, 0)
+	s:EnableMouse(true)
+	s:SetMinMaxValues(lo, hi)
+	s:SetValueStep(step)
+
+	local track = s:CreateTexture(nil, "BACKGROUND")
+	track:SetTexture(self.texture.solid)
+	track:SetHeight(4)
+	track:SetPoint("LEFT", s, "LEFT", 0, 0)
+	track:SetPoint("RIGHT", s, "RIGHT", 0, 0)
+	self:Tint(track, "text", 0.14)
+
+	s:SetThumbTexture(self.texture.circleFill)
+	local thumb = s:GetThumbTexture()
+	thumb:SetWidth(14); thumb:SetHeight(14)
+	self:Tint(thumb, "accent")
+
+	local function Show(v)
+		val:SetText(format and format(v) or tostring(v))
+	end
+	s:SetScript("OnValueChanged", function()
+		local v = math.floor(this:GetValue() / step + 0.5) * step
+		Show(v)
+		if not this.__quiet and onChange then onChange(v) end
+	end)
+
+	row.slider, row.label, row.value, row.track = s, fs, val, track
+	--- Set the value from code: shown, but not reported to onChange.
+	function row:SetValue(v)
+		s.__quiet = true
+		s:SetValue(v)
+		s.__quiet = nil
+		Show(v)
+	end
+	function row:GetValue() return s:GetValue() end
+	function row:Fit(width)
+		self:SetWidth(width)
+		return self:GetHeight()
+	end
 	return row
 end
 
@@ -1398,9 +1473,43 @@ local function Restack(w, base)
 	return top
 end
 
+--[[ Window scale.
+
+	One scale for every Pathfinder window, set on the Appearance page. A
+	window registers here as it is built and takes the scale in force; a
+	change reaches every window already built. The Active Items and Targets
+	windows, which are not stacked windows, join the list on their own. ]]
+Theme.SCALE_MIN, Theme.SCALE_MAX, Theme.SCALE_STEP = 0.6, 1.5, 0.05
+Theme.windowScale = 1
+Theme.scaled = {}
+
+--- Scale `frame` with the windows, now and whenever the scale changes.
+function Theme:Scaled(frame)
+	for _, f in ipairs(self.scaled) do
+		if f == frame then return frame end
+	end
+	table.insert(self.scaled, frame)
+	if frame.SetScale then frame:SetScale(self.windowScale) end
+	return frame
+end
+
+--- Set every window's scale; out of range is brought into it, and snapped
+--- to the step. Returns the scale set.
+function Theme:SetWindowScale(scale)
+	scale = tonumber(scale) or 1
+	scale = math.floor(scale / self.SCALE_STEP + 0.5) * self.SCALE_STEP
+	scale = math.max(self.SCALE_MIN, math.min(self.SCALE_MAX, scale))
+	self.windowScale = scale
+	for _, f in ipairs(self.scaled) do
+		if f.SetScale then f:SetScale(scale) end
+	end
+	return scale
+end
+
 function Theme:RegisterWindow(frame)
 	if self:IsWindow(frame) then return frame end
 	table.insert(self.windows, frame)
+	self:Scaled(frame)
 	if frame.SetToplevel then frame:SetToplevel(true) end
 	-- A window dragged, or grown, past the edge of the screen is a window
 	-- you cannot get back.
@@ -1511,6 +1620,12 @@ end
 function AegisPathfinder:GetTheme()
 	local key = self.db and self.db.profile.theme
 	return Theme.themeByKey[key] and key or Theme.DEFAULT_THEME
+end
+
+--- Scale every Pathfinder window, and remember it.
+function AegisPathfinder:SetWindowScale(scale)
+	self.db.profile.windowscale = Theme:SetWindowScale(scale)
+	return self.db.profile.windowscale
 end
 
 function AegisPathfinder:SetTheme(key)

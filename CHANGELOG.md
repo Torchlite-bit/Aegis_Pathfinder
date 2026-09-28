@@ -18,6 +18,22 @@ reports.
 
 ---
 
+## [0.12.7]
+
+### Added
+- **Window scale.** A **Scale** slider on the options window's Appearance
+  page, 60% to 150%, sizes every Pathfinder window at once: the guide, the
+  options, the shopping list, the Active Items and Targets windows and the
+  rest. It is kept per profile.
+
+### Changed
+- **The step title wraps.** In focus mode the guide's step title wraps to the
+  window's width instead of ending in "..." -- drag the grip narrower and the
+  title takes more lines, and the step grows to hold them. The overview list
+  keeps one line a step, so it still scrolls.
+- **Switches are green when on and red when off,** whatever the theme. In some
+  themes an on switch and an off one were near enough the same grey.
+
 ## [0.12.6]
 
 ### Fixed
@@ -535,6 +551,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.12.7]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.6]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.5]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.4]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

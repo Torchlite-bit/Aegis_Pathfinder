@@ -409,6 +409,28 @@ AegisPathfinder:UpdateOHPanel()
 check(frame:GetHeight() == shortPanel, "and shrinks back for a short one, got %s (was %s)",
 	frame:GetHeight(), shortPanel)
 
+-- A long title wraps to the panel in focus mode, instead of ending in "...",
+-- and the row grows for it; the list keeps one line a step.
+do
+	local name = AegisPathfinder.quests[3]
+	AegisPathfinder.quests[3] = "This has 4 different possible spawn points in the dungeon: check each of them"
+	frame:SetWidth(320)
+	AegisPathfinder:UpdateOHPanel()
+	check(built[1].text:GetHeight() > 16, "a long title gets more than one line, got %s", built[1].text:GetHeight())
+	check(built[1]:GetHeight() > shortRow, "and the row grows for it (%s, was %s)", built[1]:GetHeight(), shortRow)
+	frame:SetWidth(900)
+	AegisPathfinder:UpdateOHPanel()
+	check(built[1].text:GetHeight() == 16, "a wide panel holds it on one line, got %s", built[1].text:GetHeight())
+	frame:SetWidth(320)
+	AegisPathfinder.db.char.overviewmode = true
+	AegisPathfinder:UpdateOHPanel()
+	check(built[1].text:GetHeight() == 16, "the list keeps one line a step, got %s", built[1].text:GetHeight())
+	AegisPathfinder.db.char.overviewmode = false
+	AegisPathfinder.quests[3] = name
+	frame:SetWidth(396)
+	AegisPathfinder:UpdateOHPanel()
+end
+
 -- In focus mode the row runs to the panel's edge; there is no scrollbar
 -- beside it to stop at.
 local function rightTarget(row)

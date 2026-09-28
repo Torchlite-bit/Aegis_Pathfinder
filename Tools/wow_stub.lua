@@ -401,7 +401,11 @@ local function newFrame(frameType, name, parent)
 	end
 	function f:SetText(t) self.__text = t end
 	function f:GetText() return self.__text end
-	function f:SetScale() end
+	function f:SetScale(v)
+		if type(v) ~= "number" or v <= 0 then complain("SetScale(%s) not a positive number", tostring(v)) end
+		self.__scale = v
+	end
+	function f:GetScale() return self.__scale or 1 end
 	function f:GetEffectiveScale() return 1 end
 	function f:SetHitRectInsets() end
 	function f:CreateTitleRegion() return newObject("TitleRegion", nil, self) end

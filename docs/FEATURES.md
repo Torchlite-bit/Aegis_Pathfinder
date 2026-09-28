@@ -36,7 +36,7 @@ FuBar is no longer supported: the button is the addon's own now.
 The options window can be resized from its bottom-right corner, wider or
 taller, and keeps the size; `/apg resetpanels` puts it back. It lists its
 pages down the left: **Route** (race and route
-pack), **Dungeons**, **Filters**, **Appearance** (server theme), **Gear** and
+pack), **Dungeons**, **Filters**, **Appearance** (server theme, window scale), **Gear** and
 under it **Item Score** (the stat weights), **Behaviour**, **Navigation** (waypoints and arrow), **Maintenance** (rescan,
 error log, setup) and **About** (version and credits).
 
@@ -254,6 +254,13 @@ Paradise tan, Aegis red, and Day (amber, lighter panels) and Night (moonlight
 blue, deeper panels). It applies at once, arrow and progress bars included, with
 no reload. Themes are colours only. Every theme is checked for readability:
 accents and text keep a WCAG contrast of at least 4.5:1 against the panels.
+Switches are the exception: green when on, red when off, in every theme.
+
+**Window scale.** The same page has a **Scale** slider, 60% to 150%, for every
+Pathfinder window at once -- the guide, the options, the shopping list, the
+Active Items and Targets windows and the rest. In focus mode the guide's step
+title wraps to the window's width, so dragging the grip narrower shows the whole
+title on more lines instead of cutting it off.
 
 **Automatic advancement.** Accepting, completing and turning in quests, binding
 a hearthstone, and collecting tagged items all resolve themselves. So do travel
