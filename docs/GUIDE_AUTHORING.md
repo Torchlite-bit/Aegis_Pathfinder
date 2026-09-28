@@ -467,7 +467,10 @@ To create a guide entry for quest 41188:
    overlap (`|C|!Warrior| |R|!Undead|` and `|R|Undead|`) -- an accept or hand-in
    written twice is kept once. `python3 Tools/verify.py` rejects a name the
    client never gives.
-6. **Mark optional quests** - Use |O| tag
+6. **Mark optional quests** - Use |O| tag. An optional accept is offered only
+   when it has something to go on: a `|U|` item in your bags, a `|L|` item,
+   or a `|PRE|` quest handed in. Without one it is never shown, so a dungeon
+   chain gated by `|D|` should not also be `|O|`, or nobody picks it up.
 7. **Test your guide** - Play through it on a character
 
 ## Troubleshooting

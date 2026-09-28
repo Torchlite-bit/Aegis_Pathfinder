@@ -784,42 +784,6 @@
    ]
   },
   {
-   "id": "q3528",
-   "qid": 3528,
-   "title": "Jammal'an the Prophet",
-   "steps": [
-    {
-     "guide": "Optimized/Hinterlands (46-47)",
-     "pack": "Optimized",
-     "faction": "Alliance",
-     "file": "Guides/Optimized/Alliance/46_47_Hinterlands.lua",
-     "line": 60,
-     "action": "Accept",
-     "title": "Jammal'an the Prophet",
-     "note": "If planning Sunken Temple, accept from Fallen Hero (33, 75)",
-     "optional": false
-    }
-   ],
-   "suggestions": [
-    {
-     "kind": "dungeon",
-     "tag": "ST",
-     "confidence": "high",
-     "why": [
-      "RestedXP tags all 7 of its steps ST (Sunken Temple)",
-      "RXP Hardcore tags all 8 of its steps ST (Sunken Temple)",
-      "the guide's own text names Sunken Temple"
-     ]
-    }
-   ],
-   "factions": [
-    "Alliance"
-   ],
-   "packs": [
-    "Optimized"
-   ]
-  },
-  {
    "id": "q3445",
    "qid": 3445,
    "title": "The Sunken Temple",
@@ -888,9 +852,9 @@
    ]
   },
   {
-   "id": "q2963",
-   "qid": 2963,
-   "title": "Uldum",
+   "id": "q2946",
+   "qid": 2946,
+   "title": "Seeing What Happens",
    "steps": [
     {
      "guide": "Optimized/Tanaris (47-48)",
@@ -900,7 +864,7 @@
      "line": 35,
      "action": "Run",
      "title": "Uldum",
-     "note": "Travel to Uldum pedestal (37, 81)",
+     "note": "Travel to the Uldum Pedestal (37.6, 81.4)",
      "optional": false
     },
     {
@@ -911,9 +875,32 @@
      "line": 36,
      "action": "Turn in",
      "title": "Seeing What Happens",
-     "note": "Touch the pedestal at Uldum (37, 81)",
+     "note": "Touch the Uldum Pedestal (37.6, 81.4)",
      "optional": false
-    },
+    }
+   ],
+   "suggestions": [
+    {
+     "kind": "dungeon",
+     "tag": "ULDA",
+     "confidence": "medium",
+     "why": [
+      "RXP Hardcore tags all 2 of its steps ULDA (Uldaman)"
+     ]
+    }
+   ],
+   "factions": [
+    "Alliance"
+   ],
+   "packs": [
+    "Optimized"
+   ]
+  },
+  {
+   "id": "q2977",
+   "qid": 2977,
+   "title": "Return to Ironforge",
+   "steps": [
     {
      "guide": "Optimized/Tanaris (47-48)",
      "pack": "Optimized",
@@ -1000,8 +987,8 @@
    ]
   },
   {
-   "id": "q2768",
-   "qid": 2768,
+   "id": "q4324",
+   "qid": 4324,
    "title": "Yuka Screwspigot",
    "steps": [
     {
@@ -1012,18 +999,18 @@
      "line": 53,
      "action": "Accept",
      "title": "Yuka Screwspigot",
-     "note": "Torta near Steamwheedle Port",
+     "note": "Yorba Screwspigot in Steamwheedle Port (67, 24)",
      "optional": false
     }
    ],
    "suggestions": [
     {
      "kind": "dungeon",
-     "tag": "ZF",
+     "tag": "BRD",
      "confidence": "high",
      "why": [
-      "RestedXP tags all 11 of its steps ZF (Zul'Farrak)",
-      "RXP Hardcore tags all 7 of its steps ZF (Zul'Farrak)"
+      "Yuka Screwspigot sends you to Yuka in the Burning Steppes, whose quests are in Blackrock Depths (Ribbly Screwspigot)",
+      "the Zul'Farrak suggestion was for Divino-matic Rod, the id this step had"
      ]
     }
    ],
@@ -2305,6 +2292,17 @@
     {
      "guide": "Optimized/Hinterlands (46-47)",
      "pack": "Optimized",
+     "faction": "Alliance",
+     "file": "Guides/Optimized/Alliance/46_47_Hinterlands.lua",
+     "line": 60,
+     "action": "Accept",
+     "title": "Jammal'an the Prophet",
+     "note": "If planning Sunken Temple, accept from the Atal'ai Exile in Shadra'Alor (33.74, 75.16)",
+     "optional": false
+    },
+    {
+     "guide": "Optimized/Hinterlands (46-47)",
+     "pack": "Optimized",
      "faction": "Horde",
      "file": "Guides/Optimized/Horde/46_47_Hinterlands.lua",
      "line": 97,
@@ -2337,6 +2335,7 @@
     }
    ],
    "factions": [
+    "Alliance",
     "Horde"
    ],
    "packs": [

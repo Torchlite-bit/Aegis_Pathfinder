@@ -36,7 +36,7 @@ A Dragonkin Menace |QID|4182| |N|Helendis Riverhorn in Morgan's Vigil (85.82, 68
 R Flame Crest |QID|4726| |N|Travel to Flame Crest (65.14, 23.83)| |Z|Burning Steppes|
 A Broodling Essence |QID|4726| |N|Tinkee Steamboil in Flame Crest (65.14, 23.83)| |Z|Burning Steppes|
 A Tablet of the Seven |QID|4296| |N|Maxwort Uberglint in Flame Crest (65.17, 23.92)| |Z|Burning Steppes|
-T Yuka Screwspigot |QID|4324| |N|Yuka Screwspigot in Flame Crest (66.04, 21.94)| |Z|Burning Steppes| |O|
+T Yuka Screwspigot |QID|4324| |N|Yuka Screwspigot in Flame Crest (66.04, 21.94)| |D|BRD| |Z|Burning Steppes| |O|
 N Black Dragonflight Molt |N|This is found inside Hoard of the Black Dragonflight reward from 'Trinkets...' - need for A Taste of Flame| |L|10575|
 
 N As you go |N|Kill Ember Worg and collect 50 Blackrock Medallion while in the zone|

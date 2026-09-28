@@ -28,7 +28,7 @@ A Extinguish the Firegut |QID|3823| |N|Oralius in Morgan's Vigil (84.57, 68.66)|
 A Dragonkin Menace |QID|4182| |N|Helendis Riverhorn in Morgan's Vigil (85.82, 68.95)| |Z|Burning Steppes|
 A Broodling Essence |QID|4726| |N|Tinkee Steamboil in Flame Crest (65.14, 23.83)| |Z|Burning Steppes|
 A Tablet of the Seven |QID|4296| |N|Maxwort Uberglint in Flame Crest (65.17, 23.92)| |Z|Burning Steppes|
-T Yuka Screwspigot |QID|4324| |N|Yuka Screwspigot in Flame Crest (66.04, 21.94)| |Z|Burning Steppes| |O|
+T Yuka Screwspigot |QID|4324| |N|Yuka Screwspigot in Flame Crest (66.04, 21.94)| |D|BRD| |Z|Burning Steppes| |O|
 N Black Dragonflight Molt |QID|4023| |N|This is found inside Hoard of the Black Dragonflight quest reward from an earlier quest 'Trinkets...', you need this to complete the next quest 'A Taste of Flame', if you don't have it you will need to kill a level 54 elite that will spawn if you talk to the quest giver| |L|10575| |U|10569| |OID|4022| |P|GROUP|
 
 N As you go... |AYG|4182| |QID|4283| |N|Kill Ember Worg and collect 50 Blackrock Medallion, don't worry about trying to finish this now|

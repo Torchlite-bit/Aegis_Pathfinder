@@ -47,7 +47,7 @@ A Dreadmaul Rock |QID|3821| |N|Thal'trak Proudtusk in Kargath (3.36, 48.05)| |Z|
 R Flame Crest |QID|4726| |N|Travel to Flame Crest in Burning Steppes (65.20, 23.89)| |Z|Burning Steppes|
 A Broodling Essence |QID|4726| |N|Tinkee Steamboil in Flame Crest (65.20, 23.89)| |Z|Burning Steppes|
 A Tablet of the Seven |QID|4296| |N|Maxwort Uberglint in Flame Crest (65.20, 23.89)| |Z|Burning Steppes|
-T Yuka Screwspigot |QID|4324| |N|Yuka Screwspigot in Flame Crest (66.04, 21.94)| |Z|Burning Steppes| |O|
+T Yuka Screwspigot |QID|4324| |N|Yuka Screwspigot in Flame Crest (66.04, 21.94)| |D|BRD| |Z|Burning Steppes| |O|
 
 C Broodling Essence |QID|4726| |N|Use Draco-Incarcinatrix 900 on 8 Black Broodling BEFORE you kill them (78.49, 27.51)| |Z|Burning Steppes| |U|12284|
 

@@ -18,6 +18,28 @@ reports.
 
 ---
 
+## [0.12.3]
+
+### Added
+- **The Optimized Alliance route runs Uldaman.** Its Uldaman guide was notes
+  only; it now takes you from Gadgetzan to Ironforge, Loch Modan and the
+  Badlands for the quests, through the dig site and the instance, and back
+  to Ironforge to hand them in -- the Platinum Discs up to Seeing What
+  Happens, which Tanaris finishes at the Uldum Pedestal. Uldaman adds 21
+  quests and is recommended for the Alliance in the setup.
+
+### Fixed
+- Steps tracking the wrong quest in the Optimized Alliance guides: Tanaris's
+  Seeing What Happens (2946) and Return to Ironforge (2977) were both Portents
+  of Uldum's id, Yuka Screwspigot (4324) was Divino-matic Rod's, and the
+  Hinterlands' Jammal'an the Prophet (1446) was The God Hakkar's. The Uldum
+  steps were also optional, and an optional accept is never offered, so the
+  chain never started; with Uldaman ticked it now runs. Yuka Screwspigot
+  sends you to Blackrock Depths' quests, so it is tagged for Blackrock Depths,
+  not Zul'Farrak. The filter review records follow the corrected ids.
+- The Optimized Badlands guide hands in Badlands Reagent Run and Find Agmond
+  but never picked them up; it now stops in Loch Modan for them on the way.
+
 ## [0.12.2]
 
 ### Fixed
@@ -450,6 +472,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.12.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.12.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

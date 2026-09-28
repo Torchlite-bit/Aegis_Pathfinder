@@ -8,7 +8,13 @@ return [[
 
 N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Badlands 40-41|
 
-R Badlands |QID|706| |N|Travel to Badlands (53.7, 43.3)|
+R Loch Modan |QID|2500| |N|Travel to Thelsamar in Loch Modan (37, 49.2)| |Z|Loch Modan|
+A Badlands Reagent Run |QID|2500| |N|Ghak Healtouch in Thelsamar (37.06, 49.36)| |Z|Loch Modan|
+R Ironband's Excavation Site |QID|738| |N|Travel to Ironband's Excavation Site (65.94, 65.62)| |Z|Loch Modan|
+T Ironband Wants You! |QID|707| |N|Prospector Ironband in Ironband's Excavation Site (65.94, 65.62)| |Z|Loch Modan|
+A Find Agmond |QID|738| |N|Prospector Ironband in Ironband's Excavation Site (65.94, 65.62)| |PRE|707| |Z|Loch Modan|
+
+R Badlands |QID|706| |N|Travel south to Badlands (53.7, 43.3)|
 A Fiery Blaze Enchantments |QID|706| |N|Sigrun Ironhew in Badlands (53.7, 43.3)|
 A Mirages |QID|718| |N|Sigrun Ironhew in Badlands (53.7, 43.3)|
 A A Dwarf and His Tools |QID|719| |N|Prospector Ryedol in Badlands (53.4, 43.4)|

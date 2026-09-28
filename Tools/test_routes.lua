@@ -123,6 +123,7 @@ check(n("RestedXP", "Human", "DM") >= 20, "RestedXP takes a Human through the De
 check(n("RestedXP", "NightElf", "DM") == 0, "and not a Night Elf, who never goes, got %d", n("RestedXP", "NightElf", "DM"))
 check(n("RestedXP", "Human", "GNOMER") >= 12, "Gnomeregan's quests are handed in, got %d", n("RestedXP", "Human", "GNOMER"))
 check(n("VanillaGuide", "Orc", "BRD") < 5, "the Optimized guides take the Horde through few")
+check(n("VanillaGuide", "Human", "ULDA") >= 20, "the Optimized Alliance route runs Uldaman, got %d", n("VanillaGuide", "Human", "ULDA"))
 
 print(string.format("Routes: %d checks", checks))
 if table.getn(failures) == 0 then
