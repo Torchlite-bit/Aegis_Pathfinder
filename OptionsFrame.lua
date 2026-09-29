@@ -428,6 +428,17 @@ function AegisPathfinder:CreateConfigPanel()
 	note("When you finish a guide, each dungeon ticked here that fits your level is offered "
 		.. "beside the route: its dungeon guide opens in a tab of its own, takes you round its "
 		.. "quests and in, and back to the route after.")
+
+	--[[ At the middle of its levels: a ticked dungeon's guide, offered once
+		(NextGuideFrame.lua). ]]
+	local midSwitch = Theme:Switch(body, "Offer a dungeon's guide at the middle of its levels", function(on)
+		AegisPathfinder.db.char.middungeons = on
+	end)
+	place(midSwitch, function(w) return midSwitch:Fit(w) end, 6)
+	frame.midSwitch = midSwitch
+	note("On reaching the middle of a ticked dungeon's levels -- The Deadmines (17-24) at 21 -- "
+		.. "its dungeon guide is offered once, to open in a tab of its own. For the dungeons the "
+		.. "setup asks about, not Turtle WoW's own.")
 	space(SECTION_GAP)
 
 	-- Filters ------------------------------------------------------------------------
@@ -1059,6 +1070,8 @@ function AegisPathfinder:RefreshDungeonPanel()
 
 	frame.alongSwitch:SetOn(self.db.char.offerdungeons and not ssf)
 	frame.alongSwitch:SetLocked(ssf)
+	frame.midSwitch:SetOn(self.db.char.middungeons ~= false and not ssf)
+	frame.midSwitch:SetLocked(ssf)
 
 	if ssf then
 		frame.wiredHint:SetText("Solo Self-Found is on: no dungeons until it is off.")

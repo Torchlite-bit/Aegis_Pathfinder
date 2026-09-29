@@ -391,7 +391,7 @@ local function Build()
 	feature("ah", "Auction House", "Includes steps that buy what a quest needs from the auction house instead of farming it.")
 	feature("ssf", "Solo Self-Found", "Play alone: no group quests, no dungeons, no trading and no Auction House.")
 	feature("group", "Group quests", "Includes elite and group quests, which are hard alone. Leave off to level solo.")
-	feature("dungeons", "Dungeons", "Adds dungeon quests to your route. Choose which on the next step.")
+	feature("dungeons", "Dungeons", "Adds dungeon quests to your route, and offers each dungeon's guide at the middle of its levels. Choose which on the next step.")
 	frame.featureNote = Body(frame, WIDTH - PAD * 2)
 	Theme:TextColor(frame.featureNote, "gold")
 
@@ -467,6 +467,9 @@ function AegisPathfinder:SetupStep(delta)
 	if nextPage > last then
 		self:ApplySetup(choice)
 		frame:Hide()
+		-- A character set up part-way through the levels may be at the
+		-- middle of a dungeon just ticked (NextGuideFrame.lua).
+		if self.OfferMidLevelDungeons then self:OfferMidLevelDungeons() end
 		return
 	end
 	-- Turning dungeons on with none picked starts from the recommended ones.

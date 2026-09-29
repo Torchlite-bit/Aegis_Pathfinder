@@ -302,6 +302,89 @@ f.chosen = true
 f:Hide()
 char.offerdungeons = nil
 
+-- A dungeon at the middle of its levels ----------------------------------------------------
+
+--[[ The dungeons ticked in the setup, each offered once on reaching the
+	middle of its dungeon guide's levels: The Deadmines (17-24) at 21. ]]
+guide("Dungeons/The Deadmines (17-24)")
+AegisPathfinder.DUNGEON_INFO = {
+	{ code = "DM", name = "The Deadmines" }, { code = "SFK", name = "Shadowfang Keep" },
+	{ code = "BFD", name = "Blackfathom Deeps" }, { code = "ULDA", name = "Uldaman" },
+}
+char.Dungeons = { DM = true, SFK = true, BFD = true, ULDA = true, WHC = true }
+char.completion = {}
+char.currentguide, char.tabs, char.activetab, char.isbranching = "Optimized/Redridge (27-28)", nil, nil, false
+AegisPathfinder:EnsureTabs()
+local midlevel = AegisPathfinder.DungeonMidLevel
+check(midlevel(17, 24) == 21 and midlevel(22, 30) == 26 and midlevel(13, 18) == 16,
+	"the middle, a half rounded up: 21, 26, 16")
+
+char.setupdone = nil
+check(table.getn(AegisPathfinder:GetMidLevelDungeons(21)) == 0, "nothing before the setup is done")
+char.setupdone = true
+check(table.getn(AegisPathfinder:GetMidLevelDungeons(20)) == 0, "nothing a level short of the middle")
+check(names(AegisPathfinder:GetMidLevelDungeons(21)) == "Dungeons/The Deadmines (17-24)",
+	"The Deadmines at 21, got '%s'", names(AegisPathfinder:GetMidLevelDungeons(21)))
+check(names(AegisPathfinder:GetMidLevelDungeons(28)) == "Dungeons/Shadowfang Keep (22-30), Dungeons/Blackfathom Deeps (24-32)",
+	"at 28 two, lowest middle first; not The Deadmines, outlevelled, nor Windhorn Canyon, Turtle's own; got '%s'",
+	names(AegisPathfinder:GetMidLevelDungeons(28)))
+char.Dungeons.BFD = false
+check(names(AegisPathfinder:GetMidLevelDungeons(28)) == "Dungeons/Shadowfang Keep (22-30)", "not one unticked")
+char.Dungeons.BFD = true
+char.completion["Dungeons/Shadowfang Keep (22-30)"] = 1
+check(names(AegisPathfinder:GetMidLevelDungeons(28)) == "Dungeons/Blackfathom Deeps (24-32)", "not one finished")
+char.completion["Dungeons/Shadowfang Keep (22-30)"] = nil
+char.SelfFound = true
+check(table.getn(AegisPathfinder:GetMidLevelDungeons(28)) == 0, "none in Solo Self-Found")
+char.SelfFound = nil
+char.middungeons = false
+check(table.getn(AegisPathfinder:GetMidLevelDungeons(28)) == 0, "none with the switch off")
+char.middungeons = nil
+
+-- Offered: the window, once.
+check(AegisPathfinder:OfferMidLevelDungeons(21) == true, "at 21 The Deadmines is offered")
+local m = AegisPathfinder.middungeonframe
+check(m and m:IsShown(), "in a window")
+check(string.find(m.text:GetText(), "level 21", 1, true) and string.find(m.text:GetText(), "The Deadmines (17-24)", 1, true),
+	"saying why, got '%s'", m.text:GetText())
+check(m.dungeons[1]:GetText() == "OPEN THE DEADMINES (17-24)" and not m.dungeons[2]:IsShown() and m.later:IsShown(),
+	"one button to open it, and not now; got '%s'", tostring(m.dungeons[1]:GetText()))
+check(char.middungeonsoffered and char.middungeonsoffered.DM, "and it is remembered as offered")
+this = m.dungeons[1]
+m.dungeons[1]:GetScript("OnClick")()
+check(char.currentguide == "Dungeons/The Deadmines (17-24)", "open loads the dungeon guide")
+check(tabs() == "Optimized/Redridge (27-28) | Dungeons/The Deadmines (17-24)",
+	"in a tab beside the route, got %s", tabs())
+check(not m:IsShown(), "and the window goes")
+check(AegisPathfinder:OfferMidLevelDungeons(21) == false, "and is not offered again")
+
+-- Two at once: opening one keeps the other; not now closes.
+check(AegisPathfinder:OfferMidLevelDungeons(28) == true and m.dungeons[1]:IsShown() and m.dungeons[2]:IsShown(),
+	"at 28 both, one button each")
+this = m.dungeons[1]
+m.dungeons[1]:GetScript("OnClick")()
+check(m:IsShown() and m.dungeons[1]:GetText() == "OPEN BLACKFATHOM DEEPS (24-32)" and not m.dungeons[2]:IsShown(),
+	"opening one leaves the other, got '%s'", tostring(m.dungeons[1]:GetText()))
+this = m.later
+m.later:GetScript("OnClick")()
+check(not m:IsShown() and char.middungeonsoffered.BFD, "not now closes it, and it has had its offer")
+
+-- One at a time: "Where next?" first.
+f:Show()
+check(AegisPathfinder:OfferMidLevelDungeons(46) == false and not char.middungeonsoffered.ULDA,
+	"with Where next? up, it waits, and has not been offered")
+f.chosen = true
+f:Hide()
+
+-- The level up: the new level, from the event.
+AegisPathfinder.enableDone = true
+event, arg1 = "PLAYER_LEVEL_UP", 46
+this = AegisPathfinder.midLevelEvents
+AegisPathfinder.midLevelEvents:GetScript("OnEvent")()
+check(m:IsShown() and m.dungeons[1]:GetText() == "OPEN ULDAMAN (41-51)", "reaching 46 offers Uldaman")
+m:Hide()
+char.middungeonsoffered, char.setupdone = nil, nil
+
 -- Report ----------------------------------------------------------------------------------
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end
