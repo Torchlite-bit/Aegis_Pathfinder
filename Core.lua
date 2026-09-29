@@ -136,6 +136,7 @@ local defaults = {
     setupdone = false,            -- has this character been through the first-time setup?
     offercustomzones = true,      -- offer custom zones when a guide finishes (NextGuideFrame.lua)
     offerdungeons = false,        -- and the ticked dungeons' guides, at your level (NextGuideFrame.lua)
+    middungeons = true,           -- offer a ticked dungeon's guide at the middle of its levels, once each (NextGuideFrame.lua)
     craftsellback = true,         -- crafting routes sell what is left over to a merchant (CraftPlanner.lua)
     sharenowarn = false,          -- skip the "share this guide with your party?" question (PartySync.lua)
     routepack = nil,              -- Active route pack name (e.g., "VanillaGuide", "RestedXP")
@@ -579,7 +580,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.17.0"
+AegisPathfinder.version = "0.18.0"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -771,6 +772,9 @@ function AegisPathfinder:InitializeRoute()
     -- The first time the addon loads on this character: the three-step
     -- setup (SetupFrame.lua).
     if self.MaybeShowSetup then self:MaybeShowSetup() end
+    -- A ticked dungeon whose middle level was reached while logged out, or
+    -- before this was here (NextGuideFrame.lua).
+    if self.OfferMidLevelDungeons then self:OfferMidLevelDungeons() end
 end
 
 function AegisPathfinder:OnDisable()

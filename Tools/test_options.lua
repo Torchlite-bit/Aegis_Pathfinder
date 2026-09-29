@@ -290,6 +290,11 @@ click(frame.alongSwitch)
 check(db.offerdungeons == true and frame.alongSwitch:IsOn(), "and the switch turns them on")
 click(frame.alongSwitch)
 check(db.offerdungeons == false, "and off")
+check(frame.midSwitch:IsOn(), "a dungeon's guide at the middle of its levels starts on")
+click(frame.midSwitch)
+check(db.middungeons == false and not frame.midSwitch:IsOn(), "and the switch turns it off")
+click(frame.midSwitch)
+check(db.middungeons == true, "and on")
 local dm
 for _, c in ipairs(frame.chips) do if c.dungeonCode == "DM" then dm = c end end
 check(dm.dot:IsShown(), "the dungeon this guide has steps for carries the blue dot")

@@ -119,6 +119,10 @@ are only found at startup.
       dungeon guides along the way*, tick one at your level, and finish a
       guide: Where next? lists its dungeon guide under the custom zones, and
       it opens in a tab beside the route.
+- [ ] **A dungeon at your level**: with The Deadmines or Wailing Caverns ticked
+      in the setup, level up to 21 (their guides say 17-24): a small window
+      offers the dungeon guide. Open puts it in a tab beside the route; Not now
+      closes it, and it is not offered again after a `/reload` or relog.
 
 ## 6. Gear
 

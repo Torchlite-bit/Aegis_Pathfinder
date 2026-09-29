@@ -326,7 +326,7 @@ is sections now.
 sections added, one scrolling body grew too long to find anything in, so the
 sections are grouped into pages with a category list down the left, as Zygor's
 options have it: Route (Race, Route pack), Dungeons (Dungeons, Turtle WoW's
-own, Along the way), Filters, Appearance (Server theme, Window scale), Gear and, set in under it, Item Score, Behaviour, Navigation
+own, Along the way -- with the middle-of-its-levels switch), Filters, Appearance (Server theme, Window scale), Gear and, set in under it, Item Score, Behaviour, Navigation
 (Waypoints, Arrow), Maintenance, About. The concept's 396px pane is unchanged, with the 150px list beside it
 (546px in all). The list is a quieter column than the pane — a 3% text tint and
 a hairline on its right edge — and the page shown is marked with a 3px accent
@@ -579,6 +579,29 @@ guide is recorded as done. Closing the window (its close chip, Escape) is
 "carry on with the route" -- what finishing a guide always did.
 `offercustomzones`, on by default, switches it off; it replaced
 `autobranch`, a switch that nothing read.
+
+**A dungeon at your level** (`AegisPathfinderMidDungeon`, same file). Not in
+the concept. `GetMidLevelDungeons(level)` lists the dungeon guides (`Dungeons/`)
+of the ticked dungeons in `DUNGEON_INFO` -- the ones the setup asks about;
+Turtle WoW's own start ticked, so they are left to *along the way* -- whose
+middle level (`DungeonMidLevel`: `floor((lo + hi + 1) / 2)`, from the guide's
+title range) the player has reached, without being past its top, finished
+(`db.char.completion`), open in a tab (`FindTab`) or offered before
+(`db.char.middungeonsoffered[code]`). Nothing before `setupdone`, in Solo
+Self-Found, or with `middungeons` false (the Dungeons page's *Offer a dungeon's
+guide at the middle of its levels*, on by default). Up to four, lowest middle
+first.
+
+`OfferMidLevelDungeons(level)` shows them: chrome with an `A DUNGEON AT YOUR
+LEVEL` subhead, a line naming the level and the dungeon, a `Theme:PanelButton`
+per dungeon ("Open ..." when there is one) and a **Not now** button. Showing
+them is the offer: each is marked offered then, whatever the answer. A button
+opens its guide in a tab (`OpenGuideTab`) and the window keeps the rest; Not
+now, the close chip or Escape closes it. It waits while Where next? or the setup
+is up, without marking anything. It is asked from its own `PLAYER_LEVEL_UP`
+frame (`arg1`, the new level: `UnitLevel` can lag), at the end of
+`InitializeRoute`, and when the setup is finished (`SetupStep`). Beside the
+guide, as Where next? is.
 
 ### Shopping list -- `MaterialsFrame.lua`
 

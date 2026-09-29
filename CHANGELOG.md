@@ -18,6 +18,25 @@ reports.
 
 ---
 
+## [0.18.0]
+
+### Added
+- **A ticked dungeon's guide, offered at the middle of its levels.** When
+  you reach the middle of the level range of a dungeon you ticked in the
+  setup (The Deadmines (17-24) at 21), a small window offers its dungeon
+  guide. You can open it in a tab beside the route, or choose "Not now".
+  - Each dungeon is offered once, whatever you answer. Nothing is offered
+    once you're past a dungeon's top level, have finished its guide, or
+    already have it open.
+  - If several are due at once, they're listed together. Opening one keeps
+    the others in the window.
+  - It checks when you level up, when you log in and when you finish the
+    setup.
+  - It covers the dungeons the setup asks about. Turtle WoW's own dungeons
+    start ticked, so they stay with "dungeons along the way".
+  - The Dungeons page in the options has a switch to turn it off, and
+    Solo Self-Found holds it off.
+
 ## [0.17.0]
 
 ### Changed
@@ -848,6 +867,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.18.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.17.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.16.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.16.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

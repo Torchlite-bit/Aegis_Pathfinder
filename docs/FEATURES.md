@@ -77,6 +77,17 @@ are inside its level range or one short of it, below its top, and have not
 finished its guide. Pick one and it opens in a tab beside the route. It is off
 to start with, and Solo Self-Found holds it off.
 
+**A dungeon at your level.** Reach the middle of a ticked dungeon's levels -- The
+Deadmines (17-24) at 21 -- and a small window offers its dungeon guide: open it
+in a tab beside the route, or not now. Each dungeon is offered once, whatever
+the answer, and not at all once you are past its top level, have finished its
+guide, or already have it open. It covers the dungeons the setup asks about
+(ticking dungeons there is what switches it on for you); Turtle WoW's own stay
+with *dungeons along the way*, since they start ticked. It looks when you level
+up, when you log in and when you finish the setup. *Offer a dungeon's guide at
+the middle of its levels*, on the Dungeons page, turns it off; Solo Self-Found
+holds it off.
+
 **Dungeon guides.** The guide list's **Dungeons** tab has a guide for each
 dungeon, for your side: every leveling dungeon from Ragefire Chasm to
 Blackrock Depths, and Turtle WoW's own -- Frostmane Hollow, Windhorn Canyon
