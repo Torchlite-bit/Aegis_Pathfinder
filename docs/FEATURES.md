@@ -235,8 +235,11 @@ yet. **Active Targets** has a button for whoever the step wants you to find: the
 quest's giver or hand-in, what it wants killed, what drops what it wants
 collected, the trainer a profession step sends you to. Click one to target it
 and mark it for what the quest wants with them (see **Quest icons**).
-`/apg target` does the same for the next one each time you press it, so a macro
-with just that line works like RestedXP's; both also have key bindings under
+`/apg target` takes the nearest of the step's targets, then the next one out
+each time you press it, and back round -- so three Crocolisks are three presses,
+not the same one three times. A macro with just that line works like
+RestedXP's; clicking a target's button again moves on the same way, to the next
+one by that name. Both also have key bindings under
 *Aegis: Pathfinder* in the key bindings menu. Targets come from pfQuest's
 database, so quest steps need pfQuest; profession steps name their trainers
 themselves. What the quest wants killed or looted is looked for where the step
@@ -266,8 +269,8 @@ off, under **Behaviour**.
 
 **Macros.** A third small window, **Macros**, holds two real macros the addon
 writes into your character's macro book and keeps up to date: **AegisTarget**,
-with a `/target` line for each of the step's targets and a line that marks
-whoever it found, and **AegisItem**, which uses the quest item the step needs
+which is `/apg target` -- the nearest of the step's targets, then the next one
+out each press, marked -- and **AegisItem**, which uses the quest item the step needs
 and wears that item's icon. Drag either tile onto an action bar once; from then
 on the macro follows the guide by itself, step after step. Clicking a tile does
 what its macro does. They are made the first time there is something for them

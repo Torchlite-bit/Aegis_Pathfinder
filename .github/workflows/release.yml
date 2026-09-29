@@ -1,12 +1,28 @@
 name: Release
 
+# A GitHub release for every version that reaches main. The .toc's
+# "## Version" is tagged v<version> and packaged, once: a merge that leaves the
+# version alone (Tools/ or docs/ only, which take no bump) finds its tag there
+# already and does nothing. Launchers that compare an installed addon with the
+# latest release see the version that is on main.
+#
+# The tag is pushed with the workflow's own token, and GitHub starts no
+# workflow for that push, so the same version is not packaged twice. A v* tag
+# pushed by hand is still released as before.
 on:
   push:
+    branches:
+      - main
     tags:
       - 'v*'
+  workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
 
 jobs:
   release:
@@ -17,7 +33,30 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Tag the version, if it is new
+        id: tag
+        if: github.ref_type == 'branch'
+        run: |
+          version=$(sed -n 's/^## Version:[[:space:]]*\([^[:space:]]*\).*/\1/p' Aegis_Pathfinder.toc | tr -d '\r')
+          if ! printf '%s' "$version" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "::error::No MAJOR.MINOR.PATCH version in Aegis_Pathfinder.toc (got '$version')"
+            exit 1
+          fi
+          tag="v$version"
+          if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
+            echo "$tag is released already; nothing to do."
+            echo "new=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$tag" -m "Aegis: Pathfinder $version"
+          git push origin "$tag"
+          echo "Tagged $tag."
+          echo "new=true" >> "$GITHUB_OUTPUT"
+
       - name: Package and release to GitHub
+        if: github.ref_type == 'tag' || steps.tag.outputs.new == 'true'
         uses: BigWigsMods/packager@v2
         env:
           GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}

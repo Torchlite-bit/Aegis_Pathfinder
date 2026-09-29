@@ -768,10 +768,25 @@ Wetlands and Stranglethorn crocolisks, never a Loch Crocolisk. pfQuest's
 `fac` string says who is friendly to the player's faction. The tile shows the
 step's action glyph (the kill glyph in `danger` for an enemy) and, in its
 corner, the raid mark it will apply -- the one piece of Blizzard art here,
-because it is the in-game marker itself. A click is `TargetByName(name, true)`
-and `SetRaidTarget` with the entry's context mark (quest icons, below). An
-existing mark is not set again (which would toggle it off). The tile of
-whoever is targeted takes the accent border, relit on `PLAYER_TARGET_CHANGED`.
+because it is the in-game marker itself. A click targets the next one by
+that name around you (**Cycling**, below) and `SetRaidTarget`s the entry's
+context mark (quest icons, below). An existing mark is not set again (which
+would toggle it off). The tile of whoever is targeted takes the accent border,
+relit on `PLAYER_TARGET_CHANGED`.
+
+**Cycling.** `TargetByName` -- `/target` -- takes the nearest with the name
+but keeps the current target when it has the name already, so pressing it
+again never moves on. With ClassicAPI's `TargetNearest`, `UnitGUID` and
+`TargetUnit`, a press looks round instead: up to 30 `TargetNearest` calls,
+stopping at the first GUID seen twice, keep the living non-player units with
+a wanted name, sorted by `UnitDistanceSquared`, and the press takes the one
+after the current target's GUID -- the nearest when the target is none of
+them -- so presses go nearest, next out, and round again. While it looks,
+the `PLAYER_TARGET_CHANGED` handler does nothing (no marks, no border
+repaints) for the units it passes. When it finds none of them, the target is
+put back (`TargetUnit` of the old GUID, or `ClearTarget`) and it falls back to
+`TargetByName`, which also reaches friendly NPCs further out. Without those
+ClassicAPI functions it is `TargetByName` alone, as it was.
 
 **Quest icons.** Each target carries a context and the mark that says it,
 as RestedXP's Quest Icons do: `talk` star (an ACCEPT's starters, a TURNIN's
@@ -793,11 +808,12 @@ them too.
 it), with a tile for each of two character macros the addon writes and keeps
 current -- RestedXP's generated targeting macro, plus one for the quest item:
 
-- **AegisTarget**: `/target <name>` per target, the step's first target last
-  (`/target` keeps the last name it finds), then `/script
-  AegisPathfinder:MarkTarget()`, which marks the current target if it is one
-  of the step's. Kept to 255 letters by dropping the least wanted names. With
-  no targets it is `/apg target`, which says there is nobody. Its icon is
+- **AegisTarget**: `/apg target` (`TargetNextActive`), the same on every
+  step: each press the next of the step's targets around you, marked
+  (**Cycling**). It was a `/target <name>` line per target and `/script
+  AegisPathfinder:MarkTarget()`; `/target` stayed on whoever was targeted, so
+  presses did not move on. `MarkTarget` stays for a macro saved that way until
+  it is next written. With no targets it says there is nobody. Its icon is
   Hunter's Mark's (`Ability_Hunter_SniperShot`).
 - **AegisItem**: `/apg useitem` (1.12 has no `/use`), wearing the first active
   item's icon. The stock action bars repaint a button when its slot changes, not
@@ -824,12 +840,13 @@ bar never aims at a finished step. Never while `MacroFrame` is open: the stock
 UI saves its own copy of the text over ours when it closes, so the repaint
 waits a second and tries again. With the 18 character slots full nothing is
 made; the tile's tooltip and a drag say so. A tile click does what its macro
-does (`TargetAnyActive`, `UseActiveItem`); a drag is `PickupMacro`, to drop
+does (`TargetNextActive`, `UseActiveItem`); a drag is `PickupMacro`, to drop
 on a bar. `showmacros` switches the window and the macro writing off.
 
-`/apg target` and a key binding (`Bindings.xml`) target the next of them after
-whoever is targeted, so repeated presses cycle -- RestedXP's macro, without a
-macro. `/apg useitem` and a second binding use the first item.
+`/apg target` and a key binding (`Bindings.xml`) do what AegisTarget does:
+the nearest of the step's targets, then the next one out on each press --
+RestedXP's macro, without a macro. `/apg useitem` and a second binding use the
+first item.
 
 Step changes repaint on the next frame (`UpdateStatusFrame` calls
 `RefreshActiveFrames`); `BAG_UPDATE` bursts coalesce into one repaint 0.25s

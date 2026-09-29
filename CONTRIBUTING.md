@@ -14,8 +14,12 @@ Update both.
 
 ## Branching
 
-Work on a branch and open a pull request against `main`. Do not push a `v*`
-tag unless you mean to cut a release — that tag triggers the release packager.
+Work on a branch and open a pull request against `main`. Every version that
+reaches `main` is released by itself: `.github/workflows/release.yml` tags the
+`.toc`'s `## Version` as `v<version>` and packages it as a GitHub release, once.
+A merge that leaves the version alone releases nothing, so bump the version
+(below) when a change ships. There is no need to push a `v*` tag by hand; one
+pushed anyway is released too.
 
 ## Running the checks
 

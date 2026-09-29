@@ -191,7 +191,7 @@ local options = {
         },
         Target = {
             name = "Target",
-            desc = "Target and mark the current step's next active target -- put /apg target in a macro",
+            desc = "Target and mark the nearest of the step's targets, then the next one out each press -- put /apg target in a macro",
             type = "execute",
             func = function() AegisPathfinder:TargetNextActive() end,
         },
@@ -579,7 +579,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.16.2"
+AegisPathfinder.version = "0.17.0"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be

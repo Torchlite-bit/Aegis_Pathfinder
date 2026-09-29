@@ -169,6 +169,10 @@ are only found at startup.
       on it (star to talk, skull to kill, cross to loot, square to interact).
 - [ ] **Macros**: AegisTarget and AegisItem appear in your character macros and
       follow the guide from an action bar.
+- [ ] With several of a step's mobs around (Crocolisk Hunting), AegisTarget
+      takes the nearest, each press after it the next one out, then back to
+      the nearest; a dead one is skipped; targeting something else first, the
+      next press starts at the nearest again.
 
 ## 10. Party sharing
 

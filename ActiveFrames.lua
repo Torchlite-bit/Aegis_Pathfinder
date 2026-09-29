@@ -26,8 +26,9 @@
 	Both windows hide when they have nothing to show. Each drags by its title
 	and remembers where it was left; until then Items hangs under the guide
 	and Targets under Items. /apg target and /apg useitem, and two key
-	bindings, do what the first buttons do -- /apg target cycles through the
-	targets on each press, which is the macro RestedXP asks you to make.
+	bindings, do what the macros do -- /apg target takes the nearest of the
+	step's targets, then the next one out on each press, which is the macro
+	RestedXP asks you to make.
 ]]
 
 local AegisPathfinder = AegisPathfinder
@@ -331,6 +332,10 @@ local function Mark(entry, unit)
 end
 
 local iconTargets = {}
+-- True while a press looks round for the step's targets (Around): the target
+-- changes once for everyone it passes, and none of them is to be marked or
+-- lit up on the tiles (the PLAYER_TARGET_CHANGED handler, below).
+local scanning = false
 
 --- Quest icons: mark `unit` ("mouseover" or "target") if a quest wants it.
 function AegisPathfinder:AutoMark(unit)
@@ -345,20 +350,98 @@ function AegisPathfinder:AutoMark(unit)
 	return Mark(entry, unit)
 end
 
---- Target `entry` by name and mark it. False, and a word in chat unless
---- `quiet`, when nobody by that name is close enough.
-function AegisPathfinder:TargetActive(entry, quiet)
-	if not entry then return false end
-	TargetByName(entry.name, true)
-	if not UnitExists("target") or UnitName("target") ~= entry.name then
-		if not quiet then self:Print(entry.name .. " isn't close enough to target.") end
+--[[ Each press, the next of the step's targets around you.
+
+	TargetByName -- what /target does -- takes the nearest with the name, but
+	keeps whoever you have targeted when they have it already: pressing the
+	macro again stayed on the one Crocolisk. ClassicAPI's TargetNearest steps
+	through everyone around you that you can attack or help, nearest first. A
+	press looks through them (Around), keeps the step's targets, nearest
+	first, and takes the one after whoever you have targeted -- the nearest,
+	when that is nobody on the list. So the first press finds the nearest,
+	and each one after it the next one out, and round again.
+
+	Without those functions, or with none of the step's targets among those
+	it reaches, it is TargetByName as it was. ]]
+local AROUND = 30          -- units looked at in one press, at most
+local FAR = 1e30           -- where a unit is, when its distance is unknown
+
+-- The step's targets around you (`byName`: name to entry), nearest first,
+-- as { guid, entry }. Looking changes the target; the caller puts it right.
+local function Around(byName)
+	local found, seen = {}, {}
+	local function look()
+		for _ = 1, AROUND do
+			TargetNearest()
+			local guid = UnitGUID("target")
+			if not guid or seen[guid] then return end
+			seen[guid] = true
+			local entry = byName[UnitName("target")]
+			if entry and not UnitIsPlayer("target") and not UnitIsDead("target") then
+				local d, checked = FAR, false
+				if UnitDistanceSquared then d, checked = UnitDistanceSquared("target") end
+				table.insert(found, { guid = guid, entry = entry, d = checked and d or FAR })
+			end
+		end
+	end
+	-- Whatever happens, the quest icons come back on.
+	scanning = true
+	local ok, err = pcall(look)
+	scanning = false
+	if not ok then error(err, 0) end
+	table.sort(found, function(a, b)
+		if a.d ~= b.d then return a.d < b.d end
+		return a.guid < b.guid
+	end)
+	return found
+end
+
+-- Target and mark the next of `entries` around you after the current target.
+-- False, with the target put back, when none of them is around.
+local function Cycle(entries)
+	if not (TargetNearest and UnitGUID and TargetUnit) then return false end
+	local byName = {}
+	for _, e in ipairs(entries) do
+		if not byName[e.name] then byName[e.name] = e end
+	end
+	local was = UnitGUID("target")
+	local found = Around(byName)
+	local n = table.getn(found)
+	if n == 0 then
+		if was then TargetUnit(was) elseif ClearTarget then ClearTarget() end
 		return false
 	end
+	local pick = found[1]
+	for i, u in ipairs(found) do
+		if u.guid == was then
+			pick = found[math.mod(i, n) + 1]
+			break
+		end
+	end
+	TargetUnit(pick.guid)
+	return Mark(pick.entry)
+end
+
+-- The nearest with `entry`'s name, by TargetByName, marked; false for nobody.
+local function ByName(entry)
+	TargetByName(entry.name, true)
+	if not UnitExists("target") or UnitName("target") ~= entry.name then return false end
 	return Mark(entry)
 end
 
+--- Target `entry` -- the next one by that name around you, each press -- and
+--- mark it. False, and a word in chat unless `quiet`, when nobody by that
+--- name is close enough.
+function AegisPathfinder:TargetActive(entry, quiet)
+	if not entry then return false end
+	if Cycle({ entry }) or ByName(entry) then return true end
+	if not quiet then self:Print(entry.name .. " isn't close enough to target.") end
+	return false
+end
+
 --- Mark the current target, if it is one of the step's. The last line of the
---- AegisTarget macro, after its /target lines have found someone.
+--- AegisTarget macro when it was /target lines; one saved that way still
+--- calls it until the macro is next written.
 function AegisPathfinder:MarkTarget()
 	if not UnitExists("target") then return false end
 	local name = UnitName("target")
@@ -368,35 +451,23 @@ function AegisPathfinder:MarkTarget()
 	return false
 end
 
---- Target the first of the step's targets that is in range -- what the
---- AegisTarget macro does, and its button in the Macros window.
-function AegisPathfinder:TargetAnyActive()
-	if table.getn(activeTargets) == 0 then
-		self:Print("Nobody to target on this step.")
-		return false
-	end
-	for _, t in ipairs(activeTargets) do
-		if self:TargetActive(t, true) then return true end
-	end
-	self:Print("None of this step's targets is close enough to target.")
-	return false
-end
-
---- Target the next of the step's targets after whichever is targeted now,
---- so pressing it again moves on. What /apg target and the key binding do.
+--- Target the next of the step's targets around you, so each press moves
+--- on. What the AegisTarget macro, /apg target and the key binding do.
 function AegisPathfinder:TargetNextActive()
 	local n = table.getn(activeTargets)
 	if n == 0 then
 		self:Print("Nobody to target on this step.")
 		return false
 	end
+	if Cycle(activeTargets) then return true end
+	-- By name: the next name after the target's, round the list.
 	local current = UnitExists("target") and UnitName("target")
 	local start = 1
 	for i, t in ipairs(activeTargets) do
 		if t.name == current then start = i + 1 end
 	end
 	for k = 0, n - 1 do
-		if self:TargetActive(activeTargets[math.mod(start - 1 + k, n) + 1], true) then return true end
+		if ByName(activeTargets[math.mod(start - 1 + k, n) + 1]) then return true end
 	end
 	self:Print("None of this step's targets is close enough to target.")
 	return false
@@ -408,9 +479,11 @@ end
 	action bar. So does this: two character macros, AegisTarget and AegisItem,
 	made on first use and rewritten whenever the step changes.
 
-	AegisTarget is a /target line per target and a line to mark whoever that
-	found. /target keeps the last name it finds, so the step's first target
-	goes last. AegisItem uses the first active item -- 1.12 has no /use -- and
+	AegisTarget is /apg target: each press the next of the step's targets
+	around you, marked (TargetNextActive). It was a /target line per target,
+	and /target stays on whoever you have targeted when they have the name,
+	so pressing it again never moved on. AegisItem uses the first active
+	item -- 1.12 has no /use -- and
 	takes that item's icon when the macro icon list has it, so the button on
 	your bar shows what it will use.
 
@@ -420,7 +493,6 @@ end
 ]]
 
 local MACRO_SLOTS = 18         -- per character, and per account, on 1.12
-local MACRO_LETTERS = 255
 local TARGET_MACRO, ITEM_MACRO = "AegisTarget", "AegisItem"
 AegisPathfinder.MACROS = { TARGET = TARGET_MACRO, ITEM = ITEM_MACRO }
 -- Icons by name: the macro icon list is read at run time, and the first of
@@ -486,21 +558,10 @@ local function TargetIcon()
 	end
 end
 
---- AegisTarget's text for `targets`.
-function AegisPathfinder:TargetMacroBody(targets)
-	if table.getn(targets or {}) == 0 then return "/apg target" end
-	local mark = "/script AegisPathfinder:MarkTarget()"
-	local lines = {}
-	for i = table.getn(targets), 1, -1 do
-		table.insert(lines, "/target " .. targets[i].name)
-	end
-	-- What does not fit goes, least wanted first: those are the top lines.
-	while table.getn(lines) > 1 and string.len(table.concat(lines, "\n") .. "\n" .. mark) > MACRO_LETTERS do
-		table.remove(lines, 1)
-	end
-	table.insert(lines, mark)
-	return table.concat(lines, "\n")
-end
+-- AegisTarget's text. The same on every step: the step's targets are the
+-- addon's to look round for, so a macro saved from an earlier step is not
+-- stale.
+local TARGET_BODY = "/apg target"
 
 -- The stock action bars repaint a button when its slot changes, not when the
 -- macro in it does; a new icon would wait for the next page turn otherwise.
@@ -559,7 +620,7 @@ end
 function AegisPathfinder:SyncMacros(create)
 	if MacroFrame and MacroFrame:IsVisible() then return false end
 	local item = activeItems[1]
-	local t, newT = WriteMacro(TARGET_MACRO, TargetIcon(), self:TargetMacroBody(activeTargets), create)
+	local t, newT = WriteMacro(TARGET_MACRO, TargetIcon(), TARGET_BODY, create)
 	local i, newI = WriteMacro(ITEM_MACRO, item and item.texture, "/apg useitem", create)
 	if newT or newI then
 		local made = (newT and newI) and "macros AegisTarget and AegisItem"
@@ -727,11 +788,11 @@ local DRAG_HINT = "Drag onto an action bar: it follows the guide from then on."
 
 local function MacroTargetTile(parent)
 	local b = MacroTile(parent, TARGET_MACRO)
-	b:SetScript("OnClick", function() AegisPathfinder:TargetAnyActive() end)
+	b:SetScript("OnClick", function() AegisPathfinder:TargetNextActive() end)
 	b:SetScript("OnEnter", function()
 		this.border:SetTint("accent")
-		local lines = {}
-		for _, t in ipairs(activeTargets) do table.insert(lines, "/target " .. t.name) end
+		local lines = { "The nearest, then the next one out each press:" }
+		for _, t in ipairs(activeTargets) do table.insert(lines, t.name) end
 		table.insert(lines, AegisPathfinder.macroFull and "No free character macro slot to make it in." or DRAG_HINT)
 		Theme:ShowTip(this, "TOP", TARGET_MACRO .. " -- target and mark", lines)
 	end)
@@ -912,6 +973,7 @@ events:RegisterEvent("PLAYER_TARGET_CHANGED")
 events:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
 events:SetScript("OnEvent", function()
 	if event == "PLAYER_TARGET_CHANGED" then
+		if scanning then return end
 		AegisPathfinder:PaintTargetBorders()
 		AegisPathfinder:AutoMark("target")
 	elseif event == "UPDATE_MOUSEOVER_UNIT" then

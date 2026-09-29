@@ -18,6 +18,27 @@ reports.
 
 ---
 
+## [0.17.0]
+
+### Changed
+- **The target macro takes the nearest, then the next one out on each
+  press.** AegisTarget used to be a `/target` line per target, and `/target`
+  keeps whoever you already have targeted when they have the name. So with
+  three Crocolisks around, every press stayed on the same one. Now:
+  - The first press takes the nearest of the step's targets, each press
+    after it the next one further out, then back round to the nearest. Dead
+    ones are skipped.
+  - The macro is `/apg target`, the same on every step. `/apg target`, the
+    key binding and the Macros window's tile all do the same.
+  - Clicking a target's button in Active Targets again moves on to the next
+    one by that name.
+  - Looking round puts no raid marks on the mobs it passes, only on the one
+    it takes.
+  - It uses ClassicAPI's `TargetNearest`. Without it, or when none of the
+    step's targets turn up that way (a quest giver further off, say), it
+    targets by name as before. When it finds nobody, your target is left as
+    it was.
+
 ## [0.16.2]
 
 ### Fixed
@@ -827,6 +848,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.17.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.16.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.16.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.16.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
