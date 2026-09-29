@@ -26,7 +26,7 @@ T Speak with Thun'grim |QID|1825| |N|Thun'grim Firegaze (57.2, 30.3)| |Z|The Bar
 A Brutal Armor |QID|1838| |N|Thun'grim Firegaze (57.2, 30.3)| |Z|The Barrens| |C|Warrior|
 
 R Razorfen Kraul |N|In the south of the Barrens, west of the Thousand Needles road, among the thorns (40.8, 89.4)| |Z|The Barrens|
-C Blueleaf Tubers |QID|1221| |N|Grab a Crate with Holes. Grab a Snufflenose Command Stick. Grab and read the Snufflenose Owner's Manual.  In Razorfen Kraul, use the Crate with Holes to summon a Snufflenose Gopher, and use the Command Stick on the gopher to make it search for Tubers.  Bring 6 Blueleaf Tubers, the Snufflenose Command Stick and the Crate with Holes, outside too (62.3, 37.6)|
+C Blueleaf Tubers |QID|1221| |N|Grab a Crate with Holes. Grab a Snufflenose Command Stick. Grab and read the Snufflenose Owner's Manual.  In Razorfen Kraul, use the Crate with Holes to summon a Snufflenose Gopher, and use the Command Stick on the gopher to make it search for Tubers.  Bring 6 Blueleaf Tubers, the Snufflenose Command Stick and the Crate with Holes, outside too (62.3, 37.6)| |Z|The Barrens|
 A Willix the Importer |QID|1144| |N|Willix the Importer|
 C Willix the Importer |QID|1144| |N|Escort Willix the Importer out of Razorfen Kraul.|
 T Willix the Importer |QID|1144| |N|Willix the Importer|

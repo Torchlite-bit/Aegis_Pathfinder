@@ -26,9 +26,9 @@ A The Only Cure is More Green Glow |QID|2962| |N|Ozzie Togglevolt (45.9, 49.4)| 
 T The Only Cure is More Green Glow |QID|2962| |N|Ozzie Togglevolt (45.9, 49.4)| |Z|Dun Morogh|
 
 R Gnomeregan |N|Gnomeregan's front door is in the valley west of Kharanos (24.4, 39.6)| |Z|Dun Morogh|
-C Save Techbot's Brain! |QID|2922| |N|Get Techbot's Memory Core, outside too (19.8, 31.9)|
+C Save Techbot's Brain! |QID|2922| |N|Get Techbot's Memory Core, outside too (19.8, 31.9)| |Z|Dun Morogh|
 C Essential Artificials |QID|2924| |N|Get 12 Essential Artificials| |O|
-C Gyrodrillmatic Excavationators |QID|2928| |N|Get twenty-four Robo-mechanical Guts, outside too (20.6, 35.1)|
+C Gyrodrillmatic Excavationators |QID|2928| |N|Get twenty-four Robo-mechanical Guts, outside too (20.6, 35.1)| |Z|Dun Morogh|
 C Backup System Activation |QID|40856| |N|Activate the Alpha Channel Valve and the Reserve Pump Channel Lever deep within Gnomeregan|
 C High Energy Regulator |QID|40861| |N|Find the Schematic: High Energy Regulator within Gnomeregan|
 A Return of the Ring |QID|2947| |N|The Sparklematic 5200| |O| |PRE|2945|
@@ -53,7 +53,7 @@ T Gyrodrillmatic Excavationators |QID|2928| |N|Shoni the Shilent (62.6, 34.1)| |
 N Gnomeregan again |N|What you have handed in leads back to Gnomeregan|
 
 R Gnomeregan |N|Gnomeregan's front door is in the valley west of Kharanos (24.4, 39.6)| |Z|Dun Morogh|
-C Gnome Improvement |QID|2948| |N|Get the Brilliant Gold Ring, a Silver Bar, a Moss Agate, and 30 silver coins, outside too (30.5, 27.1) (21.5, 37.1)| |O|
+C Gnome Improvement |QID|2948| |N|Get the Brilliant Gold Ring, a Silver Bar, a Moss Agate, and 30 silver coins, outside too (30.5, 27.1) (21.5, 37.1)| |Z|Dun Morogh| |O|
 
 R Ironforge |N|Travel to Ironforge| |Z|Ironforge|
 T Gnome Improvement |QID|2948| |N|Talvash del Kissel (36.4, 3.6)| |Z|Ironforge| |O|

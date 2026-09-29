@@ -24,10 +24,10 @@ T Badlands Reagent Run |QID|2258| |N|Jarkal Mossmeld (2.4, 46.1)| |Z|Badlands|
 A Uldaman Reagent Run |QID|2202| |N|Jarkal Mossmeld (2.4, 46.1)| |Z|Badlands|
 
 R Uldaman |N|In the north of the Badlands: past the dig site (39.6, 18.5) to the temple doors (43, 13.9)| |Z|Badlands|
-C Power Stones |QID|2418| |N|Get 8 Dentrium Power Stones and 8 An'Alleum Power Stones, outside too (43.2, 11.8) (39.1, 18.4)|
-C Solution to Doom |QID|709| |N|Loot the Tablet of Ryun'eh from the Ancient Chest in the dig site, outside the instance, outside too (39.3, 18.8)|
-C Necklace Recovery |QID|2283| |N|Look for a valuable necklace within the Uldaman dig site, outside too (43.2, 11.8) (39.1, 18.4)|
-C Uldaman Reagent Run |QID|2202| |N|Get 12 Magenta Fungus Caps, outside too (40.9, 12.8)|
+C Power Stones |QID|2418| |N|Get 8 Dentrium Power Stones and 8 An'Alleum Power Stones, outside too (43.2, 11.8) (39.1, 18.4)| |Z|Badlands|
+C Solution to Doom |QID|709| |N|Loot the Tablet of Ryun'eh from the Ancient Chest in the dig site, outside the instance, outside too (39.3, 18.8)| |Z|Badlands|
+C Necklace Recovery |QID|2283| |N|Look for a valuable necklace within the Uldaman dig site, outside too (43.2, 11.8) (39.1, 18.4)| |Z|Badlands|
+C Uldaman Reagent Run |QID|2202| |N|Get 12 Magenta Fungus Caps, outside too (40.9, 12.8)| |Z|Badlands|
 C Reclaimed Treasures |QID|2342| |N|Get Patrick Garrett's family treasure from their family chest in the South Common Hall of Uldaman|
 A The Platinum Discs |QID|2278| |N|The Discs of Norgannon|
 T The Platinum Discs |QID|2278| |N|The Discs of Norgannon|

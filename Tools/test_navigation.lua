@@ -20,7 +20,7 @@ stub.install(_G)
 
 GetLocale = function() return "enUS" end
 GetMapContinents = function() return "Eastern Kingdoms" end
-GetMapZones = function() return "Dun Morogh", "Elwynn Forest" end
+GetMapZones = function() return "Dun Morogh", "Elwynn Forest", "Redridge Mountains", "Tirisfal Glades", "Stranglethorn Vale" end
 IsAddOnLoaded = function() return false end
 WorldMapFrame = CreateFrame("Frame", nil, UIParent)
 WorldMapFrame:Hide()
@@ -305,6 +305,61 @@ do
 	check(ok, "or with names and zones missing, got %s", tostring(err))
 	db.mapquestgivers, pfDB = nil, keepDB
 	db.waypointprovider = "tomtom"
+end
+
+-- The zone a step is in ------------------------------------------------------
+
+--[[ A step without a |Z| tag is in the guide's zone, from its title, and the
+	Optimized titles shorten it: "Optimized/Redridge (18-20)". The map has no
+	"Redridge", so each such step's waypoint went to the zone you stood in,
+	and chat said "Cannot find zone "Redridge", using current zone." on every
+	step. The shortened names -- in titles and in |Z| tags -- are the map's
+	names now; a point on a continent's map gets no waypoint, rather than the
+	same point in whatever zone you are in. ]]
+do
+	AegisPathfinder.select = select
+	dofile("Parser.lua")
+	local A = AegisPathfinder
+	local said = {}
+	local keepPrint, keepInfo = A.Print, A.GetObjectiveInfo
+	A.Print = function(_, msg) table.insert(said, msg) end
+	A.GetObjectiveInfo = function() return "RUN", "Three Corners" end
+	db.waypointprovider = "tomtom"
+
+	local function step(tags, guide)
+		A.zonename = A:GuideZone(guide or "Optimized/Redridge (18-20)")
+		A.tags, A.current = { tags }, 1
+		TomTom.waypoints = {}
+		said = {}
+		A:UpdateWaypoint()
+		return TomTom.waypoints[1]
+	end
+
+	check(A:GuideZone("Optimized/Redridge (18-20)") == "Redridge Mountains",
+		"Optimized/Redridge is in Redridge Mountains, got %s", tostring(A:GuideZone("Optimized/Redridge (18-20)")))
+	check(A:GuideZone("Stranglethorn (36-37)") == "Stranglethorn Vale" and A:GuideZone("Un'goro (51-52)") == "Un'Goro Crater",
+		"and the zone guides' shortened titles too")
+	check(A:GuideZone("Elwynn Forest (1-12)") == "Elwynn Forest", "a title with the map's name keeps it")
+	check(A:GuideZone("RXP/52-52 Felwood") == nil, "a title with no level range in brackets has no zone")
+
+	local wp = step("|QID|244| |N|Guard Parker in Three Corners (15.32, 71.42)|")
+	check(wp and wp.zone == 3, "a Redridge step's waypoint is on Redridge Mountains' map, got zone %s", tostring(wp and wp.zone))
+	check(table.getn(said) == 0, "and nothing is said in chat, got %q", tostring(said[1]))
+
+	wp = step("|N|Travel to Brill (59.50, 52.22)| |Z|Tirisfal|", "Silverpine Forest (12-20)")
+	check(wp and wp.zone == 4 and table.getn(said) == 0, "|Z|Tirisfal| is Tirisfal Glades, quietly")
+
+	wp = step("|N|Travel to Booty Bay (28.08, 76.19)| |Z||", "Stranglethorn (39-40)")
+	check(wp and wp.zone == 5 and table.getn(said) == 0, "an empty |Z| is the guide's zone")
+
+	wp = step("|N|Travel to Eastern Kingdoms (48.1, 62.4)| |O| |Z|Eastern Kingdoms|", "RXP/Onyxia Attunement (A)")
+	check(wp == nil and table.getn(said) == 0, "a point on a continent's map: no waypoint, nothing said")
+
+	wp = step("|N|Somewhere (10, 10)| |Z|Nowhere Land|")
+	check(wp ~= nil and said[1] and string.find(said[1], "Nowhere Land", 1, true),
+		"a zone the map really has not got is still reported, and falls back to where you are")
+
+	A.Print, A.GetObjectiveInfo = keepPrint, keepInfo
 end
 
 -- Report ---------------------------------------------------------------------

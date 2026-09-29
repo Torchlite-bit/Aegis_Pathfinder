@@ -12,6 +12,7 @@ Checks what can be checked without a WoW client:
   media    every texture is a TGA the 1.12 client can load
   textures every path Theme.lua hands the client resolves to a real file
   filters  every |C| names classes and every |R| races, as the client does
+  zones    every step with coordinates is on a zone the world map knows
 
 Run from the repository root:  python3 Tools/verify.py
 Exits non-zero if any check fails.
@@ -569,6 +570,61 @@ def check_filters(rep):
     rep.ok("filters", steps)
 
 
+# The 1.12 world map's zones, and Turtle WoW's own by the names its zone guides
+# use: what GetMapZones returns, so what a waypoint can be put on.
+MAP_ZONES = {
+    "Ashenvale", "Azshara", "Darkshore", "Darnassus", "Desolace", "Durotar", "Dustwallow Marsh",
+    "Felwood", "Feralas", "Moonglade", "Mulgore", "Orgrimmar", "Silithus", "Stonetalon Mountains",
+    "Tanaris", "Teldrassil", "The Barrens", "Thousand Needles", "Thunder Bluff", "Un'Goro Crater",
+    "Winterspring",
+    "Alterac Mountains", "Arathi Highlands", "Badlands", "Blasted Lands", "Burning Steppes",
+    "Deadwind Pass", "Dun Morogh", "Duskwood", "Eastern Plaguelands", "Elwynn Forest",
+    "Hillsbrad Foothills", "Ironforge", "Loch Modan", "Redridge Mountains", "Searing Gorge",
+    "Silverpine Forest", "Stormwind City", "Stranglethorn Vale", "Swamp of Sorrows",
+    "The Hinterlands", "Tirisfal Glades", "Undercity", "Western Plaguelands", "Westfall", "Wetlands",
+    "Alah'Thalas", "Balor", "Blackstone Island", "Gillijim's Isle", "Gilneas", "Grim Reaches",
+    "Hyjal", "Icepoint Rock", "Lapidis Isle", "Moonwhisper Coast", "Northwind",
+    "Scarlet Enclave", "Tel'Abim", "Thalassian Highlands",
+}
+CONTINENTS = {"Kalimdor", "Eastern Kingdoms"}
+COORDS = re.compile(r"\(([\d.]+),\s?([\d.]+)\)")      # Locale.lua's COORD_MATCH
+
+
+def check_zones(rep):
+    """A step whose note has coordinates gets a waypoint on its zone's map:
+    its |Z| tag's, or the guide's, from the title. That zone has to be one the
+    map knows, through Parser.lua's ZONE_NAMES -- "Redridge" is not, and every
+    step of Optimized/Redridge said so in chat. A continent is let through: the
+    waypoint code knows to skip it. So is no zone at all -- RestedXP's first
+    step, in the zone you come from, takes the zone you are in."""
+    with open(os.path.join(ROOT, "Parser.lua"), encoding="utf-8") as f:
+        block = re.search(r"ZONE_NAMES = \{(.*?)\n\}", f.read(), re.S).group(1)
+    names = dict(re.findall(r'\["([^"]+)"\] = "([^"]+)"', block))
+    for short, full in names.items():
+        if full not in MAP_ZONES:
+            rep.fail("zones", os.path.join(ROOT, "Parser.lua"), "ZONE_NAMES[%r] = %r, not a zone on the map" % (short, full))
+    steps = 0
+    for path in sorted(walk({".lua"})):
+        if not rel(path).startswith("Guides" + os.sep):
+            continue
+        with open(path, encoding="utf-8", errors="replace") as f:
+            text = f.read()
+        title = re.search(r'RegisterGuide\("([^"]+)"', text)
+        m = title and re.search(r"([^/]+) \(.*\)$", title.group(1))
+        guide_zone = m and names.get(m.group(1), m.group(1))
+        for n, line in enumerate(text.splitlines(), 1):
+            note = re.match(r"^[A-Za-z] ", line) and re.search(r"\|N\|([^|]*)\|", line)
+            if not note or not COORDS.search(note.group(1)):
+                continue
+            steps += 1
+            tag = re.search(r"\|Z\|([^|]*)\|", line)
+            zone = names.get(tag.group(1), tag.group(1)) if tag and tag.group(1) else guide_zone
+            if zone and zone not in MAP_ZONES and zone not in CONTINENTS:
+                rep.fail("zones", path, "line %d: %s -- %r is not a zone on the map; tag the step |Z|<zone>|, "
+                                        "or add the name to Parser.lua's ZONE_NAMES" % (n, ("|Z|" if tag else "title"), zone))
+    rep.ok("zones", steps)
+
+
 def main():
     print("Verifying %s\n" % ROOT)
     rep = Report()
@@ -585,6 +641,7 @@ def main():
     check_upvalues(rep)
     check_version(rep)
     check_filters(rep)
+    check_zones(rep)
     return rep.summary()
 
 

@@ -32,8 +32,8 @@ T Food for Sailing Thoughts? |QID|40395| |N|Captain Grayson (30, 86)| |Z|Westfal
 A Captain Grayson's Revenge |QID|40396| |N|Captain Grayson (30, 86)| |Z|Westfall|
 
 R The Deadmines |N|In Moonbrook: through the Defias hideout under the inn, and down the mine (42.5, 72.7)| |Z|Westfall|
-C Collecting Memories |QID|168| |N|Retrieve 4 Miners' Union Cards, outside too (41.3, 82.1)|
-C Oh Brother. . . |QID|167| |N|Get Foreman Thistlenettle's Explorers' League Badge, outside too (42.2, 82.6)|
+C Collecting Memories |QID|168| |N|Retrieve 4 Miners' Union Cards, outside too (41.3, 82.1)| |Z|Westfall|
+C Oh Brother. . . |QID|167| |N|Get Foreman Thistlenettle's Explorers' League Badge, outside too (42.2, 82.6)| |Z|Westfall|
 C Underground Assault |QID|2040| |N|Retrieve the Gnoam Sprecklesprocket from the Deadmines| |O|
 A The Unsent Letter |QID|373| |N|An Unsent Letter: right-click it to start the quest| |U|2874| |O|
 C Captain Grayson's Revenge |QID|40396| |N|End Cookie: Grayson's Pendant|
@@ -68,7 +68,7 @@ T The Harvest Golem Mystery |QID|40474| |N|Maltimor Gartside (31.3, 37.6)| |Z|We
 A The Harvest Golem Mystery |QID|40475| |N|Maltimor Gartside (31.3, 37.6)| |Z|Westfall|
 
 R The Deadmines |N|In Moonbrook: through the Defias hideout under the inn, and down the mine (42.5, 72.7)| |Z|Westfall|
-C The Harvest Golem Mystery |QID|40475| |N|Recover the Old Engineering Tools, outside too (44.6, 71)|
+C The Harvest Golem Mystery |QID|40475| |N|Recover the Old Engineering Tools, outside too (44.6, 71)| |Z|Westfall|
 C Turning Off The Tap |QID|41392| |N|Infiltrate the Deadmines in Westfall and acquire Voss' Sizzling Brew|
 
 N Back outside |N|Out of The Deadmines, in Westfall|
@@ -99,7 +99,7 @@ A The Defias Brotherhood |QID|166| |N|Gryan Stoutmantle (56.3, 47.5)| |Z|Westfal
 A Red Silk Bandanas |QID|214| |N|Scout Riell (56.7, 47.3)| |Z|Westfall|
 
 R The Deadmines |N|In Moonbrook: through the Defias hideout under the inn, and down the mine (42.5, 72.7)| |Z|Westfall|
-C Red Silk Bandanas |QID|214| |N|Scout Riell at the Sentinel Hill Tower wants you to bring her 10 Red Silk Bandanas, outside too (41.9, 77.1)|
+C Red Silk Bandanas |QID|214| |N|Scout Riell at the Sentinel Hill Tower wants you to bring her 10 Red Silk Bandanas, outside too (41.9, 77.1)| |Z|Westfall|
 C The Harvest Golem Mystery |QID|40478| |N|Venture into the Deadmines and slay the Masterpiece Harvester. Once done|
 C The Defias Brotherhood |QID|166| |N|Kill Edwin VanCleef and bring his head to Gryan Stoutmantle|
 

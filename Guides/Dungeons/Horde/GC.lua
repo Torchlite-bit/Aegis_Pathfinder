@@ -53,7 +53,7 @@ T Dim Light in the Darkness |QID|40952| |N|Moranna Rosenberg (32.7, 75.4)| |Z|Gi
 A Vilest of Men |QID|40953| |N|Moranna Rosenberg (32.7, 75.4)| |Z|Gilneas|
 
 R Gilneas City |N|The gates of Gilneas City, in the north-west of Gilneas (27.4, 30.1)| |Z|Gilneas|
-C Vilest of Men |QID|40953| |N|Collect 20 Vials of Blood from the Greymane loyalists around Dryrock Valley, outside too (19.3, 59.9) (21.6, 44.2)|
+C Vilest of Men |QID|40953| |N|Collect 20 Vials of Blood from the Greymane loyalists around Dryrock Valley, outside too (19.3, 59.9) (21.6, 44.2)| |Z|Gilneas|
 C Ebonmere Affairs |QID|40979| |N|Slay Dustivan Blackcowl and recover the Ebonmere Deed|
 C Ravencroft's Ambition |QID|41112| |N|Recover the Book of Ur : Volume Two from the library in Gilneas City|
 C A Royal Heist |QID|41113| |N|Steal the painting from the library in Gilneas City: Portrait of Mia Greymane|

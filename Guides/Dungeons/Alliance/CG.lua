@@ -16,7 +16,7 @@ A The Unwise Elders |QID|40090| |N|Grol the Exile (56.1, 59.2)| |Z|Ashenvale|
 A Kalanar's Mallet |QID|40326| |N|Kalanar Brightshine (35.9, 51.6)| |Z|Ashenvale|
 
 R Crescent Grove |N|In the south of Ashenvale (51, 77.3)| |Z|Ashenvale|
-C The Rampant Groveweald |QID|40089| |N|Venture into the Crescent Grove and collect 8 Groveweald Badges from the furbolgs inside for Grol the Exile, outside too (51.6, 74.7)|
+C The Rampant Groveweald |QID|40089| |N|Venture into the Crescent Grove and collect 8 Groveweald Badges from the furbolgs inside for Grol the Exile, outside too (51.6, 74.7)| |Z|Ashenvale|
 C Kalanar's Mallet |QID|40326| |N|Travel to the Crescent Grove and find the burned down home of Kalanar Brightshine. Then retrieve Kalanar's Mallet|
 C The Unwise Elders |QID|40090| |N|Get the paws of Elder 'One Eye' and Elder Blackmaw from within the Crescent Grove|
 C The Crescent Grove |QID|40091| |N|Destroy the source of corruption inside Crescent Grove|

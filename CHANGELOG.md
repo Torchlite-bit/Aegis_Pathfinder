@@ -18,6 +18,28 @@ reports.
 
 ---
 
+## [0.16.2]
+
+### Fixed
+- **"Cannot find zone "Redridge", using current zone." on every step.** A
+  step with no zone of its own is in the guide's zone, read from the guide's
+  title, and some titles shorten it: Optimized Redridge (18-20) is in
+  Redridge Mountains, but the map has no "Redridge". So each step's waypoint
+  went on the zone you were standing in, and chat said so.
+  - Shortened zone names are now read as the map's names, in guide titles and
+    in steps' zone tags: Redridge, Stranglethorn, Tirisfal, Un'Goro,
+    Stonetalon, Hinterlands, Hillsbrad, Alterac, Arathi, Dustwallow, Barrens
+    and Stormwind.
+  - The Stranglethorn (39-40) guide's steps had their zone written wrong, and
+    a Hunter step in RestedXP's Darkshore/Ashenvale guide had a zone and
+    coordinates from another map. Both are fixed.
+  - Dungeon guides' "outside too" points now say which zone they're in (the
+    one the entrance is in), instead of the dungeon's name.
+  - RestedXP's "Travel to Kalimdor" and "Travel to Eastern Kingdoms" steps
+    give a point on the continent's map, which no arrow here can point at.
+    They now set no waypoint and print nothing, where before they put one at
+    the same numbers in the zone you were in.
+
 ## [0.16.1]
 
 ### Fixed
@@ -805,6 +827,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.16.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.16.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.16.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.15.5]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

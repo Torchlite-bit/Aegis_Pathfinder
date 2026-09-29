@@ -19,6 +19,44 @@ local actiontypes = {
 }
 
 
+--[[ Zones as the guides write them, and as the world map names them.
+
+	A step without a |Z| tag is in the guide's zone, taken from its title, and
+	some titles shorten it: "Optimized/Redridge (18-20)" is in Redridge
+	Mountains. The map has no "Redridge", so every waypoint on such a step
+	went to the zone you were standing in, and said so in chat -- "Cannot
+	find zone "Redridge", using current zone." -- step after step. A few |Z|
+	tags shorten the same way. ]]
+AegisPathfinder.ZONE_NAMES = {
+	["Alterac"] = "Alterac Mountains",
+	["Arathi"] = "Arathi Highlands",
+	["Barrens"] = "The Barrens",
+	["Dustwallow"] = "Dustwallow Marsh",
+	["Hillsbrad"] = "Hillsbrad Foothills",
+	["Hinterlands"] = "The Hinterlands",
+	["Redridge"] = "Redridge Mountains",
+	["Stonetalon"] = "Stonetalon Mountains",
+	["Stormwind"] = "Stormwind City",
+	["Stranglethorn"] = "Stranglethorn Vale",
+	["Tirisfal"] = "Tirisfal Glades",
+	["Un'Goro"] = "Un'Goro Crater",
+	["Un'goro"] = "Un'Goro Crater",
+}
+
+--- The world map's name for a zone as a guide writes it; nil for none.
+function AegisPathfinder:ZoneName(name)
+	if not name or name == "" then return nil end
+	return self.ZONE_NAMES[name] or name
+end
+
+--- The zone a guide is in, from its title less any pack prefix:
+--- "Optimized/Redridge (18-20)" is in Redridge Mountains.
+function AegisPathfinder:GuideZone(name)
+	local _, _, zone = string.find(name or "", "([^/]+) %(.*%)$")
+	return self:ZoneName(zone)
+end
+
+
 function AegisPathfinder:GetObjectiveTag(tag, i)
 	i = i or self.current
 	if not self.tags then return end
@@ -64,6 +102,8 @@ function AegisPathfinder:GetObjectiveTag(tag, i)
 		if not count then return end
 
 		return item, tonumber(count)
+	elseif tag == "Z" then
+		return self:ZoneName(self.select(3, string.find(tags, "|Z|([^|]*)|?")))
 	end
 
 	return self.select(3, string.find(tags, "|" .. tag .. "|([^|]*)|?"))
@@ -392,9 +432,7 @@ function AegisPathfinder:LoadGuide(name, complete)
 
 	self:Debug(string.format("Loading guide: %s", name))
 	self.guidechanged = true
-	-- Extract zone name from guide name, stripping any path prefix (e.g., "Optimized/")
-	local _, _, zonename = string.find(name, "([^/]+) %(.*%)$")
-	self.zonename = zonename
+	self.zonename = self:GuideZone(name)
 	local guideContent = self.guides[self.db.char.currentguide]()
 	if type(guideContent) == "table" and guideContent.steps then
 		-- QuestShell+ format (Lua table with steps array)

@@ -23,7 +23,7 @@ T A Fine Mess |QID|2904| |N|Scooty (27.6, 77.5)| |Z|Stranglethorn Vale|
 N Gnomeregan again |N|What you have handed in leads back to Gnomeregan|
 
 R Gnomeregan |N|Gnomeregan's front door is in the valley west of Kharanos (24.4, 39.6)| |Z|Dun Morogh|
-C Nogg's Ring Redo |QID|2950| |N|Get the Brilliant Gold Ring, a Silver Bar, a Moss Agate, and 30 silver coins, outside too (30.5, 27.1) (21.5, 37.1)| |O|
+C Nogg's Ring Redo |QID|2950| |N|Get the Brilliant Gold Ring, a Silver Bar, a Moss Agate, and 30 silver coins, outside too (30.5, 27.1) (21.5, 37.1)| |Z|Dun Morogh| |O|
 
 R Orgrimmar |N|Travel to Orgrimmar| |Z|Orgrimmar|
 T Nogg's Ring Redo |QID|2950| |N|Nogg (76, 25.4)| |Z|Orgrimmar| |O|

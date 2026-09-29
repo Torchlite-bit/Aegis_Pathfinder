@@ -52,8 +52,8 @@ T The Tower of Althalaxx |QID|970| |N|Delgren the Purifier - (26.2, 38.7)| |Z|As
 A The Tower of Althalaxx |QID|973| |N|Delgren the Purifier - (26.2, 38.7)| |Z|Ashenvale|
 C Collect Lean Wolf Flank (x10) |L|1015 10| |N|Kill and loot Ghostpaw Runners you encounter while questing. Keep any [Lean Wolf Flanks] you get. You will need 10 for a cooking quest later| |O| |Z|Ashenvale|
 T Therylune's Escape |QID|945| |N|Therysil - (22.6, 51.9)| |Z|Ashenvale|
-R Head up the ramp to the north-west |N|(522.9, 2716.1)| |C|Hunter| |Z|1440/1|
-C Gooey Spider Legs |QID|93| |L|2251 6| |N|Save up to 6 Gooey Spider Legs looted from the Spiders in the zone for later| |O| |Z|1440/1|
+R Head up the ramp to the north-west |C|Hunter| |Z|Ashenvale|
+C Gooey Spider Legs |QID|93| |L|2251 6| |N|Save up to 6 Gooey Spider Legs looted from the Spiders in the zone for later| |O| |Z|Ashenvale|
 t Train your pet skills |N|Bolyun - (18.0, 60.0)| |C|Hunter| |Z|Ashenvale|
 t Train your class skills & [Aspect of the Cheetah] |N|Alenndaar Lapidaar - (18.0, 59.8)| |C|Hunter| |Z|Ashenvale|
 f Get the Astranaar Flight Path |N|Daelyshia - (34.4, 48.0)| |Z|Ashenvale|
