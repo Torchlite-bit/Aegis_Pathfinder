@@ -59,6 +59,24 @@ jobs:
           gh workflow run release.yml --repo "$GITHUB_REPOSITORY" --ref "$tag"
           echo "Tagged $tag; it is packaged in the run started on the tag."
 
+      # The release's text is this version's CHANGELOG.md entry (.pkgmeta's
+      # manual-changelog). Left to itself the packager writes the commit log
+      # since the last tag -- for the first release, the whole history, past
+      # GitHub's 125,000-character limit, and the release is refused.
+      - name: Release notes from CHANGELOG.md
+        if: github.ref_type == 'tag'
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          awk -v head="## [$version]" '
+            index($0, head) == 1 { on = 1; print; next }
+            on && (/^## \[/ || /^\[[^]]*\]: /) { exit }
+            on { print }
+          ' CHANGELOG.md > RELEASE_NOTES.md
+          if [ ! -s RELEASE_NOTES.md ]; then
+            echo "Aegis: Pathfinder $version" > RELEASE_NOTES.md
+          fi
+          cat RELEASE_NOTES.md
+
       - name: Package and release to GitHub
         if: github.ref_type == 'tag'
         uses: BigWigsMods/packager@v2
