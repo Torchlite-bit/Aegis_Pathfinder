@@ -683,8 +683,8 @@ check(tm and im, "on, it makes AegisTarget and AegisItem")
 check(table.getn(book.character) == 2 and table.getn(book.account) == 0, "as character macros")
 check(string.find(printed[1] or "", "Made the character macros AegisTarget and AegisItem", 1, true) ~= nil,
 	"and says where to find them, got '%s'", tostring(printed[1]))
-check(tm.body == "/target Kobold Laborer\n/target Defias Thug\n/target Kobold Worker\n/target Kobold Vermin\n/script AegisPathfinder:MarkTarget()",
-	"AegisTarget is a /target line each, the step's first last since /target keeps the last it finds, then the mark; got\n%s", tm.body)
+check(tm.body == "/apg target",
+	"AegisTarget is /apg target, which looks round for the step's targets on each press; got\n%s", tm.body)
 check(tm.icon == 3, "with a targeting icon from the macro icon list, got %s", tostring(tm.icon))
 check(im.body == "/apg useitem", "AegisItem uses the first active item, got '%s'", im.body)
 check(im.icon == 4, "wearing that item's icon when the list has it, got %s", tostring(im.icon))
@@ -704,7 +704,8 @@ this = mw.itemTile
 mw.itemTile:GetScript("OnDragStart")()
 check(picked == 20, "and the item tile AegisItem, got %s", tostring(picked))
 
--- Clicking does what the macro does: the first of the step's targets in range.
+-- Clicking does what the macro does: without ClassicAPI's TargetNearest, the
+-- first of the step's targets in range by name.
 world.near = { ["Kobold Worker"] = true, ["Kobold Laborer"] = true }
 world.hostile = { ["Kobold Worker"] = true, ["Kobold Laborer"] = true }
 target, marks = nil, {}
@@ -717,21 +718,21 @@ this = mw.itemTile
 mw.itemTile:GetScript("OnClick")()
 check(used[1] ~= nil, "the item tile uses the item")
 
--- The macro's last line marks whoever its /target lines found.
+-- A macro saved as /target lines ends by marking whoever they found.
 target, marks = "Kobold Laborer", {}
 check(AegisPathfinder:MarkTarget() and marks["Kobold Laborer"] == MARK.CROSS, "MarkTarget marks one of the step's")
 target = "Stonetusk Boar"
 check(not AegisPathfinder:MarkTarget() and marks["Stonetusk Boar"] == nil, "and nobody else")
 target = nil
 
--- Unchanged, nothing is rewritten; a new step rewrites.
+-- Unchanged, nothing is rewritten; a new step keeps AegisTarget's text.
 local edits = macroEdits
 AegisPathfinder:PaintActiveFrames()
 check(macroEdits == edits, "a repaint that changes nothing edits nothing")
 AegisPathfinder.current = 1
 AegisPathfinder:PaintActiveFrames()
-check(macro("AegisTarget").body == "/target Marshal Dughan\n/script AegisPathfinder:MarkTarget()",
-	"a new step, new targets, got\n%s", macro("AegisTarget").body)
+check(macro("AegisTarget").body == "/apg target",
+	"a new step, the same text: the targets are looked up as it is pressed, got\n%s", macro("AegisTarget").body)
 check(table.getn(book.character) == 2, "rewritten in place, not made again")
 
 -- The item's icon changing repaints the stock action button holding it.
@@ -750,7 +751,7 @@ stub.bags[0][1].texture = "rod"
 -- Nobody to find: the target tile goes, and the macro says so when pressed.
 AegisPathfinder.current = 5
 AegisPathfinder:PaintActiveFrames()
-check(macro("AegisTarget").body == "/apg target", "with no targets AegisTarget just asks, got '%s'", macro("AegisTarget").body)
+check(macro("AegisTarget").body == "/apg target", "with no targets AegisTarget still asks, got '%s'", macro("AegisTarget").body)
 check(not mw.targetTile:IsShown(), "and its tile goes")
 
 -- Nothing to do and no macros yet: none are made just to sit there.
@@ -763,17 +764,6 @@ check(table.getn(book.character) == 0 and not AegisPathfinder.macroFull,
 stub.bags = saved
 book = keep
 
--- Long names: the macro keeps to 255 letters, dropping the least wanted.
-local long = {}
-for k = 1, 4 do
-	table.insert(long, { name = string.rep(string.char(64 + k), 70), mark = MARK.SKULL })
-end
-local body = AegisPathfinder:TargetMacroBody(long)
-check(string.len(body) <= 255, "a macro is at most 255 letters, got %d", string.len(body))
-check(string.find(body, "/target " .. long[1].name, 1, true) ~= nil, "the step's first target is kept")
-check(string.find(body, long[4].name, 1, true) == nil, "the last one goes first")
-check(string.find(body, "MarkTarget", 1, true) ~= nil, "and the mark line stays")
-
 -- Never rewritten under the open macro window.
 MacroFrame = CreateFrame("Frame", "MacroFrame", UIParent)
 AegisPathfinder.current = 3
@@ -785,7 +775,7 @@ MacroFrame:Hide()
 now = now + 2
 this = AegisPathfinder.activeDriver
 AegisPathfinder.activeDriver:GetScript("OnUpdate")()
-check(macroEdits > edits and string.find(macro("AegisTarget").body, "Kobold", 1, true),
+check(macroEdits > edits and macro("AegisItem").icon == 4,
 	"once it closes they catch up")
 
 -- A macro of that name already in the account's book is the one used.
@@ -793,7 +783,7 @@ book = { account = { { name = "AegisTarget", icon = 1, body = "/say hi" } }, cha
 AegisPathfinder:PaintActiveFrames()
 check(table.getn(book.account) == 1 and table.getn(book.character) == 1,
 	"an existing AegisTarget is rewritten, not doubled")
-check(string.find(book.account[1].body, "/target", 1, true) ~= nil, "with the step's targets")
+check(book.account[1].body == "/apg target", "with its own text, got '%s'", book.account[1].body)
 
 -- No free character slot: nothing is made, and the window says why.
 book = { account = {}, character = {} }
@@ -892,6 +882,140 @@ for name, body in string.gfind(xml, '<Binding name="([^"]+)"[^>]*>(.-)</Binding>
 	check(fn and type(AegisPathfinder[fn]) == "function", "binding %s calls a real function (%s)", name, tostring(fn))
 end
 check(bound == 2, "two bindings: use the item, target the target -- got %d", bound)
+
+-- Each press, the next one around you ------------------------------------------------------
+
+--[[ /target took the nearest with the name, but stayed on whoever was
+	targeted when they had it already: pressing AegisTarget again never moved
+	on from the one Crocolisk. With ClassicAPI's TargetNearest, UnitGUID and
+	TargetUnit, a press looks round and takes the next of the step's targets
+	out from the one targeted, and round again.
+
+	TargetNearest here is ClassicAPI's: each call the next unit out, nearest
+	first, round and round; a target set some other way starts it again from
+	the nearest. And like the client, a change of target is an event. ]]
+do
+	-- Step 3 wants Kobold Vermin, Kobold Workers, Defias Thugs and Kobold
+	-- Laborers. Around you: a dead vermin at 3 yards, vermin at 5, 12 and
+	-- 40, a boar at 8, a laborer at 15.
+	local units = {
+		{ guid = "0xDEAD", name = "Kobold Vermin", d = 3, dead = true },
+		{ guid = "0xV5", name = "Kobold Vermin", d = 5 },
+		{ guid = "0xB8", name = "Stonetusk Boar", d = 8 },
+		{ guid = "0xV12", name = "Kobold Vermin", d = 12 },
+		{ guid = "0xL15", name = "Kobold Laborer", d = 15 },
+		{ guid = "0xV40", name = "Kobold Vermin", d = 40 },
+	}
+	local byGuid, cur, pos = {}, nil, 0
+	local function aim(guid)
+		cur = guid
+		target = guid and byGuid[guid] and byGuid[guid].name
+		event = "PLAYER_TARGET_CHANGED"
+		this = AegisPathfinder.activeEvents
+		AegisPathfinder.activeEvents:GetScript("OnEvent")()
+	end
+	local function around(list)
+		units, byGuid, pos = list, {}, 0
+		for _, u in ipairs(units) do byGuid[u.guid] = u end
+	end
+	around(units)
+	local keepDead = UnitIsDead
+	TargetNearest = function()
+		if table.getn(units) == 0 then return end
+		pos = math.mod(pos, table.getn(units)) + 1
+		aim(units[pos].guid)
+	end
+	TargetUnit = function(guid) pos = 0; aim(guid) end
+	ClearTarget = function() pos = 0; aim(nil) end
+	UnitGUID = function(unit) if unit == "target" then return cur end end
+	UnitDistanceSquared = function(unit)
+		local u = unit == "target" and byGuid[cur]
+		if u then return u.d * u.d, true end
+		return 0, false
+	end
+	UnitIsDead = function(unit) local u = unit == "target" and byGuid[cur]; return u and u.dead or false end
+
+	AegisPathfinder.current = 3
+	AegisPathfinder:PaintActiveFrames()
+	world.hostile = { ["Kobold Vermin"] = true, ["Kobold Laborer"] = true, ["Stonetusk Boar"] = true }
+	world.near = {}
+	aim(nil)
+	marks = {}
+
+	local seen = {}
+	for k = 1, 5 do
+		AegisPathfinder:TargetNextActive()
+		seen[k] = cur
+	end
+	check(seen[1] == "0xV5", "the first press takes the nearest of the step's, not the dead one; got %s", tostring(seen[1]))
+	check(seen[2] == "0xV12", "the next press the next one out, got %s", tostring(seen[2]))
+	check(seen[3] == "0xL15", "past the boar, which the step does not want, got %s", tostring(seen[3]))
+	check(seen[4] == "0xV40", "and the farthest, got %s", tostring(seen[4]))
+	check(seen[5] == "0xV5", "then round to the nearest again, got %s", tostring(seen[5]))
+	check(marks["Kobold Vermin"] == MARK.SKULL and marks["Kobold Laborer"] == MARK.CROSS,
+		"each marked for what the quest wants of it")
+
+	-- Targeting something else, the next press starts from the nearest.
+	aim("0xB8")
+	AegisPathfinder:TargetNextActive()
+	check(cur == "0xV5", "a target the step does not want: the nearest of the step's, got %s", tostring(cur))
+
+	-- The quest icons wait while it looks round: only the one it takes is marked.
+	aim(nil)
+	marks, world.setCount = {}, 0
+	AegisPathfinder:TargetNextActive()
+	check(cur == "0xV5" and world.setCount == 1 and marks["Kobold Laborer"] == nil,
+		"looking round marks nobody it passes, got %d marks", world.setCount)
+
+	-- A tile: the next one by its name, each click.
+	local vermin, laborer
+	for _, t in ipairs(AegisPathfinder:GetActiveTargets(3)) do
+		if t.name == "Kobold Vermin" then vermin = t elseif t.name == "Kobold Laborer" then laborer = t end
+	end
+	aim(nil)
+	AegisPathfinder:TargetActive(laborer)
+	check(cur == "0xL15", "a Kobold Laborer tile takes the laborer, got %s", tostring(cur))
+	AegisPathfinder:TargetActive(laborer)
+	check(cur == "0xL15", "and stays there, there being only the one, got %s", tostring(cur))
+	AegisPathfinder:TargetActive(vermin)
+	AegisPathfinder:TargetActive(vermin)
+	check(cur == "0xV12", "the Kobold Vermin tile goes vermin by vermin, got %s", tostring(cur))
+
+	-- None of the step's around: the target is put back, and it says so.
+	around({ { guid = "0xB8", name = "Stonetusk Boar", d = 8 }, { guid = "0xB9", name = "Stonetusk Boar", d = 9 } })
+	aim("0xB9")
+	local said = table.getn(printed)
+	check(AegisPathfinder:TargetNextActive() == false, "nobody of the step's around is a no")
+	check(cur == "0xB9", "with the target as it was, got %s", tostring(cur))
+	check(table.getn(printed) == said + 1, "and said once")
+	aim(nil)
+	AegisPathfinder:TargetNextActive()
+	check(cur == nil, "with no target before, none after, got %s", tostring(cur))
+
+	-- Out of its reach but there by name: TargetByName, as before.
+	world.near["Kobold Vermin"] = true
+	check(AegisPathfinder:TargetNextActive() and target == "Kobold Vermin",
+		"one it cannot reach is still found by name, got %s", tostring(target))
+	world.near = {}
+
+	-- An error while it looks leaves the quest icons working.
+	TargetNearest = function() error("boom") end
+	aim(nil)
+	check(not pcall(AegisPathfinder.TargetNextActive, AegisPathfinder), "the error comes through")
+	marks, mouseover = {}, "Kobold Laborer"
+	event = "UPDATE_MOUSEOVER_UNIT"
+	AegisPathfinder.activeEvents:GetScript("OnEvent")()
+	check(marks["Kobold Laborer"] == MARK.CROSS, "and the quest icons still mark after it")
+	target = "Kobold Vermin"
+	event = "PLAYER_TARGET_CHANGED"
+	AegisPathfinder.activeEvents:GetScript("OnEvent")()
+	check(marks["Kobold Vermin"] == MARK.SKULL, "on a new target too")
+	mouseover = nil
+
+	TargetNearest, TargetUnit, ClearTarget, UnitGUID, UnitDistanceSquared = nil, nil, nil, nil, nil
+	UnitIsDead = keepDead
+	target, marks, world.near = nil, {}, {}
+end
 
 -- Report ---------------------------------------------------------------------------------
 
