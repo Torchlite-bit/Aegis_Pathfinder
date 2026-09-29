@@ -17,7 +17,7 @@ T Feran's Report |QID|40146| |N|Loruk Foreststrider (73.3, 59.3)| |Z|Ashenvale|
 A Rooting Out Evil |QID|40147| |N|Loruk Foreststrider (73.3, 59.3)| |Z|Ashenvale|
 
 R Crescent Grove |N|In the south of Ashenvale (51, 77.3)| |Z|Ashenvale|
-C The Rampant Groveweald |QID|40089| |N|Venture into the Crescent Grove and collect 8 Groveweald Badges from the furbolgs inside for Grol the Exile, outside too (51.6, 74.7)|
+C The Rampant Groveweald |QID|40089| |N|Venture into the Crescent Grove and collect 8 Groveweald Badges from the furbolgs inside for Grol the Exile, outside too (51.6, 74.7)| |Z|Ashenvale|
 C The Unwise Elders |QID|40090| |N|Get the paws of Elder 'One Eye' and Elder Blackmaw from within the Crescent Grove|
 C Rooting Out Evil |QID|40147| |N|Venture into the Crescent Grove and root out the evil inside|
 

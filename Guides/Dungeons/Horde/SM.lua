@@ -24,8 +24,8 @@ T Scarlet with Rage |QID|60117| |N|Deathguard Burgess (60.9, 52)| |Z|Tirisfal Gl
 A Paint the Roses Red |QID|60116| |N|Deathguard Burgess (60.9, 52)| |Z|Tirisfal Glades|
 
 R Scarlet Monastery |N|In the north-east of Tirisfal Glades: the Graveyard, Library, Armory and Cathedral all open off the monastery's courtyard (83, 33.6)| |Z|Tirisfal Glades|
-C Paint the Roses Red |QID|60116| |N|Eliminate the Scarlet forces outside the Scarlet Monastery, outside too (83.1, 32.8)|
-C Hearts of Zeal |QID|1113| |N|Master Apothecary Faranell in the Undercity wants 20 Hearts of Zeal, outside too (83.2, 32.8)| |O|
+C Paint the Roses Red |QID|60116| |N|Eliminate the Scarlet forces outside the Scarlet Monastery, outside too (83.1, 32.8)| |Z|Tirisfal Glades|
+C Hearts of Zeal |QID|1113| |N|Master Apothecary Faranell in the Undercity wants 20 Hearts of Zeal, outside too (83.2, 32.8)| |Z|Tirisfal Glades| |O|
 C Test of Lore |QID|1160| |N|Find The Beginnings of the Undead Threat| |O|
 C Compendium of the Fallen |QID|1049| |N|Retrieve the Compendium of the Fallen from the Monastery in Tirisfal Glades| |R|Orc/Tauren/Troll/Goblin|
 C Reminiscent of Steel |QID|41368| |N|Slay Armory Quartermaster Daghelm: Journal of Basil Frye| |O|

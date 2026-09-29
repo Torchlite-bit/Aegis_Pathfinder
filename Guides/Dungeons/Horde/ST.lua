@@ -50,7 +50,7 @@ T Return to Fel'Zerul |QID|1444| |N|Fel'zerul (47.9, 54.8)| |Z|Swamp of Sorrows|
 A The Temple of Atal'Hakkar |QID|1445| |N|Fel'zerul (47.9, 54.8)| |Z|Swamp of Sorrows|
 
 R The Temple of Atal'Hakkar |N|The entrance is at the bottom of the Pool of Tears (70.1, 54.6)| |Z|Swamp of Sorrows|
-C The Temple of Atal'Hakkar |QID|1445| |N|Collect 20 Fetishes of Hakkar, outside too (78.2, 44.6)|
+C The Temple of Atal'Hakkar |QID|1445| |N|Collect 20 Fetishes of Hakkar, outside too (78.2, 44.6)| |Z|Swamp of Sorrows|
 T Into the Depths |QID|3446| |N|Altar of Hakkar|
 A Secret of the Circle |QID|3447| |N|Altar of Hakkar|
 C Secret of the Circle |QID|3447| |N|Travel into the Sunken Temple and discover the secret hidden in the circle of statues|

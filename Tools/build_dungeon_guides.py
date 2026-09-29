@@ -908,8 +908,12 @@ class Guide:
             for action, q, w in there:
                 v = self.q[q]
                 if action == "C":
+                    # The points outside are in the entrance's zone: say so,
+                    # or the step's zone is the guide's -- the dungeon, which
+                    # is not a map the arrow can point on.
                     outside = " ".join(fmt(p) for p in v["obj"].get(self.d["zone"], []))
-                    self.step("C", v["title"], q, v["task"] + (", outside too %s" % outside if outside else ""))
+                    self.step("C", v["title"], q, v["task"] + (", outside too %s" % outside if outside else ""),
+                              self.d["zone"] if outside else None)
                 elif w.item:
                     self.step("A", v["title"], q, "%s: right-click it to start the quest" % w.name, use=w.item)
                 else:

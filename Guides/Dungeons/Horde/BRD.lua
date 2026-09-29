@@ -73,7 +73,7 @@ A The Love Potion |QID|4201| |N|Mistress Nagmara|
 C The Love Potion |QID|4201| |N|Get 4 Gromsblood, 10 Giant Silver Veins and Nagmara's Filled Vial|
 T The Love Potion |QID|4201| |N|Mistress Nagmara|
 A The Spectral Chalice |QID|4083| |N|Spectral Chalice|
-C The Spectral Chalice |QID|4083| |N|Get Gold Bar, Truesilver Bar, Star Ruby, outside too (80.5, 44) (63.4, 39.3) (90.9, 65.9)|
+C The Spectral Chalice |QID|4083| |N|Get Gold Bar, Truesilver Bar, Star Ruby, outside too (80.5, 44) (63.4, 39.3) (90.9, 65.9)| |Z|Burning Steppes|
 T The Spectral Chalice |QID|4083| |N|Spectral Chalice|
 C The Heart of the Mountain |QID|4123| |N|Get the Heart of the Mountain|
 C Lost Thunderbrew Recipe |QID|4134| |N|Kill Hurley Blackbreath and his cronies in the Grim Guzzler for the Lost Thunderbrew Recipe|

@@ -75,7 +75,7 @@ T The Fury Runs Deep |QID|378| |N|Motley Garmason (49.7, 18.2)| |Z|Wetlands|
 N The Stockade again |N|What you have handed in leads back to The Stockade|
 
 R The Stockade |N|The prison's door is on the canal between the Mage Quarter and the Trade District (50.8, 67.6)| |Z|Stormwind City|
-C Items of Some Consequence |QID|2746| |N|Get 3 Silk Cloth and 2 of Clara's Fresh Apples, outside too (51.4, 68.2) (55.1, 5) (27.6, 52.3)| |O|
+C Items of Some Consequence |QID|2746| |N|Get 3 Silk Cloth and 2 of Clara's Fresh Apples, outside too (51.4, 68.2) (55.1, 5) (27.6, 52.3)| |Z|Stormwind City| |O|
 
 N Back outside |N|Out of The Stockade, in Stormwind City|
 T Items of Some Consequence |QID|2746| |N|Tyrion (73.2, 35.7)| |Z|Stormwind City| |O|

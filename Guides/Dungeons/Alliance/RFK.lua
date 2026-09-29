@@ -14,7 +14,7 @@ R The Barrens |N|Travel to The Barrens| |Z|The Barrens|
 A Blueleaf Tubers |QID|1221| |N|Mebok Mizzyrix (62.4, 37.6)| |Z|The Barrens|
 
 R Razorfen Kraul |N|In the south of the Barrens, west of the Thousand Needles road, among the thorns (40.8, 89.4)| |Z|The Barrens|
-C Blueleaf Tubers |QID|1221| |N|Grab a Crate with Holes. Grab a Snufflenose Command Stick. Grab and read the Snufflenose Owner's Manual.  In Razorfen Kraul, use the Crate with Holes to summon a Snufflenose Gopher, and use the Command Stick on the gopher to make it search for Tubers.  Bring 6 Blueleaf Tubers, the Snufflenose Command Stick and the Crate with Holes, outside too (62.3, 37.6)|
+C Blueleaf Tubers |QID|1221| |N|Grab a Crate with Holes. Grab a Snufflenose Command Stick. Grab and read the Snufflenose Owner's Manual.  In Razorfen Kraul, use the Crate with Holes to summon a Snufflenose Gopher, and use the Command Stick on the gopher to make it search for Tubers.  Bring 6 Blueleaf Tubers, the Snufflenose Command Stick and the Crate with Holes, outside too (62.3, 37.6)| |Z|The Barrens|
 C Fire Hardened Mail |QID|1701| |N|Gather the materials Furen Longbeard requires: Scorched Spider Fang, Charred Horn, Galvanized Horn, Vial of Phlogiston| |C|Warrior| |O|
 A Mortality Wanes |QID|1142| |N|Heralath Fallowbrook|
 C Mortality Wanes |QID|1142| |N|Find: Treshala's Pendant|

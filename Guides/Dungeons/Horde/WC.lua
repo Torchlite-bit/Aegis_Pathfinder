@@ -49,10 +49,10 @@ T Nara Wildmane |QID|1490| |N|Nara Wildmane (75.6, 31.6)| |Z|Thunder Bluff|
 A Leaders of the Fang |QID|914| |N|Nara Wildmane (75.6, 31.6)| |Z|Thunder Bluff|
 
 R Wailing Caverns |N|The cave mouth is in the rocks south-west of the Crossroads, below the great skull (46.1, 35.8)| |Z|The Barrens|
-C Deviate Hides |QID|1486| |N|Nalpak in the Wailing Caverns wants 20 Deviate Hides, outside too (47.4, 33.5)|
-C Trouble at the Docks |QID|959| |N|Crane Operator Bigglefuzz in Ratchet wants you to retrieve the bottle of 99-Year-Old Port from Mad Magglish who is hiding in the Wailing Caverns, outside too (45.7, 33.6)|
-C Serpentbloom |QID|962| |N|Apothecary Zamah in Thunder Bluff wants you to collect 10 Serpentbloom, outside too (47.5, 33.4)|
-C Smart Drinks |QID|1491| |N|Get 6 portions of Wailing Essence, outside too (47.8, 33.3)|
+C Deviate Hides |QID|1486| |N|Nalpak in the Wailing Caverns wants 20 Deviate Hides, outside too (47.4, 33.5)| |Z|The Barrens|
+C Trouble at the Docks |QID|959| |N|Crane Operator Bigglefuzz in Ratchet wants you to retrieve the bottle of 99-Year-Old Port from Mad Magglish who is hiding in the Wailing Caverns, outside too (45.7, 33.6)| |Z|The Barrens|
+C Serpentbloom |QID|962| |N|Apothecary Zamah in Thunder Bluff wants you to collect 10 Serpentbloom, outside too (47.5, 33.4)| |Z|The Barrens|
+C Smart Drinks |QID|1491| |N|Get 6 portions of Wailing Essence, outside too (47.8, 33.3)| |Z|The Barrens|
 C Arcane Arms |QID|80312| |N|Bring Chok'Garok 5 pieces of Moontouched Wood, a Crystal of the Serpent, and an Everchanging Essence from Wailing Caverns| |C|Mage|
 C Deviate Eradication |QID|1487| |N|Ebru in the Wailing Caverns wants you to kill 7 Deviate Ravagers, 7 Deviate Vipers, 7 Deviate Shamblers and 7 Deviate Dreadfangs|
 C Leaders of the Fang |QID|914| |N|Get the Gems of Cobrahn, Anacondra, Pythas and Serpentis|

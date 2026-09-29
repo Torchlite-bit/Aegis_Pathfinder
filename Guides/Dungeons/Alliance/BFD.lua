@@ -25,7 +25,7 @@ A The Moonshrine Ruins |QID|41812| |N|Aelennia Starbloom (17.3, 26)| |Z|Ashenval
 R Blackfathom Deeps |N|Out along the Zoram Strand to the sunken temple in the north-west; swim down into it (14.1, 14.4)| |Z|Ashenvale|
 C Knowledge in the Deeps |QID|971| |N|Get the Lorgalis Manuscript|
 T In Search of Thaelrid |QID|1198| |N|Argent Guard Thaelrid|
-C Researching the Corruption |QID|1275| |N|Gershala Nightwhisper in Auberdine wants 8 Corrupt Brain stems, outside too (14.7, 10.5)| |O|
+C Researching the Corruption |QID|1275| |N|Gershala Nightwhisper in Auberdine wants 8 Corrupt Brain stems, outside too (14.7, 10.5)| |Z|Ashenvale| |O|
 C Twilight Falls |QID|1199| |N|Get 10 Twilight Pendants|
 C The Moonshrine Ruins |QID|41812| |N|Traverse into the depths of Blackfathom Deeps and recover a 'Seed of Bloom' from within the Moonshrine Ruins. Once acquired|
 A Blackfathom Villainy |QID|1200| |N|Argent Guard Thaelrid|

@@ -38,15 +38,15 @@ A Agmond's Fate |QID|704| |N|Prospector Ironband (65.9, 65.6)| |Z|Loch Modan|
 
 R Uldaman |N|In the north of the Badlands: past the dig site (39.6, 18.5) to the temple doors (43, 13.9)| |Z|Badlands|
 T A Sign of Hope |QID|721| |N|Hammertoe Grez|
-C Power Stones |QID|2418| |N|Get 8 Dentrium Power Stones and 8 An'Alleum Power Stones, outside too (43.2, 11.8) (39.1, 18.4)|
-C Agmond's Fate |QID|704| |N|Get 4 Carved Stone Urns, outside too (40.2, 16.6) (42.8, 10)|
-C Solution to Doom |QID|709| |N|Loot the Tablet of Ryun'eh from the Ancient Chest in the dig site, outside the instance, outside too (39.3, 18.8)|
+C Power Stones |QID|2418| |N|Get 8 Dentrium Power Stones and 8 An'Alleum Power Stones, outside too (43.2, 11.8) (39.1, 18.4)| |Z|Badlands|
+C Agmond's Fate |QID|704| |N|Get 4 Carved Stone Urns, outside too (40.2, 16.6) (42.8, 10)| |Z|Badlands|
+C Solution to Doom |QID|709| |N|Loot the Tablet of Ryun'eh from the Ancient Chest in the dig site, outside the instance, outside too (39.3, 18.8)| |Z|Badlands|
 A Amulet of Secrets |QID|722| |N|Hammertoe Grez|
-C Amulet of Secrets |QID|722| |N|Find Hammertoe's Amulet, outside too (38.7, 18.1)|
+C Amulet of Secrets |QID|722| |N|Find Hammertoe's Amulet, outside too (38.7, 18.1)| |Z|Badlands|
 T Amulet of Secrets |QID|722| |N|Hammertoe Grez|
 A Prospect of Faith |QID|723| |N|Hammertoe Grez|
 T The Lost Dwarves |QID|2398| |N|Baelog|
-C Uldaman Reagent Run |QID|17| |N|Get 12 Magenta Fungus Caps, outside too (40.9, 12.8)|
+C Uldaman Reagent Run |QID|17| |N|Get 12 Magenta Fungus Caps, outside too (40.9, 12.8)| |Z|Badlands|
 C Reclaimed Treasures |QID|1360| |N|Get Krom Stoutarm's treasured possession from his chest in the North Common Hall of Uldaman|
 A The Platinum Discs |QID|2278| |N|The Discs of Norgannon|
 T The Platinum Discs |QID|2278| |N|The Discs of Norgannon|

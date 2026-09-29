@@ -31,8 +31,9 @@ local function EnsureMetaMapBWP()
 	return HasMetaMapBWP()
 end
 
-local zonei, zonec, zonenames = {}, {}, {}
+local zonei, zonec, zonenames, continents = {}, {}, {}, {}
 for ci, c in pairs{GetMapContinents()} do
+	continents[c] = ci
 	zonenames[ci] = {GetMapZones(ci)}
 	for zi, z in pairs(zonenames[ci]) do
 		zonei[z], zonec[z] = zi, ci
@@ -458,6 +459,14 @@ local function MapPoint(zone, x, y, desc, onArrival)
 	AegisPathfinder:Debug(string.format("Mapping %q - %s (%.2f, %.2f)", desc, zone or "nil", x or 0, y or 0))
 	local zi, zc = zone and zonei[zone], zone and zonec[zone]
 	if not zi or zi == 0 then
+		--[[ RestedXP's "Travel to Kalimdor" steps give a point on the
+			continent's map, which no waypoint here can take. The zone you
+			are in is the wrong map for it, so: no waypoint, and nothing in
+			chat. ]]
+		if zone and continents[zone] then
+			AegisPathfinder:Debug("No waypoint for a point on the map of " .. zone)
+			return
+		end
 		if zone then AegisPathfinder:Print(string.format(L["Cannot find zone %q, using current zone."], zone))
 		else AegisPathfinder:Print(L["No zone provided, using current zone."]) end
 
