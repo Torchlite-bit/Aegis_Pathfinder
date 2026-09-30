@@ -63,6 +63,19 @@ check(bar:IsShown(), "which shows once there are more guides than rows")
 local _, hi = bar:GetMinMaxValues()
 check(hi == 81 - 48, "the range is what does not fit, got %s", tostring(hi))
 
+-- Nine category tabs, Class among them, each as wide as its label: they
+-- fit the panel.
+local tabs, right = AegisPathfinder.guidecategorytabs, 12
+local keys = {}
+for i, t in ipairs(tabs) do
+	right = right + t:GetWidth() + (i > 1 and 2 or 0)
+	table.insert(keys, t.categoryKey)
+end
+check(table.getn(tabs) == 9 and table.concat(keys, ",") == "all,turtle,optimized,rxp,rxp_hc,zone,dungeon,class,profession",
+	"the tabs, Class between Dungeons and Professions, got %s", table.concat(keys, ","))
+check(right <= list:GetWidth() - 12, "and they fit the %d-wide panel, ending at %d", list:GetWidth(), right)
+check(tabs[9]:GetWidth() > tabs[8]:GetWidth(), "PROFESSIONS wider than CLASS")
+
 local function firstGuide()
 	for _, r in ipairs({ list:GetChildren() }) do
 		if r.guide then return r.guide end

@@ -18,6 +18,79 @@ reports.
 
 ---
 
+## [0.20.0] — restart
+
+### Added
+- **Class quest guides.** Every class quest chain has a guide of its own,
+  under the guide list's new **Class** tab. That's 139 guides across the
+  two sides:
+  - the warlock's Voidwalker to the Dreadsteed;
+  - the druid's Bear Form, Aquatic Form and Cure Poison;
+  - the hunter's Taming the Beast and Rhok'delar;
+  - the paladin's Redemption to the Charger;
+  - the shaman's totems and the priest's racial spells;
+  - the warrior's stances and weapons;
+  - Turtle WoW's own, the level-60 ones and the chains that need a group.
+  The tab lists only your class's guides, and only the ones your race has
+  a way through.
+- **Each race gets the chain that starts at home.** An Undead warlock's
+  Voidwalker is Carendin Halgar's, in the Undercity. An Orc's is Gan'rul
+  Bloodeye's, in Orgrimmar. A Goblin's starts with Dabbling In Darkness on
+  Blackstone Island.
+  - Turtle WoW's High Elves and Goblins follow the race they share a chain
+    with, unless they have their own. A High Elf paladin's Redemption is
+    the Human's, after Paragon of Light. A High Elf hunter tames with
+    Damilara Sunsorrow in Alah'Thalas.
+- **Every step has somewhere to go.** A class guide picks up each quest,
+  points the arrow at its objectives and hands it in.
+  - For a quest inside a dungeon or raid, the arrow goes to the door
+    (Scholomance, for the Charger's Darkreaver).
+  - What one quest needs from another comes first: the Charger's horse feed
+    before the spirit's quest.
+  - A quest's own item, the Taming Rod say, is on the Active Items button.
+  - Each guide ends with the chain's last hand-in, so it finishes by itself.
+- **A class quest at your level.** When you reach a class quest's level, a
+  small window offers its guide, like the dungeon window does.
+  - Open puts the guide in a tab beside the route, and finishing it brings
+    you back to the route.
+  - Each is offered once.
+  - It isn't offered when your route already takes you through it (the
+    Optimized routes do the warlock's Voidwalker), or when it's done.
+  - It isn't offered more than five levels after the chain's level. By
+    then you've most likely done it, perhaps before Pathfinder could see.
+    The Class tab still lists it.
+  - A chain with a dungeon, raid or elite in it is offered only in Group
+    mode.
+  - With a dungeon to offer at the same level, the dungeon's window comes
+    first and the class quest's when you close it.
+  - *Offer class quests at their level*, on the options window's Behaviour
+    page, turns it off.
+- A **CL** badge on a class quest guide's tab.
+
+### Fixed
+- **The dungeon window's buttons sat in the wrong place.** They were
+  placed against the Where next? window, not their own. Now each window's
+  buttons sit in that window.
+- **Two dungeon guide steps pointed the arrow at the wrong place.** Every
+  place in a step's note goes on that step's zone map, and two notes gave
+  places in another zone:
+  - Blackrock Depths' way in gave the Searing Gorge's door, which was put
+    in the Burning Steppes. The note still names the Searing Gorge, without
+    the place.
+  - The Alliance Sunken Temple's Rhapsody's Kalimdor Kocktail gave places
+    in Tanaris on a Feralas step. The note still says the livers are also
+    in Tanaris.
+
+### For contributors
+- `Tools/build/build_class_guides.py` writes `Guides/Class/`. It builds the
+  chains from pfQuest, pfQuest-turtle and CMaNGOS' quest table, and caches
+  what it read in `Tools/data/class_quests.json`. GUIDE_AUTHORING.md says
+  how to correct it.
+- `Tools/tests/test_classguides.lua` parses every class guide as each race of
+  its class sees it.
+- The dungeon and class guide tests now fail on a note that gives a place in
+  a zone other than the step's.
+
 ## [0.19.0] — restart
 
 ### Added
@@ -936,6 +1009,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.20.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.19.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.18.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.17.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

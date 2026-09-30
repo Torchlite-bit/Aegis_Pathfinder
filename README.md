@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.19.0)
+# Aegis: Pathfinder (v0.20.0)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -74,6 +74,14 @@ each quest wants inside, and hands them all in after. Every leveling dungeon,
 and Turtle WoW's own: Windhorn Canyon (new in 1.18.1), Frostmane Hollow,
 Dragonmaw Retreat, Crescent Grove, Stormwrought Ruins, Gilneas City and
 Hateforge Quarry.
+
+**Class quest guides.** Every class quest chain, a guide each, under the guide
+list's **Class** tab: the Voidwalker to the Dreadsteed, Bear Form, Taming the
+Beast, Redemption to the Charger, the totems, Rhok'delar and the rest --
+Turtle WoW's High Elves and Goblins included, each race by the chain that
+starts at home. Reach a chain's level and, if your route doesn't do it
+already, it's offered: open it beside the route, and when it's done you're
+back on the route.
 
 **First-time setup.** The first time you log in, three quick steps pick your
 guide, what it includes, and the dungeons you mean to run -- each with how
@@ -211,7 +219,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.19.0`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.20.0`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)** or open an

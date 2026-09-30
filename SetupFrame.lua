@@ -468,8 +468,9 @@ function AegisPathfinder:SetupStep(delta)
 		self:ApplySetup(choice)
 		frame:Hide()
 		-- A character set up part-way through the levels may be at the
-		-- middle of a dungeon just ticked (NextGuideFrame.lua).
-		if self.OfferMidLevelDungeons then self:OfferMidLevelDungeons() end
+		-- middle of a dungeon just ticked, or past a class quest's level
+		-- (NextGuideFrame.lua).
+		if self.OfferAtLevel then self:OfferAtLevel() end
 		return
 	end
 	-- Turning dungeons on with none picked starts from the recommended ones.

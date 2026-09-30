@@ -53,6 +53,7 @@ function AegisPathfinder:GetGuideCategory(guideName)
 		return "profession"
 	end
 	if string.find(guideName, "^Dungeons/") then return "dungeon" end
+	if string.find(guideName, "^Class/") then return "class" end
 	if string.find(guideName, "^Optimized/") then return "optimized" end
 	if string.find(guideName, "^RXP/") then return "rxp" end
 	if string.find(guideName, "^RXP_Hardcore/") then return "rxp_hc" end
@@ -82,6 +83,26 @@ check(AegisPathfinder:GetGuideCategory("Westfall (12-17)") == "zone",
 check(AegisPathfinder:GetGuideCategory("Dungeons/Uldaman (41-51)") == "dungeon", "a dungeon guide")
 check(AegisPathfinder:GetGuideCategory("Dungeons/Gilneas City (38-46)") == "dungeon",
 	"a dungeon guide named for a custom zone's dungeon is still a dungeon guide")
+check(AegisPathfinder:GetGuideCategory("Class/Warlock: Voidwalker (10)") == "class", "a class quest guide")
+check(AegisPathfinder:GetGuideCategory("Class/Hunter: Taming the Beast (10)") == "class",
+	"a class quest guide however it is named")
+
+-- A class quest guide has one level, not a range: "(10)" is 10 to 10.
+do
+	local src = io.open("Core.lua"):read("*a")
+	local from = string.find(src, "function AegisPathfinder:ParseGuideLevelRange", 1, true)
+	local to = string.find(src, "\nend\n", from, true)
+	assert(from and to, "could not find ParseGuideLevelRange in Core.lua")
+	assert(loadstring(string.sub(src, from, to + 4)))()
+	local lo, hi = AegisPathfinder:ParseGuideLevelRange("Class/Warlock: Voidwalker (10)")
+	check(lo == 10 and hi == 10, "Voidwalker (10) is level 10, got %s-%s", tostring(lo), tostring(hi))
+	lo, hi = AegisPathfinder:ParseGuideLevelRange("Class/Mage: Level 10 Quest (10)")
+	check(lo == 10 and hi == 10, "a number in the name is not the level, got %s-%s", tostring(lo), tostring(hi))
+	lo, hi = AegisPathfinder:ParseGuideLevelRange("Dungeons/Uldaman (41-51)")
+	check(lo == 41 and hi == 51, "a range is still a range")
+	lo, hi = AegisPathfinder:ParseGuideLevelRange("RXP/12-14 Loch Modan")
+	check(lo == 12 and hi == 14, "and the bare range RestedXP's names have")
+end
 
 -- Every custom zone guide belongs under the Custom tab: the ones the
 -- guide list has always had, and the newer Scarlet Enclave and Hyjal, which
@@ -161,6 +182,7 @@ do
 	check(badge("Alchemy (cheapest route)") == "pf:PF", "so is a crafting route")
 	check(badge("Fishing (1-300)") == "tpl:TPL", "a placeholder is TPL, whatever it is")
 	check(badge("Dungeons/Uldaman (41-51)") == "dg:DG", "a dungeon guide is DG")
+	check(badge("Class/Warlock: Voidwalker (10)") == "cl:CL", "a class quest guide is CL")
 	check(badge("RXP_Hardcore/Durotar (1-12)") == "hc:HC", "a hardcore guide is HC")
 	check(badge("Optimized/Loch Modan (17-18)") == "xp:XP" and badge("RXP/Elwynn Forest (6-11)") == "xp:XP"
 		and badge("Thalassian Highlands (1-10)") == "xp:XP", "leveling guides are XP")
@@ -171,6 +193,9 @@ do
 	b:SetKind("dg", "DG")
 	check(b.label:GetText() == "DG" and b.bg.__color[3] > b.bg.__color[2] and b.bg.__color[1] > b.bg.__color[2],
 		"DG is violet")
+	b:SetKind("cl", "CL")
+	check(b.label:GetText() == "CL" and b.bg.__color[2] > b.bg.__color[1] and b.bg.__color[3] > b.bg.__color[1],
+		"CL is teal")
 	b:SetKind("hc", "HC")
 	check(b.bg.__color[1] > 0.8 and b.bg.__color[2] < 0.4 and b.label.__color[1] > 0.9, "HC is red, its text light")
 	b:SetKind("xp", "XP")
@@ -184,6 +209,8 @@ end
 local core = io.open("Core.lua"):read("*a")
 check(string.find(core, 'string.find(guideName, "^Dungeons/")', 1, true) ~= nil,
 	"Core.lua no longer puts the dungeon guides under Dungeons the way this test assumes")
+check(string.find(core, 'string.find(guideName, "^Class/")', 1, true) ~= nil,
+	"Core.lua no longer puts the class quest guides under Class the way this test assumes")
 check(string.find(core, 'qsp.category == "Profession"', 1, true) ~= nil,
 	"Core.lua no longer categorises professions the way this test assumes")
 check(string.find(core, "function AegisPathfinder:IsTemplateGuide", 1, true) ~= nil,

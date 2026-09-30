@@ -655,14 +655,15 @@ end
 	a list where the two sit side by side and otherwise look identical.
 ]]
 --[[ What a guide is, on its tab: XP a leveling guide, PF a profession guide
-	(a crafting route included), DG a dungeon guide, HC a hardcore one, TPL a
-	placeholder. The same colours in every theme, the way the step bands keep
+	(a crafting route included), DG a dungeon guide, CL a class quest guide,
+	HC a hardcore one, TPL a placeholder. The same colours in every theme, the way the step bands keep
 	theirs, except XP's gold and TPL's grey, which were always the theme's. ]]
 local DARK, LIGHT = { 0.08, 0.07, 0.06 }, { 0.93, 0.93, 0.93 }
 Theme.BADGES = {
 	xp  = { bg = "goldDeep", text = DARK },
 	pf  = { bg = { 0.36, 0.62, 0.84 }, text = DARK },   -- blue
 	dg  = { bg = { 0.60, 0.48, 0.86 }, text = DARK },   -- violet
+	cl  = { bg = { 0.30, 0.70, 0.64 }, text = DARK },   -- teal
 	hc  = { bg = { 0.85, 0.30, 0.30 }, text = LIGHT },  -- red
 	tpl = { bg = "subtle", text = LIGHT },
 }
