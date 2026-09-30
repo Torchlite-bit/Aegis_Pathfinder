@@ -86,7 +86,6 @@ AegisPathfinder.optionsframe = CreateFrame("Frame", nil, UIParent)
 AegisPathfinder.guidelistframe = CreateFrame("Frame", nil, UIParent)
 
 dofile("Theme.lua")
-dofile("WidgetWarlock.lua")
 dofile("ObjectivesFrame.lua")
 
 -- The tab model lives in Core.lua, which is far too large to load under the

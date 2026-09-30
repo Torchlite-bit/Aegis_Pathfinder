@@ -1,12 +1,12 @@
 -- Optimized Guide: Blasted Lands (51-51)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Blasted Lands (51-51)", "Optimized/Un'Goro Crater (51-52)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Blasted Lands 51-51|
+N Optimized Leveling |N|This guide follows an optimized quest order for Blasted Lands 51-51|
 
 R Blasted Lands |QID|2601| |N|Travel to Blasted Lands (50.65, 14.27)| |Z|Blasted Lands|
 

@@ -1,7 +1,6 @@
 # media/
 
-Everything here except the two files noted below is **generated**. Do not edit
-the `.tga` files by hand — change `Tools/make_assets.py` and re-run it:
+Every texture here is **generated**. Do not edit the `.tga` files by hand — change `Tools/make_assets.py` and re-run it:
 
 ```sh
 pip install Pillow
@@ -10,8 +9,7 @@ python3 Tools/make_assets.py
 
 ## Format
 
-All textures are written to match the format of the two textures this addon
-already shipped and which are known to load on the 1.12 client:
+All textures are written in a format known to load on the 1.12 client:
 
 | Property | Value |
 |---|---|
@@ -58,13 +56,6 @@ multi-colour art bakes colour in: `nav-arrow.tga`, `progress-fill.tga`, and
 The nine-slice masks are 32×32 with a 10px corner, so the slice boundaries sit
 at 10/32 and 22/32. `Theme.CORNER` and the `S0`/`S1` constants in `Theme.lua`
 must stay in step with the radius used in `make_assets.py`.
-
-### Not generated
-
-| File | Origin |
-|---|---|
-| `dead.tga` | Inherited from VanillaGuide+ |
-| `resting.tga` | Inherited from VanillaGuide+ |
 
 ## Fonts
 

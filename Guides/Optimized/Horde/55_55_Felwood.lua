@@ -1,12 +1,12 @@
 -- Optimized Guide: Felwood (55-55)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Felwood (55-55)", "Optimized/Silithus (55-55)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Felwood 55-55|
+N Optimized Leveling |N|This guide follows an optimized quest order for Felwood 55-55|
 
 R Bloodvenom Post |QID|5157| |N|Travel to Bloodvenom Post (34.72, 52.75)| |Z|Felwood|
 T Wild Guardians (Part 1) |QID|4521| |N|Trull Failbane in Bloodvenom Post (34.72, 52.75)| |Z|Felwood| |O|

@@ -1,12 +1,12 @@
 -- Optimized Guide: Ashenvale (24-25)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Ashenvale (24-25)", "Optimized/Wetlands (25-27)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Ashenvale 24-25|
+N Optimized Leveling |N|This guide follows an optimized quest order for Ashenvale 24-25|
 
 R Astranaar |TID|1134| |N|Travel to Astranaar (34.65, 48.84)| |Z|Ashenvale|
 T Pridewings of Stonetalon |QID|1134| |N|Shindrell Swiftfire in Astranaar (34.65, 48.84)| |Z|Ashenvale| |O|

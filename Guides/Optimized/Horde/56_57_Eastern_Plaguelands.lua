@@ -1,12 +1,12 @@
 -- Optimized Guide: Eastern Plaguelands (56-57)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Eastern Plaguelands (56-57)", "Optimized/Western Plaguelands (57-58)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Eastern Plaguelands 56-57|
+N Optimized Leveling |N|This guide follows an optimized quest order for Eastern Plaguelands 56-57|
 
 R Thondroril River |OID|5542| |N|Travel to Thondroril River (7.57, 43.72)| |Z|Eastern Plaguelands|
 A Demon Dogs |QID|5542| |N|Tirion Fordring in northern Thondroril River (7.57, 43.72)| |Z|Eastern Plaguelands|

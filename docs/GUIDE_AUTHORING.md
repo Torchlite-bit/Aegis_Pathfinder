@@ -1,6 +1,6 @@
 # Aegis: Pathfinder - Guide Authoring Documentation
 
-This document explains how to create leveling guides for TurtleGuide addon.
+This document explains how to write leveling guides for Aegis: Pathfinder.
 
 ## Core Principles: How to Order Quests
 
@@ -53,7 +53,7 @@ Example: `01_10_Thalassian_Highlands.lua`
 ## Basic Guide Template
 
 ```lua
-TurtleGuide:RegisterGuide("Zone Name (Level-Range)", "Next Zone (Level-Range)", "Faction", function()
+AegisPathfinder:RegisterGuide("Zone Name (Level-Range)", "Next Zone (Level-Range)", "Faction", function()
 
 return [[
 
@@ -178,7 +178,7 @@ from the owner-supplied FAQ in `Tools/data/Profession_FAQ.md`) by
 `Tools/convert_professions.py`. Editing them by hand will be overwritten, and
 `python3 Tools/convert_professions.py --check` -- part of `Tools/run_tests.sh`
 -- fails when the committed guides differ from what it would write. They are written in QuestShell+
-structured tables rather than this DSL -- see `Tools/QuestShellPlus.md` -- and
+structured tables rather than this DSL -- see `docs/QUESTSHELL_PLUS.md` -- and
 the converter emits these tags through `QuestShellPlusParser.lua`.
 
 ## Coordinates
@@ -238,7 +238,7 @@ If a quest requires completing something in another zone:
 From `01_10_Thalassian_Highlands.lua`:
 
 ```lua
-TurtleGuide:RegisterGuide("Thalassian Highlands (1-10)", "Darkshore (12-17)", "Alliance", function()
+AegisPathfinder:RegisterGuide("Thalassian Highlands (1-10)", "Darkshore (12-17)", "Alliance", function()
 
 return [[
 

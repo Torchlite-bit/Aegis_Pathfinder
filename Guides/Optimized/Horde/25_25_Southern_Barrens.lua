@@ -1,12 +1,12 @@
 -- Optimized Guide: Southern Barrens (25-25)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/The Barrens (25-25)", "Optimized/Thousand Needles (25-26)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Southern Barrens 25-25|
+N Optimized Leveling |N|This guide follows an optimized quest order for Southern Barrens 25-25|
 
 R Camp Taurajo |QID|882| |N|Travel to Camp Taurajo (44.84, 59.12)| |Z|The Barrens|
 T Ishamuhale |QID|882| |N|Jorn Skyseer in Camp Taurajo (44.84, 59.12)| |Z|The Barrens| |O|

@@ -1,12 +1,12 @@
 -- Optimized Guide: Tanaris (44-45)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Tanaris (44-45)", "Optimized/Feralas (45-46)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Tanaris 44-45|
+N Optimized Leveling |N|This guide follows an optimized quest order for Tanaris 44-45|
 
 R Booty Bay |QID|2872| |N|Travel to Booty Bay (27.78, 77.05)| |Z|Stranglethorn Vale|
 A Stoley's Debt |QID|2872| |N|\Sea Wolf\ MacKinley in Booty Bay (27.78, 77.05)| |Z|Stranglethorn Vale|

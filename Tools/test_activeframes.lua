@@ -132,7 +132,6 @@ end
 function AegisPathfinder:SetTurnedIn() table.insert(turnedIn, self.current) end
 
 dofile("Theme.lua")
-dofile("WidgetWarlock.lua")
 dofile("Parser.lua")
 local guide = CreateFrame("Frame", "AegisPathfinderObjectives", UIParent)
 guide:SetWidth(396); guide:SetHeight(300)

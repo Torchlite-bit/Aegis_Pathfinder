@@ -1,12 +1,12 @@
 -- Optimized Guide: The Hinterlands (50-51)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Hinterlands (50-51)", "Optimized/Blasted Lands (51-51)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for The Hinterlands 50-51|
+N Optimized Leveling |N|This guide follows an optimized quest order for The Hinterlands 50-51|
 
 R Revantusk Village |QID|7815| |N|Travel to Revantusk Village in The Hinterlands (80.34, 81.48)| |Z|The Hinterlands|
 A Snapjaws, Mon! |QID|7815| |N|Katoom the Angler in Revantusk Village (80.34, 81.48)| |Z|The Hinterlands|

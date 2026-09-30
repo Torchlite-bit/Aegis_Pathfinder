@@ -1,12 +1,12 @@
 -- Optimized Guide: Teldrassil (1-12)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Teldrassil (1-12)", "Optimized/Darkshore (12-14)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for efficient leveling|
+N Optimized Leveling |N|This guide follows an optimized quest order for efficient leveling|
 
 A The Balance of Nature (Part 1) |QID|456| |N|Conservator Ilthalaine in Shadowglen (58.69, 44.35)|
 C The Balance of Nature (Part 1) |QID|456| |N|Kill 7 Young Nightsaber and 4 Young Thistle Boar (61, 43)|

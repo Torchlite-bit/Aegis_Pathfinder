@@ -1,12 +1,12 @@
 -- Optimized Guide: Arathi Highlands (30-30)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Arathi Highlands (30-30)", "Optimized/Stranglethorn Vale (30-31)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Arathi Highlands 30-30|
+N Optimized Leveling |N|This guide follows an optimized quest order for Arathi Highlands 30-30|
 
 N Class Quest - Shaman |N|If Shaman, pick up Call of Air from Xanis Flameweaver in Thunder Bluff Spirit Rise (25.20, 20.65) for Tauren, or Searn Firewarder in Orgrimmar Grommash Hold (38.00, 37.70) for Orc/Troll|
 

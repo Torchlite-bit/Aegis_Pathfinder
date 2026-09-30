@@ -1,12 +1,12 @@
 -- Optimized Guide: Badlands (40-41)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Badlands (40-41)", "Optimized/Swamp of Sorrows (41-41)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Badlands 40-41|
+N Optimized Leveling |N|This guide follows an optimized quest order for Badlands 40-41|
 
 R Loch Modan |QID|2500| |N|Travel to Thelsamar in Loch Modan (37, 49.2)| |Z|Loch Modan|
 A Badlands Reagent Run |QID|2500| |N|Ghak Healtouch in Thelsamar (37.06, 49.36)| |Z|Loch Modan|

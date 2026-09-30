@@ -1,12 +1,12 @@
 -- Optimized Guide: Tirisfal Glades (1-12)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Tirisfal Glades (1-12)", "Optimized/The Barrens (12-15)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for efficient leveling|
+N Optimized Leveling |N|This guide follows an optimized quest order for efficient leveling|
 
 N Exit Crypt |N|Exit the crypt you start in and head to the road (30.25, 71.71)|
 

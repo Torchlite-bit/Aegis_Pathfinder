@@ -23,7 +23,7 @@ version.
 | `/apg target` | Target and mark the step's next active target (put it in a macro) |
 | `/apg useitem` | Use the first active item |
 
-`/pathfinder` and `/vg` do the same thing. There is deliberately no `/aegis` —
+`/pathfinder` does the same thing. There is deliberately no `/aegis` —
 that belongs to another addon in the Aegis suite.
 
 The objectives panel is the addon's main window, so a bare `/apg` opens it, and
@@ -32,7 +32,6 @@ fight leaves it where it is; its ✕ does. The Aegis shield on the edge of the m
 same on a click; right-click it for the options window, and drag it to move it
 round the minimap. The options window's **Behaviour** page can hide it, as can
 `/apg minimapbutton`.
-FuBar is no longer supported: the button is the addon's own now.
 
 The options window can be resized from its bottom-right corner, wider or
 taller, and keeps the size; `/apg resetpanels` puts it back. It lists its

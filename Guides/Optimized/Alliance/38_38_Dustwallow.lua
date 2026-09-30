@@ -1,12 +1,12 @@
 -- Optimized Guide: Dustwallow Marsh (38-38)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Dustwallow (38-38)", "Optimized/Stranglethorn (38-40)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Dustwallow 38-38|
+N Optimized Leveling |N|This guide follows an optimized quest order for Dustwallow 38-38|
 
 R Stormwind City |QID|1260| |N|Travel to Stormwind City (41.49, 89.45)| |Z|Stormwind City|
 A Morgan Stern |QID|1260| |N|Angus Stern in Mage Quarter (41.49, 89.45)| |Z|Stormwind City|

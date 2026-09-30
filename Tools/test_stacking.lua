@@ -95,7 +95,6 @@ function AegisPathfinder:UpdateNavCallout() end
 AegisPathfinder.guidelistframe = CreateFrame("Frame", nil, UIParent)
 
 dofile("Theme.lua")
-dofile("WidgetWarlock.lua")
 dofile("ObjectivesFrame.lua")
 -- The options window carries the Item Score page, the real one.
 UnitClass = function() return "Paladin", "PALADIN" end

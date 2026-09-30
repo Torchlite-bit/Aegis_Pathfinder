@@ -1,12 +1,12 @@
 -- Optimized Guide: Tanaris (49-50)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Tanaris (49-50)", "Optimized/Azshara (50-50)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Tanaris 49-50|
+N Optimized Leveling |N|This guide follows an optimized quest order for Tanaris 49-50|
 
 R Gadgetzan |QID|82| |N|Travel to Gadgetzan (52.5, 27.9)|
 T The Super Egg-O-Matic |QID|82| |N|Egg-O-Matic in Gadgetzan (52.4, 27.0)| |L|8564| |O| |OBJ|356|

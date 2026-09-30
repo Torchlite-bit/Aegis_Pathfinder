@@ -1,12 +1,12 @@
 -- Optimized Guide: Hillsbrad Foothills (29-30)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Hillsbrad Foothills (29-30)", "Optimized/Alterac Mountains (30-30)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Hillsbrad 29-30|
+N Optimized Leveling |N|This guide follows an optimized quest order for Hillsbrad 29-30|
 
 N Travel to Eastern Kingdoms |N|Take the zeppelin from Orgrimmar to Undercity|
 

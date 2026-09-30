@@ -184,6 +184,50 @@ if A and table.getn(tickers) == 1 then
 end
 check(table.getn(tickers) == 1, "one ticker, QuestTracker's arrival check, got %d", table.getn(tickers))
 
+--[[ Starting up: the chat commands, and progress carried over from
+	TurtleGuide, the addon this one grew from. /vg was TurtleGuide's command
+	and is gone; a character's TurtleGuideDB is still adopted, once, when
+	there is no Pathfinder save to lose. ]]
+if A and A.OnInitialize then
+	local said = {}
+	local saved, themeSaved = {}, {}
+	for _, k in ipairs({ "db", "RegisterDB", "RegisterDefaults", "SetupErrorCapture", "RestoreCraftGuides",
+		"PositionActiveFrames", "CreateConfigPanel", "Print" }) do saved[k] = A[k] end
+	for _, k in ipairs({ "ApplyTheme", "SetWindowScale", "SetSwitchColours" }) do
+		themeSaved[k] = A.Theme[k]
+		A.Theme[k] = function() end
+	end
+	local function none() end
+	A.RegisterDB = function(self) self.db = { char = { panelopen = false }, profile = {} } end
+	A.RegisterDefaults, A.SetupErrorCapture, A.RestoreCraftGuides = none, none, none
+	A.PositionActiveFrames, A.CreateConfigPanel = none, none
+	A.Print = function(_, msg) table.insert(said, msg) end
+
+	local old = { chars = { ["Tester of Realm"] = { currentguide = "Elwynn Forest (1-10)" } } }
+	TurtleGuideDB, AegisPathfinderDB = old, nil
+	local ok, err = pcall(A.OnInitialize, A)
+	check(ok, "OnInitialize runs, got %s", tostring(err))
+	check(AegisPathfinderDB == old, "a character's TurtleGuide progress is carried over")
+	check(said[1] == "Imported your saved progress from TurtleGuide.", "and chat says so, got %s", tostring(said[1]))
+
+	local slashes = {}
+	for k, v in pairs(_G) do
+		if type(k) == "string" and string.find(k, "^SLASH_AEGISPATHFINDER%d+$") then slashes[v] = true end
+	end
+	check(slashes["/apg"] and slashes["/pathfinder"], "/apg and /pathfinder are the addon's commands")
+	check(not slashes["/vg"], "/vg, TurtleGuide's command, is not registered")
+	check(not slashes["/aegis"], "nor /aegis, which belongs to another Aegis addon")
+
+	local mine = { chars = { ["Tester of Realm"] = { currentguide = "Westfall (10-12)" } } }
+	TurtleGuideDB, AegisPathfinderDB, said = old, mine, {}
+	A:OnInitialize()
+	check(AegisPathfinderDB == mine and table.getn(said) == 0, "a Pathfinder save is never replaced by an old one")
+
+	TurtleGuideDB, AegisPathfinderDB = nil, nil
+	for k in pairs(saved) do A[k] = saved[k] end
+	for k, f in pairs(themeSaved) do A.Theme[k] = f end
+end
+
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end
 print(string.format("Load: %d checks", checks))
 if table.getn(failures) == 0 then

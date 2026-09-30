@@ -1,12 +1,12 @@
 -- Optimized Guide: Alterac Mountains (37-37)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Alterac Mountains (37-37)", "Optimized/Thousand Needles (37-38)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Alterac Mountains 37-37|
+N Optimized Leveling |N|This guide follows an optimized quest order for Alterac Mountains 37-37|
 
 R Tarren Mill |QID|544| |N|Travel to Tarren Mill (61.59, 20.71)| |Z|Hillsbrad Foothills|
 A Prison Break In |QID|544| |N|Magus Wordeen Voidglare in Tarren Mill (61.59, 20.71)| |Z|Hillsbrad Foothills|

@@ -1,12 +1,12 @@
 -- Optimized Guide: Ashenvale (21-21)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Ashenvale (21-21)", "Optimized/The Barrens (22-23)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Ashenvale 21-21|
+N Optimized Leveling |N|This guide follows an optimized quest order for Ashenvale 21-21|
 
 R Splintertree Post |QID|6383| |N|Travel to Splintertree Post (73.76, 61.53)| |Z|Ashenvale|
 T The Ashenvale Hunt |QID|742| |N|Senani Thunderheart in Splintertree Post (73.76, 61.53)| |Z|Ashenvale| |O|

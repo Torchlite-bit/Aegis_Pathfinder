@@ -1,12 +1,12 @@
 -- Optimized Guide: Stranglethorn Vale (32-32)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Stranglethorn (32-32)", "Optimized/Thousand Needles (32-33)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Stranglethorn 32-32|
+N Optimized Leveling |N|This guide follows an optimized quest order for Stranglethorn 32-32|
 
 R Rebel Camp |QID|203| |N|Travel to Rebel Camp via Duskwood (38.24, 4.86)| |Z|Stranglethorn Vale|
 A The Second Rebellion |QID|203| |N|Sergeant Yohwa in Rebel Camp (38.03, 3.35)| |Z|Stranglethorn Vale|

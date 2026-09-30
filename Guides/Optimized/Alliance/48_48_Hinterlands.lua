@@ -1,12 +1,12 @@
 -- Optimized Guide: The Hinterlands (48-48)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Hinterlands (48-48)", "Optimized/Stranglethorn (48-49)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Hinterlands 48|
+N Optimized Leveling |N|This guide follows an optimized quest order for Hinterlands 48|
 
 R Wildhammer Keep |QID|3843| |N|Travel to Wildhammer Keep (14.15, 43.61)| |Z|The Hinterlands|
 T The Newest Member of the Family |QID|3843| |N|Agnar Beastamer (14.15, 43.61)| |Z|The Hinterlands| |PRE|3842| |O|

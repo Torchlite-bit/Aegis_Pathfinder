@@ -32,7 +32,6 @@
 ]]
 
 local AegisPathfinder = AegisPathfinder
-local ww = WidgetWarlock
 local Theme = AegisPathfinder.Theme
 
 -- Concept geometry: .panel{width:396px}, .options-body{padding:12px 14px 16px},
@@ -816,16 +815,13 @@ function AegisPathfinder:CreateConfigPanel()
 			end
 		end
 		AegisPathfinder:RefreshConfigPanel()
-		this:SetAlpha(0)
-		this:SetScript("OnUpdate", ww.FadeIn)
+		Theme:FadeIn(this, 0.5)
 	end)
 	frame:SetScript("OnHide", function()
 		-- The credits open from here, and close with it.
 		if AegisPathfinder.creditsframe then AegisPathfinder.creditsframe:Hide() end
 		for _, d in ipairs(this.dropdowns) do d.list:Hide() end
 	end)
-	ww.SetFadeTime(frame, 0.5)
-
 	table.insert(UISpecialFrames, "AegisPathfinderOptions")
 end
 

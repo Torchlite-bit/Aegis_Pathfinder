@@ -1,12 +1,12 @@
 -- Optimized Guide: Azshara (53-54)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Azshara (53-54)", "Optimized/Felwood (54-54)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Azshara 53-54|
+N Optimized Leveling |N|This guide follows an optimized quest order for Azshara 53-54|
 
 R Valormok |QID|3505| |N|Travel to Valormok in Azshara (22.28, 51.50)| |Z|Azshara|
 T Betrayed (Part 1) |QID|3504| |N|Ag'tor Bloodfist in Valormok (22.28, 51.48)| |Z|Azshara|

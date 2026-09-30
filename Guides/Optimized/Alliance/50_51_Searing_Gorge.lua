@@ -1,12 +1,12 @@
 -- Optimized Guide: Searing Gorge (50-51)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Searing Gorge (50-51)", "Optimized/Un'Goro (51-52)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Searing Gorge 50-51|
+N Optimized Leveling |N|This guide follows an optimized quest order for Searing Gorge 50-51|
 
 N 15 Silk Cloth |N|Make sure you collect at least 15 Silk Cloth for the quest 'Caught!' later in this guide - purchase from the Auction House or farm Shadowforge Tunneler in Badlands| |L|4306 15|
 

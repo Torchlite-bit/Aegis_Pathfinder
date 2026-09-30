@@ -24,7 +24,6 @@ libs\AceHook-2.1\AceHook-2.1.lua
 Locale.lua
 Core.lua
 Theme.lua
-WidgetWarlock.lua
 Credits.lua
 Parser.lua
 QuestShellPlusParser.lua
@@ -64,7 +63,7 @@ Routes\Routes.lua
 # (converted from CraftRoute by Tools/import_recipes.py)
 Crafting\Crafting.xml
 
-# Optimized Guides (VanillaGuide quest order)
+# Optimized guides
 Guides\Optimized\Alliance\Guides.xml
 Guides\Optimized\Horde\Guides.xml
 

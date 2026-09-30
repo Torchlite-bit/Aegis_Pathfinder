@@ -1,10 +1,9 @@
 --[[
 	Tests for the minimap button.
 
-	It replaced FuBarPlugin's: Blizzard's quest-log book in the stock minimap
-	border, and a right-click Dewdrop menu. This checks it is drawn from the
-	theme, that each click does what its tooltip says, that dragging walks it
-	round the minimap's edge and is remembered, and that the setting hides it.
+	That it is drawn from the theme, that each click does what its tooltip
+	says, that dragging walks it round the minimap's edge and is remembered,
+	and that the setting hides it.
 
 	Run:  lua5.1 Tools/test_minimap.lua
 ]]

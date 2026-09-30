@@ -1,12 +1,12 @@
 -- Optimized Guide: Stranglethorn Vale (35-36)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Stranglethorn (35-36)", "Optimized/Alterac (36-37)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Stranglethorn 35-36|
+N Optimized Leveling |N|This guide follows an optimized quest order for Stranglethorn 35-36|
 
 R Ratchet |QID|1040| |N|Travel to Ratchet (62.68, 36.24)| |Z|The Barrens|
 T Goblin Sponsorship (Part 1) |QID|1178| |N|Gazlowe in Ratchet (62.68, 36.24)| |Z|The Barrens| |O|

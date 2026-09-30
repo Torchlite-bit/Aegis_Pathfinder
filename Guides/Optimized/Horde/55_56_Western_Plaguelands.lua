@@ -1,12 +1,12 @@
 -- Optimized Guide: Western Plaguelands (55-56)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Western Plaguelands (55-56)", "Optimized/Eastern Plaguelands (56-57)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Western Plaguelands 55-56|
+N Optimized Leveling |N|This guide follows an optimized quest order for Western Plaguelands 55-56|
 
 R Undercity |QID|1004| |N|Travel to Undercity (67.74, 37.91)| |Z|Undercity|
 h Undercity |QID|1004| |N|Speak to Innkeeper Norman and set hearth (67.74, 37.91)| |Z|Undercity|

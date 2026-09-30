@@ -1,12 +1,12 @@
 -- Optimized Guide: Hillsbrad Foothills (30-31)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Hillsbrad (30-31)", "Optimized/Alterac (31-31)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Hillsbrad 30-31|
+N Optimized Leveling |N|This guide follows an optimized quest order for Hillsbrad 30-31|
 
 R Menethil Harbor |QID|472| |N|Travel to Menethil Harbor (10.83, 55.85)| |Z|Wetlands|
 A Fall of Dun Modr |QID|472| |N|Harlo Barnaby in Menethil Harbor (10.83, 55.85)| |Z|Wetlands|

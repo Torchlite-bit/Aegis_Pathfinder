@@ -1,5 +1,5 @@
 -- Optimized Guide: Darkshore (12-14)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 -- All Alliance races converge here after their starting zones
 
@@ -7,7 +7,7 @@ AegisPathfinder:RegisterGuide("Optimized/Darkshore (12-14)", "Optimized/Darkshor
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Darkshore 12-14|
+N Optimized Leveling |N|This guide follows an optimized quest order for Darkshore 12-14|
 
 R Auberdine |QID|3524| |N|Travel to Auberdine by boat from Menethil Harbor or flight from Darnassus (36.61, 45.59)|
 f Auberdine |QID|3524| |N|Get flight path from Caylais Moonfeather (36.4, 45.5)|

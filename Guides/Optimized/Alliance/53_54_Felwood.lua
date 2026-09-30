@@ -1,12 +1,12 @@
 -- Optimized Guide: Felwood (53-54)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Felwood (53-54)", "Optimized/Winterspring (54-55)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Felwood 53-54|
+N Optimized Leveling |N|This guide follows an optimized quest order for Felwood 53-54|
 
 R Morlos'Aran |QID|4101| |N|Travel to Morlos'Aran in Felwood (54.15, 86.84)| |Z|Felwood|
 A Cleansing Felwood |QID|4101| |N|Arathandris Silversky in Morlos'Aran (54.15, 86.84)| |Z|Felwood|

@@ -1,12 +1,12 @@
 -- Optimized Guide: Un'Goro Crater (51-52)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Un'Goro (51-52)", "Optimized/Azshara (52-53)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Un'Goro Crater 51-52|
+N Optimized Leveling |N|This guide follows an optimized quest order for Un'Goro Crater 51-52|
 
 N Mithril Casing |QID|4243| |N|You will need a Mithril Casing later - craft or purchase from Auction House| |AH|
 

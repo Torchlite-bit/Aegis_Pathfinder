@@ -1,12 +1,12 @@
 -- Optimized Guide: Azshara (52-53)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Azshara (52-53)", "Optimized/Felwood (53-54)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Azshara 52-53|
+N Optimized Leveling |N|This guide follows an optimized quest order for Azshara 52-53|
 
 R Gadgetzan |QID|4504| |N|Travel to Gadgetzan (51.59, 26.77)| |Z|Tanaris| |O|
 T Super Sticky |QID|4504| |N|Tran'rek in Gadgetzan (51.59, 26.77)| |Z|Tanaris| |O|

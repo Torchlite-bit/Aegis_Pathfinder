@@ -1,12 +1,12 @@
 -- Optimized Guide: Feralas (43-45)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Feralas (43-45)", "Optimized/Uldaman (45-46)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Feralas 43-45|
+N Optimized Leveling |N|This guide follows an optimized quest order for Feralas 43-45|
 
 R Feathermoon Stronghold |QID|2821| |N|You should be in Feathermoon Stronghold (30.63, 42.72)| |Z|Feralas|
 A The Mark of Quality |QID|2821| |N|Pratt McGrubben in Feathermoon Stronghold (30.63, 42.72)| |Z|Feralas|

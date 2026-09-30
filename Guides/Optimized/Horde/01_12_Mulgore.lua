@@ -1,12 +1,12 @@
 -- Optimized Guide: Mulgore (1-12)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Mulgore (1-12)", "Optimized/The Barrens (12-15)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for efficient leveling|
+N Optimized Leveling |N|This guide follows an optimized quest order for efficient leveling|
 
 A The Hunt Begins |QID|747| |N|Grull Hawkwind in Camp Narache (44.91, 77.15)|
 A A Humble Task (Part 1) |QID|752| |N|Chief Hawkwind in Camp Narache (44.23, 76.04)|

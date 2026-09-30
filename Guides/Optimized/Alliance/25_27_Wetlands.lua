@@ -1,12 +1,12 @@
 -- Optimized Guide: Wetlands (25-27)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Wetlands (25-27)", "Optimized/Redridge (27-28)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Wetlands 25-27|
+N Optimized Leveling |N|This guide follows an optimized quest order for Wetlands 25-27|
 
 R Menethil Harbor |QID|279| |N|Travel to Menethil Harbor (8.31, 58.54)| |Z|Wetlands|
 A Claws from the Deep |QID|279| |N|Karl Boran in Menethil Harbor (8.31, 58.54)| |Z|Wetlands|

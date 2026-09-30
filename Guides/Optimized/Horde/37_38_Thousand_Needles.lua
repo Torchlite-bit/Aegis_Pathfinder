@@ -1,12 +1,12 @@
 -- Optimized Guide: Thousand Needles (37-38)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Thousand Needles (37-38)", "Optimized/Dustwallow Marsh (38-38)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Thousand Needles 37-38|
+N Optimized Leveling |N|This guide follows an optimized quest order for Thousand Needles 37-38|
 
 R Undercity |QID|1164| |N|Travel to Undercity (64.8, 49.6)| |Z|Undercity| |O|
 T To Steal From Thieves |QID|1164| |N|Genavie Callow in Trade Quarter (63.76, 49.17)| |Z|Undercity| |O|

@@ -1,12 +1,12 @@
 -- Optimized Guide: Alterac Mountains (36-37)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Alterac (36-37)", "Optimized/Arathi (37-38)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Alterac 36-37|
+N Optimized Leveling |N|This guide follows an optimized quest order for Alterac 36-37|
 
 R Southshore |QID|504| |N|Travel to Southshore (48.12, 59.06)| |Z|Hillsbrad Foothills|
 A Crushridge Bounty |QID|500| |N|Marshal Redpath in Southshore (49.67, 58.73)| |Z|Hillsbrad Foothills|

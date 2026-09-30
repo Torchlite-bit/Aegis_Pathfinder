@@ -1,12 +1,12 @@
 -- Optimized Guide: Winterspring (59-60)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Winterspring (59-60)", nil, "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Winterspring 59-60|
+N Optimized Leveling |N|This guide follows an optimized quest order for Winterspring 59-60|
 
 R Nighthaven |QID|6844| |N|Travel to Nighthaven in Moonglade (44.88, 35.58)| |Z|Moonglade| |O|
 T Umber, Archivist |QID|6844| |N|Umber in Nighthaven (44.88, 35.58)| |Z|Moonglade| |O|

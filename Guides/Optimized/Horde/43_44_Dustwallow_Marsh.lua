@@ -1,12 +1,12 @@
 -- Optimized Guide: Dustwallow Marsh (43-44)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Dustwallow Marsh (43-44)", "Optimized/Tanaris (44-45)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Dustwallow Marsh 43-44|
+N Optimized Leveling |N|This guide follows an optimized quest order for Dustwallow Marsh 43-44|
 
 T The Troll Witchdoctor |QID|1240| |N|Kin'weelay in Grom'gol Base Camp (32.26, 27.71)| |O|
 A Marg Speaks |QID|1261| |N|Bubbling Cauldron in Grom'gol Base Camp (32.2, 27.7)| |PRE|1240|

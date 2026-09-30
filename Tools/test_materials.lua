@@ -46,7 +46,6 @@ function AegisPathfinder:GetObjectiveInfo(i)
 end
 
 dofile("Theme.lua")
-dofile("WidgetWarlock.lua")
 dofile("Parser.lua")
 dofile("Professions.lua")
 dofile("MaterialsFrame.lua")

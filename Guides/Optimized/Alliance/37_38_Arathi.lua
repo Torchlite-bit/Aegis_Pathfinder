@@ -1,12 +1,12 @@
 -- Optimized Guide: Arathi Highlands (37-38)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Arathi (37-38)", "Optimized/Dustwallow (38-38)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Arathi 37-38|
+N Optimized Leveling |N|This guide follows an optimized quest order for Arathi 37-38|
 
 R Stormwind City |QID|690| |N|Travel to Stormwind City (39.82, 81.53)| |Z|Stormwind City|
 A Malin's Request |QID|690| |N|Archmage Malin in Mage Quarter (50.3, 87.0)| |Z|Stormwind City|

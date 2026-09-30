@@ -1,14 +1,7 @@
 local L = AEGISPATHFINDER_LOCALE
 AEGISPATHFINDER_LOCALE = nil
 
--- No FuBarPlugin: the minimap button is the addon's own (MinimapButton.lua),
--- and its right-click opens the options panel rather than a Dewdrop menu.
 AegisPathfinder = AceLibrary("AceAddon-2.0"):new("AceConsole-2.0", "AceDB-2.0", "AceDebug-2.0", "AceEvent-2.0", "AceHook-2.1")
-
--- Compatibility alias for the pre-rebrand addon name. Guide files -- including
--- any authored outside this repository -- call TurtleGuide:RegisterGuide(), so
--- the old global has to keep resolving to the addon object.
-TurtleGuide = AegisPathfinder
 
 AegisPathfinder.guides = {}
 AegisPathfinder.guidelist = {}
@@ -557,13 +550,13 @@ local options = {
                     local marker = (current == pack.name) and " |cff00ff00(active)|r" or ""
                     AegisPathfinder:Print("  " .. pack.displayName .. marker .. " - " .. pack.description)
                 end
-                AegisPathfinder:Print("Use |cff00ccff/vg SetRoutePack <name>|r to switch.")
+                AegisPathfinder:Print("Use |cff00ccff/apg SetRoutePack <name>|r to switch.")
             end,
             order = 21,
         },
         SetRoutePack = {
             name = "Set Route Pack",
-            desc = "Switch to a route pack (e.g., /vg SetRoutePack RestedXP)",
+            desc = "Switch to a route pack (e.g., /apg SetRoutePack RestedXP)",
             type = "text",
             usage = "<pack name>",
             get = false,
@@ -619,12 +612,12 @@ function AegisPathfinder:OnInitialize()
     end
     -- /aegis belongs to another addon in the Aegis suite; registering it
     -- here would collide with it.
-    self:RegisterChatCommand({ "/apg", "/pathfinder", "/vg" }, options, SLASH_HANDLER)
+    self:RegisterChatCommand({ "/apg", "/pathfinder" }, options, SLASH_HANDLER)
 
     --[[ A bare /apg opens the objectives panel.
 
         AceConsole's own handler answers an empty argument with a list of
-        subcommands, which is not what anyone typing /vg is looking for -- the
+        subcommands, which is not what anyone typing /apg is looking for -- the
         panel is the addon's main surface. There is no hook for the empty case,
         so wrap the handler AceConsole just installed: subcommands still go to
         it, and the options panel is a right-click on the minimap button away.

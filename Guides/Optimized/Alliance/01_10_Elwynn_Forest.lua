@@ -1,12 +1,12 @@
 -- Optimized Guide: Elwynn Forest (1-10)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Elwynn Forest (1-10)", "Optimized/Westfall (10-12)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for efficient leveling|
+N Optimized Leveling |N|This guide follows an optimized quest order for efficient leveling|
 
 A A Threat Within |QID|783| |N|Deputy Willem in Northshire Valley (48.18, 42.93)|
 T A Threat Within |QID|783| |N|Marshal McBride in Northshire Abbey (48.91, 41.60)|

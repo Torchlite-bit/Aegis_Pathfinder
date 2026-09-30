@@ -1,12 +1,12 @@
 -- Optimized Guide: Desolace (33-35)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Desolace (33-35)", "Optimized/Stranglethorn (35-36)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Desolace 33-35|
+N Optimized Leveling |N|This guide follows an optimized quest order for Desolace 33-35|
 
 R Desolace |QID|1437| |N|Run south through Stonetalon to Desolace (27, 85.9)| |Z|Stonetalon Mountains|
 R Nijel's Point |QID|1437| |N|Nijel's Point is along the northern edge of Desolace (64, 10)| |Z|Desolace|

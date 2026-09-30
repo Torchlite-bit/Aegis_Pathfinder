@@ -1,12 +1,12 @@
 -- Optimized Guide: Darkshore (14-17)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Darkshore (14-17)", "Optimized/Loch Modan (17-18)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Darkshore 14-17|
+N Optimized Leveling |N|This guide follows an optimized quest order for Darkshore 14-17|
 
 T Bashal'Aran (Part 4) |QID|957| |N|Asterion in Bashal'Aran (44.20, 36.30)|
 

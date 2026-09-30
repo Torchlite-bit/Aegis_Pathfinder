@@ -1,12 +1,12 @@
 -- Optimized Guide: Ashenvale (26-27)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Ashenvale (26-27)", "Optimized/Stonetalon (27-27)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Ashenvale 26-27|
+N Optimized Leveling |N|This guide follows an optimized quest order for Ashenvale 26-27|
 
 R Splintertree Post |QID|25| |N|You should be at Splintertree Post (73, 65)| |Z|Ashenvale|
 h Splintertree Post |QID|25| |N|Set hearth at Innkeeper Kaylisk (73.96, 60.69)| |Z|Ashenvale|

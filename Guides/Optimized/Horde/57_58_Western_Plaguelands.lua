@@ -1,12 +1,12 @@
 -- Optimized Guide: Western Plaguelands (57-58)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Western Plaguelands (57-58)", "Optimized/Winterspring (58-60)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Western Plaguelands 57-58|
+N Optimized Leveling |N|This guide follows an optimized quest order for Western Plaguelands 57-58|
 
 R The Bulwark |TID|5237| |N|Travel to The Bulwark (83.05, 71.91)| |Z|Tirisfal|
 T Return to the Bulwark (Part 4) |QID|5236| |N|Shadow Priestess Vandis in The Bulwark (83.05, 71.91)| |Z|Tirisfal|

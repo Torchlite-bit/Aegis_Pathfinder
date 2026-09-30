@@ -46,7 +46,6 @@ function AegisPathfinder:GetObjectiveInfo(i)
 	return self.actions[i], self.quests[i], self.quests[i]
 end
 
-dofile("WidgetWarlock.lua")
 dofile("Theme.lua")
 dofile("Parser.lua")      -- provides GetObjectiveTag
 dofile("GuideEngine.lua")

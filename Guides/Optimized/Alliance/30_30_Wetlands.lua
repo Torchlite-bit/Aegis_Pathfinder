@@ -1,12 +1,12 @@
 -- Optimized Guide: Wetlands (30-30)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Wetlands (30-30)", "Optimized/Hillsbrad (30-31)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Wetlands 30-30|
+N Optimized Leveling |N|This guide follows an optimized quest order for Wetlands 30-30|
 
 R Wetlands |QID|290| |N|Travel to Wetlands|
 R Deepwater Tavern |QID|290| |N|Travel to Deepwater Tavern (10.68, 60.92)| |Z|Wetlands|

@@ -1,12 +1,9 @@
 --[[
 	MinimapButton.lua -- the button on the minimap's edge.
 
-	It used to be FuBarPlugin's: Blizzard's quest-log book in the stock round
-	minimap border, with a right-click that opened a Dewdrop menu of every
-	setting -- the same settings the options panel now shows properly. This is
-	the addon's own: the Aegis: Pathfinder logo, in its own colours -- a dark
-	disc with a red and gold rune ring, so it needs no border of ours. Hovering
-	puts the accent ring round it.
+	The Aegis: Pathfinder logo, in its own colours -- a dark disc with a red
+	and gold rune ring, so it needs no border of ours. Hovering puts the
+	accent ring round it.
 
 	Click shows or hides the guide, right-click opens the options panel, and
 	dragging walks it round the minimap's edge. The Guide behaviour section of

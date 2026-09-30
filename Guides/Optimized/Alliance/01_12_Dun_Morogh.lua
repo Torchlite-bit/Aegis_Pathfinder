@@ -1,12 +1,12 @@
 -- Optimized Guide: Dun Morogh (1-12)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Dun Morogh (1-12)", "Optimized/Darkshore (12-14)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for efficient leveling. For Dwarves and Gnomes.|
+N Optimized Leveling |N|This guide follows an optimized quest order for efficient leveling. For Dwarves and Gnomes.|
 
 A Dwarven Outfitters |QID|179| |N|Sten Stoutarm in Coldridge Valley (29.92, 71.23)|
 C Dwarven Outfitters |QID|179| |N|Kill Ragged Timber Wolves and Ragged Young Wolves for 8 Tough Wolf Meat (30, 73)|

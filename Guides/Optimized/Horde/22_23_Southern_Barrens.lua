@@ -1,12 +1,12 @@
 -- Optimized Guide: Southern Barrens (22-23)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/The Barrens (22-23)", "Optimized/Stonetalon (23-25)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Southern Barrens 22-23|
+N Optimized Leveling |N|This guide follows an optimized quest order for Southern Barrens 22-23|
 
 F Camp Taurajo |QID|3261| |N|Fly to Camp Taurajo (44.6, 59.2)| |Z|The Barrens|
 T Jorn Skyseer |QID|3261| |N|Jorn Skyseer in Camp Taurajo (44.83, 59.09)| |Z|The Barrens| |O|

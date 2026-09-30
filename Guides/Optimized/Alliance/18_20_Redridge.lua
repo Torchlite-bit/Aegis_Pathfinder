@@ -1,12 +1,12 @@
 -- Optimized Guide: Redridge Mountains (18-20)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Redridge (18-20)", "Optimized/Darkshore (20-21)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Redridge 18-20|
+N Optimized Leveling |N|This guide follows an optimized quest order for Redridge 18-20|
 
 R Three Corners |QID|244| |N|Travel to Three Corners in Redridge Mountains (15.32, 71.42)|
 A Encroaching Gnolls |QID|244| |N|Guard Parker in Three Corners (15.32, 71.42)|

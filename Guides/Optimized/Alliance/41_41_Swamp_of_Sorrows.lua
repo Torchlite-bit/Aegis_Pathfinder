@@ -1,12 +1,12 @@
 -- Optimized Guide: Swamp of Sorrows (41-41)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Swamp of Sorrows (41-41)", "Optimized/Desolace (41-42)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Swamp of Sorrows 41|
+N Optimized Leveling |N|This guide follows an optimized quest order for Swamp of Sorrows 41|
 
 R Swamp of Sorrows |QID|1116| |N|Run from Darkshire through Deadwind Pass to Swamp of Sorrows (16.64, 56.29)| |Z|Swamp of Sorrows|
 

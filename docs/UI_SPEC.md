@@ -301,21 +301,12 @@ mode shows one step and has the room, so its row grows to show the whole note
 (a second, wrapping font string, measured after it is set), and runs to the
 panel's edge since there is no scrollbar beside it.
 
-### Shared widgets -- `WidgetWarlock.lua`
+### Shared widgets
 
-Rather than edit every call site, the two shared widget helpers build themed
-widgets:
-
-| Helper | Now returns |
-|---|---|
-| `SummonCheckBox` | `Theme:StepCheck` -- a CheckButton, so `SetChecked`/`GetChecked`/`OnClick` are unchanged |
-| `SummonFontString` | A font string mapped from the Blizzard font object name onto a theme face and colour |
-
-`Theme.lua` therefore loads before `WidgetWarlock.lua`.
-
-`Theme:PanelButton` and `Theme:CloseChip` do the same job for
-`UIPanelButtonTemplate` and `UIPanelCloseButton`, which is what every
-secondary panel and all three `Core.lua` dialogs were still built from.
+`Theme:StepCheck` is the step circle, a CheckButton, so `SetChecked` /
+`GetChecked` / `OnClick` work as on any check button. `Theme:PanelButton` and
+`Theme:CloseChip` are the buttons every secondary panel and the `Core.lua`
+dialogs are built from, and `Theme:FadeIn` fades a window in as it opens.
 
 ### Options panel -- `OptionsFrame.lua`
 
@@ -461,22 +452,16 @@ Text, gold, danger and the green/red step bands keep their meaning everywhere.
 
 ### Minimap button -- `MinimapButton.lua`
 
-Not in the concept, which has no minimap. It used to be FuBarPlugin's:
-Blizzard's quest-log book in the stock round minimap border, and a right-click
-that opened a Dewdrop menu of every setting in Blizzard tooltip chrome. Now it
-is drawn like the rest of the addon -- `logo.tga`, the Aegis shield, in accent
-on a `panel-2` disc (`circle-fill.tga`) with a `subtle` hairline ring
-(`circle-border.tga`) that takes the accent on hover.
+Not in the concept, which has no minimap. It is the addon's own:
+`minimap-logo.tga`, the Aegis: Pathfinder logo on its dark disc with a red and
+gold rune ring, so it needs no border; hovering puts an accent ring
+(`circle-border.tga`) round it.
 
-Click toggles the guide, right-click toggles the options panel (every setting
-the Dewdrop menu held is there), and dragging walks it round the minimap's edge
-at 80px from its centre; the angle is saved per profile. "Minimap button" in
-the options panel's Guide behaviour section, or `/apg minimapbutton`, hides it.
-
-Dewdrop-2.0, Tablet-2.0 and FuBarPlugin-2.0 were only there for the old
-button, so they are gone from `libs/` and the `.toc`; AceConsole and AceDB use
-Dewdrop only when it is present. `Tools/verify.py` fails on Blizzard quest-log
-or minimap art, in either backslash form.
+Click toggles the guide, right-click toggles the options panel, and dragging
+walks it round the minimap's edge at 80px from its centre; the angle is saved
+per profile. "Minimap button" in the options panel's Guide behaviour section,
+or `/apg minimapbutton`, hides it. `Tools/verify.py` fails on Blizzard
+quest-log or minimap art, in either backslash form.
 
 ### Guide list -- `GuideListFrame.lua`
 
@@ -880,9 +865,7 @@ later.
 
 ### Scrollbar -- `Theme:ScrollBar`
 
-The last Blizzard art in the addon. `WidgetWarlock.ConjureScrollBar` used the
-stock knob plus the character-sheet scroll frame around it, which read as a
-foreign object on a flat panel; it now delegates here. A dark track, a stadium
+A dark track, a stadium
 thumb (`scroll-thumb.tga`, radius half its width, so the caps stay circular at
 any length) and caret step buttons. It is still a Slider, so
 `SetMinMaxValues` / `SetValue` / `OnValueChanged` are unchanged.

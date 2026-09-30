@@ -1,12 +1,12 @@
 -- Optimized Guide: Desolace (32-34)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Desolace (32-34)", "Optimized/Stranglethorn Vale (34-36)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Desolace 32-34|
+N Optimized Leveling |N|This guide follows an optimized quest order for Desolace 32-34|
 
 R Orgrimmar |QID|1146| |N|Travel to Orgrimmar (75, 34)| |Z|Orgrimmar|
 N Bank Items |N|Store Rod of Helcular, Kravel's Parts Order and Kravel's Crate in the bank if you have them (49.6, 69.4)| |Z|Orgrimmar|

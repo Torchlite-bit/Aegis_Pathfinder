@@ -1,12 +1,12 @@
 -- Optimized Guide: Azshara (46-46)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Azshara (46-46)", "Optimized/Hinterlands (46-47)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Azshara 46-46|
+N Optimized Leveling |N|This guide follows an optimized quest order for Azshara 46-46|
 
 R Talrendis Point |QID|5535| |N|Travel to Talrendis Point in Azshara (11.37, 78.14)| |Z|Azshara|
 A Spiritual Unrest |QID|5535| |N|Loh'atu in Talrendis Point (11.37, 78.14)| |Z|Azshara|

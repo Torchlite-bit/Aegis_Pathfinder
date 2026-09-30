@@ -115,7 +115,6 @@ dofile("ItemScoreData.lua")
 dofile("ItemScore.lua")
 local scoreSettings = AegisPathfinder.ItemScore.Settings()
 dofile("GearFrame.lua")
-dofile("WidgetWarlock.lua")
 dofile("Credits.lua")
 dofile("OptionsFrame.lua")
 

@@ -1,12 +1,12 @@
 -- Optimized Guide: Burning Steppes (52-53)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Burning Steppes (52-53)", "Optimized/Sunken Temple (53-53)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Burning Steppes 52-53|
+N Optimized Leveling |N|This guide follows an optimized quest order for Burning Steppes 52-53|
 
 T Super Sticky |QID|4504| |N|Tran'rek in Gadgetzan (51.59, 26.77)| |Z|Tanaris| |O|
 T Bungle in the Jungle |QID|4496| |N|Alchemist Pestlezugg in Gadgetzan (50.90, 26.97)| |Z|Tanaris| |O|

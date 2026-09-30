@@ -85,7 +85,6 @@ AegisPathfinder.DUNGEON_QUESTS = {
 AegisPathfinder.DUNGEON_RECOMMEND = 5
 
 dofile("Theme.lua")
-dofile("WidgetWarlock.lua")
 dofile("SetupFrame.lua")
 local Theme = AegisPathfinder.Theme
 

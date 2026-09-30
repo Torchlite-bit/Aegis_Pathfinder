@@ -90,7 +90,6 @@ function AegisPathfinder:SetTurnedIn(i, value)
 end
 
 dofile("Theme.lua")
-dofile("WidgetWarlock.lua")
 dofile("Parser.lua")
 dofile("QuestShellPlusParser.lua")
 dofile("Professions.lua")

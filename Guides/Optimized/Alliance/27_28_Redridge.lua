@@ -1,12 +1,12 @@
 -- Optimized Guide: Redridge Mountains (27-28)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Redridge (27-28)", "Optimized/Duskwood (28-29)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Redridge Mountains 27-28|
+N Optimized Leveling |N|This guide follows an optimized quest order for Redridge Mountains 27-28|
 
 R Lakeshire |QID|128| |N|Travel to Lakeshire (31.52, 57.90)| |Z|Redridge Mountains|
 A Blackrock Bounty |QID|128| |N|Guard Howe in Lakeshire (31.52, 57.90)| |Z|Redridge Mountains|

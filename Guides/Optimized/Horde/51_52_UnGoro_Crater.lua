@@ -1,12 +1,12 @@
 -- Optimized Guide: Un'Goro Crater (51-52)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Un'Goro Crater (51-52)", "Optimized/Burning Steppes (52-53)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Un'Goro Crater 51-52|
+N Optimized Leveling |N|This guide follows an optimized quest order for Un'Goro Crater 51-52|
 
 B Mithril Casing |QID|4244| |N|Buy Mithril Casing from Auction House for 1-2g - used for A-Me 01 quest later. Skip if poor| |L|10561| |AH|
 

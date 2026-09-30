@@ -1,7 +1,6 @@
 -- Routes.lua
 -- Race-based leveling routes for AegisPathfinder
 -- Defines the zone progression for each race from 1-60
--- Uses Optimized guides from VanillaGuide quest order
 
 local AegisPathfinder = AegisPathfinder
 
@@ -203,10 +202,11 @@ AegisPathfinder:RegisterRoute("Goblin", MergeRoutes({
 -- Route Packs
 -- ============================================================================
 
--- VanillaGuide Route Pack (default) - uses the existing Optimized routes
+-- The Optimized route pack (default)
 AegisPathfinder:RegisterRoutePack("VanillaGuide", {
-    -- Shown as the concept names it. The key stays "VanillaGuide": it is what
-    -- every existing character has saved in its routepack field.
+    -- Shown as "Optimized". The key keeps its old name, "VanillaGuide",
+    -- because every existing character has it saved in its routepack field:
+    -- renamed, they would all lose their route.
     displayName = "Optimized",
     description = "Quest-optimized 1-60 leveling",
     routes = {

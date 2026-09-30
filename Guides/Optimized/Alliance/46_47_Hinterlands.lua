@@ -1,12 +1,12 @@
 -- Optimized Guide: The Hinterlands (46-47)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Hinterlands (46-47)", "Optimized/Feralas (47-47)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Hinterlands 46-47|
+N Optimized Leveling |N|This guide follows an optimized quest order for Hinterlands 46-47|
 
 R Aerie Peak |QID|1449| |N|Travel to Aerie Peak (11.80, 46.74)| |D|ST| |Z|The Hinterlands|
 T To The Hinterlands |QID|1449| |N|Falstad Wildhammer in Aerie Peak (11.80, 46.74)| |D|ST| |Z|The Hinterlands|

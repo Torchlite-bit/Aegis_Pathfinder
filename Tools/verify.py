@@ -292,14 +292,8 @@ BLIZZARD_CHROME = [
     (re.compile(r"Interface\\{1,2}Minimap\\{1,2}"), "Blizzard minimap-button art -- use the theme's disc and ring"),
 ]
 
-# WidgetWarlock keeps TooltipBorderBG as public API for guides written against
-# it. Its scrollbar is Theme:ScrollBar now, so nothing else here is exempt.
-CHROME_EXEMPT = {"WidgetWarlock.lua"}
-
-
 def check_theme(rep):
-    files = [p for p in sorted(walk({".lua"}))
-             if is_shipped(p) and os.path.basename(p) not in CHROME_EXEMPT]
+    files = [p for p in sorted(walk({".lua"})) if is_shipped(p)]
     for path in files:
         # Comments only: every pattern here names a texture path or a frame
         # template, and both live inside string literals. Scanning the

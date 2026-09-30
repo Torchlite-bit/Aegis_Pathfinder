@@ -1,12 +1,12 @@
 -- Optimized Guide: Dustwallow Marsh (38-38)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Dustwallow Marsh (38-38)", "Optimized/Stranglethorn Vale (38-40)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Dustwallow Marsh 38-38|
+N Optimized Leveling |N|This guide follows an optimized quest order for Dustwallow Marsh 38-38|
 
 R Thunder Bluff |QID|1205| |N|Travel to Thunder Bluff (40.2, 27.5)| |Z|Thunder Bluff|
 T Frostmaw |QID|1136| |N|Melor Stonehoof in Hunter's Rise (61.4, 80.6)| |P|GROUP| |Z|Thunder Bluff| |O|

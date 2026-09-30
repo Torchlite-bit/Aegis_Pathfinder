@@ -1,12 +1,12 @@
 -- Optimized Guide: Desolace (43-43)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Desolace (43-43)", "Optimized/Dustwallow Marsh (43-44)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Desolace 43-43|
+N Optimized Leveling |N|This guide follows an optimized quest order for Desolace 43-43|
 
 R Shadowprey Village |QID|5581| |N|Travel to Shadowprey Village (25.78, 68.20)| |Z|Desolace|
 A Hand of Iruxos |QID|5381| |N|Taiga Wisemane in Shadowprey Village (25.79, 68.28)|

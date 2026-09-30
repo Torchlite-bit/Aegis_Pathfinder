@@ -1,12 +1,12 @@
 -- Optimized Guide: Tanaris (47-48)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Tanaris (47-48)", "Optimized/Hinterlands (48-48)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Tanaris 47-48|
+N Optimized Leveling |N|This guide follows an optimized quest order for Tanaris 47-48|
 
 R Gadgetzan |QID|2605| |N|You should be in Gadgetzan (51.81, 28.65)| |Z|Tanaris|
 A The Thirsty Goblin |QID|2605| |N|Marin Noggenfogger in Gadgetzan (51.81, 28.65)| |Z|Tanaris|

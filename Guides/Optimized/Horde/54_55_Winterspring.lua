@@ -1,12 +1,12 @@
 -- Optimized Guide: Winterspring (54-55)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Winterspring (54-55)", "Optimized/Felwood (55-55)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Winterspring 54-55|
+N Optimized Leveling |N|This guide follows an optimized quest order for Winterspring 54-55|
 
 R Winterspring |QID|8464| |N|Travel to Winterspring zone| |Z|Winterspring|
 T Speak to Salfa |QID|8465| |N|Salfa at zone entrance (27.74, 34.53)| |Z|Winterspring| |O|

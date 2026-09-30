@@ -1,12 +1,12 @@
 -- Optimized Guide: Stranglethorn Vale (48-49)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Stranglethorn (48-49)", "Optimized/Blasted Lands (49-50)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Stranglethorn 48-49|
+N Optimized Leveling |N|This guide follows an optimized quest order for Stranglethorn 48-49|
 
 R Booty Bay |QID|1118| |N|You should be in Booty Bay (27.1, 77.3)| |Z|Stranglethorn Vale|
 h Booty Bay |QID|1118| |N|Set hearth at The Salty Sailor Tavern (27.05, 77.32)| |Z|Stranglethorn Vale|

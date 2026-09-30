@@ -1,12 +1,12 @@
 -- Optimized Guide: Alterac Mountains (30-30)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Alterac Mountains (30-30)", "Optimized/Arathi Highlands (30-30)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Alterac Mountains 30-30|
+N Optimized Leveling |N|This guide follows an optimized quest order for Alterac Mountains 30-30|
 
 R Tarren Mill |QID|501| |N|Travel to Tarren Mill (61.59, 20.71)| |Z|Hillsbrad Foothills|
 A Elixir of Pain |QID|501| |N|Apothecary Lydon in Tarren Mill (61.49, 19.18)| |Z|Hillsbrad Foothills|

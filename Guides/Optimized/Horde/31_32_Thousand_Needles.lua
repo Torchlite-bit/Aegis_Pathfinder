@@ -1,12 +1,12 @@
 -- Optimized Guide: Thousand Needles (31-32)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Thousand Needles (31-32)", "Optimized/Desolace (32-34)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Thousand Needles 31-32|
+N Optimized Leveling |N|This guide follows an optimized quest order for Thousand Needles 31-32|
 
 R The Crossroads |QID|1145| |N|Travel to The Crossroads (51.09, 29.59)| |Z|The Barrens|
 A The Swarm Grows (Part 1) |QID|1145| |N|Korran in The Crossroads (51.09, 29.59)| |Z|The Barrens|

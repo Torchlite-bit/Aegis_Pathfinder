@@ -1,12 +1,12 @@
 -- Optimized Guide: Winterspring (54-55)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Winterspring (54-55)", "Optimized/Burning Steppes (55-56)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Winterspring 54-55|
+N Optimized Leveling |N|This guide follows an optimized quest order for Winterspring 54-55|
 
 R Frostfire Hot Springs |QID|8464| |N|Travel to Frostfire Hot Springs (27.74, 34.53)| |Z|Winterspring|
 T Speak to Salfa |QID|8465| |N|Salfa in Frostfire Hot Springs (27.74, 34.53)| |Z|Winterspring| |O|

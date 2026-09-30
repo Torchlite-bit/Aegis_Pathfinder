@@ -1,12 +1,12 @@
 -- Optimized Guide: Loch Modan (17-18)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Loch Modan (17-18)", "Optimized/Redridge (18-20)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Loch Modan 17-18|
+N Optimized Leveling |N|This guide follows an optimized quest order for Loch Modan 17-18|
 
 R Algaz Station |QID|307| |N|Travel to Algaz Station in Loch Modan (24.67, 18.25)|
 A Filthy Paws |QID|307| |N|Mountaineer Stormpike in Algaz Station (24.67, 18.25)|

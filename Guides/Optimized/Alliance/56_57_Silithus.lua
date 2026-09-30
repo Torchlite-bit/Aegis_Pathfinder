@@ -1,12 +1,12 @@
 -- Optimized Guide: Silithus (56-57)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Silithus (56-57)", "Optimized/Western Plaguelands (57-58)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Silithus 56-57|
+N Optimized Leveling |N|This guide follows an optimized quest order for Silithus 56-57|
 
 A The New Frontier (Part 1) |QID|1015| |N|Crier Goodman in Stormwind City - she wanders around (46.71, 65.25)| |Z|Stormwind City| |O|
 T The Blightcaller Cometh |QID|6186| |N|Highlord Bolvar Fordragon in Stormwind Keep (78.19, 18.10)| |Z|Stormwind City| |O|

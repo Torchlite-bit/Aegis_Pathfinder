@@ -1,10 +1,12 @@
 # QuestShell+ Format Specification
 
-An extended QuestShell format that combines the structured Lua table syntax with all TurtleGuide features.
+An extended QuestShell format: QuestShell's structured Lua tables, with every feature of Pathfinder's text
+format (docs/GUIDE_AUTHORING.md). The profession guides and the crafting routes are written in it; the
+other guides use the text format.
 
 ## Why QuestShell+?
 
-| Feature | TurtleGuide | QuestShell | QuestShell+ |
+| Feature | Text format | QuestShell | QuestShell+ |
 |---------|:-----------:|:----------:|:-----------:|
 | Structured syntax | ❌ | ✅ | ✅ |
 | Easy for contributors | ❌ | ✅ | ✅ |
@@ -142,9 +144,9 @@ QuestShellGuides["QS_Durotar_1_12"] = {
 }
 ```
 
-## Mapping from TurtleGuide Format
+## Mapping from the text format
 
-| TurtleGuide | QuestShell+ |
+| Text format | QuestShell+ |
 |-------------|-------------|
 | `A Quest Name` | `type="ACCEPT", title="Quest Name"` |
 | `T Quest Name` | `type="TURNIN", title="Quest Name"` |

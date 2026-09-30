@@ -1,12 +1,12 @@
 -- Optimized Guide: Silithus (55-55)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Silithus (55-55)", "Optimized/Western Plaguelands (55-56)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Silithus 55-55|
+N Optimized Leveling |N|This guide follows an optimized quest order for Silithus 55-55|
 
 R Thunder Bluff |QID|1123| |N|Travel to Elder Rise in Thunder Bluff (75.70, 31.54)| |Z|Thunder Bluff|
 A The New Frontier |QID|1000| |N|Bluff Runner Windstrider in Thunder Bluff (78.55, 28.59)| |Z|Thunder Bluff| |OID|1004, 1018|

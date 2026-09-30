@@ -1,12 +1,12 @@
 -- Optimized Guide: Arathi Highlands (36-37)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Arathi Highlands (36-37)", "Optimized/Alterac Mountains (37-37)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Arathi Highlands 36-37|
+N Optimized Leveling |N|This guide follows an optimized quest order for Arathi Highlands 36-37|
 
 R Undercity |QID|1164| |N|Travel to Undercity (64.8, 49.6)| |Z|Undercity|
 A To Steal From Thieves |QID|1164| |N|Genavie Callow in Trade Quarter (63.76, 49.17)| |Z|Undercity|

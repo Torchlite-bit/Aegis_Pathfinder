@@ -18,7 +18,6 @@
 
 local AegisPathfinder = AegisPathfinder
 local L = AegisPathfinder.Locale
-local ww = WidgetWarlock
 local Theme = AegisPathfinder.Theme
 
 
@@ -295,8 +294,7 @@ local function OnShow(f)
 	local f = f or this
 	AegisPathfinder.db.char.panelopen = true
 	ResetScrollbar()
-	f:SetAlpha(0)
-	f:SetScript("OnUpdate", ww.FadeIn)
+	Theme:FadeIn(f, 0.5)
 end
 
 
@@ -699,7 +697,7 @@ function AegisPathfinder:UpdateObjectivePanel()
 
 	frame.footer = footer
 
-	scrollbar, upbutt, downbutt = ww.ConjureScrollBar(frame)
+	scrollbar, upbutt, downbutt = Theme:ScrollBar(frame)
 	scrollbar:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -7, -(G.CHROME_TOP + 14))
 	scrollbar:SetPoint("BOTTOM", frame, "BOTTOM", 0, G.FOOTER_H + 18)
 	scrollbar:SetScript("OnValueChanged", function() local val = arg1 self:UpdateOHPanel(val) end)
@@ -888,7 +886,6 @@ function AegisPathfinder:UpdateObjectivePanel()
 	self:OnObjectiveFrameResized()
 
 	frame:SetScript("OnShow", OnShow)
-	ww.SetFadeTime(frame, 0.5)
 	OnShow(frame)
 	return frame
 end

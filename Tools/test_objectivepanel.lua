@@ -95,7 +95,6 @@ AegisPathfinder.optionsframe = CreateFrame("Frame", nil, UIParent)
 AegisPathfinder.guidelistframe = CreateFrame("Frame", nil, UIParent)
 
 dofile("Theme.lua")
-dofile("WidgetWarlock.lua")
 dofile("ObjectivesFrame.lua")
 -- Sharing adds the party icon and the members under the step.
 AegisPathfinder.SkipToNextObjective = AegisPathfinder.SkipToNextObjective or function() end

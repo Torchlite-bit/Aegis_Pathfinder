@@ -40,7 +40,6 @@ end
 AegisPathfinder.objectiveframe = CreateFrame("Frame", nil, UIParent)
 
 dofile("Theme.lua")
-dofile("WidgetWarlock.lua")
 dofile("GuideListFrame.lua")
 
 local failures, checks = {}, 0

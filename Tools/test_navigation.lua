@@ -85,7 +85,7 @@ check(TomTom.active_waypoint == nil, "so TomTom's arrow is not pointing at it")
 check(AegisPathfinder.waypointtarget and AegisPathfinder.waypointtarget.x == 42.1,
 	"while ours still has the waypoint to point at")
 check(wp and wp.title == "Pathfinder: Goldshire",
-	"titled for this addon, not the old TurtleGuide [TG] tag, got '%s'", tostring(wp and wp.title))
+	"titled for this addon, got '%s'", tostring(wp and wp.title))
 
 -- The pins keep TomTom's own tooltips and menus.
 check(wp and wp.callbacks.minimap == DEFAULT_CALLBACKS.minimap

@@ -1,12 +1,12 @@
 -- Optimized Guide: Tanaris (43-43)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Tanaris (43-43)", "Optimized/Feralas (43-45)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Tanaris 43|
+N Optimized Leveling |N|This guide follows an optimized quest order for Tanaris 43|
 
 R Gadgetzan |QID|1690| |N|You should be in Gadgetzan (52.44, 28.50)| |Z|Tanaris|
 A Wastewander Justice |QID|1690| |N|Chief Engineer Bilgewhizzle in Gadgetzan (52.44, 28.50)| |Z|Tanaris|

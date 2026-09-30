@@ -1,12 +1,12 @@
 -- Optimized Guide: Searing Gorge (47-48)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Searing Gorge (47-48)", "Optimized/Swamp of Sorrows (48-48)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Searing Gorge 47-48|
+N Optimized Leveling |N|This guide follows an optimized quest order for Searing Gorge 47-48|
 
 R Grimesilt Dig Site |QID|4449| |N|Travel to Grimesilt Dig Site (65.51, 62.14)| |Z|Searing Gorge|
 A Caught! |QID|4449| |N|Wooden Outhouse in Grimesilt Dig Site (65.51, 62.14)| |Z|Searing Gorge| |OBJ|3332|

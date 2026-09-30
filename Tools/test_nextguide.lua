@@ -87,7 +87,6 @@ lift("-- Turtle WoW custom zones for categorization", "-------------------------
 lift("function AegisPathfinder:LoadNextGuide()", "function AegisPathfinder:IsProfessionLearned")
 
 dofile("Theme.lua")
-dofile("WidgetWarlock.lua")
 dofile("NextGuideFrame.lua")
 
 local failures, checks = {}, 0

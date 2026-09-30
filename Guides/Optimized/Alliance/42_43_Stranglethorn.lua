@@ -1,12 +1,12 @@
 -- Optimized Guide: Stranglethorn Vale (42-43)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Stranglethorn (42-43)", "Optimized/Tanaris (43-43)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Stranglethorn 42-43|
+N Optimized Leveling |N|This guide follows an optimized quest order for Stranglethorn 42-43|
 
 R Booty Bay |QID|2864| |N|Travel to Booty Bay (27.0, 77.2)| |Z|Stranglethorn Vale|
 A Tran'rek |QID|2864| |N|Krazek in The Salty Sailor Tavern (27.0, 77.2)| |Z|Stranglethorn Vale|

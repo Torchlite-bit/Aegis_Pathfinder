@@ -1,12 +1,12 @@
 -- Optimized Guide: Stranglethorn Vale (38-40)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Stranglethorn (38-40)", "Optimized/Badlands (40-41)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Stranglethorn 38-40|
+N Optimized Leveling |N|This guide follows an optimized quest order for Stranglethorn 38-40|
 
 R Booty Bay |QID|606| |N|Travel to Booty Bay (28.08, 76.19)| |Z|Stranglethorn Vale|
 A The Bloodsail Buccaneers (Part 1) |QID|595| |N|First Mate Crazz in Booty Bay (28.08, 76.19)| |Z|Stranglethorn Vale|

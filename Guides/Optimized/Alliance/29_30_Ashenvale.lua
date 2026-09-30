@@ -1,12 +1,12 @@
 -- Optimized Guide: Ashenvale (29-30)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Ashenvale (29-30)", "Optimized/Wetlands (30-30)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Ashenvale 29-30|
+N Optimized Leveling |N|This guide follows an optimized quest order for Ashenvale 29-30|
 
 R Stormwind City |QID|269| |N|Travel to Stormwind City|
 R Cathedral of Light |QID|269| |N|Travel to Cathedral of Light (39.53, 28.13)| |Z|Stormwind City|
