@@ -18,7 +18,26 @@ reports.
 
 ---
 
-## [0.18.1]
+## [0.19.0]
+
+### Added
+- **Notes that have you pick something up tick themselves.** Bingles'
+  four tools in Loch Modan are one note each. Each one now ticks when that
+  tool is in your bags, as a quest objective does, and shows the ⟳ that
+  says so.
+  - 101 notes like these in the Optimized and zone guides now tick
+    themselves. Each is a note naming one item a quest wants.
+  - One you pick up ahead of its note ticks as soon as the guide reaches
+    it.
+- **An arrow for RestedXP's "Travel to Kalimdor" steps.** Some RestedXP
+  steps give a point on the continent's map rather than a zone's: "Travel
+  to Kalimdor", "Travel to Eastern Kingdoms", and the dungeon-quest steps
+  at Wailing Caverns, Blackfathom Deeps and Uldaman. These 75 steps in 14
+  guides had no waypoint.
+  - With TomTom, they now get a pin on the continent's map, and TomTom's
+    arrow and Pathfinder's point across the continent to it.
+  - pfQuest, Cartographer and MetaMap can only place a point in a zone, so
+    they still set none for these steps, and say nothing in chat.
 
 ### Fixed
 - **Leaving a starting zone waited for your next login.** When you
@@ -32,6 +51,17 @@ reports.
     starting zone.
   - The check now uses your new level. The game can still report the
     old one at that moment.
+- **A "Travel to Kalimdor" step could tick in the wrong place.** Pathfinder's
+  own arrival check read a continent's point on the map of the zone you
+  were in. Standing on the same numbers there, in the Barrens say, ticked
+  the step nowhere near the Wailing Caverns. It now measures the distance
+  on the continent's map. That needs Astrolabe, which TomTom-TWOW brings.
+  Within 30 yards counts as arrived, because these points are only written
+  to a tenth of a percent of the whole continent.
+
+### Removed
+- An unused glow texture, left over from the step circle's old look.
+  Nothing used it, so `/reload` is enough.
 
 ## [0.18.0]
 
@@ -882,7 +912,7 @@ on, each change gets its own entry.
 
 ---
 
-[0.18.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.19.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.18.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.17.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.16.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
