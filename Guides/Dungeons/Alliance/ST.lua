@@ -47,7 +47,7 @@ F Thalanaar |N|Fly to Thalanaar in Feralas| |Z|Feralas|
 T A Visit to Gregan |QID|4142| |N|Gregan Brewspewer (45.1, 25.6)| |Z|Feralas|
 A Haze of Evil |QID|4143| |N|Gregan Brewspewer (45.1, 25.6)| |Z|Feralas|
 A The Sunken Temple |QID|3445| |N|Angelas Moonbreeze (31.8, 45.6)| |Z|Feralas|
-C Rhapsody's Kalimdor Kocktail |QID|1452| |N|Rhapsody Shindigger in The Hinterlands wants you to bring him 3 Roc Gizzards, 3 Groddoc Livers and 3 Ironfur Livers (58.3, 56.8) (43.1, 22.3) (83.2, 42.3) -- also in Tanaris (46.6, 40.1) (39.7, 65.5)| |Z|Feralas|
+C Rhapsody's Kalimdor Kocktail |QID|1452| |N|Rhapsody Shindigger in The Hinterlands wants you to bring him 3 Roc Gizzards, 3 Groddoc Livers and 3 Ironfur Livers (58.3, 56.8) (43.1, 22.3) (83.2, 42.3) -- also in Tanaris| |Z|Feralas|
 
 F Gadgetzan |N|Fly to Gadgetzan in Tanaris| |Z|Tanaris|
 T The Sunken Temple |QID|3445| |N|Marvon Rivetseeker (52.7, 45.9)| |Z|Tanaris|

@@ -80,6 +80,12 @@ for _, side in ipairs({ "Alliance", "Horde" }) do
 	end
 end
 
+-- The zones the guides name.
+local zones = {}
+for _, g in pairs(guides) do
+	for zone in string.gfind(g.text, "|Z|([^|]+)|") do zones[zone] = true end
+end
+
 local n = 0
 for _, g in pairs(guides) do
 	n = n + 1
@@ -90,6 +96,16 @@ for _, g in pairs(guides) do
 		local _, _, action, rest = string.find(line, "^(%a) (.*)$")
 		local _, _, qid = string.find(line, "|QID|(%d+)|")
 		local optional = string.find(line, "|O|", 1, true)
+		-- Every point in a note goes on the step's own zone's map: another
+		-- zone is named, never given a place (the Searing Gorge's way into
+		-- Blackrock Mountain was put in the Burning Steppes).
+		check(not string.find(line, "also in [^|]*%(%d"), "%s (%s): a point in another zone: %s", g.name, g.side, line)
+		local _, _, here = string.find(line, "|Z|([^|]+)|")
+		for zone in pairs(zones) do
+			if zone ~= here and string.find(line, zone .. " %(%d") then
+				check(false, "%s (%s): a point in %s on %s's map: %s", g.name, g.side, zone, tostring(here), line)
+			end
+		end
 		if action == "R" and string.find(line, "|Z|", 1, true) and string.find(line, "%(%d+%.?%d*, %d+%.?%d*%)|") then
 			entrance = true
 		end
