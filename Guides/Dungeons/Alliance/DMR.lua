@@ -1,5 +1,5 @@
 -- Dungeon guide: Dragonmaw Retreat, Alliance
--- Written by Tools/build_dungeon_guides.py from pfQuest and InstanceJournal: do not edit it here.
+-- Written by Tools/build/build_dungeon_guides.py from pfQuest and InstanceJournal: do not edit it here.
 
 AegisPathfinder:RegisterGuide("Dungeons/Dragonmaw Retreat (26-35)", nil, "Alliance", function()
 

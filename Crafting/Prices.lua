@@ -5,7 +5,7 @@
 	GENERATED FILE -- do not edit by hand.
 	Source:    CraftRoute by Kitymeowmeow (GPLv3), data_vendorprices.lua and
 	           data_vendorsellprices.lua
-	Generator: Tools/import_recipes.py
+	Generator: Tools/build/import_recipes.py
 
 	A sell price of 0 is real: no merchant will buy the item. An item missing
 	from `sell` has no confirmed price, and is never assumed to sell.

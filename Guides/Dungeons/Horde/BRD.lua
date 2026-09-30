@@ -1,5 +1,5 @@
 -- Dungeon guide: Blackrock Depths, Horde
--- Written by Tools/build_dungeon_guides.py from pfQuest and InstanceJournal: do not edit it here.
+-- Written by Tools/build/build_dungeon_guides.py from pfQuest and InstanceJournal: do not edit it here.
 
 AegisPathfinder:RegisterGuide("Dungeons/Blackrock Depths (52-60)", nil, "Horde", function()
 

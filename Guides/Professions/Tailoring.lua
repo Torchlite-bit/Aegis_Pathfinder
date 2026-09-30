@@ -2,9 +2,9 @@
 --
 -- GENERATED FILE -- do not edit by hand.
 -- Source:    Tools/data/Professions_Reference.docx
--- Generator: Tools/convert_professions.py
+-- Generator: Tools/build/convert_professions.py
 --
--- Regenerate with:  python3 Tools/convert_professions.py
+-- Regenerate with:  python3 Tools/build/convert_professions.py
 
 
 AegisPathfinder:RegisterQuestShellPlusGuide("Tailoring (1-300)", {

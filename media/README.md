@@ -1,10 +1,11 @@
 # media/
 
-Every texture here is **generated**. Do not edit the `.tga` files by hand — change `Tools/make_assets.py` and re-run it:
+Every texture here is **generated**. Do not edit the `.tga` files by hand —
+change `Tools/build/make_assets.py` and re-run it:
 
 ```sh
 pip install Pillow
-python3 Tools/make_assets.py
+python3 Tools/build/make_assets.py
 ```
 
 ## Format

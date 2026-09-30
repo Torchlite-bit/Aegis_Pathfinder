@@ -21,6 +21,24 @@ A merge that leaves the version alone releases nothing, so bump the version
 (below) when a change ships. There is no need to push a `v*` tag by hand; one
 pushed anyway is released too.
 
+## Where things are
+
+| Path | What it is |
+|---|---|
+| `Aegis_Pathfinder.toc`, `*.lua`, `Bindings.xml` | The addon. The `.toc` lists what loads, in order |
+| `Guides/` | The guides: `Optimized/`, `RXP/` and `RXP_Hardcore/` by side; the zone guides in `Alliance/`, `Horde/` and `Both/`; `Dungeons/` and `Professions/`, which are generated |
+| `Routes/` | The route packs: which guide follows which, per race |
+| `Crafting/` | Recipe and price data for the crafting route planner (generated) |
+| `media/` | Textures (generated) and fonts -- see [media/README.md](media/README.md) |
+| `libs/` | Ace2 |
+| `Tools/run_tests.sh`, `Tools/verify.py` | The checks (below) |
+| `Tools/tests/` | The Lua tests, and `wow_stub.lua`, the 1.12 API they run against |
+| `Tools/build/` | The generators and importers: dungeon, zone and profession guides, gear and item-score data, recipes, textures, the filter review, and the RestedXP converter |
+| `Tools/data/` | What the generators read and cache, and the filter review's candidates and answers |
+| `docs/` | Features, guide authoring, the QuestShell+ format, the UI spec and design concept, and the in-game test pass |
+
+Nothing under `Tools/` or `docs/` ships: `.pkgmeta` leaves them out.
+
 ## Running the checks
 
 ```sh
@@ -32,29 +50,39 @@ That runs everything that can run without a WoW client:
 | Check | What it covers |
 |---|---|
 | `Tools/verify.py` | Lua syntax, Lua 5.0 compatibility for shipped files, `.toc` paths, `Guides.xml` completeness, TGA validity, no Blizzard chrome, the 32-upvalue ceiling, the class and race names in the guides' class and race tags, that every step with coordinates is on a zone the world map knows, that no `AegisPathfinder` method is defined twice (a later definition replaces the first) except as a wrapper |
-| `Tools/convert_professions.py --check` | The profession source document still parses and is internally consistent; the gathering guides cover 1–300 for each faction with somewhere named in every band; the committed guides are what the generator writes |
-| `Tools/test_theme.lua` | The theme layer against a stubbed 1.12 API |
-| `Tools/test_smartskip.lua` | Where a guide opens: a new character at the top, a quest in progress or ready to hand in at its step, otherwise the first step not done |
-| `Tools/test_yourplace.lua` | Right-clicking the step arrows: back or on to your place after clicking round, every mark and completion the arrows changed put back (a completion earned meanwhile kept), only in the arrow's direction, and with no clicking round, to where the guide would open |
-| `Tools/test_filtertags.lua` | The filter tags in the Optimized and zone guides through the real parser: group quests and their follow-ups hide in Solo mode, Auction House steps with Auction House steps off, dungeon quests with the dungeon unticked, and all three -- with trading -- under Solo Self-Found; and every approved tag is still in place |
-| `Tools/test_professions.lua` | Generated guides through the real parsers: skill bands tile 1–300 for each faction, every rank is reached, and a gathering guide never sends a faction into the other side's starting zones or capitals |
-| `Tools/test_statusframe.lua` | The status card's layout and population |
-| `Tools/test_dungeons.lua` | Dungeon chips and the guide-reference scan |
-| `Tools/test_guidelist.lua` | Guide categorisation, tabs and badges |
-| `Tools/test_activeframes.lua` | Active Items, Active Targets and Macros: which items and targets each step offers, targeting and raid marks, the generated AegisTarget/AegisItem macros, placement, the key bindings |
-| `Tools/test_setup.lua` | First-time setup: when it opens, which guides and dungeons it offers, Solo Self-Found holding the other features off, and what Finish writes |
-| `Tools/test_zoneguide.lua` | The Moonwhisper Coast guides through the real parser: each side's own quests and not the other's; every quest step with an id, a zone and a place to go; picked up, done, handed in in that order, and each quest after the one it follows (the Moro'gai story, the Horde's trips to Azshara and Mulgore and back); the quest log never past 20; the quests you may not have optional; group quests, what follows them and a trip made only for them in Group mode alone; a race's quest shown to that race only |
-| `Tools/test_routes.lua` | The route packs against the guides: every leg a guide your faction has, every guide's next link one that exists, where the routes part by race, and DungeonQuests.lua what `Tools/build_dungeon_quests.py` makes of them today |
-| `Tools/test_nextguide.lua` | Where next?: which custom zones fit a level, and the walk from a route guide to a custom zone and back to the route |
-| `Tools/test_materials.lua` | Shopping list arithmetic, checked against the source document's own shopping list; bag counts, the scope tabs, and sending to Aegis: Exchange |
-| `Tools/test_craftplanner.lua` | The crafting route planner: reading the recipe data, the skill-up chance, the route against brute force, learning fees, make-or-buy, pricing at depth, stock carried between steps, selling back, unpriced reagents; the auction scan against the suite's auction house rules; every profession planned from the real data |
-| `Tools/test_itemscore.lua` | The item score: reading 1.12 tooltips (stats, weapon DPS, school spell damage, set bonuses and procs ignored, red lines meaning unusable or later), soft caps, the spec from your talents, your own weights and sharing them in OctoPawn's string, comparing by slot (rings, two-handers, dual wield), and the tooltip line |
-| `Tools/test_gearadvisor.lua` | The Gear Advisor: upgrades found in the bags, offered biggest first and once a session, Equip into the right slot (waiting out a fight, finding an item that moved), Decline remembered across reloads, equip-for-me never binding an item, off at 60; the best quest reward (upgrade, else sell price, waiting for items to load) marked and picked; upgrades bordered in the bags |
-| `Tools/test_gearfinder.lua` | The Gear finder: the dungeons it looks in (level, side, your ticks, raids), the drops it weighs (level, class), Turtle WoW's own items described by the client (and badges, greys and items above you never weighed), quest rewards (not done, your side and class, within reach), reputation gear and crafted gear (bind-on-pickup and Solo Self-Found only with the profession), loading the ones not cached, the best three a slot in the character sheet's order, the window, and naming upgrades on walking into a dungeon; and that the real loot data is there |
-| `Tools/test_gearframe.lua` | The Item Score page: the spec picker, the weights listed down the left and edited, show all growing the page, export, import and reset beside and under them |
-| `Tools/test_craftroute.lua` | The crafting route window and planned guides: rank steps placed where the skill cap runs out, crafts contiguous and parsed as skill steps, saving and restoring, the window's totals, rows, status line, re-planning only on change, and the scan button |
-| `Tools/test_partysync.lua` | Sharing a guide with the party: step names that survive different step numbering, holding a finished step for the slowest partner without pulling anyone back, skipping out of a hold, the messages both ways, the throttle and heartbeat, the popups, the members under the step, and the group changing |
-| `Tools/test_objectivetabs.lua` | The objectives tab bar and branch state |
+| `Tools/build/convert_professions.py --check` | The profession source document still parses and is internally consistent; the gathering guides cover 1–300 for each faction with somewhere named in every band; the committed guides are what the generator writes |
+| `Tools/tests/test_theme.lua` | The theme layer against a stubbed 1.12 API |
+| `Tools/tests/test_smartskip.lua` | Where a guide opens: a new character at the top, a quest in progress or ready to hand in at its step, otherwise the first step not done |
+| `Tools/tests/test_yourplace.lua` | Right-clicking the step arrows: back or on to your place after clicking round, every mark and completion the arrows changed put back (a completion earned meanwhile kept), only in the arrow's direction, and with no clicking round, to where the guide would open |
+| `Tools/tests/test_filtertags.lua` | The filter tags in the Optimized and zone guides through the real parser: group quests and their follow-ups hide in Solo mode, Auction House steps with Auction House steps off, dungeon quests with the dungeon unticked, and all three -- with trading -- under Solo Self-Found; and every approved tag is still in place |
+| `Tools/tests/test_professions.lua` | Generated guides through the real parsers: skill bands tile 1–300 for each faction, every rank is reached, and a gathering guide never sends a faction into the other side's starting zones or capitals |
+| `Tools/tests/test_dungeons.lua` | Dungeon chips and the guide-reference scan |
+| `Tools/tests/test_guidelist.lua` | Guide categorisation, tabs and badges |
+| `Tools/tests/test_activeframes.lua` | Active Items, Active Targets and Macros: which items and targets each step offers, targeting and raid marks, the generated AegisTarget/AegisItem macros, placement, the key bindings |
+| `Tools/tests/test_setup.lua` | First-time setup: when it opens, which guides and dungeons it offers, Solo Self-Found holding the other features off, and what Finish writes |
+| `Tools/tests/test_zoneguide.lua` | The Moonwhisper Coast guides through the real parser: each side's own quests and not the other's; every quest step with an id, a zone and a place to go; picked up, done, handed in in that order, and each quest after the one it follows (the Moro'gai story, the Horde's trips to Azshara and Mulgore and back); the quest log never past 20; the quests you may not have optional; group quests, what follows them and a trip made only for them in Group mode alone; a race's quest shown to that race only |
+| `Tools/tests/test_routes.lua` | The route packs against the guides: every leg a guide your faction has, every guide's next link one that exists, where the routes part by race, and DungeonQuests.lua what `Tools/build/build_dungeon_quests.py` makes of them today |
+| `Tools/tests/test_nextguide.lua` | Where next?: which custom zones fit a level, and the walk from a route guide to a custom zone and back to the route |
+| `Tools/tests/test_materials.lua` | Shopping list arithmetic, checked against the source document's own shopping list; bag counts, the scope tabs, and sending to Aegis: Exchange |
+| `Tools/tests/test_craftplanner.lua` | The crafting route planner: reading the recipe data, the skill-up chance, the route against brute force, learning fees, make-or-buy, pricing at depth, stock carried between steps, selling back, unpriced reagents; the auction scan against the suite's auction house rules; every profession planned from the real data |
+| `Tools/tests/test_itemscore.lua` | The item score: reading 1.12 tooltips (stats, weapon DPS, school spell damage, set bonuses and procs ignored, red lines meaning unusable or later), soft caps, the spec from your talents, your own weights and sharing them in OctoPawn's string, comparing by slot (rings, two-handers, dual wield), and the tooltip line |
+| `Tools/tests/test_gearadvisor.lua` | The Gear Advisor: upgrades found in the bags, offered biggest first and once a session, Equip into the right slot (waiting out a fight, finding an item that moved), Decline remembered across reloads, equip-for-me never binding an item, off at 60; the best quest reward (upgrade, else sell price, waiting for items to load) marked and picked; upgrades bordered in the bags |
+| `Tools/tests/test_gearfinder.lua` | The Gear finder: the dungeons it looks in (level, side, your ticks, raids), the drops it weighs (level, class), Turtle WoW's own items described by the client (and badges, greys and items above you never weighed), quest rewards (not done, your side and class, within reach), reputation gear and crafted gear (bind-on-pickup and Solo Self-Found only with the profession), loading the ones not cached, the best three a slot in the character sheet's order, the window, and naming upgrades on walking into a dungeon; and that the real loot data is there |
+| `Tools/tests/test_gearframe.lua` | The Item Score page: the spec picker, the weights listed down the left and edited, show all growing the page, export, import and reset beside and under them |
+| `Tools/tests/test_craftroute.lua` | The crafting route window and planned guides: rank steps placed where the skill cap runs out, crafts contiguous and parsed as skill steps, saving and restoring, the window's totals, rows, status line, re-planning only on change, and the scan button |
+| `Tools/tests/test_partysync.lua` | Sharing a guide with the party: step names that survive different step numbering, holding a finished step for the slowest partner without pulling anyone back, skipping out of a hold, the messages both ways, the throttle and heartbeat, the popups, the members under the step, and the group changing |
+| `Tools/tests/test_objectivetabs.lua` | The objectives tab bar and branch state |
+| `Tools/tests/test_load.lua` | The whole addon loaded in `.toc` order with the real Ace2: every file to its end; starting up (the chat commands, the TurtleGuide progress import); the level-up and arrival handlers |
+| `Tools/tests/test_guideengine.lua` | The guide engine: which steps tick themselves, the step details the panel shows, collect notes ticking on the items in your bags |
+| `Tools/tests/test_objectivepanel.lua` | The objectives panel: header, nav row, step rows, the objective bars, resizing |
+| `Tools/tests/test_options.lua` | The options window: its pages, and every control driving the setting it shows |
+| `Tools/tests/test_stacking.lua` | Windows drawn in front stay in front, wherever they overlap |
+| `Tools/tests/test_scrolling.lua` | The theme's scrollbar on the guide list and the error log: carets, wheel, the ends of the range |
+| `Tools/tests/test_minimap.lua` | The minimap button: drawn from the theme, its clicks, dragging round the edge, and the setting that hides it |
+| `Tools/tests/test_navcallout.lua` | The navigation arrow's maths: bearing relative to your facing, distance and time |
+| `Tools/tests/test_navigation.lua` | The waypoint addons and arrow switches, continent-map points, trainers found by name, and the zone a step is in |
+| `Tools/tests/test_dungeonguides.lua` | The dungeon guides: current with their generator, listed, parsed, an entrance to point at, and no loose ends |
+| `Tools/tests/test_professionsteps.lua` | Profession training: ranks waiting for their level, your side's trainers, tomes and Artisan quests, completing on skill and cap |
 
 Everything must pass before you open a PR. **None of it proves the UI looks
 right** — that still needs someone to load the addon on a 1.12 client and look
@@ -101,7 +129,7 @@ function -- `ObjectivesFrame.lua` keeps its layout in `G` for this reason.
 need a colour that is not there, add it there.
 
 **Textures are generated.** Do not hand-edit anything in `media/` — change
-`Tools/make_assets.py` and re-run it. See [media/README.md](media/README.md).
+`Tools/build/make_assets.py` and re-run it. See [media/README.md](media/README.md).
 
 ## Writing guides
 
@@ -113,18 +141,18 @@ Generated guides use QuestShell+ structured tables, because a generated corpus
 diffs and validates far better that way.
 
 **Profession guides in `Guides/Professions/` are generated.** Editing them by
-hand will be overwritten. Change `Tools/convert_professions.py` or the source
+hand will be overwritten. Change `Tools/build/convert_professions.py` or the source
 document in `Tools/data/`, then regenerate. Engineering, which the document
 does not cover, comes from CraftRoute's fixed route
-(`Tools/data/craftroute_routes.json`, exported by `Tools/import_recipes.py`)
+(`Tools/data/craftroute_routes.json`, exported by `Tools/build/import_recipes.py`)
 with its trainers in `Tools/data/profession_training.json`. Herbalism, Skinning
-and Fishing are built by `Tools/gathering_guides.py` from
+and Fishing are built by `Tools/build/gathering_guides.py` from
 `Tools/data/gathering.json`, which also gives each step of the Mining route,
 per faction, where to mine its ore. They only send players to zones this addon
 has a zone guide for:
 
 ```sh
-python3 Tools/convert_professions.py
+python3 Tools/build/convert_professions.py
 ```
 
 `Tools/data/gathering.json` is extracted from pfQuest (herb and ore nodes,
@@ -134,22 +162,22 @@ fishing book, Nat Pagle's quest).
 To refresh it, check both out and run:
 
 ```sh
-python3 Tools/build_gathering.py --pfquest <pfQuest> <pfQuest-turtle> --cmangos <classic-db full dump .sql[.gz]>
+python3 Tools/build/build_gathering.py --pfquest <pfQuest> <pfQuest-turtle> --cmangos <classic-db full dump .sql[.gz]>
 ```
 
 **`ItemScoreData.lua` is generated** from
 [OctoPawn](https://github.com/iGreed1993/OctoPawn)'s defaults (MIT; its notice
-is carried in the file) by `Tools/import_octopawn.py`: the stat weights for every
+is carried in the file) by `Tools/build/import_octopawn.py`: the stat weights for every
 class and spec, the tooltip patterns, the soft caps. To pick up a newer OctoPawn,
 check it out and run:
 
 ```sh
-python3 Tools/import_octopawn.py <path to OctoPawn>
+python3 Tools/build/import_octopawn.py <path to OctoPawn>
 ```
 
 **`GearData.lua` is generated** from the CMaNGOS classic-db dump and a
 pfQuest-turtle checkout by
-`Tools/build_gear_data.py --cmangos <dump> --pfquest-turtle <pfQuest-turtle>`:
+`Tools/build/build_gear_data.py --cmangos <dump> --pfquest-turtle <pfQuest-turtle>`:
 what each quest reward sells for, which the Gear Advisor falls back on when no
 reward is an upgrade; and for the Gear finder, what drops in each dungeon and
 raid, which quests reward gear, what reputation vendors sell, and what the
@@ -159,11 +187,11 @@ CMaNGOS loot (`turtle_vanilla`).
 
 **Recipe data in `Crafting/` is generated** from
 [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute)'s data files, with
-its author's permission, by `Tools/import_recipes.py`. To pick up a newer
+its author's permission, by `Tools/build/import_recipes.py`. To pick up a newer
 CraftRoute, check it out and run:
 
 ```sh
-python3 Tools/import_recipes.py <path to CraftRoute>
+python3 Tools/build/import_recipes.py <path to CraftRoute>
 ```
 
 Only the data is taken, rewritten into this addon's own one-line-per-recipe
@@ -175,9 +203,9 @@ item id are named from pfQuest's item database, cached in
 **Filter tags.** The Auction House, Group and Dungeon switches act on `|AH|`,
 `|P|GROUP|` and `|D|<code>|` tags. The RestedXP and RXP Hardcore guides always
 carried them. The Optimized and zone guides carry the ones the owner approved:
-`Tools/find_filter_candidates.py` listed the steps that probably wanted one
-(`docs/review/filter_candidates.json`), the answers are in
-`docs/review/filter_decisions.json`, and `Tools/apply_filter_tags.py` applies
+`Tools/build/find_filter_candidates.py` listed the steps that probably wanted one
+(`Tools/data/filter_candidates.json`), the answers are in
+`Tools/data/filter_decisions.json`, and `Tools/build/apply_filter_tags.py` applies
 them. A "yes" on a quest's own step tags every step of that quest; a "yes" on
 a note or buy step that merely carries a quest id tags only that step; an
 answer changed to "no" takes the tag off again. An Auction House tag belongs on
@@ -188,7 +216,7 @@ makes keeps the tag on the quest itself. Quests
 you can only reach through a tagged one inherit its tag (worked out from
 pfQuest's prerequisites with `--pfquest`, and kept in the decisions file).
 When you add a step for a tagged quest, give it the same tag --
-`Tools/test_filtertags.lua` runs `apply_filter_tags.py --check`, which fails
+`Tools/tests/test_filtertags.lua` runs `apply_filter_tags.py --check`, which fails
 if an approved tag has gone missing.
 
 ## Guide data and servers

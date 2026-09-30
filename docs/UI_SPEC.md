@@ -40,7 +40,7 @@ TTF degrades to readable text rather than an empty UI.
 builds one from a 32×32 mask: four 10px corners at fixed size, four edges that
 stretch along one axis, and a stretched centre, positioned with `SetTexCoord`.
 `Theme.CORNER` and the slice constants must stay in step with the radius in
-`Tools/make_assets.py`.
+`Tools/build/make_assets.py`.
 
 **Colour.** Shapes are white masks tinted with `SetVertexColor`, so one
 rounded-rect serves every panel, tab, pill and band, and a palette change is a
@@ -484,7 +484,7 @@ none ships with it; the badge stays for the next placeholder.
 Custom-zone guides are the **Custom** tab: `GetGuideCategory` matches a
 guide's name against `TURTLE_ZONES` in `Core.lua`, which has to name every
 custom zone -- Scarlet Enclave and Hyjal were once missing and filed under
-Zones. `Tools/test_guidelist.lua` reads that list out of `Core.lua` and checks
+Zones. `Tools/tests/test_guidelist.lua` reads that list out of `Core.lua` and checks
 every custom-zone guide against it.
 
 Dungeon guides (`Guides/Dungeons/`, named `Dungeons/<dungeon> (lo-hi)`) are
@@ -635,7 +635,7 @@ made, want, reagents = { { name, count, itemId } } }`, priced at the auction
 house. The button writes one project per craft still ahead, in route order
 with the next craft on top: `want` is the craft count and `made` is 1, so
 Exchange's `reagent count x crafts` lands on the same totals as the list here
-(`Tools/test_materials.lua` checks this against the reference document's
+(`Tools/tests/test_materials.lua` checks this against the reference document's
 Alchemy list). The same craft on two steps is one project with both counts.
 Item ids come from the bags, then Exchange's own name map, then pfQuest's item
 database; anything unmatched is reported in chat, since Exchange's list only
@@ -661,7 +661,7 @@ Not in the concept. It does what CraftRoute does, without CraftRoute: plans
 the cheapest way from your skill to 300 at today's prices and shows it, and
 can turn it into a guide. The planning is `CraftPlanner.lua`, the auction scan
 `CraftScan.lua`, the recipe and merchant-price data `Crafting/` (converted from
-CraftRoute's data by `Tools/import_recipes.py`).
+CraftRoute's data by `Tools/build/import_recipes.py`).
 
 Opened by **Cheapest route** on the shopping list, or `/apg craft`. It pops out
 beside the guide like the shopping list, until dragged (`craftframe`).
@@ -930,7 +930,7 @@ addon already shipped and which are known to load on this client.
 every shipped file, so a panel drifting off the theme is caught here rather
 than in the client.
 
-`Tools/test_theme.lua` and `Tools/test_statusframe.lua` execute the real code
+`Tools/tests/test_theme.lua` and `Tools/tests/test_statusframe.lua` execute the real code
 against a stubbed API and assert the geometry and state transitions.
 
 **None of this proves the UI looks like the concept.** Nothing here has been

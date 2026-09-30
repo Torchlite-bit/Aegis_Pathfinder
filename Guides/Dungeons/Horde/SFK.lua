@@ -1,5 +1,5 @@
 -- Dungeon guide: Shadowfang Keep, Horde
--- Written by Tools/build_dungeon_guides.py from pfQuest and InstanceJournal: do not edit it here.
+-- Written by Tools/build/build_dungeon_guides.py from pfQuest and InstanceJournal: do not edit it here.
 
 AegisPathfinder:RegisterGuide("Dungeons/Shadowfang Keep (22-30)", nil, "Horde", function()
 

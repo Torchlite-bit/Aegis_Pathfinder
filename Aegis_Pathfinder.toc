@@ -60,7 +60,7 @@ MinimapButton.lua
 Routes\Routes.lua
 
 # Recipe and merchant-price data for the crafting route planner
-# (converted from CraftRoute by Tools/import_recipes.py)
+# (converted from CraftRoute by Tools/build/import_recipes.py)
 Crafting\Crafting.xml
 
 # Optimized guides
@@ -68,7 +68,7 @@ Guides\Optimized\Alliance\Guides.xml
 Guides\Optimized\Horde\Guides.xml
 
 # Dungeon guides: every quest for a dungeon, then the way in
-# (written by Tools/build_dungeon_guides.py)
+# (written by Tools/build/build_dungeon_guides.py)
 Guides\Dungeons\Alliance\Guides.xml
 Guides\Dungeons\Horde\Guides.xml
 

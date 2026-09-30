@@ -4,7 +4,7 @@ Supplied by the repository owner, 2026-09-24, as the source for profession
 rank levels and costs, the secondary professions' Expert books and Artisan
 quests, and trainers the reference document does not list. Kept verbatim;
 `Tools/data/profession_training.json` records the values taken from it, and
-`Tools/convert_professions.py` reads that file.
+`Tools/build/convert_professions.py` reads that file.
 
 The wording, spelling and question marks below are the source's own -- where
 it is unsure ("Una? in Thunder Bluff?") the generator does not use it.

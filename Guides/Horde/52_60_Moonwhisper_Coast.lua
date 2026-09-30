@@ -1,4 +1,4 @@
--- Written by Tools/build_zone_guide.py from pfQuest-turtle's data: edit ZONES there,
+-- Written by Tools/build/build_zone_guide.py from pfQuest-turtle's data: edit ZONES there,
 -- not this file, and run it again.
 AegisPathfinder:RegisterGuide("Moonwhisper Coast (52-60)", "Winterspring (59-60)", "Horde", function()
 

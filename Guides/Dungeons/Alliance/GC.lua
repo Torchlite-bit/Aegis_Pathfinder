@@ -1,5 +1,5 @@
 -- Dungeon guide: Gilneas City, Alliance
--- Written by Tools/build_dungeon_guides.py from pfQuest and InstanceJournal: do not edit it here.
+-- Written by Tools/build/build_dungeon_guides.py from pfQuest and InstanceJournal: do not edit it here.
 
 AegisPathfinder:RegisterGuide("Dungeons/Gilneas City (43-52)", nil, "Alliance", function()
 

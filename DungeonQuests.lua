@@ -1,4 +1,4 @@
--- Written by Tools/build_dungeon_quests.py: do not edit. For each route
+-- Written by Tools/build/build_dungeon_quests.py: do not edit. For each route
 -- pack and race, the dungeon quests the route takes you all the way
 -- through with that dungeon ticked -- picked up, what comes before them
 -- done first, handed in -- and so the dungeons worth recommending. A

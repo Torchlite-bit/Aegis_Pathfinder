@@ -99,7 +99,7 @@ LUA50_BANNED = [
 def pkgmeta_ignored():
     """Paths .pkgmeta excludes from the packaged addon.
 
-    These are desktop-side tooling (converters, docs, task notes) that run on a
+    These are desktop-side tooling (Tools/, docs) that run on a
     normal Lua/Python install and never reach the 1.12 client, so the Lua 5.0
     restrictions do not apply to them.
     """
@@ -363,7 +363,7 @@ def check_shadow_ring(rep, path):
     Theme:Panel draws it in the same layer as the fill, and 1.12 does not
     order textures within a layer; the old shadow, darkest in its middle,
     drew a dark square straight through the guide panel. Needs Pillow, which
-    Tools/make_assets.py needs anyway; skipped without it.
+    Tools/build/make_assets.py needs anyway; skipped without it.
     """
     try:
         from PIL import Image

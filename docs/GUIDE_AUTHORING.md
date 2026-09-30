@@ -175,8 +175,8 @@ straight to where they are.
 `Tools/data/profession_training.json` (rank levels and costs, the secondary
 professions' tomes and Artisan quests, trainers the reference lacks -- taken
 from the owner-supplied FAQ in `Tools/data/Profession_FAQ.md`) by
-`Tools/convert_professions.py`. Editing them by hand will be overwritten, and
-`python3 Tools/convert_professions.py --check` -- part of `Tools/run_tests.sh`
+`Tools/build/convert_professions.py`. Editing them by hand will be overwritten, and
+`python3 Tools/build/convert_professions.py --check` -- part of `Tools/run_tests.sh`
 -- fails when the committed guides differ from what it would write. They are written in QuestShell+
 structured tables rather than this DSL -- see `docs/QUESTSHELL_PLUS.md` -- and
 the converter emits these tags through `QuestShellPlusParser.lua`.
@@ -268,7 +268,7 @@ end)
 ## Generated Zone Guides
 
 A custom zone whose quests are in a pfQuest-turtle checkout can be written
-from that data instead of by hand. `Tools/build_zone_guide.py` reads the
+from that data instead of by hand. `Tools/build/build_zone_guide.py` reads the
 zone's quests -- givers, takers, objectives and where they are, the quests
 before each, levels and races -- and orders them by the rules above:
 prerequisites first, then level, then the nearest thing to do next, picking up
@@ -277,7 +277,7 @@ the zone only where a chain goes out and comes back. It writes one guide per
 side.
 
 ```sh
-python3 Tools/build_zone_guide.py --pfquest-turtle ../pfQuest-turtle --pfquest ../pfQuest
+python3 Tools/build/build_zone_guide.py --pfquest-turtle ../pfQuest-turtle --pfquest ../pfQuest
 ```
 
 What the data cannot give -- the names of places, a quest chain it has no
@@ -287,11 +287,11 @@ guide, so running it again over a newer checkout keeps it. Anything it still
 cannot place is printed as it writes. Moonwhisper Coast is written this way,
 from [ryanmr82's fork](https://github.com/ryanmr82/pfQuest-turtle); its data
 grows as players send in captures, so run it again now and then.
-`Tools/test_zoneguide.lua` checks what it writes.
+`Tools/tests/test_zoneguide.lua` checks what it writes.
 
 ## Dungeon Guides
 
-`Guides/Dungeons/` is written by `Tools/build_dungeon_guides.py`: do not edit
+`Guides/Dungeons/` is written by `Tools/build/build_dungeon_guides.py`: do not edit
 the guides there, change the script. Each dungeon's entry in its `DUNGEONS`
 table says where the entrance is and, per side, which towns to go round and in
 what order -- a town can come twice, for a chain that goes there and back.
@@ -302,9 +302,9 @@ it does not list, a giver or taker it lacks, an objective it has no spawns
 for, a quest that needs another dungeon first.
 
 ```sh
-python3 Tools/build_dungeon_guides.py --dump ULDA      # one dungeon, and what it left out
-python3 Tools/build_dungeon_guides.py                  # write the guides
-python3 Tools/build_dungeon_guides.py --pfquest ../pfQuest --pfquest-turtle ../kludge-pfQuest-turtle \
+python3 Tools/build/build_dungeon_guides.py --dump ULDA      # one dungeon, and what it left out
+python3 Tools/build/build_dungeon_guides.py                  # write the guides
+python3 Tools/build/build_dungeon_guides.py --pfquest ../pfQuest --pfquest-turtle ../kludge-pfQuest-turtle \
     --instancejournal ../InstanceJournal               # read the data again first
 ```
 
@@ -312,7 +312,7 @@ What it reads is kept in `Tools/data/dungeon_guides.json`, so it runs without
 the checkouts. `--dump` lists the quests given where the guide does not go,
 those it thinks need no more than a word with someone (check them: the data
 may lack their objectives), and any it picks up and never hands in.
-`Tools/test_dungeonguides.lua` fails if the guides are stale, or a quest is
+`Tools/tests/test_dungeonguides.lua` fails if the guides are stale, or a quest is
 handed in before it is picked up, or picked up and never handed in.
 
 ## Routes and Dungeon Quests
@@ -320,15 +320,15 @@ handed in before it is picked up, or picked up and never handed in.
 A route pack's route (`Routes/Routes.lua`) decides what comes after a guide on
 it: the next leg for the character's pack and race. A guide's own next guide
 (`RegisterGuide`'s second argument) is only the way on for a guide picked off
-the route, so keep the two in step; `Tools/test_routes.lua` fails on a leg or
+the route, so keep the two in step; `Tools/tests/test_routes.lua` fails on a leg or
 a next guide that does not exist.
 
 The first-time setup counts each dungeon's quests along a route, and a quest
 counts only if the guide takes you all the way through it.
-`python3 Tools/build_dungeon_quests.py --report` says which dungeon-tagged
+`python3 Tools/build/build_dungeon_quests.py --report` says which dungeon-tagged
 quests do not count and why -- never picked up, handed in before it is
 picked up, what the server wants done before it missing -- and without
-`--report` it writes `DungeonQuests.lua`, which `Tools/test_routes.lua` checks
+`--report` it writes `DungeonQuests.lua`, which `Tools/tests/test_routes.lua` checks
 is up to date. After editing a guide's dungeon steps or a route, run it.
 (Remember that Parser.lua keeps only the first accept and the first hand-in
 of a quest in a guide: a later duplicate is dropped.)

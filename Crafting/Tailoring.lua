@@ -3,7 +3,7 @@
 
 	GENERATED FILE -- do not edit by hand.
 	Source:    CraftRoute by Kitymeowmeow (GPLv3), data_tailoring.lua
-	Generator: Tools/import_recipes.py
+	Generator: Tools/build/import_recipes.py
 
 	One recipe a line, ordered by the skill it turns orange at:
 
@@ -15,7 +15,7 @@
 	"trainer <copper>", "book <item> <copper>" or "book <item> ?", "quest",
 	"drop" or "special"; a ~ marks an estimated cost. "skip" keeps a recipe
 	out of routes (cooldowns, rare drops); "nomake" stops the planner making
-	it to supply another recipe. Tools/import_recipes.py documents each.
+	it to supply another recipe. Tools/build/import_recipes.py documents each.
 ]]
 
 AegisPathfinder:RegisterRecipeBook("Tailoring", {

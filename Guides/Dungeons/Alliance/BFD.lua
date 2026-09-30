@@ -1,5 +1,5 @@
 -- Dungeon guide: Blackfathom Deeps, Alliance
--- Written by Tools/build_dungeon_guides.py from pfQuest and InstanceJournal: do not edit it here.
+-- Written by Tools/build/build_dungeon_guides.py from pfQuest and InstanceJournal: do not edit it here.
 
 AegisPathfinder:RegisterGuide("Dungeons/Blackfathom Deeps (24-32)", nil, "Alliance", function()
 

@@ -7,7 +7,7 @@
 	verbatim so they can be diffed against it.
 
 	Textures are white masks tinted at runtime with SetVertexColor (see
-	Tools/make_assets.py), which is why one 32x32 rounded-rect serves every
+	Tools/build/make_assets.py), which is why one 32x32 rounded-rect serves every
 	panel, band, pill and tab in the addon.
 ]]
 
@@ -242,7 +242,7 @@ end
 --[[ Art with the concept's green baked in.
 
 	The navigation arrow and the progress fill are gradients, drawn in green
-	(Tools/make_assets.py). The concept's theme keeps that art exactly; any
+	(Tools/build/make_assets.py). The concept's theme keeps that art exactly; any
 	other theme gets the same shape in grey, shaded the same way, tinted with
 	its accent glow.
 ]]

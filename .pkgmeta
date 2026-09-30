@@ -8,11 +8,8 @@ manual-changelog:
 
 ignore:
     - README.md
-    - RXPConverter.lua
-    - convert_rxp.py
     - Tools
     - docs
-    - tasks
     - .luarc.json
     - CONTRIBUTORS.md
     - CONTRIBUTING.md

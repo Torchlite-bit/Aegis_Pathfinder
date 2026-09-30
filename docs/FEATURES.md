@@ -113,7 +113,7 @@ taken inside.
 
 Which quests belong to a dungeon comes from InstanceJournal, a Turtle WoW
 addon that lists every instance's quests, and the quests themselves from
-pfQuest-turtle, patch 1.18.1's included (`Tools/build_dungeon_guides.py`).
+pfQuest-turtle, patch 1.18.1's included (`Tools/build/build_dungeon_guides.py`).
 
 **Filters.** Solo or group mode, and whether Auction House steps appear.
 Defaults follow the route pack you chose. They act on every route pack: in

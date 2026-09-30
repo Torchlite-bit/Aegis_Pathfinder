@@ -1,5 +1,5 @@
 {
- "_about": "Facts behind the Herbalism, Skinning and Fishing guides and Mining's ore, extracted by Tools/build_gathering.py from pfQuest (with pfQuest-turtle) and CMaNGOS classic-db. Read by Tools/convert_professions.py.",
+ "_about": "Facts behind the Herbalism, Skinning and Fishing guides and Mining's ore, extracted by Tools/build/build_gathering.py from pfQuest (with pfQuest-turtle) and CMaNGOS classic-db. Read by Tools/build/convert_professions.py.",
  "herbs": [
   {
    "name": "Peacebloom",

@@ -9,7 +9,7 @@
 --            db/items-turtle.lua, db/enUS/units-turtle.lua, db/enUS/zones-turtle.lua;
 --            and for Frostmane Hollow and Windhorn Canyon (patch 1.18.1), InstanceJournal
 --            (https://github.com/Arthur-Helias/InstanceJournal): db/dungeons, locale enUS
--- Generator: Tools/build_gear_data.py
+-- Generator: Tools/build/build_gear_data.py
 
 AegisPathfinder.GearData = {
 	-- What a vendor pays, in copper, for each item a quest offers as a choice.
