@@ -18,6 +18,11 @@ are only found at startup.
 
 - [ ] The load message in chat names the version you installed.
 - [ ] No Lua error on login (the Error log is empty).
+- [ ] `/apg` and `/pathfinder` open and close the guide; `/vg` is not
+      Pathfinder's any more (the client says it doesn't know it).
+- [ ] The guide, the options window and the guide list fade in as they open.
+- [ ] A character that used TurtleGuide, on a fresh install with no
+      Pathfinder save, keeps its progress, and chat says it was imported.
 - [ ] The minimap button is the Aegis: Pathfinder logo, round, in its own
       colours; hovering it shows a green ring and a tooltip.
 - [ ] Click toggles the guide; right-click opens the options; dragging walks it

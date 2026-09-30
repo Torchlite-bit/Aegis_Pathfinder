@@ -18,7 +18,7 @@ reports.
 
 ---
 
-## [0.19.0]
+## [0.19.0] — restart
 
 ### Added
 - **Notes that have you pick something up tick themselves.** Bingles'
@@ -59,9 +59,33 @@ reports.
   Within 30 yards counts as arrived, because these points are only written
   to a tenth of a percent of the whole continent.
 
+### Changed
+- **The Optimized guides' first step** no longer says it follows
+  "VanillaGuide's optimized quest order"; it says "an optimized quest
+  order". The addons Pathfinder grew from are credited on the options
+  window's About page, in the README and in CONTRIBUTORS.md.
+
 ### Removed
+- **`/vg`.** It was the command of TurtleGuide, the addon Pathfinder grew
+  from. Use `/apg`, or `/pathfinder`.
+- **The `TurtleGuide` name for guide files.** A guide written for
+  TurtleGuide registers itself with `TurtleGuide:RegisterGuide`; it now
+  needs `AegisPathfinder:RegisterGuide`. Every guide that comes with
+  Pathfinder already uses it.
+- **The rest of what was left of TourGuide, TurtleGuide and
+  VanillaGuide+:** TourGuide's widget library (`WidgetWarlock.lua`, whose
+  removal is why this release needs a restart), its unused translations
+  (help text, and option labels for addons and windows that are gone), two
+  textures nothing drew, and settings nothing read.
+  - Your progress from TurtleGuide still carries over, as before.
 - An unused glow texture, left over from the step circle's old look.
-  Nothing used it, so `/reload` is enough.
+
+### For contributors
+- Everything that doesn't ship is under `Tools/`: the checks
+  (`Tools/run_tests.sh`, `Tools/verify.py`), the tests in `Tools/tests/`,
+  the generators and importers in `Tools/build/`, and what they read in
+  `Tools/data/`. CONTRIBUTING.md says where everything is.
+- The QuestShell+ format is documented in `docs/QUESTSHELL_PLUS.md`.
 
 ## [0.18.0]
 
