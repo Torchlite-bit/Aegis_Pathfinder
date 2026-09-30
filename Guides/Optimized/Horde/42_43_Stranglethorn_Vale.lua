@@ -1,12 +1,12 @@
 -- Optimized Guide: Stranglethorn Vale (42-43)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Stranglethorn Vale (42-43)", "Optimized/Desolace (43-43)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Stranglethorn Vale 42-43|
+N Optimized Leveling |N|This guide follows an optimized quest order for Stranglethorn Vale 42-43|
 
 R Grom'gol Base Camp |OID|598| |N|Travel to Grom'gol Base Camp (32.16, 29.18)|
 T Mok'thardin's Enchantment (Part 3) |QID|571| |N|Far Seer Mok'thardin in Grom'gol Base Camp (32.16, 29.18)| |O|

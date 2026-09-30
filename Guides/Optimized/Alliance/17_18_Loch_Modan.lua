@@ -1,12 +1,12 @@
 -- Optimized Guide: Loch Modan (17-18)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Loch Modan (17-18)", "Optimized/Redridge (18-20)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Loch Modan 17-18|
+N Optimized Leveling |N|This guide follows an optimized quest order for Loch Modan 17-18|
 
 R Algaz Station |QID|307| |N|Travel to Algaz Station in Loch Modan (24.67, 18.25)|
 A Filthy Paws |QID|307| |N|Mountaineer Stormpike in Algaz Station (24.67, 18.25)|
@@ -41,10 +41,10 @@ A Bingles' Missing Supplies |QID|2038| |N|Bingles Blastenheimer at The Loch (63.
 N As you go |N|Kill Loch Crocolisk for 5 Crocolisk Meat and 6 Crocolisk Skin|
 C Crocolisk Hunting |QID|385| |N|Kill Loch Crocolisk in the lake for 5 Crocolisk Meat and 6 Crocolisk Skin (54, 38)|
 
-N Bingles' Blastencapper |QID|2038| |N|Collect Bingles' Blastencapper (54.33, 26.54)|
-N Bingles' Wrench |QID|2038| |N|Collect Bingles' Wrench near the campfire (48.69, 29.99)|
-N Bingles' Hammer |QID|2038| |N|Collect Bingles' Hammer (51.79, 23.93)|
-N Bingles' Screwdriver |QID|2038| |N|Collect Bingles' Screwdriver (48.35, 20.39)|
+N Bingles' Blastencapper |QID|2038| |L|7376| |N|Collect Bingles' Blastencapper (54.33, 26.54)|
+N Bingles' Wrench |QID|2038| |L|7343| |N|Collect Bingles' Wrench near the campfire (48.69, 29.99)|
+N Bingles' Hammer |QID|2038| |L|7346| |N|Collect Bingles' Hammer (51.79, 23.93)|
+N Bingles' Screwdriver |QID|2038| |L|7345| |N|Collect Bingles' Screwdriver (48.35, 20.39)|
 
 R Stonewrought Dam |QID|250| |N|Travel to Stonewrought Dam from the west side (45, 13)|
 A A Dark Threat Looms (Part 1) |QID|250| |N|Chief Engineer Hinderweir VII at Stonewrought Dam (46.06, 13.72)|

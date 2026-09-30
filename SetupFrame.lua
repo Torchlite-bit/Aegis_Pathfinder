@@ -150,7 +150,7 @@ end
 	Only the quests the pack's route takes you all the way through count:
 	with that dungeon ticked, the guide sends you to pick each up, has you
 	hand in first whatever the server wants done before it, and sends you to
-	hand it in -- Tools/build_dungeon_quests.py works that out from the
+	hand it in -- Tools/build/build_dungeon_quests.py works that out from the
 	guides and the server's quest rules, into DungeonQuests.lua. A quest
 	whose chain runs through another dungeon's quests -- the Stockade's
 	Onyxia chain starts with the Deadmines' Bazil Thredd -- counts once that

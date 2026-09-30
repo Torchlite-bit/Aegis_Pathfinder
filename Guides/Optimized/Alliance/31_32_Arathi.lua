@@ -1,12 +1,12 @@
 -- Optimized Guide: Arathi Highlands (31-32)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Arathi (31-32)", "Optimized/Stranglethorn (32-32)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Arathi 31-32|
+N Optimized Leveling |N|This guide follows an optimized quest order for Arathi 31-32|
 
 R Refuge Pointe |QID|681| |N|Travel to Refuge Pointe (45.83, 47.57)| |Z|Arathi Highlands|
 A Northfold Manor |QID|681| |N|Captain Nials in Refuge Pointe (45.84, 47.50)| |Z|Arathi Highlands|

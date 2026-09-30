@@ -1,5 +1,5 @@
 -- Optimized Guide: Uldaman (45-46)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database; the Uldaman quests' givers,
 -- takers and coordinates from pfQuest
 
@@ -7,7 +7,7 @@ AegisPathfinder:RegisterGuide("Optimized/Uldaman (45-46)", "Optimized/Hinterland
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Uldaman 45-46| |D|ULDA|
+N Optimized Leveling |N|This guide follows an optimized quest order for Uldaman 45-46| |D|ULDA|
 
 N Uldaman Dungeon |N|This section recommends doing Uldaman dungeon. You should have quests from Badlands and can get more in Ironforge. One full run inside and out should get you 75-100% through this level| |D|ULDA|
 

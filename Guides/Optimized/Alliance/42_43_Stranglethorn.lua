@@ -1,12 +1,12 @@
 -- Optimized Guide: Stranglethorn Vale (42-43)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Stranglethorn (42-43)", "Optimized/Tanaris (43-43)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Stranglethorn 42-43|
+N Optimized Leveling |N|This guide follows an optimized quest order for Stranglethorn 42-43|
 
 R Booty Bay |QID|2864| |N|Travel to Booty Bay (27.0, 77.2)| |Z|Stranglethorn Vale|
 A Tran'rek |QID|2864| |N|Krazek in The Salty Sailor Tavern (27.0, 77.2)| |Z|Stranglethorn Vale|
@@ -21,8 +21,8 @@ R Wild Shore |QID|587| |N|Travel south to Wild Shore (31, 79)| |Z|Stranglethorn 
 C Up to Snuff |QID|587| |N|Kill Bloodsail pirates for 15 Snuff (30, 80)| |Z|Stranglethorn Vale|
 C Keep An Eye Out |QID|576| |N|Keep killing pirates until Dizzy's Eye drops (30, 80)| |Z|Stranglethorn Vale|
 
-N Bloodsail Charts |QID|604| |N|Collect Bloodsail Charts on barrel (26.9, 82.5)| |Z|Stranglethorn Vale|
-N Bloodsail Orders |QID|604| |N|Collect Bloodsail Orders on crate (27.8, 83.1)| |Z|Stranglethorn Vale|
+N Bloodsail Charts |QID|604| |L|3920| |N|Collect Bloodsail Charts on barrel (26.9, 82.5)| |Z|Stranglethorn Vale|
+N Bloodsail Orders |QID|604| |L|3921| |N|Collect Bloodsail Orders on crate (27.8, 83.1)| |Z|Stranglethorn Vale|
 C The Bloodsail Buccaneers (Part 4) |QID|604| |N|Kill 10 Bloodsail Swashbuckler in Wild Shore (29, 81)| |Z|Stranglethorn Vale|
 
 R Booty Bay |TID|576| |N|Return to Booty Bay (27.1, 77.3)| |Z|Stranglethorn Vale|
@@ -37,7 +37,7 @@ C Akiris by the Bundle |QID|617| |N|Collect 10 Bundles of Akiris Reed from Naga 
 N Grind Nagas |N|Grind on the nagas until you're at least 50% into 43|
 
 R Ruins of Aboraz |QID|609| |N|Travel to Ruins of Aboraz (40, 58)| |Z|Stranglethorn Vale|
-N As you go... |QID|621| |N|Kill Zanzil mobs for 12 Zanzil's Mixture|
+N As you go... |QID|621| |L|4016 12| |N|Kill Zanzil mobs for 12 Zanzil's Mixture|
 K Chucky Ten Thumbs |QID|609| |OIDX|3| |N|Kill Chucky Ten Thumbs for Chucky's Huge Ring at Ruins of Aboraz (40.05, 58.21)| |Z|Stranglethorn Vale|
 
 R Ruins of Jubuwal |QID|609| |N|Travel to Ruins of Jubuwal (35, 51)| |Z|Stranglethorn Vale|

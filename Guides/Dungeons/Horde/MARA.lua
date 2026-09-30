@@ -1,5 +1,5 @@
 -- Dungeon guide: Maraudon, Horde
--- Written by Tools/build_dungeon_guides.py from pfQuest and InstanceJournal: do not edit it here.
+-- Written by Tools/build/build_dungeon_guides.py from pfQuest and InstanceJournal: do not edit it here.
 
 AegisPathfinder:RegisterGuide("Dungeons/Maraudon (46-55)", nil, "Horde", function()
 

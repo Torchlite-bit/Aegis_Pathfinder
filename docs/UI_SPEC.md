@@ -40,7 +40,7 @@ TTF degrades to readable text rather than an empty UI.
 builds one from a 32×32 mask: four 10px corners at fixed size, four edges that
 stretch along one axis, and a stretched centre, positioned with `SetTexCoord`.
 `Theme.CORNER` and the slice constants must stay in step with the radius in
-`Tools/make_assets.py`.
+`Tools/build/make_assets.py`.
 
 **Colour.** Shapes are white masks tinted with `SetVertexColor`, so one
 rounded-rect serves every panel, tab, pill and band, and a palette change is a
@@ -118,6 +118,9 @@ being left on the continent view. Astrolabe does that itself when it cannot
 place the player in a zone, and the same-zone path used to read it as "not in
 the waypoint's zone" and hide, while TomTom's arrow kept pointing. Without
 Astrolabe it falls back to that path (re-centring a continent-view map first).
+A waypoint on a continent's own map -- zone 0, from RestedXP's "Travel to
+Kalimdor" steps -- is measured by Astrolabe like any other; without it the
+callout hides and `/apg diagnav` says the point is on the continent's map.
 With no provider, no waypoint, or no way to measure, the callout hides; an
 arrow that is confidently wrong is worse than no arrow. `/apg diagnav` says
 which of those it is.
@@ -298,21 +301,12 @@ mode shows one step and has the room, so its row grows to show the whole note
 (a second, wrapping font string, measured after it is set), and runs to the
 panel's edge since there is no scrollbar beside it.
 
-### Shared widgets -- `WidgetWarlock.lua`
+### Shared widgets
 
-Rather than edit every call site, the two shared widget helpers build themed
-widgets:
-
-| Helper | Now returns |
-|---|---|
-| `SummonCheckBox` | `Theme:StepCheck` -- a CheckButton, so `SetChecked`/`GetChecked`/`OnClick` are unchanged |
-| `SummonFontString` | A font string mapped from the Blizzard font object name onto a theme face and colour |
-
-`Theme.lua` therefore loads before `WidgetWarlock.lua`.
-
-`Theme:PanelButton` and `Theme:CloseChip` do the same job for
-`UIPanelButtonTemplate` and `UIPanelCloseButton`, which is what every
-secondary panel and all three `Core.lua` dialogs were still built from.
+`Theme:StepCheck` is the step circle, a CheckButton, so `SetChecked` /
+`GetChecked` / `OnClick` work as on any check button. `Theme:PanelButton` and
+`Theme:CloseChip` are the buttons every secondary panel and the `Core.lua`
+dialogs are built from, and `Theme:FadeIn` fades a window in as it opens.
 
 ### Options panel -- `OptionsFrame.lua`
 
@@ -458,22 +452,16 @@ Text, gold, danger and the green/red step bands keep their meaning everywhere.
 
 ### Minimap button -- `MinimapButton.lua`
 
-Not in the concept, which has no minimap. It used to be FuBarPlugin's:
-Blizzard's quest-log book in the stock round minimap border, and a right-click
-that opened a Dewdrop menu of every setting in Blizzard tooltip chrome. Now it
-is drawn like the rest of the addon -- `logo.tga`, the Aegis shield, in accent
-on a `panel-2` disc (`circle-fill.tga`) with a `subtle` hairline ring
-(`circle-border.tga`) that takes the accent on hover.
+Not in the concept, which has no minimap. It is the addon's own:
+`minimap-logo.tga`, the Aegis: Pathfinder logo on its dark disc with a red and
+gold rune ring, so it needs no border; hovering puts an accent ring
+(`circle-border.tga`) round it.
 
-Click toggles the guide, right-click toggles the options panel (every setting
-the Dewdrop menu held is there), and dragging walks it round the minimap's edge
-at 80px from its centre; the angle is saved per profile. "Minimap button" in
-the options panel's Guide behaviour section, or `/apg minimapbutton`, hides it.
-
-Dewdrop-2.0, Tablet-2.0 and FuBarPlugin-2.0 were only there for the old
-button, so they are gone from `libs/` and the `.toc`; AceConsole and AceDB use
-Dewdrop only when it is present. `Tools/verify.py` fails on Blizzard quest-log
-or minimap art, in either backslash form.
+Click toggles the guide, right-click toggles the options panel, and dragging
+walks it round the minimap's edge at 80px from its centre; the angle is saved
+per profile. "Minimap button" in the options panel's Guide behaviour section,
+or `/apg minimapbutton`, hides it. `Tools/verify.py` fails on Blizzard
+quest-log or minimap art, in either backslash form.
 
 ### Guide list -- `GuideListFrame.lua`
 
@@ -496,7 +484,7 @@ none ships with it; the badge stays for the next placeholder.
 Custom-zone guides are the **Custom** tab: `GetGuideCategory` matches a
 guide's name against `TURTLE_ZONES` in `Core.lua`, which has to name every
 custom zone -- Scarlet Enclave and Hyjal were once missing and filed under
-Zones. `Tools/test_guidelist.lua` reads that list out of `Core.lua` and checks
+Zones. `Tools/tests/test_guidelist.lua` reads that list out of `Core.lua` and checks
 every custom-zone guide against it.
 
 Dungeon guides (`Guides/Dungeons/`, named `Dungeons/<dungeon> (lo-hi)`) are
@@ -647,7 +635,7 @@ made, want, reagents = { { name, count, itemId } } }`, priced at the auction
 house. The button writes one project per craft still ahead, in route order
 with the next craft on top: `want` is the craft count and `made` is 1, so
 Exchange's `reagent count x crafts` lands on the same totals as the list here
-(`Tools/test_materials.lua` checks this against the reference document's
+(`Tools/tests/test_materials.lua` checks this against the reference document's
 Alchemy list). The same craft on two steps is one project with both counts.
 Item ids come from the bags, then Exchange's own name map, then pfQuest's item
 database; anything unmatched is reported in chat, since Exchange's list only
@@ -673,7 +661,7 @@ Not in the concept. It does what CraftRoute does, without CraftRoute: plans
 the cheapest way from your skill to 300 at today's prices and shows it, and
 can turn it into a guide. The planning is `CraftPlanner.lua`, the auction scan
 `CraftScan.lua`, the recipe and merchant-price data `Crafting/` (converted from
-CraftRoute's data by `Tools/import_recipes.py`).
+CraftRoute's data by `Tools/build/import_recipes.py`).
 
 Opened by **Cheapest route** on the shopping list, or `/apg craft`. It pops out
 beside the guide like the shopping list, until dragged (`craftframe`).
@@ -877,9 +865,7 @@ later.
 
 ### Scrollbar -- `Theme:ScrollBar`
 
-The last Blizzard art in the addon. `WidgetWarlock.ConjureScrollBar` used the
-stock knob plus the character-sheet scroll frame around it, which read as a
-foreign object on a flat panel; it now delegates here. A dark track, a stadium
+A dark track, a stadium
 thumb (`scroll-thumb.tga`, radius half its width, so the caps stay circular at
 any length) and caret step buttons. It is still a Slider, so
 `SetMinMaxValues` / `SetValue` / `OnValueChanged` are unchanged.
@@ -944,8 +930,8 @@ addon already shipped and which are known to load on this client.
 every shipped file, so a panel drifting off the theme is caught here rather
 than in the client.
 
-`Tools/test_theme.lua` and `Tools/test_statusframe.lua` execute the real code
-against a stubbed API and assert the geometry and state transitions.
+The Lua tests under `Tools/tests/` execute the real code against a stubbed API
+and assert the geometry and state transitions.
 
 **None of this proves the UI looks like the concept.** Nothing here has been
 loaded in a game client. Texture orientation, font rendering, and whether the

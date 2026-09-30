@@ -1,12 +1,12 @@
 -- Optimized Guide: Alterac Mountains (36-37)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Alterac (36-37)", "Optimized/Arathi (37-38)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Alterac 36-37|
+N Optimized Leveling |N|This guide follows an optimized quest order for Alterac 36-37|
 
 R Southshore |QID|504| |N|Travel to Southshore (48.12, 59.06)| |Z|Hillsbrad Foothills|
 A Crushridge Bounty |QID|500| |N|Marshal Redpath in Southshore (49.67, 58.73)| |Z|Hillsbrad Foothills|
@@ -21,7 +21,7 @@ C Crushridge Bounty |QID|500| |N|Kill Crushridge Ogre for 9 Dirty Knucklebones (
 R The Uplands |QID|512| |N|Travel to The Uplands (47.67, 18.58)| |Z|Alterac Mountains|
 N As you go |N|Collect 7 Alterac Signet Ring from any Syndicate enemies|
 K Argus Shadow Mage |QID|512| |N|Kill 4 Argus Shadow Mage in The Uplands - one per camp (58.43, 30.95) (55.43, 27.03) (52.97, 20.91) (47.67, 18.58)| |Z|Alterac Mountains|
-K Nagaz |QID|537| |N|Kill Nagaz inside house for Head of Nagaz in Dandred's Fold (39.34, 15.01)| |Z|Alterac Mountains|
+K Nagaz |QID|537| |L|3672| |N|Kill Nagaz inside house for Head of Nagaz in Dandred's Fold (39.34, 15.01)| |Z|Alterac Mountains|
 N Ensorcelled Parchment |QID|551| |N|Collect Ensorcelled Parchment from chest in Dandred's Fold (39.21, 14.66)| |L|3706| |Z|Alterac Mountains|
 A The Ensorcelled Parchment |QID|551| |N|Use Ensorcelled Parchment to accept quest| |Z|Alterac Mountains| |U|3706|
 C Noble Deaths |QID|512| |N|Finish collecting 7 Alterac Signet Ring from Syndicate enemies (47.67, 18.58)| |Z|Alterac Mountains|

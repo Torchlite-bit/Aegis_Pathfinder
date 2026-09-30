@@ -1,12 +1,12 @@
 -- Optimized Guide: Felwood (53-54)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Felwood (53-54)", "Optimized/Winterspring (54-55)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Felwood 53-54|
+N Optimized Leveling |N|This guide follows an optimized quest order for Felwood 53-54|
 
 R Morlos'Aran |QID|4101| |N|Travel to Morlos'Aran in Felwood (54.15, 86.84)| |Z|Felwood|
 A Cleansing Felwood |QID|4101| |N|Arathandris Silversky in Morlos'Aran (54.15, 86.84)| |Z|Felwood|
@@ -26,12 +26,12 @@ R Ruins of Constellas |QID|4512| |N|Travel to Ruins of Constellas (40.14, 67.91)
 N Empty Cursed Ooze Jar |QID|4512| |N|Collect 6 Empty Cursed Ooze Jar from Package of Empty Ooze Containers| |U|11912| |L|11914|
 N Empty Tainted Ooze Jar |QID|4512| |N|Collect 6 Empty Tainted Ooze Jar from Package of Empty Ooze Containers| |U|11912| |L|11948|
 
-K Cursed Ooze |QID|4512| |N|Kill Cursed Ooze and use Empty Cursed Ooze Jar to collect 6 Filled Cursed Ooze Jar (40.14, 67.91)| |Z|Felwood| |U|11914|
+K Cursed Ooze |QID|4512| |L|11947 6| |N|Kill Cursed Ooze and use Empty Cursed Ooze Jar to collect 6 Filled Cursed Ooze Jar (40.14, 67.91)| |Z|Felwood| |U|11914|
 K Xavathras |QID|4421| |N|Kill Xavathras in Ruins of Constellas (36.62, 68.46)| |Z|Felwood|
 C The Corruption of the Jadefire |QID|4421| |N|Kill the required Jadefire Satyr in Ruins of Constellas (37.16, 66.88)| |Z|Felwood|
 
 R Jaedenar |QID|4512| |N|Travel to Jaedenar (39.94, 55.20)| |Z|Felwood|
-K Tainted Ooze |QID|4512| |N|Kill Tainted Ooze and use Empty Tainted Ooze Jar to collect 6 Filled Tainted Ooze Jar (39.94, 55.20)| |Z|Felwood| |U|11948|
+K Tainted Ooze |QID|4512| |L|11949 6| |N|Kill Tainted Ooze and use Empty Tainted Ooze Jar to collect 6 Filled Tainted Ooze Jar (39.94, 55.20)| |Z|Felwood| |U|11948|
 C Forces of Jaedenar |QID|5155| |N|Kill the required Jaedenar Satyrs in Jaedenar (38.87, 58.76)| |Z|Felwood|
 
 R Emerald Sanctuary |QID|4906| |N|Travel to Emerald Sanctuary (51.35, 81.52)| |Z|Felwood|
@@ -54,7 +54,7 @@ R Jadefire Run |QID|4906| |N|Travel to Jadefire Run (43.21, 21.85)| |Z|Felwood|
 K Xavaric |QID|4906| |N|Kill Xavaric in Jadefire Run (42.68, 18.34)| |Z|Felwood|
 N Flute of Xavaric |QID|939| |N|Collect Flute of Xavaric from Xavaric (39.15, 21.70)| |Z|Felwood| |L|11668|
 A Flute of Xavaric |QID|939| |N|Use Flute of Xavaric to accept quest| |Z|Felwood| |U|11668|
-N Jadefire Felbind |QID|939| |N|Kill Jadefire Satyr and collect 5 Jadefire Felbind (42.13, 18.70)| |Z|Felwood|
+N Jadefire Felbind |QID|939| |L|11674 5| |N|Kill Jadefire Satyr and collect 5 Jadefire Felbind (42.13, 18.70)| |Z|Felwood|
 C Further Corruption |QID|4906| |N|Kill the required Jadefire Satyr in Jadefire Run (42.68, 18.34)| |Z|Felwood|
 
 R Irontree Woods |QID|4101| |N|Travel to Irontree Woods (55.19, 17.72)| |Z|Felwood|

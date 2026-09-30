@@ -1,12 +1,12 @@
 -- Optimized Guide: Stonetalon Mountains (22-23)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Stonetalon (22-23)", "Optimized/Darkshore (23-24)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Stonetalon 22-23|
+N Optimized Leveling |N|This guide follows an optimized quest order for Stonetalon 22-23|
 
 R Windshear Crag |QID|1093| |N|Travel through The Talondeep Path from Ashenvale to Stonetalon Mountains (59.00, 62.50)| |Z|Stonetalon Mountains|
 A Super Reaper 6000 |QID|1093| |N|Ziz Fizziks in Windshear Crag (59.00, 62.50)| |Z|Stonetalon Mountains|

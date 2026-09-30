@@ -1,12 +1,12 @@
 -- Optimized Guide: Swamp of Sorrows (41-42)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Swamp of Sorrows (41-42)", "Optimized/Stranglethorn Vale (42-43)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Swamp of Sorrows 41-42|
+N Optimized Leveling |N|This guide follows an optimized quest order for Swamp of Sorrows 41-42|
 
 T The Rumormonger |QID|1115| |N|Krazek in The Salty Sailor Tavern (26.95, 77.22)| |Z|Stranglethorn Vale| |O|
 A Dream Dust in the Swamp |QID|1116| |N|Krazek in The Salty Sailor Tavern (26.95, 77.22)| |Z|Stranglethorn Vale| |PRE|1116|

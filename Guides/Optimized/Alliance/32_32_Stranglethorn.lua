@@ -1,12 +1,12 @@
 -- Optimized Guide: Stranglethorn Vale (32-32)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Stranglethorn (32-32)", "Optimized/Thousand Needles (32-33)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Stranglethorn 32-32|
+N Optimized Leveling |N|This guide follows an optimized quest order for Stranglethorn 32-32|
 
 R Rebel Camp |QID|203| |N|Travel to Rebel Camp via Duskwood (38.24, 4.86)| |Z|Stranglethorn Vale|
 A The Second Rebellion |QID|203| |N|Sergeant Yohwa in Rebel Camp (38.03, 3.35)| |Z|Stranglethorn Vale|
@@ -17,7 +17,7 @@ T Jungle Secrets |QID|215| |N|Lieutenant Doren in Rebel Camp (38.04, 3.01)| |Z|S
 A Bookie Herod |QID|200| |N|Lieutenant Doren in Rebel Camp (38.04, 3.01)| |Z|Stranglethorn Vale|
 
 R Kurzen's Compound |QID|204| |N|Travel to Kurzen's Compound (44.11, 9.58)| |Z|Stranglethorn Vale|
-N Venom Fern Extract |QID|204| |N|Collect Venom Fern Extract from Kurzen supplies on the ground (44.52, 9.83)| |Z|Stranglethorn Vale|
+N Venom Fern Extract |QID|204| |L|2634| |N|Collect Venom Fern Extract from Kurzen supplies on the ground (44.52, 9.83)| |Z|Stranglethorn Vale|
 T Bookie Herod |QID|200| |N|Bookie Herod's Record in Kurzen's Compound (43.67, 9.38)| |Z|Stranglethorn Vale|
 A The Hidden Key |QID|328| |N|Bookie Herod's Record in Kurzen's Compound (43.67, 9.39)| |Z|Stranglethorn Vale|
 C Bad Medicine |QID|204| |N|Kill Kurzen Medicine Man for 7 Jungle Remedy (44.78, 10.93)| |Z|Stranglethorn Vale|

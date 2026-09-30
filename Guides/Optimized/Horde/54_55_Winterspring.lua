@@ -1,12 +1,12 @@
 -- Optimized Guide: Winterspring (54-55)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Winterspring (54-55)", "Optimized/Felwood (55-55)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Winterspring 54-55|
+N Optimized Leveling |N|This guide follows an optimized quest order for Winterspring 54-55|
 
 R Winterspring |QID|8464| |N|Travel to Winterspring zone| |Z|Winterspring|
 T Speak to Salfa |QID|8465| |N|Salfa at zone entrance (27.74, 34.53)| |Z|Winterspring| |O|
@@ -26,7 +26,7 @@ T Trouble in Winterspring! |QID|6603| |N|Donova Snowden in Frostfire Hot Springs
 A Threat of the Winterfall |QID|5082| |N|Donova Snowden in Frostfire Hot Springs (31.28, 45.17)| |Z|Winterspring|
 T It's a Secret to Everybody (Part 3) |QID|3908| |N|Donova Snowden in Frostfire Hot Springs - skip follow up (31.27, 45.17)| |Z|Winterspring| |O|
 
-N Moontouched Feather |QID|978| |N|Collect Moontouched Feather from the ground near the quest giver (31.64, 44.83)| |Z|Winterspring| |OBJ|3651| |O|
+N Moontouched Feather |QID|978| |L|12383 10| |N|Collect Moontouched Feather from the ground near the quest giver (31.64, 44.83)| |Z|Winterspring| |OBJ|3651| |O|
 
 C Strange Sources |QID|4842| |N|Go south-east and discover Darkwhisper Gorge (60.40, 73.37)| |Z|Winterspring| |PRE|980|
 

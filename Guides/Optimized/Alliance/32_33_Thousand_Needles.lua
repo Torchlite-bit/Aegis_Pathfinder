@@ -1,12 +1,12 @@
 -- Optimized Guide: Thousand Needles (32-33)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Thousand Needles (32-33)", "Optimized/Stonetalon (33-33)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Thousand Needles 32-33|
+N Optimized Leveling |N|This guide follows an optimized quest order for Thousand Needles 32-33|
 
 R Ratchet |QID|1100| |N|Take the boat from Booty Bay to Ratchet (63.36, 38.44)| |Z|The Barrens|
 f Ratchet |QID|1100| |N|Bragok for flight path (63.09, 37.16)| |Z|The Barrens|

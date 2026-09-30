@@ -1,12 +1,12 @@
 -- Optimized Guide: Stonetalon Mountains (23-25)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Stonetalon (23-25)", "Optimized/The Barrens (25-25)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Stonetalon 23-25|
+N Optimized Leveling |N|This guide follows an optimized quest order for Stonetalon 23-25|
 
 R Sun Rock Retreat |QID|6301| |N|Travel to Sun Rock Retreat (45.96, 60.36)| |Z|Stonetalon Mountains|
 A Cenarius' Legacy |QID|1087| |N|Braelyn Firehand in Sun Rock Retreat (45.96, 60.36)| |Z|Stonetalon Mountains|

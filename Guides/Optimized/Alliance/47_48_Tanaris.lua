@@ -1,12 +1,12 @@
 -- Optimized Guide: Tanaris (47-48)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Tanaris (47-48)", "Optimized/Hinterlands (48-48)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Tanaris 47-48|
+N Optimized Leveling |N|This guide follows an optimized quest order for Tanaris 47-48|
 
 R Gadgetzan |QID|2605| |N|You should be in Gadgetzan (51.81, 28.65)| |Z|Tanaris|
 A The Thirsty Goblin |QID|2605| |N|Marin Noggenfogger in Gadgetzan (51.81, 28.65)| |Z|Tanaris|
@@ -21,13 +21,13 @@ A Gahz'ridian |QID|3161| |N|Marvon Rivetseeker (52.72, 45.92)| |Z|Tanaris|
 
 N Gahz'ridian Detector |QID|3161| |N|Equip the Gahz'ridian Detector to help find ornaments - yellow dots on minimap| |U|9978|
 
-N Grind Rocs |QID|1452| |N|Kill Searing Roc at skeletons around (49, 36) and (44, 39) for Roc Gizzard| |D|ST|
+N Grind Rocs |QID|1452| |L|6257 3| |N|Kill Searing Roc at skeletons around (49, 36) and (44, 39) for Roc Gizzard| |D|ST|
 
 R Dunemaul Compound |QID|5863| |N|Travel to Dunemaul Compound (40.43, 55.72)| |Z|Tanaris|
 C Gor'marok the Ravager |QID|5863| |OIDX|3| |N|Kill Gor'marok the Ravager inside the cave (41.46, 57.78)| |Z|Tanaris|
 C The Dunemaul Compound |QID|5863| |N|Kill 10 Dunemaul Brute, 10 Dunemaul Enforcer (40.43, 55.72) (47.02, 65.85)| |Z|Tanaris|
 
-N As you go... |QID|3161| |N|Collect Gahz'ridian Ornament (30 total) while in the area|
+N As you go... |QID|3161| |L|8443 30| |N|Collect Gahz'ridian Ornament (30 total) while in the area|
 C Gahz'ridian |QID|3161| |N|Collect 30 Gahz'ridian Ornament from ruins (47.02, 65.85)| |Z|Tanaris| |OBJ|1767|
 
 N Grind to 10k from 48 |N|Grind on ogres until you're about 10,000 from level 48|
@@ -39,7 +39,7 @@ T The Stone Watcher |QID|2954| |N|Touch the pedestal again| |D|ULDA| |Z|Tanaris|
 A Return to Ironforge |QID|2977| |N|Touch the pedestal one more time| |D|ULDA| |Z|Tanaris|
 
 R Thistleshrub Valley |QID|3362| |N|Travel west to Thistleshrub Valley (29.66)| |Z|Tanaris|
-K Thistleshrub Dew Collector |QID|2605| |N|Kill Thistleshrub Dew Collector until Laden Dew Gland drops (28.18, 63.86)| |Z|Tanaris|
+K Thistleshrub Dew Collector |QID|2605| |L|8428| |N|Kill Thistleshrub Dew Collector until Laden Dew Gland drops (28.18, 63.86)| |Z|Tanaris|
 C Thistleshrub Valley |QID|3362| |N|Kill 8 Gnarled Thistleshrub and 8 Thistleshrub Rootshaper (28, 65)| |Z|Tanaris|
 
 N Level 48 |N|You should hit level 48 around here|

@@ -1,12 +1,12 @@
 -- Optimized Guide: Westfall Introduction (10-12)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Westfall (10-12)", "Optimized/Darkshore (12-14)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order - bouncing between zones for efficiency|
+N Optimized Leveling |N|This guide follows an optimized quest order - bouncing between zones for efficiency|
 
 R Westfall |QID|184| |N|Leave Goldshire and head west into Westfall (60, 19)|
 T Furlbrow's Deed |QID|184| |N|Farmer Furlbrow at The Jansen Stead. Skip if you don't have the deed (60.00, 19.37)| |O|

@@ -28,7 +28,7 @@ R Go'Shek Farm |QID|658| |N|Travel to Go'Shek Farm (60.17, 53.84)| |Z|Arathi Hig
 T Hints of a New Plague? (Part 1) |QID|659| |N|Quae in Go'Shek Farm (60.17, 53.84)| |Z|Arathi Highlands|
 A Hints of a New Plague? (Part 2) |QID|658| |N|Quae in Go'Shek Farm (60.17, 53.84)| |Z|Arathi Highlands|
 
-N Forsaken Courier |QID|658| |N|Keep checking the main road from east to west to kill Forsaken Courier for Sealed Folder for the quest 'Hints of a New Plague? (Part 1)', she travels between the farm and all the way to Hillsbrad entrance. Tick this step|
+N Forsaken Courier |QID|658| |L|4482| |N|Keep checking the main road from east to west to kill Forsaken Courier for Sealed Folder for the quest 'Hints of a New Plague? (Part 1)', she travels between the farm and all the way to Hillsbrad entrance. Tick this step|
 
 R Witherbark Village |QID|691| |N|Travel to Witherbark Village (68.29, 74.52)| |Z|Arathi Highlands| |PRE|690|
 C Witherbark Shadow Hunter |QID|691| |OIDX|3| |N|Find and kill Witherbark Shadow Hunter inside the cave first and collect Shadow Hunter Knife in Witherbark Village, they are quite rare and only found inside the cave<br/><b>Collect Witherbark Tusk and Witherbark Medicine Pouch from the other troll as you go (67.33, 78.77)|  |PRE|690|

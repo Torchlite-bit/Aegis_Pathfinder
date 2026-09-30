@@ -1,12 +1,12 @@
 -- Optimized Guide: Burning Steppes (55-56)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Burning Steppes (55-56)", "Optimized/Sunken Temple (56-56)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Burning Steppes 55-56|
+N Optimized Leveling |N|This guide follows an optimized quest order for Burning Steppes 55-56|
 
 R Ironforge |QID|2948| |N|Travel to Ironforge (30, 66)| |D|GNOMER| |Z|Ironforge|
 N Black Dragonflight Molt |QID|4023| |N|Withdraw Black Dragonflight Molt from the bank (35.48, 60.70)| |Z|Ironforge| |L|10575| |O|

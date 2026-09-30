@@ -22,7 +22,7 @@ N Goodsteel's Balanced Flameberge |QID|4450| |N|Withdraw Goodsteel's Balanced Fl
 N Ironfur Liver |QID|1452| |N|Store Ironfur Liver to the bank (52.30, 28.89)| |L|6258| |O| |D|ST|
 N Groddoc Liver |QID|1452| |N|Store Groddoc Liver to the bank (52.30, 28.89)| |L|6259| |O| |D|ST|
 N Unhatched Sprite Darter Egg |QID|3841| |N|Store Unhatched Sprite Darter Egg to the bank (52.30, 28.89)| |L|11102| |O|
-N A Short Incubation |QID|3842| |N|To complete the quest line A Short Incubation, you will need 2 Elixir of Fortitude. You will be asked to craft or purchase these from the Auction House in a later step. Tick this step| |AH|
+N A Short Incubation |QID|3842| |L|3825 2| |N|To complete the quest line A Short Incubation, you will need 2 Elixir of Fortitude. You will be asked to craft or purchase these from the Auction House in a later step. Tick this step| |AH|
 T The Super Egg-O-Matic |QID|82| |N|Egg-O-Matic in Gadgetzan (52.4, 27.0)| |L|8564| |O|  |OBJ|356|
 h Gadgetzan |QID|82| |N|Speak to Innkeeper Fizzgrimble and set hearth in Gadgetzan (52.5, 27.9)|
 T Ledger from Tanaris |QID|4450| |N|Krinkle Goodsteel in Gadgetzan (51.47, 28.80)| |O|
@@ -49,7 +49,7 @@ R The Noxious Lair |QID|82| |N|Travel to The Noxious Lair (34.81, 43.60)|
 C Noxious Lair Investigation |QID|82| |N|Kill Centipaar insects and collect 5 Centipaar Insect Parts in The Noxious Lair (34, 47)|
 
 R Thistleshrub Valley |QID|2605| |N|Travel to Thistleshrub Valley (28.18, 63.86)|
-K Thistleshrub Dew Collector |QID|2605| |N|Kill Thistleshrub Dew Collector until you collect Laden Dew Gland in Thistleshrub Valley (28.18, 63.86)|
+K Thistleshrub Dew Collector |QID|2605| |L|8428| |N|Kill Thistleshrub Dew Collector until you collect Laden Dew Gland in Thistleshrub Valley (28.18, 63.86)|
 C Thistleshrub Valley |QID|3362| |N|Kill 8 Gnarled Thistleshrub and 8 Thistleshrub Rootshaper in Thistleshrub Valley (28, 65)|
 
 A Tooga's Quest |QID|1560| |N|Tooga in Tanaris (52.7, 54.9)|
@@ -91,7 +91,7 @@ N Ironfur Liver |QID|1452| |N|Withdraw Ironfur Liver from the bank. Tick this st
 N Groddoc Liver |QID|1452| |N|Withdraw Groddoc Liver from the bank. Tick this step (52.30, 28.89)| |L|6259| |OO| |D|ST|
 N Unhatched Sprite Darter Egg |QID|3841| |N|Withdraw Unhatched Sprite Darter Egg from the bank. Tick this step (52.30, 28.89)| |L|11102| |OO|
 N Insect Analysis Report |QID|162| |N|Store Insect Analysis Report to the bank (52.30, 28.89)| |L|8594| |O|
-N A Short Incubation |QID|3842| |N|To complete the quest line A Short Incubation, you will need 2 Elixir of Fortitude. Craft these or purchase from the Auction House in Gadgetzan. This is optional| |AH|
+N A Short Incubation |QID|3842| |L|3825 2| |N|To complete the quest line A Short Incubation, you will need 2 Elixir of Fortitude. Craft these or purchase from the Auction House in Gadgetzan. This is optional| |AH|
 T Safety First (Part 2) |QID|1189| |N|Razzeric in Mirage Raceway (80.33, 76.10)| |Z|Thousand Needles| |PRE|1188|
 T An Orphan Looking For a Home |QID|3841| |N|Quentin in Mirage Raceway (78.33, 74.72)| |Z|Thousand Needles| |O|
 A A Short Incubation |QID|3842| |N|Quentin in Mirage Raceway (78.33, 74.72)| |Z|Thousand Needles| |PRE|3842| |L|3825 2| |O|

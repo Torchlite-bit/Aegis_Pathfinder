@@ -1,5 +1,5 @@
 -- Dungeon guide: Uldaman, Alliance
--- Written by Tools/build_dungeon_guides.py from pfQuest and InstanceJournal: do not edit it here.
+-- Written by Tools/build/build_dungeon_guides.py from pfQuest and InstanceJournal: do not edit it here.
 
 AegisPathfinder:RegisterGuide("Dungeons/Uldaman (41-51)", nil, "Alliance", function()
 

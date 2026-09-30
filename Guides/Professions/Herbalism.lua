@@ -4,11 +4,11 @@
 -- Source:    Tools/data/gathering.json -- pfQuest's gathering nodes (with
 --            pfQuest-turtle) and CMaNGOS classic-db's creatures, fishing
 --            skill, trainers, book and quest, extracted by
---            Tools/build_gathering.py; zone sides and levels from this
+--            Tools/build/build_gathering.py; zone sides and levels from this
 --            addon's own zone guides
--- Generator: Tools/convert_professions.py, via Tools/gathering_guides.py
+-- Generator: Tools/build/convert_professions.py, via Tools/build/gathering_guides.py
 --
--- Regenerate with:  python3 Tools/convert_professions.py
+-- Regenerate with:  python3 Tools/build/convert_professions.py
 
 
 AegisPathfinder:RegisterQuestShellPlusGuide("Herbalism (1-300)", {

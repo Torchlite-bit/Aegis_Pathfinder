@@ -1,12 +1,12 @@
 -- Optimized Guide: Alterac Mountains (31-31)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Alterac (31-31)", "Optimized/Arathi (31-32)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Alterac 31-31|
+N Optimized Leveling |N|This guide follows an optimized quest order for Alterac 31-31|
 
 N As you go |N|Collect Turtle Meat from Snapjaw turtles along the river as you travel|
 C Soothing Turtle Bisque |QID|555| |N|Kill Snapjaw along the river for 10 Turtle Meat - follow river north (55.79, 54.39) (64.0, 40.0) (68.6, 28.2)| |Z|Hillsbrad Foothills|

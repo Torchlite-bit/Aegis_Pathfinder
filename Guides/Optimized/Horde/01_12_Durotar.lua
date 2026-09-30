@@ -1,12 +1,12 @@
 -- Optimized Guide: Durotar (1-12)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Durotar (1-12)", "Optimized/The Barrens (12-15)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for efficient leveling|
+N Optimized Leveling |N|This guide follows an optimized quest order for efficient leveling|
 
 A Your Place In The World |QID|4641| |N|Kaltunk in Valley of Trials (43.29, 68.61)|
 T Your Place In The World |QID|4641| |N|Gornek in The Den (42.08, 68.35)|

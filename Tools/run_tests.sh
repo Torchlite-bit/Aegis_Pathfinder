@@ -13,43 +13,43 @@ python3 Tools/verify.py
 
 echo
 echo "== profession source document =="
-python3 Tools/convert_professions.py --check
+python3 Tools/build/convert_professions.py --check
 
 
 echo
 echo "== lua tests =="
-lua5.1 Tools/test_load.lua
-lua5.1 Tools/test_theme.lua
-lua5.1 Tools/test_professions.lua
-lua5.1 Tools/test_guideengine.lua
-lua5.1 Tools/test_navcallout.lua
-lua5.1 Tools/test_dungeons.lua
-lua5.1 Tools/test_dungeonguides.lua
-lua5.1 Tools/test_filtertags.lua
-lua5.1 Tools/test_smartskip.lua
-lua5.1 Tools/test_yourplace.lua
-lua5.1 Tools/test_itemscore.lua
-lua5.1 Tools/test_gearframe.lua
-lua5.1 Tools/test_gearadvisor.lua
-lua5.1 Tools/test_gearfinder.lua
-lua5.1 Tools/test_guidelist.lua
-lua5.1 Tools/test_materials.lua
-lua5.1 Tools/test_craftplanner.lua
-lua5.1 Tools/test_craftroute.lua
-lua5.1 Tools/test_partysync.lua
-lua5.1 Tools/test_activeframes.lua
-lua5.1 Tools/test_nextguide.lua
-lua5.1 Tools/test_routes.lua
-lua5.1 Tools/test_zoneguide.lua
-lua5.1 Tools/test_setup.lua
-lua5.1 Tools/test_objectivetabs.lua
-lua5.1 Tools/test_objectivepanel.lua
-lua5.1 Tools/test_options.lua
-lua5.1 Tools/test_stacking.lua
-lua5.1 Tools/test_scrolling.lua
-lua5.1 Tools/test_minimap.lua
-lua5.1 Tools/test_navigation.lua
-lua5.1 Tools/test_professionsteps.lua
+lua5.1 Tools/tests/test_load.lua
+lua5.1 Tools/tests/test_theme.lua
+lua5.1 Tools/tests/test_professions.lua
+lua5.1 Tools/tests/test_guideengine.lua
+lua5.1 Tools/tests/test_navcallout.lua
+lua5.1 Tools/tests/test_dungeons.lua
+lua5.1 Tools/tests/test_dungeonguides.lua
+lua5.1 Tools/tests/test_filtertags.lua
+lua5.1 Tools/tests/test_smartskip.lua
+lua5.1 Tools/tests/test_yourplace.lua
+lua5.1 Tools/tests/test_itemscore.lua
+lua5.1 Tools/tests/test_gearframe.lua
+lua5.1 Tools/tests/test_gearadvisor.lua
+lua5.1 Tools/tests/test_gearfinder.lua
+lua5.1 Tools/tests/test_guidelist.lua
+lua5.1 Tools/tests/test_materials.lua
+lua5.1 Tools/tests/test_craftplanner.lua
+lua5.1 Tools/tests/test_craftroute.lua
+lua5.1 Tools/tests/test_partysync.lua
+lua5.1 Tools/tests/test_activeframes.lua
+lua5.1 Tools/tests/test_nextguide.lua
+lua5.1 Tools/tests/test_routes.lua
+lua5.1 Tools/tests/test_zoneguide.lua
+lua5.1 Tools/tests/test_setup.lua
+lua5.1 Tools/tests/test_objectivetabs.lua
+lua5.1 Tools/tests/test_objectivepanel.lua
+lua5.1 Tools/tests/test_options.lua
+lua5.1 Tools/tests/test_stacking.lua
+lua5.1 Tools/tests/test_scrolling.lua
+lua5.1 Tools/tests/test_minimap.lua
+lua5.1 Tools/tests/test_navigation.lua
+lua5.1 Tools/tests/test_professionsteps.lua
 
 echo
 echo "All offline checks passed."

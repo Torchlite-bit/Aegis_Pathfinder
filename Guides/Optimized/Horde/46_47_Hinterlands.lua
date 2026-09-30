@@ -1,12 +1,12 @@
 -- Optimized Guide: The Hinterlands (46-47)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Hinterlands (46-47)", "Optimized/Stranglethorn Vale (47-47)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for The Hinterlands 46-47|
+N Optimized Leveling |N|This guide follows an optimized quest order for The Hinterlands 46-47|
 
 R Grom'gol Base Camp |OID|2932| |N|Travel to Grom'gol Base Camp (32.16, 27.77)| |Z|Stranglethorn Vale|
 A Grim Message |QID|2932| |N|Nimboya in Grom'gol Base Camp (32.16, 27.77)| |Z|Stranglethorn Vale|

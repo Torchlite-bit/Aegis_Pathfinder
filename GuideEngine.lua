@@ -1,34 +1,14 @@
 --[[ GuideEngine.lua -- where the guide is actually followed.
 
-	This file used to be StatusFrame.lua and drew the compact status card. The
-	concept deleted that surface, but almost none of what lived here was the
-	card: UpdateStatusFrame is the scan that walks the step list, decides which
-	step you are on, auto-completes the ones ClassicAPI can resolve, drives the
+	UpdateStatusFrame is the scan that walks the step list, decides which step
+	you are on, auto-completes the ones ClassicAPI can resolve, drives the
 	waypoint and loads the next guide when one runs out. The objectives panel
-	renders; this decides what there is to render.
+	renders; this decides what there is to render. The use-item button is the
+	Active Items window, in ActiveFrames.lua.
 
-	The use-item button that used to live here is the Active Items window now,
-	in ActiveFrames.lua.
-
-	UpdateStatusFrame keeps its name despite no status frame existing: it is
-	called from twenty-eight places and renaming it would bury this change in
-	churn. Worth doing on its own.
+	UpdateStatusFrame is named for the status card this scan once fed. No such
+	frame exists now; the name stays because it is called from many places.
 ]]
-
-local professions = {
-	["mining"] = true,
-	["herbalism"] = true,
-	["skinning"] = true,
-	["alchemy"] = true,
-	["blacksmithing"] = true,
-	["enchanting"] = true,
-	["engineering"] = true,
-	["leatherworking"] = true,
-	["tailoring"] = true,
-	["cooking"] = true,
-	["first aid"] = true,
-	["fishing"] = true,
-}
 
 local AegisPathfinder = AegisPathfinder
 
@@ -126,8 +106,7 @@ end
 
 function AegisPathfinder:SetStatusText(i)
 	self.current = i
-	local action, quest = self:GetObjectiveInfo(i)
-	local note = self:GetObjectiveTag("N")
+	local action = self:GetObjectiveInfo(i)
 	-- Check for unmet prerequisites from other zones (only for ACCEPT actions)
 	-- Only warn once per objective to avoid spam
 	if action == "ACCEPT" and self.lastPrereqWarning ~= i then
@@ -144,8 +123,6 @@ function AegisPathfinder:SetStatusText(i)
 
 	-- Auto-track quest for COMPLETE objectives
 	self:TrackCurrentQuest()
-
-	if self.UpdateFubarPlugin then self.UpdateFubarPlugin(quest, self.icons[action], note) end
 end
 
 -- Coalesce bursty refresh requests. UpdateStatusFrame does a full guide scan

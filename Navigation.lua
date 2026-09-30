@@ -46,9 +46,11 @@ end
 
 -- A provider is { label, IsAvailable(), Add(wp), Clear() }, where wp is
 --   { zone, continent, zoneindex, x, y, title, description, onArrival, arrow }
+-- zoneindex 0 is a point on the continent's own map (see MapPoint); a
+-- provider that can only place a point in a zone declines it.
 -- `arrow` says whether the provider's own arrow should point at this
--- waypoint (see IsArrowOn). A provider whose waypoint *is* its arrow --
--- Cartographer, MetaMap BWP -- marks itself `arrowIsWaypoint` and ignores it.
+-- waypoint (see IsArrowOn). Cartographer and MetaMap BWP ignore it: their
+-- waypoint is their arrow.
 -- x and y are map coordinates in 0-100 space. Add() returns true when it
 -- actually created a waypoint. Clear() removes everything that provider created
 -- and must be safe to call when it holds nothing.
@@ -82,8 +84,10 @@ providers.tomtom = {
 			pins their tooltip and click menu. So start from the defaults. ]]
 		if wp.onArrival then
 			opts.callbacks = TomTom.DefaultCallbacks and TomTom:DefaultCallbacks() or {}
+			-- A continent's point is written to a tenth of a percent of the
+			-- continent, up to twenty yards out: 30 yd, as QuestTracker's.
 			opts.callbacks.distance = {
-				[15] = function(event, uid, dist, lastdist)
+				[wp.zoneindex == 0 and 30 or 15] = function(event, uid, dist, lastdist)
 					AegisPathfinder:Debug("TomTom arrival callback triggered")
 					wp.onArrival()
 				end
@@ -139,6 +143,7 @@ providers.pfquest = {
 	end,
 
 	Add = function(wp)
+		if wp.zoneindex == 0 then return end
 		-- pfQuest keys nodes by area id, not by the world map's zone index
 		local map = pfMap:GetMapIDByName(wp.zone)
 		if not map then
@@ -198,13 +203,13 @@ local cartographerids = {}
 
 providers.cartographer = {
 	label = "Cartographer",
-	arrowIsWaypoint = true,
 
 	IsAvailable = function()
 		return Cartographer_Waypoints and true or nil
 	end,
 
 	Add = function(wp)
+		if wp.zoneindex == 0 then return end
 		local pt = NotePoint:new(wp.zone, wp.x / 100, wp.y / 100, wp.title)
 		Cartographer_Waypoints:AddWaypoint(pt)
 		table.insert(cartographerids, pt.WaypointID)
@@ -224,14 +229,15 @@ local metamapnotes = {}
 
 providers.metamapbwp = {
 	label = "MetaMap BWP",
-	arrowIsWaypoint = true,
 
 	IsAvailable = function()
 		return HasMetaMap() and (HasMetaMapBWP() or MetaMap_LoadBWP) and true or nil
 	end,
 
 	Add = function(wp)
-		if not EnsureMetaMapBWP() then return end
+		-- A continent is no MetaMap zone, and the fallback below would put
+		-- the point in the zone you are standing in.
+		if wp.zoneindex == 0 or not EnsureMetaMapBWP() then return end
 		local zid = MetaMap_NameToZoneID(wp.zone) or MetaMap_GetCurrentMapInfo()
 		BWP_ClearDest()
 		BWP_AddDestination(wp.title, zid, wp.x / 100, wp.y / 100, true, true)
@@ -251,6 +257,7 @@ providers.metamap = {
 	end,
 
 	Add = function(wp)
+		if wp.zoneindex == 0 then return end
 		local zid = MetaMap_NameToZoneID(wp.zone) or MetaMap_GetCurrentMapInfo()
 		local note = { zoneid = zid, xPos = wp.x / 100, yPos = wp.y / 100, name = wp.title, color = 0 }
 		MetaMapNotes_AddNewNote(note)
@@ -415,13 +422,6 @@ function AegisPathfinder:DescribeArrows()
 	return table.getn(on) > 0 and table.concat(on, ", ") or "none"
 end
 
---- True when the active provider has no waypoint but its arrow, so the
---- arrow switches cannot take it away.
-function AegisPathfinder:ProviderArrowIsWaypoint()
-	local provider = self:GetWaypointProvider()
-	return provider and provider.arrowIsWaypoint and true or false
-end
-
 -- Which arrow switch a provider's arrow answers to, if it has one.
 local function ArrowKey(provider)
 	if provider == providers.tomtom then return "tomtom" end
@@ -458,24 +458,24 @@ local function MapPoint(zone, x, y, desc, onArrival)
 	desc = desc or "Waypoint"
 	AegisPathfinder:Debug(string.format("Mapping %q - %s (%.2f, %.2f)", desc, zone or "nil", x or 0, y or 0))
 	local zi, zc = zone and zonei[zone], zone and zonec[zone]
-	if not zi or zi == 0 then
-		--[[ RestedXP's "Travel to Kalimdor" steps give a point on the
-			continent's map, which no waypoint here can take. The zone you
-			are in is the wrong map for it, so: no waypoint, and nothing in
-			chat. ]]
-		if zone and continents[zone] then
-			AegisPathfinder:Debug("No waypoint for a point on the map of " .. zone)
-			return
-		end
+	--[[ RestedXP's "Travel to Kalimdor" steps give a point on the
+		continent's map: zone 0 of that continent, as the world map and
+		Astrolabe number it. TomTom-TWOW takes it and points across the
+		continent, and our arrow measures it with Astrolabe; pfQuest,
+		Cartographer and MetaMap place notes in a zone, and decline it. ]]
+	if zone and continents[zone] then
+		zc, zi = continents[zone], 0
+	elseif not zi or zi == 0 then
 		if zone then AegisPathfinder:Print(string.format(L["Cannot find zone %q, using current zone."], zone))
 		else AegisPathfinder:Print(L["No zone provided, using current zone."]) end
 
 		zc, zi = GetPlayerZoneData()
 		zone = zonenames[zc] and zonenames[zc][zi]
+		if zi == 0 then zi = nil end
 	end
 
 	-- Skip if still no valid zone
-	if not zc or zc == 0 or not zi or zi == 0 then
+	if not zc or zc == 0 or not zi then
 		AegisPathfinder:Debug("Could not determine zone for waypoint")
 		return
 	end
@@ -604,6 +604,9 @@ function AegisPathfinder:GetWaypointBearing()
 		end
 		if not px or (px == 0 and py == 0) then return nil, nil, "no player position" end
 		local c, z = GetCurrentMapContinent(), GetCurrentMapZone()
+		if wp.zoneindex == 0 then
+			return nil, nil, "the waypoint is on the continent's map, which needs Astrolabe (TomTom-TWOW brings it)"
+		end
 		if c ~= wp.continent or z ~= wp.zoneindex then
 			return nil, nil, "the waypoint is in another zone (install TomTom-TWOW or pfQuest to point across zones)"
 		end
@@ -872,20 +875,6 @@ function AegisPathfinder:ParseAndMapCoords(qid, action, note, desc, zone, npcs)
 	else
 		self:Debug("No coords in note and action=" .. (action or "nil") .. " - no waypoint created")
 	end
-end
-
--- Auto-update waypoint when step changes
-function AegisPathfinder:UpdateWaypoint()
-	if not self:GetWaypointProvider() then return end
-
-	local action, quest, fullquest = self:GetObjectiveInfo()
-	if not action then return end
-
-	local note = self:GetObjectiveTag("N")
-	local qid = self:GetObjectiveTag("QID")
-	local zonename = self:GetObjectiveTag("Z") or self.zonename
-
-	self:ParseAndMapCoords(qid, action, note, quest, zonename)
 end
 
 -- Patch Astrolabe/TomTom spelling mismatches and Lua errors at runtime

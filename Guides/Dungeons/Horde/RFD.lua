@@ -1,5 +1,5 @@
 -- Dungeon guide: Razorfen Downs, Horde
--- Written by Tools/build_dungeon_guides.py from pfQuest and InstanceJournal: do not edit it here.
+-- Written by Tools/build/build_dungeon_guides.py from pfQuest and InstanceJournal: do not edit it here.
 
 AegisPathfinder:RegisterGuide("Dungeons/Razorfen Downs (37-46)", nil, "Horde", function()
 

@@ -1,12 +1,12 @@
 -- Optimized Guide: Feralas (45-46)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Feralas (45-46)", "Optimized/Uldaman (46-46)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Feralas 45-46|
+N Optimized Leveling |N|This guide follows an optimized quest order for Feralas 45-46|
 
 R Camp Mojache |QID|2973| |N|Travel to Camp Mojache (75.95, 42.74)| |Z|Feralas|
 A A New Cloak's Sheen |QID|2973| |N|Krueg Skullsplitter in Camp Mojache (75.95, 42.74)| |Z|Feralas|

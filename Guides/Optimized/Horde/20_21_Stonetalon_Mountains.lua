@@ -1,12 +1,12 @@
 -- Optimized Guide: Stonetalon Mountains (20-21)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Stonetalon (20-21)", "Optimized/Ashenvale (21-21)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Stonetalon 20-21|
+N Optimized Leveling |N|This guide follows an optimized quest order for Stonetalon 20-21|
 
 R Malaka'jin |QID|6461| |N|Travel to Malaka'jin (71.26, 94.95)| |Z|Stonetalon Mountains|
 A Blood Feeders |QID|6461| |N|Xen'Zilla in Malaka'jin (71.26, 94.95)| |Z|Stonetalon Mountains|

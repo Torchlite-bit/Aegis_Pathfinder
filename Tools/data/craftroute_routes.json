@@ -1,5 +1,5 @@
 {
- "_about": "CraftRoute's fixed leveling routes (data_guide_wowprofessions.lua, GPLv3, by Kitymeowmeow; sourced from wow-professions.com and cross-checked against its recipe data). Written by Tools/import_recipes.py; read by Tools/convert_professions.py for professions the reference document lacks.",
+ "_about": "CraftRoute's fixed leveling routes (data_guide_wowprofessions.lua, GPLv3, by Kitymeowmeow; sourced from wow-professions.com and cross-checked against its recipe data). Written by Tools/build/import_recipes.py; read by Tools/build/convert_professions.py for professions the reference document lacks.",
  "routes": {
   "Alchemy": [
    {

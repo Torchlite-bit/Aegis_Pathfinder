@@ -1,17 +1,16 @@
 # media/
 
-Everything here except the two files noted below is **generated**. Do not edit
-the `.tga` files by hand — change `Tools/make_assets.py` and re-run it:
+Every texture here is **generated**. Do not edit the `.tga` files by hand —
+change `Tools/build/make_assets.py` and re-run it:
 
 ```sh
 pip install Pillow
-python3 Tools/make_assets.py
+python3 Tools/build/make_assets.py
 ```
 
 ## Format
 
-All textures are written to match the format of the two textures this addon
-already shipped and which are known to load on the 1.12 client:
+All textures are written in a format known to load on the 1.12 client:
 
 | Property | Value |
 |---|---|
@@ -41,7 +40,6 @@ multi-colour art bakes colour in: `nav-arrow.tga`, `progress-fill.tga`, and
 | `pill-fill.tga` / `pill-border.tga` | 32×32 | Route-pack selector pills |
 | `tab-fill.tga` / `tab-border.tga` | 32×32 | Tab bar and dungeon chips, 6px radius |
 | `circle-fill.tga` / `circle-border.tga` | 32×32 | Step checkbox |
-| `glow.tga` | 64×64 | Auto-detect halo and focus rings |
 | `shadow.tga` | 64×64 | Panel drop shadow: a ring, clear inside the panel's edge, nine-sliced 7px outside it |
 | `progress-fill.tga` | 64×8 | accent-deep → accent-glow gradient |
 | `cap-top.tga` / `cap-bottom.tga` | 32×32 | Header and footer strips: rounded on the panel edge, square on the body edge |
@@ -59,13 +57,6 @@ multi-colour art bakes colour in: `nav-arrow.tga`, `progress-fill.tga`, and
 The nine-slice masks are 32×32 with a 10px corner, so the slice boundaries sit
 at 10/32 and 22/32. `Theme.CORNER` and the `S0`/`S1` constants in `Theme.lua`
 must stay in step with the radius used in `make_assets.py`.
-
-### Not generated
-
-| File | Origin |
-|---|---|
-| `dead.tga` | Inherited from VanillaGuide+ |
-| `resting.tga` | Inherited from VanillaGuide+ |
 
 ## Fonts
 

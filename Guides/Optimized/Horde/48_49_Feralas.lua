@@ -1,12 +1,12 @@
 -- Optimized Guide: Feralas (48-49)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Feralas (48-49)", "Optimized/Tanaris (49-50)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Feralas 48-49|
+N Optimized Leveling |N|This guide follows an optimized quest order for Feralas 48-49|
 
 R Camp Mojache |QID|3062| |N|Travel to Camp Mojache (74.42, 43.35)| |Z|Feralas|
 T Testing the Vessel |QID|3123| |N|Witch Doctor Uzer'i in Camp Mojache (74.42, 43.35)| |Z|Feralas| |O|

@@ -1,5 +1,5 @@
 {
- "_about": "Item names for Tools/import_recipes.py, taken from pfQuest's item database. ids: reagents CraftRoute gives by id. case: merchant-price names (stored lower case by CraftRoute) in their in-game spelling.",
+ "_about": "Item names for Tools/build/import_recipes.py, taken from pfQuest's item database. ids: reagents CraftRoute gives by id. case: merchant-price names (stored lower case by CraftRoute) in their in-game spelling.",
  "ids": {
   "159": "Refreshing Spring Water",
   "774": "Malachite",

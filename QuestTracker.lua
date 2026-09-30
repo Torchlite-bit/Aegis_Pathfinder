@@ -40,10 +40,23 @@ function AegisPathfinder:SPELLS_CHANGED()
 	self:ScheduleStatusUpdate()
 end
 
+--[[ A level up. A step waiting on a level (|LV|) is done; then a starting
+	zone outlevelled hands over to the shared route (Core.lua,
+	CheckStartingZoneCompletion), counting that step.
+
+	Core.lua had a handler of this name for the starting zone, and this one,
+	loaded after it, replaced it: the starting zone only let go at the next
+	login. The level is the event's -- UnitLevel can still say the old one
+	while it fires. ]]
 function AegisPathfinder:PLAYER_LEVEL_UP(newlevel)
+	newlevel = tonumber(newlevel)
 	local level = tonumber((self:GetObjectiveTag("LV")))
 	self:Debug("PLAYER_LEVEL_UP", newlevel, level)
-	if level and newlevel >= level then self:SetTurnedIn() end
+	if level and newlevel and newlevel >= level then self:SetTurnedIn() end
+	local db = self.db.char
+	if db.startingzoneselected and not db.startingzonecomplete then
+		self:CheckStartingZoneCompletion(newlevel)
+	end
 end
 
 function AegisPathfinder:ZONE_CHANGED(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19,
@@ -458,10 +471,15 @@ end
 -- check is cheap enough to run alongside them.
 local ARRIVAL_CHECK_INTERVAL = 0.5 -- Check every 0.5 seconds
 local ARRIVAL_DISTANCE = 0.005     -- Map coordinate distance threshold (~15-18 yards)
+-- A point on a continent's map (RestedXP's "Travel to Kalimdor" steps) is
+-- written to a tenth of a percent of the whole continent, up to twenty yards
+-- out, so it is measured in yards with room for that.
+local CONTINENT_ARRIVAL_YARDS = 30
 
 -- Zone name to continent/zone index lookup (built from Navigation.lua pattern)
-local zonei, zonec = {}, {}
+local zonei, zonec, continents = {}, {}, {}
 for ci, c in pairs({ GetMapContinents() }) do
+	continents[c] = ci
 	for zi, z in pairs({ GetMapZones(ci) }) do
 		zonei[z], zonec[z] = zi, ci
 	end
@@ -524,6 +542,24 @@ C_Timer.NewTicker(ARRIVAL_CHECK_INTERVAL, function()
 
 	-- Get target zone
 	local targetZone = AegisPathfinder:GetObjectiveTag("Z") or AegisPathfinder.zonename
+
+	--[[ A point on a continent's map. Read against the map of the zone you
+		are in, the same numbers are another place entirely, and a step
+		could tick there. Astrolabe measures it; without Astrolabe it is
+		left to the waypoint addon. ]]
+	local targetC = targetZone and continents[targetZone]
+	if targetC then
+		if not (Astrolabe and Astrolabe.GetCurrentPlayerPosition and Astrolabe.ComputeDistance) then return end
+		local ok, pc, pz, px, py = pcall(Astrolabe.GetCurrentPlayerPosition, Astrolabe)
+		if not ok or not pc or pc == 0 or not px then return end
+		local ok2, yards = pcall(Astrolabe.ComputeDistance, Astrolabe, pc, pz, px, py, targetC, 0, targetX, targetY)
+		-- 0 is Astrolabe's answer for a map it has no dimensions for
+		if ok2 and yards and yards > 0 and yards <= CONTINENT_ARRIVAL_YARDS then
+			AegisPathfinder:Debug(string.format("Arrived on the %s map: %.0f yd from target", targetZone, yards))
+			AegisPathfinder:SetTurnedIn()
+		end
+		return
+	end
 
 	-- Get player position safely without interrupting the map view if open
 	local playerC, playerZ, playerX, playerY

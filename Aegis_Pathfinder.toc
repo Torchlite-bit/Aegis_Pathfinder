@@ -3,7 +3,7 @@
 ## Title: Aegis: Pathfinder
 ## Notes: Classic+ leveling guide for the Turtle WoW-lineage 1.12 client family.|nPart of the Aegis addon suite.
 ## Author: Aegis: Pathfinder Contributors (see CONTRIBUTORS.md)
-## Version: 0.18.0
+## Version: 0.19.0
 ## X-Category: Quest
 
 ## SavedVariables: AegisPathfinderDB, TurtleGuideDB
@@ -24,7 +24,6 @@ libs\AceHook-2.1\AceHook-2.1.lua
 Locale.lua
 Core.lua
 Theme.lua
-WidgetWarlock.lua
 Credits.lua
 Parser.lua
 QuestShellPlusParser.lua
@@ -61,15 +60,15 @@ MinimapButton.lua
 Routes\Routes.lua
 
 # Recipe and merchant-price data for the crafting route planner
-# (converted from CraftRoute by Tools/import_recipes.py)
+# (converted from CraftRoute by Tools/build/import_recipes.py)
 Crafting\Crafting.xml
 
-# Optimized Guides (VanillaGuide quest order)
+# Optimized guides
 Guides\Optimized\Alliance\Guides.xml
 Guides\Optimized\Horde\Guides.xml
 
 # Dungeon guides: every quest for a dungeon, then the way in
-# (written by Tools/build_dungeon_guides.py)
+# (written by Tools/build/build_dungeon_guides.py)
 Guides\Dungeons\Alliance\Guides.xml
 Guides\Dungeons\Horde\Guides.xml
 

@@ -1,12 +1,12 @@
 -- Optimized Guide: Stranglethorn Vale (38-40)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Stranglethorn Vale (38-40)", "Optimized/Badlands (40-41)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Stranglethorn Vale 38-40|
+N Optimized Leveling |N|This guide follows an optimized quest order for Stranglethorn Vale 38-40|
 
 R Grom'gol Base Camp |QID|572| |N|Travel to Grom'gol Base Camp (32.14, 29.16)| |Z|Stranglethorn Vale|
 T The Troll Witchdoctor |QID|1240| |N|Kin'weelay in Grom'gol Base Camp (32.26, 27.71)| |Z|Stranglethorn Vale| |O|

@@ -1,12 +1,12 @@
 -- Optimized Guide: Stonetalon Mountains (15-16)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Stonetalon (15-16)", "Optimized/The Barrens (16-18)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Stonetalon 15-16|
+N Optimized Leveling |N|This guide follows an optimized quest order for Stonetalon 15-16|
 
 R Honor's Stand |QID|6548| |N|Take the road west out of the Crossroads to the edge of Stonetalon Mountains (35.29, 27.87)| |Z|The Barrens|
 A Goblin Invaders |QID|1062| |N|Seereth Stonebreak in The Barrens (35.29, 27.87)| |Z|The Barrens|

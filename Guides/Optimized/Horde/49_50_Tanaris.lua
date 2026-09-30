@@ -1,12 +1,12 @@
 -- Optimized Guide: Tanaris (49-50)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Tanaris (49-50)", "Optimized/Azshara (50-50)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Tanaris 49-50|
+N Optimized Leveling |N|This guide follows an optimized quest order for Tanaris 49-50|
 
 R Gadgetzan |QID|82| |N|Travel to Gadgetzan (52.5, 27.9)|
 T The Super Egg-O-Matic |QID|82| |N|Egg-O-Matic in Gadgetzan (52.4, 27.0)| |L|8564| |O| |OBJ|356|
@@ -53,7 +53,7 @@ R The Noxious Lair |QID|82| |N|Travel to The Noxious Lair (34.81, 43.60)| |Z|Tan
 C Noxious Lair Investigation |QID|82| |N|Kill Centipaar insects and collect 5 Centipaar Insect Parts in The Noxious Lair (34, 47)|
 
 R Thistleshrub Valley |QID|2605| |N|Travel to Thistleshrub Valley (28.18, 63.86)| |Z|Tanaris|
-K Thistleshrub Dew Collector |QID|2605| |N|Kill Thistleshrub Dew Collector until you collect Laden Dew Gland in Thistleshrub Valley (28.18, 63.86)| |Z|Tanaris|
+K Thistleshrub Dew Collector |QID|2605| |L|8428| |N|Kill Thistleshrub Dew Collector until you collect Laden Dew Gland in Thistleshrub Valley (28.18, 63.86)| |Z|Tanaris|
 C Thistleshrub Valley |QID|3362| |N|Kill 8 Gnarled Thistleshrub and 8 Thistleshrub Rootshaper in Thistleshrub Valley (28, 65)|
 
 R Uldum |QID|2966| |N|Travel south-east to the Uldum Pedestal (37.6, 81.4)| |D|ULDA| |Z|Tanaris|

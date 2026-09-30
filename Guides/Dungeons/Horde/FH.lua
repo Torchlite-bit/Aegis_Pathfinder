@@ -1,5 +1,5 @@
 -- Dungeon guide: Frostmane Hollow, Horde
--- Written by Tools/build_dungeon_guides.py from pfQuest and InstanceJournal: do not edit it here.
+-- Written by Tools/build/build_dungeon_guides.py from pfQuest and InstanceJournal: do not edit it here.
 
 AegisPathfinder:RegisterGuide("Dungeons/Frostmane Hollow (13-20)", nil, "Horde", function()
 

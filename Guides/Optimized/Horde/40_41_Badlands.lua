@@ -1,12 +1,12 @@
 -- Optimized Guide: Badlands (40-41)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Badlands (40-41)", "Optimized/Swamp of Sorrows (41-42)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Badlands 40-41|
+N Optimized Leveling |N|This guide follows an optimized quest order for Badlands 40-41|
 
 R Undercity |QID|710| |N|Travel to Undercity (64.0, 36.0)| |Z|Undercity|
 B Frost Oil |QID|710| |N|Buy Frost Oil from Auction House. Skip this if not available. Don't buy if this is your first character and you still need to purchase a mount (64.0, 36.0)| |L|3829| |AH| |Z|Undercity|

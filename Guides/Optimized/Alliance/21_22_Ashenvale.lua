@@ -1,12 +1,12 @@
 -- Optimized Guide: Ashenvale (21-22)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Ashenvale (21-22)", "Optimized/Stonetalon (22-23)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Ashenvale 21-22|
+N Optimized Leveling |N|This guide follows an optimized quest order for Ashenvale 21-22|
 
 R Maestra's Post |QID|970| |N|Travel to Maestra's Post (27.25, 35.62)| |Z|Ashenvale|
 T The Sleeper Has Awakened |QID|5321| |N|Liladris Moonriver in Maestra's Post (27.25, 35.62)| |Z|Ashenvale| |O|

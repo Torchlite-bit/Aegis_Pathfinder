@@ -1,12 +1,12 @@
 -- Optimized Guide: Winterspring (58-60)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Winterspring (58-60)", nil, "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Winterspring 58-60|
+N Optimized Leveling |N|This guide follows an optimized quest order for Winterspring 58-60|
 
 R Gadgetzan |QID|5163| |N|Travel to Gadgetzan in Tanaris (51.07, 26.88)| |Z|Tanaris| |O|
 N Are We There, Yeti? |QID|5163| |OIDX|2| |N|Use Umi's Mechanical Yeti to scare Sprinkle (51.07, 26.88)| |Z|Tanaris| |O| |Q|Are We There, Yeti?||QO|Scare Sprinkle: 1/1|

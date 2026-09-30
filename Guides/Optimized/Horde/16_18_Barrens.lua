@@ -1,12 +1,12 @@
 -- Optimized Guide: Barrens (16-18)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/The Barrens (16-18)", "Optimized/The Barrens (18-20)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Barrens 16-18|
+N Optimized Leveling |N|This guide follows an optimized quest order for Barrens 16-18|
 
 R The Crossroads |QID|845| |N|Travel to The Crossroads (52.21, 30.99)|
 T Stolen Booty |QID|888| |N|Gazlowe in Ratchet (62.66, 36.26)|

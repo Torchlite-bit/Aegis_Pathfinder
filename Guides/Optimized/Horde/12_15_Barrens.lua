@@ -1,12 +1,12 @@
 -- Optimized Guide: Barrens (12-15)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/The Barrens (12-15)", "Optimized/Stonetalon (15-16)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Barrens 12-15|
+N Optimized Leveling |N|This guide follows an optimized quest order for Barrens 12-15|
 
 R Orgrimmar |QID|840| |N|Travel to Orgrimmar (45.23, 63.84)| |Z|Orgrimmar| |R|Undead|
 f Orgrimmar |QID|840| |N|Speak to Doras and grab flight path for Orgrimmar (45.23, 63.84)| |Z|Orgrimmar| |R|Undead|

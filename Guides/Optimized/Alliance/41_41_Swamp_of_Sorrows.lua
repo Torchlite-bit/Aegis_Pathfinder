@@ -1,12 +1,12 @@
 -- Optimized Guide: Swamp of Sorrows (41-41)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Swamp of Sorrows (41-41)", "Optimized/Desolace (41-42)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Swamp of Sorrows 41|
+N Optimized Leveling |N|This guide follows an optimized quest order for Swamp of Sorrows 41|
 
 R Swamp of Sorrows |QID|1116| |N|Run from Darkshire through Deadwind Pass to Swamp of Sorrows (16.64, 56.29)| |Z|Swamp of Sorrows|
 
@@ -26,7 +26,7 @@ T Noboru the Cudgel |QID|1392| |N|Magtoor in The Harborage (25.99, 31.44)| |Z|Sw
 A Draenethyst Crystals |QID|1389| |N|Magtoor in The Harborage (25.99, 31.44)| |Z|Swamp of Sorrows|
 
 R Fallow Sanctuary |QID|1421| |N|Travel to Fallow Sanctuary (65.40, 18.29)| |Z|Swamp of Sorrows|
-N As you go... |QID|1389| |N|Collect 6 Draenethyst Crystal (large blue crystals on the ground)|
+N As you go... |QID|1389| |L|6071 6| |N|Collect 6 Draenethyst Crystal (large blue crystals on the ground)|
 C The Lost Caravan |QID|1421| |N|Collect Wizards' Reagents from the Caravan Chest (64.47, 18.36)| |Z|Swamp of Sorrows| |OBJ|10|
 
 A Galen's Escape |QID|1393| |N|Galen Goodward in Fallow Sanctuary - clear the area first (65.40, 18.29)| |Z|Swamp of Sorrows|

@@ -1,12 +1,12 @@
 -- Optimized Guide: Azshara (50-50)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Azshara (50-50)", "Optimized/Hinterlands (50-51)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Azshara 50-50|
+N Optimized Leveling |N|This guide follows an optimized quest order for Azshara 50-50|
 
 R Orgrimmar |QID|3517| |N|Travel to Orgrimmar (54.1, 68.6)| |Z|Orgrimmar|
 h Orgrimmar |QID|3517| |N|Speak to Innkeeper Gryshka and set hearth in Orgrimmar (54.1, 68.6)| |Z|Orgrimmar|

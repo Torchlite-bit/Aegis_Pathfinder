@@ -46,7 +46,7 @@ N As you go... |AYG|5544| |QID|5544| |N|Kill the required Noxious Plaguebat, Pla
 C Noxious Plaguebat |QID|6042| |OIDX|1| |N|Kill 20 Noxious Plaguebat in Eastern Plaguelands (56.72, 62.35) (53.06, 57.88) (53.06, 57.88) (55.24, 56.29) (53.41, 51.07) (59.81, 55.02) (64.89, 56.86) (70.08, 59.87) (69.51, 67.25)| |Z|Eastern Plaguelands|
 C Plaguehound |QID|5542| |OIDX|2| |N|Kill 5 Plaguehound in Eastern Plaguelands (79.18, 68.76) (70.90, 71.41) (64.97, 62.50) (72.41, 54.10)| |Z|Eastern Plaguelands|
 C Frenzied Plaguehound |QID|5542| |OIDX|3| |N|Kill 5 Frenzied Plaguehound in Eastern Plaguelands (70.30, 44.54) (68.90, 36.51)| |Z|Eastern Plaguelands|
-K Carrion Grub |QID|5544| |N|Kill Carrion Grub for 15 Slab of Carrion Worm Meat (67.9, 61.0) (66.4, 67.6) (73.0, 71.8)| |Z|Eastern Plaguelands|
+K Carrion Grub |QID|5544| |L|13853 15| |N|Kill Carrion Grub for 15 Slab of Carrion Worm Meat (67.9, 61.0) (66.4, 67.6) (73.0, 71.8)| |Z|Eastern Plaguelands|
 R Eastern Plaguelands |QID|5544| |N|Travel to Eastern Plaguelands|
 N As you go... |AYG|5211| |QID|9126| |N|Collect 30 Bone Fragments for a later quest from Skeletons| |L|22526 30|
 C Diseased Flayer |QID|5211| |OIDX|1| |N|Make a start on this quest and kill Diseased Flayer then speak to Darrowshire Spirit that will spawn after the kill to free the spirit. NOTE: You can complete this later in Stratholme if this area is cleared already, tick this step (65.96, 39.86)| |Z|Eastern Plaguelands|

@@ -1,12 +1,12 @@
 -- Optimized Guide: Duskwood (28-29)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Duskwood (28-29)", "Optimized/Ashenvale (29-30)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Duskwood 28-29|
+N Optimized Leveling |N|This guide follows an optimized quest order for Duskwood 28-29|
 
 B Bronze Tube |QID|174| |N|Purchase from Engineering vendor or Auction House if you don't have one| |L|4371| |AH|
 

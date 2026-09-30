@@ -1,12 +1,12 @@
 -- Optimized Guide: Tanaris (43-43)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Tanaris (43-43)", "Optimized/Feralas (43-45)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Tanaris 43|
+N Optimized Leveling |N|This guide follows an optimized quest order for Tanaris 43|
 
 R Gadgetzan |QID|1690| |N|You should be in Gadgetzan (52.44, 28.50)| |Z|Tanaris|
 A Wastewander Justice |QID|1690| |N|Chief Engineer Bilgewhizzle in Gadgetzan (52.44, 28.50)| |Z|Tanaris|
@@ -43,7 +43,7 @@ C Water Pouch Bounty |QID|1707| |N|Collect 5 Wastewander Water Pouch (59.82, 24.
 C WANTED: Caliph Scorpidsting |QID|2781| |N|Kill Caliph Scorpidsting for his head (62.57, 33.04)| |Z|Tanaris|
 
 R Lost Rigger Cove |QID|2875| |N|Travel through the cave to Lost Rigger Cove (68.55, 41.48)| |Z|Tanaris|
-N As you go... |QID|8365| |N|Collect 20 Southsea Pirate Hat and look for Pirate's Footlocker containing Ship Schedule|
+N As you go... |QID|8365| |L|20519 20| |N|Collect 20 Southsea Pirate Hat and look for Pirate's Footlocker containing Ship Schedule|
 C WANTED: Andre Firebeard |QID|2875| |N|Kill Andre Firebeard for his head (73.52, 46.93)| |Z|Tanaris|
 C Stoley's Shipment |QID|2873| |N|Go upstairs in the 2 story building and collect Stoley's Shipment (72.17, 46.77)| |Z|Tanaris| |OBJ|36|
 C Southsea Shakedown |QID|8366| |N|Kill 10 Southsea Swashbuckler, 10 Southsea Dock Worker and 10 Southsea Freebooter (72.75, 47.11)| |Z|Tanaris|

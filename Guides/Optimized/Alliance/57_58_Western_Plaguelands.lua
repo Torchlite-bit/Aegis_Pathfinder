@@ -1,12 +1,12 @@
 -- Optimized Guide: Western Plaguelands (57-58)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Western Plaguelands (57-58)", "Optimized/Eastern Plaguelands (58-59)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Western Plaguelands 57-58|
+N Optimized Leveling |N|This guide follows an optimized quest order for Western Plaguelands 57-58|
 
 R Ironforge |QID|5903| |N|Travel to The High Seat in Ironforge (38.34, 55.33)| |Z|Ironforge|
 T The Smoldering Ruins of Thaurissan |QID|3701| |N|Royal Historian Archesonus (38.34, 55.33)| |Z|Ironforge| |O|

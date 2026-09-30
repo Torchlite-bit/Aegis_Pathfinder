@@ -1,7 +1,6 @@
 -- Routes.lua
 -- Race-based leveling routes for AegisPathfinder
 -- Defines the zone progression for each race from 1-60
--- Uses Optimized guides from VanillaGuide quest order
 
 local AegisPathfinder = AegisPathfinder
 
@@ -203,10 +202,11 @@ AegisPathfinder:RegisterRoute("Goblin", MergeRoutes({
 -- Route Packs
 -- ============================================================================
 
--- VanillaGuide Route Pack (default) - uses the existing Optimized routes
+-- The Optimized route pack (default)
 AegisPathfinder:RegisterRoutePack("VanillaGuide", {
-    -- Shown as the concept names it. The key stays "VanillaGuide": it is what
-    -- every existing character has saved in its routepack field.
+    -- Shown as "Optimized". The key keeps its old name, "VanillaGuide",
+    -- because every existing character has it saved in its routepack field:
+    -- renamed, they would all lose their route.
     displayName = "Optimized",
     description = "Quest-optimized 1-60 leveling",
     routes = {
@@ -573,30 +573,3 @@ AegisPathfinder:RegisterRoutePack("Kamisayo Speedrun", {
     },
 })
 ]]
-
-
--- ============================================================================
--- Debug Functions
--- ============================================================================
-
--- Print route info for debugging
-function AegisPathfinder:PrintCurrentRoute()
-    local route = self.routes[self.db.char.currentroute]
-    if not route then
-        self:Print("No route selected")
-        return
-    end
-
-    self:Print("Current route: " .. (self.db.char.currentroute or "None"))
-    for i, zone in ipairs(route) do
-        self:Print(string.format("  %d. %s (%s) - %s", i, zone.zone, zone.levels, zone.guide))
-    end
-end
-
--- Print all available routes
-function AegisPathfinder:PrintAllRoutes()
-    self:Print("Available routes:")
-    for name, route in pairs(self.routes) do
-        self:Print(string.format("  %s: %d zones", name, table.getn(route)))
-    end
-end

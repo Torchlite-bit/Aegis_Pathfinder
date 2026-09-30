@@ -1,12 +1,12 @@
 -- Optimized Guide: Darkshore (20-21)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Darkshore (20-21)", "Optimized/Ashenvale (21-22)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Darkshore 20-21|
+N Optimized Leveling |N|This guide follows an optimized quest order for Darkshore 20-21|
 
 R Grove of the Ancients |QID|948| |N|Travel to Grove of the Ancients (43.55, 76.32)|
 T Onu |QID|948| |N|Onu in Grove of the Ancients (43.55, 76.37)|

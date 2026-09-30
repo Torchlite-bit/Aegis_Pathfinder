@@ -7,7 +7,7 @@
 	verbatim so they can be diffed against it.
 
 	Textures are white masks tinted at runtime with SetVertexColor (see
-	Tools/make_assets.py), which is why one 32x32 rounded-rect serves every
+	Tools/build/make_assets.py), which is why one 32x32 rounded-rect serves every
 	panel, band, pill and tab in the addon.
 ]]
 
@@ -111,7 +111,6 @@ Theme.texture = {
 	tabBorder   = MEDIA .. "tab-border",
 	circleFill  = MEDIA .. "circle-fill",
 	circleBorder= MEDIA .. "circle-border",
-	glow        = MEDIA .. "glow",
 	shadow      = MEDIA .. "shadow",
 	progress    = MEDIA .. "progress-fill",
 	minimapLogo = MEDIA .. "minimap-logo",
@@ -243,7 +242,7 @@ end
 --[[ Art with the concept's green baked in.
 
 	The navigation arrow and the progress fill are gradients, drawn in green
-	(Tools/make_assets.py). The concept's theme keeps that art exactly; any
+	(Tools/build/make_assets.py). The concept's theme keeps that art exactly; any
 	other theme gets the same shape in grey, shaded the same way, tinted with
 	its accent glow.
 ]]
@@ -921,15 +920,26 @@ function Theme:Header(frame, height)
 	return h
 end
 
+--[[ Fade a window in as it opens: from clear to solid over `seconds`. ]]
+function Theme:FadeIn(frame, seconds)
+	local elapsed = 0
+	frame:SetAlpha(0)
+	frame:SetScript("OnUpdate", function()
+		elapsed = elapsed + (arg1 or 0)
+		if elapsed >= seconds then
+			frame:SetScript("OnUpdate", nil)
+			frame:SetAlpha(1)
+		else
+			frame:SetAlpha(elapsed / seconds)
+		end
+	end)
+end
+
 --[[ Scrollbar.
 
-	The last Blizzard art in the addon: WidgetWarlock's scrollbar used the
-	stock knob and the character-sheet frame around it, which read as a foreign
-	object on a flat panel. This is the concept's own -- a dark track, a
-	stadium thumb at the accent, and small caret buttons at either end.
-
-	It keeps the Slider widget, so SetMinMaxValues / SetValue / OnValueChanged
-	are unchanged and existing call sites do not care.
+	The concept's own: a dark track, a stadium thumb at the accent, and small
+	caret buttons at either end. It is a Slider, so SetMinMaxValues / SetValue
+	/ OnValueChanged work as on any slider.
 ]]
 function Theme:ScrollBar(parent, width)
 	local f = CreateFrame("Slider", nil, parent)

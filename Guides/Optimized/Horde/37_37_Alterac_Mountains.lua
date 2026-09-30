@@ -1,12 +1,12 @@
 -- Optimized Guide: Alterac Mountains (37-37)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Alterac Mountains (37-37)", "Optimized/Thousand Needles (37-38)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Alterac Mountains 37-37|
+N Optimized Leveling |N|This guide follows an optimized quest order for Alterac Mountains 37-37|
 
 R Tarren Mill |QID|544| |N|Travel to Tarren Mill (61.59, 20.71)| |Z|Hillsbrad Foothills|
 A Prison Break In |QID|544| |N|Magus Wordeen Voidglare in Tarren Mill (61.59, 20.71)| |Z|Hillsbrad Foothills|
@@ -14,7 +14,7 @@ A Stone Tokens |QID|556| |N|Keeper Bel'varil in Tarren Mill (61.59, 20.71)| |Z|H
 
 R Growless Cave |QID|553| |N|Travel to Growless Cave (37.54, 67.91)| |Z|Alterac Mountains| |O|
 N Charge Flame of Uzel |QID|553| |OIDX|3| |N|Click Item Flame of Uzel in Growless Cave (37.54, 66.38)| |Z|Alterac Mountains| |O|
-K Frostmaw |QID|1136| |N|Kill Frostmaw and collect Frostmaw's Mane in Growless Cave (37.59, 65.84)| |P|GROUP| |Z|Alterac Mountains| |O|
+K Frostmaw |QID|1136| |L|5811| |N|Kill Frostmaw and collect Frostmaw's Mane in Growless Cave (37.59, 65.84)| |P|GROUP| |Z|Alterac Mountains| |O|
 
 R Dalaran |QID|556| |N|Travel to Dalaran (20.33, 84.79)| |Z|Alterac Mountains|
 C Stone Tokens |QID|556| |N|Kill Dalaran humanoid enemies and collect 10 Worn Stone Token (21, 83)| |Z|Alterac Mountains|

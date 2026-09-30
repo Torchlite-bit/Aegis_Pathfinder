@@ -1,12 +1,12 @@
 -- Optimized Guide: Stranglethorn Vale (30-31)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Stranglethorn Vale (30-31)", "Optimized/Thousand Needles (31-32)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Stranglethorn Vale 30-31|
+N Optimized Leveling |N|This guide follows an optimized quest order for Stranglethorn Vale 30-31|
 
 R Grom'gol Base Camp |QID|583| |N|Travel to Grom'gol Base Camp (32.5, 29.3)| |Z|Stranglethorn Vale|
 f Grom'gol Base Camp |QID|583| |N|Speak to Thysta and grab flight path for Grom'gol Base Camp (32.5, 29.3)| |Z|Stranglethorn Vale|

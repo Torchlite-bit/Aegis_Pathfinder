@@ -1,12 +1,12 @@
 -- Optimized Guide: Redridge Mountains (18-20)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Redridge (18-20)", "Optimized/Darkshore (20-21)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Redridge 18-20|
+N Optimized Leveling |N|This guide follows an optimized quest order for Redridge 18-20|
 
 R Three Corners |QID|244| |N|Travel to Three Corners in Redridge Mountains (15.32, 71.42)|
 A Encroaching Gnolls |QID|244| |N|Guard Parker in Three Corners (15.32, 71.42)|
@@ -22,7 +22,7 @@ A A Free Lunch |QID|129| |N|Darcy in the Inn (27.08, 45.13)|
 h Lakeshire |QID|92| |N|Set hearth at Innkeeper Brianna (27.01, 44.90)|
 A Redridge Goulash |QID|92| |N|Chef Breanna west of Lakeshire (22.70, 43.88)|
 
-N Great Goretusk Snouts |QID|92| |N|Kill Great Goretusk west of the houses for 5 Great Goretusk Snout (16.5, 49.6)|
+N Great Goretusk Snouts |QID|92| |L|2296 5| |N|Kill Great Goretusk west of the houses for 5 Great Goretusk Snout (16.5, 49.6)|
 
 R Lake Everstill |QID|125| |N|Head toward the lake (41, 54)|
 C The Lost Tools |QID|125| |N|Find Oslow's Toolbox in the Sunken Chest underwater (41.4, 54.7)|

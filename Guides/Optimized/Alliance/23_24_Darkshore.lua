@@ -1,12 +1,12 @@
 -- Optimized Guide: Darkshore (23-24)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Darkshore (23-24)", "Optimized/Ashenvale (24-25)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Darkshore 23-24|
+N Optimized Leveling |N|This guide follows an optimized quest order for Darkshore 23-24|
 
 R Auberdine |QID|741| |N|Travel to Auberdine (37.21, 44.27)| |Z|Darkshore|
 h Auberdine |QID|741| |N|Speak to Innkeeper Shaussiy and set hearth in Auberdine (37, 44.1)|

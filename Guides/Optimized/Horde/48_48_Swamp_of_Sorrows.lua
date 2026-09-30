@@ -1,12 +1,12 @@
 -- Optimized Guide: Swamp of Sorrows (48-48)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Swamp of Sorrows (48-48)", "Optimized/Feralas (48-49)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Swamp of Sorrows 48-48|
+N Optimized Leveling |N|This guide follows an optimized quest order for Swamp of Sorrows 48-48|
 
 R Stonard |QID|2784| |N|Travel to Stonard (45.13, 56.64)| |Z|Swamp of Sorrows|
 h Stonard |QID|2784| |N|Speak to Innkeeper Karakul and set hearth to Stonard (45.13, 56.64)| |Z|Swamp of Sorrows|

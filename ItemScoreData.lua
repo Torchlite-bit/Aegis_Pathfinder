@@ -3,7 +3,7 @@
 -- GENERATED FILE -- do not edit by hand.
 -- Source:    OctoPawn's default weights, stat patterns, soft caps and labels
 --            (https://github.com/iGreed1993/OctoPawn)
--- Generator: Tools/import_octopawn.py
+-- Generator: Tools/build/import_octopawn.py
 --
 -- OctoPawn's licence, which covers this data:
 --

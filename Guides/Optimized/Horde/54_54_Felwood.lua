@@ -1,12 +1,12 @@
 -- Optimized Guide: Felwood (54-54)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Felwood (54-54)", "Optimized/Winterspring (54-55)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Felwood 54-54|
+N Optimized Leveling |N|This guide follows an optimized quest order for Felwood 54-54|
 
 R Emerald Sanctuary |QID|4102| |N|Travel to Emerald Sanctuary in Felwood (51.06, 81.91)| |Z|Felwood|
 A Forces of Jaedenar |QID|5155| |N|Greta Mosshoof in Emerald Sanctuary (51.06, 81.91)| |Z|Felwood|

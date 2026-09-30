@@ -1,12 +1,12 @@
 -- Optimized Guide: Feralas (47-47)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Feralas (47-47)", "Optimized/Tanaris (47-48)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Feralas 47|
+N Optimized Leveling |N|This guide follows an optimized quest order for Feralas 47|
 
 R Feathermoon Stronghold |QID|2943| |N|You should be in Feathermoon Stronghold (30.58, 42.74)| |P|GROUP| |Z|Feralas|
 h Feathermoon Stronghold |QID|2943| |N|Set hearth at Feathermoon Stronghold (30.97, 43.50)| |P|GROUP| |Z|Feralas|

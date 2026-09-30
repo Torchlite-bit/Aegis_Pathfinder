@@ -1,12 +1,12 @@
 -- Optimized Guide: Eastern Plaguelands (56-57)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Eastern Plaguelands (56-57)", "Optimized/Western Plaguelands (57-58)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Eastern Plaguelands 56-57|
+N Optimized Leveling |N|This guide follows an optimized quest order for Eastern Plaguelands 56-57|
 
 R Thondroril River |OID|5542| |N|Travel to Thondroril River (7.57, 43.72)| |Z|Eastern Plaguelands|
 A Demon Dogs |QID|5542| |N|Tirion Fordring in northern Thondroril River (7.57, 43.72)| |Z|Eastern Plaguelands|
@@ -51,7 +51,7 @@ N As you go... |AYG|5544| |QID|5544| |N|Kill Noxious Plaguebat, Plaguehound, Dis
 C Noxious Plaguebat |QID|6042| |OIDX|1| |N|Kill 20 Noxious Plaguebat (56.72, 62.35) (70.08, 59.87)| |Z|Eastern Plaguelands|
 C Plaguehound |QID|5542| |OIDX|2| |N|Kill 5 Plaguehound (79.18, 68.76) (70.90, 71.41)| |Z|Eastern Plaguelands|
 C Frenzied Plaguehound |QID|5542| |OIDX|3| |N|Kill 5 Frenzied Plaguehound (70.30, 44.54) (68.90, 36.51)| |Z|Eastern Plaguelands|
-K Carrion Grub |QID|5544| |N|Kill Carrion Grub for 15 Slab of Carrion Worm Meat (67.9, 61.0) (73.0, 71.8)| |Z|Eastern Plaguelands|
+K Carrion Grub |QID|5544| |L|13853 15| |N|Kill Carrion Grub for 15 Slab of Carrion Worm Meat (67.9, 61.0) (73.0, 71.8)| |Z|Eastern Plaguelands|
 
 C Diseased Flayer |QID|5211| |OIDX|1| |N|Kill Diseased Flayer then speak to Darrowshire Spirit that spawns to free the spirit (65.96, 39.86)| |Z|Eastern Plaguelands|
 

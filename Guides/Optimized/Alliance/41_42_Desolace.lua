@@ -1,12 +1,12 @@
 -- Optimized Guide: Desolace (41-42)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Desolace (41-42)", "Optimized/Stranglethorn (42-43)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Desolace 41-42|
+N Optimized Leveling |N|This guide follows an optimized quest order for Desolace 41-42|
 
 R Nijel's Point |QID|261| |N|You should be in Nijel's Point (66.40, 9.74)| |Z|Desolace|
 h Nijel's Point |QID|261| |N|Set hearth at Nijel's Point (66.30, 6.60)| |Z|Desolace|

@@ -102,7 +102,6 @@ function GA:Scan()
 end
 
 function GA:Found() return found end
-function GA:Queue() return queue end
 
 --- Where an upgrade has gone, if it moved since it was found.
 local function relocate(rec)

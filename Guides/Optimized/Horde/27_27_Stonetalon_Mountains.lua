@@ -1,12 +1,12 @@
 -- Optimized Guide: Stonetalon Mountains (27-27)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Stonetalon (27-27)", "Optimized/Thousand Needles (27-29)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Stonetalon 27-27|
+N Optimized Leveling |N|This guide follows an optimized quest order for Stonetalon 27-27|
 
 R Sun Rock Retreat |QID|1088| |N|You should be at Sun Rock Retreat (45.96, 60.36)| |Z|Stonetalon Mountains|
 T Ordanus |QID|1088| |N|Braelyn Firehand in Sun Rock Retreat (45.91, 60.36)| |Z|Stonetalon Mountains| |O|

@@ -13,7 +13,7 @@ A Trouble in Winterspring! |QID|6603| |N|Meggi Peppinrocker in Everlook (61.10, 
 T Trouble in Winterspring! |QID|6603| |N|Donova Snowden in Frostfire Hot Springs (31.28, 45.17)| |Z|Winterspring|
 A Threat of the Winterfall |QID|5082| |N|Donova Snowden in Frostfire Hot Springs (31.28, 45.17)| |Z|Winterspring|
 T It's a Secret to Everybody (Part 3) |QID|3908| |N|Donova Snowden in Frostfire Hot Springs -Skip follow up (31.27, 45.17)| |Z|Winterspring| |O|
-N Moontouched Feather |QID|978| |N|Collect Moontouched Feather from the ground near the quest giver (31.64, 44.83)| |Z|Winterspring|  |O| |OBJ|3651|
+N Moontouched Feather |QID|978| |L|12383 10| |N|Collect Moontouched Feather from the ground near the quest giver (31.64, 44.83)| |Z|Winterspring|  |O| |OBJ|3651|
 
 R Starfall Village |QID|5244| |N|Travel to Starfall Village (51.97, 30.39)| |Z|Winterspring|
 T To Winterspring! |QID|5249| |N|Wynd Nightchaser in Starfall Village (51.97, 30.39)| |Z|Winterspring| |O|

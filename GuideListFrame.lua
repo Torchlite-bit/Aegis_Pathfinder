@@ -1,5 +1,4 @@
 local AegisPathfinder = AegisPathfinder
-local ww = WidgetWarlock
 local Theme = AegisPathfinder.Theme
 
 local NUMROWS, COLWIDTH = 16, 210
@@ -271,8 +270,7 @@ frame:SetScript("OnShow", function()
         this:SetPoint(quad, AegisPathfinder.objectiveframe, anchpoint)
     end
     AegisPathfinder:UpdateGuideListPanel()
-    this:SetAlpha(0)
-    this:SetScript("OnUpdate", ww.FadeIn)
+    Theme:FadeIn(this, 0.7)
 end)
 
 frame:EnableMouseWheel()
@@ -291,8 +289,6 @@ frame:SetScript("OnMouseWheel", function()
         AegisPathfinder:UpdateGuideListPanel()
     end
 end)
-
-ww.SetFadeTime(frame, 0.7)
 
 table.insert(UISpecialFrames, "AegisPathfinderGuideList")
 

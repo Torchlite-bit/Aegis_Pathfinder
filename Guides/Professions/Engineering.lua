@@ -5,9 +5,9 @@
 --            Tools/data/craftroute_routes.json; reagents and recipe sources
 --            from Crafting/Engineering.lua; trainers from
 --            Tools/data/profession_training.json
--- Generator: Tools/convert_professions.py
+-- Generator: Tools/build/convert_professions.py
 --
--- Regenerate with:  python3 Tools/convert_professions.py
+-- Regenerate with:  python3 Tools/build/convert_professions.py
 
 
 AegisPathfinder:RegisterQuestShellPlusGuide("Engineering (1-300)", {

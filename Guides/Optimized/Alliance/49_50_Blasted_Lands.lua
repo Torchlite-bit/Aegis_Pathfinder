@@ -1,12 +1,12 @@
 -- Optimized Guide: Blasted Lands (49-50)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Blasted Lands (49-50)", "Optimized/Searing Gorge (50-51)", "Alliance", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Blasted Lands 49-50|
+N Optimized Leveling |N|This guide follows an optimized quest order for Blasted Lands 49-50|
 
 N Grind while traveling |N|No rush through this zone - kill everything you see|
 

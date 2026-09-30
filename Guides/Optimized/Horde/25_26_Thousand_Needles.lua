@@ -1,12 +1,12 @@
 -- Optimized Guide: Thousand Needles (25-26)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Thousand Needles (25-26)", "Optimized/Ashenvale (26-27)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Thousand Needles 25-26|
+N Optimized Leveling |N|This guide follows an optimized quest order for Thousand Needles 25-26|
 
 R Freewind Post |QID|4542| |N|Travel to Freewind Post, use the elevator at (47, 48.2)| |Z|Thousand Needles|
 T Message to Freewind Post |QID|4542| |N|Cliffwatcher Longhorn in Freewind Post (45.69, 50.66)| |Z|Thousand Needles| |O|

@@ -1,12 +1,12 @@
 -- Optimized Guide: Barrens (18-20)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/The Barrens (18-20)", "Optimized/Stonetalon (20-21)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Barrens 18-20|
+N Optimized Leveling |N|This guide follows an optimized quest order for Barrens 18-20|
 
 R The Stagnant Oasis |QID|877| |N|Travel to The Stagnant Oasis (55.62, 42.70)|
 C The Stagnant Oasis |QID|877| |N|Go to the fissure at the bottom of the lake at The Stagnant Oasis (55.62, 42.70)|

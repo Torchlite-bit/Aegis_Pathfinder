@@ -3,10 +3,10 @@
 -- GENERATED FILE -- do not edit by hand.
 -- Source:    Tools/data/Professions_Reference.docx
 -- Where to mine: Tools/data/gathering.json -- pfQuest's ore nodes and
---            CMaNGOS classic-db's vein loot, via Tools/gathering_guides.py
--- Generator: Tools/convert_professions.py
+--            CMaNGOS classic-db's vein loot, via Tools/build/gathering_guides.py
+-- Generator: Tools/build/convert_professions.py
 --
--- Regenerate with:  python3 Tools/convert_professions.py
+-- Regenerate with:  python3 Tools/build/convert_professions.py
 
 
 AegisPathfinder:RegisterQuestShellPlusGuide("Mining (1-300)", {

@@ -1,12 +1,12 @@
 -- Optimized Guide: Mulgore (1-12)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Mulgore (1-12)", "Optimized/The Barrens (12-15)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for efficient leveling|
+N Optimized Leveling |N|This guide follows an optimized quest order for efficient leveling|
 
 A The Hunt Begins |QID|747| |N|Grull Hawkwind in Camp Narache (44.91, 77.15)|
 A A Humble Task (Part 1) |QID|752| |N|Chief Hawkwind in Camp Narache (44.23, 76.04)|
@@ -88,8 +88,8 @@ A Rite of Vision (Part 2) |QID|771| |N|Zarlman Two-Moons in Bloodhoof Village (4
 A Mazzranache |QID|766| |N|Maur Raincaller in Bloodhoof Village (47.05, 57.07)|
 A Dangers of the Windfury |QID|743| |N|Ruul Eagletalon in Bloodhoof Village (47.33, 61.94)|
 
-N Collect Ambercorn |QID|771| |N|Collect 2 Ambercorn from the ground near trees (50.27, 66.53)|
-N Collect Well Stone |QID|771| |N|Collect 2 Well Stone from Winterhoof Water Well (53.48, 66.26)|
+N Collect Ambercorn |QID|771| |L|4809 2| |N|Collect 2 Ambercorn from the ground near trees (50.27, 66.53)|
+N Collect Well Stone |QID|771| |L|4808 2| |N|Collect 2 Well Stone from Winterhoof Water Well (53.48, 66.26)|
 
 C Poison Water |QID|748| |N|Kill Prairie Wolf for 6 Prairie Wolf Paw and Adult Plainstrider for 6 Plainstrider Talon (52.55, 70.51)|
 

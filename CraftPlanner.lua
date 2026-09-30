@@ -8,7 +8,7 @@
 	out again from current prices, whenever you ask.
 
 	What it knows about each recipe (Crafting/*.lua, converted from CraftRoute
-	by Tools/import_recipes.py): the skill at which it turns orange, yellow,
+	by Tools/build/import_recipes.py): the skill at which it turns orange, yellow,
 	green and grey, its reagents, how it is learned and roughly what that
 	costs. What it knows about prices: what merchants charge (Crafting/
 	Prices.lua), what the auction house asks (its own scan, CraftScan.lua, or

@@ -1,12 +1,12 @@
 -- Optimized Guide: Thousand Needles (27-29)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Thousand Needles (27-29)", "Optimized/Hillsbrad Foothills (29-30)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for Thousand Needles 27-29|
+N Optimized Leveling |N|This guide follows an optimized quest order for Thousand Needles 27-29|
 
 R Freewind Post |QID|1196| |N|You should be at Freewind Post (46.12, 51.62)| |Z|Thousand Needles|
 T The Sacred Flame (Part 2) |QID|1196| |N|Rau Cliffrunner in Freewind Post (46.12, 51.62)| |Z|Thousand Needles| |O|

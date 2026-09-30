@@ -1,12 +1,12 @@
 -- Optimized Guide: The Hinterlands (50-51)
--- Quest order follows VanillaGuide (mrmr) for efficient leveling
+-- Quest order optimized for efficient leveling
 -- QIDs and coordinates from AegisPathfinder database
 
 AegisPathfinder:RegisterGuide("Optimized/Hinterlands (50-51)", "Optimized/Blasted Lands (51-51)", "Horde", function()
 
 return [[
 
-N Optimized Leveling |N|This guide follows VanillaGuide's optimized quest order for The Hinterlands 50-51|
+N Optimized Leveling |N|This guide follows an optimized quest order for The Hinterlands 50-51|
 
 R Revantusk Village |QID|7815| |N|Travel to Revantusk Village in The Hinterlands (80.34, 81.48)| |Z|The Hinterlands|
 A Snapjaws, Mon! |QID|7815| |N|Katoom the Angler in Revantusk Village (80.34, 81.48)| |Z|The Hinterlands|
@@ -23,7 +23,7 @@ T Cortello's Riddle |QID|626| |N|Cortello's Treasure in The Overlook Cliffs - 14
 C Lard Lost His Lunch |QID|7840| |N|Click on Lard's Picnic Basket on the small island - three level 49 Vilebranch Kidnapper will appear, kill them (84.35, 41.08)| |Z|The Hinterlands| |OBJ|5993|
 
 R Valorwind Lake |QID|2641| |N|Travel west to Valorwind Lake (40.04, 59.93)| |Z|The Hinterlands|
-N Violet Tragan |QID|2641| |N|Collect Violet Tragan from the mushroom underwater in the middle of Valorwind Lake - for Gadgetzan quest later (40.05, 59.89)| |Z|The Hinterlands| |OBJ|1847| |O|
+N Violet Tragan |QID|2641| |L|8526| |N|Collect Violet Tragan from the mushroom underwater in the middle of Valorwind Lake - for Gadgetzan quest later (40.05, 59.89)| |Z|The Hinterlands| |OBJ|1847| |O|
 
 R Aerie Peak |QID|7843| |N|Travel to Aerie Peak - be careful of guards (14, 48)| |Z|The Hinterlands| |PRE|7842|
 C The Final Message to the Wildhammer |QID|7843| |N|Click on the well in Aerie Peak (14, 48)| |Z|The Hinterlands| |PRE|7842|

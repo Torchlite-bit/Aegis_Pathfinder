@@ -20,7 +20,7 @@ R Shindigger's Camp |TID|1452| |N|Travel to Shindigger's Camp (20.00, 48.33) (26
 T Rhapsody's Kalimdor Kocktail |QID|1452| |N|Rhapsody Shindigger in Shindigger's Camp (26.93, 48.60)| |D|ST| |Z|The Hinterlands| |O|
 
 R Valorwind Lake |QID|2641| |N|Travel to Valorwind Lake (40.05, 59.89)| |Z|The Hinterlands|
-N Violet Tragan |QID|2641| |N|Collect Violet Tragan from the mushroom underwater in the middle of Valorwind Lake (40.05, 59.89)| |Z|The Hinterlands| |OBJ|1847|
+N Violet Tragan |QID|2641| |L|8526| |N|Collect Violet Tragan from the mushroom underwater in the middle of Valorwind Lake (40.05, 59.89)| |Z|The Hinterlands| |OBJ|1847|
 
 
 R The Altar of Zul |QID|2989| |N|Travel to The Altar of Zul (48.76, 68.35)| |Z|The Hinterlands|
