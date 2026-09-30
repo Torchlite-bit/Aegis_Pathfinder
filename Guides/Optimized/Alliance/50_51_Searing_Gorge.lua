@@ -26,11 +26,11 @@ A Suntara Stones (Part 2) |QID|3368| |N|Singed Letter in Dustfire Valley (74.42,
 C Caught! |QID|4449| |N|Kill 8 Dark Iron Geologist and collect 15 Silk Cloth in Grimesilt Dig Site - respawns may be slow (63.03, 58.88)| |Z|Searing Gorge|
 T Caught! |QID|4449| |N|Wooden Outhouse in Grimesilt Dig Site (65.51, 62.14)| |Z|Searing Gorge|
 A Ledger from Tanaris |QID|4450| |N|Wooden Outhouse in Grimesilt Dig Site (65.51, 62.14)| |Z|Searing Gorge|
-N Goodsteel Ledger |QID|4450| |N|Collect Goodsteel Ledger on the ground next to the Wooden Outhouse (65.51, 62.17)| |Z|Searing Gorge|
+N Goodsteel Ledger |QID|4450| |L|11727| |N|Collect Goodsteel Ledger on the ground next to the Wooden Outhouse (65.51, 62.17)| |Z|Searing Gorge|
 
 K Margol the Rager |QID|3181| |N|Kill Margol the Rager (easy elite to solo) and collect Margol's Horn to start a new quest (67.8, 71.0)| |P|GROUP| |Z|Searing Gorge| |L|10000| |O|
 A The Horn of the Beast |QID|3181| |N|Use Margol's Horn to accept quest| |P|GROUP| |Z|Searing Gorge| |U|10000| |O|
-K Glassweb Spider |QID|4450| |N|Kill Glassweb Spider and collect 20 Solid Crystal Leg Shaft in The Sea of Cinders (60.00, 70.26)| |Z|Searing Gorge|
+K Glassweb Spider |QID|4450| |L|11725 20| |N|Kill Glassweb Spider and collect 20 Solid Crystal Leg Shaft in The Sea of Cinders (60.00, 70.26)| |Z|Searing Gorge|
 
 R Thorium Point |QID|3441| |N|Travel to Thorium Point (39.05, 38.95)| |Z|Searing Gorge|
 A Divine Retribution |QID|3441| |N|Kalaran Windblade in Thorium Point (39.05, 38.95)| |Z|Searing Gorge|
@@ -63,8 +63,8 @@ T At Last! |QID|3201| |N|Mountaineer Pebblebitty in Valley of Kings (18.21, 83.9
 
 R Thorium Point |QID|7728| |N|Travel to Thorium Point (32.25, 33.10)| |Z|Searing Gorge|
 N As you go |N|Prioritize killing Elementals for The Flawless Flame quest|
-K Dark Iron Steamsmith |QID|7728| |N|Kill Dark Iron Steamsmith and collect Smithing Tuyere in The Cauldron (40.71, 49.49)| |Z|Searing Gorge|
-K Dark Iron Lookout |QID|7728| |N|Kill Dark Iron Lookout and collect Lookout's Spyglass in The Sea of Cinders (53.54, 58.33)| |Z|Searing Gorge|
+K Dark Iron Steamsmith |QID|7728| |L|18959| |N|Kill Dark Iron Steamsmith and collect Smithing Tuyere in The Cauldron (40.71, 49.49)| |Z|Searing Gorge|
+K Dark Iron Lookout |QID|7728| |L|18960| |N|Kill Dark Iron Lookout and collect Lookout's Spyglass in The Sea of Cinders (53.54, 58.33)| |Z|Searing Gorge|
 C The Flawless Flame |QID|3442| |N|Kill Blazing Elemental for 4 Heart of Flame and Magma Elemental for 4 Golem Oil near Thorium Point (39.09, 41.74)| |Z|Searing Gorge|
 C Fiery Menace! |QID|7724| |N|Kill 20 Greater Lava Spider in Firewatch Ridge (28.07, 45.91)| |Z|Searing Gorge|
 C Curse These Fat Fingers |QID|7723| |N|Kill 20 Heavy War Golem in Firewatch Ridge (35.47, 46.92)| |Z|Searing Gorge|

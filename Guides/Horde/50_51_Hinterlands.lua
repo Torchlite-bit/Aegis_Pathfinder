@@ -17,7 +17,7 @@ T Cortello's Riddle |QID|626| |N|Cortello's Treasure in The Overlook Cliffs (80.
 C Lard Lost His Lunch |QID|7840| |N|Click on Lard's Picnic Basket in the small island and three level 49 Vilebranch Kidnapper will appear, kill them to collect Lard's Lunch (84.35, 41.08)| |Z|The Hinterlands| |OBJ|5993| 
 
 R Valorwind Lake |QID|2641| |N|Travel to Valorwind Lake (76.36, 60.93) (71.74, 65.36) (40.04, 59.93)| |Z|The Hinterlands|
-N Violet Tragan |QID|2641| |N|Collect Violet Tragan from the mushroom underwater in the middle of Valorwind Lake (40.05, 59.89)| |Z|The Hinterlands| |OBJ|1847|
+N Violet Tragan |QID|2641| |L|8526| |N|Collect Violet Tragan from the mushroom underwater in the middle of Valorwind Lake (40.05, 59.89)| |Z|The Hinterlands| |OBJ|1847|
 
 R Aerie Peak |QID|7843| |N|Travel to Aerie Peak (14, 48)| |Z|The Hinterlands| |PRE|7842|
 C The Final Message to the Wildhammer |QID|7843| |N|Click on the well in Aerie Peak (14, 48)| |Z|The Hinterlands| |PRE|7842|

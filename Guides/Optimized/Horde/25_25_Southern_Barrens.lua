@@ -23,7 +23,7 @@ A Washte Pawne |QID|885| |N|Use Washte Pawne's Feather to accept quest| |U|5103|
 
 R Bael Modan |QID|846| |N|Travel to Bael Modan (47.58, 86.15)| |Z|The Barrens|
 C Gann's Reclamation |QID|843| |N|Kill 15 Bael'dun Excavator and 5 Bael'dun Foreman (46, 85)| |Z|The Barrens|
-K Prospector Khazgorm |QID|843| |N|Kill Prospector Khazgorm and collect Khazgorm's Journal (47.58, 86.15)| |Z|The Barrens|
+K Prospector Khazgorm |QID|843| |L|5006| |N|Kill Prospector Khazgorm and collect Khazgorm's Journal (47.58, 86.15)| |Z|The Barrens|
 
 R Southern Gold Road |QID|846| |N|Travel to Southern Gold Road (46.15, 75.4)| |Z|The Barrens|
 T Gann's Reclamation |QID|843| |N|Gann Stonespire patrols the road (46.15, 75.4)| |Z|The Barrens|

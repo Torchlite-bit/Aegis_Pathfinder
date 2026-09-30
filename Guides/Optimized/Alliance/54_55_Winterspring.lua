@@ -19,7 +19,7 @@ A Trouble in Winterspring! |QID|6603| |N|Meggi Peppinrocker in Everlook (61.10, 
 T Trouble in Winterspring! |QID|6603| |N|Donova Snowden in Frostfire Hot Springs (31.28, 45.17)| |Z|Winterspring| |O|
 A Threat of the Winterfall |QID|5082| |N|Donova Snowden in Frostfire Hot Springs (31.28, 45.17)| |Z|Winterspring|
 T It's a Secret to Everybody (Part 3) |QID|3908| |N|Donova Snowden - skip follow up (31.27, 45.17)| |Z|Winterspring| |O|
-N Moontouched Feather |QID|978| |N|Collect Moontouched Feather from the ground near quest giver (31.64, 44.83)| |Z|Winterspring| |O|
+N Moontouched Feather |QID|978| |L|12383 10| |N|Collect Moontouched Feather from the ground near quest giver (31.64, 44.83)| |Z|Winterspring| |O|
 
 R Starfall Village |QID|5244| |N|Travel to Starfall Village (51.97, 30.39)| |Z|Winterspring|
 T To Winterspring! |QID|5249| |N|Wynd Nightchaser in Starfall Village (51.97, 30.39)| |Z|Winterspring| |O|
@@ -41,18 +41,18 @@ N Filled Tainted Ooze Jar |QID|4512| |N|Store Filled Tainted Ooze Jar to the ban
 N Deadwood Ritual Totem |QID|8470| |N|Store Deadwood Ritual Totem to the bank (61.4, 37.0)| |Z|Winterspring| |L|20741| |O|
 
 R Lake Kel'Theril |QID|5245| |N|Travel to Lake Kel'Theril (55.16, 42.94)| |Z|Winterspring|
-N First Relic Fragment |QID|5245| |N|Collect First Relic Fragment from Highborne Relic Fragment (55.16, 42.94)| |Z|Winterspring|
-N Third Relic Fragment |QID|5245| |N|Collect Third Relic Fragment from Highborne Relic Fragment (53.3, 43.4)| |Z|Winterspring|
-N Fourth Relic Fragment |QID|5245| |N|Collect Fourth Relic Fragment from Highborne Relic Fragment (52.41, 41.59)| |Z|Winterspring|
-N Second Relic Fragment |QID|5245| |N|Collect Second Relic Fragment from Highborne Relic Fragment (50.96, 41.75)| |Z|Winterspring|
+N First Relic Fragment |QID|5245| |L|12896| |N|Collect First Relic Fragment from Highborne Relic Fragment (55.16, 42.94)| |Z|Winterspring|
+N Third Relic Fragment |QID|5245| |L|12898| |N|Collect Third Relic Fragment from Highborne Relic Fragment (53.3, 43.4)| |Z|Winterspring|
+N Fourth Relic Fragment |QID|5245| |L|12899| |N|Collect Fourth Relic Fragment from Highborne Relic Fragment (52.41, 41.59)| |Z|Winterspring|
+N Second Relic Fragment |QID|5245| |L|12897| |N|Collect Second Relic Fragment from Highborne Relic Fragment (50.96, 41.75)| |Z|Winterspring|
 
 R Dun Mandarr |QID|4863| |N|Travel to Dun Mandarr (58.99, 59.76)| |Z|Winterspring|
 T Enraged Wildkin |QID|4861| |N|Damaged Crate in Dun Mandarr (58.99, 59.76)| |Z|Winterspring|
 A Enraged Wildkin |QID|4863| |N|Damaged Crate in Dun Mandarr (58.99, 59.76)| |Z|Winterspring|
 T Enraged Wildkin |QID|4863| |N|Jaron's Wagon in Dun Mandarr (61.40, 60.67)| |Z|Winterspring|
 A Enraged Wildkin |QID|4864| |N|Jaron's Wagon in Dun Mandarr (61.40, 60.67)| |Z|Winterspring|
-N Jaron's Supplies |QID|4864| |N|Collect Jaron's Supplies from the crate next to Jaron's Wagon (61.40, 60.74)| |Z|Winterspring|
-N Blue-feathered Amulet |QID|4864| |N|Kill Owlbeasts until you find Blue-feathered Amulet in Owl Wing Thicket (65.55, 60.38)| |Z|Winterspring|
+N Jaron's Supplies |QID|4864| |L|12525| |N|Collect Jaron's Supplies from the crate next to Jaron's Wagon (61.40, 60.74)| |Z|Winterspring|
+N Blue-feathered Amulet |QID|4864| |L|12524| |N|Kill Owlbeasts until you find Blue-feathered Amulet in Owl Wing Thicket (65.55, 60.38)| |Z|Winterspring|
 
 C Strange Sources |QID|4842| |N|Go over the bridge and discover Darkwhisper Gorge (60.06, 73.49)| |Z|Winterspring|
 

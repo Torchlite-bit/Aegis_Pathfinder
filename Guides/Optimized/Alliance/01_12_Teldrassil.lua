@@ -49,11 +49,11 @@ T The Woodland Protector (Part 2) |QID|459| |N|Tarindrella in Shadowglen (57.75,
 T A Friend in Need |QID|3519| |N|Dirania Silvershine in Shadowglen (60.84, 41.98)|
 A Iverron's Antidote (Part 1) |QID|3521| |N|Dirania Silvershine in Shadowglen (60.84, 41.98)|
 
-N 4 Moonpetal Lily |QID|3521| |N|Collect 4 Moonpetal Lily from around the edge of the pond (57, 37)|
-N 7 Hyacinth Mushroom |QID|3521| |N|Collect 7 Hyacinth Mushroom from around trees or dropped from Grellkin (57, 37)|
+N 4 Moonpetal Lily |QID|3521| |L|10641 4| |N|Collect 4 Moonpetal Lily from around the edge of the pond (57, 37)|
+N 7 Hyacinth Mushroom |QID|3521| |L|10639 7| |N|Collect 7 Hyacinth Mushroom from around trees or dropped from Grellkin (57, 37)|
 
 R Shadowthread Cave |QID|917| |N|Enter Shadowthread Cave (56.80, 31.65)|
-N Webwood Ichor |QID|3521| |N|Collect Webwood Ichor from Webwood Spider (57.31, 34.25)|
+N Webwood Ichor |QID|3521| |L|10640| |N|Collect Webwood Ichor from Webwood Spider (57.31, 34.25)|
 C Webwood Egg |QID|917| |N|Follow the path inside and collect Webwood Egg near the giant spider (56.65, 26.48)|
 
 T Webwood Egg |QID|917| |N|Gilshalan Windwalker in Aldrassil (57.81, 41.63)|
@@ -123,7 +123,7 @@ A Ferocitas the Dream Eater |QID|2459| |N|Tallonkai Swiftroot in Dolanaar (55.5,
 
 N Level 8 |N|You should be level 8 now. Train skills if needed|
 
-N As you go... |QID|489| |N|Collect 3 Fel Cone from around the bottom of large trees as you travel|
+N As you go... |QID|489| |L|3418 3| |N|Collect 3 Fel Cone from around the bottom of large trees as you travel|
 
 C Ferocitas the Dream Eater |QID|2459| |N|Kill Ferocitas the Dream Eater and 7 Gnarlpine Mystic north of Starbreeze Village (69.8, 53.0)| |U|8049|
 
@@ -137,11 +137,11 @@ T Ferocitas the Dream Eater |QID|2459| |N|Tallonkai Swiftroot at the top of the 
 C The Road to Darnassus |QID|487| |N|Kill 6 Gnarlpine Ambusher in Ban'ethil Hollow (45.92, 52.80)|
 
 R Ban'ethil Barrow Den |QID|483| |N|Travel to Ban'ethil Barrow Den (44.28, 58.08)|
-N Rune of Nesting |QID|483| |N|At the first bridges, take the left bridge and collect from the chest (44.40, 60.62)|
-N Black Feather Quill |QID|483| |N|Collect Black Feather Quill from the chest across the other bridge (43.76, 61.20)|
+N Rune of Nesting |QID|483| |L|3408| |N|At the first bridges, take the left bridge and collect from the chest (44.40, 60.62)|
+N Black Feather Quill |QID|483| |L|3406| |N|Collect Black Feather Quill from the chest across the other bridge (43.76, 61.20)|
 A The Sleeping Druid |QID|2541| |N|Oben Rageclaw in Ban'ethil Barrow Den (44.96, 61.46)|
-N Raven Claw Talisman |QID|483| |N|Collect Raven Claw Talisman from the chest (45.71, 57.33)|
-N Sapphire of Sky |QID|483| |N|Collect Sapphire of Sky from the small chest (44.65, 62.50)|
+N Raven Claw Talisman |QID|483| |L|3405| |N|Collect Raven Claw Talisman from the chest (45.71, 57.33)|
+N Sapphire of Sky |QID|483| |L|3407| |N|Collect Sapphire of Sky from the small chest (44.65, 62.50)|
 
 C The Sleeping Druid |QID|2541| |N|Kill Gnarlpine Shaman until you find a Voodoo Charm. Low drop rate - skip if rewards not useful (44, 59)| |O|
 T The Sleeping Druid |QID|2541| |N|Oben Rageclaw in Ban'ethil Barrow Den (44.96, 61.46)| |O|
@@ -232,7 +232,7 @@ T Mist |QID|938| |N|Sentinel Arynia Cloudsbreak in The Oracle Glade (38.3, 34.4)
 T The Enchanted Glade |QID|937| |N|Sentinel Arynia Cloudsbreak in The Oracle Glade (38.3, 34.4)|
 A Teldrassil |QID|940| |N|Sentinel Arynia Cloudsbreak in The Oracle Glade (38.3, 34.4)|
 
-N Tears of the Moon |QID|2518| |N|Kill Lady Sathrah and collect Silvery Spinnerets (39.28, 25.70) or (48, 25.9)|
+N Tears of the Moon |QID|2518| |L|8344| |N|Kill Lady Sathrah and collect Silvery Spinnerets (39.28, 25.70) or (48, 25.9)|
 
 C Destiny Calls |QID|2242| |N|Find Sethir the Ancient. While stealthed, use Pickpocket from behind (37.21, 23.24)| |C|Rogue|
 

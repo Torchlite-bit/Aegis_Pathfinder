@@ -26,7 +26,7 @@ T Noboru the Cudgel |QID|1392| |N|Magtoor in The Harborage (25.99, 31.44)| |Z|Sw
 A Draenethyst Crystals |QID|1389| |N|Magtoor in The Harborage (25.99, 31.44)| |Z|Swamp of Sorrows|
 
 R Fallow Sanctuary |QID|1421| |N|Travel to Fallow Sanctuary (65.40, 18.29)| |Z|Swamp of Sorrows|
-N As you go... |QID|1389| |N|Collect 6 Draenethyst Crystal (large blue crystals on the ground)|
+N As you go... |QID|1389| |L|6071 6| |N|Collect 6 Draenethyst Crystal (large blue crystals on the ground)|
 C The Lost Caravan |QID|1421| |N|Collect Wizards' Reagents from the Caravan Chest (64.47, 18.36)| |Z|Swamp of Sorrows| |OBJ|10|
 
 A Galen's Escape |QID|1393| |N|Galen Goodward in Fallow Sanctuary - clear the area first (65.40, 18.29)| |Z|Swamp of Sorrows|

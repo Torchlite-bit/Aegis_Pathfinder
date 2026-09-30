@@ -153,7 +153,7 @@ A A New Plague (Part 3) |QID|369| |N|Apothecary Johaan in Brill (59.47, 52.33)|
 
 R Scarlet Tower |QID|370| |N|Travel to the tower south of Brill (51, 68)|
 
-N As you go... |QID|374| |N|Collect 10 Scarlet Insignia Ring from Scarlet Crusade enemies|
+N As you go... |QID|374| |L|2875 10| |N|Collect 10 Scarlet Insignia Ring from Scarlet Crusade enemies|
 K Captain Perrine |QID|370| |N|Kill Captain Perrine inside the tower (51.6, 67.6)|
 C At War With The Scarlet Crusade (Part 2) |QID|370| |N|Kill 3 Scarlet Zealot and 3 Scarlet Missionary near the tower (51, 67)|
 
@@ -216,9 +216,9 @@ R Agamand Mills |QID|362| |N|Travel to Agamand Mills (46.92, 41.02)|
 
 C The Mills Overrun |QID|426| |N|Kill scourge for 5 Notched Rib and 3 Blackened Skull from Darkeye Bonecaster (50.00, 36.98)|
 C The Haunted Mills |QID|362| |N|Kill Devlin Agamand for Devlin's Remains (46.92, 41.02)|
-K Nissa Agamand |QID|354| |N|Kill Nissa Agamand for Nissa's Remains (49.56, 35.58)|
-K Gregor Agamand |QID|354| |N|Kill Gregor Agamand for Gregor's Remains (45.10, 30.20)|
-K Thurman Agamand |QID|354| |N|Kill Thurman Agamand for Thurman's Remains (44.07, 31.85)|
+K Nissa Agamand |QID|354| |L|2828| |N|Kill Nissa Agamand for Nissa's Remains (49.56, 35.58)|
+K Gregor Agamand |QID|354| |L|2829| |N|Kill Gregor Agamand for Gregor's Remains (45.10, 30.20)|
+K Thurman Agamand |QID|354| |L|2830| |N|Kill Thurman Agamand for Thurman's Remains (44.07, 31.85)|
 
 A A Letter Undelivered |QID|361| |N|Use A Letter to Yvette if it drops from Cracked Skull Soldiers (46, 34)| |U|2839| |O|
 
@@ -308,10 +308,10 @@ T The Prodigal Lich Returns |QID|411| |N|Bethor Iceshard in Magic Quarter (85.02
 
 ; -- WARRIOR AGAMAND HEIRLOOMS COMPLETION --
 R Agamand Family Crypt |QID|1821| |N|Travel to Agamand Family Crypt (47.64, 48.77)| |C|Warrior|
-N Agamand Family Mace |QID|1821| |N|Collect Agamand Family Mace from the weapon rack (51.90, 27.09)| |C|Warrior|
-N Agamand Family Dagger |QID|1821| |N|Collect Agamand Family Dagger from the weapon rack (51.90, 27.09)| |C|Warrior|
-N Agamand Family Axe |QID|1821| |N|Collect Agamand Family Axe from the weapon rack (52.64, 25.91)| |C|Warrior|
-N Agamand Family Sword |QID|1821| |N|Collect Agamand Family Sword from the weapon rack (52.64, 25.91)| |C|Warrior|
+N Agamand Family Mace |QID|1821| |L|7569| |N|Collect Agamand Family Mace from the weapon rack (51.90, 27.09)| |C|Warrior|
+N Agamand Family Dagger |QID|1821| |L|7568| |N|Collect Agamand Family Dagger from the weapon rack (51.90, 27.09)| |C|Warrior|
+N Agamand Family Axe |QID|1821| |L|7567| |N|Collect Agamand Family Axe from the weapon rack (52.64, 25.91)| |C|Warrior|
+N Agamand Family Sword |QID|1821| |L|7566| |N|Collect Agamand Family Sword from the weapon rack (52.64, 25.91)| |C|Warrior|
 R Brill |QID|1821| |N|Return to Brill| |C|Warrior|
 T Agamand Heirlooms |QID|1821| |N|Coleman Farthing in Gallows' End Tavern (61.73, 52.31)| |C|Warrior|
 A Heirloom Weapon |QID|1822| |N|Coleman Farthing in Gallows' End Tavern (61.73, 52.31)| |C|Warrior|

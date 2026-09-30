@@ -53,7 +53,7 @@ R The Noxious Lair |QID|82| |N|Travel to The Noxious Lair (34.81, 43.60)| |Z|Tan
 C Noxious Lair Investigation |QID|82| |N|Kill Centipaar insects and collect 5 Centipaar Insect Parts in The Noxious Lair (34, 47)|
 
 R Thistleshrub Valley |QID|2605| |N|Travel to Thistleshrub Valley (28.18, 63.86)| |Z|Tanaris|
-K Thistleshrub Dew Collector |QID|2605| |N|Kill Thistleshrub Dew Collector until you collect Laden Dew Gland in Thistleshrub Valley (28.18, 63.86)| |Z|Tanaris|
+K Thistleshrub Dew Collector |QID|2605| |L|8428| |N|Kill Thistleshrub Dew Collector until you collect Laden Dew Gland in Thistleshrub Valley (28.18, 63.86)| |Z|Tanaris|
 C Thistleshrub Valley |QID|3362| |N|Kill 8 Gnarled Thistleshrub and 8 Thistleshrub Rootshaper in Thistleshrub Valley (28, 65)|
 
 R Uldum |QID|2966| |N|Travel south-east to the Uldum Pedestal (37.6, 81.4)| |D|ULDA| |Z|Tanaris|

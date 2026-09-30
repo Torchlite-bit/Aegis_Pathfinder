@@ -75,11 +75,11 @@ C The Apes of Un'Goro |QID|4289| |N|Kill Un'Goro Gorilla, Un'Goro Thunderer and 
 K Pterrordax |QID|4501| |N|Continue killing Pterrordax in Lakkari Tar Pits (56.91, 9.94)|
 
 R The Marshlands |QID|4141| |N|Travel to The Marshlands (68.5, 36.5)|
-N Crate of Foodstuffs |QID|3881| |N|Collect Crate of Foodstuffs from the crate (68.5, 36.5)|
+N Crate of Foodstuffs |QID|3881| |L|11113| |N|Collect Crate of Foodstuffs from the crate (68.5, 36.5)|
 C Muigin and Larion |QID|4141| |N|Kill Bloodpetals and collect 15 Bloodpetal (67.8, 33.4)|
 
 R Un'Goro Crater |QID|3882| |N|Travel south (58.23, 56.34)|
-K Diemetradon |QID|4503| |N|Kill Diemetradon and collect 8 Webbed Diemetradon Scale (58.23, 56.34)|
+K Diemetradon |QID|4503| |L|11830 8| |N|Kill Diemetradon and collect 8 Webbed Diemetradon Scale (58.23, 56.34)|
 C Roll the Bones |QID|3882| |N|Collect 8 Dinosaur Bone dropped from Diemetradons (58.18, 71.82)|
 
 T The Apes of Un'Goro |QID|4289| |N|Torwa Pathfinder in Un'Goro (71.62, 75.98)|
@@ -97,14 +97,14 @@ A The Bait for Lar'korwi |QID|4292| |N|Torwa Pathfinder in Un'Goro (71.62, 75.97
 
 R The Slithering Scar |QID|3883| |N|Travel to The Slithering Scar (50.09, 80.92)|
 C Alien Ecology |QID|3883| |N|Use Unused Scraping Vial inside the hive (50.09, 80.92)| |U|11132|
-N Gorishi Scent Gland |QID|4496| |N|Kill Gorishi insects until you collect Gorishi Scent Gland (50.09, 80.92)|
+N Gorishi Scent Gland |QID|4496| |L|11837| |N|Kill Gorishi insects until you collect Gorishi Scent Gland (50.09, 80.92)|
 
 R Terror Run |QID|3881| |N|Exit The Slithering Scar and travel to Terror Run (38.42, 66.11)|
-N Research Equipment |QID|3881| |N|Collect Research Equipment from the ground (38.42, 66.11)|
+N Research Equipment |QID|3881| |L|11112| |N|Collect Research Equipment from the ground (38.42, 66.11)|
 
 A Finding the Source |QID|974| |N|Krakle in Golakka Hot Springs (30.94, 50.45)|
 C Frenzied Pterrordax |QID|4501| |N|Kill 15 Frenzied Pterrordax in Western Un'Goro (32.40, 43.90)|
-N Webbed Pterrordax Scale |QID|4503| |N|Collect 8 Webbed Pterrordax Scale from Pterrordax creatures (32.40, 43.90)|
+N Webbed Pterrordax Scale |QID|4503| |L|11831 8| |N|Collect 8 Webbed Pterrordax Scale from Pterrordax creatures (32.40, 43.90)|
 N Power Crystals |QID|4284| |N|Finish collecting 7 of each Red, Blue, Yellow and Green Power Crystal|
 
 R Fire Plume Ridge |QID|974| |N|Travel to Fire Plume Ridge (52.77, 42.24)|

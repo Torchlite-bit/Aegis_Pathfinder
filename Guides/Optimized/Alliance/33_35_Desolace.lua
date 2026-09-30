@@ -46,7 +46,7 @@ A Kodo Roundup |QID|5561| |N|Smeed Scrabblescrew (60.89, 61.89)| |Z|Desolace|
 N As you go |N|Collect 10 Kodo Bone from the ground in Kodo Graveyard (51, 59)|
 C Kodo Roundup |QID|5561| |N|Use Kodo Kombobulator on Ancient/Aged/Dying Kodo in graveyard (51, 59). Bring each back to Scrabblescrew - one at a time| |U|13892| |Z|Desolace|
 T Kodo Roundup |QID|5561| |N|Smeed Scrabblescrew (60.89, 61.89)| |Z|Desolace|
-K Aged Kodo |QID|1459| |N|Kill Aged Kodo for 3 Aged Kodo Hide (58.37, 34.52) (49.4, 40.2) (50.5, 56.6)| |Z|Desolace|
+K Aged Kodo |QID|1459| |L|6249 3| |N|Kill Aged Kodo for 3 Aged Kodo Hide (58.37, 34.52) (49.4, 40.2) (50.5, 56.6)| |Z|Desolace|
 C Bone Collector |QID|5501| |N|Collect 10 Kodo Bone in Kodo Graveyard (51, 59)| |Z|Desolace|
 T Bone Collector |QID|5501| |N|Bibbly F'utzbuckle in Kormek's Hut (62.32, 38.98)| |Z|Desolace|
 
@@ -58,7 +58,7 @@ R Ethel Rethor |QID|6161| |N|Travel to Ethel Rethor (36.11, 30.44)| |Z|Desolace|
 T The Karnitol Shipwreck (Part 1) |QID|1454| |N|Rackmore's Log in Ethel Rethor (36.11, 30.44)| |Z|Desolace|
 A The Karnitol Shipwreck (Part 2) |QID|1455| |N|Rackmore's Log in Ethel Rethor (36.11, 30.44)| |Z|Desolace|
 A Claim Rackmore's Treasure! |QID|6161| |N|Rackmore's Log in Ethel Rethor (36.11, 30.44)| |Z|Desolace|
-K Drysnap Pincer |QID|6161| |N|Kill Drysnaps for Rackmore's Silver Key (33.7, 29.0)| |Z|Desolace|
+K Drysnap Pincer |QID|6161| |L|15878| |N|Kill Drysnaps for Rackmore's Silver Key (33.7, 29.0)| |Z|Desolace|
 
 R Ethel Rethor |QID|5741| |N|Travel to Ethel Rethor (38.89, 27.17)| |Z|Desolace|
 A Sceptre of Light |QID|5741| |N|Azore Aldamort in Ethel Rethor (38.89, 27.17)| |Z|Desolace|
@@ -83,7 +83,7 @@ A Book of the Ancients |QID|6027| |N|Azore Aldamort in Ethel Rethor (38.89, 27.1
 
 R Ranazjar Isle |QID|6027| |N|Travel to Ranazjar Isle (30.02, 8.69)| |Z|Desolace|
 C Book of the Ancients |QID|6027| |N|Clear area around statue, click it, kill Lord Kragaru for Book of the Ancients (28, 7)| |Z|Desolace|
-N Rackmore's Golden Key |QID|6161| |N|Kill Slitherblade enemies for Rackmore's Golden Key (32.86, 23.12)| |Z|Desolace|
+N Rackmore's Golden Key |QID|6161| |L|15881| |N|Kill Slitherblade enemies for Rackmore's Golden Key (32.86, 23.12)| |Z|Desolace|
 C The Karnitol Shipwreck (Part 3) |QID|1456| |N|Kill Slitherblade Tidehunter/Sea Witch for Karnitol's Satchel (27.60, 8.95)| |Z|Desolace|
 T Claim Rackmore's Treasure! |QID|6161| |N|Rackmore's Chest in Ranazjar Isle (30.02, 8.69)| |Z|Desolace|
 

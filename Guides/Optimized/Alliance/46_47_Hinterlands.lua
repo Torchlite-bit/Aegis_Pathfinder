@@ -21,7 +21,7 @@ A Skulk Rock Clean-up |QID|2877| |N|Fraggar Thundermantle (14.82, 44.57)| |Z|The
 A Troll Necklace Bounty |QID|2880| |N|Fraggar Thundermantle (14.82, 44.57)| |Z|The Hinterlands|
 h Wildhammer Keep |QID|2877| |N|Set hearth at Wildhammer Keep (13.91, 42.24)| |Z|The Hinterlands|
 
-N As you go... |QID|3661| |N|Collect Wildkin Feather on the ground while traveling for Favored of Elune?|
+N As you go... |QID|3661| |L|10819 15| |N|Collect Wildkin Feather on the ground while traveling for Favored of Elune?|
 
 R Shindigger's Camp |QID|1452| |N|Travel east to Shindigger's Camp (26.93, 48.60)| |D|ST| |Z|The Hinterlands|
 T Rhapsody Shindigger |QID|1451| |N|Rhapsody Shindigger (26.93, 48.60)| |D|ST| |Z|The Hinterlands|
@@ -36,7 +36,7 @@ C Check Third Cage |QID|2988| |OIDX|3| |N|Click Third Witherbark Cage (32.00, 57
 C Troll Necklace Bounty |QID|2880| |N|Kill Witherbark trolls for 5 Troll Tribal Necklace (32.00, 57.38)| |Z|The Hinterlands|
 
 R Agol'watha |QID|2877| |N|Travel northeast to Agol'watha (46.54, 40.46)| |Z|The Hinterlands|
-N As you go... |QID|3661| |N|Keep collecting Wildkin Feather|
+N As you go... |QID|3661| |L|10819 15| |N|Keep collecting Wildkin Feather|
 A Find OOX-09/HL! |QID|485| |N|Use OOX-09/HL Distress Beacon if you have it| |Z|The Hinterlands| |U|8704| |O|
 T Find OOX-09/HL! |QID|485| |N|Homing Robot OOX-09/HL (49.36, 37.63)| |Z|The Hinterlands| |O|
 C Skulk Rock Clean-up |QID|2877| |N|Kill 10 Green Sludge and 10 Jade Ooze (46.35, 40.24) (56.41, 41.43)| |Z|The Hinterlands|
@@ -44,7 +44,7 @@ C Skulk Rock Clean-up |QID|2877| |N|Kill 10 Green Sludge and 10 Jade Ooze (46.35
 R The Overlook Cliffs |QID|2944| |N|Travel to The Overlook Cliffs (81, 46)| |P|GROUP| |Z|The Hinterlands|
 N Dive down |N|Dive into the water below the waterfall|
 C The Super Snapper FX |QID|2944| |N|Use Super Snapper FX on elite turtle Gammerita along the shore - get close, take picture, run (72.36, 66.07)| |P|GROUP| |Z|The Hinterlands| |U|9328|
-N Whiskey Slim's Lost Grog |QID|580| |N|Look for bottles along the shore for Pupellyverbos Port|
+N Whiskey Slim's Lost Grog |QID|580| |L|3900 12| |N|Look for bottles along the shore for Pupellyverbos Port|
 
 H Wildhammer Keep |QID|2877| |N|Hearth to Wildhammer Keep| |Z|The Hinterlands|
 T Skulk Rock Clean-up |QID|2877| |N|Fraggar Thundermantle (14.82, 44.58)| |Z|The Hinterlands|

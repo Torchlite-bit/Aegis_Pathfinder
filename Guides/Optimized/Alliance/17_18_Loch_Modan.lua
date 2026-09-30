@@ -41,10 +41,10 @@ A Bingles' Missing Supplies |QID|2038| |N|Bingles Blastenheimer at The Loch (63.
 N As you go |N|Kill Loch Crocolisk for 5 Crocolisk Meat and 6 Crocolisk Skin|
 C Crocolisk Hunting |QID|385| |N|Kill Loch Crocolisk in the lake for 5 Crocolisk Meat and 6 Crocolisk Skin (54, 38)|
 
-N Bingles' Blastencapper |QID|2038| |N|Collect Bingles' Blastencapper (54.33, 26.54)|
-N Bingles' Wrench |QID|2038| |N|Collect Bingles' Wrench near the campfire (48.69, 29.99)|
-N Bingles' Hammer |QID|2038| |N|Collect Bingles' Hammer (51.79, 23.93)|
-N Bingles' Screwdriver |QID|2038| |N|Collect Bingles' Screwdriver (48.35, 20.39)|
+N Bingles' Blastencapper |QID|2038| |L|7376| |N|Collect Bingles' Blastencapper (54.33, 26.54)|
+N Bingles' Wrench |QID|2038| |L|7343| |N|Collect Bingles' Wrench near the campfire (48.69, 29.99)|
+N Bingles' Hammer |QID|2038| |L|7346| |N|Collect Bingles' Hammer (51.79, 23.93)|
+N Bingles' Screwdriver |QID|2038| |L|7345| |N|Collect Bingles' Screwdriver (48.35, 20.39)|
 
 R Stonewrought Dam |QID|250| |N|Travel to Stonewrought Dam from the west side (45, 13)|
 A A Dark Threat Looms (Part 1) |QID|250| |N|Chief Engineer Hinderweir VII at Stonewrought Dam (46.06, 13.72)|

@@ -28,7 +28,7 @@ T The Princess Trapped |QID|642| |N|Iridescent shards in Drywhisker Gorge (84.41
 A Stones of Binding |QID|651| |N|Iridescent shards in Drywhisker Gorge (84.31, 30.92)| |Z|Arathi Highlands|
 
 R Circle of East Binding |QID|651| |N|Exit cave and travel to Circle of East Binding (66.66, 29.66)| |Z|Arathi Highlands|
-N Cresting Key |QID|651| |N|Collect Cresting Key from the stone (66.70, 29.64)| |Z|Arathi Highlands|
+N Cresting Key |QID|651| |L|4484| |N|Collect Cresting Key from the stone (66.70, 29.64)| |Z|Arathi Highlands|
 
 R Go'Shek Farm |QID|658| |N|Travel to Go'Shek Farm (60.17, 53.84)| |Z|Arathi Highlands|
 T Hints of a New Plague? (Part 1) |QID|659| |N|Quae in Go'Shek Farm (60.17, 53.84)| |Z|Arathi Highlands|
@@ -37,17 +37,17 @@ A Hints of a New Plague? (Part 2) |QID|658| |N|Quae in Go'Shek Farm (60.17, 53.8
 N Forsaken Courier |N|Keep checking main road east to west to kill Forsaken Courier for Sealed Folder - patrols between farm and Hillsbrad entrance|
 
 R Witherbark Village |QID|691| |N|Travel to Witherbark Village (68.29, 74.52)| |Z|Arathi Highlands|
-K Witherbark Shadow Hunter |QID|691| |N|Find and kill Witherbark Shadow Hunter inside cave first for Shadow Hunter Knife - quite rare (67.33, 78.77)| |Z|Arathi Highlands|
+K Witherbark Shadow Hunter |QID|691| |L|5040| |N|Find and kill Witherbark Shadow Hunter inside cave first for Shadow Hunter Knife - quite rare (67.33, 78.77)| |Z|Arathi Highlands|
 C Worth Its Weight in Gold |QID|691| |N|Kill Witherbark Witch Doctor for 4 Medicine Pouch and Headhunter for 10 Tusk (67.33, 78.77)| |Z|Arathi Highlands|
 
-N Thundering Key |QID|651| |N|Collect Thundering Key from stone in Circle of Outer Binding (52.09, 50.68)| |Z|Arathi Highlands|
+N Thundering Key |QID|651| |L|4485| |N|Collect Thundering Key from stone in Circle of Outer Binding (52.09, 50.68)| |Z|Arathi Highlands|
 
 R Refuge Pointe |QID|693| |N|Travel to Refuge Pointe (46.18, 47.71)| |Z|Arathi Highlands|
 T Worth Its Weight in Gold |QID|691| |N|Apprentice Kryten in Refuge Pointe (46.18, 47.71)| |Z|Arathi Highlands|
 A Wand over Fist |QID|693| |N|Skuerto in Refuge Pointe (46.59, 47.12)| |Z|Arathi Highlands|
 
 R Circle of West Binding |QID|651| |N|Travel to Circle of West Binding (25.43, 30.07)| |Z|Arathi Highlands|
-N Burning Key |QID|651| |N|Collect Burning Key from the stone (25.43, 30.07)| |Z|Arathi Highlands|
+N Burning Key |QID|651| |L|4483| |N|Collect Burning Key from the stone (25.43, 30.07)| |Z|Arathi Highlands|
 
 R Circle of Inner Binding |QID|651| |N|Travel to Circle of Inner Binding (36.24, 57.23)| |Z|Arathi Highlands|
 T Stones of Binding |QID|651| |N|Stone of Inner Binding (36.24, 57.25)| |Z|Arathi Highlands|
@@ -68,10 +68,10 @@ T Sunken Treasure (Part 1) |QID|665| |N|Doctor Draxlegauge in Faldir's Cove (33.
 A Sunken Treasure (Part 2) |QID|666| |N|Doctor Draxlegauge in Faldir's Cove (33.91, 80.44)| |Z|Arathi Highlands|
 N Goggles |QID|666| |N|Equip Goggles of Gem Hunting to help find Elven Gems| |U|4492|
 
-N Maiden's Folly Charts |QID|662| |N|Inside cauldron on second floor of ship (23.04, 84.44)| |Z|Arathi Highlands|
-N Maiden's Folly Log |QID|662| |N|Bottom of the ship (20.41, 85.60)| |Z|Arathi Highlands|
-N Spirit of Silverpine Charts |QID|662| |N|In The Drowned Reef (20.63, 85.10)| |Z|Arathi Highlands|
-N Spirit of Silverpine Log |QID|662| |N|Book on bottom of ship (23.04, 84.44)| |Z|Arathi Highlands|
+N Maiden's Folly Charts |QID|662| |L|4487| |N|Inside cauldron on second floor of ship (23.04, 84.44)| |Z|Arathi Highlands|
+N Maiden's Folly Log |QID|662| |L|4489| |N|Bottom of the ship (20.41, 85.60)| |Z|Arathi Highlands|
+N Spirit of Silverpine Charts |QID|662| |L|4488| |N|In The Drowned Reef (20.63, 85.10)| |Z|Arathi Highlands|
+N Spirit of Silverpine Log |QID|662| |L|4490| |N|Book on bottom of ship (23.04, 84.44)| |Z|Arathi Highlands|
 C Sunken Treasure (Part 2) |QID|666| |N|Collect 10 Elven Gem from stones underwater (22.58, 90.02)| |Z|Arathi Highlands|
 C Drowned Sorrows |QID|664| |N|Kill 10 Daggerspine Raider and 3 Daggerspine Sorceress (22.16, 83.00)| |Z|Arathi Highlands|
 

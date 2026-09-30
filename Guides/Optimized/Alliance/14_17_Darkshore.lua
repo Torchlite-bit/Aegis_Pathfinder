@@ -77,8 +77,8 @@ T Fruit of the Sea |QID|1138| |N|Gubber Blump in Auberdine (36.13, 44.92)|
 T The Blackwood Corrupted |QID|4763| |N|Thundris Windweaver in Auberdine (37.41, 40.16)|
 T Tharnariun's Hope |QID|2139| |N|Tharnariun Treetender in Auberdine (38.85, 43.44)|
 
-N Druid Cure Chain |QID|6123| |N|Collect 12 Lunar Fungus from caves (46.42, 45.61) (43.19, 45.75) (43.27, 49.17) (43.65, 50.41) (42.60, 52.39)| |C|Druid|
-N Druid Cure Chain |QID|6123| |N|Gather 5 Earthroot with Herbalism or purchase from auction house| |C|Druid|
+N Druid Cure Chain |QID|6123| |L|15851 12| |N|Collect 12 Lunar Fungus from caves (46.42, 45.61) (43.19, 45.75) (43.27, 49.17) (43.65, 50.41) (42.60, 52.39)| |C|Druid|
+N Druid Cure Chain |QID|6123| |L|2449 5| |N|Gather 5 Earthroot with Herbalism or purchase from auction house| |C|Druid|
 T Gathering the Cure |QID|6123| |N|Alanndarian Nightsong in Auberdine (37.68, 40.67)| |C|Druid|
 A Curing the Sick |QID|6124| |N|Alanndarian Nightsong in Auberdine (37.71, 40.83)| |C|Druid|
 C Curing the Sick |QID|6124| |N|Use Curative Animal Salve on 10 Sickly Deer throughout Darkshore (41.6, 46.2) (43.8, 41.8) (47.0, 42.2) (49.4, 35.2) (45.6, 31.6)| |C|Druid|

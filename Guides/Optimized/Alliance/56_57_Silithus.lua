@@ -62,8 +62,8 @@ A Bungle in the Jungle |QID|4496| |N|Alchemist Pestlezugg in Gadgetzan (50.91, 2
 N Spitelash Siren |QID|5163| |N|Use Umi's Mechanical Yeti to scare Spitelash Siren (51.07, 26.88)| |Z|Tanaris| |U|12928| |O|
 
 R The Slithering Scar |QID|4496| |N|Travel to The Slithering Scar in Un'Goro (51.44, 77.74)| |Z|Un'Goro Crater|
-N Gorishi Scent Gland |QID|4496| |N|Kill Gorishi insects and collect Gorishi Scent Gland (56.09, 67.27)| |Z|Un'Goro Crater|
-N Un'Goro Soil |QID|4496| |N|Collect 5 Un'Goro Soil from any npc or Un'Goro Dirt Pile| |Z|Un'Goro Crater|
+N Gorishi Scent Gland |QID|4496| |L|11837| |N|Kill Gorishi insects and collect Gorishi Scent Gland (56.09, 67.27)| |Z|Un'Goro Crater|
+N Un'Goro Soil |QID|4496| |L|11018 5| |N|Collect 5 Un'Goro Soil from any npc or Un'Goro Dirt Pile| |Z|Un'Goro Crater|
 
 U Bag of Empty Ooze Containers |QID|4513| |N|Open Bag and collect 10 Empty Pure Sample Jar| |U|11955| |L|11953| |O|
 C A Little Slime Goes a Long Way (Part 2) |QID|4513| |N|Kill Primal/Glutinous Ooze and use Empty Sample Jar on corpse BEFORE looting to collect 10 Filled Pure Sample Jar in Terror Run (47.92, 67.97)| |Z|Un'Goro Crater| |O|

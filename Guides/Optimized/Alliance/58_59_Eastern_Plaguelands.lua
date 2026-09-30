@@ -16,9 +16,9 @@ A Carrion Grubbage |QID|5544| |N|Tirion Fordring in Thondroril River (7.57, 43.7
 N As you go |N|Kill 30 Plaguebat, 20 Plaguehound Runt and Carrion Grub for 15 Slab of Carrion Worm Meat|
 
 R The Marris Stead |QID|6185| |N|Travel to The Marris Stead (28.04, 78.99)| |Z|Eastern Plaguelands| |O|
-N SI:7 Insignia (Turyen) |QID|6185| |N|Collect SI:7 Insignia (Turyen) from Mangled Human Remains (28.8, 74.8)| |Z|Eastern Plaguelands| |O|
-N SI:7 Insignia (Fredo) |QID|6185| |N|Collect SI:7 Insignia (Fredo) from Mangled Human Remains (27.22, 75.01)| |Z|Eastern Plaguelands| |O|
-N SI:7 Insignia (Rutger) |QID|6185| |N|Collect SI:7 Insignia (Rutger) from Mangled Human Remains (28.80, 79.80)| |Z|Eastern Plaguelands| |O|
+N SI:7 Insignia (Turyen) |QID|6185| |L|16002| |N|Collect SI:7 Insignia (Turyen) from Mangled Human Remains (28.8, 74.8)| |Z|Eastern Plaguelands| |O|
+N SI:7 Insignia (Fredo) |QID|6185| |L|16001| |N|Collect SI:7 Insignia (Fredo) from Mangled Human Remains (27.22, 75.01)| |Z|Eastern Plaguelands| |O|
+N SI:7 Insignia (Rutger) |QID|6185| |L|16003| |N|Collect SI:7 Insignia (Rutger) from Mangled Human Remains (28.80, 79.80)| |Z|Eastern Plaguelands| |O|
 N Uncovered The Blightcaller |QID|6185| |N|Uncovered The Blightcaller (28.80, 79.80)| |Z|Eastern Plaguelands| |O|
 
 R The Undercroft |QID|6024| |N|Travel to The Undercroft (27.91, 85.46)| |Z|Eastern Plaguelands|
@@ -47,13 +47,13 @@ f Light's Hope Chapel |QID|5542| |N|Get flight path from Khaelyn Steelwing (81.6
 N As you go |N|Kill Plaguehound, Frenzied Plaguehound, Carrion Grub|
 K Plaguehound |QID|5542| |N|Kill 5 Plaguehound (70.90, 71.41)| |Z|Eastern Plaguelands|
 K Frenzied Plaguehound |QID|5542| |N|Kill 5 Frenzied Plaguehound (70.30, 44.54)| |Z|Eastern Plaguelands|
-K Carrion Grub |QID|5544| |N|Kill Carrion Grub for 15 Slab of Carrion Worm Meat (67.9, 61.0)| |Z|Eastern Plaguelands|
+K Carrion Grub |QID|5544| |L|13853 15| |N|Kill Carrion Grub for 15 Slab of Carrion Worm Meat (67.9, 61.0)| |Z|Eastern Plaguelands|
 
 N As you go |N|Collect 30 Bone Fragments from Skeletons| |L|22526 30|
 K Diseased Flayer |QID|5211| |N|Kill Diseased Flayer then speak to Darrowshire Spirit that spawns to free it (65.96, 39.86)| |Z|Eastern Plaguelands|
 
 R Zul'Mashar |QID|6024| |N|Travel to Zul'Mashar (64.32, 22.56)| |Z|Eastern Plaguelands|
-K Infiltrator Hameya |QID|6024| |N|Kill Infiltrator Hameya and collect Hameya's Key (70.77, 16.07)| |Z|Eastern Plaguelands|
+K Infiltrator Hameya |QID|6024| |L|15767| |N|Kill Infiltrator Hameya and collect Hameya's Key (70.77, 16.07)| |Z|Eastern Plaguelands|
 
 R Quel'Lithien Lodge |QID|5246| |N|Travel to Quel'Lithien Lodge (53.54, 22.04)| |Z|Eastern Plaguelands|
 T Troubled Spirits of Kel'Theril |QID|5245| |N|Aurora Skycaller in Quel'Lithien Lodge (53.54, 22.04)| |Z|Eastern Plaguelands|
@@ -155,8 +155,8 @@ T A Plague Upon Thee (Part 3) |QID|6389| |N|Nathaniel Dumah in Chillwind Camp (4
 R Light's Hope Chapel |QID|5181| |N|Travel to Light's Hope Chapel (81.51, 59.77)| |Z|Eastern Plaguelands|
 T Brother Carlin |QID|5210| |N|Carlin Redpath in Light's Hope Chapel (81.51, 59.77)| |Z|Eastern Plaguelands|
 A Villains of Darrowshire |QID|5181| |N|Carlin Redpath in Light's Hope Chapel (81.51, 59.77)| |Z|Eastern Plaguelands|
-N Skull of Horgus |QID|5181| |N|Collect Skull of Horgus underwater in Blackwood Lake (51.07, 49.94)| |Z|Eastern Plaguelands|
-N Shattered Sword of Marduk |QID|5181| |N|Collect Shattered Sword of Marduk in The Infectis Scar (53.89, 65.78)| |Z|Eastern Plaguelands|
+N Skull of Horgus |QID|5181| |L|12956| |N|Collect Skull of Horgus underwater in Blackwood Lake (51.07, 49.94)| |Z|Eastern Plaguelands|
+N Shattered Sword of Marduk |QID|5181| |L|12957| |N|Collect Shattered Sword of Marduk in The Infectis Scar (53.89, 65.78)| |Z|Eastern Plaguelands|
 
 R Light's Hope Chapel |QID|5181| |N|Travel to Light's Hope Chapel (81.52, 59.75)| |Z|Eastern Plaguelands|
 T Villains of Darrowshire |QID|5181| |N|Carlin Redpath in Light's Hope Chapel (81.52, 59.75)| |Z|Eastern Plaguelands|

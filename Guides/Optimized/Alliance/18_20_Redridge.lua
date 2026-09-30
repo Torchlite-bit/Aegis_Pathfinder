@@ -22,7 +22,7 @@ A A Free Lunch |QID|129| |N|Darcy in the Inn (27.08, 45.13)|
 h Lakeshire |QID|92| |N|Set hearth at Innkeeper Brianna (27.01, 44.90)|
 A Redridge Goulash |QID|92| |N|Chef Breanna west of Lakeshire (22.70, 43.88)|
 
-N Great Goretusk Snouts |QID|92| |N|Kill Great Goretusk west of the houses for 5 Great Goretusk Snout (16.5, 49.6)|
+N Great Goretusk Snouts |QID|92| |L|2296 5| |N|Kill Great Goretusk west of the houses for 5 Great Goretusk Snout (16.5, 49.6)|
 
 R Lake Everstill |QID|125| |N|Head toward the lake (41, 54)|
 C The Lost Tools |QID|125| |N|Find Oslow's Toolbox in the Sunken Chest underwater (41.4, 54.7)|

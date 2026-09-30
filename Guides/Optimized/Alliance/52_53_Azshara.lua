@@ -39,9 +39,9 @@ T Prayer to Elune |QID|3378| |N|Astarii Starseeker in Temple of the Moon (38.29,
 h Craftsmen's Terrace |QID|3449| |N|Set hearth at Innkeeper Saelienne (67.42, 15.57)| |Z|Darnassus|
 
 R Temple of Zin-Malor |QID|3449| |N|Travel to Temple of Zin-Malor in Azshara (39.54, 50.12)| |Z|Azshara|
-N Rubbing: Rune of Jin'yael |QID|3449| |N|Collect Rubbing: Rune of Jin'yael (39.54, 50.12)| |Z|Azshara|
-N Rubbing: Rune of Beth'Amara |QID|3449| |N|Collect Rubbing: Rune of Beth'Amara (36.8, 53.2)| |Z|Azshara|
-N Rubbing: Rune of Markri |QID|3449| |N|Collect Rubbing: Rune of Markri (39.36, 55.59)| |Z|Azshara|
+N Rubbing: Rune of Jin'yael |QID|3449| |L|10564| |N|Collect Rubbing: Rune of Jin'yael (39.54, 50.12)| |Z|Azshara|
+N Rubbing: Rune of Beth'Amara |QID|3449| |L|10563| |N|Collect Rubbing: Rune of Beth'Amara (36.8, 53.2)| |Z|Azshara|
+N Rubbing: Rune of Markri |QID|3449| |L|10565| |N|Collect Rubbing: Rune of Markri (39.36, 55.59)| |Z|Azshara|
 
 R Legash Encampment |QID|3601| |N|Travel to Legash Encampment (53.28, 20.15)| |Z|Azshara|
 A Kim'jael Indeed! |QID|3601| |N|Kim'jael in Legash Encampment (53.46, 21.81)| |Z|Azshara|
@@ -60,7 +60,7 @@ T Kim'jael's "Missing" Equipment |QID|5534| |N|Kim'jael in Legash Encampment (53
 N Level 53 Required |N|Grind Blood Elf Surveyor in Thalassian Base Camp until level 53 - they have low HP (58.29, 28.39)| |Z|Azshara|
 
 R Ruins of Eldarath |QID|3449| |N|Travel to Ruins of Eldarath (42.35, 64.12)| |Z|Azshara|
-N Rubbing: Rune of Sael'hai |QID|3449| |N|Collect Rubbing: Rune of Sael'hai (42.35, 64.12)| |Z|Azshara|
+N Rubbing: Rune of Sael'hai |QID|3449| |L|10566| |N|Collect Rubbing: Rune of Sael'hai (42.35, 64.12)| |Z|Azshara|
 
 R The Ruined Reaches |QID|3449| |N|Travel to The Ruined Reaches (77.80, 91.32)| |Z|Azshara|
 U Standard Issue Flare Gun |QID|3449| |N|Use Standard Issue Flare Gun to summon Pilot Xiggs Fuselighter (77.81, 91.45)| |Z|Azshara| |U|10444|

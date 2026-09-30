@@ -330,6 +330,70 @@ do
 		"no prerequisite is never handed in")
 end
 
+-- A collect note ticks itself --------------------------------------------------------
+
+--[[ The Optimized guides had notes to collect a quest's items -- Bingles'
+	four tools in Loch Modan -- that waited for a click. Tagged with the item
+	(|L|, from the quest's own requirements), each ticks when the item is in
+	your bags, and shows the ⟳. These are the guide's own four lines. ]]
+do
+	local steps = {}
+	for line in io.lines("Guides/Optimized/Alliance/17_18_Loch_Modan.lua") do
+		local _, _, title, tags = string.find(line, "^N (Bingles' [^|]-) (|.*)$")
+		if title then table.insert(steps, { title = title, tags = tags }) end
+	end
+	check(table.getn(steps) == 4, "the guide has Bingles' four tools, got %d", table.getn(steps))
+	local want = { ["Bingles' Wrench"] = 7343, ["Bingles' Screwdriver"] = 7345,
+		["Bingles' Hammer"] = 7346, ["Bingles' Blastencapper"] = 7376 }
+
+	local bags = { [7343] = 1 }               -- the wrench, and nothing else yet
+	C_Item.GetItemCount = function(id) return bags[id] or 0 end
+	-- Core.lua's, as far as an |L| tag goes (an earlier block stubbed it out).
+	function AegisPathfinder:GetLootRequirement(i)
+		local id, qty = self:GetObjectiveTag("L", i)
+		if id then return tonumber(id), qty end
+	end
+	function AegisPathfinder:SetTurnedIn(i, value)
+		self.turnedin[self.quests[i]] = value and true or nil
+		self:UpdateStatusFrame()
+	end
+	AegisPathfinder.actions, AegisPathfinder.quests, AegisPathfinder.tags = {}, {}, {}
+	for k, s in ipairs(steps) do
+		AegisPathfinder.actions[k] = "NOTE"
+		AegisPathfinder.quests[k] = s.title .. "@" .. k .. "@"
+		AegisPathfinder.tags[k] = s.tags
+	end
+	for k, s in ipairs(steps) do
+		local id, qty = AegisPathfinder:GetObjectiveTag("L", k)
+		check(tonumber(id) == want[s.title] and qty == 1, "%s is tagged with its item, got %s x%s",
+			s.title, tostring(id), tostring(qty))
+		check(AegisPathfinder:IsAutoDetectable("NOTE", k), "and shows the auto-tick mark")
+	end
+	-- The engine looks at steps up to the first one not done: one picked up
+	-- ahead of its step ticks the moment the guide reaches it.
+	local function ticked()
+		local out = {}
+		for k, s in ipairs(steps) do
+			if AegisPathfinder.turnedin[AegisPathfinder.quests[k]] then table.insert(out, s.title) end
+		end
+		return table.concat(out, ", ")
+	end
+	AegisPathfinder.turnedin, AegisPathfinder.current = {}, 1
+	AegisPathfinder:UpdateStatusFrame()
+	check(ticked() == "", "on the Blastencapper with only the wrench, nothing ticks yet; got %s", ticked())
+	bags[7376] = 1
+	AegisPathfinder:UpdateStatusFrame()
+	check(ticked() == "Bingles' Blastencapper, Bingles' Wrench" and AegisPathfinder.current == 3,
+		"the Blastencapper ticks, then the wrench already in the bags; got %s at step %s",
+		ticked(), tostring(AegisPathfinder.current))
+	bags[7345], bags[7346] = 1, 1
+	AegisPathfinder:UpdateStatusFrame()
+	check(ticked() == "Bingles' Blastencapper, Bingles' Wrench, Bingles' Hammer, Bingles' Screwdriver",
+		"with all four, all four tick; got %s", ticked())
+	C_Item.GetItemCount = function() return 0 end
+	AegisPathfinder.SetTurnedIn, AegisPathfinder.GetLootRequirement = nil, nil
+end
+
 -- Report ---------------------------------------------------------------------
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end
