@@ -118,6 +118,9 @@ being left on the continent view. Astrolabe does that itself when it cannot
 place the player in a zone, and the same-zone path used to read it as "not in
 the waypoint's zone" and hide, while TomTom's arrow kept pointing. Without
 Astrolabe it falls back to that path (re-centring a continent-view map first).
+A waypoint on a continent's own map -- zone 0, from RestedXP's "Travel to
+Kalimdor" steps -- is measured by Astrolabe like any other; without it the
+callout hides and `/apg diagnav` says the point is on the continent's map.
 With no provider, no waypoint, or no way to measure, the callout hides; an
 arrow that is confidently wrong is worse than no arrow. `/apg diagnav` says
 which of those it is.

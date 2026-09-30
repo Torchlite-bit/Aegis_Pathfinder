@@ -67,6 +67,9 @@ are only found at startup.
       addon) has a small ⟳ in its circle; a note has an empty circle; a done
       step is filled, with no ⟳.
 - [ ] Accepting, completing and handing in a quest ticks its steps by itself.
+- [ ] Optimized Loch Modan, Bingles' tools (Bingles' Supplies): each of the
+      four notes has a ⟳ and ticks when that tool is in your bags. Pick up
+      one ahead of its note and it ticks as soon as the guide reaches it.
 - [ ] ◀ and ▶ step back and on; the tick marks the step done.
 - [ ] Click ◀ a few times, then **right-click ▶**: back at your place, with the
       steps ticked as they were. Same the other way (▶ a few times, right-click ◀).
@@ -85,6 +88,10 @@ are only found at startup.
 
 - [ ] With TomTom or pfQuest, the arrow points at the step and counts down the
       distance.
+- [ ] With TomTom, a RestedXP "Travel to Kalimdor" or "Travel to Eastern
+      Kingdoms" step (the Onyxia attunement guides have them) gets a pin on
+      the continent's map, and TomTom's arrow and ours point at it. With
+      only pfQuest there is no waypoint for the step, and nothing in chat.
 - [ ] Options → Navigation → Arrows: each switch turns its arrow on and off,
       and any two or all three can point at once. With TomTom taking the
       waypoints, pfQuest's arrow still points at the step when it is on.

@@ -59,7 +59,8 @@ C_CreatureInfo = {
 }
 local function anything() return setmetatable({}, { __index = function() return function() end end }) end
 C_QuestLog, C_Item = anything(), anything()
-C_Timer = { After = function() end, NewTicker = function() end }
+local tickers = {}
+C_Timer = { After = function() end, NewTicker = function(_, f) table.insert(tickers, f) end }
 UnitRaceBase = function() return "Human", "Human" end
 CLASSIC_API_VERSION = 10509
 
@@ -132,6 +133,56 @@ if A and A.PLAYER_LEVEL_UP then
 	UnitLevel = keepLevel
 	for k in pairs(saved) do A[k] = saved[k] end
 end
+
+--[[ Arriving at a point on a continent's map: RestedXP's "Travel to
+	Kalimdor (51.9, 55.5)", the Wailing Caverns' meeting stone. The arrival
+	check didn't know the continents' names, so it read the numbers on the
+	map of the zone you were in -- and ticked the step standing on 51.9, 55.5
+	of the Barrens, nowhere near the cave. ]]
+if A and table.getn(tickers) == 1 then
+	local ticked, yards, asked = 0, 400, nil
+	local saved = {}
+	for _, k in ipairs({ "current", "actions", "GetObjectiveInfo", "GetObjectiveTag", "SetTurnedIn", "Debug",
+		"updatedelay", "recheckCompletion" }) do saved[k] = A[k] end
+	local keep = { WorldMapFrame, SetMapToCurrentZone, GetCurrentMapContinent, GetCurrentMapZone, GetPlayerMapPosition }
+	A.current, A.actions, A.updatedelay, A.recheckCompletion = 1, { "RUN" }, nil, nil
+	A.Debug = function() end
+	A.GetObjectiveInfo = function() return "RUN", "Travel to Kalimdor" end
+	A.GetObjectiveTag = function(_, tag)
+		if tag == "N" then return "(51.9, 55.5) (WC Dungeon Quest)" end
+		if tag == "Z" then return "Kalimdor" end
+	end
+	A.SetTurnedIn = function() ticked = ticked + 1 end
+	-- In the Barrens, on 51.9, 55.5 of the Barrens' own map.
+	WorldMapFrame = CreateFrame("Frame")
+	WorldMapFrame:Hide()
+	SetMapToCurrentZone = function() end
+	GetCurrentMapContinent, GetCurrentMapZone = function() return 1 end, function() return 1 end
+	GetPlayerMapPosition = function() return 0.519, 0.555 end
+
+	tickers[1]()
+	check(ticked == 0, "a continent's point is not read on the map of the zone you are in")
+
+	Astrolabe = {
+		GetCurrentPlayerPosition = function() return 1, 1, 0.519, 0.555 end,
+		ComputeDistance = function(_, c1, z1, x1, y1, c2, z2, x2, y2)
+			asked = { c2, z2, x2, y2 }
+			return yards, 1, 1
+		end,
+	}
+	tickers[1]()
+	check(ticked == 0 and asked and asked[1] == 1 and asked[2] == 0 and math.abs(asked[3] - 0.519) < 1e-9,
+		"Astrolabe measures it on Kalimdor's own map, and 400 yd off is not there")
+	yards = 20
+	tickers[1]()
+	check(ticked == 1, "20 yd is: the point is only written to a tenth of a percent of the continent")
+
+	Astrolabe = nil
+	WorldMapFrame, SetMapToCurrentZone, GetCurrentMapContinent, GetCurrentMapZone, GetPlayerMapPosition =
+		keep[1], keep[2], keep[3], keep[4], keep[5]
+	for k in pairs(saved) do A[k] = saved[k] end
+end
+check(table.getn(tickers) == 1, "one ticker, QuestTracker's arrival check, got %d", table.getn(tickers))
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end
 print(string.format("Load: %d checks", checks))

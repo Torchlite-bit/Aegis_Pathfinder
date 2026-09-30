@@ -314,8 +314,8 @@ end
 	"Redridge", so each such step's waypoint went to the zone you stood in,
 	and chat said "Cannot find zone "Redridge", using current zone." on every
 	step. The shortened names -- in titles and in |Z| tags -- are the map's
-	names now; a point on a continent's map gets no waypoint, rather than the
-	same point in whatever zone you are in. ]]
+	names now; a point on a continent's map is put on that map, never on
+	whatever zone you are in. ]]
 do
 	AegisPathfinder.select = select
 	dofile("Parser.lua")
@@ -352,8 +352,47 @@ do
 	wp = step("|N|Travel to Booty Bay (28.08, 76.19)| |Z||", "Stranglethorn (39-40)")
 	check(wp and wp.zone == 5 and table.getn(said) == 0, "an empty |Z| is the guide's zone")
 
-	wp = step("|N|Travel to Eastern Kingdoms (48.1, 62.4)| |O| |Z|Eastern Kingdoms|", "RXP/Onyxia Attunement (A)")
-	check(wp == nil and table.getn(said) == 0, "a point on a continent's map: no waypoint, nothing said")
+	--[[ RestedXP's "Travel to Eastern Kingdoms" steps give a point on the
+		continent's map. TomTom-TWOW takes it as zone 0 of the continent, as
+		Astrolabe numbers it, and points across the continent. ]]
+	local continentstep = "|N|Travel to Eastern Kingdoms (48.1, 62.4)| |O| |Z|Eastern Kingdoms|"
+	wp = step(continentstep, "RXP/Onyxia Attunement (A)")
+	check(wp and wp.continent == 1 and wp.zone == 0 and math.abs(wp.x - 0.481) < 1e-9,
+		"a point on a continent's map goes to TomTom on that map, zone 0, got %s/%s",
+		tostring(wp and wp.continent), tostring(wp and wp.zone))
+	check(table.getn(said) == 0, "and nothing is said in chat, got %q", tostring(said[1]))
+	check(wp and wp.callbacks.distance and wp.callbacks.distance[30] and not wp.callbacks.distance[15],
+		"arriving within 30 yd, as the point is only written to a tenth of a percent of the continent")
+	check(A.waypointtarget and A.waypointtarget.zoneindex == 0, "our arrow has it to point at")
+	local bearing, yards, why = A:GetWaypointBearing()
+	check(bearing ~= nil and yards == 2000, "and points, measured by Astrolabe (%s)", tostring(why))
+	local keepAstrolabe = Astrolabe
+	Astrolabe = nil
+	bearing, yards, why = A:GetWaypointBearing()
+	check(bearing == nil and string.find(why or "", "continent", 1, true),
+		"without Astrolabe it hides, saying why, got '%s'", tostring(why))
+	Astrolabe = keepAstrolabe
+
+	-- The others place notes in a zone: they decline it, rather than put the
+	-- point in the zone you are standing in.
+	db.providerarrow = false
+	db.waypointprovider = "pfquest"
+	nodes = {}
+	wp = step(continentstep, "RXP/Onyxia Attunement (A)")
+	check(table.getn(nodes) == 0 and A.waypointtarget == nil and table.getn(said) == 0,
+		"pfQuest declines it, quietly")
+	local keepLoaded, metanotes = IsAddOnLoaded, {}
+	IsAddOnLoaded = function(name) return name == "MetaMap" end
+	MetaMap_NameToZoneID = function() return nil end
+	MetaMap_GetCurrentMapInfo = function() return 99 end
+	MetaMapNotes_AddNewNote = function(note) table.insert(metanotes, note) end
+	MetaMapNotes_DeleteNote = function() end
+	db.waypointprovider = "metamap"
+	step(continentstep, "RXP/Onyxia Attunement (A)")
+	check(table.getn(metanotes) == 0, "and so does MetaMap, whose fallback is the zone you are in")
+	IsAddOnLoaded, MetaMap_NameToZoneID, MetaMap_GetCurrentMapInfo = keepLoaded, nil, nil
+	MetaMapNotes_AddNewNote, MetaMapNotes_DeleteNote = nil, nil
+	db.waypointprovider, db.providerarrow = "tomtom", true
 
 	wp = step("|N|Somewhere (10, 10)| |Z|Nowhere Land|")
 	check(wp ~= nil and said[1] and string.find(said[1], "Nowhere Land", 1, true),

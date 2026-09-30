@@ -330,7 +330,10 @@ options window does not shrink out from under the cursor.
 
 **Automatic advancement.** Accepting, completing and turning in quests, binding
 a hearthstone, and collecting tagged items all resolve themselves. So do travel
-steps, once a waypoint provider is active. A step the addon can finish for you
+steps, once a waypoint provider is active. A note that has you pick something
+up for a quest -- Bingles' four tools in Loch Modan, one note each -- ticks
+when the item is in your bags, and one you pick up ahead of its note ticks
+when the guide gets there. A step the addon can finish for you
 has a small ⟳ inside its circle, so you know when not to reach for it; an
 empty circle is one only you can tick, and a filled one is done.
 
@@ -362,7 +365,11 @@ you have not picked up stays, and the guide still takes you there.
 **A navigation arrow.** It points at the current objective and says how far and
 how long, floating on the world with no window around it. It needs a waypoint
 provider; with none, or with no waypoint for this step, it hides rather than
-pointing somewhere arbitrary.
+pointing somewhere arbitrary. RestedXP's "Travel to Kalimdor" and "Travel to
+Eastern Kingdoms" steps give a point on the continent's map rather than a
+zone's: TomTom takes it and points across the continent, and so does
+Pathfinder's arrow. pfQuest, Cartographer and MetaMap only place points in a
+zone, so they set none for those steps.
 
 **Which arrows.** The **Arrows** section on the options' **Navigation** page
 has a switch for each: Pathfinder's, TomTom's and pfQuest's. Turn on one, two,
