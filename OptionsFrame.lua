@@ -598,6 +598,7 @@ function AegisPathfinder:CreateConfigPanel()
 		{ key = "trackquests",   label = "Track quests automatically" },
 		{ key = "skipfollowups", label = "Skip suggested follow-ups" },
 		{ key = "offercustomzones", label = "Offer custom zones between guides" },
+		{ key = "classquests", label = "Offer class quests at their level" },
 		{ key = "showminimapbutton", label = "Minimap button" },
 		{ key = "showactiveitems", label = "Active items window" },
 		{ key = "showactivetargets", label = "Active targets window" },

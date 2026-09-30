@@ -26,14 +26,14 @@ pushed anyway is released too.
 | Path | What it is |
 |---|---|
 | `Aegis_Pathfinder.toc`, `*.lua`, `Bindings.xml` | The addon. The `.toc` lists what loads, in order |
-| `Guides/` | The guides: `Optimized/`, `RXP/` and `RXP_Hardcore/` by side; the zone guides in `Alliance/`, `Horde/` and `Both/`; `Dungeons/` and `Professions/`, which are generated |
+| `Guides/` | The guides: `Optimized/`, `RXP/` and `RXP_Hardcore/` by side; the zone guides in `Alliance/`, `Horde/` and `Both/`; `Dungeons/`, `Class/` and `Professions/`, which are generated |
 | `Routes/` | The route packs: which guide follows which, per race |
 | `Crafting/` | Recipe and price data for the crafting route planner (generated) |
 | `media/` | Textures (generated) and fonts -- see [media/README.md](media/README.md) |
 | `libs/` | Ace2 |
 | `Tools/run_tests.sh`, `Tools/verify.py` | The checks (below) |
 | `Tools/tests/` | The Lua tests, and `wow_stub.lua`, the 1.12 API they run against |
-| `Tools/build/` | The generators and importers: dungeon, zone and profession guides, gear and item-score data, recipes, textures, the filter review, and the RestedXP converter |
+| `Tools/build/` | The generators and importers: dungeon, class quest, zone and profession guides, gear and item-score data, recipes, textures, the filter review, and the RestedXP converter |
 | `Tools/data/` | What the generators read and cache, and the filter review's candidates and answers |
 | `docs/` | Features, guide authoring, the QuestShell+ format, the UI spec and design concept, and the in-game test pass |
 
@@ -57,12 +57,12 @@ That runs everything that can run without a WoW client:
 | `Tools/tests/test_filtertags.lua` | The filter tags in the Optimized and zone guides through the real parser: group quests and their follow-ups hide in Solo mode, Auction House steps with Auction House steps off, dungeon quests with the dungeon unticked, and all three -- with trading -- under Solo Self-Found; and every approved tag is still in place |
 | `Tools/tests/test_professions.lua` | Generated guides through the real parsers: skill bands tile 1–300 for each faction, every rank is reached, and a gathering guide never sends a faction into the other side's starting zones or capitals |
 | `Tools/tests/test_dungeons.lua` | Dungeon chips and the guide-reference scan |
-| `Tools/tests/test_guidelist.lua` | Guide categorisation, tabs and badges |
+| `Tools/tests/test_guidelist.lua` | Guide categorisation, tabs and badges, and a class quest guide's one level |
 | `Tools/tests/test_activeframes.lua` | Active Items, Active Targets and Macros: which items and targets each step offers, targeting and raid marks, the generated AegisTarget/AegisItem macros, placement, the key bindings |
 | `Tools/tests/test_setup.lua` | First-time setup: when it opens, which guides and dungeons it offers, Solo Self-Found holding the other features off, and what Finish writes |
 | `Tools/tests/test_zoneguide.lua` | The Moonwhisper Coast guides through the real parser: each side's own quests and not the other's; every quest step with an id, a zone and a place to go; picked up, done, handed in in that order, and each quest after the one it follows (the Moro'gai story, the Horde's trips to Azshara and Mulgore and back); the quest log never past 20; the quests you may not have optional; group quests, what follows them and a trip made only for them in Group mode alone; a race's quest shown to that race only |
 | `Tools/tests/test_routes.lua` | The route packs against the guides: every leg a guide your faction has, every guide's next link one that exists, where the routes part by race, and DungeonQuests.lua what `Tools/build/build_dungeon_quests.py` makes of them today |
-| `Tools/tests/test_nextguide.lua` | Where next?: which custom zones fit a level, and the walk from a route guide to a custom zone and back to the route |
+| `Tools/tests/test_nextguide.lua` | Where next?: which custom zones fit a level, and the walk from a route guide to a custom zone and back to the route; a ticked dungeon at the middle of its levels; a class quest at its level (your class and race, not done, not on the route still to come, a group chain only in a group), each window's buttons in their own window, the dungeon's before the class quest's |
 | `Tools/tests/test_materials.lua` | Shopping list arithmetic, checked against the source document's own shopping list; bag counts, the scope tabs, and sending to Aegis: Exchange |
 | `Tools/tests/test_craftplanner.lua` | The crafting route planner: reading the recipe data, the skill-up chance, the route against brute force, learning fees, make-or-buy, pricing at depth, stock carried between steps, selling back, unpriced reagents; the auction scan against the suite's auction house rules; every profession planned from the real data |
 | `Tools/tests/test_itemscore.lua` | The item score: reading 1.12 tooltips (stats, weapon DPS, school spell damage, set bonuses and procs ignored, red lines meaning unusable or later), soft caps, the spec from your talents, your own weights and sharing them in OctoPawn's string, comparing by slot (rings, two-handers, dual wield), and the tooltip line |
@@ -77,11 +77,12 @@ That runs everything that can run without a WoW client:
 | `Tools/tests/test_objectivepanel.lua` | The objectives panel: header, nav row, step rows, the objective bars, resizing |
 | `Tools/tests/test_options.lua` | The options window: its pages, and every control driving the setting it shows |
 | `Tools/tests/test_stacking.lua` | Windows drawn in front stay in front, wherever they overlap |
-| `Tools/tests/test_scrolling.lua` | The theme's scrollbar on the guide list and the error log: carets, wheel, the ends of the range |
+| `Tools/tests/test_scrolling.lua` | The theme's scrollbar on the guide list and the error log: carets, wheel, the ends of the range; the guide list's nine tabs fitting the panel |
 | `Tools/tests/test_minimap.lua` | The minimap button: drawn from the theme, its clicks, dragging round the edge, and the setting that hides it |
 | `Tools/tests/test_navcallout.lua` | The navigation arrow's maths: bearing relative to your facing, distance and time |
 | `Tools/tests/test_navigation.lua` | The waypoint addons and arrow switches, continent-map points, trainers found by name, and the zone a step is in |
 | `Tools/tests/test_dungeonguides.lua` | The dungeon guides: current with their generator, listed, parsed, an entrance to point at, and no loose ends |
+| `Tools/tests/test_classguides.lua` | The class quest guides: current with their generator, listed, a milestone for each; parsed as every race of the class sees it -- its own chain and no other race's, no loose ends, ending with the quest the offer takes for its last; and the chains that must come out right (the Voidwalker by home city, the Charger's horse feed before the spirit) |
 | `Tools/tests/test_professionsteps.lua` | Profession training: ranks waiting for their level, your side's trainers, tomes and Artisan quests, completing on skill and cap |
 
 Everything must pass before you open a PR. **None of it proves the UI looks

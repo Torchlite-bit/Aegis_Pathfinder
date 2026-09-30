@@ -490,8 +490,14 @@ every custom-zone guide against it.
 Dungeon guides (`Guides/Dungeons/`, named `Dungeons/<dungeon> (lo-hi)`) are
 the **Dungeons** tab, between Zones and Professions: `GetGuideCategory` takes
 the `Dungeons/` prefix before it looks for a custom zone's name, so Gilneas
-City's guide is not filed under Custom. With eight tabs the strip's tabs are
-78 wide, to fit the 660-wide panel.
+City's guide is not filed under Custom.
+
+Class quest guides (`Guides/Class/`, named `Class/<Class>: <milestone>
+(<level>)`) are the **Class** tab, between Dungeons and Professions, under a
+`--- Class Quests ---` header; the list holds only yours (`IsMyClassGuide`: your
+class's, and one your race has a chain for). `ParseGuideLevelRange` reads a
+single `(10)` as 10-10. With nine tabs each is as wide as its label and 14 (at
+least 40), laid end to end 2 apart, so the strip fits the 660-wide panel.
 
 ### First-time setup -- `SetupFrame.lua`
 
@@ -585,11 +591,33 @@ LEVEL` subhead, a line naming the level and the dungeon, a `Theme:PanelButton`
 per dungeon ("Open ..." when there is one) and a **Not now** button. Showing
 them is the offer: each is marked offered then, whatever the answer. A button
 opens its guide in a tab (`OpenGuideTab`) and the window keeps the rest; Not
-now, the close chip or Escape closes it. It waits while Where next? or the setup
-is up, without marking anything. It is asked from its own `PLAYER_LEVEL_UP`
-frame (`arg1`, the new level: `UnitLevel` can lag), at the end of
-`InitializeRoute`, and when the setup is finished (`SetupStep`). Beside the
-guide, as Where next? is.
+now, the close chip or Escape closes it. It waits while Where next?, the setup
+or the class quest's window is up, without marking anything. It is asked from
+its own `PLAYER_LEVEL_UP` frame (`arg1`, the new level: `UnitLevel` can lag),
+at the end of `InitializeRoute`, and when the setup is finished (`SetupStep`),
+each through `OfferAtLevel`. Beside the guide, as Where next? is.
+
+**A class quest at your level** (`AegisPathfinderClassQuest`, same file). Not
+in the concept. The same window as the dungeon's (`BuildOffer`, `PaintOffer`,
+`ShowOffer`, one layout for both; a row is anchored to its own window, which
+`Put` now takes), with an `A CLASS QUEST AT YOUR LEVEL` subhead.
+`GetClassMilestones(level)` reads `CLASS_MILESTONES`, which each
+`Guides/Class/` file fills through `RegisterClassMilestones(side, class,
+list)`: for your side and `UnitClass` token, the milestones your race
+(`ClassGuideRace`: `UnitRace`'s token, Scourge as Undead) has a chain for,
+whose level you have reached, by no more than five (`CLASS_PAST`), and that
+are not offered before
+(`db.char.classoffered[guide]`), finished (`db.char.completion`), done on the
+server (`IsQuestCompletedOnServer` of the race's `last`), open in a tab, or
+still to come on your route (`RouteHasQuests`: a leg from the one in tab 1 on
+has a `|QID|` of the race's chain in a step your class and race would see, each
+guide read once). A `group` milestone only in Group mode without Solo
+Self-Found. Nothing before `setupdone` or with `classquests` false (Behaviour's
+*Offer class quests at their level*, on by default). Up to four, lowest level
+first. `OfferClassMilestones` shows them, marking each offered;
+`OpenClassMilestone` opens one in a tab, and the guide's end takes you back
+to the route as any tab's does. `OfferAtLevel` asks the dungeon's first; the
+dungeon window's `OnHide` then asks the class quest's.
 
 ### Shopping list -- `MaterialsFrame.lua`
 
@@ -900,9 +928,10 @@ the width goes to the name.
 **Substitution: the badge says what the guide is** (`GuideBadge`,
 `Theme.BADGES`). The concept has the one gold `XP`. Here it's `XP` for a leveling
 guide, `PF` (blue) for a profession guide, a crafting route included, `DG`
-(violet) for a dungeon guide, `HC` (red, light text) for a hardcore guide, and
-the grey `TPL` for a placeholder, whatever else it is. PF, DG and HC keep
-their colours in every theme, as the step bands do.
+(violet) for a dungeon guide, `CL` (teal) for a class quest guide, `HC` (red,
+light text) for a hardcore guide, and the grey `TPL` for a placeholder,
+whatever else it is. PF, DG, CL and HC keep their colours in every theme, as
+the step bands do.
 
 The model is `db.char.tabs` (a list of `{guide, step}`) plus `activetab`, in
 `Core.lua`. It replaced a one-deep branch — main plus at most one branch off

@@ -64,7 +64,7 @@ C The Sternrock Stash |QID|40461| |N|Recover the Sternrock Stash (29.3, 43.5)| |
 T The Sternrock Stash |QID|40461| |N|Orvak Sternrock (76, 68.2)| |Z|Burning Steppes|
 A Senatorial Revenge |QID|40464| |N|Orvak Sternrock (76, 68.2)| |Z|Burning Steppes|
 
-R Blackrock Depths |N|Into Blackrock Mountain from the Burning Steppes -- or from the Searing Gorge (35.5, 84.4) -- and take the chains down to Blackrock Depths' portal at the bottom of the mountain (29.5, 38.1)| |Z|Burning Steppes|
+R Blackrock Depths |N|Into Blackrock Mountain from the Burning Steppes -- or from the Searing Gorge -- and take the chains down to Blackrock Depths' portal at the bottom of the mountain (29.5, 38.1)| |Z|Burning Steppes|
 C Dark Iron Legacy |QID|3802| |N|Slay Fineous Darkvire and recover the great hammer, Ironfel. Take Ironfel to the Shrine of Thaurissan and place it on the statue of Franclorn Forgewright|
 T Dark Iron Legacy |QID|3802| |N|Monument of Franclorn Forgewright|
 C KILL ON SIGHT: Dark Iron Dwarves |QID|4081| |N|Venture to Blackrock Depths and destroy the vile aggressors!  Warlord Goretooth wants you to kill 15 Anvilrage Guardsmen, 10 Anvilrage Wardens and 5 Anvilrage Footmen|
@@ -111,7 +111,7 @@ T A Taste of Flame |QID|4023| |N|Cyrus Therepentous (95.1, 31.6)| |Z|Burning Ste
 A A Taste of Flame |QID|4024| |N|Cyrus Therepentous (95.1, 31.6)| |Z|Burning Steppes|
 T A Taste of Flame |QID|4024| |N|Cyrus Therepentous (95.1, 31.6)| |Z|Burning Steppes|
 
-R Blackrock Depths |N|Into Blackrock Mountain from the Burning Steppes -- or from the Searing Gorge (35.5, 84.4) -- and take the chains down to Blackrock Depths' portal at the bottom of the mountain (29.5, 38.1)| |Z|Burning Steppes|
+R Blackrock Depths |N|Into Blackrock Mountain from the Burning Steppes -- or from the Searing Gorge -- and take the chains down to Blackrock Depths' portal at the bottom of the mountain (29.5, 38.1)| |Z|Burning Steppes|
 T Commander Gor'shak |QID|3981| |N|Commander Gor'shak|
 A What Is Going On? |QID|3982| |N|Commander Gor'shak|
 C What Is Going On? |QID|3982| |N|Defend Gor'shak.|
@@ -138,7 +138,7 @@ A Operation: Death to Angerforge |QID|4132| |N|Warlord Goretooth (5.8, 47.5)| |Z
 
 N Blackrock Depths again |N|What you have handed in leads back to Blackrock Depths|
 
-R Blackrock Depths |N|Into Blackrock Mountain from the Burning Steppes -- or from the Searing Gorge (35.5, 84.4) -- and take the chains down to Blackrock Depths' portal at the bottom of the mountain (29.5, 38.1)| |Z|Burning Steppes|
+R Blackrock Depths |N|Into Blackrock Mountain from the Burning Steppes -- or from the Searing Gorge -- and take the chains down to Blackrock Depths' portal at the bottom of the mountain (29.5, 38.1)| |Z|Burning Steppes|
 C Operation: Death to Angerforge |QID|4132| |N|Travel to Blackrock Depths and slay General Angerforge|
 
 F Kargath |N|Fly to Kargath in the Badlands| |Z|Badlands|

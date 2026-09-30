@@ -384,6 +384,174 @@ check(m:IsShown() and m.dungeons[1]:GetText() == "OPEN ULDAMAN (41-51)", "reachi
 m:Hide()
 char.middungeonsoffered, char.setupdone = nil, nil
 
+-- The windows' rows sit in their own window ---------------------------------------------
+
+--[[ Put anchored every row to "Where next?", whichever window it was laying
+	out: the dungeon window's buttons hung off a window that was not there,
+	or off another one. ]]
+char.setupdone, char.middungeonsoffered = true, nil
+check(AegisPathfinder:OfferMidLevelDungeons(46) == true, "Uldaman again, for the anchoring")
+local _, rel = m.dungeons[1]:GetPoint(1)
+local _, relLater = m.later:GetPoint(1)
+check(rel == m and relLater == m, "the dungeon window's buttons are anchored to it, not to Where next?")
+m:Hide()
+char.middungeonsoffered = nil
+
+-- A class quest at its level --------------------------------------------------------------
+
+--[[ Guides/Class/ registers each class's milestones: a warlock's Voidwalker
+	at 10, the Felhunter at 30, the Dreadsteed at 60 with a group. The one
+	for your class and race is offered on reaching its level, once, when the
+	route does not do it already and it is not done. ]]
+local VOID, FELHUNTER, DREAD = "Class/Warlock: Voidwalker (10)", "Class/Warlock: Felhunter (30)", "Class/Warlock: Dreadsteed (60)"
+guide(VOID) guide(FELHUNTER) guide(DREAD)
+AegisPathfinder:RegisterClassMilestones("Horde", "WARLOCK", {
+	{ guide = VOID, group = false, races = {
+		["Orc"] = { level = 10, last = 1504, quests = { 1501, 1504 } },
+		["Undead"] = { level = 10, last = 1471, quests = { 1473, 1471 } },
+	} },
+	{ guide = FELHUNTER, group = false, races = {
+		["Orc"] = { level = 30, last = 1795, quests = { 1801, 1803, 1805, 1795 } },
+	} },
+	{ guide = DREAD, group = true, races = {
+		["Orc"] = { level = 60, last = 7631, quests = { 7562, 7631 } },
+	} },
+})
+AegisPathfinder:RegisterClassMilestones("Alliance", "WARLOCK", {
+	{ guide = "Class/Warlock: Voidwalker (10)", group = false, races = {
+		["Human"] = { level = 10, last = 1689, quests = { 1688, 1689 } },
+	} },
+})
+local faction, class, race = "Horde", "WARLOCK", "Orc"
+UnitFactionGroup = function() return faction end
+UnitClass = function() return "Warlock", class end
+UnitRace = function() return race == "Undead" and "Undead" or race, race == "Undead" and "Scourge" or race end
+local onServer = {}
+function AegisPathfinder:IsQuestCompletedOnServer(qid) return onServer[tonumber(qid)] == true end
+-- The route: an Orgrimmar stretch that does not take the Voidwalker.
+AegisPathfinder.guides["Optimized/Durotar (10-12)"] = function()
+	return "A Creature of the Void |QID|1473| |C|Warlock| |R|Undead|\nA Vile Familiars |QID|792|\n"
+end
+AegisPathfinder.routes.Orc = { { levels = "10-12", guide = "Optimized/Durotar (10-12)" } }
+function AegisPathfinder:GetRouteForRace() return faction == "Horde" and "Orc" or "Human" end
+char.currentroute, char.classoffered = nil, nil
+char.completion = {}
+char.currentguide, char.tabs, char.activetab, char.isbranching = "Optimized/Durotar (10-12)", nil, nil, false
+AegisPathfinder:EnsureTabs()
+
+check(AegisPathfinder:ClassGuideRace() == "Orc", "an Orc is an Orc")
+race = "Undead"
+check(AegisPathfinder:ClassGuideRace() == "Undead", "UnitRace's Scourge is the guides' Undead")
+race = "Orc"
+
+char.setupdone = nil
+check(table.getn(AegisPathfinder:GetClassMilestones(10)) == 0, "nothing before the setup is done")
+char.setupdone = true
+check(table.getn(AegisPathfinder:GetClassMilestones(9)) == 0, "nothing a level short")
+check(names(AegisPathfinder:GetClassMilestones(10)) == VOID, "the Voidwalker at 10, got '%s'",
+	names(AegisPathfinder:GetClassMilestones(10)))
+check(names(AegisPathfinder:GetClassMilestones(15)) == VOID, "five levels on, still")
+check(table.getn(AegisPathfinder:GetClassMilestones(16)) == 0,
+	"six on, no: that far past it, it is most likely done")
+check(names(AegisPathfinder:GetClassMilestones(30)) == FELHUNTER, "the Felhunter at 30")
+check(table.getn(AegisPathfinder:GetClassMilestones(60)) == 0, "the Dreadsteed needs a group")
+char.PlayStyle = "GROUP"
+check(names(AegisPathfinder:GetClassMilestones(60)) == DREAD, "in a group it is offered")
+char.SelfFound = true
+check(table.getn(AegisPathfinder:GetClassMilestones(60)) == 0, "Solo Self-Found is solo, whatever group mode says")
+char.SelfFound, char.PlayStyle = nil, nil
+-- Two at once, lowest first.
+AegisPathfinder:RegisterClassMilestones("Horde", "WARLOCK", {
+	{ guide = VOID, group = false, races = { ["Orc"] = { level = 10, last = 1504, quests = { 1501, 1504 } } } },
+	{ guide = FELHUNTER, group = false, races = { ["Orc"] = { level = 12, last = 1795, quests = { 1795 } } } },
+})
+check(names(AegisPathfinder:GetClassMilestones(13)) == VOID .. ", " .. FELHUNTER, "two at 13, lowest first")
+AegisPathfinder:RegisterClassMilestones("Horde", "WARLOCK", {
+	{ guide = VOID, group = false, races = {
+		["Orc"] = { level = 10, last = 1504, quests = { 1501, 1504 } },
+		["Undead"] = { level = 10, last = 1471, quests = { 1473, 1471 } },
+	} },
+	{ guide = FELHUNTER, group = false, races = {
+		["Orc"] = { level = 30, last = 1795, quests = { 1801, 1803, 1805, 1795 } },
+	} },
+	{ guide = DREAD, group = true, races = {
+		["Orc"] = { level = 60, last = 7631, quests = { 7562, 7631 } },
+	} },
+})
+onServer[1504] = true
+check(table.getn(AegisPathfinder:GetClassMilestones(10)) == 0, "not one whose last quest is handed in")
+onServer[1504] = nil
+char.completion[VOID] = 1
+check(table.getn(AegisPathfinder:GetClassMilestones(10)) == 0, "nor one whose guide is finished")
+char.completion[VOID] = nil
+class = "WARRIOR"
+check(table.getn(AegisPathfinder:GetClassMilestones(10)) == 0, "a warrior is offered no warlock's")
+class, race = "WARLOCK", "Tauren"
+check(table.getn(AegisPathfinder:GetClassMilestones(10)) == 0, "nor a race the milestone has no chain for")
+race = "Undead"
+check(table.getn(AegisPathfinder:GetClassMilestones(10)) == 0,
+	"an Undead's route has Creature of the Void already: not offered")
+race, faction = "Human", "Alliance"
+check(names(AegisPathfinder:GetClassMilestones(10)) == VOID, "the Alliance's, for a Human")
+race, faction = "Orc", "Horde"
+AegisPathfinder.guides["Optimized/Orgrimmar (12-13)"] = function()
+	return "A Creature of the Void |QID|1501| |C|Mage|\n"
+end
+table.insert(AegisPathfinder.routes.Orc, { levels = "12-13", guide = "Optimized/Orgrimmar (12-13)" })
+check(names(AegisPathfinder:GetClassMilestones(10)) == VOID, "a later leg's step for another class does not count")
+AegisPathfinder.guides["Optimized/Barrens (13-15)"] = function()
+	return "T The Binding |QID|1504| |C|Warlock| |R|Orc/Troll|\n"
+end
+table.insert(AegisPathfinder.routes.Orc, { levels = "13-15", guide = "Optimized/Barrens (13-15)" })
+check(table.getn(AegisPathfinder:GetClassMilestones(10)) == 0, "one of its quests on a leg to come: the route does it")
+table.remove(AegisPathfinder.routes.Orc)
+char.classquests = false
+check(table.getn(AegisPathfinder:GetClassMilestones(10)) == 0, "none with the switch off")
+char.classquests = nil
+
+-- Offered: the window, once; open puts it in a tab beside the route.
+check(AegisPathfinder:OfferClassMilestones(10) == true, "at 10 the Voidwalker is offered")
+local cw = AegisPathfinder.classquestframe
+check(cw and cw:IsShown(), "in a window")
+check(string.find(cw.text:GetText(), "level 10", 1, true) and string.find(cw.text:GetText(), "Warlock: Voidwalker (10)", 1, true),
+	"saying which, got '%s'", cw.text:GetText())
+check(cw.rows[1]:GetText() == "OPEN WARLOCK: VOIDWALKER (10)" and not cw.rows[2]:IsShown() and cw.later:IsShown(),
+	"one button to open it, and not now; got '%s'", tostring(cw.rows[1]:GetText()))
+local _, rowRel = cw.rows[1]:GetPoint(1)
+check(rowRel == cw, "its buttons are anchored to it")
+check(char.classoffered and char.classoffered[VOID], "and it is remembered as offered")
+this = cw.rows[1]
+cw.rows[1]:GetScript("OnClick")()
+check(char.currentguide == VOID, "open loads the class guide")
+check(tabs() == "Optimized/Durotar (10-12) | " .. VOID, "in a tab beside the route, got %s", tabs())
+check(not cw:IsShown(), "and the window goes")
+check(AegisPathfinder:OfferClassMilestones(10) == false, "and is not offered again")
+
+-- The dungeon's window first; the class quest's when it closes.
+local SUCCUBUS = "Class/Warlock: Succubus (20)"
+guide(SUCCUBUS)
+AegisPathfinder:RegisterClassMilestones("Horde", "WARLOCK", {
+	{ guide = SUCCUBUS, group = false, races = { ["Orc"] = { level = 20, last = 1513, quests = { 1507, 1513 } } } },
+})
+char.classoffered = nil
+char.tabs, char.activetab, char.isbranching = nil, nil, false
+char.currentguide = "Optimized/Durotar (10-12)"
+AegisPathfinder:EnsureTabs()
+char.Dungeons = { DM = true }
+char.middungeonsoffered = nil
+check(AegisPathfinder:OfferAtLevel(21) == true and m:IsShown() and not cw:IsShown(),
+	"at 21 The Deadmines' window first")
+this = m.later
+m.later:GetScript("OnClick")()
+-- The client runs OnHide as the window goes; the stub leaves it to us.
+this = m
+m:GetScript("OnHide")()
+check(not m:IsShown() and cw:IsShown() and cw.rows[1]:GetText() == "OPEN WARLOCK: SUCCUBUS (20)",
+	"not now on it brings the class quest's, got '%s'", tostring(cw.rows[1]:GetText()))
+cw.later:GetScript("OnClick")()
+check(not cw:IsShown() and char.classoffered[SUCCUBUS], "not now closes it, and it has had its offer")
+char.middungeonsoffered, char.classoffered, char.setupdone, char.Dungeons = nil, nil, nil, {}
+
 -- Report ----------------------------------------------------------------------------------
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end

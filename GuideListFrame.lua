@@ -152,16 +152,25 @@ local CATEGORY_TABS = {
     { key = "rxp_hc",     label = "Hardcore" },
     { key = "zone",       label = "Zones" },
     { key = "dungeon",    label = "Dungeons" },
+    { key = "class",      label = "Class" },
     { key = "profession", label = "Professions" },
 }
 
+--[[ Nine tabs do not fit the 660-wide panel at one width, so each is as
+    wide as its label and a margin: CLASS narrow, PROFESSIONS wide. ]]
 local categoryTabs = {}
-local TAB_W, TAB_H, TAB_GAP = 78, 22, 2
+local TAB_H, TAB_GAP, TAB_PAD, TAB_MIN = 22, 2, 14, 40
 
+local prevTab
 for idx, def in ipairs(CATEGORY_TABS) do
-    local tab = Theme:Tab(frame, def.label, TAB_W, TAB_H)
-    tab:SetPoint("TOPLEFT", frame, "TOPLEFT", 12 + (idx - 1) * (TAB_W + TAB_GAP),
-        -(HEADER_H + SUBHEAD_H + 4))
+    local tab = Theme:Tab(frame, def.label, TAB_MIN, TAB_H)
+    tab:SetWidth(math.max(TAB_MIN, math.ceil((tab.label:GetStringWidth() or 0) + TAB_PAD)))
+    if prevTab then
+        tab:SetPoint("TOPLEFT", prevTab, "TOPRIGHT", TAB_GAP, 0)
+    else
+        tab:SetPoint("TOPLEFT", frame, "TOPLEFT", 12, -(HEADER_H + SUBHEAD_H + 4))
+    end
+    prevTab = tab
     tab.categoryKey = def.key
 
     local key = def.key
@@ -333,6 +342,7 @@ function AegisPathfinder:UpdateGuideListPanel()
     local rxpGuides = {}
     local rxphcGuides = {}
     local zoneGuides = {}
+    local classGuides = {}
     local professionGuides = {}
     local seen = {}
 
@@ -340,7 +350,9 @@ function AegisPathfinder:UpdateGuideListPanel()
     local margin = 5
 
     for _, name in ipairs(self.guidelist) do
-        if not self:IsRoutePackGuide(name) and not seen[name] then
+        -- Class quest guides: your class's, that your race has.
+        if not self:IsRoutePackGuide(name) and not seen[name]
+            and (self:GetGuideCategory(name) ~= "class" or self:IsMyClassGuide(name)) then
             seen[name] = true
 
             local include = true
@@ -372,6 +384,8 @@ function AegisPathfinder:UpdateGuideListPanel()
                     table.insert(rxphcGuides, name)
                 elseif cat == "profession" then
                     table.insert(professionGuides, name)
+                elseif cat == "class" then
+                    table.insert(classGuides, name)
                 else
                     table.insert(zoneGuides, name)
                 end
@@ -384,6 +398,7 @@ function AegisPathfinder:UpdateGuideListPanel()
     table.sort(rxpGuides, SortGuidesByLevel)
     table.sort(rxphcGuides, SortGuidesByLevel)
     table.sort(zoneGuides, SortGuidesByLevel)
+    table.sort(classGuides, SortGuidesByLevel)
     table.sort(professionGuides, SortGuidesByLevel)
 
     if table.getn(turtleGuides) > 0 then
@@ -417,6 +432,13 @@ function AegisPathfinder:UpdateGuideListPanel()
     if table.getn(zoneGuides) > 0 then
         table.insert(displayList, { header = true, text = "--- Zone Guides ---" })
         for _, name in ipairs(zoneGuides) do
+            table.insert(displayList, { guide = name })
+        end
+    end
+
+    if table.getn(classGuides) > 0 then
+        table.insert(displayList, { header = true, text = "--- Class Quests ---" })
+        for _, name in ipairs(classGuides) do
             table.insert(displayList, { guide = name })
         end
     end

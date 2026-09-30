@@ -3,7 +3,7 @@
 ## Title: Aegis: Pathfinder
 ## Notes: Classic+ leveling guide for the Turtle WoW-lineage 1.12 client family.|nPart of the Aegis addon suite.
 ## Author: Aegis: Pathfinder Contributors (see CONTRIBUTORS.md)
-## Version: 0.19.0
+## Version: 0.20.0
 ## X-Category: Quest
 
 ## SavedVariables: AegisPathfinderDB, TurtleGuideDB
@@ -71,6 +71,11 @@ Guides\Optimized\Horde\Guides.xml
 # (written by Tools/build/build_dungeon_guides.py)
 Guides\Dungeons\Alliance\Guides.xml
 Guides\Dungeons\Horde\Guides.xml
+
+# Class quest guides: a guide per class quest chain, offered at its level
+# (written by Tools/build/build_class_guides.py)
+Guides\Class\Alliance\Guides.xml
+Guides\Class\Horde\Guides.xml
 
 # Alliance Zone Completion Guides
 Guides\Alliance\Guides.xml

@@ -212,7 +212,9 @@ DUNGEONS = {
     "BRD": {
         "title": "Blackrock Depths", "name": "Blackrock Depths", "levels": (52, 60), "areas": [1584, 5140], "journal": ["brd"],
         "zone": "Burning Steppes", "entrance": (29.5, 38.1),
-        "enter": "Into Blackrock Mountain from the Burning Steppes -- or from the Searing Gorge (35.5, 84.4) -- and take the chains down to Blackrock Depths' portal at the bottom of the mountain",
+        # No place in the Searing Gorge here: a step's points are all put on
+        # its own zone's map, the Burning Steppes'.
+        "enter": "Into Blackrock Mountain from the Burning Steppes -- or from the Searing Gorge -- and take the chains down to Blackrock Depths' portal at the bottom of the mountain",
         "Alliance": {"towns": ["Ironforge", "Badlands", "Searing Gorge", "Burning Steppes"]},
         "Horde": {"towns": ["Undercity", "Badlands", "Searing Gorge", "Burning Steppes"]},
     },
@@ -721,11 +723,12 @@ class Guide:
     # -- writing -------------------------------------------------------------
 
     def where(self, q, zone):
-        """ (x, y) ... for the objectives in the zone, and the other zones'
-        where they are found too."""
+        """ (x, y) ... for the objectives in the zone, and the other zones
+        where they are found too -- by name: every point in a step's note is
+        put on its own zone's map."""
         obj = self.q[q]["obj"]
         out = " ".join(fmt(p) for p in obj.get(zone, []))
-        others = ["%s %s" % (z, " ".join(fmt(p) for p in pts[:2])) for z, pts in sorted(obj.items())
+        others = [z for z, pts in sorted(obj.items())
                   if z != zone and z not in self.areas and z in self.towns + self.back and pts]
         if others:
             out += "%s-- also in %s" % (" " if out else "", "; ".join(others))

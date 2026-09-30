@@ -58,7 +58,7 @@ are only found at startup.
 - [ ] Tick a few steps, then switch group mode or a dungeon chip: the ticks
       stay on the same steps, and after `/reload` too.
 - [ ] Tabs: a leveling guide says XP, a profession guide or crafting route PF,
-      a dungeon guide DG, a hardcore guide HC.
+      a dungeon guide DG, a class quest guide CL, a hardcore guide HC.
 - [ ] A guide opened partway -- Loch Modan (17-18) with Crocolisk Hunting in
       the log -- opens at that quest and stays there as the log updates and
       after `/reload`; it does not drop back to step 1, 0 done.
@@ -135,6 +135,32 @@ are only found at startup.
       in the setup, level up to 21 (their guides say 17-24): a small window
       offers the dungeon guide. Open puts it in a tab beside the route; Not now
       closes it, and it is not offered again after a `/reload` or relog.
+
+## 5b. Class quests
+
+- [ ] The guide list's tabs all fit the window, CLASS between DUNGEONS and
+      PROFESSIONS, and no label is cut off.
+- [ ] The Class tab lists your class's guides only, lowest level first.
+- [ ] A Goblin warlock's **Warlock: Voidwalker (10)**: Dabbling In Darkness on
+      Blackstone Island, then Gan'rul Bloodeye in Orgrimmar; an Undead's goes to
+      Carendin Halgar in the Undercity. Each quest's steps tick as you go, and
+      the guide finishes by itself on the last hand-in.
+- [ ] On a character whose route does not take it (RestedXP or a zone guide),
+      reaching a class quest's level brings **A class quest at your level**:
+      Open puts the guide in a tab beside the route, and finishing it brings
+      you back to the route. Not now closes it, and it is not offered again
+      after a `/reload`.
+- [ ] On the Optimized route, whose legs take a warlock to the Voidwalker, it
+      is not offered.
+- [ ] Reaching the middle of a ticked dungeon and a class quest's level at the
+      same level up: the dungeon's window first, the class quest's when you
+      close it.
+- [ ] Options → Behaviour → *Offer class quests at their level* off: nothing
+      is offered.
+- [ ] A chain with a dungeon or raid in it (the Charger, Rhok'delar) is offered
+      only in Group mode.
+- [ ] A step whose quest is inside a dungeon points the arrow at its door
+      (the Charger's Scholomance step).
 
 ## 6. Gear
 

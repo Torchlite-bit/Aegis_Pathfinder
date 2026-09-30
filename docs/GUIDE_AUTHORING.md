@@ -315,6 +315,42 @@ may lack their objectives), and any it picks up and never hands in.
 `Tools/tests/test_dungeonguides.lua` fails if the guides are stale, or a quest is
 handed in before it is picked up, or picked up and never handed in.
 
+## Class Quest Guides
+
+`Guides/Class/` is written by `Tools/build/build_class_guides.py`: do not edit
+the guides there, change the script. One file per class and side holds a
+guide per milestone -- a chain of class quests that ends in something the
+class keeps -- and, at its end, `RegisterClassMilestones` with what the offer
+needs of each: per race, the level to offer it at, the quests that say a
+route does it already, and the quest the guide ends handing in.
+
+The chains are found from the data: pfQuest's quests before, CMaNGOS'
+`PrevQuestId` and `NextQuestInChain`, and quests that only send you to a
+chain's first giver (Turtle WoW's Dabbling In Darkness), which become `|O|`
+steps. Chains that end in the same thing are one milestone; each race gets the
+one that starts at home. Its steps are merged across the races, `|R|` on the
+ones not everyone takes. What the data gets wrong goes in the script's tables:
+
+- `CHAIN_NAMES`, `SPELL_NAMES`, `TITLE_NAMES`, `RACIAL_TITLES`: what a milestone
+  is called, where the spell it teaches or its last quest's title does not say;
+- `EXCHANGE_NPCS`: the raid tiers' armour exchanges, which are left out;
+- `SKIP`: quests that are not steps of a chain (the Charger's fight again);
+- `PLACES`: NPCs pfQuest has no spawns for (the Ancients in Felwood);
+- `MORE_ENTRANCES`: an instance's door the dungeon guides do not give.
+
+```sh
+python3 Tools/build/build_class_guides.py --list       # the milestones, and each race's chain
+python3 Tools/build/build_class_guides.py              # write the guides
+python3 Tools/build/build_class_guides.py --pfquest ../pfQuest --pfquest-turtle ../kludge-pfQuest-turtle \
+    --cmangos ../classic-db/full.sql                   # read the data again first
+```
+
+What it reads is kept in `Tools/data/class_quests.json`. `Tools/tests/test_classguides.lua`
+parses every guide as each race of its class sees it, and fails if the guides
+are stale, a race's chain is missing a quest or has another race's, a quest is
+handed in before it is picked up or never handed in, or a guide does not end
+with the quest the offer takes for its last.
+
 ## Routes and Dungeon Quests
 
 A route pack's route (`Routes/Routes.lua`) decides what comes after a guide on

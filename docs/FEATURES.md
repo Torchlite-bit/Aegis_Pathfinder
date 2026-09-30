@@ -57,7 +57,7 @@ always brought into view. The first is your main route — what the addon
 advances along on its own. Left-click a guide in the list to open it beside
 what you are reading, or right-click to load it into the tab you are on; each
 tab remembers its own place. A badge on each tab says what the guide is: XP
-for leveling, PF for a profession, DG for a dungeon, HC for hardcore. Every tab can be closed; close them all and the
+for leveling, PF for a profession, DG for a dungeon, CL for a class quest, HC for hardcore. Every tab can be closed; close them all and the
 panel waits, empty, for you to pick one.
 
 **Dungeons.** Toggle which of 15 dungeons you intend to run. Opting in promotes
@@ -114,6 +114,44 @@ taken inside.
 Which quests belong to a dungeon comes from InstanceJournal, a Turtle WoW
 addon that lists every instance's quests, and the quests themselves from
 pfQuest-turtle, patch 1.18.1's included (`Tools/build/build_dungeon_guides.py`).
+
+**Class quest guides.** The guide list's **Class** tab has a guide for each of
+your class's quest chains -- the warlock's Voidwalker, Succubus, Felhunter,
+Felsteed, Infernal and Dreadsteed; the druid's Bear Form, Aquatic Form and
+Cure Poison; the hunter's Taming the Beast and Rhok'delar; the paladin's
+Redemption and Charger; the shaman's totems; the priest's racial spells;
+Turtle WoW's own, the level-60 ones and the chains that need a dungeon or a
+raid among them. It lists only your class's, and only those your race has a
+way through. Each race gets the chain that starts at home: an Undead
+warlock's Voidwalker is Carendin Halgar's in the Undercity, an Orc's Gan'rul
+Bloodeye's in Orgrimmar, and a Goblin's starts with Dabbling In Darkness on
+Blackstone Island. Turtle WoW's High Elves and Goblins go the way of the race
+they share it with -- a High Elf paladin's Redemption is the Human's, after
+Paragon of Light -- unless they have their own (a High Elf hunter's taming is
+Damilara Sunsorrow's in Alah'Thalas). A guide picks up each quest, sends the
+arrow where its objectives are (a dungeon's door, for one inside), hands it
+in, and does what one quest needs of another first: the Charger's horse feed
+before the spirit's quest. It ends with the chain's last hand-in, so it
+finishes by itself.
+
+**A class quest at your level.** Reach the level a class quest starts at and a
+small window, like the dungeon's, offers its guide: open it in a tab beside
+the route, and when it is done you are back on the route; or not now. Each is
+offered once, and not at all when your route has it already (a leg still to
+come picks up one of its quests), when it is done (its last quest handed in, or
+its guide finished), more than five levels after it (most likely done before
+Pathfinder could see; the Class tab still has it), or, for a chain with a
+dungeon, a raid or an elite in it,
+unless you play in a group -- Solo Self-Found is solo. With a dungeon to offer
+at the same level, the dungeon's window comes first and the class quest's when
+it closes. It looks when you level up, when you log in and when you finish the
+setup; *Offer class quests at their level*, under Behaviour, turns it off.
+
+The chains come from pfQuest, pfQuest-turtle and CMaNGOS' quest table: which
+quest follows which, which races each is for, and what one gives that another
+needs (`Tools/build/build_class_guides.py`). The raid tiers' armour exchanges
+-- Zul'Gurub's, Ahn'Qiraj's, Naxxramas', the dungeon set's upgrade -- are not
+class quests in that sense, and have no guide.
 
 **Filters.** Solo or group mode, and whether Auction House steps appear.
 Defaults follow the route pack you chose. They act on every route pack: in

@@ -126,6 +126,7 @@ local defaults = {
     offercustomzones = true,      -- offer custom zones when a guide finishes (NextGuideFrame.lua)
     offerdungeons = false,        -- and the ticked dungeons' guides, at your level (NextGuideFrame.lua)
     middungeons = true,           -- offer a ticked dungeon's guide at the middle of its levels, once each (NextGuideFrame.lua)
+    classquests = true,           -- offer a class quest's guide at its level, once each (NextGuideFrame.lua)
     craftsellback = true,         -- crafting routes sell what is left over to a merchant (CraftPlanner.lua)
     sharenowarn = false,          -- skip the "share this guide with your party?" question (PartySync.lua)
     routepack = nil,              -- Active route pack name (e.g., "VanillaGuide", "RestedXP")
@@ -564,7 +565,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.19.0"
+AegisPathfinder.version = "0.20.0"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -757,8 +758,8 @@ function AegisPathfinder:InitializeRoute()
     -- setup (SetupFrame.lua).
     if self.MaybeShowSetup then self:MaybeShowSetup() end
     -- A ticked dungeon whose middle level was reached while logged out, or
-    -- before this was here (NextGuideFrame.lua).
-    if self.OfferMidLevelDungeons then self:OfferMidLevelDungeons() end
+    -- before this was here, and a class quest likewise (NextGuideFrame.lua).
+    if self.OfferAtLevel then self:OfferAtLevel() end
 end
 
 function AegisPathfinder:OnDisable()
@@ -2027,13 +2028,14 @@ function AegisPathfinder:IsTemplateGuide(guideName)
 end
 
 --- A guide's tab badge: its kind and text. TPL for a placeholder, PF for a
---- profession guide (a crafting route included), DG a dungeon guide, HC a
---- hardcore one, XP any other.
+--- profession guide (a crafting route included), DG a dungeon guide, CL a
+--- class quest guide, HC a hardcore one, XP any other.
 function AegisPathfinder:GuideBadge(guideName)
     if self:IsTemplateGuide(guideName) then return "tpl", "TPL" end
     local category = self:GetGuideCategory(guideName)
     if category == "profession" then return "pf", "PF" end
     if category == "dungeon" then return "dg", "DG" end
+    if category == "class" then return "cl", "CL" end
     if category == "rxp_hc" then return "hc", "HC" end
     return "xp", "XP"
 end
@@ -2050,6 +2052,9 @@ function AegisPathfinder:GetGuideCategory(guideName)
     -- Before the custom zones: "Dungeons/Gilneas City" is no zone guide.
     if string.find(guideName, "^Dungeons/") then
         return "dungeon"
+    end
+    if string.find(guideName, "^Class/") then
+        return "class"
     end
     if string.find(guideName, "^Optimized/") then
         return "optimized"
@@ -2076,6 +2081,11 @@ function AegisPathfinder:ParseGuideLevelRange(guideName)
     if not minText then
         -- Try 1-12 format (common in RXP guides)
         _, _, minText, maxText = string.find(guideName, "(%d+)%-(%d+)")
+    end
+    if not minText then
+        -- A class quest guide's one level: "Class/Warlock: Voidwalker (10)".
+        _, _, minText = string.find(guideName, "%((%d+)%)$")
+        maxText = minText
     end
 
     if minText and maxText then

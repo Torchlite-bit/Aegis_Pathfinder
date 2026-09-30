@@ -28,7 +28,8 @@
 	in, and when it is done asks where next, the route first.
 
 	And, at the end of the file, a ticked dungeon offered on its own when you
-	reach the middle of its levels -- not waiting for a guide to finish.
+	reach the middle of its levels -- not waiting for a guide to finish -- and
+	a class quest when you reach its level.
 ]]
 
 local AegisPathfinder = AegisPathfinder
@@ -172,10 +173,11 @@ local function Build()
 	table.insert(UISpecialFrames, "AegisPathfinderNextGuide")
 end
 
--- Stack the window's rows under `y`; returns where the next goes.
-local function Put(widget, y, h)
+-- Stack a window's rows under `y` -- this window's, or `parent`'s; returns
+-- where the next goes.
+local function Put(widget, y, h, parent)
 	widget:ClearAllPoints()
-	widget:SetPoint("TOPLEFT", frame, "TOPLEFT", PAD, -y)
+	widget:SetPoint("TOPLEFT", parent or frame, "TOPLEFT", PAD, -y)
 	widget:Show()
 	return y + h
 end
@@ -358,66 +360,110 @@ function AegisPathfinder:GetMidLevelDungeons(level)
 	return out
 end
 
-local mid
+--[[ The small windows that offer a guide at your level: a line of text, a
+	button per guide and Not now. The dungeon's and the class quest's are
+	two of them, shown one at a time. ]]
+local mid, classwin
 
-local function BuildMid()
-	mid = CreateFrame("Frame", "AegisPathfinderMidDungeon", UIParent)
-	mid:SetFrameStrata("DIALOG")
-	mid:SetWidth(WIDTH)
-	mid:SetHeight(160)
-	mid:SetPoint("CENTER", UIParent, "CENTER", 0, 80)
-	Theme:Panel(mid, "panel")
-	mid:Hide()
-	Theme:Chrome(mid, "A dungeon at your level")
-	AegisPathfinder.middungeonframe = mid
+local function BuildOffer(name, title, open)
+	local win = CreateFrame("Frame", name, UIParent)
+	win:SetFrameStrata("DIALOG")
+	win:SetWidth(WIDTH)
+	win:SetHeight(160)
+	win:SetPoint("CENTER", UIParent, "CENTER", 0, 80)
+	Theme:Panel(win, "panel")
+	win:Hide()
+	Theme:Chrome(win, title)
 
-	local text = mid:CreateFontString(nil, "OVERLAY")
+	local text = win:CreateFontString(nil, "OVERLAY")
 	Theme:SetFont(text, "body", 11)
-	text:SetPoint("TOPLEFT", mid, "TOPLEFT", PAD, -(CHROME_TOP + 10))
-	text:SetPoint("RIGHT", mid, "RIGHT", -PAD, 0)
+	text:SetPoint("TOPLEFT", win, "TOPLEFT", PAD, -(CHROME_TOP + 10))
+	text:SetPoint("RIGHT", win, "RIGHT", -PAD, 0)
 	text:SetJustifyH("LEFT")
 	Theme:TextColor(text, "textDim")
-	mid.text = text
+	win.text = text
 
-	mid.dungeons = {}
+	win.rows = {}
 	for i = 1, MAX_MIDLEVEL do
-		local b = Theme:PanelButton(mid, "", WIDTH - PAD * 2, ROW_H)
-		b:SetScript("OnClick", function() AegisPathfinder:OpenMidLevelDungeon(this.guide) end)
-		mid.dungeons[i] = b
+		local b = Theme:PanelButton(win, "", WIDTH - PAD * 2, ROW_H)
+		b:SetScript("OnClick", function() open(this.guide) end)
+		win.rows[i] = b
 	end
-	mid.later = Theme:PanelButton(mid, "Not now", WIDTH - PAD * 2, ROW_H)
-	mid.later:SetScript("OnClick", function() mid:Hide() end)
-	table.insert(UISpecialFrames, "AegisPathfinderMidDungeon")
+	win.later = Theme:PanelButton(win, "Not now", WIDTH - PAD * 2, ROW_H)
+	win.later:SetScript("OnClick", function() win:Hide() end)
+	table.insert(UISpecialFrames, name)
+	return win
+end
+
+-- Lay `win` out: `text`, then a button per choice ("Open ..." when there is
+-- only one), then Not now.
+local function PaintOffer(win, text, choices)
+	win.text:SetText(text)
+	local one = table.getn(choices) == 1
+	local textH = win.text:GetHeight() or 0
+	if textH < 1 then
+		textH = math.ceil(win.text:GetStringWidth() / (WIDTH - PAD * 2)) * 13
+	end
+	local y = CHROME_TOP + 10 + textH + 12
+	for i, b in ipairs(win.rows) do
+		local c = choices[i]
+		if c then
+			b.guide = c.guide
+			b:SetText((one and "Open " or "") .. DisplayName(c.guide))
+			y = Put(b, y, ROW_H + ROW_GAP, win)
+		else
+			b.guide = nil
+			b:Hide()
+		end
+	end
+	y = Put(win.later, y + 6, ROW_H, win)
+	win:SetHeight(y + PAD)
+end
+
+-- Beside the guide window, on whichever side has room.
+local function ShowOffer(win)
+	local guide = AegisPathfinder.objectiveframe
+	if guide and AegisPathfinder.GetQuadrant then
+		local _, _, hhalf = AegisPathfinder.GetQuadrant(guide)
+		win:ClearAllPoints()
+		if hhalf == "LEFT" then
+			win:SetPoint("TOPLEFT", guide, "TOPRIGHT", 8, 0)
+		else
+			win:SetPoint("TOPRIGHT", guide, "TOPLEFT", -8, 0)
+		end
+	end
+	win:Show()
+end
+
+-- Whether another window than `win` is asking something already: one at a
+-- time.
+local function Busy(win)
+	local function up(w) return w and w ~= win and w:IsShown() end
+	return up(frame) or up(mid) or up(classwin) or up(AegisPathfinder.setupframe)
+end
+
+local function BuildMid()
+	mid = BuildOffer("AegisPathfinderMidDungeon", "A dungeon at your level",
+		function(guide) AegisPathfinder:OpenMidLevelDungeon(guide) end)
+	mid.dungeons = mid.rows
+	AegisPathfinder.middungeonframe = mid
+	-- A class quest at the same level waits for this one's answer: asked at
+	-- the level this was, which UnitLevel can lag behind on a level up.
+	mid:SetScript("OnHide", function()
+		if AegisPathfinder.OfferClassMilestones then AegisPathfinder:OfferClassMilestones(mid.level) end
+	end)
 end
 
 -- Lay the window out for `choices` at `level`.
 local function PaintMid(choices, level)
 	local one = table.getn(choices) == 1 and choices[1]
 	if one then
-		mid.text:SetText(string.format("You're level %d, the middle of %s, which you ticked. Open its dungeon guide beside the route? It picks up the quests, then takes you in.",
-			level, DisplayName(one.guide)))
+		PaintOffer(mid, string.format("You're level %d, the middle of %s, which you ticked. Open its dungeon guide beside the route? It picks up the quests, then takes you in.",
+			level, DisplayName(one.guide)), choices)
 	else
-		mid.text:SetText(string.format("You're level %d, the middle of these dungeons you ticked. Open one's dungeon guide beside the route? It picks up the quests, then takes you in.",
-			level))
+		PaintOffer(mid, string.format("You're level %d, the middle of these dungeons you ticked. Open one's dungeon guide beside the route? It picks up the quests, then takes you in.",
+			level), choices)
 	end
-	local textH = mid.text:GetHeight() or 0
-	if textH < 1 then
-		textH = math.ceil(mid.text:GetStringWidth() / (WIDTH - PAD * 2)) * 13
-	end
-	local y = CHROME_TOP + 10 + textH + 12
-	for i, b in ipairs(mid.dungeons) do
-		local c = choices[i]
-		if c then
-			b.guide = c.guide
-			b:SetText((one and "Open " or "") .. DisplayName(c.guide))
-			y = Put(b, y, ROW_H + ROW_GAP)
-		else
-			b.guide = nil
-			b:Hide()
-		end
-	end
-	y = Put(mid.later, y + 6, ROW_H)
-	mid:SetHeight(y + PAD)
 end
 
 --- Offer the ticked dungeons whose middle level `level` (yours, when nil)
@@ -430,8 +476,7 @@ function AegisPathfinder:OfferMidLevelDungeons(level)
 	if table.getn(choices) == 0 then return false end
 	-- One window at a time: "Where next?" goes first; the next level up or
 	-- login asks again.
-	if frame and frame:IsShown() then return false end
-	if self.setupframe and self.setupframe:IsShown() then return false end
+	if Busy(mid) then return false end
 
 	if not mid then BuildMid() end
 	local db = self.db.char
@@ -439,18 +484,7 @@ function AegisPathfinder:OfferMidLevelDungeons(level)
 	for _, c in ipairs(choices) do db.middungeonsoffered[c.code] = true end
 	mid.choices, mid.level = choices, level
 	PaintMid(choices, level)
-
-	local guide = self.objectiveframe
-	if guide and self.GetQuadrant then
-		local _, _, hhalf = self.GetQuadrant(guide)
-		mid:ClearAllPoints()
-		if hhalf == "LEFT" then
-			mid:SetPoint("TOPLEFT", guide, "TOPRIGHT", 8, 0)
-		else
-			mid:SetPoint("TOPRIGHT", guide, "TOPLEFT", -8, 0)
-		end
-	end
-	mid:Show()
+	ShowOffer(mid)
 	return true
 end
 
@@ -472,13 +506,228 @@ function AegisPathfinder:OpenMidLevelDungeon(guide)
 	end
 end
 
+--[[ A class quest at its level.
+
+	Guides/Class/ has a guide for each of a class's quest chains -- the
+	Voidwalker, Bear Form, the Charger -- and the level each race can start
+	it. On reaching it a small window like the dungeon's offers the guide, to
+	open in a tab beside the route; finishing it goes back to the route, as
+	any guide in a tab does. Each is offered once, and not at all:
+
+	  * when your route has it already -- a leg still to come picks up one of
+	    its quests (the Optimized routes take a warlock to the Voidwalker);
+	  * when it is done: its last quest handed in, or its guide finished;
+	  * more than five levels after it: a character that far past it has
+	    most likely done it, before Pathfinder could see (the Class tab
+	    still has it);
+	  * for a chain with a dungeon, a raid or an elite in it, unless you play
+	    in a group (Solo Self-Found is solo);
+	  * before the setup is done, or with the options window's switch off.
+
+	It looks when the dungeon's does: each level up, after login and when
+	the setup is finished -- after the dungeon's window, if that has
+	something to say. ]]
+
+AegisPathfinder.CLASS_MILESTONES = AegisPathfinder.CLASS_MILESTONES or {}
+
+--- The class quest guides' milestones, as Guides/Class/ lists them: for
+--- `side` and `class` (UnitClass's token), { guide, group, races = { [race]
+--- = { level, last, quests } } }.
+function AegisPathfinder:RegisterClassMilestones(side, class, list)
+	local bySide = self.CLASS_MILESTONES[side] or {}
+	self.CLASS_MILESTONES[side] = bySide
+	bySide[class] = list
+end
+
+-- UnitRace's token, as the guides name races.
+local RACE_NAMES = {
+	Human = "Human", Orc = "Orc", Dwarf = "Dwarf", NightElf = "Night Elf", Scourge = "Undead",
+	Tauren = "Tauren", Gnome = "Gnome", Troll = "Troll", Goblin = "Goblin", HighElf = "High Elf",
+	BloodElf = "High Elf",
+}
+
+--- Your race as the class guides name it.
+function AegisPathfinder:ClassGuideRace()
+	local localized, token = UnitRace("player")
+	return RACE_NAMES[token or ""] or localized
+end
+
+--- Whether class quest guide `guide` is for you: your class's, and one
+--- your race has a chain for.
+function AegisPathfinder:IsMyClassGuide(guide)
+	local _, class = UnitClass("player")
+	local side = UnitFactionGroup("player")
+	local list = self.CLASS_MILESTONES[side or ""] and self.CLASS_MILESTONES[side][class or ""]
+	local race = self:ClassGuideRace()
+	for _, m in ipairs(list or {}) do
+		if m.guide == guide then return m.races[race] ~= nil end
+	end
+	return false
+end
+
+-- Each guide's quests, read once: { [qid] = true } for the steps you would
+-- see -- a step for another class or race is not yours.
+local routeQuests = {}
+local function QuestsIn(guide, class, race)
+	local key = guide .. "\001" .. (class or "") .. "\001" .. (race or "")
+	if routeQuests[key] then return routeQuests[key] end
+	local out, fn = {}, AegisPathfinder.guides and AegisPathfinder.guides[guide]
+	local text = type(fn) == "function" and fn() or type(fn) == "string" and fn or ""
+	local function same(a, b) return string.gsub(a, " ", "") == string.gsub(b, " ", "") end
+	-- As Parser.lua reads |C| and |R|: a list of names, or of names not.
+	local function mine(line, tag, value)
+		local _, _, list = string.find(line, "|" .. tag .. "|([^|]+)|")
+		if not list or not value then return true end
+		local has, negated = false, false
+		for v in string.gfind(list, "[^/,]+") do
+			v = string.gsub(v, "^%s*(.-)%s*$", "%1")
+			if string.sub(v, 1, 1) == "!" then
+				negated = true
+				if same(string.sub(v, 2), value) then return false end
+			elseif same(v, value) then
+				has = true
+			end
+		end
+		return has or negated
+	end
+	for line in string.gfind(text, "[^\n]+") do
+		local _, _, qid = string.find(line, "|QID|(%d+)")
+		if qid and mine(line, "C", class) and mine(line, "R", race) then out[tonumber(qid)] = true end
+	end
+	routeQuests[key] = out
+	return out
+end
+
+--- Whether the route from the guide you are on has any of `quests` still to
+--- come.
+function AegisPathfinder:RouteHasQuests(quests)
+	local chosen = self.db.char.currentroute
+	local route = self.routes and ((chosen and self.routes[chosen]) or self.routes[self:GetRouteForRace()])
+	if not route then return false end
+	local tabs = self.EnsureTabs and self:EnsureTabs()
+	local current = (tabs and tabs[1] and tabs[1].guide) or self.db.char.currentguide
+	local class = UnitClass("player")
+	local race = UnitRace("player")
+	local from
+	for i, leg in ipairs(route) do
+		if leg.guide == current then from = i break end
+	end
+	for i = from or 1, table.getn(route) do
+		local guide = route[i].guide
+		local lo, hi = self:ParseGuideLevelRange(guide or "")
+		-- Off the route, the legs not yet outgrown.
+		if guide and (from or not hi or hi >= UnitLevel("player")) then
+			local have = QuestsIn(guide, class, race)
+			for _, qid in ipairs(quests) do
+				if have[qid] then return true end
+			end
+		end
+	end
+	return false
+end
+
+local MAX_CLASS = MAX_MIDLEVEL
+local CLASS_PAST = 5         -- levels past a class quest's that it is still offered
+
+--- The class quest guides to offer at `level`, lowest first: { guide,
+--- level }.
+function AegisPathfinder:GetClassMilestones(level)
+	local db = self.db.char
+	local out = {}
+	if not db.setupdone or db.classquests == false or not level then return out end
+	local _, class = UnitClass("player")
+	local side = UnitFactionGroup("player")
+	local list = self.CLASS_MILESTONES[side or ""] and self.CLASS_MILESTONES[side][class or ""]
+	if not list then return out end
+	local race = self:ClassGuideRace()
+	local grouped = (db.PlayStyle or "SOLO") == "GROUP" and not db.SelfFound
+	local offered, completion = db.classoffered or {}, db.completion or {}
+	for _, m in ipairs(list) do
+		local mine = m.races[race]
+		if mine and level >= mine.level and level <= mine.level + CLASS_PAST
+			and not offered[m.guide] and self.guides[m.guide]
+			and (grouped or not m.group)
+			and (completion[m.guide] or 0) < 1
+			and not self:IsQuestCompletedOnServer(mine.last)
+			and not (self.FindTab and self:FindTab(m.guide))
+			and not self:RouteHasQuests(mine.quests) then
+			table.insert(out, { guide = m.guide, level = mine.level })
+		end
+	end
+	table.sort(out, function(a, b)
+		if a.level ~= b.level then return a.level < b.level end
+		return a.guide < b.guide
+	end)
+	while table.getn(out) > MAX_CLASS do table.remove(out) end
+	return out
+end
+
+local function PaintClass(choices, level)
+	local one = table.getn(choices) == 1 and choices[1]
+	if one then
+		PaintOffer(classwin, string.format("You're level %d: %s is ready for you. Open its guide beside the route? When it is done you are back on the route.",
+			level, DisplayName(one.guide)), choices)
+	else
+		PaintOffer(classwin, string.format("You're level %d: these class quests are ready for you. Open one's guide beside the route? When it is done you are back on the route.",
+			level), choices)
+	end
+end
+
+--- Offer the class quests `level` (yours, when nil) has reached. True when
+--- the window is up. Each is offered once: showing it is the offer.
+function AegisPathfinder:OfferClassMilestones(level)
+	if not self.db then return false end
+	level = level or UnitLevel("player")
+	local choices = self:GetClassMilestones(level)
+	if table.getn(choices) == 0 then return false end
+	if Busy(classwin) then return false end
+
+	if not classwin then
+		classwin = BuildOffer("AegisPathfinderClassQuest", "A class quest at your level",
+			function(guide) AegisPathfinder:OpenClassMilestone(guide) end)
+		AegisPathfinder.classquestframe = classwin
+	end
+	local db = self.db.char
+	db.classoffered = db.classoffered or {}
+	for _, c in ipairs(choices) do db.classoffered[c.guide] = true end
+	classwin.choices, classwin.level = choices, level
+	PaintClass(choices, level)
+	ShowOffer(classwin)
+	return true
+end
+
+--- Open class quest guide `guide` from the window in a tab of its own; the
+--- window stays for any others it offered.
+function AegisPathfinder:OpenClassMilestone(guide)
+	if not guide or not self.guides[guide] then return end
+	self:OpenGuideTab(guide)
+	if not classwin then return end
+	local rest = {}
+	for _, c in ipairs(classwin.choices or {}) do
+		if c.guide ~= guide then table.insert(rest, c) end
+	end
+	classwin.choices = rest
+	if table.getn(rest) == 0 then
+		classwin:Hide()
+	else
+		PaintClass(rest, classwin.level)
+	end
+end
+
+--- Both offers at `level`: the dungeon's first, the class quest's when that
+--- window closes, or now if it has nothing to say.
+function AegisPathfinder:OfferAtLevel(level)
+	if self:OfferMidLevelDungeons(level) then return true end
+	return self:OfferClassMilestones(level)
+end
+
 -- The level up. PLAYER_LEVEL_UP's arg1 is the new level: UnitLevel can
 -- still say the old one while it fires.
 local levels = CreateFrame("Frame")
 levels:RegisterEvent("PLAYER_LEVEL_UP")
 levels:SetScript("OnEvent", function()
 	if AegisPathfinder.db and AegisPathfinder.enableDone then
-		AegisPathfinder:OfferMidLevelDungeons(tonumber(arg1))
+		AegisPathfinder:OfferAtLevel(tonumber(arg1))
 	end
 end)
 AegisPathfinder.midLevelEvents = levels

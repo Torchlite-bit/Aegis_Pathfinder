@@ -62,7 +62,7 @@ C The Sternrock Stash |QID|40461| |N|Recover the Sternrock Stash (29.3, 43.5)| |
 T The Sternrock Stash |QID|40461| |N|Orvak Sternrock (76, 68.2)| |Z|Burning Steppes|
 A Senatorial Revenge |QID|40464| |N|Orvak Sternrock (76, 68.2)| |Z|Burning Steppes|
 
-R Blackrock Depths |N|Into Blackrock Mountain from the Burning Steppes -- or from the Searing Gorge (35.5, 84.4) -- and take the chains down to Blackrock Depths' portal at the bottom of the mountain (29.5, 38.1)| |Z|Burning Steppes|
+R Blackrock Depths |N|Into Blackrock Mountain from the Burning Steppes -- or from the Searing Gorge -- and take the chains down to Blackrock Depths' portal at the bottom of the mountain (29.5, 38.1)| |Z|Burning Steppes|
 C Dark Iron Legacy |QID|3802| |N|Slay Fineous Darkvire and recover the great hammer, Ironfel. Take Ironfel to the Shrine of Thaurissan and place it on the statue of Franclorn Forgewright|
 T Dark Iron Legacy |QID|3802| |N|Monument of Franclorn Forgewright|
 C Ribbly Screwspigot |QID|4136| |N|Get Ribbly's Head| |O|
@@ -106,7 +106,7 @@ T A Taste of Flame |QID|4023| |N|Cyrus Therepentous (95.1, 31.6)| |Z|Burning Ste
 A A Taste of Flame |QID|4024| |N|Cyrus Therepentous (95.1, 31.6)| |Z|Burning Steppes|
 T A Taste of Flame |QID|4024| |N|Cyrus Therepentous (95.1, 31.6)| |Z|Burning Steppes|
 
-R Blackrock Depths |N|Into Blackrock Mountain from the Burning Steppes -- or from the Searing Gorge (35.5, 84.4) -- and take the chains down to Blackrock Depths' portal at the bottom of the mountain (29.5, 38.1)| |Z|Burning Steppes|
+R Blackrock Depths |N|Into Blackrock Mountain from the Burning Steppes -- or from the Searing Gorge -- and take the chains down to Blackrock Depths' portal at the bottom of the mountain (29.5, 38.1)| |Z|Burning Steppes|
 T Marshal Windsor |QID|4241| |N|Marshal Windsor| |O|
 A Abandoned Hope |QID|4242| |N|Marshal Windsor| |O| |PRE|4241|
 C Incendius! |QID|4263| |N|Find Lord Incendius in Blackrock Depths and destroy him|
@@ -126,7 +126,7 @@ A The Fate of the Kingdom |QID|4362| |N|King Magni Bronzebeard (39.1, 56.2)| |Z|
 
 N Blackrock Depths again |N|What you have handed in leads back to Blackrock Depths|
 
-R Blackrock Depths |N|Into Blackrock Mountain from the Burning Steppes -- or from the Searing Gorge (35.5, 84.4) -- and take the chains down to Blackrock Depths' portal at the bottom of the mountain (29.5, 38.1)| |Z|Burning Steppes|
+R Blackrock Depths |N|Into Blackrock Mountain from the Burning Steppes -- or from the Searing Gorge -- and take the chains down to Blackrock Depths' portal at the bottom of the mountain (29.5, 38.1)| |Z|Burning Steppes|
 A A Crumpled Up Note |QID|4264| |N|A Crumpled Up Note: right-click it to start the quest| |U|11446| |O|
 T A Crumpled Up Note |QID|4264| |N|Marshal Windsor| |O|
 A A Shred of Hope |QID|4282| |N|Marshal Windsor| |O| |PRE|4264|
