@@ -7,10 +7,9 @@ them, edit this and re-run:
     pip install Pillow
     python3 Tools/build/make_assets.py
 
-Output format matches the two textures the addon already shipped and is known
-to load on the 1.12 client (see media/dead.tga): 32-bit RLE truecolor TGA,
-bottom-left origin, 8 alpha bits, no colour map and no ID field. PIL's own TGA
-writer does not pin all of that down, so the encoder here is explicit.
+Output is in a format known to load on the 1.12 client: 32-bit RLE truecolor
+TGA, bottom-left origin, 8 alpha bits, no colour map and no ID field. PIL's own
+TGA writer does not pin all of that down, so the encoder here is explicit.
 
 Shapes are written as white masks wherever the colour is applied at runtime
 with SetVertexColor -- Theme.lua owns the palette, so a colour change is a Lua

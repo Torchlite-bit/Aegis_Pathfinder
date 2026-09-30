@@ -242,10 +242,6 @@ local function Refresh(self)
 	if self.PaintShareButton then self:PaintShareButton() end
 end
 
-function AegisPathfinder:IsSharing()
-	return share.active, share.guide
-end
-
 --- Members sharing with us, sorted by name.
 function AegisPathfinder:ShareMembers()
 	local out = {}

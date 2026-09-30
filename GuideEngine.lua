@@ -10,21 +10,6 @@
 	frame exists now; the name stays because it is called from many places.
 ]]
 
-local professions = {
-	["mining"] = true,
-	["herbalism"] = true,
-	["skinning"] = true,
-	["alchemy"] = true,
-	["blacksmithing"] = true,
-	["enchanting"] = true,
-	["engineering"] = true,
-	["leatherworking"] = true,
-	["tailoring"] = true,
-	["cooking"] = true,
-	["first aid"] = true,
-	["fishing"] = true,
-}
-
 local AegisPathfinder = AegisPathfinder
 
 --- Show or hide the objectives panel. It is the addon's only window now, so

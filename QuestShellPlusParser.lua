@@ -253,14 +253,6 @@ function AegisPathfinder:ParseQuestShellPlus(guideTable)
     return actions, quests, tags
 end
 
--- Check if a guide is in QuestShell+ format (table with steps array)
-function AegisPathfinder:IsQuestShellPlusFormat(guide)
-    if type(guide) == "table" and guide.steps and type(guide.steps) == "table" then
-        return true
-    end
-    return false
-end
-
 -- Register a QuestShell+ format guide
 -- This allows mixing both formats in the same addon
 function AegisPathfinder:RegisterQuestShellPlusGuide(key, guideTable)

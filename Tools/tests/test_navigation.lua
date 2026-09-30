@@ -35,6 +35,9 @@ function AegisPathfinder:UpdateNavCallout() end
 dofile("Locale.lua")
 AegisPathfinder.Locale = AEGISPATHFINDER_LOCALE
 dofile("Navigation.lua")
+-- The real one, for the tests that follow a step to its waypoint; the arrow
+-- tests below stand in for it.
+local ForceWaypointUpdate = AegisPathfinder.ForceWaypointUpdate
 
 -- TomTom-TWOW, as far as these tests reach into it.
 local DEFAULT_CALLBACKS = { minimap = { tooltip_show = "pin tooltip" }, world = { tooltip_show = "map tooltip" } }
@@ -331,7 +334,7 @@ do
 		A.tags, A.current = { tags }, 1
 		TomTom.waypoints = {}
 		said = {}
-		A:UpdateWaypoint()
+		ForceWaypointUpdate(A)
 		return TomTom.waypoints[1]
 	end
 

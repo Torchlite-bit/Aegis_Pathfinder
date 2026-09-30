@@ -95,7 +95,6 @@ local defaults = {
     currentroute = nil,
     routeselected = false,
     mapquestgivers = true,
-    mapnotecoords = true,
     waypointprovider = "auto", -- see Navigation.lua providerorder
     -- Focus mode is the concept's default: the step you are on, and nothing
     -- else. Overview is the whole list, behind the header's expand chip.
@@ -106,14 +105,11 @@ local defaults = {
     showactivetargets = true,
     questicons = true,        -- mark quest NPCs and mobs on mouseover/target
     showmacros = true,        -- the Macros window, and the AegisTarget/AegisItem macros
-    showuseitem = true,
-    showuseitemcomplete = true,
     skipfollowups = true,
     autoquest = true,
     petskills = {},
     completedquests = {},
     completedquestsbyid = {}, -- {[questId] = true} from server
-    lastserverquery = 0,      -- timestamp for throttling
     -- Branching state
     -- Open guides, as the tab bar shows them. Tab 1 is the main route -- the
     -- one auto-advance follows. The rest are guides opened beside it. Empty
@@ -141,11 +137,6 @@ local defaults = {
     selectedstartingzone = nil,   -- which starting zone was selected (e.g., "Human", "Dwarf")
     startingzonecomplete = false, -- has player finished their starting zone?
     rejoinlevel = 12,             -- level at which all paths rejoin (default 12)
-    filterTurtle = true,
-    filterOptimized = true,
-    filterRXP = true,
-    filterZone = true,
-    filterRXPHC = true,
     Dungeons = {
         ["RFC"] = true,
         ["WC"] = true,
@@ -912,17 +903,11 @@ function AegisPathfinder:GetAvailableRoutePacks()
     return available
 end
 
--- Switch to a route pack, replacing self.routes with the pack's routes
 --[[ Solo Self-Found: a character that plays alone, never trades and never
     uses the Auction House. While it is on, steps tagged |AH| or |TRADE|, group
     quests and dungeon quests are left out whatever their switches say, and
     those switches are held off. What they were set to is kept, and comes back
     when it goes off. Per character, like the other filters. ]]
-function AegisPathfinder:UsesAuctionHouse()
-    local db = self.db and self.db.char
-    return db and db.UseAH and not db.SelfFound and true or false
-end
-
 function AegisPathfinder:SetSelfFound(on)
     self.db.char.SelfFound = on and true or false
     self:Print(on and "Solo Self-Found on: group quests, dungeons, and steps that trade or use the Auction House are hidden."
@@ -934,6 +919,7 @@ function AegisPathfinder:SetSelfFound(on)
     if self.optionsframe and self.RefreshConfigPanel then self:RefreshConfigPanel() end
 end
 
+-- Switch to a route pack, replacing self.routes with the pack's routes
 function AegisPathfinder:SelectRoutePack(packName)
     local pack = self.routepacks[packName]
     if not pack then
@@ -956,32 +942,20 @@ function AegisPathfinder:SelectRoutePack(packName)
     -- Save selection
     self.db.char.routepack = packName
 
-    -- Auto-toggle checkboxes if RXP guide route is selected
+    -- Each pack's play style and Auction House use
     if packName == "RestedXP" or packName == "Kamisayo Speedrun" then
-        self.db.char.filterRXP = true
-        self.db.char.filterOptimized = false
-        self.db.char.filterZone = false
-        self.db.char.filterRXPHC = false
         self.db.char.PlayStyle = "GROUP"
         self.db.char.UseAH = true
         if self.guidelistframe and self.guidelistframe:IsVisible() then
             self:UpdateGuideListPanel()
         end
     elseif packName == "RXP Hardcore" then
-        self.db.char.filterRXP = false
-        self.db.char.filterOptimized = false
-        self.db.char.filterZone = false
-        self.db.char.filterRXPHC = true
         self.db.char.PlayStyle = "SOLO"
         self.db.char.UseAH = false
         if self.guidelistframe and self.guidelistframe:IsVisible() then
             self:UpdateGuideListPanel()
         end
     elseif packName == "VanillaGuide" then
-        self.db.char.filterRXP = false
-        self.db.char.filterOptimized = true
-        self.db.char.filterZone = true
-        self.db.char.filterRXPHC = false
         self.db.char.PlayStyle = "SOLO"
         self.db.char.UseAH = false
         if self.guidelistframe and self.guidelistframe:IsVisible() then
@@ -1957,12 +1931,6 @@ end
 --      Branching Functions    --
 ---------------------------------
 
---- Branching is opening a guide in another tab. Kept as a name because the
---- guide list, the slash commands and the profession guides all call it.
-function AegisPathfinder:BranchToGuide(guideName)
-    self:OpenGuideTab(guideName)
-end
-
 --[[ Go back to the main route, closing the tab you were on.
 
     If the player has out-levelled the guide sitting in tab 1 while they were
@@ -2028,31 +1996,6 @@ function AegisPathfinder:GetOptimizedGuideForLevel(level)
         end
     end
     return nil
-end
-
--- Check if current guide is complete and handle branch return
-function AegisPathfinder:CheckBranchCompletion()
-    if not self.db.char.isbranching then return false end
-
-    -- Check if current branch guide is 100% complete
-    local totalSteps = self.actions and table.getn(self.actions) or 0
-    if totalSteps == 0 then return false end
-
-    local completedSteps = 0
-    for i, quest in ipairs(self.quests) do
-        if self.turnedin[quest] then
-            completedSteps = completedSteps + 1
-        end
-    end
-
-    local completion = completedSteps / totalSteps
-    if completion >= 1 then
-        self:Print("Branch guide complete! Returning to main route.")
-        self:ReturnFromBranch()
-        return true
-    end
-
-    return false
 end
 
 -- Turtle WoW custom zones for categorization
@@ -2806,39 +2749,12 @@ function AegisPathfinder.split(...)
     return fields
 end
 
-function AegisPathfinder.modf(f)
-    if f > 0 then
-        return math.floor(f), math.mod(f, 1)
-    end
-    return math.ceil(f), math.mod(f, 1)
-end
-
-function AegisPathfinder.ColorGradient(perc)
-    if perc >= 1 then
-        return 0, 1, 0
-    elseif perc <= 0 then
-        return 1, 0, 0
-    end
-
-    local segment, relperc = AegisPathfinder.modf(perc * 2)
-    local r1, g1, b1, r2, g2, b2 = AegisPathfinder.select((segment * 3) + 1, 1, 0, 0, 1, 0.82, 0, 0, 1, 0)
-    return r1 + (r2 - r1) * relperc, g1 + (g2 - g1) * relperc, b1 + (b2 - b1) * relperc
-end
-
 function AegisPathfinder.GetQuadrant(frame)
     local x, y = frame:GetCenter()
     if not x or not y then return "BOTTOMLEFT", "BOTTOM", "LEFT" end
     local hhalf = (x > UIParent:GetWidth() / 2) and "RIGHT" or "LEFT"
     local vhalf = (y > UIParent:GetHeight() / 2) and "TOP" or "BOTTOM"
     return vhalf .. hhalf, vhalf, hhalf
-end
-
-function AegisPathfinder.GetUIParentAnchor(frame)
-    local w, h, x, y = UIParent:GetWidth(), UIParent:GetHeight(), frame:GetCenter()
-    local hhalf, vhalf = (x > w / 2) and "RIGHT" or "LEFT", (y > h / 2) and "TOP" or "BOTTOM"
-    local dx = hhalf == "RIGHT" and math.floor(frame:GetRight() + 0.5) - w or math.floor(frame:GetLeft() + 0.5)
-    local dy = vhalf == "TOP" and math.floor(frame:GetTop() + 0.5) - h or math.floor(frame:GetBottom() + 0.5)
-    return vhalf .. hhalf, dx, dy
 end
 
 function AegisPathfinder:SyncWithPfQuestHistory(force)
@@ -2888,24 +2804,5 @@ function AegisPathfinder:SyncWithPfQuestHistory(force)
 
     if imported > 0 then
         self:Debug(string.format("Imported %d completed quests from pfQuest history.", imported))
-    end
-end
-
-function AegisPathfinder:DumpLoc()
-    if IsShiftKeyDown() then
-        if not self.db.global.savedpoints then
-            self:Print("No saved points")
-        else
-            for t in string.gfind(self.db.global.savedpoints, "([^\n]+)") do self:Print(t) end
-        end
-    elseif IsControlKeyDown() then
-        self.db.global.savedpoints = nil
-        self:Print("Saved points cleared")
-    else
-        local _, _, x, y = Astrolabe:GetCurrentPlayerPosition()
-        local s = string.format("%s, %s, (%.2f, %.2f) -- %s %s", GetZoneText(), GetSubZoneText(), x * 100, y * 100,
-            self:GetObjectiveInfo())
-        self.db.global.savedpoints = (self.db.global.savedpoints or "") .. s .. "\n"
-        self:Print(s)
     end
 end

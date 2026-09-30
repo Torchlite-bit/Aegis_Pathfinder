@@ -82,7 +82,7 @@ local function lift(from, to)
 	assert(loadstring(string.sub(core, a, b - 1)))()
 end
 lift("AegisPathfinder.NO_GUIDE =", "---------------------------------\n--      Branching Functions")
-lift("function AegisPathfinder:BranchToGuide", "-- Check if current guide is complete and handle branch return")
+lift("--[[ Go back to the main route", "-- Turtle WoW custom zones for categorization")
 lift("-- Turtle WoW custom zones for categorization", "---------------------------------\n--      Route Functions")
 lift("function AegisPathfinder:LoadNextGuide()", "function AegisPathfinder:IsProfessionLearned")
 

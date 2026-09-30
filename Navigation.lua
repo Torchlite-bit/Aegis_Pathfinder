@@ -49,8 +49,8 @@ end
 -- zoneindex 0 is a point on the continent's own map (see MapPoint); a
 -- provider that can only place a point in a zone declines it.
 -- `arrow` says whether the provider's own arrow should point at this
--- waypoint (see IsArrowOn). A provider whose waypoint *is* its arrow --
--- Cartographer, MetaMap BWP -- marks itself `arrowIsWaypoint` and ignores it.
+-- waypoint (see IsArrowOn). Cartographer and MetaMap BWP ignore it: their
+-- waypoint is their arrow.
 -- x and y are map coordinates in 0-100 space. Add() returns true when it
 -- actually created a waypoint. Clear() removes everything that provider created
 -- and must be safe to call when it holds nothing.
@@ -203,7 +203,6 @@ local cartographerids = {}
 
 providers.cartographer = {
 	label = "Cartographer",
-	arrowIsWaypoint = true,
 
 	IsAvailable = function()
 		return Cartographer_Waypoints and true or nil
@@ -230,7 +229,6 @@ local metamapnotes = {}
 
 providers.metamapbwp = {
 	label = "MetaMap BWP",
-	arrowIsWaypoint = true,
 
 	IsAvailable = function()
 		return HasMetaMap() and (HasMetaMapBWP() or MetaMap_LoadBWP) and true or nil
@@ -422,13 +420,6 @@ function AegisPathfinder:DescribeArrows()
 		end
 	end
 	return table.getn(on) > 0 and table.concat(on, ", ") or "none"
-end
-
---- True when the active provider has no waypoint but its arrow, so the
---- arrow switches cannot take it away.
-function AegisPathfinder:ProviderArrowIsWaypoint()
-	local provider = self:GetWaypointProvider()
-	return provider and provider.arrowIsWaypoint and true or false
 end
 
 -- Which arrow switch a provider's arrow answers to, if it has one.
@@ -884,20 +875,6 @@ function AegisPathfinder:ParseAndMapCoords(qid, action, note, desc, zone, npcs)
 	else
 		self:Debug("No coords in note and action=" .. (action or "nil") .. " - no waypoint created")
 	end
-end
-
--- Auto-update waypoint when step changes
-function AegisPathfinder:UpdateWaypoint()
-	if not self:GetWaypointProvider() then return end
-
-	local action, quest, fullquest = self:GetObjectiveInfo()
-	if not action then return end
-
-	local note = self:GetObjectiveTag("N")
-	local qid = self:GetObjectiveTag("QID")
-	local zonename = self:GetObjectiveTag("Z") or self.zonename
-
-	self:ParseAndMapCoords(qid, action, note, quest, zonename)
 end
 
 -- Patch Astrolabe/TomTom spelling mismatches and Lua errors at runtime

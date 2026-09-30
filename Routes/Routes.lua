@@ -573,30 +573,3 @@ AegisPathfinder:RegisterRoutePack("Kamisayo Speedrun", {
     },
 })
 ]]
-
-
--- ============================================================================
--- Debug Functions
--- ============================================================================
-
--- Print route info for debugging
-function AegisPathfinder:PrintCurrentRoute()
-    local route = self.routes[self.db.char.currentroute]
-    if not route then
-        self:Print("No route selected")
-        return
-    end
-
-    self:Print("Current route: " .. (self.db.char.currentroute or "None"))
-    for i, zone in ipairs(route) do
-        self:Print(string.format("  %d. %s (%s) - %s", i, zone.zone, zone.levels, zone.guide))
-    end
-end
-
--- Print all available routes
-function AegisPathfinder:PrintAllRoutes()
-    self:Print("Available routes:")
-    for name, route in pairs(self.routes) do
-        self:Print(string.format("  %s: %d zones", name, table.getn(route)))
-    end
-end

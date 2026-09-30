@@ -930,8 +930,8 @@ addon already shipped and which are known to load on this client.
 every shipped file, so a panel drifting off the theme is caught here rather
 than in the client.
 
-`Tools/tests/test_theme.lua` and `Tools/tests/test_statusframe.lua` execute the real code
-against a stubbed API and assert the geometry and state transitions.
+The Lua tests under `Tools/tests/` execute the real code against a stubbed API
+and assert the geometry and state transitions.
 
 **None of this proves the UI looks like the concept.** Nothing here has been
 loaded in a game client. Texture orientation, font rendering, and whether the

@@ -96,8 +96,8 @@ local to = string.find(core, "---------------------------------\n--      Branchi
 assert(from and to, "could not find the tab block in Core.lua")
 assert(loadstring(string.sub(core, from, to - 1)))()
 
--- Plus the two branch entry points, which are now tab operations.
-local bfrom = string.find(core, "function AegisPathfinder:BranchToGuide", 1, true)
+-- Plus ReturnFromBranch, the way back to the main route's tab.
+local bfrom = string.find(core, "--[[ Go back to the main route", 1, true)
 local bto = string.find(core, "-- Get the optimized guide for a given level", 1, true)
 assert(bfrom and bto, "could not find the branch block in Core.lua")
 assert(loadstring(string.sub(core, bfrom, bto - 1)))()
