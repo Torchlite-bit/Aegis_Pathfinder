@@ -111,7 +111,6 @@ Theme.texture = {
 	tabBorder   = MEDIA .. "tab-border",
 	circleFill  = MEDIA .. "circle-fill",
 	circleBorder= MEDIA .. "circle-border",
-	glow        = MEDIA .. "glow",
 	shadow      = MEDIA .. "shadow",
 	progress    = MEDIA .. "progress-fill",
 	minimapLogo = MEDIA .. "minimap-logo",

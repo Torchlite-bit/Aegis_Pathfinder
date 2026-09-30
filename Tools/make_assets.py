@@ -168,19 +168,6 @@ def circle(size, width=None, path=None, pad=1):
     return finish(img, size, path)
 
 
-def glow(size=64):
-    """Radial falloff for the auto-detect pulse and focus rings."""
-    img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
-    px = img.load()
-    c = (size - 1) / 2.0
-    for y in range(size):
-        for x in range(size):
-            dist = ((x - c) ** 2 + (y - c) ** 2) ** 0.5 / c
-            a = max(0.0, 1.0 - dist)
-            px[x, y] = WHITE + (int(255 * a * a),)
-    return write_tga(img, os.path.join(MEDIA, "glow.tga"))
-
-
 def shadow(size=64, outset=7, radius=10):
     """Soft drop shadow behind floating panels, as a ring.
 
@@ -706,7 +693,6 @@ def main():
     record("tab-border.tga", rounded(32, 6, width=1, path="tab-border.tga"))
     record("circle-fill.tga", circle(32, path="circle-fill.tga"))
     record("circle-border.tga", circle(32, width=2, path="circle-border.tga"))
-    record("glow.tga", glow())
     record("shadow.tga", shadow())
     record("progress-fill.tga", progress_fill())
     record("progress-mask.tga", progress_mask())

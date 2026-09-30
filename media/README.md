@@ -41,7 +41,6 @@ multi-colour art bakes colour in: `nav-arrow.tga`, `progress-fill.tga`, and
 | `pill-fill.tga` / `pill-border.tga` | 32×32 | Route-pack selector pills |
 | `tab-fill.tga` / `tab-border.tga` | 32×32 | Tab bar and dungeon chips, 6px radius |
 | `circle-fill.tga` / `circle-border.tga` | 32×32 | Step checkbox |
-| `glow.tga` | 64×64 | Auto-detect halo and focus rings |
 | `shadow.tga` | 64×64 | Panel drop shadow: a ring, clear inside the panel's edge, nine-sliced 7px outside it |
 | `progress-fill.tga` | 64×8 | accent-deep → accent-glow gradient |
 | `cap-top.tga` / `cap-bottom.tga` | 32×32 | Header and footer strips: rounded on the panel edge, square on the body edge |
