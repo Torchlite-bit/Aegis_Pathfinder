@@ -40,10 +40,23 @@ function AegisPathfinder:SPELLS_CHANGED()
 	self:ScheduleStatusUpdate()
 end
 
+--[[ A level up. A step waiting on a level (|LV|) is done; then a starting
+	zone outlevelled hands over to the shared route (Core.lua,
+	CheckStartingZoneCompletion), counting that step.
+
+	Core.lua had a handler of this name for the starting zone, and this one,
+	loaded after it, replaced it: the starting zone only let go at the next
+	login. The level is the event's -- UnitLevel can still say the old one
+	while it fires. ]]
 function AegisPathfinder:PLAYER_LEVEL_UP(newlevel)
+	newlevel = tonumber(newlevel)
 	local level = tonumber((self:GetObjectiveTag("LV")))
 	self:Debug("PLAYER_LEVEL_UP", newlevel, level)
-	if level and newlevel >= level then self:SetTurnedIn() end
+	if level and newlevel and newlevel >= level then self:SetTurnedIn() end
+	local db = self.db.char
+	if db.startingzoneselected and not db.startingzonecomplete then
+		self:CheckStartingZoneCompletion(newlevel)
+	end
 end
 
 function AegisPathfinder:ZONE_CHANGED(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19,

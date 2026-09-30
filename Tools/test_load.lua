@@ -95,6 +95,44 @@ check(A and A.turtleRaces.Human and A.turtleRaces.Human.faction == "Alliance"
 	and A.turtleRaces.Orc and A.turtleRaces.Orc.faction == "Horde", "the playable races are read, with their side")
 check(A and A.turtleRaces.FelOrc == nil, "and a race with no side is left out, not an error")
 
+--[[ A level up, with every file loaded in the .toc's order.
+
+	Core.lua and QuestTracker.lua each defined PLAYER_LEVEL_UP, one for the
+	starting zone and one for |LV| steps; QuestTracker.lua's, loaded after,
+	replaced Core.lua's, so the starting zone only handed over to the shared
+	route at the next login. And the starting zone judged by UnitLevel, which
+	can still say the old level while the event fires. ]]
+if A and A.PLAYER_LEVEL_UP then
+	local ticked, moved = 0, 0
+	local saved = {}
+	for _, k in ipairs({ "db", "GetObjectiveTag", "SetTurnedIn", "IsInStartingZone", "TransitionFromStartingZone",
+		"actions", "quests", "turnedin", "Debug" }) do saved[k] = A[k] end
+	A.db = { char = { startingzoneselected = true, startingzonecomplete = false } }
+	A.Debug = function() end
+	A.GetObjectiveTag = function(_, tag) if tag == "LV" then return "12" end end
+	A.SetTurnedIn = function(self) ticked = ticked + 1; self.turnedin[self.quests[1]] = true end
+	A.IsInStartingZone = function() return true, { rejoinLevel = 12 } end
+	A.TransitionFromStartingZone = function() moved = moved + 1 end
+	-- Four of five steps done: the fifth is the level step.
+	A.actions = { "ACCEPT", "TURNIN", "ACCEPT", "TURNIN", "GRIND" }
+	A.quests = { "Level@5@", "a@1@", "b@2@", "c@3@", "d@4@" }
+	A.turnedin = { ["a@1@"] = true, ["b@2@"] = true, ["c@3@"] = true, ["d@4@"] = true }
+	local keepLevel = UnitLevel
+	UnitLevel = function() return 11 end        -- not caught up with the event yet
+
+	A:PLAYER_LEVEL_UP(12)
+	check(ticked == 1, "a level up ticks the step waiting on level 12")
+	check(moved == 1, "and hands the outlevelled starting zone over to the shared route, at the event's level 12")
+
+	ticked, moved = 0, 0
+	A.db.char.startingzonecomplete = true
+	A:PLAYER_LEVEL_UP(12)
+	check(moved == 0, "not once the starting zone is done")
+
+	UnitLevel = keepLevel
+	for k in pairs(saved) do A[k] = saved[k] end
+end
+
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end
 print(string.format("Load: %d checks", checks))
 if table.getn(failures) == 0 then

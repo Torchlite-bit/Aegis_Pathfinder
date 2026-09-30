@@ -13,6 +13,7 @@ Checks what can be checked without a WoW client:
   textures every path Theme.lua hands the client resolves to a real file
   filters  every |C| names classes and every |R| races, as the client does
   zones    every step with coordinates is on a zone the world map knows
+  methods  no AegisPathfinder method is defined twice, except as a wrapper
 
 Run from the repository root:  python3 Tools/verify.py
 Exits non-zero if any check fails.
@@ -625,6 +626,38 @@ def check_zones(rep):
     rep.ok("zones", steps)
 
 
+def check_methods(rep):
+    """An AegisPathfinder method defined in two files: the one loaded later
+    replaces the other outright. QuestTracker.lua's PLAYER_LEVEL_UP replaced
+    Core.lua's, and the starting zone stopped letting go on a level up. A
+    later definition is allowed only as a wrapper, keeping the earlier one to
+    call (`local skip = AegisPathfinder.SkipToNextObjective`)."""
+    files = []
+    for entry in toc_entries(os.path.join(ROOT, "Aegis_Pathfinder.toc")):
+        if entry.endswith(".lua"):
+            files.append(os.path.join(ROOT, entry))
+    seen, n = {}, 0
+    for path in files:
+        if not os.path.isfile(path):
+            continue
+        with open(path, encoding="utf-8", errors="replace") as f:
+            text = f.read()
+        for m in re.finditer(r"^\s*(?:function AegisPathfinder[:.](\w+)\s*\(|AegisPathfinder[.:](\w+)\s*=\s*function\b)",
+                             text, re.M):
+            name = m.group(1) or m.group(2)
+            line = text.count("\n", 0, m.start()) + 1
+            n += 1
+            if name in seen:
+                keeps = re.search(r"=\s*AegisPathfinder\.%s\b(?!\s*\()" % re.escape(name), text[:m.start()])
+                if not keeps:
+                    rep.fail("methods", path, "line %d: AegisPathfinder:%s is defined again (first at %s) -- "
+                                              "the later one replaces it; merge them, or keep the first to call"
+                             % (line, name, seen[name]))
+            else:
+                seen[name] = "%s:%d" % (rel(path), line)
+    rep.ok("methods", n)
+
+
 def main():
     print("Verifying %s\n" % ROOT)
     rep = Report()
@@ -642,6 +675,7 @@ def main():
     check_version(rep)
     check_filters(rep)
     check_zones(rep)
+    check_methods(rep)
     return rep.summary()
 
 

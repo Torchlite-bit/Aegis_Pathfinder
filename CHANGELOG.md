@@ -18,6 +18,21 @@ reports.
 
 ---
 
+## [0.18.1]
+
+### Fixed
+- **Leaving a starting zone waited for your next login.** When you
+  outlevel a starting zone's guide (Elwynn Forest, Durotar and the rest,
+  from level 12), Pathfinder should move you onto the shared route at
+  once. It didn't: two parts of the addon each handled the level-up, and
+  the one loaded second replaced the other. The move only happened the
+  next time you logged in.
+  - One level-up handler now does both jobs. It ticks a step that was
+    waiting for your level, then checks whether you've finished the
+    starting zone.
+  - The check now uses your new level. The game can still report the
+    old one at that moment.
+
 ## [0.18.0]
 
 ### Added
@@ -867,6 +882,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.18.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.18.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.17.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.16.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

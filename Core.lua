@@ -580,7 +580,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.18.0"
+AegisPathfinder.version = "0.18.1"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -761,7 +761,7 @@ function AegisPathfinder:InitializeRoute()
     end
     self.initializeDone = true
     for _, event in pairs(self.TrackEvents) do self:RegisterEvent(event) end
-    -- Register for level up to check starting zone completion
+    -- Level ups: the |LV| steps and the starting zone (QuestTracker.lua)
     self:RegisterEvent("PLAYER_LEVEL_UP")
     self.TrackEvents = nil
     self:QueryServerCompletedQuests()
@@ -779,14 +779,6 @@ end
 
 function AegisPathfinder:OnDisable()
     self:UnregisterAllEvents()
-end
-
--- Handle level up events for starting zone transition
-function AegisPathfinder:PLAYER_LEVEL_UP()
-    -- Check if we should transition from starting zone to shared path
-    if self.db.char.startingzoneselected and not self.db.char.startingzonecomplete then
-        self:CheckStartingZoneCompletion()
-    end
 end
 
 local REGISTER_BATCH = 25       -- guides registered per resume
@@ -2393,11 +2385,12 @@ function AegisPathfinder:GetRejoinGuide()
 end
 
 -- Handle starting zone completion and transition to shared path
-function AegisPathfinder:CheckStartingZoneCompletion()
+--- `level` is the level to judge by -- a level up's own; yours when nil.
+function AegisPathfinder:CheckStartingZoneCompletion(level)
     local inStartingZone, zoneInfo = self:IsInStartingZone()
     if not inStartingZone then return false end
 
-    local playerLevel = UnitLevel("player")
+    local playerLevel = level or UnitLevel("player")
     local rejoinLevel = zoneInfo and zoneInfo.rejoinLevel or 12
 
     -- Check if player has outleveled the starting zone
