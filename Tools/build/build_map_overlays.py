@@ -13,7 +13,9 @@ modules/turtle-wow.lua). pfUI is Shagu's (https://github.com/shagu/pfUI),
 MIT; its licence is copied into the file written.
 
 Only the zones the browser knows are kept: the map folders named in
-GuideBrowser.lua's Browser.ZONES. Each overlay is the string pfUI has,
+GuideBrowser.lua's Browser.ZONES, but for the custom zones with a map of
+their own (Theme.zonemap) -- built from Turtle WoW's tiles and these
+overlays, they came out wrong in game. Each overlay is the string pfUI has,
 "TEXTURE:width:height:offsetX:offsetY", in map pixels from the top left of
 the 1002x668 map.
 """
@@ -25,6 +27,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OUT = os.path.join(ROOT, "MapOverlays.lua")
 BROWSER = os.path.join(ROOT, "GuideBrowser.lua")
+THEME = os.path.join(ROOT, "Theme.lua")
 
 
 def block(text, start):
@@ -56,10 +59,14 @@ def overlays(pfui):
 
 
 def wanted():
-    """The map folders GuideBrowser.lua's zones name."""
+    """The map folders GuideBrowser.lua's zones name, but those of the zones
+    with a map of their own (Theme.zonemap), which need no overlays."""
     src = open(BROWSER, encoding="utf-8").read()
     zones = block(src, src.index("Browser.ZONES = {"))
-    return set(re.findall(r'\]\s*=\s*\{\s*"([A-Za-z]+)"', zones))
+    theme = open(THEME, encoding="utf-8").read()
+    own = set(re.findall(r'\["([^"]+)"\]', block(theme, theme.index("Theme.zonemap = {"))))
+    return set(folder for zone, folder in re.findall(r'\["([^"]+)"\]\s*=\s*\{\s*"([A-Za-z]+)"', zones)
+               if zone not in own)
 
 
 def licence(pfui):

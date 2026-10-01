@@ -166,9 +166,10 @@ Theme.glyph = {
 --[[ The guide browser's pictures (GuidePictures.lua) that are not in the
 	client's own 1.12 files. Turtle WoW's dungeon loading screens, by the
 	dungeon's name -- the ones its client shows on the way in, with the art
-	of its Mysteries of Azeroth, Lionel Schramm's among it. And the world
-	maps of the custom zones the browser cannot build from the client's map
-	tiles, explored. ]]
+	of its Mysteries of Azeroth, Lionel Schramm's among it. And the custom
+	zones' world maps, explored, as Turtle WoW draws them: built from the
+	client's tiles and pfUI's overlay data, as the other zones are, they
+	came out wrong in game. ]]
 Theme.loadscreen = {
 	["Ragefire Chasm"]     = MEDIA .. "loadscreens\\ragefire-chasm",
 	["Wailing Caverns"]    = MEDIA .. "loadscreens\\wailing-caverns",
@@ -193,8 +194,19 @@ Theme.loadscreen = {
 	["Hateforge Quarry"]   = MEDIA .. "loadscreens\\hateforge-quarry",
 }
 Theme.zonemap = {
-	["Moonwhisper Coast"] = MEDIA .. "maps\\moonwhisper-coast",
-	["Scarlet Enclave"]   = MEDIA .. "maps\\scarlet-enclave",
+	["Balor"]                = MEDIA .. "maps\\balor",
+	["Blackstone Island"]    = MEDIA .. "maps\\blackstone-island",
+	["Gillijim's Isle"]      = MEDIA .. "maps\\gillijims-isle",
+	["Gilneas"]              = MEDIA .. "maps\\gilneas",
+	["Grim Reaches"]         = MEDIA .. "maps\\grim-reaches",
+	["Hyjal"]                = MEDIA .. "maps\\hyjal",
+	["Icepoint Rock"]        = MEDIA .. "maps\\icepoint-rock",
+	["Lapidis Isle"]         = MEDIA .. "maps\\lapidis-isle",
+	["Moonwhisper Coast"]    = MEDIA .. "maps\\moonwhisper-coast",
+	["Northwind"]            = MEDIA .. "maps\\northwind",
+	["Scarlet Enclave"]      = MEDIA .. "maps\\scarlet-enclave",
+	["Tel'Abim"]             = MEDIA .. "maps\\tel-abim",
+	["Thalassian Highlands"] = MEDIA .. "maps\\thalassian-highlands",
 }
 
 Theme.font = {

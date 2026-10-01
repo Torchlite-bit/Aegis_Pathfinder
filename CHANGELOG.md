@@ -39,9 +39,8 @@ reports.
     you're on, right-click loads it in this tab, and shift-click resets it.
 - **Every guide has a picture.**
   - A zone guide shows its zone's map **fully explored**: every area drawn
-    in, whether you've been there or not. Moonwhisper Coast and Scarlet
-    Enclave, which the game has no map data for, show a map the addon
-    carries.
+    in, whether you've been there or not. A custom zone shows Turtle WoW's
+    own explored map of it, which the addon carries.
   - A dungeon guide shows the loading screen Turtle WoW shows on the way
     in, which the addon carries for every dungeon but Shadowfang Keep. So
     does a route leg named for one, such as Optimized's Uldaman.
@@ -90,8 +89,9 @@ reports.
 ### Credits
 - The fully explored maps use pfUI's map reveal data (MIT, Shagu): where
   each area's art sits on its zone's map.
-- The dungeon loading screens and the two maps are Turtle WoW's, from its
-  client: the art of its Mysteries of Azeroth, Lionel Schramm's among it.
+- The dungeon loading screens and the custom zones' maps are Turtle WoW's,
+  from its client: the art of its Mysteries of Azeroth, Lionel Schramm's
+  among it.
 
 ## [0.20.0] — restart
 

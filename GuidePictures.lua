@@ -3,11 +3,13 @@
 	browser's right pane.
 
 	Every picture is the game's art, from the client's own files but for
-	Turtle WoW's dungeon loading screens, which the addon carries:
+	Turtle WoW's dungeon loading screens and custom zone maps, which the
+	addon carries:
 
 	  * a zone guide shows its zone's map with every area explored -- the
 	    map's twelve tiles, and each area's overlay where pfUI's map reveal
-	    data puts it (MapOverlays.lua) -- cropped to the explored part;
+	    data puts it (MapOverlays.lua) -- cropped to the explored part; a
+	    custom zone, Turtle WoW's explored map of it (Theme.zonemap);
 	  * a dungeon guide shows its dungeon's loading screen, or one of the
 	    client's generic ones;
 	  * a class quest guide shows the class's crest and colour, and the

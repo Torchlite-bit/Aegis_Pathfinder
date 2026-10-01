@@ -158,8 +158,9 @@ are only found at startup.
       loading screen, not stretched; a class quest (Voidwalker) the class
       crest in the corner, the panel in the class's colour, the spell in the
       middle; a profession its icon. Note any that are blank.
-- [ ] A custom zone (Northwind, Gilneas, Tel'Abim) shows its own map, and
-      Moonwhisper Coast and Scarlet Enclave theirs.
+- [ ] Every custom zone (Northwind, Gilneas, Tel'Abim, Moonwhisper Coast,
+      Scarlet Enclave and the rest) shows its own map, whole, with no
+      glitches.
 - [ ] Every dungeon shows the loading screen Turtle WoW shows on the way in,
       whole, not squashed, with no logo or bars; Shadowfang Keep the generic
       dungeon screen.

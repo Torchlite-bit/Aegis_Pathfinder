@@ -273,7 +273,20 @@ local function pic(name) return A:GuidePicture(name) end
 check(pic("Optimized/Darkshore (20-21)").kind == "map" and pic("Optimized/Darkshore (20-21)").map == "Darkshore",
 	"a zone guide is its map")
 check(pic("RXP/1-6 Coldridge Valley").map == "DunMorogh", "by the zone a place is in")
-check(pic("Northwind (28-34)").map == "Northwind", "a custom zone too")
+-- A custom zone is Turtle WoW's own map of it, which the addon carries:
+-- built from its tiles and pfUI's overlays, they came out wrong in game.
+check(pic("Northwind (28-34)").kind == "image" and pic("Northwind (28-34)").texture == A.Theme.zonemap["Northwind"],
+	"a custom zone is the map the addon carries")
+do
+	local _, _, list = string.find(core, "local TURTLE_ZONES = (%b{})")
+	local n = 0
+	for zone in string.gfind(list or "", '%["([^"]+)"%]%s*=%s*true') do
+		n = n + 1
+		-- "Gillijims Isle" is only another spelling of a title's.
+		check(zone == "Gillijims Isle" or A.Theme.zonemap[zone], "%s has its map", zone)
+	end
+	check(n >= 14, "every custom zone is checked, got %d", n)
+end
 check(pic("Dungeons/Scarlet Monastery (34-45)").texture == A.Theme.loadscreen["Scarlet Monastery"]
 	and pic("Dungeons/Scarlet Monastery (34-45)").coords == Pictures.ART_COORDS,
 	"a dungeon guide is Turtle WoW's loading screen for it, the addon's, shown whole")

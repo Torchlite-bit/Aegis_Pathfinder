@@ -562,11 +562,13 @@ own files, and Turtle WoW's dungeon loading screens, which the client lacks:
   Shagu), cut into tiles as the client's `WorldMapFrame_Update` cuts them,
   inside a ScrollFrame that clips them to the picture. The crop is the
   explored areas and a margin at the picture's shape, at least 560 map
-  pixels across. A city has no areas and is shown whole. The two custom
-  zones pfUI has no data for, Moonwhisper Coast and Scarlet Enclave, show
-  their explored world map as Turtle WoW draws it, which the addon carries
-  (`Theme.zonemap`); a custom zone with neither shows the logo rather than
-  borrow another zone's map.
+  pixels across. A city has no areas and is shown whole. A custom zone
+  shows its explored world map as Turtle WoW draws it, which the addon
+  carries (`Theme.zonemap`): built from Turtle WoW's tiles and pfUI's
+  overlays they came out wrong in game, and pfUI has none for Moonwhisper
+  Coast or Scarlet Enclave. The importer leaves those zones' overlays out.
+  A custom zone with no map at all shows the logo rather than borrow
+  another zone's.
 - A dungeon guide, or a route leg named for a dungeon ("Optimized/Uldaman"),
   shows the loading screen Turtle WoW shows on the way in. The 1.12 client
   has no file for most of them, so the addon carries them (`Theme.loadscreen`,
