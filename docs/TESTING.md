@@ -243,8 +243,11 @@ are only found at startup.
       Reputation's neighbour when there is no Pet tab), looking like the
       others; clicking it shows the Gear Finder over the panel, wider than
       it, with the tabs still underneath.
+- [ ] Only the page's own ✕ shows at its top right, not the character
+      panel's as well; back on the character sheet, the panel's ✕ is back.
 - [ ] Clicking Character, or pressing C, goes back to the character sheet;
       the ✕ and Escape close the panel.
+- [ ] Dragging the page moves the character panel, with or without pfUI.
 - [ ] With **pfUI**: the tab is skinned like pfUI's tabs and sits in their
       row, and the page lines up with pfUI's panel.
 - [ ] At a levelling character: a cell per slot with its biggest upgrade,
@@ -261,13 +264,17 @@ are only found at startup.
       of the cells' items, its levels and slots; the arrows step through the
       rest and go round; picks that move the most upgrades elsewhere change
       it at once. **Open the guide** opens that dungeon's guide.
-- [ ] The spec dropdown changes the spec, and the cells follow.
+- [ ] The spec dropdown changes the spec, and the cells follow. A spec with
+      no dungeon to suggest keeps the dropdown, to switch back.
+- [ ] Slots fill from dungeons unticked on the Dungeons page too, and from
+      quest rewards (most need no level).
 - [ ] Quest, reputation and crafted gear (*Quest: …*, *Revered with …*,
       *Blacksmithing 300 …*) have cells but are never the suggestion.
 - [ ] Options → Gear: **Upgrade sources** has **Dungeons** and **Raids**;
       ticking Raids says in chat it takes a minute or two, and the cells
       fill in as items load. With both unticked the footer says it has
-      nowhere to look. The cog in the footer opens this page.
+      nowhere to look. The cog in the footer opens the options at this
+      page, whether or not they were open.
 - [ ] At 60: every dungeon, Turtle's own included; Molten Core shows Turtle's
       bosses (Incindis, Basalthar).
 - [ ] Walking into a dungeon names its upgrades in chat.

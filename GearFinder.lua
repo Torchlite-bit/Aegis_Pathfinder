@@ -7,8 +7,8 @@
 	own items come with none of that; the client says what they are once it
 	has loaded them -- slot, quality and level from GetItemInfo, and whether
 	your class can use one from the red lines on its tooltip, as for any item. The finder takes the dungeons you can go to
-	-- those starting no more than a few levels above you, on your side, not
-	unticked among the options' dungeons; raids only when you ask -- and
+	-- those starting no more than a few levels above you, on your side; raids
+	only when you tick them -- and
 	weighs each of their items for your spec against what you wear, with the
 	item score. What beats it is kept under the slot it would go in -- the
 	one the item score says it replaces, so a one-hander a dual wielder would
@@ -120,7 +120,6 @@ end
 function GF:Dungeons()
 	local level = UnitLevel("player") or 1
 	local faction = UnitFactionGroup("player")
-	local chips = AegisPathfinder.db.char.Dungeons or {}
 	local s = settings()
 	local out = {}
 	-- Solo Self-Found runs no dungeons.
@@ -131,8 +130,9 @@ function GF:Dungeons()
 		if d.kind == "raid" and not s.raids then ok = false end
 		if d.kind ~= "raid" and not s.dungeons then ok = false end
 		if d.faction and faction and d.faction ~= faction then ok = false end
-		-- A dungeon unticked among the options' dungeons is one you do not run.
-		if chips[d.code] == false then ok = false end
+		-- Not the Dungeons page's ticks: those are which dungeons' quests the
+		-- route takes in, set by the setup for the route. A dungeon you skip
+		-- for its quests may still be where your upgrades are.
 		if ok then table.insert(out, d) end
 	end
 	return out
@@ -193,9 +193,14 @@ function GF:Others(level, class)
 	local data, s, db = AegisPathfinder.GearData, settings(), AegisPathfinder.db.char
 	local faction = UnitFactionGroup("player")
 	local out = {}
-	local function near(id)
+	-- How near your level an item is: its required level, or, for one with
+	-- none -- most quest rewards -- the level its quest is taken at. Read as
+	-- level 0, every such reward was "long outgrown" and never weighed.
+	local function near(id, taken)
 		local m = data.items[id]
-		return m and m[3] <= level + L.AHEAD and m[3] >= level - L.BELOW
+		if not m then return nil end
+		local lvl = m[3] > 0 and m[3] or (taken or 0)
+		return lvl <= level + L.AHEAD and lvl >= level - L.BELOW and lvl
 	end
 	local function ours(side) return side == "" or not faction or side == faction end
 	if s.quests then
@@ -206,7 +211,8 @@ function GF:Others(level, class)
 				local where = "Quest: " .. d[1]
 				if d[5] > 0 then where = where .. " (" .. L.RANKS[d[6]] .. ", " .. data.factions[d[5]][1] .. ")" end
 				for _, id in ipairs(d[7]) do
-					if near(id) then table.insert(out, { id, where }) end
+					local lvl = near(id, d[2])
+					if lvl then table.insert(out, { id, where, lvl }) end
 				end
 			end
 		end
@@ -245,7 +251,7 @@ function GF:Find()
 	missing = 0
 	-- One item from anywhere: weighed, and kept if it is an upgrade. A drop
 	-- has its dungeon, who drops it and the chance; anything else says where.
-	local function consider(id, dungeon, code, source, chance, where)
+	local function consider(id, dungeon, code, source, chance, where, taken)
 		local it = "item:" .. id .. ":0:0:0"
 		local meta = not seen[id] and describe(items, id, it)
 		if meta == nil and not seen[id] then
@@ -253,7 +259,7 @@ function GF:Find()
 			seen[id] = true
 			wantLoaded(id)
 			missing = missing + 1
-		elseif meta and meta[3] <= level + L.AHEAD and GF.ForClass(meta[4], class) then
+		elseif meta and math.max(meta[3], taken or 0) <= level + L.AHEAD and GF.ForClass(meta[4], class) then
 			seen[id] = true
 			if not GetItemInfo(it) then
 				wantLoaded(id)
@@ -269,7 +275,8 @@ function GF:Find()
 						bySlot[group] = bySlot[group] or {}
 						table.insert(bySlot[group], {
 							id = id, item = it, dungeon = dungeon, code = code, source = source,
-							chance = chance, where = where, compare = c, level = meta[3],
+							-- "at level N": the item's, or a quest's you cannot take yet.
+							chance = chance, where = where, compare = c, level = math.max(meta[3], taken or 0),
 						})
 					end
 				end
@@ -279,7 +286,7 @@ function GF:Find()
 	for _, d in ipairs(self:Dungeons()) do
 		for _, drop in ipairs(d.loot) do consider(drop[1], d.name, d.code, drop[2], drop[3]) end
 	end
-	for _, o in ipairs(self:Others(level, class)) do consider(o[1], nil, nil, nil, nil, o[2]) end
+	for _, o in ipairs(self:Others(level, class)) do consider(o[1], nil, nil, nil, nil, o[2], o[3]) end
 	results = {}
 	for _, g in ipairs(GROUPS) do
 		local list = bySlot[g]
@@ -480,7 +487,7 @@ function GF:Status()
 		text = "Solo Self-Found is on, so it looks in no dungeons."
 			.. (n > 0 and (" Looking at " .. where .. ".") or "")
 	elseif n == 0 then
-		text = "No dungeon at your level is ticked in the options."
+		text = "There is no " .. (s.dungeons and "dungeon" or "raid") .. " at your level to look in."
 	else
 		text = "Looking in " .. where .. "."
 	end
@@ -529,11 +536,10 @@ function GF:Announce(zone)
 	if not known then return end
 	-- Look in this dungeon even if it is not one the finder would pick.
 	local s = settings()
-	local raids, dungeons, chips = s.raids, s.dungeons, AegisPathfinder.db.char.Dungeons or {}
-	local chip = chips[known.code]
-	s.raids, s.dungeons, chips[known.code] = true, true, nil
+	local raids, dungeons = s.raids, s.dungeons
+	s.raids, s.dungeons = true, true
 	self:Find()
-	s.raids, s.dungeons, chips[known.code] = raids, dungeons, chip
+	s.raids, s.dungeons = raids, dungeons
 	-- What was found for this one dungeon is not what the tab shows.
 	if self:Showing() then self.events.refreshAt = GetTime() end
 	local ups = self:UpgradesIn(zone)

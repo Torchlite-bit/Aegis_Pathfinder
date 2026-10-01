@@ -499,7 +499,11 @@ makes, there because it sits in Blizzard's row.
 **The page** is 714 wide, over the character panel's frame (or pfUI's
 backdrop of it) down to where its tabs hang, and running past the panel to
 the right. Header: GEAR FINDER and the character's level, race and class,
-and a close chip. Footer: where it looked, and a cog for the Gear options.
+and a close chip; the panel's own close button, which would sit over the
+header, is hidden while the page shows. Footer: where it looked, and a cog
+that opens the options at the Gear page. Dragging the page moves the
+character panel it hangs from, as pfUI lets you drag the panel's other
+pages.
 
 - **Cells**, 227 by 41 in two columns of eight -- Head, Neck, Shoulder, Back,
   Chest, Wrist, Main hand, Off hand; Hands, Waist, Legs, Feet, Finger 1 and
@@ -518,7 +522,8 @@ and a close chip. Footer: where it looked, and a cog for the Gear options.
   (`pic:SetDungeon`, GuidePictures.lua), *Scoring for* and a spec dropdown,
   SUGGESTED DUNGEON, the name between arrows, its levels, *N upgrades here*,
   the slots, *1 of N*, and **Open the guide** in the accent, hidden for a
-  dungeon with no guide. With nothing to suggest: the logo and why.
+  dungeon with no guide. With nothing to suggest: the logo in the loading
+  screen's place, the spec row still there to switch back, and why under it.
 
 ### Guide browser -- `GuideListFrame.lua`, `GuideBrowser.lua`, `GuidePictures.lua`
 

@@ -454,26 +454,30 @@ function H.NewRight(body)
 	Theme:NineSlice(rp, Theme.texture.panelFill, "BACKGROUND", "panel3")
 	Theme:NineSlice(rp, Theme.texture.panelBorder, "BORDER", "border")
 
+	-- The dungeon's loading screen, or the logo when there is none to suggest.
 	rp.pic = AegisPathfinder.Pictures:Create(rp, G.PIC_W, G.PIC_H)
 	rp.pic:SetPoint("TOPLEFT", rp, "TOPLEFT", 10, -10)
 
-	-- The dungeon: spec, name, how many upgrades, its guide.
-	local d = CreateFrame("Frame", nil, rp)
-	d:SetAllPoints(rp)
-	rp.dungeon = d
-	local scoring = H.Text(d, "body", 11, "textDim")
+	-- The spec it scores for, shown either way: a spec with nothing to
+	-- suggest is one you may want to switch back from.
+	local scoring = H.Text(rp, "body", 11, "textDim")
 	scoring:SetPoint("TOPLEFT", rp.pic, "BOTTOMLEFT", 0, -11)
 	scoring:SetText("Scoring for")
 	local IS = AegisPathfinder.ItemScore
-	rp.spec = Theme:Dropdown(d, 104, function(spec) IS:SetSpec(spec) end)
+	rp.spec = Theme:Dropdown(rp, 104, function(spec) IS:SetSpec(spec) end)
 	rp.spec:SetHeight(22)
 	rp.spec:SetPoint("TOPRIGHT", rp.pic, "BOTTOMRIGHT", 0, -6)
-	local line = d:CreateTexture(nil, "ARTWORK")
+	local line = rp:CreateTexture(nil, "ARTWORK")
 	line:SetTexture(Theme.texture.solid)
 	line:SetHeight(1)
 	line:SetPoint("TOPLEFT", rp.pic, "BOTTOMLEFT", 0, -34)
 	line:SetPoint("TOPRIGHT", rp.pic, "BOTTOMRIGHT", 0, -34)
 	Theme:Tint(line, "tabbg")
+
+	-- The dungeon: name, how many upgrades, its guide.
+	local d = CreateFrame("Frame", nil, rp)
+	d:SetAllPoints(rp)
+	rp.dungeon = d
 	local label = H.Text(d, "display", 10, "textDim")
 	label:SetPoint("TOPLEFT", line, "BOTTOMLEFT", 0, -7)
 	label:SetText("SUGGESTED DUNGEON")
@@ -513,18 +517,13 @@ function H.NewRight(body)
 		if AegisPathfinder.objectiveframe then AegisPathfinder.objectiveframe:Show() end
 	end)
 
-	-- Nothing to suggest: the logo and why.
+	-- Nothing to suggest: why, where the dungeon would be.
 	local e = CreateFrame("Frame", nil, rp)
 	e:SetAllPoints(rp)
 	rp.empty = e
-	local logo = e:CreateTexture(nil, "ARTWORK")
-	logo:SetTexture(Theme.texture.logo)
-	logo:SetWidth(96)
-	logo:SetHeight(96)
-	logo:SetPoint("CENTER", rp, "CENTER", 0, 44)
 	rp.emptyTitle = H.Text(e, "display", 15, "text")
 	rp.emptyTitle:SetJustifyH("CENTER")
-	rp.emptyTitle:SetPoint("TOP", logo, "BOTTOM", 0, -10)
+	rp.emptyTitle:SetPoint("TOP", line, "BOTTOM", 0, -24)
 	rp.emptyText = Theme:FinePrint(e, G.PIC_W - 10)
 	rp.emptyText:SetJustifyH("CENTER")
 	rp.emptyText:SetPoint("TOP", rp.emptyTitle, "BOTTOM", 0, -6)
@@ -543,10 +542,14 @@ function H.PaintRight(ui, ranked, any, nothing)
 	local n = table.getn(ranked)
 	local cur = ranked[ui.sugIndex]
 	local IS = AegisPathfinder.ItemScore
+	local items = {}
+	for _, spec in ipairs(IS:Specs()) do table.insert(items, { value = spec, label = IS:SpecLabel(spec) }) end
+	rp.spec:SetItems(items)
+	rp.spec:SetValue((IS:Spec()))
+	rp.pic:SetDungeon(cur and cur.name)
 	if cur then
 		rp.dungeon:Show()
 		rp.empty:Hide()
-		rp.pic:SetDungeon(cur.name)
 		rp.name:SetText(cur.name)
 		rp.levels:SetText(cur.lo and ((cur.kind == "raid" and "Raid, level " or "Levels ") .. cur.lo
 			.. (cur.hi and cur.hi ~= cur.lo and ("\226\128\147" .. cur.hi) or "")) or "")
@@ -557,15 +560,9 @@ function H.PaintRight(ui, ranked, any, nothing)
 		local guide = GF:DungeonGuide(cur.name)
 		rp.guide.guideName = guide
 		if guide then rp.guide:Show() else rp.guide:Hide() end
-		local items = {}
-		for _, spec in ipairs(IS:Specs()) do table.insert(items, { value = spec, label = IS:SpecLabel(spec) }) end
-		rp.spec:SetItems(items)
-		rp.spec:SetValue((IS:Spec()))
 	else
 		rp.dungeon:Hide()
 		rp.empty:Show()
-		rp.pic:SetDungeon(nil)
-		rp.pic:Hide()
 		if any then
 			rp.emptyTitle:SetText("No dungeon to suggest")
 			rp.emptyText:SetText("Every upgrade found comes from a quest, a vendor or crafting.")
@@ -573,9 +570,7 @@ function H.PaintRight(ui, ranked, any, nothing)
 			rp.emptyTitle:SetText(GF.Settings().enabled and "Nothing to upgrade" or "Switched off")
 			rp.emptyText:SetText(nothing)
 		end
-		return
 	end
-	rp.pic:Show()
 end
 
 --[[ The page -------------------------------------------------------------------- ]]
@@ -606,7 +601,12 @@ function GF:BuildPage()
 	ui.status:SetPoint("RIGHT", footer, "RIGHT", -34, 0)
 	local cog = Theme:GlyphButton(footer, "gear", 12, 22)
 	cog:SetPoint("RIGHT", footer, "RIGHT", -6, 0)
-	cog:SetScript("OnClick", function() AegisPathfinder:ShowConfigPage("Gear") end)
+	cog:SetScript("OnClick", function()
+		local A = AegisPathfinder
+		if not A.optionsframe then A:CreateConfigPanel() end
+		A.optionsframe:Show()
+		A:ShowConfigPage("Gear")
+	end)
 	cog:SetScript("OnEnter", function()
 		Theme:Tint(this.glyph, "accent")
 		Theme:ShowTip(this, "TOP", "Gear options", { "Upgrade sources, and what else it looks at" })
@@ -664,15 +664,40 @@ if CharacterFrame then
 	page:EnableMouse(true)
 	page:Hide()
 	GF.panel = page
+	-- Dragging the page moves the character panel, which it hangs from, as
+	-- pfUI lets you drag the panel's other pages; without pfUI the client
+	-- puts the panel back where its panels go the next time it opens.
+	page:RegisterForDrag("LeftButton")
+	page:SetScript("OnDragStart", function()
+		CharacterFrame:SetMovable(true)
+		CharacterFrame:StartMoving()
+	end)
+	page:SetScript("OnDragStop", function() CharacterFrame:StopMovingOrSizing() end)
 	page:SetScript("OnShow", function()
 		GF:AnchorPage()
 		GF:PlaceTab()
 		if not GF.ui then GF:BuildPage() end
 		GF.ui.listKey, GF.ui.sugIndex = nil, 1
+		-- pfUI turns the mouse off on the panel's pages, for its own
+		-- dragging; this one drags itself, and has buttons.
+		page:EnableMouse(true)
+		-- The panel's own close button sits over the page's header, which
+		-- has its own; back when the page goes, unless something else hid it.
+		local close = CharacterFrameCloseButton
+		if close and close:IsShown() then
+			close:Hide()
+			GF.hidClose = true
+		end
 		GF:Refresh()
 	end)
 	page:SetScript("OnHide", function()
 		if GF.ui then GF.ui.listKey = nil end
+		if GF.hidClose then
+			CharacterFrameCloseButton:Show()
+			GF.hidClose = nil
+		end
+		-- Let go of the panel if it closes mid-drag.
+		CharacterFrame:StopMovingOrSizing()
 		GameTooltip:Hide()
 	end)
 

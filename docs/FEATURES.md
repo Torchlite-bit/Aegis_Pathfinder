@@ -98,8 +98,9 @@ their setup and prerequisite steps to mandatory; opting out hides them. A blue
 dot marks the dungeons the guide you are currently on actually has steps for.
 Under them, **Turtle WoW's own**: Frostmane Hollow, Windhorn Canyon, Dragonmaw
 Retreat, Stormwrought Ruins, Crescent Grove, Gilneas City and Hateforge Quarry.
-No route guide has steps for these; ticked, the Gear Finder looks in them, and
-their dungeon guides can be offered along the way.
+No route guide has steps for these; ticked, their dungeon guides can be offered
+along the way. These ticks are for the route: the Gear Finder looks in every
+dungeon at your level, ticked or not.
 
 **Dungeons along the way.** Switch on *Offer dungeon guides along the way*, on
 the same page, and finishing a guide asks **Where next?** with the dungeon
@@ -525,15 +526,19 @@ laid out like Zygor's:
   dungeons in that order, and **Open the guide** opens its dungeon guide.
   Picking a different item can change the suggestion; it changes at once.
   Quest, reputation and crafted gear have cells, but do not count towards it.
-- The footer says where it looked; the cog opens the Gear options. Closing it
-  closes the character panel, as any of its pages does.
+- With nothing to suggest -- a spec whose upgrades are all quest rewards, say --
+  it says why, and the spec stays there to switch back.
+- The footer says where it looked; the cog opens the options at the Gear
+  page. Drag the page to move the character panel. Its own ✕ closes the
+  character panel, as closing any of its pages does.
 
 - **Upgrade sources**, two checkboxes in the options: **Dungeons** and
   **Raids** -- 1.12 has no difficulties to tick. It looks in the dungeons that
-  start no more than three levels above you, on your side, and ticked under
-  **Dungeons**; with **Raids** ticked, in the raids at your level too. Items
-  up to three levels above you count, marked with their level. With both
-  unticked it says it has nowhere to look.
+  start no more than three levels above you, on your side -- ticked on the
+  **Dungeons** page or not, as those ticks are which dungeons' quests the route
+  takes in; with **Raids** ticked, in the raids at your level too. Items up to
+  three levels above you count, marked with their level. With both unticked it
+  says it has nowhere to look.
 - Each drop is weighed with the item score, for your spec, as tooltips are.
 - Walking into a dungeon names its upgrades in chat.
 - The loot tables are the CMaNGOS database's for every vanilla dungeon and
@@ -554,7 +559,9 @@ laid out like Zygor's:
   the options, on to start with:
   - **Quest rewards** from quests you have still to do, on your side and for
     your class, that you can take within three levels: *Quest: Title*, with
-    the reputation it needs where it needs one (*Honored, Argent Dawn*).
+    the reputation it needs where it needs one (*Honored, Argent Dawn*). Most
+    rewards need no level to wear; those count at their quest's level, so one
+    from a quest ten levels below you is left out as outgrown.
   - **Reputation gear** a vendor sells at a rank: *Revered with Stormpike
     Guard · the quartermaster*.
   - **Crafted gear**: *Blacksmithing 300*, and *made by a crafter* when you

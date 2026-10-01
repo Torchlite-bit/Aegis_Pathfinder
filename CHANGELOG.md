@@ -18,6 +18,31 @@ reports.
 
 ---
 
+## [0.22.1]
+
+### Fixed
+- **Many Gear Finder slots said *No upgrade found* when there were
+  upgrades.** Two causes:
+  - It skipped every dungeon unticked on the **Dungeons** page. Those ticks
+    say which dungeons' quests the route takes in, and the first-time setup
+    unticks most of them for the route, so a character could be left with
+    one dungeon to look in. The Gear Finder now looks in every dungeon at
+    your level, ticked or not. Its own **Upgrade sources** decide where it
+    looks, as Zygor's do.
+  - Quest rewards that need no level to wear, which is most of them, were
+    taken as level 0. So they all counted as long outgrown and none was
+    weighed. They now count at their quest's level.
+- **The character panel's ✕ showed over the Gear Finder,** beside the page's
+  own. It is hidden while the Gear Finder is open, and back on the other
+  pages.
+- **The Gear Finder could not be dragged.** Dragging the page now moves the
+  character panel, as pfUI lets you drag its other pages.
+- **The cog in the Gear Finder's footer did nothing** unless the options
+  were already open. It now opens them at the Gear page.
+- **Switching to a spec with no dungeon to suggest took the spec dropdown
+  with it,** leaving no way back from there. The dropdown stays, with the
+  logo where the loading screen goes and the reason under it.
+
 ## [0.22.0] — restart
 
 ### Added
@@ -1157,6 +1182,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.21.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.21.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

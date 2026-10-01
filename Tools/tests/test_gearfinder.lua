@@ -74,6 +74,7 @@ for i = 1, 5 do
 end
 CharacterFrameTab2:Hide()
 CharacterFrameTab3:SetPoint("LEFT", CharacterFrameTab1, "RIGHT", -16, 0)
+CreateFrame("Button", "CharacterFrameCloseButton", CharacterFrame)
 function PanelTemplates_SetNumTabs(frame, n) frame.numTabs = n end
 function PanelTemplates_SetTab(frame, id) frame.selectedTab = id end
 function PlaySound() end
@@ -92,8 +93,10 @@ function ToggleCharacter(tab)
 			f:Show()
 			local h = f:GetScript("OnShow")
 			if h then local old = this; this = f; h(); this = old end
-		else
+		elseif f:IsShown() then
 			f:Hide()
+			local h = f:GetScript("OnHide")
+			if h then local old = this; this = f; h(); this = old end
 		end
 	end
 end
@@ -310,8 +313,10 @@ check(c.DM and c.WC, "the dungeons at your level")
 check(not c.RFC, "not the other side's")
 check(c.SFK, "one starting a few levels above you")
 check(not c.ZG, "no raids until you ask")
+-- The Dungeons page's ticks are which dungeons' quests the route takes in,
+-- and the setup unticks most for the route; they hid those dungeons' gear.
 A.db.char.Dungeons.WC = false
-check(not codes().WC, "not a dungeon you have unticked")
+check(codes().WC, "a dungeon unticked on the Dungeons page still: those ticks are the route's")
 A.db.char.Dungeons.WC = true
 GF.Settings().raids = true
 check(not codes().ZG, "a raid only at its level, even when asked")
@@ -432,6 +437,18 @@ check(f[331] and f[331].where == "Blacksmithing 150 \194\183 made by a crafter",
 	tostring(f[331] and f[331].where))
 check(not f[332], "not gear that binds on pickup to a crafter you are not")
 check(f[333] and f[333].where == "Tailoring 145", "but yes if you are one, got %s", tostring(f[333] and f[333].where))
+-- Most quest rewards need no level: read as level 0, every one was "long
+-- outgrown" and none was weighed. Such a reward is as near as its quest.
+data.quests[308] = { "Plain Reward", 18, "", 0, 0, 0, { 318 } }
+data.quests[309] = { "Long Ago", 6, "", 0, 0, 0, { 319 } }
+data.quests[310] = { "Coming Up", 22, "", 0, 0, 0, { 320 } }
+for _, id in ipairs({ 318, 319, 320 }) do meta(id, "INVTYPE_WRIST", 0); item(id, "INVTYPE_WRIST", id - 310) end
+f = found()
+check(f[318] and f[318].level == 18, "a reward that needs no level, weighed at its quest's, got %s",
+	tostring(f[318] and f[318].level))
+check(f[320] and f[320].level == 22, "a quest a level or two off: at that level, got %s", tostring(f[320] and f[320].level))
+check(not f[319], "but not one whose quest you have long outgrown")
+data.quests[308], data.quests[309], data.quests[310] = nil, nil, nil
 A.db.char.SelfFound = true
 f = found()
 check(not f[331] and f[333], "Solo Self-Found: only what you make yourself")
@@ -518,11 +535,11 @@ GF:Refresh()
 check(A.db.char.gearfinder.picks.head == nil, "or it is no longer an upgrade")
 worn[1] = 900
 GF:SetPick("head", 131)
-A.db.char.Dungeons.SFK = false
+GF.Settings().dungeons = false
 GF:Refresh()
-check(A.db.char.gearfinder.picks.head == 131 and cellsByKey().head.shown.id == 112,
-	"but not because its dungeon is unticked: shown again when it is ticked")
-A.db.char.Dungeons.SFK = true
+check(A.db.char.gearfinder.picks.head == 131 and not cellsByKey().head.shown,
+	"but not because dungeons are unticked under the sources: shown again when they are ticked")
+GF.Settings().dungeons = true
 GF:Refresh()
 check(cellsByKey().head.shown.id == 131, "as it is")
 GF:SetPick("head", nil)
@@ -539,6 +556,10 @@ GF.Settings().quests, GF.Settings().reputation, GF.Settings().crafted = false, f
 status, nothing = GF:Status()
 check(string.find(status, "has nowhere to look", 1, true) and string.find(nothing, "nowhere to look", 1, true),
 	"and with nothing else, that it has nowhere to look, got %s", status)
+GF.Settings().raids = true
+status = GF:Status()
+check(status == "There is no raid at your level to look in.", "raids alone, below them: no ticks to blame, got %s", status)
+GF.Settings().raids = false
 GF.Settings().quests, GF.Settings().reputation, GF.Settings().crafted, GF.Settings().dungeons = true, true, true, true
 level = 60
 GF.Settings().raids = true
@@ -602,6 +623,7 @@ run(tab, "OnClick")
 check(toggled[table.getn(toggled)] == "AegisPathfinderGearFinderPage" and page:IsShown() and CharacterFrame:IsShown(),
 	"the tab opens the character panel on its page")
 check(not PaperDollFrame:IsShown(), "in place of the other pages")
+check(not CharacterFrameCloseButton:IsShown(), "the panel's own close button hidden, not over the page's header")
 local ui = GF.ui
 check(ui and ui.cells and table.getn(ui.cells) == 17, "its cells drawn")
 local head = ui.cells[1]
@@ -627,8 +649,18 @@ run(ui.right.prev, "OnClick")
 check(ui.right.name:GetText() == "Crescent Grove", "and round from the first to the last, got %s", tostring(ui.right.name:GetText()))
 check(not ui.right.guide:IsShown(), "a dungeon with no guide has no button")
 check(string.find(ui.status:GetText(), "Looking in", 1, true), "the footer says where it looked")
+-- The cog called ShowConfigPage alone, which does nothing while the options
+-- window is not open.
+function A:CreateConfigPanel() self.optionsframe = CreateFrame("Frame", nil, UIParent); self.optionsframe:Hide() end
 run(ui.cog, "OnClick")
-check(config[1] == "Gear", "the cog opens the Gear options")
+check(config[1] == "Gear" and A.optionsframe and A.optionsframe:IsShown(), "the cog opens the options, at the Gear page")
+A.optionsframe:Hide()
+-- The page drags the character panel, and has its own close button.
+check(page.__dragButton == "LeftButton", "the page is a drag handle")
+run(page, "OnDragStart")
+check(CharacterFrame.__moving and CharacterFrame.__movable, "dragging it moves the character panel")
+run(page, "OnDragStop")
+check(not CharacterFrame.__moving, "and lets go")
 
 -- A slot's list.
 run(head, "OnClick")
@@ -654,7 +686,17 @@ check(not list:IsShown(), "an empty slot has no list")
 GF.Settings().dungeons = false
 GF.Settings().quests, GF.Settings().reputation, GF.Settings().crafted = false, false, false
 GF:SettingsChanged()
-check(ui.right.empty:IsShown() and ui.right.emptyTitle:GetText() == "Nothing to upgrade", "nothing found: the logo, and why")
+check(ui.right.empty:IsShown() and ui.right.emptyTitle:GetText() == "Nothing to upgrade", "nothing found: why")
+check(ui.right.pic.kind == "logo" and ui.right.pic:IsShown(), "the logo where the loading screen was")
+-- Switching to a spec with nothing to suggest took the spec menu with it.
+local function onPage(f)
+	while f and f ~= page do
+		if not f:IsShown() then return false end
+		f = f:GetParent()
+	end
+	return f == page
+end
+check(onPage(ui.right.spec), "and the spec menu still there, to switch back")
 GF.Settings().quests, GF.Settings().reputation, GF.Settings().crafted, GF.Settings().dungeons = true, true, true, true
 GF.Settings().enabled = false
 GF:SettingsChanged()
@@ -664,6 +706,7 @@ GF:SettingsChanged()
 check(tab:IsShown(), "and comes back")
 ToggleCharacter("PaperDollFrame")
 check(not page:IsShown() and PaperDollFrame:IsShown(), "another tab's page replaces it")
+check(CharacterFrameCloseButton:IsShown(), "and the panel's close button is back")
 A:ToggleGearFinder()
 check(toggled[table.getn(toggled)] == "AegisPathfinderGearFinderPage" and page:IsShown(), "the options' button opens it")
 run(head, "OnEnter")

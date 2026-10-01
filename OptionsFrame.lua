@@ -55,9 +55,9 @@ local CHIP_W = math.floor((BODY_W - (CHIP_COLS - 1) * CHIP_GAP) / CHIP_COLS)
 
 --[[ Turtle WoW's own dungeons, at InstanceJournal's levels. No route guide
 	has steps for them, so the first-time setup does not offer them; the
-	Dungeons page does. Ticked, the Gear finder looks in them and
-	their dungeon guides (Guides/Dungeons/, under these names) can be offered
-	along the way. ]]
+	Dungeons page does. Ticked, their dungeon guides (Guides/Dungeons/, under
+	these names) can be offered along the way. The Gear Finder looks in them
+	ticked or not: its Upgrade sources decide where it looks. ]]
 AegisPathfinder.TURTLE_DUNGEON_INFO = {
 	{ code = "FH",  name = "Frostmane Hollow",   lo = 13, hi = 20 },
 	{ code = "WHC", name = "Windhorn Canyon",    lo = 26, hi = 30 },
@@ -412,8 +412,8 @@ function AegisPathfinder:CreateConfigPanel()
 	-- Turtle WoW's own: no route steps, a dungeon guide each.
 	table.insert(frame.sections, section("Turtle WoW's own"))
 	chipGrid(AegisPathfinder.TURTLE_DUNGEON_INFO or {})
-	note("No route guide has steps for these. Ticked, the Gear finder looks in them, "
-		.. "and their dungeon guides can be offered along the way.")
+	note("No route guide has steps for these. Ticked, their dungeon guides can be "
+		.. "offered along the way.")
 	space(SECTION_GAP)
 
 	--[[ Dungeons along the way: the ticked dungeons' guides, offered when a
