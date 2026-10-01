@@ -18,6 +18,22 @@ reports.
 
 ---
 
+## [0.21.1] — restart
+
+### Added
+- **Shadowfang Keep shows its loading screen** in the guide browser, the
+  last dungeon guide still on the game's generic one. Every dungeon guide
+  now shows the screen Turtle WoW shows on the way in.
+
+### Fixed
+- **Picking a guide threw TomTom errors when TomTom hadn't started.**
+  TomTom-TWOW stops starting up when the arrow position it saved is one the
+  game won't take, and every call into it after that fails. Pathfinder now
+  treats a TomTom that didn't start as not there, and uses the next arrow
+  addon or its own. To get TomTom going again, clear its saved arrow
+  position and reload:
+  `/run for _,p in pairs(TomTomDB and TomTomDB.profiles or {}) do if p.arrow then p.arrow.location=nil end end ReloadUI()`
+
 ## [0.21.0] — restart
 
 ### Added
@@ -42,7 +58,7 @@ reports.
     in, whether you've been there or not. A custom zone shows Turtle WoW's
     own explored map of it, which the addon carries.
   - A dungeon guide shows the loading screen Turtle WoW shows on the way
-    in, which the addon carries for every dungeon. So
+    in, which the addon carries for every dungeon but Shadowfang Keep. So
     does a route leg named for one, such as Optimized's Uldaman.
   - A class quest shows your class's crest and colour, and the chain's spell
     or reward.
@@ -82,16 +98,9 @@ reports.
   list's switch that hides outlevelled guides, do its job.
 - Reset window also puts the browser back to its own size.
 
-### Fixed
-- **Picking a guide threw TomTom errors when TomTom hadn't started.**
-  TomTom-TWOW stops starting up when the arrow position it saved is one the
-  game won't take, and every call into it after that fails. Pathfinder now
-  treats a TomTom that didn't start as not there, and uses the next arrow
-  addon or its own.
-
 ### Not yet checked in game
-- The loading screens and custom zone maps the addon carries haven't all
-  been seen in game yet.
+- Shadowfang Keep shows the game's generic dungeon screen until the addon
+  has its own.
 
 ### Credits
 - The fully explored maps use pfUI's map reveal data (MIT, Shagu): where
@@ -1091,6 +1100,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.21.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.21.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.20.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.19.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
