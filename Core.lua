@@ -115,6 +115,15 @@ local defaults = {
     sellbutton = true,            -- the "Sell greys" button on the vendor window
     autosell = false,             -- sell greys as a vendor's window opens
     autorepair = "off",           -- "off", or "own": repair with your own money
+    -- The Action Buttons page (ActiveFrames.lua)
+    itemsgrow = "right",          -- which way Active Items grows: right, left, up or down
+    targetsgrow = "right",        -- and Active Targets
+    buttonscale = 1,              -- the three small windows' size, over the window scale
+    btnitems = true,              -- buttons: quest items
+    btntalk = true,               -- talk to (and interact with) NPCs
+    btnkill = true,               -- kill (and loot) enemies
+    btndelete = true,             -- delete the cheapest item, when the bags are full
+    raidmark = true,              -- the target buttons mark whom they target
     petskills = {},
     completedquests = {},
     completedquestsbyid = {}, -- {[questId] = true} from server
@@ -584,7 +593,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.22.3"
+AegisPathfinder.version = "0.22.4"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be

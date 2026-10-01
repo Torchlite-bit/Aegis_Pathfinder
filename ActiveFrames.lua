@@ -295,6 +295,10 @@ end
 --[[ The actions. ]]
 
 local activeItems, activeTargets = {}, {}
+-- What the windows show of those: the Action Buttons page's button types
+-- leave some out, while the macros, the key bindings and the quest icons
+-- still have them all.
+local windowItems, windowTargets = {}, {}
 
 --- Use the `n`th active item (the first by default).
 function AegisPathfinder:UseActiveItem(n)
@@ -318,9 +322,13 @@ end
 -- Mark `unit` for `entry`'s context. What the client says outranks the
 -- database: someone to kill or loot who cannot be attacked is someone to
 -- interact with. The same mark is not set again -- setting it again is how
--- the stock UI takes one off.
-local function Mark(entry, unit)
+-- the stock UI takes one off. A target button's mark (not `auto`, the quest
+-- icons') waits on the Action Buttons page's raid marker switch; with it off
+-- the buttons only target.
+local function Mark(entry, unit, auto)
 	unit = unit or "target"
+	local char = AegisPathfinder.db and AegisPathfinder.db.char
+	if not auto and char and char.raidmark == false then return true end
 	local mark = entry.mark or STAR
 	if (entry.context == "kill" or entry.context == "loot") and not UnitCanAttack("player", unit) then
 		mark = SQUARE
@@ -347,7 +355,7 @@ function AegisPathfinder:AutoMark(unit)
 	if GetRaidTargetIndex(unit) then return false end
 	local entry = iconTargets[UnitName(unit)]
 	if not entry then return false end
-	return Mark(entry, unit)
+	return Mark(entry, unit, true)
 end
 
 --[[ Each press, the next of the step's targets around you.
@@ -636,6 +644,7 @@ end
 
 local items, targets, macros
 local Request   -- ask for a repaint; defined with the driver below
+local AnchorGrow   -- pin a dragged window by the corner it grows from; below
 
 -- A tile: the theme's rounded square, an icon inside it, a count and a mark
 -- in its corners.
@@ -690,7 +699,12 @@ local function Window(name, title, key)
 	label:SetText(string.upper(title))
 	Theme:TextColor(label, "text")
 
-	header:MakeDragHandle(f, Theme:PositionSaver(key))
+	local save = Theme:PositionSaver(key)
+	header:MakeDragHandle(f, function(frame)
+		AnchorGrow(frame)
+		save(frame)
+	end)
+	f.save = save
 	-- A window mid-drag is not re-anchored under the cursor.
 	local start, stop = header:GetScript("OnDragStart"), header:GetScript("OnDragStop")
 	header:SetScript("OnDragStart", function() f.moving = true; start() end)
@@ -701,19 +715,68 @@ local function Window(name, title, key)
 	return f
 end
 
--- Size `f` to `n` tiles, and hand back its first `n`, built as needed.
+-- `f`'s first `n` tiles, built as needed; the rest hidden.
 local function Fit(f, n, build)
 	for i = table.getn(f.tiles) + 1, n do
 		local b = build(f)
-		b:SetPoint("TOPLEFT", f, "TOPLEFT", PAD + (i - 1) * (TILE + GAP), -(HEADER_H + PAD))
 		b.index = i
 		f.tiles[i] = b
 	end
+	local shown = {}
 	for i, b in ipairs(f.tiles) do
-		if i <= n then b:Show() else b:Hide() end
+		if i <= n then table.insert(shown, b) else b:Hide() end
 	end
-	local tiles = PAD * 2 + n * TILE + math.max(n - 1, 0) * GAP
-	f:SetWidth(math.max(tiles, math.ceil(f.label:GetStringWidth()) + 24))
+	return shown
+end
+
+--[[ Which way a window grows (the Action Buttons page): "right", the first
+	tile at the left; "left", the first at the right; "down", a column from
+	the top; "up", a column from the bottom. A window that has been dragged
+	keeps the corner it grows from where you left it (AnchorGrow); until
+	then it hangs under the guide. ]]
+local function Grow(f)
+	local char = AegisPathfinder.db and AegisPathfinder.db.char or {}
+	return (f == items and char.itemsgrow) or (f == targets and char.targetsgrow) or "right"
+end
+
+-- Lay `tiles` out in `f` the way it grows, and size it to them.
+local function Arrange(f, tiles)
+	local dir, n = Grow(f), table.getn(tiles)
+	for i, b in ipairs(tiles) do
+		local k = (i - 1) * (TILE + GAP)
+		b:ClearAllPoints()
+		if dir == "left" then
+			b:SetPoint("TOPRIGHT", f, "TOPRIGHT", -(PAD + k), -(HEADER_H + PAD))
+		elseif dir == "down" then
+			b:SetPoint("TOP", f, "TOP", 0, -(HEADER_H + PAD + k))
+		elseif dir == "up" then
+			b:SetPoint("BOTTOM", f, "BOTTOM", 0, PAD + k)
+		else
+			b:SetPoint("TOPLEFT", f, "TOPLEFT", PAD + k, -(HEADER_H + PAD))
+		end
+		b:Show()
+	end
+	local run = PAD * 2 + n * TILE + math.max(n - 1, 0) * GAP
+	local label = math.ceil(f.label:GetStringWidth()) + 24
+	if dir == "up" or dir == "down" then
+		f:SetWidth(math.max(PAD * 2 + TILE, label))
+		f:SetHeight(HEADER_H + run)
+	else
+		f:SetWidth(math.max(run, label))
+		f:SetHeight(HEADER_H + PAD * 2 + TILE)
+	end
+end
+
+-- Pin a dragged window by the corner it grows from, where that corner is.
+local CORNER = { right = "TOPLEFT", down = "TOPLEFT", left = "TOPRIGHT", up = "BOTTOMLEFT" }
+AnchorGrow = function(f)
+	local corner = CORNER[Grow(f)] or "TOPLEFT"
+	local x = corner == "TOPRIGHT" and f:GetRight() or f:GetLeft()
+	local y = corner == "BOTTOMLEFT" and f:GetBottom() or f:GetTop()
+	if not x or not y then return false end
+	f:ClearAllPoints()
+	f:SetPoint(corner, UIParent, "BOTTOMLEFT", x, y)
+	return true
 end
 
 -- Until dragged, Items hangs under the guide and Targets under Items -- or
@@ -731,7 +794,7 @@ local function ItemTile(parent)
 	-- GameTooltip, because only it can show a game item.
 	b:SetScript("OnEnter", function()
 		this.border:SetTint("accent")
-		local entry = activeItems[this.index]
+		local entry = windowItems[this.index]
 		if not entry then return end
 		GameTooltip:SetOwner(this, "ANCHOR_LEFT")
 		GameTooltip:SetBagItem(entry.bag, entry.slot)
@@ -744,16 +807,50 @@ local function ItemTile(parent)
 	return b
 end
 
+-- The delete tile, after the items when your bags are full: the cheapest
+-- thing in them, to make room (Automation.lua chooses it, and asks before
+-- deleting anything that is not grey).
+local function DeleteTile(parent)
+	local b = Tile(parent)
+	b.icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+	b.cross = b:CreateTexture(nil, "OVERLAY")
+	b.cross:SetTexture(Theme.glyph.close)
+	b.cross:SetWidth(12); b.cross:SetHeight(12)
+	b.cross:SetPoint("TOPRIGHT", b, "TOPRIGHT", 2, 2)
+	Theme:Tint(b.cross, "danger")
+	b:SetScript("OnClick", function()
+		local auto = AegisPathfinder.Automation
+		if auto and this.entry then auto:DeleteCheapest(this.entry) end
+	end)
+	-- GameTooltip, because only it can show a game item.
+	b:SetScript("OnEnter", function()
+		this.border:SetTint("danger")
+		local e = this.entry
+		if not e then return end
+		GameTooltip:SetOwner(this, "ANCHOR_LEFT")
+		GameTooltip:SetBagItem(e.bag, e.slot)
+		GameTooltip:AddLine("Your bags are full. Click to delete this, the cheapest thing in them"
+			.. (e.grey and "." or (": a vendor would pay " .. AegisPathfinder.Automation.Money(e.value) .. ".")),
+			0.78, 0.78, 0.74, 1)
+		GameTooltip:Show()
+	end)
+	b:SetScript("OnLeave", function()
+		this.border:SetTint("subtle")
+		GameTooltip:Hide()
+	end)
+	return b
+end
+
 local function TargetTile(parent)
 	local b = Tile(parent)
-	b:SetScript("OnClick", function() AegisPathfinder:TargetActive(activeTargets[this.index]) end)
+	b:SetScript("OnClick", function() AegisPathfinder:TargetActive(windowTargets[this.index]) end)
 	b:SetScript("OnEnter", function()
 		this.border:SetTint("accent")
-		local entry = activeTargets[this.index]
+		local entry = windowTargets[this.index]
 		if not entry then return end
-		Theme:ShowTip(this, "TOP", entry.name, {
-			string.format("Click to target and mark with %s.", MARK_NAME[entry.mark] or "a mark"),
-		})
+		local char = AegisPathfinder.db and AegisPathfinder.db.char or {}
+		Theme:ShowTip(this, "TOP", entry.name, { char.raidmark == false and "Click to target."
+			or string.format("Click to target and mark with %s.", MARK_NAME[entry.mark] or "a mark") })
 	end)
 	b:SetScript("OnLeave", function()
 		AegisPathfinder:PaintTargetBorders()
@@ -824,7 +921,30 @@ function AegisPathfinder:CreateActiveFrames()
 	macros = Window("AegisPathfinderMacros", "Macros", "activemacros")
 	macros.targetTile = MacroTargetTile(macros)
 	macros.itemTile = MacroItemTile(macros)
+	items.deleteTile = DeleteTile(items)
+	items.deleteTile:Hide()
 	self.activeitemsframe, self.activetargetsframe, self.macrosframe = items, targets, macros
+	self:ApplyButtonScale()
+end
+
+--- The three windows at the Action Buttons page's button size, on top of the
+--- window scale.
+function AegisPathfinder:ApplyButtonScale()
+	if not items then return end
+	local char = self.db and self.db.char
+	local factor = char and char.buttonscale or 1
+	for _, f in ipairs({ items, targets, macros }) do Theme:SetScaleFactor(f, factor) end
+end
+
+--- Which way Active Items ("items") or Active Targets ("targets") grows:
+--- "right", "left", "up" or "down". A window you have dragged grows from the
+--- matching corner, from where it is now.
+function AegisPathfinder:SetActiveGrowth(which, dir)
+	if not items then self:CreateActiveFrames() end
+	local f = which == "targets" and targets or items
+	self.db.char[which == "targets" and "targetsgrow" or "itemsgrow"] = dir
+	if Theme:RestorePosition(f, f.key) and AnchorGrow(f) then f.save(f) end
+	self:PaintActiveFrames()
 end
 
 -- The Macros window: a tile for whichever of the two has something to do.
@@ -889,17 +1009,32 @@ function AegisPathfinder:PaintActiveFrames()
 	local guide = self.objectiveframe or UIParent
 
 	activeItems = char.showactiveitems ~= false and self:GetActiveItems() or {}
-	local n = table.getn(activeItems)
-	if n > 0 then
-		Fit(items, n, ItemTile)
+	windowItems = char.btnitems ~= false and activeItems or {}
+	local cheap = char.showactiveitems ~= false and char.btndelete ~= false and self.Automation
+		and self.Automation:CheapestToDelete()
+	local n = table.getn(windowItems)
+	local del = items.deleteTile
+	if n > 0 or cheap then
+		local shown = Fit(items, n, ItemTile)
 		for i = 1, n do
-			local b, entry = items.tiles[i], activeItems[i]
+			local b, entry = items.tiles[i], windowItems[i]
 			b.icon:SetTexture(entry.texture)
 			b.count:SetText(entry.count > 1 and tostring(entry.count) or "")
 		end
+		del.entry = cheap or nil
+		if cheap then
+			del.icon:SetTexture(cheap.texture)
+			del.count:SetText(cheap.count > 1 and tostring(cheap.count) or "")
+			table.insert(shown, del)
+		else
+			del:Hide()
+		end
+		Arrange(items, shown)
 		Place(items, guide)
 		items:Show()
 	else
+		del.entry = nil
+		del:Hide()
 		items:Hide()
 	end
 
@@ -907,11 +1042,23 @@ function AegisPathfinder:PaintActiveFrames()
 	-- are worked out whether or not their window is showing.
 	activeTargets = self:GetActiveTargets()
 	iconTargets = self:GetQuestIconTargets(activeTargets)
-	n = char.showactivetargets ~= false and table.getn(activeTargets) or 0
+	-- Talk to NPC covers talking and interacting; Kill enemy, killing and
+	-- looting.
+	windowTargets = {}
+	if char.showactivetargets ~= false then
+		for _, t in ipairs(activeTargets) do
+			local hostile = t.context == "kill" or t.context == "loot"
+			if (hostile and char.btnkill ~= false) or (not hostile and char.btntalk ~= false) then
+				table.insert(windowTargets, t)
+			end
+		end
+	end
+	n = table.getn(windowTargets)
 	if n > 0 then
-		Fit(targets, n, TargetTile)
+		local shown = Fit(targets, n, TargetTile)
+		Arrange(targets, shown)
 		for i = 1, n do
-			local b, entry = targets.tiles[i], activeTargets[i]
+			local b, entry = targets.tiles[i], windowTargets[i]
 			local hostile = entry.context == "kill" or entry.context == "loot"
 			local glyph = hostile and Theme.actionIcon.K
 				or entry.context == "interact" and Theme.actionIcon.U
@@ -937,7 +1084,7 @@ function AegisPathfinder:PaintTargetBorders()
 	if not targets then return end
 	local current = UnitExists("target") and UnitName("target")
 	for i, b in ipairs(targets.tiles) do
-		local entry = activeTargets[i]
+		local entry = windowTargets[i]
 		b.border:SetTint(entry and entry.name == current and "accent" or "subtle")
 	end
 end
@@ -987,6 +1134,7 @@ AegisPathfinder.activeEvents = events
 --- Put each window back where the player left it, at login.
 function AegisPathfinder:PositionActiveFrames()
 	if not items then self:CreateActiveFrames() end
+	self:ApplyButtonScale()
 	Theme:RestorePosition(items, "activeitems")
 	Theme:RestorePosition(targets, "activetargets")
 	Theme:RestorePosition(macros, "activemacros")

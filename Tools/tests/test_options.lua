@@ -627,6 +627,41 @@ check(frame.repair.list:IsShown(), "its list opens")
 click(navNamed("Gear"))
 check(not frame.repair.list:IsShown(), "and closes with the page, as the others do")
 click(navNamed("Automation"))
+
+-- Action Buttons: which way the windows grow, their size, which buttons, the mark.
+do
+	local abPage = pageNamed("Action Buttons")
+	local grown, scaled = {}, 0
+	function AegisPathfinder:SetActiveGrowth(which, dir) table.insert(grown, which .. " " .. dir) end
+	function AegisPathfinder:ApplyButtonScale() scaled = scaled + 1 end
+	check(frame.itemsGrow:GetParent() == abPage and frame.targetsGrow:GetParent() == abPage, "the growth dropdowns are on the page")
+	check(frame.itemsGrow.label:GetText() == "Right" and frame.targetsGrow.label:GetText() == "Right", "both grow right to start with")
+	click(frame.itemsGrow)
+	click(frame.itemsGrow.rows[3])
+	check(db.itemsgrow == "up" and grown[1] == "items up", "picking Up grows Active Items up, got %s", tostring(grown[1]))
+	click(frame.targetsGrow)
+	click(frame.targetsGrow.rows[2])
+	check(db.targetsgrow == "left" and grown[2] == "targets left", "and Active Targets its own way")
+	check(frame.buttonSize:GetParent() == abPage and frame.buttonSize.value:GetText() == "100%", "button size: 100%% to start with")
+	frame.buttonSize.slider:SetValue(1.25)
+	check(math.abs(db.buttonscale - 1.25) < 1e-6 and scaled == 1, "dragging it sizes the windows, got %s", tostring(db.buttonscale))
+	for _, key in ipairs({ "btnitems", "btntalk", "btnkill", "btndelete" }) do
+		check(frame.boxes[key] and frame.boxes[key]:IsOn(), "the %s box is ticked to start with", key)
+	end
+	check(frame.boxes.btndelete.label:GetText() == "Delete cheapest item", "the fourth is Delete cheapest item")
+	local before = AegisPathfinder.__activeRefreshed or 0
+	click(frame.boxes.btnkill)
+	check(db.btnkill == false and (AegisPathfinder.__activeRefreshed or 0) > before, "unticking one repaints the windows")
+	click(frame.boxes.btnkill)
+	check(frame.switches.raidmark and frame.switches.raidmark:IsOn(), "the target buttons mark, to start with")
+	click(frame.switches.raidmark)
+	check(db.raidmark == false, "and can be told not to")
+	click(frame.switches.raidmark)
+	db.itemsgrow, db.targetsgrow, db.buttonscale = nil, nil, nil
+	AegisPathfinder:RefreshConfigPanel()
+	check(frame.itemsGrow.label:GetText() == "Right" and frame.buttonSize.value:GetText() == "100%",
+		"a character without them reads right and 100%%")
+end
 check(frame.switches.shownavcallout == nil,
 	"our arrow's switch is in the Arrows section, with the others")
 check(frame.switches.showminimapbutton ~= nil and frame.switches.showminimapbutton:IsOn(),

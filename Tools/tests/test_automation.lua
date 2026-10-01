@@ -364,6 +364,88 @@ check(not repaired and sold[1] == nil and Auto.button:IsShown(), "holding Shift:
 shift = false
 check(Auto.Money(1234567) == "123g 45s 67c" and Auto.Money(5) == "5c" and Auto.Money(100) == "1s 0c", "money written out")
 
+-- Full bags: what the delete tile offers -------------------------------------------------
+
+UISpecialFrames = {}
+local slotsOf = { [0] = 4, [1] = 2, [2] = 2 }
+GetContainerNumSlots = function(bag) return slotsOf[bag] or 0 end
+local counts = {}
+GetContainerItemInfo = function(bag, slot) return "tex" .. bag .. slot, counts[bag .. ":" .. slot] or 1 end
+ContainerIDToInventoryID = function(bag) return 19 + bag end
+-- Bag 2 is a quiver: its empty slots are no room for anything else.
+GetInventoryItemLink = function(_, inv)
+	return inv == 21 and "|cffffffff|Hitem:2101:0:0:0|h[Light Quiver]|h|r" or "|cffffffff|Hitem:4500:0:0:0|h[Bag]|h|r"
+end
+GetItemInfo = function(id)
+	if id == 2101 then return "Light Quiver", "item:2101", 1, 1, "Quiver", "Quiver" end
+	return "Bag", "item:4500", 1, 1, "Container", "Bag"
+end
+local GREY_EAR = "|cff9d9d9d|Hitem:2211:0:0:0|h[Bat Ear]|h|r"
+local GREY_FOOT = "|cff9d9d9d|Hitem:3300:0:0:0|h[Rabbit's Foot]|h|r"
+bags = {
+	[0] = { GREY_EAR, "|cffffffff|Hitem:159:0:0:0|h[Water]|h|r", "|cffffffff|Hitem:6948:0:0:0|h[Hearthstone]|h|r",
+		"|cffffffff|Hitem:3713:0:0:0|h[Soothing Spices]|h|r" },
+	[1] = { "|cffffffff|Hitem:2589:0:0:0|h[Linen Cloth]|h|r", GREY_FOOT },
+	[2] = {},
+}
+A.SELL_PRICES = { [2211] = 4, [3300] = 3, [159] = 1, [3713] = 1, [2589] = 13 }
+step("BUY", "Soothing Spices", { L = "3713 3" })
+check(Auto.FreeSlots() == 0, "a quiver's empty slots are not room, got %d", Auto.FreeSlots())
+local c = Auto:CheapestToDelete()
+check(c and c.id == 3300 and c.grey and c.bag == 1 and c.slot == 2, "full: the cheapest grey first, a foot at 3c, got %s",
+	tostring(c and c.id))
+counts["1:2"] = 2
+c = Auto:CheapestToDelete()
+check(c and c.id == 2211 and c.value == 4, "by what the whole stack fetches: two feet at 3c lose to an ear at 4c, got %s",
+	tostring(c and c.id))
+counts["1:2"] = nil
+bags[0][1], bags[1][2] = "|cffffffff|Hitem:4604:0:0:0|h[Forest Mushroom]|h|r", "|cffffffff|Hitem:4536:0:0:0|h[Apple]|h|r"
+A.SELL_PRICES[4604], A.SELL_PRICES[4536] = 1, 1
+c = Auto:CheapestToDelete()
+check(c and not c.grey and (c.id == 159 or c.id == 4604 or c.id == 4536), "no greys: the cheapest a vendor buys, got %s",
+	tostring(c and c.id))
+check(c.id ~= 3713 and c.id ~= 6948, "never the step's item, nor the hearthstone")
+A.SELL_PRICES[159], A.SELL_PRICES[4604], A.SELL_PRICES[4536] = nil, nil, nil
+c = Auto:CheapestToDelete()
+check(c and c.id == 2589, "not what no vendor buys (a quest item, a Turtle item), got %s", tostring(c and c.id))
+bags[1][2] = "|cff9d9d9d|Hitem:60001:0:0:0|h[Turtle Junk]|h|r"
+c = Auto:CheapestToDelete()
+check(c and c.id == 60001 and c.value == 0, "a grey with no price (Turtle's own) is offered")
+slotsOf[1] = 3
+check(Auto:CheapestToDelete() == nil, "a bag with room: nothing offered")
+slotsOf[1] = 2
+
+-- Deleting: a grey at once, anything else after asking.
+local cursor, deletedItems = nil, {}
+ClearCursor = function() cursor = nil end
+PickupContainerItem = function(bag, slot) cursor = bags[bag] and bags[bag][slot] end
+CursorHasItem = function() return cursor ~= nil end
+DeleteCursorItem = function() table.insert(deletedItems, cursor); cursor = nil end
+printed = {}
+c = Auto:CheapestToDelete()
+check(Auto:DeleteCheapest(c) == true and deletedItems[1] == bags[1][2], "a grey is deleted at once")
+check(printed[1] and string.find(printed[1], "to make room", 1, true), "and it says so, got %s", tostring(printed[1]))
+bags[1][2] = nil
+slotsOf[1] = 1
+deletedItems = {}
+c = Auto:CheapestToDelete()
+check(c and c.id == 2589 and not c.grey, "next, the linen")
+check(Auto:DeleteCheapest(c) == false and deletedItems[1] == nil, "not grey: nothing deleted yet")
+local dialog = Auto.confirm
+check(dialog and dialog:IsShown() and string.find(dialog.text:GetText(), "Linen Cloth", 1, true)
+	and string.find(dialog.text:GetText(), "13c", 1, true), "it asks, naming it and what a vendor pays, got %s",
+	tostring(dialog and dialog.text:GetText()))
+dialog.no:GetScript("OnClick")()
+check(not dialog:IsShown() and deletedItems[1] == nil, "Keep it keeps it")
+Auto:DeleteCheapest(c)
+dialog.yes:GetScript("OnClick")()
+check(deletedItems[1] == bags[1][1] and not dialog:IsShown(), "Delete deletes it")
+deletedItems = {}
+c.link = "|cffffffff|Hitem:1:0:0:0|h[Something Else]|h|r"
+printed = {}
+check(Auto:DeleteCheapest(c, true) == false and deletedItems[1] == nil, "a slot that holds something else now: nothing deleted")
+check(printed[1] == "Your bags changed: nothing was deleted.", "saying so, got %s", tostring(printed[1]))
+
 -- Before the settings exist, the events do nothing.
 do
 	local saved = A.db

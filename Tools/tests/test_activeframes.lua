@@ -1016,6 +1016,164 @@ do
 	target, marks, world.near = nil, {}, {}
 end
 
+-- The Action Buttons page -------------------------------------------------------------------
+
+do
+	local keepTargets, keepItems = AegisPathfinder.GetActiveTargets, AegisPathfinder.GetActiveItems
+	local tlist = {
+		{ name = "Marshal Dughan", kind = "npc", context = "talk", mark = MARK.STAR, action = "ACCEPT" },
+		{ name = "Kobold Vermin", kind = "enemy", context = "kill", mark = MARK.SKULL, action = "COMPLETE" },
+		{ name = "Kobold Laborer", kind = "enemy", context = "loot", mark = MARK.CROSS, action = "COMPLETE" },
+	}
+	local ilist = { { id = 5001, step = 1, bag = 0, slot = 1, count = 1, texture = "rod" },
+		{ id = 5002, step = 2, bag = 0, slot = 4, count = 5, texture = "horn" } }
+	AegisPathfinder.GetActiveTargets = function() return tlist end
+	AegisPathfinder.GetActiveItems = function() return ilist end
+	local char, profile = AegisPathfinder.db.char, AegisPathfinder.db.profile
+	char.showactiveitems, char.showactivetargets = true, true
+	local function at(b) local p, rel, rp, x, y = b:GetPoint(); return p, x, y, rel, rp end
+
+	-- Which way each window grows.
+	AegisPathfinder:PaintActiveFrames()
+	local p1, x1 = at(items.tiles[1])
+	local p2, x2 = at(items.tiles[2])
+	check(p1 == "TOPLEFT" and p2 == "TOPLEFT" and x2 > x1, "to start with the tiles run right, the first at the left")
+	char.itemsgrow = "left"
+	AegisPathfinder:PaintActiveFrames()
+	p1, x1 = at(items.tiles[1])
+	p2, x2 = at(items.tiles[2])
+	check(p1 == "TOPRIGHT" and x1 == -6 and x2 == -(6 + 36), "left: the first at the right, the next to its left, got %s %s %s",
+		tostring(p1), tostring(x1), tostring(x2))
+	char.itemsgrow = "down"
+	AegisPathfinder:PaintActiveFrames()
+	local _, _, y1 = at(items.tiles[1])
+	local p, _, y2 = at(items.tiles[2])
+	check(p == "TOP" and y1 == -(18 + 6) and y2 == -(18 + 6 + 36), "down: a column from the top, got %s %s", tostring(y1), tostring(y2))
+	check(items:GetHeight() == 18 + 6 * 2 + 2 * 32 + 4, "as tall as its column, got %s", tostring(items:GetHeight()))
+	char.itemsgrow = "up"
+	AegisPathfinder:PaintActiveFrames()
+	_, _, y1 = at(items.tiles[1])
+	p, _, y2 = at(items.tiles[2])
+	check(p == "BOTTOM" and y1 == 6 and y2 == 6 + 36, "up: a column from the bottom, got %s %s", tostring(y1), tostring(y2))
+	char.targetsgrow = "left"
+	AegisPathfinder:PaintActiveFrames()
+	check(at(targets.tiles[1]) == "TOPRIGHT", "Active Targets grows its own way")
+
+	-- A dragged window keeps the corner it grows from.
+	profile.activeitemspoint, profile.activeitemsrel, profile.activeitemsx, profile.activeitemsy = "TOPLEFT", "BOTTOMLEFT", 100, 500
+	char.itemsgrow = "right"
+	AegisPathfinder:PaintActiveFrames()
+	local width = items:GetWidth()
+	AegisPathfinder:SetActiveGrowth("items", "left")
+	check(char.itemsgrow == "left" and profile.activeitemspoint == "TOPRIGHT" and math.abs(profile.activeitemsx - (100 + width)) < 0.01,
+		"turned to grow left, it is pinned by its right edge where it is, got %s %s", tostring(profile.activeitemspoint),
+		tostring(profile.activeitemsx))
+	AegisPathfinder:SetActiveGrowth("items", "up")
+	check(profile.activeitemspoint == "BOTTOMLEFT", "and up, by its bottom, got %s", tostring(profile.activeitemspoint))
+	char.itemsgrow = "left"
+	items.header:GetScript("OnDragStart")()
+	items.header:GetScript("OnDragStop")()
+	check(profile.activeitemspoint == "TOPRIGHT", "dragging it saves the corner it grows from, got %s", tostring(profile.activeitemspoint))
+	profile.activeitemspoint, profile.activeitemsrel, profile.activeitemsx, profile.activeitemsy = nil, nil, nil, nil
+	char.itemsgrow, char.targetsgrow = "right", "right"
+
+	-- Button size, on top of the window scale.
+	char.buttonscale = 1.25
+	AegisPathfinder:ApplyButtonScale()
+	check(math.abs(items:GetScale() - 1.25) < 1e-6 and math.abs(targets:GetScale() - 1.25) < 1e-6,
+		"the button size sizes the windows, got %s", tostring(items:GetScale()))
+	AegisPathfinder.Theme:SetWindowScale(1.2)
+	check(math.abs(items:GetScale() - 1.5) < 1e-6, "on top of the window scale, got %s", tostring(items:GetScale()))
+	AegisPathfinder.Theme:SetWindowScale(1)
+	char.buttonscale = 1
+	AegisPathfinder:ApplyButtonScale()
+
+	-- Which buttons show. The macros and the key bindings keep them all.
+	char.btnitems = false
+	AegisPathfinder:PaintActiveFrames()
+	check(not items:IsShown(), "quest items off: no item buttons")
+	used = {}
+	check(AegisPathfinder:UseActiveItem(1), "but the key binding still uses the step's item")
+	char.btnitems = nil
+	char.btntalk = false
+	AegisPathfinder:PaintActiveFrames()
+	local n = 0
+	for _, b in ipairs(targets.tiles) do if b:IsShown() then n = n + 1 end end
+	check(n == 2, "talk to NPC off: the enemies alone, got %d", n)
+	world.near = { ["Kobold Vermin"] = true, ["Marshal Dughan"] = true }
+	world.hostile = { ["Kobold Vermin"] = true }
+	target, marks = nil, {}
+	this = targets.tiles[1]
+	targets.tiles[1]:GetScript("OnClick")()
+	check(target == "Kobold Vermin", "the first button is the first enemy, got %s", tostring(target))
+	char.btntalk, char.btnkill = nil, false
+	AegisPathfinder:PaintActiveFrames()
+	n = 0
+	for _, b in ipairs(targets.tiles) do if b:IsShown() then n = n + 1 end end
+	check(n == 1, "kill enemy off: whom to talk to alone (looting goes with killing), got %d", n)
+	char.btntalk = false
+	AegisPathfinder:PaintActiveFrames()
+	check(not targets:IsShown(), "both off: no target buttons")
+	target = nil
+	check(AegisPathfinder:TargetNextActive() and target ~= nil, "but the macro still targets the step's")
+	char.btntalk, char.btnkill = nil, nil
+
+	-- The raid marker switch: the buttons only target; quest icons still mark.
+	char.raidmark = false
+	AegisPathfinder:PaintActiveFrames()
+	target, marks = nil, {}
+	check(AegisPathfinder:TargetActive(tlist[2]) and target == "Kobold Vermin", "marking off: still targets")
+	check(marks["Kobold Vermin"] == nil, "but leaves no mark")
+	mouseover = "Kobold Laborer"
+	local keepIcons, keepRaid = char.questicons, party.raid
+	char.questicons, party.raid = true, 0
+	world.hostile["Kobold Laborer"] = true
+	check(AegisPathfinder:AutoMark("mouseover") and marks["Kobold Laborer"] == MARK.CROSS,
+		"quest icons mark by themselves either way, got %s", tostring(marks["Kobold Laborer"]))
+	char.questicons, party.raid = keepIcons, keepRaid
+	mouseover = nil
+	char.raidmark = nil
+	marks = {}
+	AegisPathfinder:TargetActive(tlist[2])
+	check(marks["Kobold Vermin"] == MARK.SKULL, "on again, the button marks")
+
+	-- Delete cheapest item: a tile after the items when the bags are full.
+	local cheap, deleted = nil, nil
+	local keepAuto = AegisPathfinder.Automation
+	AegisPathfinder.Automation = {
+		CheapestToDelete = function() return cheap end,
+		DeleteCheapest = function(_, e) deleted = e end,
+		Money = function(c) return c .. "c" end,
+	}
+	AegisPathfinder:PaintActiveFrames()
+	check(not items.deleteTile:IsShown(), "room in the bags: no delete tile")
+	cheap = { bag = 1, slot = 3, id = 2211, link = "[Bat Ear]", texture = "ear", count = 3, value = 0, grey = true }
+	AegisPathfinder:PaintActiveFrames()
+	local d = items.deleteTile
+	check(d:IsShown() and d.icon:GetTexture() == "ear" and d.count:GetText() == "3", "full: the cheapest thing, after the items")
+	local _, dx = at(d)
+	check(dx == 6 + 2 * 36, "in the third place, got %s", tostring(dx))
+	this = d
+	d:GetScript("OnClick")()
+	check(deleted == cheap, "a click deletes it (Automation asks first when it is not grey)")
+	d:GetScript("OnEnter")()
+	check(tooltip.bag == 1 and tooltip.slot == 3, "hovering it shows the item")
+	d:GetScript("OnLeave")()
+	char.btnitems = false
+	AegisPathfinder:PaintActiveFrames()
+	check(items:IsShown() and d:IsShown() and not items.tiles[1]:IsShown(), "quest items off, full bags: the delete tile alone")
+	char.btnitems, char.btndelete = nil, false
+	AegisPathfinder:PaintActiveFrames()
+	check(not d:IsShown(), "delete cheapest item off: no tile")
+	char.btndelete, cheap = nil, nil
+	AegisPathfinder:PaintActiveFrames()
+	check(not d:IsShown(), "room again: gone")
+	AegisPathfinder.Automation = keepAuto
+
+	AegisPathfinder.GetActiveTargets, AegisPathfinder.GetActiveItems = keepTargets, keepItems
+	target, marks, world.near, world.hostile = nil, {}, {}, {}
+end
+
 -- Report ---------------------------------------------------------------------------------
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end

@@ -184,6 +184,153 @@ function Auto:PlaceButton()
 	if AegisPathfinder.db.char.sellbutton ~= false then b:Show() else b:Hide() end
 end
 
+--[[ Full bags ---------------------------------------------------------------------- ]]
+
+--[[ The Action Buttons page's "Delete cheapest item": with your bags full, a
+	tile in the Active Items window offers the cheapest thing in them -- a
+	grey first, then whatever a vendor pays least for, by the whole stack.
+	It never offers the guide's items, a hearthstone, or anything a vendor
+	will not buy (quest items), and asks before deleting anything that is
+	not grey. 1.12 does not say what a vendor pays, so SellPrices.lua does;
+	Turtle WoW's own items are not in it, and are offered only when grey. ]]
+
+-- Bags that hold only their own kind: their room is not room for anything.
+local SPECIAL = { Quiver = true, ["Ammo Pouch"] = true, ["Soul Bag"] = true }
+local function Ordinary(bag)
+	if bag == 0 then return true end
+	local link = GetInventoryItemLink("player", ContainerIDToInventoryID(bag))
+	local _, _, id = string.find(link or "", "item:(%d+)")
+	if not id then return true end
+	local _, _, _, _, kind, sub = GetItemInfo(tonumber(id))
+	return not (SPECIAL[kind or ""] or SPECIAL[sub or ""])
+end
+
+--- Empty slots in your ordinary bags.
+function Auto.FreeSlots()
+	local free = 0
+	for bag = 0, 4 do
+		local n = GetContainerNumSlots(bag) or 0
+		if n > 0 and Ordinary(bag) then
+			for slot = 1, n do
+				if not GetContainerItemLink(bag, slot) then free = free + 1 end
+			end
+		end
+	end
+	return free
+end
+
+local HEARTHSTONE = 6948
+
+--- The items the guide still wants, by id: every step's |U| and |L| item from
+--- the one you are on, and the hearthstone.
+function Auto.Keep()
+	local A, keep = AegisPathfinder, { [HEARTHSTONE] = true }
+	-- A step's tag's item id: its first number ("3713" of an |L| that also
+	-- says how many).
+	local function id(tag, i)
+		local _, _, n = string.find(tostring(A:GetObjectiveTag(tag, i) or ""), "^(%d+)")
+		return tonumber(n)
+	end
+	for i = A.current or 1, table.getn(A.actions or {}) do
+		local u, l = id("U", i), id("L", i)
+		if u then keep[u] = true end
+		if l then keep[l] = true end
+	end
+	return keep
+end
+
+--- With your bags full, what to delete to make room: { bag, slot, id, link,
+--- texture, count, value, grey }. Nil while there is room, or nothing to
+--- offer.
+function Auto:CheapestToDelete()
+	if Auto.FreeSlots() > 0 then return end
+	local prices, keep, best = AegisPathfinder.SELL_PRICES or {}, Auto.Keep(), nil
+	for bag = 0, 4 do
+		for slot = 1, GetContainerNumSlots(bag) or 0 do
+			local link = GetContainerItemLink(bag, slot)
+			local _, _, id = string.find(link or "", "item:(%d+)")
+			id = tonumber(id)
+			if id and not keep[id] then
+				local grey = string.find(link, "|cff9d9d9d", 1, true) ~= nil
+				local price = prices[id]
+				if grey or price then
+					local texture, count = GetContainerItemInfo(bag, slot)
+					local e = { bag = bag, slot = slot, id = id, link = link, texture = texture,
+						count = count or 1, value = (price or 0) * (count or 1), grey = grey }
+					if not best or (e.grey and not best.grey) or (e.grey == best.grey and e.value < best.value) then
+						best = e
+					end
+				end
+			end
+		end
+	end
+	return best
+end
+
+-- "Bat Ear" x3: an item and how many, as chat and the question say it.
+local function Named(e)
+	return (e.link or "it") .. (e.count > 1 and (" x" .. e.count) or "")
+end
+
+--- Delete `entry` (the cheapest by default): a grey at once, anything else
+--- once you have said yes. Nothing if the bag slot holds something else now.
+function Auto:DeleteCheapest(entry, confirmed)
+	entry = entry or self:CheapestToDelete()
+	if not entry then return end
+	if not entry.grey and not confirmed then return self:ConfirmDelete(entry) end
+	if GetContainerItemLink(entry.bag, entry.slot) ~= entry.link then
+		AegisPathfinder:Print("Your bags changed: nothing was deleted.")
+		return false
+	end
+	ClearCursor()
+	PickupContainerItem(entry.bag, entry.slot)
+	if not CursorHasItem() then return false end
+	DeleteCursorItem()
+	AegisPathfinder:Print("Deleted " .. Named(entry) .. " to make room.")
+	return true
+end
+
+--- Ask before deleting something that is not grey: what it is, and what a
+--- vendor would pay for it.
+function Auto:ConfirmDelete(entry)
+	local f = self.confirm
+	if not f then
+		f = CreateFrame("Frame", "AegisPathfinderDeleteConfirm", UIParent)
+		f:SetFrameStrata("DIALOG")
+		f:SetWidth(320)
+		f:SetHeight(150)
+		f:SetPoint("CENTER", UIParent, "CENTER", 0, 120)
+		Theme:Panel(f, "panel")
+		Theme:Chrome(f, "Make room")
+		f.text = f:CreateFontString(nil, "OVERLAY")
+		Theme:SetFont(f.text, "body", 12)
+		Theme:TextColor(f.text, "text")
+		f.text:SetWidth(288)
+		f.text:SetJustifyH("CENTER")
+		f.text:SetPoint("TOP", f, "TOP", 0, -62)
+		local yes = Theme:PanelButton(f, "Delete", 140, 22)
+		yes:SetPoint("BOTTOMLEFT", f, "BOTTOMLEFT", 16, 12)
+		yes:SetScript("OnClick", function()
+			local e = f.entry
+			f:Hide()
+			Auto:DeleteCheapest(e, true)
+		end)
+		local no = Theme:PanelButton(f, "Keep it", 140, 22)
+		no:SetPoint("BOTTOMRIGHT", f, "BOTTOMRIGHT", -16, 12)
+		no:SetScript("OnClick", function() f:Hide() end)
+		f.yes, f.no = yes, no
+		table.insert(UISpecialFrames, "AegisPathfinderDeleteConfirm")
+		f:Hide()
+		self.confirm = f
+	end
+	f.entry = entry
+	f.text:SetText(string.format("Your bags are full. Delete %s? A vendor would pay %s for it.",
+		Named(entry), Auto.Money(entry.value)))
+	f:Show()
+	Theme:BringToFront(f)
+	return false
+end
+
 --[[ Repairing ---------------------------------------------------------------------- ]]
 
 --- At a vendor who repairs: everything, with your own money, when the

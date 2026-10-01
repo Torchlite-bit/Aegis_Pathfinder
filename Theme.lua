@@ -1706,8 +1706,15 @@ function Theme:Scaled(frame)
 		if f == frame then return frame end
 	end
 	table.insert(self.scaled, frame)
-	if frame.SetScale then frame:SetScale(self.windowScale) end
+	if frame.SetScale then frame:SetScale(self.windowScale * (frame.scaleFactor or 1)) end
 	return frame
+end
+
+--- A window's own size on top of the window scale: the Action Buttons page's
+--- button size, on its three small windows.
+function Theme:SetScaleFactor(frame, factor)
+	frame.scaleFactor = factor or 1
+	if frame.SetScale then frame:SetScale(self.windowScale * frame.scaleFactor) end
 end
 
 --- Set every window's scale; out of range is brought into it, and snapped
@@ -1718,7 +1725,7 @@ function Theme:SetWindowScale(scale)
 	scale = math.max(self.SCALE_MIN, math.min(self.SCALE_MAX, scale))
 	self.windowScale = scale
 	for _, f in ipairs(self.scaled) do
-		if f.SetScale then f:SetScale(scale) end
+		if f.SetScale then f:SetScale(scale * (f.scaleFactor or 1)) end
 	end
 	return scale
 end

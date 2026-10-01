@@ -350,6 +350,22 @@ guide's quest from an NPC's list* under accepting the guide's quests -- sits
 not clickable) while that one is off. A dropdown with a name, *Repair
 automatically*, has it as a 13px body line above it.
 
+**Boxes to a row.** The Gear page's Upgrade sources and the Action Buttons
+page's *Buttons to show* are both `Theme:Checkbox` grids under a 13px label,
+two to a row 170px apart (`Build.Boxes`). *Active items grow* and *Active
+targets grow* are named dropdowns (Right, Left, Up, Down); *Button size* a
+`Theme:Slider`, 60% to 150%, applied as a scale factor on top of the window
+scale (`Theme:SetScaleFactor`).
+
+**The Active Items and Active Targets windows** lay their tiles out the way
+each grows: a row from the left (right) or the right (left), or a column from
+the top (down) or the bottom (up), 32px tiles 4px apart. Dragged, a window is
+pinned by the corner it grows from -- top left, top right or bottom left -- so
+it grows away from where you left it. The delete tile wears the cheapest
+item's icon with a `close` glyph in the danger colour at its corner and a
+danger border on hover; its question is a small themed window ("Make room")
+with **Delete** and **Keep it**.
+
 **The Sell greys button** (`Automation.lua`) is a `Theme:PanelButton`, 92 by
 20, on the client's vendor window: at its top right, 44px in and 44px down,
 clear of the title and the item grid, five levels over the window. It is the

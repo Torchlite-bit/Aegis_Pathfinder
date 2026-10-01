@@ -44,10 +44,11 @@ pages down the left, after Zygor's from Appearance on:
   button.
 - **Step Display**: what comes between guides (follow-ups, custom zones,
   class quests), and *Ask before inviting my party* for sharing.
-- **Automation**: accepting and turning in the guide's quests, and tracking
-  them.
-- **Action Buttons**: the Active Items, Active Targets and Macros windows, and
-  quest icons.
+- **Automation**: quests (the guide's or all of them), flights, buying,
+  selling greys and repairing -- see **Automation**, below.
+- **Action Buttons**: the Active Items, Active Targets and Macros windows and
+  quest icons; which way the windows grow and their size; which buttons they
+  show; the target buttons' raid marker -- see **Action Buttons**, below.
 - **Navigation**: waypoints and arrows.
 - **Gear** and under it **Item Score** (the stat weights).
 - **Maintenance** (rescan, error log, setup) and **About** (version and
@@ -344,6 +345,28 @@ is: Crocolisk Hunting in Loch Modan targets Loch Crocolisks, not the likelier
 crocolisks of the Wetlands. With none there, it is those where you are, then
 everyone. Either window can be dragged anywhere, or switched off under
 **Action Buttons** in the options.
+
+**Action Buttons.** The options window's page for those windows:
+
+- **Layout.** Which way Active Items and Active Targets each grow -- right
+  (the first button at the left), left, up or down, a row or a column. A
+  window you have dragged grows from the matching corner, where you left it;
+  until then it hangs under the guide. **Button size**, 60% to 150%, on top
+  of the window scale, for the three small windows.
+- **Buttons to show**: **Quest items**, **Talk to NPC** (talking and
+  interacting), **Kill enemy** (killing and looting), and **Delete cheapest
+  item**. Leaving one out takes its buttons out of the window; the macros,
+  the key bindings and the quest icons still have them.
+- **Delete cheapest item.** With your bags full, a button after the items
+  offers the cheapest thing in them to make room: a grey first, then
+  whatever a vendor pays least for, by the whole stack. It never offers the
+  guide's items, your hearthstone or what no vendor buys (quest items), and
+  asks before deleting anything that is not grey. A quiver's or soul bag's
+  empty slots are not room. 1.12 does not tell an addon what a vendor pays,
+  so the prices come from the CMaNGOS database (SellPrices.lua); Turtle WoW's
+  own items are not in it, and are offered only when grey.
+- **Mark whoever the target buttons target** (on). Off, the buttons only
+  target; quest icons still mark by themselves.
 
 **Quest icons.** Mouse over or target anyone a quest wants and the right raid
 marker goes on them by itself, as RestedXP's Quest Icons do:

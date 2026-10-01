@@ -297,8 +297,58 @@ function Build.Automation(k)
 	k.space(k.SECTION_GAP)
 end
 
+--- A named dropdown of `items` for db.char[key], kept as frame[name].
+function Build.CharDropdown(k, name, label, key, items, after)
+	Build.Label(k, label)
+	local d = Theme:Dropdown(k.body(), k.BODY_W, function(v)
+		AegisPathfinder.db.char[key] = v
+		if after then after(v) end
+	end)
+	d:SetItems(items)
+	d.settingKey = key
+	k.place(d, 30, 8)
+	k.wide(d)
+	k.frame[name] = d
+	table.insert(k.frame.lateDropdowns, d)
+	return d
+end
+
+-- The box grid's geometry: two to a row.
+local BOX_COL, BOX_ROW = 170, 26
+
+--- A label over boxes, two to a row, each a per-character setting that is on
+--- until it is unticked; kept in frame.boxes for RefreshConfigPanel.
+function Build.Boxes(k, label, defs, after)
+	local rows = math.ceil(table.getn(defs) / 2)
+	local h = 17 + rows * BOX_ROW
+	local holder = CreateFrame("Frame", nil, k.body())
+	holder:SetHeight(h)
+	holder:SetWidth(k.BODY_W)
+	local fs = holder:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(fs, "body", 13)
+	Theme:TextColor(fs, "text")
+	fs:SetPoint("TOPLEFT", holder, "TOPLEFT", 0, 0)
+	fs:SetText(label)
+	for i, def in ipairs(defs) do
+		local key = def[1]
+		local box = Theme:Checkbox(holder, def[2], function(on)
+			AegisPathfinder.db.char[key] = on
+			if after then after(on) end
+		end)
+		box:Fit()
+		box:SetPoint("TOPLEFT", fs, "BOTTOMLEFT", math.mod(i - 1, 2) * BOX_COL, -(4 + math.floor((i - 1) / 2) * BOX_ROW))
+		k.frame.boxes[key] = box
+	end
+	k.place(holder, h, 4)
+	return holder
+end
+
+local GROWTH = { { value = "right", label = "Right" }, { value = "left", label = "Left" },
+	{ value = "up", label = "Up" }, { value = "down", label = "Down" } }
+
 --- Action Buttons: the windows of buttons that hang under the guide.
 function Build.ActionButtons(k)
+	local A = AegisPathfinder
 	k.page("Action Buttons")
 	k.section("Windows")
 	Build.CharSwitch(k, "showactiveitems", "Active items window", RefreshActive)
@@ -306,6 +356,31 @@ function Build.ActionButtons(k)
 	Build.CharSwitch(k, "showmacros", "Macros window (AegisTarget, AegisItem)", RefreshActive)
 	Build.CharSwitch(k, "questicons", "Quest icons: mark quest NPCs as you mouse over them", RefreshActive)
 	k.space(k.SECTION_GAP - 8)
+	k.section("Layout")
+	Build.CharDropdown(k, "itemsGrow", "Active items grow", "itemsgrow", GROWTH,
+		function(v) A:SetActiveGrowth("items", v) end)
+	Build.CharDropdown(k, "targetsGrow", "Active targets grow", "targetsgrow", GROWTH,
+		function(v) A:SetActiveGrowth("targets", v) end)
+	local size = Theme:Slider(k.body(), "Button size", 0.6, 1.5, 0.05, function(v)
+		A.db.char.buttonscale = v
+		A:ApplyButtonScale()
+	end, function(v) return string.format("%d%%", math.floor(v * 100 + 0.5)) end)
+	k.place(size, function(w) return size:Fit(w) end, 6)
+	k.frame.buttonSize = size
+	k.note("A window you have dragged grows from the matching corner, where you left it; until "
+		.. "then it hangs under the guide. The size is on top of the window scale.")
+	k.space(k.SECTION_GAP)
+	k.section("Buttons")
+	Build.Boxes(k, "Buttons to show", { { "btnitems", "Quest items" }, { "btntalk", "Talk to NPC" },
+		{ "btnkill", "Kill enemy" }, { "btndelete", "Delete cheapest item" } }, RefreshActive)
+	k.note("Delete cheapest item appears when your bags are full: the cheapest grey first, and it "
+		.. "asks before deleting anything that is not grey. 1.12 does not say what vendors pay, so "
+		.. "the prices are the CMaNGOS database's; Turtle WoW's own items are offered only when grey.")
+	k.space(10)
+	Build.CharSwitch(k, "raidmark", "Mark whoever the target buttons target", nil, { defaultOn = true })
+	k.note("A star to talk, a square to interact, a skull to kill, a cross to loot. Off, the "
+		.. "buttons only target. Quest icons mark by themselves either way.")
+	k.space(k.SECTION_GAP)
 end
 
 function AegisPathfinder:CreateConfigPanel()
@@ -436,7 +511,7 @@ function AegisPathfinder:CreateConfigPanel()
 	frame.sections = {}
 	frame.switches = {}
 	-- What the page builders out of this function lay out with (Build).
-	frame.subSwitches, frame.lateDropdowns = {}, {}
+	frame.subSwitches, frame.lateDropdowns, frame.boxes = {}, {}, {}
 	local kit = { frame = frame, page = page, place = place, space = space, note = note, wide = wide,
 		section = function(title) table.insert(frame.sections, section(title)) end,
 		body = function() return body end, SECTION_GAP = SECTION_GAP, BODY_W = BODY_W }
@@ -1178,6 +1253,11 @@ function AegisPathfinder:RefreshConfigPanel()
 		frame.switches[key]:SetLocked(not db[parent])
 	end
 	frame.repair:SetValue(db.autorepair or "off")
+	-- The Action Buttons page.
+	frame.itemsGrow:SetValue(db.itemsgrow or "right")
+	frame.targetsGrow:SetValue(db.targetsgrow or "right")
+	frame.buttonSize:SetValue(db.buttonscale or 1)
+	for key, box in pairs(frame.boxes) do box:SetOn(db[key] ~= false) end
 
 	-- Waypoint providers actually loaded, plus automatic.
 	local wp = { { value = "auto", label = "Automatic" } }

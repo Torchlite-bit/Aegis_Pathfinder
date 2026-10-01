@@ -134,6 +134,18 @@ are only found at startup.
 - [ ] *Repair automatically* → *With my own money* repairs at a repairing
       vendor and says the cost; not with too little money.
 - [ ] Holding Shift as any of these windows opens: nothing happens by itself.
+- [ ] Action Buttons → *Active items grow* Left, Up, Down: the buttons run
+      that way; drag the window, change it again, and it grows from the
+      matching corner where you left it.
+- [ ] *Button size* makes the three small windows bigger and smaller, on top
+      of the window scale.
+- [ ] Unticking *Talk to NPC* or *Kill enemy* takes those target buttons out;
+      the AegisTarget macro still cycles them all.
+- [ ] With bags full (a quiver's room doesn't count), a delete button with the
+      cheapest grey appears after the items and deletes it; with no greys it
+      asks first, naming the item and its price; *Keep it* keeps it.
+- [ ] *Mark whoever the target buttons target* off: a target button targets
+      without a raid marker; quest icons still mark on mouseover.
 - [ ] Step Display → *Ask before inviting my party* off: the party icon shares
       without the popup; the popup's "don't ask again" turns it off here.
 - [ ] Drag the corner grip: the window grows wider and taller, and every page

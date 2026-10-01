@@ -18,6 +18,30 @@ reports.
 
 ---
 
+## [0.22.4] — restart
+
+### Added
+- **The Action Buttons page does more**, as Zygor's does:
+  - **Which way each window grows**: Active Items and Active Targets each
+    right (as before), left, up or down. A window you have dragged grows
+    from the matching corner, where you left it; until then it hangs under
+    the guide.
+  - **Button size**, 60% to 150%, for the three small windows, on top of the
+    window scale.
+  - **Buttons to show**: quest items, talk to NPC, kill enemy, and delete
+    cheapest item. One left out goes from its window; the macros, the key
+    bindings and the quest icons still have them all.
+  - **Delete cheapest item.** With your bags full, a button after the items
+    offers the cheapest thing in them: a grey first, then whatever a vendor
+    pays least for, by the whole stack. It never offers the guide's items,
+    your hearthstone or quest items, and asks before deleting anything that
+    is not grey. A quiver's or soul bag's empty slots don't count as room.
+    1.12 doesn't tell addons what vendors pay, so the prices come from the
+    CMaNGOS database (a new file, SellPrices.lua); Turtle WoW's own items
+    aren't in it and are offered only when grey.
+  - **Mark whoever the target buttons target**, on as before. Off, the
+    buttons only target; quest icons still mark by themselves.
+
 ## [0.22.3] — restart
 
 ### Added
@@ -1235,6 +1259,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.4]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
