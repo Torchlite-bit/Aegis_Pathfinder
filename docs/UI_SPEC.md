@@ -329,8 +329,15 @@ is sections now.
 sections added, one scrolling body grew too long to find anything in, so the
 sections are grouped into pages with a category list down the left, as Zygor's
 options have it: Route (Race, Route pack), Dungeons (Dungeons, Turtle WoW's
-own, Along the way -- with the middle-of-its-levels switch), Filters, Appearance (Server theme, Window scale), Gear and, set in under it, Item Score, Behaviour, Navigation
-(Waypoints, Arrow), Maintenance, About. The concept's 396px pane is unchanged, with the 150px list beside it
+own, Along the way -- with the middle-of-its-levels switch), Filters, then
+Zygor's pages in this style -- Appearance (Server theme, Window scale, Guide
+window, Minimap), Step Display (Between guides, Sync & Share), Automation
+(Quests), Action Buttons (Windows), Navigation (Waypoints, Arrows) -- then
+Gear and, set in under it, Item Score, Maintenance, About. Automation replaced
+Behaviour, whose switches went to Step Display, Automation, Action Buttons and
+Appearance with their saved values. The pages built out of `CreateConfigPanel`
+(`Build.*`) take its layout helpers as a kit, which keeps that function inside
+Lua 5.0's limits. The concept's 396px pane is unchanged, with the 150px list beside it
 (546px in all). The list is a quieter column than the pane — a 3% text tint and
 a hairline on its right edge — and the page shown is marked with a 3px accent
 bar, a brighter row and white text. The subhead names the page (`CONFIG ·
@@ -355,8 +362,9 @@ unwrapped width, since a wrapped font string's own height is not reliable on
 
 **Checkboxes** (`Theme:Checkbox`) are for a few choices side by side that are
 each on or off, where a column of switches would read as one list: the Gear
-page's **Upgrade sources**, **Dungeons** and **Raids**, as Zygor lays out its
-dungeon and raid sources. Off, an outlined box; on, a box in the theme's
+page's **Upgrade sources** -- **Dungeons** and **Raids**, as Zygor lays out its
+dungeon and raid sources, then **Quest rewards**, **Reputation vendors** and
+**Crafted gear** -- two to a row, 170px apart, three rows. Off, an outlined box; on, a box in the theme's
 switchOn colour with a tick. They hold off with the Gear Finder, as its
 switches do.
 
@@ -477,7 +485,7 @@ bigger than the rest at 32.
 
 Click toggles the guide, right-click toggles the options panel, and dragging
 walks it round the minimap's edge at 80px from its centre; the angle is saved
-per profile. "Minimap button" in the options panel's Guide behaviour section,
+per profile. "Minimap button" on the options panel's Appearance page,
 or `/apg minimapbutton`, hides it. `Tools/verify.py` fails on Blizzard
 quest-log or minimap art, in either backslash form.
 
@@ -753,7 +761,7 @@ server (`IsQuestCompletedOnServer` of the race's `last`), open in a tab, or
 still to come on your route (`RouteHasQuests`: a leg from the one in tab 1 on
 has a `|QID|` of the race's chain in a step your class and race would see, each
 guide read once). A `group` milestone only in Group mode without Solo
-Self-Found. Nothing before `setupdone` or with `classquests` false (Behaviour's
+Self-Found. Nothing before `setupdone` or with `classquests` false (Step Display's
 *Offer class quests at their level*, on by default). Up to four, lowest level
 first. `OfferClassMilestones` shows them, marking each offered;
 `OpenClassMilestone` opens one in a tab, and the guide's end takes you back

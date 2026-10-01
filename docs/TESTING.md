@@ -111,7 +111,15 @@ are only found at startup.
       marked and named in the strip under the title.
 - [ ] Every page opens at its top; a long page (Gear) scrolls, a short one
       doesn't show a scroll bar.
-- [ ] No label is cut off or crowded, on any page (Gear, Behaviour especially).
+- [ ] No label is cut off or crowded, on any page (Gear and Action Buttons especially).
+- [ ] The pages are Route, Dungeons, Filters, Appearance, Step Display,
+      Automation, Action Buttons, Navigation, Gear (Item Score under it),
+      Maintenance, About; no Behaviour. Each setting that was on Behaviour is
+      on its new page as it was set.
+- [ ] Appearance → *Lock window* and *Transparency* do what the guide's ≡ menu
+      does, and each shows what the other set.
+- [ ] Step Display → *Ask before inviting my party* off: the party icon shares
+      without the popup; the popup's "don't ask again" turns it off here.
 - [ ] Drag the corner grip: the window grows wider and taller, and every page
       re-lays itself without gaps; it keeps the size after `/reload`.
 - [ ] `/apg resetpanels` puts it back to its first size and place.
@@ -217,7 +225,7 @@ are only found at startup.
 - [ ] Reaching the middle of a ticked dungeon and a class quest's level at the
       same level up: the dungeon's window first, the class quest's when you
       close it.
-- [ ] Options → Behaviour → *Offer class quests at their level* off: nothing
+- [ ] Options → Step Display → *Offer class quests at their level* off: nothing
       is offered.
 - [ ] A chain with a dungeon or raid in it (the Charger, Rhok'delar) is offered
       only in Group mode.
@@ -270,10 +278,12 @@ are only found at startup.
       quest rewards (most need no level).
 - [ ] Quest, reputation and crafted gear (*Quest: …*, *Revered with …*,
       *Blacksmithing 300 …*) have cells but are never the suggestion.
-- [ ] Options → Gear: **Upgrade sources** has **Dungeons** and **Raids**;
-      ticking Raids says in chat it takes a minute or two, and the cells
-      fill in as items load. With both unticked the footer says it has
-      nowhere to look. The cog in the footer opens the options at this
+- [ ] Options → Gear: **Upgrade sources** has five boxes, two to a row:
+      **Dungeons**, **Raids**, **Quest rewards**, **Reputation vendors**,
+      **Crafted gear**, the last three ticked as their old switches were.
+      Dungeons alone: only dungeon drops in the cells. Ticking Raids says in
+      chat it takes a minute or two, and the cells fill in as items load.
+      With nothing ticked the footer says it has nowhere to look. The cog in the footer opens the options at this
       page, whether or not they were open.
 - [ ] At 60: every dungeon, Turtle's own included; Molten Core shows Turtle's
       bosses (Incindis, Basalthar).

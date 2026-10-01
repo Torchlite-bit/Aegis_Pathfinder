@@ -73,6 +73,9 @@ function AegisPathfinder:UpdateMinimapButton() self.__minimapRefreshed = true en
 function AegisPathfinder:RefreshActiveFrames() self.__activeRefreshed = (self.__activeRefreshed or 0) + 1 end
 function AegisPathfinder:QueryServerCompletedQuests() self.__rescanned = true end
 function AegisPathfinder:ShowErrorLog() self.__errorlog = true end
+-- The guide's own setters (ObjectivesFrame.lua), as its menu calls them.
+function AegisPathfinder:SetGuideLocked(on) self.db.profile.objframelocked = on and true or nil end
+function AegisPathfinder:SetGuideTransparent(on) self.db.profile.objframetransparent = on and true or nil end
 
 AegisPathfinder.objectiveframe = CreateFrame("Frame", nil, UIParent)
 
@@ -164,8 +167,8 @@ check(AegisPathfinder.ToggleDungeonPanel == nil and AegisPathfinder.ToggleFilter
 	"the functions that opened those windows are gone")
 
 -- The pages, and the list that picks them.
-local PAGES = { "Route", "Dungeons", "Filters", "Appearance", "Gear", "Item Score", "Behaviour",
-	"Navigation", "Maintenance", "About" }
+local PAGES = { "Route", "Dungeons", "Filters", "Appearance", "Step Display", "Automation", "Action Buttons",
+	"Navigation", "Gear", "Item Score", "Maintenance", "About" }
 local names = {}
 for _, p in ipairs(frame.pages) do table.insert(names, p.pageName) end
 check(table.concat(names, ", ") == table.concat(PAGES, ", "), "the pages, in order: %s", table.concat(names, ", "))
@@ -174,6 +177,12 @@ for i, b in ipairs(frame.navButtons) do
 	check(b.label:GetText() == PAGES[i], "list entry %d names %s, got %s", i, PAGES[i], tostring(b.label:GetText()))
 	local _, rel, _, x = b:GetPoint()
 	check(rel == frame.nav and x == 0, "and sits in the list down the left")
+end
+local function navNamed(name)
+	for _, b in ipairs(frame.navButtons) do if b.pageName == name then return b end end
+end
+local function pageNamed(name)
+	for _, p in ipairs(frame.pages) do if p.pageName == name then return p end end
 end
 local function shown()
 	local out = {}
@@ -384,12 +393,33 @@ check(frame.advisor.popups:IsEnabled(), "and let go when it is back on")
 click(frame.clearDeclined)
 check(AegisPathfinder.__declinedCleared, "Clear declined items clears them")
 check(frame.finder.enabled:IsOn() and frame.finder.announce:IsOn(), "the gear finder is on, and names upgrades")
-check(frame.finder.quests:IsOn() and frame.finder.reputation:IsOn() and frame.finder.crafted:IsOn(),
-	"and looks at quest, reputation and crafted gear")
-click(frame.finder.crafted)
-check(finderSettings.crafted == false, "each of which can be switched off")
-click(frame.finder.crafted)
--- The upgrade sources: two checkboxes, as Zygor's dungeon and raid sources.
+-- The upgrade sources: a box each, Zygor's Dungeons and Raids and the three
+-- that were "Look at ..." switches, which keep what they were set to.
+check(frame.finder.quests == nil and frame.finder.reputation == nil and frame.finder.crafted == nil,
+	"quest, reputation and crafted gear are no longer switches")
+check(frame.sources.quests:IsOn() and frame.sources.reputation:IsOn() and frame.sources.crafted:IsOn(),
+	"but boxes under the sources, ticked as the switches were")
+check(frame.sources.quests.label:GetText() == "Quest rewards" and frame.sources.reputation.label:GetText()
+	== "Reputation vendors" and frame.sources.crafted.label:GetText() == "Crafted gear", "named for what they are")
+do
+	local _, _, _, x1, y1 = frame.sources.dungeons:GetPoint()
+	local _, _, _, x2, y2 = frame.sources.raids:GetPoint()
+	local _, _, _, x3, y3 = frame.sources.quests:GetPoint()
+	local _, _, _, x5, y5 = frame.sources.crafted:GetPoint()
+	check(y1 == y2 and x2 > x1 and x3 == x1 and y3 < y1 and y5 < y3, "two to a row, three rows")
+	check(x2 + frame.sources.reputation:GetWidth() <= frame.bodyW, "and inside the page")
+end
+click(frame.sources.crafted)
+check(finderSettings.crafted == false and (AegisPathfinder.__finderChanged or 0) > 0, "each of which can be unticked")
+click(frame.sources.crafted)
+click(frame.sources.quests)
+click(frame.sources.reputation)
+click(frame.sources.crafted)
+check(not finderSettings.quests and not finderSettings.reputation and not finderSettings.crafted and finderSettings.dungeons,
+	"so it can look in dungeons alone")
+click(frame.sources.quests)
+click(frame.sources.reputation)
+click(frame.sources.crafted)
 check(frame.sources.dungeons:IsOn() and not frame.sources.raids:IsOn(), "upgrade sources: Dungeons ticked, Raids not")
 local said = {}
 local keepPrint = AegisPathfinder.Print
@@ -530,6 +560,20 @@ check(Theme.color.accent[1] == green[1] and Theme.color.accent[2] == green[2], "
 
 -- The addon's own settings ---------------------------------------------------------------
 
+-- Behaviour's switches went to Zygor's pages, keeping their saved values.
+local HOME = {
+	autoquest = "Automation", trackquests = "Automation",
+	skipfollowups = "Step Display", offercustomzones = "Step Display", classquests = "Step Display",
+	showminimapbutton = "Appearance",
+	showactiveitems = "Action Buttons", showactivetargets = "Action Buttons", showmacros = "Action Buttons",
+	questicons = "Action Buttons",
+}
+for key, pageName in pairs(HOME) do
+	local sw = frame.switches[key]
+	check(sw and sw:GetParent().pageName == pageName, "%s is on the %s page, got %s", key, pageName,
+		tostring(sw and sw:GetParent().pageName))
+end
+check(pageNamed("Behaviour") == nil, "and the Behaviour page is gone")
 check(frame.switches.autoquest:IsOn(), "switches start from the saved settings")
 check(not frame.switches.trackquests:IsOn(), "off ones included")
 click(frame.switches.trackquests)
@@ -563,6 +607,30 @@ for _, key in ipairs({ "showactiveitems", "showactivetargets", "showmacros", "qu
 		check((AegisPathfinder.__activeRefreshed or 0) == before + 1, "and repaints the windows at once")
 	end
 end
+
+-- Lock window and Transparency: the guide's ≡ menu settings, on Appearance too.
+check(frame.guideLock:GetParent().pageName == "Appearance" and frame.guideTransparent:GetParent().pageName == "Appearance",
+	"the guide's lock and transparency are on the Appearance page")
+check(not frame.guideLock:IsOn() and not frame.guideTransparent:IsOn(), "both off to start with")
+click(frame.guideLock)
+check(AegisPathfinder.db.profile.objframelocked == true, "the switch locks the guide, as its menu does")
+click(frame.guideTransparent)
+check(AegisPathfinder.db.profile.objframetransparent == true, "and makes it see-through")
+AegisPathfinder.db.profile.objframelocked = nil              -- unlocked from the menu
+AegisPathfinder:RefreshConfigPanel()
+check(not frame.guideLock:IsOn() and frame.guideTransparent:IsOn(), "and shows what the menu set")
+click(frame.guideTransparent)
+-- Asking before inviting the party: the share popup's "don't ask again".
+check(frame.askShare:GetParent().pageName == "Step Display" and frame.askShare:IsOn(), "Step Display asks before inviting, by default")
+click(frame.askShare)
+check(db.sharenowarn == true, "off, it shares without asking")
+click(frame.askShare)
+check(db.sharenowarn == nil and frame.askShare:IsOn(), "and on, it asks again")
+db.sharenowarn = true                                        -- "don't ask again" in the popup
+AegisPathfinder:RefreshConfigPanel()
+check(not frame.askShare:IsOn(), "the popup's box shows here")
+db.sharenowarn = nil
+AegisPathfinder:RefreshConfigPanel()
 
 click(frame.waypoints.rows[2])
 check(db.waypointprovider == "TomTom", "the waypoint dropdown picks a provider, got %s",
@@ -658,7 +726,7 @@ check(frame.switches.questicons.label:GetWidth() == frame.switches.questicons:Ge
 check(frame.grip ~= nil and frame.grip:GetScript("OnMouseDown") ~= nil, "the window has a resize grip")
 local _, _, gripPoint = frame.grip:GetPoint()
 check(gripPoint == "BOTTOMRIGHT", "in its bottom right corner")
-click(frame.navButtons[5])                -- Gear, the long page
+click(navNamed("Gear"))                   -- the long page
 local _, gearRange = frame.scrollbar:GetMinMaxValues()
 stub.cursor, stub.mouseDown = { 500, 300 }, true
 fire(frame.grip, "OnMouseDown")
@@ -708,7 +776,7 @@ local _, _, _, _, pickY2 = pick:GetPoint()
 local _, _, _, _, borderY2 = border:GetPoint()
 check(pick:GetHeight() == 22 and borderY2 == pickY2 - 22 - 6,
 	"wider, it is one line and the next row moves up to it (%s, %s)", pickY2, borderY2)
-local gearPage = frame.pages[5]
+local gearPage = pageNamed("Gear")
 local lowest = 0
 for _, e in ipairs(gearPage.flow) do
 	if e.region then

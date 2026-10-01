@@ -19,16 +19,24 @@
 	more sections in the same style -- the substitution is the extra sections, not
 	a different look.
 
-	  Route         Race, Route pack
-	  Dungeons      Dungeons, Turtle WoW's own, Along the way
-	  Filters       Filters
-	  Appearance    Server theme and switch colours, window scale
-	  Gear          the item score, the Gear Advisor, the Gear finder
-	    Item Score  the stat weights (GearFrame.lua), listed under Gear
-	  Behaviour     Guide behaviour
-	  Navigation    Waypoints, Arrow
-	  Maintenance   Maintenance
-	  About         About, Credits
+	The pages after Filters follow Zygor's, in this style; Behaviour was
+	spread over Step Display, Automation and Action Buttons, every setting
+	keeping its saved value.
+
+	  Route           Race, Route pack
+	  Dungeons        Dungeons, Turtle WoW's own, Along the way
+	  Filters         Filters
+	  Appearance      Server theme and switch colours, window scale, the guide
+	                  window (lock, transparency), the minimap button
+	  Step Display    Between guides, Sync & Share
+	  Automation      Quests
+	  Action Buttons  the Active Items, Active Targets and Macros windows,
+	                  quest icons
+	  Navigation      Waypoints, Arrows
+	  Gear            the item score, the Gear Advisor, the Gear Finder
+	    Item Score    the stat weights (GearFrame.lua), listed under Gear
+	  Maintenance     Maintenance
+	  About           About, Credits
 ]]
 
 local AegisPathfinder = AegisPathfinder
@@ -52,6 +60,10 @@ local HEADER_GAP = 7                  -- h3 margin-bottom
 -- The dungeon grid: four across in a 396px panel.
 local CHIP_COLS, CHIP_GAP, CHIP_H = 4, 6, 34
 local CHIP_W = math.floor((BODY_W - (CHIP_COLS - 1) * CHIP_GAP) / CHIP_COLS)
+
+-- The Gear Finder's upgrade sources: two boxes to a row, three rows.
+local SOURCE_COL, SOURCE_ROW = 170, 26
+local SOURCES_H = 17 + 3 * SOURCE_ROW
 
 --[[ Turtle WoW's own dungeons, at InstanceJournal's levels. No route guide
 	has steps for them, so the first-time setup does not offer them; the
@@ -164,6 +176,91 @@ local function ReloadCurrentGuide()
 	if self:HasNoGuide() then return end
 	self:LoadGuide(self.db.char.currentguide)
 	self:UpdateStatusFrame()
+end
+
+--[[ The pages laid out along Zygor's -- Appearance's guide settings, Step
+	Display, Automation, Action Buttons -- built from the layout kit
+	CreateConfigPanel hands them (`k`): its page, place, section, note and
+	space, the page being built (k.body()) and the window (k.frame). They are
+	out here so that function stays inside Lua 5.0's limits on locals and
+	upvalues. ]]
+local Build = {}
+
+--- A switch for a per-character setting, db.char[key], kept in frame.switches
+--- for RefreshConfigPanel; `after(on)` updates whatever it shows on screen.
+function Build.CharSwitch(k, key, label, after)
+	local sw = Theme:Switch(k.body(), label, function(on)
+		AegisPathfinder.db.char[key] = on
+		if after then after(on) end
+	end)
+	sw.settingKey = key
+	k.place(sw, function(w) return sw:Fit(w) end, 8)
+	k.frame.switches[key] = sw
+	return sw
+end
+
+--- A switch whose setting has its own setter (`set(on)`), kept as frame[name].
+function Build.Switch(k, name, label, set)
+	local sw = Theme:Switch(k.body(), label, function(on) set(on) end)
+	k.place(sw, function(w) return sw:Fit(w) end, 8)
+	k.frame[name] = sw
+	return sw
+end
+
+local function RefreshActive() AegisPathfinder:RefreshActiveFrames() end
+
+--- Appearance, after the theme and the scale: the guide window, and the
+--- minimap button.
+function Build.AppearanceGuide(k)
+	local A = AegisPathfinder
+	k.section("Guide window")
+	-- The same settings as the guide's ≡ menu has, and kept in step with it.
+	Build.Switch(k, "guideLock", "Lock window", function(on) A:SetGuideLocked(on) end)
+	Build.Switch(k, "guideTransparent", "Transparency", function(on) A:SetGuideTransparent(on) end)
+	k.note("Lock window holds the guide where it is, with no grip to size it by; Transparency "
+		.. "lets the game show through it. Both are in the menu at the guide's top left too.")
+	k.space(k.SECTION_GAP)
+	k.section("Minimap")
+	Build.CharSwitch(k, "showminimapbutton", "Minimap button", function() A:UpdateMinimapButton() end)
+	k.space(k.SECTION_GAP - 8)
+end
+
+--- Step Display: what comes between guides, and sharing with your party.
+function Build.StepDisplay(k)
+	k.page("Step Display")
+	k.section("Between guides")
+	Build.CharSwitch(k, "skipfollowups", "Skip suggested follow-ups")
+	Build.CharSwitch(k, "offercustomzones", "Offer custom zones between guides")
+	Build.CharSwitch(k, "classquests", "Offer class quests at their level")
+	k.space(k.SECTION_GAP - 8)
+	k.section("Sync & Share")
+	-- The share popup's "don't ask again", as a setting you can take back.
+	Build.Switch(k, "askShare", "Ask before inviting my party", function(on)
+		AegisPathfinder.db.char.sharenowarn = not on or nil
+	end)
+	k.note("The party icon on the step row invites your party to share the guide you are on.")
+	k.space(k.SECTION_GAP)
+end
+
+--- Automation: what the addon does for you. It replaced Behaviour.
+function Build.Automation(k)
+	k.page("Automation")
+	k.section("Quests")
+	Build.CharSwitch(k, "autoquest", "Accept and turn in the guide's quests")
+	Build.CharSwitch(k, "trackquests", "Track quests automatically")
+	k.note("Hold Shift as you talk to an NPC and nothing happens by itself.")
+	k.space(k.SECTION_GAP)
+end
+
+--- Action Buttons: the windows of buttons that hang under the guide.
+function Build.ActionButtons(k)
+	k.page("Action Buttons")
+	k.section("Windows")
+	Build.CharSwitch(k, "showactiveitems", "Active items window", RefreshActive)
+	Build.CharSwitch(k, "showactivetargets", "Active targets window", RefreshActive)
+	Build.CharSwitch(k, "showmacros", "Macros window (AegisTarget, AegisItem)", RefreshActive)
+	Build.CharSwitch(k, "questicons", "Quest icons: mark quest NPCs as you mouse over them", RefreshActive)
+	k.space(k.SECTION_GAP - 8)
 end
 
 function AegisPathfinder:CreateConfigPanel()
@@ -292,6 +389,11 @@ function AegisPathfinder:CreateConfigPanel()
 	end
 
 	frame.sections = {}
+	frame.switches = {}
+	-- What the page builders out of this function lay out with (Build).
+	local kit = { frame = frame, page = page, place = place, space = space, note = note,
+		section = function(title) table.insert(frame.sections, section(title)) end,
+		body = function() return body end, SECTION_GAP = SECTION_GAP }
 
 	-- Race -----------------------------------------------------------------------
 	page("Route")
@@ -508,6 +610,43 @@ function AegisPathfinder:CreateConfigPanel()
 		.. "to with the grip in its corner.")
 	space(SECTION_GAP)
 	frame.scale = scale
+	Build.AppearanceGuide(kit)
+
+	-- Zygor's pages, in this style: what used to be Behaviour, spread out.
+	Build.StepDisplay(kit)
+	Build.Automation(kit)
+	Build.ActionButtons(kit)
+
+	page("Navigation")
+	table.insert(frame.sections, section("Waypoints"))
+	local waypoints = Theme:Dropdown(body, BODY_W, function(name)
+		AegisPathfinder:SetWaypointProvider(name)
+		AegisPathfinder:RefreshConfigPanel()
+	end)
+	place(waypoints, 30, SECTION_GAP)
+	wide(waypoints)
+	frame.waypoints = waypoints
+
+	--[[ Which arrows point at the step: a switch each for ours, TomTom's and
+		pfQuest's, so any of them, all or none. They replaced a dropdown of
+		ours, the waypoint addon's, both or neither, which could not turn
+		pfQuest's arrow off when TomTom took the waypoints, nor have three. An
+		addon that is not loaded has its switch held off. ]]
+	table.insert(frame.sections, section("Arrows"))
+	frame.arrows = {}
+	for _, def in ipairs(AegisPathfinder.ARROWS or {}) do
+		local key = def.key
+		local sw = Theme:Switch(body, def.label, function(on)
+			AegisPathfinder:SetArrow(key, on)
+			AegisPathfinder:RefreshConfigPanel()
+		end)
+		sw.arrowKey = key
+		place(sw, function(w) return sw:Fit(w) end, 8)
+		frame.arrows[key] = sw
+	end
+	local arrowNote = fine(Theme:FinePrint(body, BODY_W))
+	place(arrowNote, 58, SECTION_GAP)
+	frame.arrowNote = arrowNote
 
 	--[[ Gear: the item score on tooltips, and the window with its weights. ]]
 	page("Gear")
@@ -564,10 +703,15 @@ function AegisPathfinder:CreateConfigPanel()
 		frame.finder[key] = sw
 	end
 	finderSwitch("enabled", "Gear finder: upgrades waiting for me")
-	-- Where its upgrades drop: two boxes side by side, as Zygor's dungeon and
-	-- raid sources are -- 1.12 has no difficulties to tick, so one each.
+	--[[ Where it looks for upgrades: a box each, two to a row. Dungeons and
+		Raids are Zygor's two (1.12 has no difficulties to tick); quest rewards,
+		reputation vendors and crafted gear were switches of their own, and
+		keep what they were set to. Tick only Dungeons and it looks nowhere
+		else. ]]
+	local SOURCES = { { "dungeons", "Dungeons" }, { "raids", "Raids" }, { "quests", "Quest rewards" },
+		{ "reputation", "Reputation vendors" }, { "crafted", "Crafted gear" } }
 	local sources = CreateFrame("Frame", nil, body)
-	sources:SetHeight(42)
+	sources:SetHeight(SOURCES_H)
 	sources:SetWidth(BODY_W)
 	local sourcesLabel = sources:CreateFontString(nil, "OVERLAY")
 	Theme:SetFont(sourcesLabel, "body", 13)
@@ -575,8 +719,7 @@ function AegisPathfinder:CreateConfigPanel()
 	sourcesLabel:SetPoint("TOPLEFT", sources, "TOPLEFT", 0, 0)
 	sourcesLabel:SetText("Upgrade sources")
 	frame.sources = {}
-	local lastBox
-	for _, def in ipairs({ { "dungeons", "Dungeons" }, { "raids", "Raids" } }) do
+	for i, def in ipairs(SOURCES) do
 		local key = def[1]
 		local box = Theme:Checkbox(sources, def[2], function(on)
 			AegisPathfinder.GearFinder.Settings()[key] = on
@@ -588,30 +731,22 @@ function AegisPathfinder:CreateConfigPanel()
 			AegisPathfinder.GearFinder:SettingsChanged()
 		end)
 		box:Fit()
-		if lastBox then
-			box:SetPoint("LEFT", lastBox, "RIGHT", 24, 0)
-		else
-			box:SetPoint("TOPLEFT", sourcesLabel, "BOTTOMLEFT", 0, -4)
-		end
-		lastBox = box
+		box:SetPoint("TOPLEFT", sourcesLabel, "BOTTOMLEFT", math.mod(i - 1, 2) * SOURCE_COL,
+			-(4 + math.floor((i - 1) / 2) * SOURCE_ROW))
 		frame.sources[key] = box
 	end
-	place(sources, 42, 2)
+	place(sources, SOURCES_H, 2)
 	note("The first time Raids is ticked, their items load from the server: it can take a "
 		.. "minute or two, and the Gear Finder fills in as they arrive.")
 	space(6)
-	finderSwitch("quests", "Look at quest rewards")
-	finderSwitch("reputation", "Look at reputation rewards")
-	finderSwitch("crafted", "Look at crafted gear")
 	finderSwitch("announce", "Name the upgrades when I walk into a dungeon")
 	local openFinder = Theme:Pill(body, "Open the Gear Finder", 150, 26)
 	openFinder:SetScript("OnClick", function() AegisPathfinder:ToggleGearFinder() end)
 	place(openFinder, 26, 6)
 	note("A tab on the character panel. It looks in the dungeons at or a little above your "
-		.. "level that are ticked under Dungeons, Turtle WoW's own included, and in raids when "
-		.. "Raids is ticked; and at quests you have still to do, reputation vendors and crafted "
-		.. "gear near your level. Crafted gear that binds on pickup counts only if you have the "
-		.. "profession.")
+		.. "level, Turtle WoW's own included, and in raids at your level; and at quests you have "
+		.. "still to do, reputation vendors and crafted gear near your level -- each where it is "
+		.. "ticked. Crafted gear that binds on pickup counts only if you have the profession.")
 	space(SECTION_GAP)
 	frame.scoreTips, frame.weightsButton, frame.clearDeclined = scoreTips, weights, clearDeclined
 	frame.openFinder = openFinder
@@ -623,70 +758,6 @@ function AegisPathfinder:CreateConfigPanel()
 	local scorePage = AegisPathfinder:CreateItemScorePage(body, BODY_W, y, PAD_BOTTOM)
 	body.ownHeight = true
 	stretchy(function(w) scorePage:Resize(w) end)
-
-	-- Beyond the concept: the addon's own settings, in the same language. -------
-	page("Behaviour")
-	table.insert(frame.sections, section("Guide behaviour"))
-	frame.switches = {}
-	local BEHAVIOUR = {
-		{ key = "autoquest",     label = "Accept and turn in quests automatically" },
-		{ key = "trackquests",   label = "Track quests automatically" },
-		{ key = "skipfollowups", label = "Skip suggested follow-ups" },
-		{ key = "offercustomzones", label = "Offer custom zones between guides" },
-		{ key = "classquests", label = "Offer class quests at their level" },
-		{ key = "showminimapbutton", label = "Minimap button" },
-		{ key = "showactiveitems", label = "Active items window" },
-		{ key = "showactivetargets", label = "Active targets window" },
-		{ key = "showmacros", label = "Macros window (AegisTarget, AegisItem)" },
-		{ key = "questicons", label = "Quest icons: mark quest NPCs as you mouse over them" },
-	}
-	for _, def in ipairs(BEHAVIOUR) do
-		local key = def.key
-		local sw = Theme:Switch(body, def.label, function(on)
-			AegisPathfinder.db.char[key] = on
-			-- The settings with something on screen to update.
-			if key == "showminimapbutton" then AegisPathfinder:UpdateMinimapButton() end
-			if key == "showactiveitems" or key == "showactivetargets" or key == "showmacros"
-				or key == "questicons" then
-				AegisPathfinder:RefreshActiveFrames()
-			end
-		end)
-		sw.settingKey = key
-		place(sw, function(w) return sw:Fit(w) end, 8)
-		frame.switches[key] = sw
-	end
-	space(SECTION_GAP - 8)
-
-	page("Navigation")
-	table.insert(frame.sections, section("Waypoints"))
-	local waypoints = Theme:Dropdown(body, BODY_W, function(name)
-		AegisPathfinder:SetWaypointProvider(name)
-		AegisPathfinder:RefreshConfigPanel()
-	end)
-	place(waypoints, 30, SECTION_GAP)
-	wide(waypoints)
-	frame.waypoints = waypoints
-
-	--[[ Which arrows point at the step: a switch each for ours, TomTom's and
-		pfQuest's, so any of them, all or none. They replaced a dropdown of
-		ours, the waypoint addon's, both or neither, which could not turn
-		pfQuest's arrow off when TomTom took the waypoints, nor have three. An
-		addon that is not loaded has its switch held off. ]]
-	table.insert(frame.sections, section("Arrows"))
-	frame.arrows = {}
-	for _, def in ipairs(AegisPathfinder.ARROWS or {}) do
-		local key = def.key
-		local sw = Theme:Switch(body, def.label, function(on)
-			AegisPathfinder:SetArrow(key, on)
-			AegisPathfinder:RefreshConfigPanel()
-		end)
-		sw.arrowKey = key
-		place(sw, function(w) return sw:Fit(w) end, 8)
-		frame.arrows[key] = sw
-	end
-	local arrowNote = fine(Theme:FinePrint(body, BODY_W))
-	place(arrowNote, 58, SECTION_GAP)
-	frame.arrowNote = arrowNote
 
 	page("Maintenance")
 	table.insert(frame.sections, section("Maintenance"))
@@ -1045,6 +1116,12 @@ function AegisPathfinder:RefreshConfigPanel()
 	frame.themeNote:SetText(def.note)
 	frame.redGreen:SetOn(Theme.switchColours == "redgreen")
 	frame.scale:SetValue(Theme.windowScale)
+
+	-- The guide's lock and transparency, which its ≡ menu sets too.
+	local profile = self.db.profile
+	frame.guideLock:SetOn(profile.objframelocked)
+	frame.guideTransparent:SetOn(profile.objframetransparent)
+	frame.askShare:SetOn(not db.sharenowarn)
 
 	-- The addon's own switches.
 	for key, sw in pairs(frame.switches) do

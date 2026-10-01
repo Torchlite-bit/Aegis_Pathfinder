@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.22.1)
+# Aegis: Pathfinder (v0.22.2)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -179,7 +179,8 @@ finished step waits for the slowest.
 ### ⚙️ Settings, laid out like Zygor's
 
 Every setting in one window, a page a category down the left: your route,
-dungeons, filters, appearance, gear and item score, behaviour, navigation.
+dungeons, filters, appearance, step display, automation, action buttons,
+navigation, gear and item score.
 Resize it from the corner.
 
 | Route | Dungeons |
@@ -235,7 +236,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.22.1`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.22.2`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)** or open an

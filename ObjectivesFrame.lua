@@ -330,6 +330,8 @@ local MENU_W, MENU_ROW = 220, 28
 function AegisPathfinder:SetGuideLocked(on)
 	self.db.profile.objframelocked = on and true or nil
 	if on then frame.grip:Hide() else frame.grip:Show() end
+	-- The options' Appearance page has it too.
+	if self.optionsframe and self.optionsframe:IsShown() and self.RefreshConfigPanel then self:RefreshConfigPanel() end
 end
 
 --- A see-through panel: its body at half strength, and no shadow.
@@ -338,6 +340,7 @@ function AegisPathfinder:SetGuideTransparent(on)
 	local skin = self.objectiveskin
 	skin.fill:SetTint("panel", on and 0.5 or 1)
 	if skin.shadow then skin.shadow:SetTint({ 0, 0, 0 }, on and 0 or 0.62) end
+	if self.optionsframe and self.optionsframe:IsShown() and self.RefreshConfigPanel then self:RefreshConfigPanel() end
 end
 
 -- A menu row's box, ticked while what it stands for is on.

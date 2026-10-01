@@ -30,15 +30,30 @@ The objectives panel is the addon's main window, so a bare `/apg` opens it, and
 it opens with the client. Escape doesn't close it, so clearing a target in a
 fight leaves it where it is; its ✕ does. The Aegis shield on the edge of the minimap does the
 same on a click; right-click it for the options window, and drag it to move it
-round the minimap. The options window's **Behaviour** page can hide it, as can
+round the minimap. The options window's **Appearance** page can hide it, as can
 `/apg minimapbutton`.
 
 The options window can be resized from its bottom-right corner, wider or
 taller, and keeps the size; `/apg resetpanels` puts it back. It lists its
-pages down the left: **Route** (race and route
-pack), **Dungeons**, **Filters**, **Appearance** (server theme, switch colours, window scale), **Gear** and
-under it **Item Score** (the stat weights), **Behaviour**, **Navigation** (waypoints and arrows), **Maintenance** (rescan,
-error log, setup) and **About** (version and credits).
+pages down the left, after Zygor's from Appearance on:
+
+- **Route**: race and route pack.
+- **Dungeons** and **Filters**.
+- **Appearance**: server theme, switch colours, window scale; the guide
+  window's *Lock window* and *Transparency* (also in its ≡ menu); the minimap
+  button.
+- **Step Display**: what comes between guides (follow-ups, custom zones,
+  class quests), and *Ask before inviting my party* for sharing.
+- **Automation**: accepting and turning in the guide's quests, and tracking
+  them.
+- **Action Buttons**: the Active Items, Active Targets and Macros windows, and
+  quest icons.
+- **Navigation**: waypoints and arrows.
+- **Gear** and under it **Item Score** (the stat weights).
+- **Maintenance** (rescan, error log, setup) and **About** (version and
+  credits).
+
+The Behaviour page those settings were on is gone; each kept its value.
 
 ## What it does
 
@@ -179,7 +194,7 @@ dungeon, a raid or an elite in it,
 unless you play in a group -- Solo Self-Found is solo. With a dungeon to offer
 at the same level, the dungeon's window comes first and the class quest's when
 it closes. It looks when you level up, when you log in and when you finish the
-setup; *Offer class quests at their level*, under Behaviour, turns it off.
+setup; *Offer class quests at their level*, under **Step Display**, turns it off.
 
 The chains come from pfQuest, pfQuest-turtle and CMaNGOS' quest table: which
 quest follows which, which races each is for, and what one gives that another
@@ -245,7 +260,7 @@ guide for the level you are by then, or on to the next custom zone that fits. A
 zone fits when you are inside its level range or one short of it, below its top,
 and have not finished it; with none that fit, nothing is asked. Closing the
 window carries on with the route. The options window can switch it off (*Offer
-custom zones between guides*, under **Behaviour**). The custom zones are also under the guide
+custom zones between guides*, under **Step Display**). The custom zones are also under the guide
 list's **Custom** tab at any time.
 
 **Moonwhisper Coast (52-60)**, which came with patch 1.18.1, has a guide for
@@ -328,7 +343,7 @@ themselves. What the quest wants killed or looted is looked for where the step
 is: Crocolisk Hunting in Loch Modan targets Loch Crocolisks, not the likelier
 crocolisks of the Wetlands. With none there, it is those where you are, then
 everyone. Either window can be dragged anywhere, or switched off under
-**Behaviour** in the options.
+**Action Buttons** in the options.
 
 **Quest icons.** Mouse over or target anyone a quest wants and the right raid
 marker goes on them by itself, as RestedXP's Quest Icons do:
@@ -347,7 +362,7 @@ stays out of raids, where markers belong to the leaders. Someone marked for
 killing who turns out not to be attackable gets a square instead. Quest-log
 marks need pfQuest and ClassicAPI (which gives the log's quest ids); without
 ClassicAPI only the current step is marked. The options window can switch it
-off, under **Behaviour**.
+off, under **Action Buttons**.
 
 **Macros.** A third small window, **Macros**, holds two real macros the addon
 writes into your character's macro book and keeps up to date: **AegisTarget**,
@@ -358,7 +373,7 @@ on the macro follows the guide by itself, step after step. Clicking a tile does
 what its macro does. They are made the first time there is something for them
 to do, use two of your 18 character macro slots (the window says so if none are
 free), and are never rewritten while the macro window is open. The options
-window can switch it off, under **Behaviour**, which also stops the macros
+window can switch it off, under **Action Buttons**, which also stops the macros
 being made or updated.
 
 **Sharing a guide with your party (beta).** Playing a guide with someone else
@@ -532,13 +547,15 @@ laid out like Zygor's:
   page. Drag the page to move the character panel. Its own ✕ closes the
   character panel, as closing any of its pages does.
 
-- **Upgrade sources**, two checkboxes in the options: **Dungeons** and
-  **Raids** -- 1.12 has no difficulties to tick. It looks in the dungeons that
+- **Upgrade sources**, five checkboxes in the options, two to a row:
+  **Dungeons**, **Raids**, **Quest rewards**, **Reputation vendors** and
+  **Crafted gear**. Tick only Dungeons and it looks nowhere else. Dungeons
+  and Raids are Zygor's two -- 1.12 has no difficulties to tick. It looks in the dungeons that
   start no more than three levels above you, on your side -- ticked on the
   **Dungeons** page or not, as those ticks are which dungeons' quests the route
   takes in; with **Raids** ticked, in the raids at your level too. Items up to
-  three levels above you count, marked with their level. With both unticked it
-  says it has nowhere to look.
+  three levels above you count, marked with their level. With nothing ticked
+  it says it has nowhere to look.
 - Each drop is weighed with the item score, for your spec, as tooltips are.
 - Walking into a dungeon names its upgrades in chat.
 - The loot tables are the CMaNGOS database's for every vanilla dungeon and
@@ -555,8 +572,9 @@ laid out like Zygor's:
   Core's Incindis and Basalthar, among others), loot moved between bosses,
   new items, and drops taken out. Where Turtle only changed a shared loot
   table, the CMaNGOS chance stands.
-- Not only drops -- at 60 much of the best gear is not one. Each switched in
-  the options, on to start with:
+- Not only drops -- at 60 much of the best gear is not one. Each a box under
+  Upgrade sources, ticked to start with (they were switches before 0.22.2,
+  and keep what those were set to):
   - **Quest rewards** from quests you have still to do, on your side and for
     your class, that you can take within three levels: *Quest: Title*, with
     the reputation it needs where it needs one (*Honored, Argent Dawn*). Most

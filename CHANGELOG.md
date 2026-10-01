@@ -18,6 +18,33 @@ reports.
 
 ---
 
+## [0.22.2]
+
+### Changed
+- **The options window's pages follow Zygor's**, in the addon's look. After
+  Route, Dungeons and Filters come Appearance, Step Display, Automation,
+  Action Buttons and Navigation, then Gear and Item Score, Maintenance and
+  About. The settings that were on **Behaviour** have moved, each keeping
+  what you had it set to, and the Behaviour page is gone:
+  - **Appearance**: the minimap button, and the guide window's *Lock window*
+    and *Transparency*, which were only in the guide's menu. They are in
+    both places now, as one setting.
+  - **Step Display**: skip suggested follow-ups, offer custom zones between
+    guides, offer class quests at their level; and *Ask before inviting my
+    party*, the share popup's "don't ask again" as a setting you can turn
+    back on.
+  - **Automation**: accept and turn in the guide's quests, track quests.
+  - **Action Buttons**: the Active Items, Active Targets and Macros windows,
+    and quest icons.
+- **The Gear Finder's Upgrade sources are five boxes**: Dungeons, Raids,
+  Quest rewards, Reputation vendors and Crafted gear. The last three were
+  switches of their own and keep what those were set to. Tick only Dungeons
+  and it looks nowhere else.
+
+### Fixed
+- The Gear page's note still said the Gear Finder only looked in dungeons
+  ticked on the Dungeons page, which stopped being true in 0.22.1.
+
 ## [0.22.1]
 
 ### Fixed
@@ -1182,6 +1209,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.21.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
