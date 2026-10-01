@@ -101,8 +101,10 @@ UnitClass = function() return "Paladin", "PALADIN" end
 local talents = { 0, 0, 0 }
 GetTalentTabInfo = function(tab) return ({ "Holy", "Protection", "Retribution" })[tab], "icon", talents[tab] end
 local advisorSettings = { enabled = true, popups = true, questmark = true, bagmark = true }
-local finderSettings = { enabled = true, announce = true, raids = false, quests = true, reputation = true, crafted = true }
-AegisPathfinder.GearFinder = { Settings = function() return finderSettings end }
+local finderSettings = { enabled = true, announce = true, dungeons = true, raids = false, quests = true, reputation = true,
+	crafted = true }
+AegisPathfinder.GearFinder = { Settings = function() return finderSettings end,
+	SettingsChanged = function() AegisPathfinder.__finderChanged = (AegisPathfinder.__finderChanged or 0) + 1 end }
 function AegisPathfinder:ToggleGearFinder() self.__finder = (self.__finder or 0) + 1 end
 AegisPathfinder.GearAdvisor = {
 	Settings = function() return advisorSettings end,
@@ -387,11 +389,28 @@ check(frame.finder.quests:IsOn() and frame.finder.reputation:IsOn() and frame.fi
 click(frame.finder.crafted)
 check(finderSettings.crafted == false, "each of which can be switched off")
 click(frame.finder.crafted)
+-- The upgrade sources: two checkboxes, as Zygor's dungeon and raid sources.
+check(frame.sources.dungeons:IsOn() and not frame.sources.raids:IsOn(), "upgrade sources: Dungeons ticked, Raids not")
+local said = {}
+local keepPrint = AegisPathfinder.Print
+function AegisPathfinder:Print(msg) table.insert(said, msg) end
+local changed = AegisPathfinder.__finderChanged or 0
+click(frame.sources.raids)
+check(finderSettings.raids == true and frame.sources.raids:IsOn(), "ticking Raids looks in raids")
+check(said[1] and string.find(said[1], "minute or two", 1, true), "and says the first look takes a while, got %s", tostring(said[1]))
+check((AegisPathfinder.__finderChanged or 0) > changed, "and the tab follows at once")
+click(frame.sources.dungeons)
+check(finderSettings.dungeons == false, "Dungeons can be unticked too")
+click(frame.sources.dungeons)
+click(frame.sources.raids)
+check(finderSettings.dungeons and not finderSettings.raids, "and both back as they were")
+AegisPathfinder.Print = keepPrint
 click(frame.finder.enabled)
-check(finderSettings.enabled == false and not frame.finder.announce:IsEnabled(), "off, its other switch is held")
+check(finderSettings.enabled == false and not frame.finder.announce:IsEnabled() and not frame.sources.raids:IsEnabled(),
+	"off, its other switches and the sources are held")
 click(frame.finder.enabled)
 click(frame.openFinder)
-check(AegisPathfinder.__finder == 1, "the Gear finder button opens it")
+check(AegisPathfinder.__finder == 1, "the Open the Gear Finder button opens it")
 
 -- Solo Self-Found holds group mode, the Auction House and the dungeons off,
 -- and lets them go again as they were.

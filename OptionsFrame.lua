@@ -552,31 +552,66 @@ function AegisPathfinder:CreateConfigPanel()
 		AegisPathfinder:Print("Declined upgrades cleared: they will be offered again.")
 	end)
 	place(clearDeclined, 26, 10)
-	-- The Gear Finder (GearFinder.lua): upgrades in the dungeons you run.
+	-- The Gear Finder (GearFinder.lua, the character panel's tab).
 	frame.finder = {}
-	for _, def in ipairs({
-		{ key = "enabled",  label = "Gear finder: upgrades waiting for me" },
-		{ key = "quests",   label = "Look at quest rewards" },
-		{ key = "reputation", label = "Look at reputation rewards" },
-		{ key = "crafted",  label = "Look at crafted gear" },
-		{ key = "announce", label = "Name the upgrades when I walk into a dungeon" },
-	}) do
-		local key = def.key
-		local sw = Theme:Switch(body, def.label, function(on)
+	local function finderSwitch(key, label)
+		local sw = Theme:Switch(body, label, function(on)
 			AegisPathfinder.GearFinder.Settings()[key] = on
 			AegisPathfinder:RefreshConfigPanel()
+			AegisPathfinder.GearFinder:SettingsChanged()
 		end)
 		place(sw, function(w) return sw:Fit(w) end, 6)
 		frame.finder[key] = sw
 	end
-	local openFinder = Theme:Pill(body, "Gear finder", 110, 26)
+	finderSwitch("enabled", "Gear finder: upgrades waiting for me")
+	-- Where its upgrades drop: two boxes side by side, as Zygor's dungeon and
+	-- raid sources are -- 1.12 has no difficulties to tick, so one each.
+	local sources = CreateFrame("Frame", nil, body)
+	sources:SetHeight(42)
+	sources:SetWidth(BODY_W)
+	local sourcesLabel = sources:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(sourcesLabel, "body", 13)
+	Theme:TextColor(sourcesLabel, "text")
+	sourcesLabel:SetPoint("TOPLEFT", sources, "TOPLEFT", 0, 0)
+	sourcesLabel:SetText("Upgrade sources")
+	frame.sources = {}
+	local lastBox
+	for _, def in ipairs({ { "dungeons", "Dungeons" }, { "raids", "Raids" } }) do
+		local key = def[1]
+		local box = Theme:Checkbox(sources, def[2], function(on)
+			AegisPathfinder.GearFinder.Settings()[key] = on
+			if key == "raids" and on then
+				AegisPathfinder:Print("Raids added to the Gear Finder. The first time, their items have to "
+					.. "load from the server: it can take a minute or two, and the cells fill in as they arrive.")
+			end
+			AegisPathfinder:RefreshConfigPanel()
+			AegisPathfinder.GearFinder:SettingsChanged()
+		end)
+		box:Fit()
+		if lastBox then
+			box:SetPoint("LEFT", lastBox, "RIGHT", 24, 0)
+		else
+			box:SetPoint("TOPLEFT", sourcesLabel, "BOTTOMLEFT", 0, -4)
+		end
+		lastBox = box
+		frame.sources[key] = box
+	end
+	place(sources, 42, 2)
+	note("The first time Raids is ticked, their items load from the server: it can take a "
+		.. "minute or two, and the Gear Finder fills in as they arrive.")
+	space(6)
+	finderSwitch("quests", "Look at quest rewards")
+	finderSwitch("reputation", "Look at reputation rewards")
+	finderSwitch("crafted", "Look at crafted gear")
+	finderSwitch("announce", "Name the upgrades when I walk into a dungeon")
+	local openFinder = Theme:Pill(body, "Open the Gear Finder", 150, 26)
 	openFinder:SetScript("OnClick", function() AegisPathfinder:ToggleGearFinder() end)
 	place(openFinder, 26, 6)
-	note("It looks in the dungeons at or a little above your level that are "
-		.. "ticked under Dungeons, Turtle WoW's own included, and in raids if you "
-		.. "ask it to; and at quests you have still to do, reputation vendors and "
-		.. "crafted gear near your level. Crafted gear that binds on pickup counts "
-		.. "only if you have the profession.")
+	note("A tab on the character panel. It looks in the dungeons at or a little above your "
+		.. "level that are ticked under Dungeons, Turtle WoW's own included, and in raids when "
+		.. "Raids is ticked; and at quests you have still to do, reputation vendors and crafted "
+		.. "gear near your level. Crafted gear that binds on pickup counts only if you have the "
+		.. "profession.")
 	space(SECTION_GAP)
 	frame.scoreTips, frame.weightsButton, frame.clearDeclined = scoreTips, weights, clearDeclined
 	frame.openFinder = openFinder
@@ -988,6 +1023,10 @@ function AegisPathfinder:RefreshConfigPanel()
 	for key, sw in pairs(frame.finder) do
 		sw:SetOn(finder[key])
 		sw:SetLocked(key ~= "enabled" and not finder.enabled)
+	end
+	for key, box in pairs(frame.sources) do
+		box:SetOn(finder[key])
+		box:SetLocked(not finder.enabled)
 	end
 	local advisor = self.GearAdvisor.Settings()
 	for key, sw in pairs(frame.advisor) do

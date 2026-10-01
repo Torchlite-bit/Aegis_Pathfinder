@@ -18,6 +18,38 @@ reports.
 
 ---
 
+## [0.22.0] — restart
+
+### Added
+- **The Gear Finder is a tab on the character panel**, laid out like
+  Zygor's, after Character, Reputation, Skills and Honor. It replaces the
+  Gear Finder window. `/apg finder` and **Open the Gear Finder** in the
+  options open the panel on it.
+  - **A cell per slot**, as the character sheet has them: the slot's biggest
+    upgrade, how much better it is, where it drops and who drops it, and *at
+    level N* if you can't wear it yet. A slot with none says *No upgrade
+    found*; one you wear nothing in says *Empty slot*. Rings and trinkets have
+    two cells each, never showing the same item.
+  - **Click a cell** for every upgrade for that slot, biggest first, with
+    drop chances. Pick the one you want and the cell shows it as *Your pick*.
+    Picks are kept for the character, and forgotten once you wear the item
+    or it stops being an upgrade.
+  - **The suggested dungeon**: its loading screen, the dungeon the cells'
+    items drop in most (by how many slots it upgrades, then by how much),
+    arrows through the others, the spec it scores for, and **Open the guide**
+    for its dungeon guide. Picking a different item can change it, at once.
+  - Works with pfUI: the tab is skinned like pfUI's tabs and sits in their row.
+- **Upgrade sources** on the options' Gear page: **Dungeons** and **Raids**,
+  two checkboxes side by side. **Raids** replaces the window's *Include raids*
+  switch, and still says the first look takes a minute or two. With both
+  unticked, the Gear Finder says it has nowhere to look.
+
+### Changed
+- The Gear Finder now keeps every upgrade for a slot, not just the best three,
+  so a slot's list has them all.
+- A one-hander a dual wielder would put in the off hand is an off-hand
+  upgrade, under the slot it would replace.
+
 ## [0.21.3]
 
 ### Fixed
@@ -1125,6 +1157,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.21.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.21.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.21.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

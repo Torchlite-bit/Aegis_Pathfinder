@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.21.3)
+# Aegis: Pathfinder (v0.22.0)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -133,14 +133,16 @@ the guides of the dungeons you ticked are offered beside the next zone.
   does.
 - **Gear Advisor** offers upgrades as you loot them and marks the best quest
   reward.
-- **Gear finder** lists the upgrades waiting in the dungeons you run — who
-  drops them, where, and how often — and the quest rewards, reputation gear
-  and crafted gear within your reach. At 60 that is every dungeon, and the
-  raids too if you ask it.
+- **Gear Finder**, a tab on the character panel as Zygor's is: the biggest
+  upgrade for every slot, how much better it is and where it drops, with the
+  rest of the slot's upgrades a click away. Pick the ones you want and it
+  suggests the dungeon to run for most of them, with its guide a click away.
+  Quest rewards, reputation gear and crafted gear within reach too, and the
+  raids at 60 when you tick them.
 
-| Stat weights, per spec | The Gear finder |
+| Stat weights, per spec | The Gear Finder |
 | :---: | :---: |
-| <img src="docs/images/options-itemscore.png" width="380" alt="Options, Item Score page: a Retribution Paladin's stat weights, with Holy and Protection scored as well and Share weights to import or export"> | <img src="docs/images/gear-finder.png" width="380" alt="The Gear finder: upgrades for Retribution by slot, from the Deadmines, Wailing Caverns, quests and crafting, with who drops each, the chance, and how much better it is"> |
+| <img src="docs/images/options-itemscore.png" width="380" alt="Options, Item Score page: a Retribution Paladin's stat weights, with Holy and Protection scored as well and Share weights to import or export"> | <img src="docs/images/gear-finder.png" width="380" alt="The Gear Finder tab on the character panel, for a level 23 Mage: a cell per slot with its biggest upgrade, how much better it is and where it drops, and Shadowfang Keep suggested for four of them"> |
 
 <!-- Screenshot to come: the Gear Advisor pop-up. Put it in docs/images/ and
      add it here. -->
@@ -186,7 +188,7 @@ Resize it from the corner.
 
 | Behaviour | Gear |
 | :---: | :---: |
-| <img src="docs/images/options-behaviour.png" width="380" alt="Options, Behaviour page: how the guide behaves, and its windows"> | <img src="docs/images/options-gear.png" width="380" alt="Options, Gear page: the item score, the Gear Advisor and the Gear finder"> |
+| <img src="docs/images/options-behaviour.png" width="380" alt="Options, Behaviour page: how the guide behaves, and its windows"> | <img src="docs/images/options-gear.png" width="380" alt="Options, Gear page: the item score, the Gear Advisor and the Gear Finder"> |
 
 ### 🎨 Your server's colours
 
@@ -222,7 +224,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 | `/apg` | Open the guide |
 | `/apg setup` | Run the first-time setup again |
 | `/apg gear` | Your stat weights (options → Item Score) |
-| `/apg finder` | Upgrades in the dungeons you run |
+| `/apg finder` | The Gear Finder tab: upgrades in the dungeons you run |
 | `/apg craft` | Cheapest route to 300 in a profession |
 | `/apg share` | Share your guide with your party |
 | `/apg ssf` | Solo Self-Found on or off |
@@ -233,7 +235,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.21.3`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.22.0`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)** or open an

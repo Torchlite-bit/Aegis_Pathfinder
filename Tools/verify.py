@@ -442,7 +442,7 @@ def check_texture_paths(rep):
 # list -- may reach for GameTooltip: only it can show an item.
 GAMETOOLTIP = re.compile(r"\bGameTooltip\s*:\s*SetOwner\b")
 # Files whose rows are game items: only GameTooltip can show one.
-GAMETOOLTIP_ALLOWED = {"ActiveFrames.lua", "GearFinder.lua"}
+GAMETOOLTIP_ALLOWED = {"ActiveFrames.lua", "GearFinderTab.lua"}
 
 
 def check_tooltips(rep):

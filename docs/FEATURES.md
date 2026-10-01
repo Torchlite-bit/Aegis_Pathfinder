@@ -17,7 +17,7 @@ version.
 | `/apg craft` | The crafting route window: the cheapest way to level a profession at today's prices |
 | `/apg share` | Share the guide you are on with your party, or stop sharing (beta) |
 | `/apg gear` | The options at **Item Score**: the stat weights behind the item score |
-| `/apg finder` | The Gear finder: upgrades that drop in the dungeons you run |
+| `/apg finder` | The Gear Finder tab on the character panel: upgrades in the dungeons you run |
 | `/apg ssf` | Solo Self-Found on or off |
 | `/apg setup` | Run the first-time setup again: your guide, its features and your dungeons |
 | `/apg target` | Target and mark the step's next active target (put it in a macro) |
@@ -98,7 +98,7 @@ their setup and prerequisite steps to mandatory; opting out hides them. A blue
 dot marks the dungeons the guide you are currently on actually has steps for.
 Under them, **Turtle WoW's own**: Frostmane Hollow, Windhorn Canyon, Dragonmaw
 Retreat, Stormwrought Ruins, Crescent Grove, Gilneas City and Hateforge Quarry.
-No route guide has steps for these; ticked, the Gear finder looks in them, and
+No route guide has steps for these; ticked, the Gear Finder looks in them, and
 their dungeon guides can be offered along the way.
 
 **Dungeons along the way.** Switch on *Offer dungeon guides along the way*, on
@@ -502,13 +502,38 @@ under **Gear** in the options:
 - **Your bags.** Upgrades get a border in the default bag frames.
 - It can be switched off, or off at level 60.
 
-**Gear finder.** Upgrades waiting in the dungeons you run (`/apg finder`, or
-**Gear finder** in the options): for each slot, the best few drops that beat
-what you wear, with who drops them, where, and how often.
+**Gear Finder.** A tab on the character panel, after Character, Reputation,
+Skills and Honor (`/apg finder`, or **Open the Gear Finder** in the options),
+laid out like Zygor's:
 
-- It looks in the dungeons that start no more than three levels above you, on
-  your side, and ticked under **Dungeons** — and in raids, at 60, if you switch
-  them on. Items up to three levels above you count, marked with their level.
+- **A cell per slot**, as the character sheet has them: two columns of eight,
+  and the ranged slot under the suggested dungeon. Each shows the slot's
+  biggest upgrade: the item, how much better it is (+54%, or *Empty slot* for
+  a slot you wear nothing in), where it drops and who drops it, and *at level
+  24* if you cannot wear it yet. A slot with none shows its empty picture and
+  *No upgrade found*. Rings and trinkets have two cells each, never the same
+  item in both. Shirt and tabard are left out: they have no stats.
+- **Click a cell** for the slot's list: every upgrade for it, biggest first,
+  each with its gain, dungeon, boss and drop chance. Click one to make it the
+  cell's -- it is marked *Your pick* -- or **Clear my pick** for the biggest
+  again. Picks are kept for the character, and forgotten once you wear the
+  item or it is no longer an upgrade.
+- **The suggested dungeon**, on the right: its loading screen, the spec it
+  scores for (change it there), the dungeon the cells' items drop in most --
+  by how many slots it upgrades, then by how much they add up to -- with its
+  levels, how many upgrades and which slots. Arrows step through the other
+  dungeons in that order, and **Open the guide** opens its dungeon guide.
+  Picking a different item can change the suggestion; it changes at once.
+  Quest, reputation and crafted gear have cells, but do not count towards it.
+- The footer says where it looked; the cog opens the Gear options. Closing it
+  closes the character panel, as any of its pages does.
+
+- **Upgrade sources**, two checkboxes in the options: **Dungeons** and
+  **Raids** -- 1.12 has no difficulties to tick. It looks in the dungeons that
+  start no more than three levels above you, on your side, and ticked under
+  **Dungeons**; with **Raids** ticked, in the raids at your level too. Items
+  up to three levels above you count, marked with their level. With both
+  unticked it says it has nowhere to look.
 - Each drop is weighed with the item score, for your spec, as tooltips are.
 - Walking into a dungeon names its upgrades in chat.
 - The loot tables are the CMaNGOS database's for every vanilla dungeon and
@@ -538,7 +563,7 @@ what you wear, with who drops them, where, and how often.
   These are looked at near your level only, up to ten levels under it: there
   are thousands, each loaded to be weighed. They are vanilla's, from the
   CMaNGOS database; Turtle's own quests and recipes are not in it.
-- Turning raids on says the first look takes a minute or two: hundreds more
+- Ticking **Raids** says the first look takes a minute or two: hundreds more
   items to load, once.
 
 ## Professions

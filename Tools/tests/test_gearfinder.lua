@@ -1,8 +1,9 @@
 --[[
-	Tests for the Gear Finder (GearFinder.lua): which dungeons it looks in,
-	which of their drops it weighs, loading the ones the client has not seen,
-	the upgrades by slot, the window, and naming upgrades on walking in --
-	through the real item score, on a small made-up GearData.
+	Tests for the Gear Finder (GearFinder.lua, GearFinderTab.lua): which
+	dungeons it looks in, which of their drops it weighs, loading the ones the
+	client has not seen, the upgrades by slot, the cells and the picks, the
+	suggested dungeon, the tab on the character panel, and naming upgrades on
+	walking in -- through the real item score, on a small made-up GearData.
 
 	Run:  lua5.1 Tools/tests/test_gearfinder.lua
 ]]
@@ -47,12 +48,65 @@ GetInventoryItemLink = function(unit, slot)
 	return worn[slot] and ("|Hitem:" .. worn[slot] .. ":0:0:0|h[x]|h")
 end
 
+--[[ The client's character panel, as far as the tab touches it: the panel,
+	its five tabs (Pet hidden, as for a class without a pet), its pages, and
+	the functions that swap them -- ToggleCharacter and the PanelTemplates,
+	as FrameXML 1.12.1 has them. ]]
+CharacterFrame = CreateFrame("Frame", "CharacterFrame", UIParent)
+CharacterFrame:SetWidth(384); CharacterFrame:SetHeight(512)
+CharacterFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 0, -104)
+CharacterFrame:Hide()
+CHARACTERFRAME_SUBFRAMES = { "PaperDollFrame", "PetPaperDollFrame", "SkillFrame", "ReputationFrame", "HonorFrame" }
+for i, name in ipairs(CHARACTERFRAME_SUBFRAMES) do
+	local sub = CreateFrame("Frame", name, CharacterFrame)
+	sub:SetID(({ PaperDollFrame = 1, PetPaperDollFrame = 2, ReputationFrame = 3, SkillFrame = 4, HonorFrame = 5 })[name])
+	sub:Hide()
+end
+for i = 1, 5 do
+	local t = CreateFrame("Button", "CharacterFrameTab" .. i, CharacterFrame)
+	t:SetID(i)
+	t:SetWidth(80); t:SetHeight(32)
+	if i == 1 then
+		t:SetPoint("CENTER", CharacterFrame, "BOTTOMLEFT", 60, 62)
+	else
+		t:SetPoint("LEFT", getglobal("CharacterFrameTab" .. (i - 1)), "RIGHT", -16, 0)
+	end
+end
+CharacterFrameTab2:Hide()
+CharacterFrameTab3:SetPoint("LEFT", CharacterFrameTab1, "RIGHT", -16, 0)
+function PanelTemplates_SetNumTabs(frame, n) frame.numTabs = n end
+function PanelTemplates_SetTab(frame, id) frame.selectedTab = id end
+function PlaySound() end
+local toggled = {}
+function ShowUIPanel(f) f:Show() end
+function HideUIPanel(f) f:Hide() end
+function ToggleCharacter(tab)
+	table.insert(toggled, tab)
+	local sub = getglobal(tab)
+	PanelTemplates_SetTab(CharacterFrame, sub:GetID())
+	if CharacterFrame:IsVisible() and sub:IsVisible() then return HideUIPanel(CharacterFrame) end
+	ShowUIPanel(CharacterFrame)
+	for _, name in ipairs(CHARACTERFRAME_SUBFRAMES) do
+		local f = getglobal(name)
+		if name == tab then
+			f:Show()
+			local h = f:GetScript("OnShow")
+			if h then local old = this; this = f; h(); this = old end
+		else
+			f:Hide()
+		end
+	end
+end
+GetInventorySlotInfo = function(name) return 1, "Interface\\PaperDoll\\UI-PaperDoll-Slot-" .. name end
+
 dofile("Theme.lua")
 dofile("ItemScoreData.lua")
 dofile("ItemScore.lua")
 dofile("GearData.lua")
 dofile("GearAdvisor.lua")
+dofile("GuidePictures.lua")
 dofile("GearFinder.lua")
+dofile("GearFinderTab.lua")
 local A, IS, GF = AegisPathfinder, AegisPathfinder.ItemScore, AegisPathfinder.GearFinder
 function IS:ReadLines(it)
 	local _, _, id = string.find(it, "item:(%d+)")
@@ -262,6 +316,15 @@ A.db.char.Dungeons.WC = true
 GF.Settings().raids = true
 check(not codes().ZG, "a raid only at its level, even when asked")
 GF.Settings().raids = false
+-- The options' two upgrade sources: dungeons, and raids.
+GF.Settings().dungeons = false
+check(table.getn(GF:Dungeons()) == 0, "with Dungeons unticked under the sources, no dungeons")
+level = 60
+GF.Settings().raids = true
+c = codes()
+check(c.ZG and not c.DM, "and with Raids ticked, the raids alone, got DM %s", tostring(c.DM))
+level = 20
+GF.Settings().raids, GF.Settings().dungeons = false, true
 check(GF.ForClass(128, "MAGE") and not GF.ForClass(128, "WARRIOR") and GF.ForClass(0, "WARRIOR"),
 	"class masks read")
 A.db.char.SelfFound = true
@@ -284,16 +347,18 @@ local slots = {}
 for _, g in ipairs(results) do slots[g.slot] = g.entries end
 check(slots.Head and slots.Head[1].id == 112, "the best head first (+14 over +10), got %s",
 	tostring(slots.Head and slots.Head[1].id))
-check(table.getn(slots.Head) == 3, "at most three a slot (of four), got %d", slots.Head and table.getn(slots.Head) or 0)
-check(slots.Head[3].id == 115, "the three best: +14, +13, +12, got %s", tostring(slots.Head[3].id))
+check(table.getn(slots.Head) == 4, "every upgrade for the slot, for its list: four, got %d",
+	slots.Head and table.getn(slots.Head) or 0)
+check(slots.Head[2].id == 131 and slots.Head[3].id == 115 and slots.Head[4].id == 104,
+	"best first: +14, +13, +12, +11, got %s", tostring(slots.Head[4].id))
 for _, e in ipairs(slots.Head) do
 	check(e.id ~= 102, "not one that is worse than what you wear")
 	check(e.id ~= 105, "not one too far above your level")
 	check(e.id ~= 113, "not one for another class")
 end
 check(slots.Chest and slots.Chest[1].compare.emptySlot, "a slot you have nothing in")
-check(slots.Weapon and slots.Weapon[1].id == 103 and slots.Weapon[1].source == "Mr. Smite",
-	"weapons, with who drops them")
+check(slots["Main hand"] and slots["Main hand"][1].id == 103 and slots["Main hand"][1].source == "Mr. Smite",
+	"a two-hander under the main hand it replaces, with who drops it")
 check(missing == 2 and not slots.Wrist, "items not loaded yet are counted, not guessed at")
 check(slots.Feet and slots.Feet[1].id == 201 and slots.Feet[1].dungeon == "Crescent Grove"
 	and slots.Feet[1].source == "Grovetender", "a Turtle dungeon's own item, described by the client")
@@ -377,50 +442,232 @@ f = found()
 check(not f[311] and not f[321] and not f[333], "each can be switched off")
 GF.Settings().quests, GF.Settings().reputation, GF.Settings().crafted = true, true, true
 
--- The window --------------------------------------------------------------------------
+-- The cells ----------------------------------------------------------------------------
 
-GF:Toggle()
-local frame = GF.frame
-run(frame, "OnShow")
-check(frame:IsShown(), "the toggle opens it")
-local row = frame.rows[1]
-check(row:IsShown() and row.slot:GetText() == "Head", "the first row names the slot, got %s", tostring(row.slot:GetText()))
-check(row.name:GetText() == "|cff0070ddItem 112|r", "the item, in its quality's colour")
-check(row.gain:GetText() == "+40%", "what it gains, got %s", tostring(row.gain:GetText()))
-check(row.where:GetText() == "Lady Anacondra, Wailing Caverns \194\183 20%", "and where it drops, got %s",
-	tostring(row.where:GetText()))
-check(frame.rows[2].slot:GetText() == "", "the slot is named once")
-check(string.find(frame.note:GetText(), "The Deadmines", 1, true), "the note names where it looked")
--- At 60 it is every dungeon there is, and the raids when asked: counted, not named.
-level = 60
-GF.Settings().raids = true
-check(table.getn(GF:Dungeons()) == 5, "at 60 it looks in every dungeon, and the raid, got %d", table.getn(GF:Dungeons()))
+-- Two rings from the Deadmines, better than the Grove's: two cells, two rings.
+table.insert(data.dungeons[1].loot, { 106, "Rhahk'Zor", 30 })
+table.insert(data.dungeons[1].loot, { 107, "Sneed", 30 })
+meta(106, "INVTYPE_FINGER"); meta(107, "INVTYPE_FINGER")
+item(106, "INVTYPE_FINGER", 8); item(107, "INVTYPE_FINGER", 6)
 GF:Refresh()
-check(string.find(frame.note:GetText(), "4 dungeons and 1 raid", 1, true) and not string.find(frame.note:GetText(), "The Deadmines", 1, true),
-	"too many to name, so counted, got %s", tostring(frame.note:GetText()))
-level = 20
-GF.Settings().raids = false
+local function cellsByKey()
+	local out = {}
+	for _, cell in ipairs(GF:Cells()) do out[cell.key] = cell end
+	return out
+end
+local cells = cellsByKey()
+check(table.getn(GF:Cells()) == 17, "a cell a slot, two each for rings and trinkets, no shirt or tabard, got %d",
+	table.getn(GF:Cells()))
+check(cells.head.shown and cells.head.shown.id == 112 and not cells.head.picked, "a cell shows the slot's biggest upgrade")
+check(table.getn(cells.head.entries) == 4, "and offers them all in its list")
+check(cells.neck.shown == nil, "a slot with none shows none")
+check(cells.mainhand.shown.id == 103 and cells.offhand.shown == nil, "the two-hander in the main hand, and no off hand")
+check(cells.finger1.shown.id == 106 and cells.finger2.shown.id == 107, "two rings, the two biggest, got %s and %s",
+	tostring(cells.finger1.shown and cells.finger1.shown.id), tostring(cells.finger2.shown and cells.finger2.shown.id))
+local offered = {}
+for _, e in ipairs(cells.finger2.entries) do offered[e.id] = true end
+check(not offered[106] and offered[107] and offered[204], "never the ring the other cell shows")
+check(cells.waist.shown.where == "Quest: The Hard Way" and cells.shoulder.shown.where, "quest and vendor gear have cells too")
+
+-- Picks.
+GF:SetPick("finger2", 106)
+cells = cellsByKey()
+check(cells.finger2.shown.id == 106 and cells.finger2.picked, "picking the other cell's ring takes it")
+check(cells.finger1.shown.id == 107 and not cells.finger1.picked, "and the other cell shows the next one")
+GF:SetPick("finger2", nil)
+GF:SetPick("head", 131)
+cells = cellsByKey()
+check(cells.head.shown.id == 131 and cells.head.picked, "a pick is what its cell shows")
+check(A.db.char.gearfinder.picks.head == 131, "kept with the character's settings")
+GF:SetPick("head", 112)
+check(A.db.char.gearfinder.picks.head == nil, "picking the biggest again is no pick at all")
+
+-- The suggested dungeon: by how many cells, then by how much.
+local function codesOf(ranked)
+	local out = {}
+	for _, t in ipairs(ranked) do table.insert(out, t.code) end
+	return table.concat(out, " ")
+end
+local ranked = GF:Suggest()
+check(codesOf(ranked) == "DM WC CG", "the dungeon with most of the cells' items first, got %s", codesOf(ranked))
+check(ranked[1].n == 4 and ranked[1].name == "The Deadmines" and ranked[1].lo == 18 and ranked[1].hi == 25,
+	"with how many, its name and levels")
+check(table.concat(ranked[1].slots, ", ") == "Chest, Main hand, Finger 1, Finger 2", "and which cells, got %s",
+	table.concat(ranked[1].slots, ", "))
+GF:SetPick("finger2", 204)
+ranked = GF:Suggest()
+check(codesOf(ranked) == "DM CG WC", "a pick moves a dungeon up: the Grove now two, ahead of the Caverns on what they add, got %s",
+	codesOf(ranked))
+GF:SetPick("finger2", nil)
+local fake = function(code, name, worth) return { label = code, shown = { code = code, dungeon = name, compare = { pct = worth } } } end
+ranked = GF:Suggest({ fake("A", "Alpha", 10), fake("B", "Beta", 50), fake("A", "Alpha", 10), fake("C", "Gamma", 20), fake("B", "Beta", 0) })
+check(codesOf(ranked) == "B A C", "count first, then what they add up to, got %s", codesOf(ranked))
+ranked = GF:Suggest({ fake("Z", "Zeta", 10), fake("Y", "Eta", 10) })
+check(codesOf(ranked) == "Y Z", "then by name, got %s", codesOf(ranked))
+check(GF.Worth({ compare = { emptySlot = true, delta = 5 } }) == 100, "an empty slot filled counts as +100%")
+
+-- Picks you no longer need are forgotten.
+GF:SetPick("head", 131)
+worn[1] = 131
 GF:Refresh()
-A.db.char.SelfFound = true
-GF:Refresh()
-check(string.find(frame.note:GetText(), "Solo Self-Found is on, so it looks in no dungeons.", 1, true) == 1,
-	"with Self-Found on it says why there are no dungeons, got %s", tostring(frame.note:GetText()))
-A.db.char.SelfFound = nil
-GF:Refresh()
-run(row, "OnEnter")
-check(GameTooltip.__link == "item:112:0:0:0", "hovering a row shows the item")
-printed = {}
-run(frame.raids, "OnClick")
-check(GF.Settings().raids, "the raids switch")
-check(printed[1] and string.find(printed[1], "minute or two", 1, true),
-	"turning raids on says the first look takes a while, got %s", tostring(printed[1]))
-run(frame.raids, "OnClick")
+check(A.db.char.gearfinder.picks.head == nil, "once you wear it")
+worn[1] = 900
+GF:SetPick("head", 104)
 worn[1] = 121
 GF:Refresh()
-check(string.find(frame.note:GetText(), "Nothing in", 1, true) or frame.rows[1].slot:GetText() ~= "Head",
-	"with better gear on, fewer upgrades")
+check(A.db.char.gearfinder.picks.head == nil, "or it is no longer an upgrade")
 worn[1] = 900
+GF:SetPick("head", 131)
+A.db.char.Dungeons.SFK = false
 GF:Refresh()
+check(A.db.char.gearfinder.picks.head == 131 and cellsByKey().head.shown.id == 112,
+	"but not because its dungeon is unticked: shown again when it is ticked")
+A.db.char.Dungeons.SFK = true
+GF:Refresh()
+check(cellsByKey().head.shown.id == 131, "as it is")
+GF:SetPick("head", nil)
+
+-- What the footer says.
+local status, nothing = GF:Status()
+check(string.find(status, "Looking in The Deadmines, Wailing Caverns, Shadowfang Keep, Crescent Grove", 1, true),
+	"where it looked, got %s", status)
+GF.Settings().dungeons = false
+status = GF:Status()
+check(string.find(status, "both unticked under Upgrade sources, so it looks at quests, reputation and crafting only", 1, true),
+	"with neither source ticked, it says so, got %s", status)
+GF.Settings().quests, GF.Settings().reputation, GF.Settings().crafted = false, false, false
+status, nothing = GF:Status()
+check(string.find(status, "has nowhere to look", 1, true) and string.find(nothing, "nowhere to look", 1, true),
+	"and with nothing else, that it has nowhere to look, got %s", status)
+GF.Settings().quests, GF.Settings().reputation, GF.Settings().crafted, GF.Settings().dungeons = true, true, true, true
+level = 60
+GF.Settings().raids = true
+status = GF:Status()
+check(string.find(status, "4 dungeons and 1 raid", 1, true) and not string.find(status, "The Deadmines", 1, true),
+	"too many to name, so counted, got %s", status)
+level = 20
+GF.Settings().raids = false
+A.db.char.SelfFound = true
+status = GF:Status()
+check(string.find(status, "Solo Self-Found is on, so it looks in no dungeons.", 1, true) == 1,
+	"with Self-Found on it says why there are no dungeons, got %s", status)
+A.db.char.SelfFound = nil
+GF.Settings().enabled = false
+check(GF:Status() == "The Gear Finder is switched off in the options.", "and when it is switched off")
+GF.Settings().enabled = true
+
+-- The tab ---------------------------------------------------------------------------------
+
+local tab, page = GF.tab, GF.panel
+-- The tab is placed as the file loads, before OnInitialize has made the
+-- saved settings.
+do
+	local saved = A.db
+	A.db = nil
+	local ok, err = pcall(GF.PlaceTab, GF)
+	check(ok and tab:IsShown(), "placing the tab before the settings exist is no error, got %s", tostring(err))
+	A.db = saved
+end
+check(tab and tab:GetName() == "CharacterFrameTab6" and tab:GetID() == 6, "a sixth tab on the character panel")
+check(page and page:GetID() == 6 and CHARACTERFRAME_SUBFRAMES[6] == "AegisPathfinderGearFinderPage",
+	"and its page, one of the panel's, swapped by the client's own ToggleCharacter")
+check(CharacterFrame.numTabs == 6, "which the panel's tab code walks to, got %s", tostring(CharacterFrame.numTabs))
+GF:PlaceTab()
+check(math.abs(tab:GetLeft() - (CharacterFrameTab5:GetRight() - 16)) < 0.01,
+	"after the last tab, overlapping as the client's do, got %s", tostring(tab:GetLeft()))
+CharacterFrameTab5:Hide()
+GF:PlaceTab()
+check(math.abs(tab:GetLeft() - (CharacterFrameTab4:GetRight() - 16)) < 0.01, "after the last one shown, when the last is hidden")
+CharacterFrameTab5:Show()
+-- pfUI's skin: its own gap, and the tab skinned to match.
+local skinned
+pfUI = { api = { SkinTab = function(t) skinned = t end } }
+CharacterFrameTab5.backdrop = {}
+CharacterFrameTab5:ClearAllPoints()
+CharacterFrameTab5:SetPoint("LEFT", CharacterFrameTab4, "RIGHT", 3, 0)
+GF:PlaceTab()
+check(skinned == tab and math.abs(tab:GetLeft() - (CharacterFrameTab5:GetRight() + 3)) < 0.01,
+	"with pfUI, skinned like its tabs and spaced like them")
+pfUI, CharacterFrameTab5.backdrop = nil, nil
+CharacterFrameTab5:ClearAllPoints()
+CharacterFrameTab5:SetPoint("LEFT", CharacterFrameTab4, "RIGHT", -16, 0)
+GF:PlaceTab()
+
+-- Opening it.
+local opened, config = {}, {}
+function A:OpenGuideTab(name) table.insert(opened, name) end
+function A:ShowConfigPage(name) table.insert(config, name) end
+A.guidelist = { "Dungeons/Wailing Caverns (17-24)", "Dungeons/The Deadmines (17-24)" }
+run(tab, "OnClick")
+check(toggled[table.getn(toggled)] == "AegisPathfinderGearFinderPage" and page:IsShown() and CharacterFrame:IsShown(),
+	"the tab opens the character panel on its page")
+check(not PaperDollFrame:IsShown(), "in place of the other pages")
+local ui = GF.ui
+check(ui and ui.cells and table.getn(ui.cells) == 17, "its cells drawn")
+local head = ui.cells[1]
+check(head.name:GetText() == "Item 112" and head.gain:GetText() == "+40%", "a cell: the item and what it gains, got %s %s",
+	tostring(head.name:GetText()), tostring(head.gain:GetText()))
+check(head.where:GetText() == "Wailing Caverns \194\183 Lady Anacondra", "and where it drops, got %s",
+	tostring(head.where:GetText()))
+check(ui.cells[2].name:GetText() == "No upgrade found" and ui.cells[2].where:GetText() == "Neck",
+	"a slot with nothing says so")
+check(ui.cells[5].gain:GetText() == "Empty slot", "and a slot you wear nothing in, got %s", tostring(ui.cells[5].gain:GetText()))
+check(ui.right.name:GetText() == "The Deadmines" and ui.right.count:GetText() == "4 upgrades here",
+	"the suggested dungeon, and how many upgrades, got %s", tostring(ui.right.count:GetText()))
+check(ui.right.slots:GetText() == "Chest, Main hand, Finger 1, Finger 2", "which cells")
+check(ui.right.rank:GetText() == "1 of 3 dungeons with upgrades", "and where it stands, got %s", tostring(ui.right.rank:GetText()))
+check(ui.right.pic.kind == "screen", "its loading screen")
+check(ui.right.guide:IsShown() and ui.right.guide.guideName == "Dungeons/The Deadmines (17-24)", "and its guide")
+run(ui.right.guide, "OnClick")
+check(opened[1] == "Dungeons/The Deadmines (17-24)", "which the button opens")
+run(ui.right.next, "OnClick")
+check(ui.right.name:GetText() == "Wailing Caverns", "the arrows step to the next dungeon, got %s", tostring(ui.right.name:GetText()))
+run(ui.right.prev, "OnClick")
+run(ui.right.prev, "OnClick")
+check(ui.right.name:GetText() == "Crescent Grove", "and round from the first to the last, got %s", tostring(ui.right.name:GetText()))
+check(not ui.right.guide:IsShown(), "a dungeon with no guide has no button")
+check(string.find(ui.status:GetText(), "Looking in", 1, true), "the footer says where it looked")
+run(ui.cog, "OnClick")
+check(config[1] == "Gear", "the cog opens the Gear options")
+
+-- A slot's list.
+run(head, "OnClick")
+local list = ui.list
+check(list:IsShown() and list.title:GetText() == "HEAD" and list.count:GetText() == "4 upgrades", "a cell opens its slot's list")
+check(list.rows[1]:IsShown() and list.rows[4]:IsShown() and not list.rows[5]:IsShown(), "a row an upgrade")
+check(list.rows[1].mark:GetText() == "Biggest" and list.rows[2].mark:GetText() == "", "the one shown, marked")
+check(list.rows[2].where:GetText() == "Shadowfang Keep \194\183 Arugal \194\183 30% \194\183 at level 23",
+	"where each drops, how often, and the level it needs, got %s",
+	tostring(list.rows[2].where:GetText()))
+check(not list.clear:IsShown(), "no pick to clear yet")
+run(list.rows[2], "OnClick")
+check(not list:IsShown() and head.name:GetText() == "Item 131" and head.chip:IsShown(),
+	"picking one closes the list, and the cell shows it as your pick")
+run(head, "OnClick")
+check(list.clear:IsShown() and list.rows[2].mark:GetText() == "Your pick", "the list marks your pick, and can clear it")
+run(list.clear, "OnClick")
+check(head.name:GetText() == "Item 112" and not head.chip:IsShown(), "cleared, it is the biggest again")
+run(ui.cells[2], "OnClick")
+check(not list:IsShown(), "an empty slot has no list")
+
+-- Nothing found, switched off, and going.
+GF.Settings().dungeons = false
+GF.Settings().quests, GF.Settings().reputation, GF.Settings().crafted = false, false, false
+GF:SettingsChanged()
+check(ui.right.empty:IsShown() and ui.right.emptyTitle:GetText() == "Nothing to upgrade", "nothing found: the logo, and why")
+GF.Settings().quests, GF.Settings().reputation, GF.Settings().crafted, GF.Settings().dungeons = true, true, true, true
+GF.Settings().enabled = false
+GF:SettingsChanged()
+check(not tab:IsShown(), "switched off, the tab goes")
+GF.Settings().enabled = true
+GF:SettingsChanged()
+check(tab:IsShown(), "and comes back")
+ToggleCharacter("PaperDollFrame")
+check(not page:IsShown() and PaperDollFrame:IsShown(), "another tab's page replaces it")
+A:ToggleGearFinder()
+check(toggled[table.getn(toggled)] == "AegisPathfinderGearFinderPage" and page:IsShown(), "the options' button opens it")
+run(head, "OnEnter")
+check(GameTooltip.__link == "item:112:0:0:0", "hovering a cell shows the item")
 
 -- Walking into a dungeon ----------------------------------------------------------------
 

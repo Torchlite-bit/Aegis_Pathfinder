@@ -1228,6 +1228,69 @@ function Theme:Switch(parent, label, onChange)
 	return row
 end
 
+--[[ A checkbox and its label, the whole row clickable: for a few choices
+	side by side that are each on or off, where a column of switches would
+	read as one list -- the Gear Finder's upgrade sources. Off: an outlined
+	box. On: a box in the theme's switchOn colour with a tick. Same methods
+	as a switch: SetOn, IsOn, SetLocked, Fit. ]]
+function Theme:Checkbox(parent, label, onChange)
+	local row = CreateFrame("Button", nil, parent)
+	row:SetHeight(22)
+
+	local edge = row:CreateTexture(nil, "BORDER")
+	edge:SetTexture(self.texture.solid)
+	edge:SetWidth(16); edge:SetHeight(16)
+	edge:SetPoint("LEFT", row, "LEFT", 0, 0)
+	local fill = row:CreateTexture(nil, "ARTWORK")
+	fill:SetTexture(self.texture.solid)
+	fill:SetWidth(14); fill:SetHeight(14)
+	fill:SetPoint("CENTER", edge, "CENTER", 0, 0)
+	local tick = row:CreateTexture(nil, "OVERLAY")
+	tick:SetTexture(self.glyph.tick)
+	tick:SetWidth(12); tick:SetHeight(12)
+	tick:SetPoint("CENTER", edge, "CENTER", 0, 0)
+	self:Tint(tick, "text")
+
+	local fs = row:CreateFontString(nil, "OVERLAY")
+	self:SetFont(fs, "body", 13)
+	fs:SetPoint("LEFT", edge, "RIGHT", 8, 0)
+	fs:SetText(label or "")
+	self:TextColor(fs, "text")
+
+	row.edge, row.fill, row.tick, row.label = edge, fill, tick, fs
+
+	function row:SetOn(on)
+		self.__on = on and true or false
+		if self.__on then
+			Theme:Tint(self.edge, "accent")
+			Theme:Tint(self.fill, "switchOn")
+			self.tick:Show()
+		else
+			Theme:Tint(self.edge, "subtle")
+			Theme:Tint(self.fill, "panel2")
+			self.tick:Hide()
+		end
+	end
+	function row:IsOn() return self.__on end
+	function row:SetLocked(locked)
+		if locked then self:Disable() else self:Enable() end
+		self:SetAlpha(locked and 0.45 or 1)
+	end
+	--- As wide as its label needs; returns the row's height.
+	function row:Fit()
+		self:SetWidth(24 + (self.label:GetStringWidth() or 0) + 4)
+		return 22
+	end
+
+	row:SetScript("OnClick", function()
+		this:SetOn(not this.__on)
+		if onChange then onChange(this.__on) end
+	end)
+
+	row:SetOn(false)
+	return row
+end
+
 --[[ A slider, for a number: its label on the left, the value on the right,
 	and a thin track under them with a knob to drag. `format(value)` writes
 	the value (a plain number without it); `onChange(value)` hears what the

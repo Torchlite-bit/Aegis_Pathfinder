@@ -214,7 +214,8 @@ nav row, a 4px progress rule, the step list, and the footer.
 screen while you play, as the quest tracker does, and Escape is what clears a
 target or cancels a spell in a fight, so it kept closing the guide in combat.
 Its close chip closes it. The windows opened from it (options, guide browser,
-Gear finder, Where next?) still close on Escape.
+Where next?) still close on Escape, as does the character panel the Gear
+Finder is a tab of.
 
 **The ≡ menu**, Zygor's: the header's first chip opens it under itself, in
 `FULLSCREEN_DIALOG` above every window -- **Guide menu** (the guide browser),
@@ -352,6 +353,13 @@ row grows to hold it (`Switch:Fit`): the lines are counted from the label's
 unwrapped width, since a wrapped font string's own height is not reliable on
 1.12. Labels used to run under the scroll bar and be cut off.
 
+**Checkboxes** (`Theme:Checkbox`) are for a few choices side by side that are
+each on or off, where a column of switches would read as one list: the Gear
+page's **Upgrade sources**, **Dungeons** and **Raids**, as Zygor lays out its
+dungeon and raid sources. Off, an outlined box; on, a box in the theme's
+switchOn colour with a tick. They hold off with the Gear Finder, as its
+switches do.
+
 **Item Score** (`GearFrame.lua`) is Zygor's page of the same name: the spec
 picker and your class, a note on where the spec came from and whether the
 weights are the defaults or yours, *Show all stats*, then the weights one to a
@@ -472,6 +480,45 @@ walks it round the minimap's edge at 80px from its centre; the angle is saved
 per profile. "Minimap button" in the options panel's Guide behaviour section,
 or `/apg minimapbutton`, hides it. `Tools/verify.py` fails on Blizzard
 quest-log or minimap art, in either backslash form.
+
+### Gear Finder tab -- `GearFinderTab.lua`, `GearFinder.lua`
+
+Not in the concept, which has no character panel: Zygor's Gear Finder, in the
+addon's language. **A tab on the client's character panel**, after its own
+(Character, Pet, Reputation, Skills, Honor): `CharacterFrameTab6` -- the
+first free number, as the client's PanelTemplates walk the tabs by number --
+from the client's `CharacterFrameTabButtonTemplate`, so it looks like its
+neighbours. It is placed after the last tab shown, which moves as the Pet tab
+comes and goes, at the gap the tabs before it keep (Blizzard's -16 overlap,
+or a skin's spacing); under pfUI it is skinned with pfUI's `SkinTab`, as pfUI
+skins tabs one to five. Its page is one of `CHARACTERFRAME_SUBFRAMES`, so the
+client's own `ToggleCharacter` swaps it with the other pages and closing it
+closes the panel. The tab is the one Blizzard-looking control the addon
+makes, there because it sits in Blizzard's row.
+
+**The page** is 714 wide, over the character panel's frame (or pfUI's
+backdrop of it) down to where its tabs hang, and running past the panel to
+the right. Header: GEAR FINDER and the character's level, race and class,
+and a close chip. Footer: where it looked, and a cog for the Gear options.
+
+- **Cells**, 227 by 41 in two columns of eight -- Head, Neck, Shoulder, Back,
+  Chest, Wrist, Main hand, Off hand; Hands, Waist, Legs, Feet, Finger 1 and
+  2, Trinket 1 and 2 -- and Ranged under the suggested dungeon. The item's
+  icon in a 1px frame of its quality's colour, its name in that colour, where
+  it comes from in grey (in the accent when it drops in the dungeon on the
+  right), *at level N* in gold; the gain in the display face, and *YOUR PICK*
+  under it. Text stops short of what is beside it and ends in "..." rather
+  than wrapping. An empty slot: the client's empty-slot picture, dimmed, and
+  *No upgrade found*.
+- **A slot's list**, opened from its cell, beside it over the other column
+  (over the left one for the ranged cell), kept inside the page: up to eight
+  rows, the wheel for more, the one shown marked *Biggest* or *Your pick*,
+  and **Clear my pick**.
+- **The suggested dungeon**, 222 wide: the loading screen
+  (`pic:SetDungeon`, GuidePictures.lua), *Scoring for* and a spec dropdown,
+  SUGGESTED DUNGEON, the name between arrows, its levels, *N upgrades here*,
+  the slots, *1 of N*, and **Open the guide** in the accent, hidden for a
+  dungeon with no guide. With nothing to suggest: the logo and why.
 
 ### Guide browser -- `GuideListFrame.lua`, `GuideBrowser.lua`, `GuidePictures.lua`
 

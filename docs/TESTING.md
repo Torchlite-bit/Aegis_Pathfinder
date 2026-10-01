@@ -237,20 +237,41 @@ are only found at startup.
 - [ ] A quest with reward choices: the best one is marked.
 - [ ] Upgrades are bordered in the bags.
 
-## 7. Gear finder (`/apg finder`)
+## 7. Gear Finder (`/apg finder`)
 
-- [ ] At a levelling character: upgrades from the dungeons at your level, each
-      with who drops it, where, and the chance — and quest, reputation and
-      crafted gear (*Quest: …*, *Revered with …*, *Blacksmithing 300 …*).
-- [ ] The note names up to four places and counts the rest, without running
-      over the list.
-- [ ] Turning **Include raids** on says in chat it takes a minute or two; the
-      list fills in as items load.
+- [ ] The character panel has a **Gear Finder** tab after Honor (after
+      Reputation's neighbour when there is no Pet tab), looking like the
+      others; clicking it shows the Gear Finder over the panel, wider than
+      it, with the tabs still underneath.
+- [ ] Clicking Character, or pressing C, goes back to the character sheet;
+      the ✕ and Escape close the panel.
+- [ ] With **pfUI**: the tab is skinned like pfUI's tabs and sits in their
+      row, and the page lines up with pfUI's panel.
+- [ ] At a levelling character: a cell per slot with its biggest upgrade,
+      the gain, where it drops, and *at level N* for one you cannot wear
+      yet; *No upgrade found* with the slot's empty picture where there is
+      none; *Empty slot* for a slot you wear nothing in. Long names end in
+      "..." rather than running into the next line.
+- [ ] Hovering a cell shows the item's tooltip.
+- [ ] Clicking a cell opens its list beside it: every upgrade, biggest
+      first, with the drop chance; picking one marks the cell *Your pick*,
+      and **Clear my pick** undoes it. A pick survives a /reload, and goes
+      once you equip the item.
+- [ ] The suggested dungeon shows its loading screen, the dungeon with most
+      of the cells' items, its levels and slots; the arrows step through the
+      rest and go round; picks that move the most upgrades elsewhere change
+      it at once. **Open the guide** opens that dungeon's guide.
+- [ ] The spec dropdown changes the spec, and the cells follow.
+- [ ] Quest, reputation and crafted gear (*Quest: …*, *Revered with …*,
+      *Blacksmithing 300 …*) have cells but are never the suggestion.
+- [ ] Options → Gear: **Upgrade sources** has **Dungeons** and **Raids**;
+      ticking Raids says in chat it takes a minute or two, and the cells
+      fill in as items load. With both unticked the footer says it has
+      nowhere to look. The cog in the footer opens this page.
 - [ ] At 60: every dungeon, Turtle's own included; Molten Core shows Turtle's
       bosses (Incindis, Basalthar).
 - [ ] Walking into a dungeon names its upgrades in chat.
-- [ ] Options → Gear: switching off quest, reputation or crafted gear removes
-      them from the list.
+- [ ] Switching the Gear Finder off in the options takes the tab away.
 - [ ] With Solo Self-Found on: no dungeons, and crafted gear only from your own
       professions.
 

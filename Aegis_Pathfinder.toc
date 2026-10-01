@@ -3,7 +3,7 @@
 ## Title: Aegis: Pathfinder
 ## Notes: Classic+ leveling guide for the Turtle WoW-lineage 1.12 client family.|nPart of the Aegis addon suite.
 ## Author: Aegis: Pathfinder Contributors (see CONTRIBUTORS.md)
-## Version: 0.21.3
+## Version: 0.22.0
 ## X-Category: Quest
 
 ## SavedVariables: AegisPathfinderDB, TurtleGuideDB
@@ -54,6 +54,8 @@ CraftRouteFrame.lua
 GearFrame.lua
 GearAdvisor.lua
 GearFinder.lua
+# The Gear Finder as a tab on the character panel
+GearFinderTab.lua
 ActiveFrames.lua
 NextGuideFrame.lua
 DungeonQuests.lua

@@ -411,6 +411,13 @@ function Pictures:Create(parent, w, h)
 		Paint(self, AegisPathfinder:GuidePicture(name))
 	end
 
+	--- A dungeon's loading screen, as its guide has it (the Gear Finder's
+	--- suggested dungeon); nil shows the logo.
+	function pic:SetDungeon(name)
+		self.guide = nil
+		Paint(self, name and Screen(name) or { kind = "logo" })
+	end
+
 	pic:SetGuide(nil)
 	return pic
 end
