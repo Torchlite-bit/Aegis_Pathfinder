@@ -381,6 +381,29 @@ After creating the guide file, add it to the appropriate `Guides.xml`:
 </Ui>
 ```
 
+### Where it shows in the guide browser
+
+The browser files a guide by its name (`GetGuideCategory`): `Optimized/`,
+`RXP/` and `RXP_Hardcore/` under Leveling's packs, `Dungeons/` under Dungeons,
+`Class/` under Class Quests, a profession's table under Professions, a custom
+zone's name (`TURTLE_ZONES` in `Core.lua`) under Custom zones, and anything
+else under Zone guides. Put the levels in the name -- `Darkshore (12-17)`,
+`RXP/12-14 Loch Modan` -- because that is what the browser sorts by, colours by
+and shows.
+
+A zone guide goes under its continent, and its picture is its zone's map, by
+the zone its name says (`Browser.ZONES` in `GuideBrowser.lua`, which also knows
+places such as "Coldridge Valley"); a name with no zone in it is filed by the
+zone most of its `|Z|` tags name. A route leg named for a dungeon
+(`Optimized/Uldaman (45-46)`) is listed under Dungeons, in **On the routes**,
+rather than in its pack, and shows the dungeon's loading screen. A new custom
+zone wants a line in `Browser.ZONES`, its explored world map in
+`Tools/data/maps/` and a line in `Theme.zonemap` (see `media/README.md`):
+custom zones' maps built from the client's tiles and pfUI's overlays came
+out wrong in game. A
+new dungeon's loading screen goes in `Tools/data/loadscreens/` and
+`Theme.loadscreen` the same way.
+
 ## Research Resources
 
 When creating guides for Turtle WoW custom zones:

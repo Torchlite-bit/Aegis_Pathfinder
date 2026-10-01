@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.20.0)
+# Aegis: Pathfinder (v0.21.0)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -67,7 +67,19 @@ Hardcore**. Steps tick themselves off as you accept, complete and turn in
 quests. Finish a guide and it offers the next — or one of your server's custom
 zones, if one fits your level: Moonwhisper Coast, new in 1.18.1, included.
 
-**Dungeon guides.** Pick a dungeon under the guide list's **Dungeons** tab and
+**A guide browser like Zygor's.** Categories down the left (Leveling,
+Dungeons, Class Quests, Professions, Favorites), a search box, folders by pack,
+continent and level, and on the right the guide you point at: its picture --
+its zone's map fully explored, a dungeon's loading screen, your class's crest,
+a profession's icon -- its levels and how far through it you are. **Home**
+shows the guides you opened last, what fits your level now, the time you've
+spent at each level and the gold you've made today and this week. The guide's
+≡ menu adds Lock window, Transparency, Reset window and Reload.
+
+| <img src="docs/images/guide-browser-home.png" width="400" alt="The guide browser's Home: guides history, suggested guides with why, the level tracker and the gold tracker"> | <img src="docs/images/guide-browser-folder.png" width="400" alt="Leveling, Optimized, Levels 20-40: guides coloured by level, Darkshore picked, its map fully explored on the right"> |
+|:---:|:---:|
+
+**Dungeon guides.** Pick a dungeon under the guide browser's **Dungeons** category and
 it takes you round the towns to pick up every quest for it -- the quests
 before them included -- puts the arrow on the entrance, walks you through what
 each quest wants inside, and hands them all in after. Every leveling dungeon,
@@ -76,7 +88,7 @@ Dragonmaw Retreat, Crescent Grove, Stormwrought Ruins, Gilneas City and
 Hateforge Quarry.
 
 **Class quest guides.** Every class quest chain, a guide each, under the guide
-list's **Class** tab: the Voidwalker to the Dreadsteed, Bear Form, Taming the
+browser's **Class Quests** category: the Voidwalker to the Dreadsteed, Bear Form, Taming the
 Beast, Redemption to the Charger, the totems, Rhok'delar and the rest --
 Turtle WoW's High Elves and Goblins included, each race by the chain that
 starts at home. Reach a chain's level and, if your route doesn't do it
@@ -219,7 +231,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.20.0`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.21.0`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)** or open an
@@ -245,7 +257,8 @@ by **Tekkub**, [VanillaGuide](https://github.com/isalcedo/VanillaGuide) by
 by **NostalgiaGeek**, **Brues** and **DonutsDelivery**, and
 [ClassicAPI](https://github.com/brues-code/ClassicAPI) by **Brues**. Routes by
 **[Joana](https://www.joanasworld.com/)**, **mrmr**, and **RestedXP** (Tactics
-and Zeroji). Data from [pfQuest](https://github.com/shagu/pfQuest) (**shagu**),
+and Zeroji). Data from [pfQuest](https://github.com/shagu/pfQuest) and
+[pfUI](https://github.com/shagu/pfUI)'s map reveal (**shagu**),
 [InstanceJournal](https://github.com/Arthur-Helias/InstanceJournal) (**Arthur-Helias**),
 [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) (**Kitymeowmeow**),
 [OctoPawn](https://github.com/iGreed1993/OctoPawn) (**iGreed**) and

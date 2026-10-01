@@ -128,6 +128,17 @@ local defaults = {
     middungeons = true,           -- offer a ticked dungeon's guide at the middle of its levels, once each (NextGuideFrame.lua)
     classquests = true,           -- offer a class quest's guide at its level, once each (NextGuideFrame.lua)
     craftsellback = true,         -- crafting routes sell what is left over to a merchant (CraftPlanner.lua)
+    -- The guide browser (GuideListFrame.lua, GuideBrowser.lua)
+    browsertab = "home",          -- where it was left: "home", "current", "recent" or a category's key
+    browsercolour = true,         -- colour guides by how they suit your level
+    browserticks = true,          -- tick the guides you have finished
+    browserhidedone = false,      -- hide finished guides, and those you have outlevelled
+    browserstars = false,         -- star the guides the Home tab suggests
+    browserpanels = {},           -- Home panels hidden: { [key] = true }
+    favorites = {},               -- starred guides: { [guide] = true }
+    recentguides = {},            -- the guides opened lately, the last first
+    leveltime = {},               -- time played at each level, in seconds: { [level] = n }
+    gold = {},                    -- gold earned: today and this week, and the day and week they are for
     sharenowarn = false,          -- skip the "share this guide with your party?" question (PartySync.lua)
     routepack = nil,              -- Active route pack name (e.g., "VanillaGuide", "RestedXP")
     PlayStyle = "SOLO",           -- Default playstyle ("SOLO" or "GROUP")
@@ -565,7 +576,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.20.0"
+AegisPathfinder.version = "0.21.0"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be

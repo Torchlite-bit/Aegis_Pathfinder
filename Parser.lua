@@ -409,6 +409,8 @@ function AegisPathfinder:LoadGuide(name, complete)
 	end
 
 	self.db.char.currentguide = self.guides[name] and name or self.guidelist[1]
+	-- The guide browser's history (GuideBrowser.lua).
+	if self.NoteRecentGuide then self:NoteRecentGuide(self.db.char.currentguide) end
 
 	--[[ Keep the active tab pointing at what is actually loaded.
 

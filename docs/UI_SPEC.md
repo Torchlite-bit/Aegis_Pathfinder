@@ -213,13 +213,21 @@ nav row, a 4px progress rule, the step list, and the footer.
 **Escape does not close it.** It is not in `UISpecialFrames`: it stays on
 screen while you play, as the quest tracker does, and Escape is what clears a
 target or cancels a spell in a fight, so it kept closing the guide in combat.
-Its close chip closes it. The windows opened from it (options, guide list,
+Its close chip closes it. The windows opened from it (options, guide browser,
 Gear finder, Where next?) still close on Escape.
+
+**The ≡ menu**, Zygor's: the header's first chip opens it under itself, in
+`FULLSCREEN_DIALOG` above every window -- **Guide menu** (the guide browser),
+**Setup wizard**, **Lock window** (no drag, no grip), **Transparency** (the
+panel's body at half strength, no shadow), **Reset window**, **Reload** and
+**Settings**. The two switches are ticked boxes and saved per profile; any
+other item closes the menu, and so does Escape. Find NPC is for later.
 
 **Panels open beside the guide, not instead of it.** The ☰ chip used to hide
 the panel before showing Config, so opening settings closed what you were
 reading; the concept has `#options` at `right:456px` and `#objectives` at
-`right:40px`, both on screen. Same for the `+` and the guide list.
+`right:40px`, both on screen. Same for the menu's items, the `+` and the guide
+browser.
 
 **Two modes**, behind the header's third chip. Focus -- the default -- shows
 the one step you are on and nothing else, which is how you follow a guide;
@@ -463,41 +471,120 @@ per profile. "Minimap button" in the options panel's Guide behaviour section,
 or `/apg minimapbutton`, hides it. `Tools/verify.py` fails on Blizzard
 quest-log or minimap art, in either backslash form.
 
-### Guide list -- `GuideListFrame.lua`
+### Guide browser -- `GuideListFrame.lua`, `GuideBrowser.lua`, `GuidePictures.lua`
 
-The concept's tab bar, replacing five independent category checkboxes with
-`Theme:Tab`. Single-select on its own would have lost the ability to see
-several categories at once, so **All** leads the bar and is the default: the
-concept's layout, none of the old capability removed. An active tab takes the
-panel colour so it reads as continuous with the list below it.
+Not in the concept, which has a flat list: laid out like Zygor's guide menu,
+on the owner's call and to the mockup they signed off. An 880x560 Chrome
+window (820x520 to 1280x860 by the grip, saved per profile), in three
+columns under the header:
 
-Profession guides get their own tab and their own category. They are named
-"Alchemy (1-300)", which matches none of the name prefixes `GetGuideCategory`
-keys on, so they would otherwise land in with the zone guides — the category
-comes off the guide table instead.
+- **Header.** HOME, CURRENT and RECENT on the left in the display face, an
+  accent line under the one open; the wordmark; **Return to Main** while a
+  guide is open beside the route; the close chip.
+- **Sidebar** (196px, `panel3`). A search box, then the categories --
+  Leveling, Dungeons, Class Quests, Professions (each with its badge) and
+  Favorites (a gold star) -- then COMING SOON: Reputations, Dailies, Events,
+  Gold, Pets & Mounts and Titles, at 45% and not clickable until they have
+  guides. Options, at the foot, opens the settings. The open category takes
+  `tabbg` and a 3px accent bar.
+- **Middle.** A 50px title bar -- a back chevron when there is somewhere to
+  go back to, a crumb over the title, and the list's ⋮ -- over the list or
+  the Home panels.
+- **Right pane** (268px, `panel3`), beside a list: the guide you point at --
+  its picture, its name, what it is ("Optimized route", "Dungeon guide"),
+  the levels it is for in the colour below, a progress bar with its
+  percentage, **Load** and **Open beside the route**; the logo and "Pick a
+  guide" while you have pointed at none. A line at its foot says what the
+  clicks do.
 
-Placeholder guides carry the concept's grey `TPL` badge (`Theme:Badge`). In a
-list where an unauthored guide looks exactly like an authored one, that badge
-is the only thing distinguishing them. Every profession has a guide now, so
-none ships with it; the badge stays for the next placeholder.
+**What it lists** (`GuideBrowser.lua`). Leveling holds Optimized, RestedXP,
+RestedXP Hardcore, Zone guides (in Eastern Kingdoms and Kalimdor) and Custom
+zones; a folder of more than 24 guides is split into Levels 1-20, 20-40 and
+40-60 by the level each starts at. A zone guide's zone is the one its title
+names, or a place in it does ("Coldridge Valley" is Dun Morogh), or else the
+one most of its steps' `|Z|` tags name. Dungeons and Class Quests are by
+level, Professions and Favorites by name. A route leg that is a dungeon run
+-- a title naming a dungeon or raid (`Browser.DungeonIn`), such as
+Optimized's Uldaman and Sunken Temple, or RestedXP's Scholomance Key -- is
+not in its pack's folder but in **On the routes**, the first folder under
+Dungeons, each saying whose route it is on. Class Quests holds only yours
+(`IsMyClassGuide`: your class's, and one your race has a chain for). Search
+looks through every title, any case.
 
-Custom-zone guides are the **Custom** tab: `GetGuideCategory` matches a
-guide's name against `TURTLE_ZONES` in `Core.lua`, which has to name every
-custom zone -- Scarlet Enclave and Hyjal were once missing and filed under
-Zones. `Tools/tests/test_guidelist.lua` reads that list out of `Core.lua` and checks
-every custom-zone guide against it.
+Categories are `GetGuideCategory`'s. Profession guides are named "Alchemy
+(1-300)", which matches none of the name prefixes it keys on, so the
+category comes off the guide table. Custom zones are matched by name against
+`TURTLE_ZONES` in `Core.lua`, which has to name every custom zone --
+Scarlet Enclave and Hyjal were once missing and filed with the zone guides;
+`Tools/tests/test_guidelist.lua` reads that list out of `Core.lua` and checks
+every custom-zone guide against it. `Dungeons/` is taken before a custom
+zone's name, so Gilneas City's guide is a dungeon guide, and `Class/` too.
+`ParseGuideLevelRange` reads a single `(10)` as 10-10.
 
-Dungeon guides (`Guides/Dungeons/`, named `Dungeons/<dungeon> (lo-hi)`) are
-the **Dungeons** tab, between Zones and Professions: `GetGuideCategory` takes
-the `Dungeons/` prefix before it looks for a custom zone's name, so Gilneas
-City's guide is not filed under Custom.
+**A row** is a folder (its glyph, its name, how many guides it holds) or a
+guide: a ring, or a tick once finished; its title without the pack's prefix,
+which carries its levels; on the right its progress, or "Your route" for the
+main route while you branch. Pointing at a guide marks it (`tabbg`, an
+accent bar), shows it on the right, and puts up a star and an arrow on the
+row: the star keeps it in Favorites, the arrow opens it beside the route. A
+favourite's star stays up. Left-click opens a guide beside the one you are
+on; right-click loads it in the tab you are on; shift-click resets its
+progress. Picking a RestedXP guide switches to a RestedXP route pack, so the
+route goes on from it. Placeholder guides carry the grey `TPL` badge.
 
-Class quest guides (`Guides/Class/`, named `Class/<Class>: <milestone>
-(<level>)`) are the **Class** tab, between Dungeons and Professions, under a
-`--- Class Quests ---` header; the list holds only yours (`IsMyClassGuide`: your
-class's, and one your race has a chain for). `ParseGuideLevelRange` reads a
-single `(10)` as 10-10. With nine tabs each is as wide as its label and 14 (at
-least 40), laid end to end 2 apart, so the strip fits the 660-wide panel.
+**The list's ⋮** has four switches, saved per character: colour guides by how
+they suit your level (`Theme.LEVEL_COLORS`, the quest log's colours -- grey
+once outlevelled, green in range, yellow, orange and red the further short;
+none for a profession, whose range is its skill), tick finished guides, hide
+finished and outlevelled guides, and star the guides Home suggests. On Home
+the ⋮ is which panels show.
+
+**Home** is four panels, two across and two down, the shown ones moving up
+into a hidden one's place: **Guides history** (the last five opened, from
+`LoadGuide`), **Suggested guides** (the route's next leg, the class quests at
+your level, ticked dungeons and custom zones at your level, five at most,
+each with why), **Level tracker** (the time at each level, the one you are at
+counting up; **See more** is every level) and **Gold tracker** (gold earned
+today and this week, in the coins' colours). Time is counted while you play,
+from logging in, banked at each level up, loading screen and logout -- not `/played`,
+which prints to chat. Gold earned is every rise in your money; spending is
+not taken off. Both start from the first time a character runs 0.21.0.
+
+**CURRENT** is the guides open in the guide window, the route first.
+**RECENT** is the last 30 opened, under their categories.
+
+**Pictures** (`GuidePictures.lua`), 240x135, the game's art -- the client's
+own files, and Turtle WoW's dungeon loading screens, which the client lacks:
+
+- A zone guide shows its zone's map **explored**: the twelve 256px tiles, and
+  every area's overlay where pfUI's map reveal data puts it
+  (`MapOverlays.lua`, written by `Tools/build/build_map_overlays.py`, MIT,
+  Shagu), cut into tiles as the client's `WorldMapFrame_Update` cuts them,
+  inside a ScrollFrame that clips them to the picture. The crop is the
+  explored areas and a margin at the picture's shape, at least 560 map
+  pixels across. A city has no areas and is shown whole. A custom zone
+  shows its explored world map as Turtle WoW draws it, which the addon
+  carries (`Theme.zonemap`): built from Turtle WoW's tiles and pfUI's
+  overlays they came out wrong in game, and pfUI has none for Moonwhisper
+  Coast or Scarlet Enclave. The importer leaves those zones' overlays out.
+  A custom zone with no map at all shows the logo rather than borrow
+  another zone's.
+- A dungeon guide, or a route leg named for a dungeon ("Optimized/Uldaman"),
+  shows the loading screen Turtle WoW shows on the way in. The 1.12 client
+  has no file for most of them, so the addon carries them (`Theme.loadscreen`,
+  every dungeon but Shadowfang Keep): the art between the screen's bars,
+  below the logo, at 16:9, squeezed into a 256x128 texture and shown whole.
+  A dungeon without one, and the raids when they have guides, get the
+  instance's own 1.12 screen where there is one, else one of the six generic
+  ones chosen from the art (`Pictures.SCREEN_FOR`), cropped to its art.
+- A class quest shows the class's crest from the character creation sheet
+  in the corner, the panel in the class's colour (`Theme.CLASS_COLORS`), and
+  the chain's spell, mount or reward in the middle, else an icon that says
+  the class.
+- A profession guide shows the profession's icon on its badge's blue.
+
+`Tools/verify.py`'s ban on `Interface\Icons` in shipped code excepts
+`GuidePictures.lua`: there the game's art is the picture, not chrome.
 
 ### First-time setup -- `SetupFrame.lua`
 
@@ -898,10 +985,10 @@ thumb (`scroll-thumb.tga`, radius half its width, so the caps stay circular at
 any length) and caret step buttons. It is still a Slider, so
 `SetMinMaxValues` / `SetValue` / `OnValueChanged` are unchanged.
 
-The carets move by the bar's `step` -- a row by default, a column of 16 in the
-guide list, 40px in the error log -- and stop at the ends of the range. Every
+The carets move by the bar's `step` -- a row by default, three rows in the
+guide browser, 40px in the error log -- and stop at the ends of the range. Every
 scrolling list uses it: the objectives panel, the options body, the guide
-list, the shopping list and the error log. The last three were still on
+browser, the shopping list and the error log. The last three were still on
 `UIPanelScrollBarTemplate` / `UIPanelScrollFrameTemplate`, which drew
 Blizzard's gold arrows and knob; `Tools/verify.py` now fails on either.
 
@@ -911,7 +998,7 @@ One tab per open guide, up to eight. Tab 1 is the main route — what
 auto-advance follows. Every tab has a ✕, the first included; closing the last
 one leaves the panel empty, with "Click here to load a guide" in place of the
 steps. Clicking a tab switches to it and resumes where it was left; the `+`
-opens the guide list beside the panel; at eight the `+` stops offering what it
+opens the guide browser beside the panel; at eight the `+` stops offering what it
 cannot do.
 
 The bar does not squeeze every open guide in: at five that reduced each tab to
@@ -919,7 +1006,7 @@ The bar does not squeeze every open guide in: at five that reduced each tab to
 concept's 396px, four once the panel is widened to about 480px), and a `‹` `›` pair appears either side
 once there are more. Each arrow, or a notch of the mouse wheel over the bar,
 moves the view one tab and dims at its end. The view follows the active tab
-when that changes — opening a guide, switching from the guide list, closing
+when that changes — opening a guide, switching from the guide browser, closing
 one — and otherwise stays where the arrows left it, so a repaint does not
 yank it back. Tab labels drop the pack prefix (`Optimized/`) that every tab
 shares; the tooltip keeps the full name. Below 130px a tab drops its badge so

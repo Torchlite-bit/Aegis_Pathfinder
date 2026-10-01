@@ -32,7 +32,6 @@ if loc == "deDE" then localized = {
 	PART_GSUB = "%s%(Teil %d+%)",
 	PART_FIND = "(.+)%s%(Teil %d+%)",
 	["^You .*Hitem:(%d+).*(%[.+%])"] = "^Ihr .*Hitem:(%d+).*(%[.+%])",
-	["Config"] = "Einstellungen",
 	["Automatically track quests"] = "Automatische Questverfolgung",
 	["Automatically skip suggested follow-ups"] = "Follow-ups automatisch \195\188berspringen",
 } end
@@ -41,7 +40,6 @@ if loc == "frFR" then localized = {
 	PART_GSUB = "%s%(Partie %d+%)",
 	PART_FIND = "(.+)%s%(Partie %d+%)",
 	["^You .*Hitem:(%d+).*(%[.+%])"] = "^Vous .*Hitem:(%d+).*(%[.+%])",
-	["Config"] = "R\195\169glages",
 	["Automatically track quests"] = "Suivi des qu\195\170tes automatique",
 	["Automatically skip suggested follow-ups"] = "Sauter automatiquement les follow-ups sugg\195\169r\195\169s",
 } end

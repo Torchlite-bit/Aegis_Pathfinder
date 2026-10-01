@@ -20,7 +20,7 @@ are only found at startup.
 - [ ] No Lua error on login (the Error log is empty).
 - [ ] `/apg` and `/pathfinder` open and close the guide; `/vg` is not
       Pathfinder's any more (the client says it doesn't know it).
-- [ ] The guide, the options window and the guide list fade in as they open.
+- [ ] The guide, the options window and the guide browser fade in as they open.
 - [ ] A character that used TurtleGuide, on a fresh install with no
       Pathfinder save, keeps its progress, and chat says it was imported.
 - [ ] The minimap button is the Aegis: Pathfinder logo, round, in its own
@@ -48,7 +48,7 @@ are only found at startup.
 
 - [ ] A new character opens at step 1, not at the end.
 - [ ] In a fight, Escape clears your target and the guide stays open; its ✕
-      still closes it. Escape still closes the options and the guide list.
+      still closes it. Escape still closes the options and the guide browser.
 - [ ] Loch Modan (17-18), Crocolisk Hunting: Active Targets and the
       AegisTarget macro name Loch Crocolisk, not the Wetlands or Stranglethorn
       crocolisks.
@@ -136,11 +136,73 @@ are only found at startup.
       offers the dungeon guide. Open puts it in a tab beside the route; Not now
       closes it, and it is not offered again after a `/reload` or relog.
 
-## 5b. Class quests
+## 5a. The guide browser (the `+` on the tab bar, or ≡ → Guide menu)
 
-- [ ] The guide list's tabs all fit the window, CLASS between DUNGEONS and
-      PROFESSIONS, and no label is cut off.
-- [ ] The Class tab lists your class's guides only, lowest level first.
+- [ ] It opens on HOME, beside the guide, and fades in. Its header, sidebar,
+      middle and right pane line up, and the sidebar's and right pane's
+      bottom corners follow the window's rounded ones.
+- [ ] HOME: Guides history lists what you opened last; Suggested guides
+      lists your route's next leg, a class quest, ticked dungeons and custom
+      zones at your level, each with why; Level tracker counts up the level
+      you are at, and See more lists every level; Gold tracker rises when you
+      loot or sell, in gold, silver and copper colours, and starts again
+      tomorrow.
+- [ ] The ⋮ on HOME hides and shows each panel; the rest move up.
+- [ ] Each category opens; Leveling's folders open into their guides
+      (Optimized → Levels 20-40), and the back chevron comes back up. The
+      Coming Soon rows are greyed, and say so when pointed at.
+- [ ] Pointing at a guide shows it on the right. **Check the pictures load**:
+      a zone guide (Optimized → Darkshore) shows Darkshore's map fully
+      explored -- the areas in their places, no gaps between tiles; a city
+      guide's map whole; a dungeon (The Deadmines, Scarlet Monastery) its
+      loading screen, not stretched; a class quest (Voidwalker) the class
+      crest in the corner, the panel in the class's colour, the spell in the
+      middle; a profession its icon. Note any that are blank.
+- [ ] Every custom zone (Northwind, Gilneas, Tel'Abim, Moonwhisper Coast,
+      Scarlet Enclave and the rest) shows its own map, whole, with no
+      glitches.
+- [ ] Every dungeon shows the loading screen Turtle WoW shows on the way in,
+      whole, not squashed, with no logo or bars; Shadowfang Keep the generic
+      dungeon screen.
+- [ ] Dungeons starts with **On the routes**: Optimized's Uldaman and Sunken
+      Temple (and RestedXP's Scholomance Key), each saying whose route; they
+      are no longer in Optimized's Levels 40-60.
+- [ ] Left-click a guide: it opens beside the route. Right-click: it loads in
+      the tab you are on. Load and Open beside the route do the same. Shift-
+      click resets a finished guide.
+- [ ] The row's star keeps a guide in Favorites, and stays lit there; the
+      arrow opens it.
+- [ ] The list's ⋮: colours by level (grey outlevelled, green in range,
+      yellow, orange, red), ticks on finished guides, hiding finished and
+      outlevelled ones, stars on suggested ones -- each switch takes at once
+      and is kept after a `/reload`.
+- [ ] Typing in the search box lists the guides with that in their name;
+      Escape clears it and goes back to where you were.
+- [ ] CURRENT lists the guides open in the guide window, the route first;
+      RECENT the ones opened lately, by category.
+- [ ] The corner grip resizes it (no smaller than 820x520); the list shows
+      more rows as it grows; it reopens at that size and place, on the tab or
+      category it was left on.
+- [ ] **Return to Main** shows in the header while a guide is open beside
+      the route, and takes you back.
+
+## 5b. The guide window's ≡ menu
+
+- [ ] The ≡ chip opens the menu under it, above every window; Escape and any
+      item but the two switches close it.
+- [ ] Guide menu opens the browser; Setup wizard the setup; Settings the
+      options, all beside the guide.
+- [ ] Lock window: the guide cannot be dragged and its grip is gone; untick
+      and both come back; kept after a `/reload`.
+- [ ] Transparency: the panel's body goes see-through and its shadow goes;
+      kept after a `/reload`, and it survives a theme change.
+- [ ] Reset window puts the windows back, the browser at its own size.
+- [ ] Reload reloads the UI.
+
+## 5c. Class quests
+
+- [ ] The guide browser's Class Quests lists your class's guides only, lowest
+      level first.
 - [ ] A Goblin warlock's **Warlock: Voidwalker (10)**: Dabbling In Darkness on
       Blackstone Island, then Gan'rul Bloodeye in Orgrimmar; an Undead's goes to
       Carendin Halgar in the Undercity. Each quest's steps tick as you go, and
@@ -194,7 +256,7 @@ are only found at startup.
 
 ## 8. Professions
 
-- [ ] A profession guide from the guide list advances on your skill.
+- [ ] A profession guide from the guide browser advances on your skill.
 - [ ] **Shopping list** (`/apg materials`): counts what your bags hold, and
       **This step** / **Whole route** switch.
 - [ ] **Cheapest route** (`/apg craft`): plans, **Scan prices** at the auction

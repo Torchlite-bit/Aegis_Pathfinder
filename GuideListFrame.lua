@@ -1,529 +1,1205 @@
+--[[
+	GuideListFrame.lua -- the guide browser.
+
+	Laid out like Zygor's guide menu: HOME, CURRENT and RECENT along the top;
+	search and the categories down the left; a category's folders and guides
+	in the middle; and on the right the guide you point at -- its picture,
+	its levels, how far through it you are, and the buttons that open it.
+	Home is four panels: the guides you opened last, what fits you now, the
+	time spent at each level, and the gold earned today and this week.
+
+	What it lists is GuideBrowser.lua's, the pictures GuidePictures.lua's.
+	The clicks are the old list's: left-click opens a guide beside the one
+	you are on, right-click loads it in the tab you are on, shift-click
+	resets its progress; picking a RestedXP guide switches to a RestedXP
+	route pack, so the route goes on with guides that follow it.
+]]
+
 local AegisPathfinder = AegisPathfinder
 local Theme = AegisPathfinder.Theme
+local Browser = AegisPathfinder.Browser
 
-local NUMROWS, COLWIDTH = 16, 210
-local ROWHEIGHT = 305 / NUMROWS
-local TOTALROWS = NUMROWS * 3
+local DEFAULT_W, DEFAULT_H = 880, 560
+local MIN_W, MIN_H, MAX_W, MAX_H = 820, 520, 1280, 860
+local HEADER_H = 30            -- Theme:Header's
+local SIDE_W, PANE_W = 196, 268
+local BAR_H = 50               -- the title bar over the list
+local ROW_H = 26
+local MAX_ROWS = math.ceil((MAX_H - HEADER_H - BAR_H) / ROW_H)
+local PIC_W, PIC_H = 240, 135
+local SEP = " / "
 
--- Header (30) + subhead (18) + the category tab strip below it. The tab bar
--- used to start at -28 while the first row started at -30, so the top two rows
--- of every column were drawn underneath it.
-local HEADER_H, SUBHEAD_H, TABSTRIP_H = 30, 18, 30
-local CHROME_TOP = HEADER_H + SUBHEAD_H + TABSTRIP_H
+local ui = {}                  -- the widgets, by name
+--[[ What the browser shows: `tab` "home", "current" or "recent", or nil
+	with `category` open; `path` the folders opened in it, by title; `page`
+	"levels" for the level tracker's own page; `search` what is typed in the
+	box; `selected` the guide the right pane shows. ]]
+local view = { tab = "home", path = {}, offset = 0, search = "" }
+local entries = {}             -- the list's rows, as last built
 
-local offset = 0
-local rows = {}
-local displayList = {}
-local levelFilterOn = false
+local function Char() return AegisPathfinder.db.char end
+local function Refresh() AegisPathfinder:UpdateGuideListPanel() end
 
-local function SortGuidesByLevel(a, b)
-    local aMin, aMax = AegisPathfinder:ParseGuideLevelRange(a)
-    local bMin, bMax = AegisPathfinder:ParseGuideLevelRange(b)
-
-    if not aMin and not bMin then
-        return a < b
-    elseif not aMin then
-        return false
-    elseif not bMin then
-        return true
-    end
-
-    if aMin ~= bMin then
-        return aMin < bMin
-    elseif aMax ~= bMax then
-        return aMax < bMax
-    else
-        return a < b
-    end
+-- A colour from Theme as a chat colour code, for text in two colours.
+local function Code(c)
+	return string.format("|cff%02x%02x%02x", math.floor(c[1] * 255), math.floor(c[2] * 255), math.floor(c[3] * 255))
 end
 
-local function HideTooltip()
-    Theme:HideTip(this)
+-- A flat fill for a row or panel, `name` a Theme colour.
+local function Fill(f, layer, name, alpha)
+	local t = f:CreateTexture(nil, layer or "BACKGROUND")
+	t:SetTexture(Theme.texture.solid)
+	t:SetAllPoints(f)
+	Theme:Tint(t, name, alpha)
+	return t
 end
 
-local function ShowTooltip()
-    local f = this
-    -- A category header has nothing to click through to.
-    if not f.guide then return Theme:HideTip() end
-    -- The guide's name is the hint; what each click does is the detail.
-    local lines = {}
-    table.insert(lines, "Left-click: Open in a new tab")
-    table.insert(lines, "Right-click: Load in the current tab")
-
-    if f.guide and AegisPathfinder.db.char.completion[f.guide] == 1 then
-        table.insert(lines, "Shift-click: Reset progress")
-    end
-
-    if AegisPathfinder.db.char.isbranching and AegisPathfinder.db.char.branchsavedguide == f.guide then
-        table.insert(lines, "|cff52c722Your main route|r")
-    end
-
-    Theme:ShowTip(f, "RIGHT", f.guide, lines)
+local function Glyph(f, name, size)
+	local t = f:CreateTexture(nil, "ARTWORK")
+	t:SetTexture(Theme.glyph[name] or Theme.actionIcon[name] or name)
+	t:SetWidth(size)
+	t:SetHeight(size)
+	return t
 end
 
-local function OnClick()
-    local f = this
-    local btn = arg1
-    if IsShiftKeyDown() then
-        AegisPathfinder.db.char.completion[f.guide] = nil
-        AegisPathfinder.db.char.turnins[f.guide] = {}
-        AegisPathfinder:UpdateGuideListPanel()
-        Theme:HideTip()
-    else
-        local text = f.guide
-        if not text then
-            f:SetChecked(false)
-            return
-        end
-
-        local isRXP = string.find(text, "^RXP/")
-        local isRXPHC = string.find(text, "^RXP_Hardcore/")
-        local currentPack = AegisPathfinder.db.char.routepack
-
-        -- If manually picking an RXP guide, ensure an RXP-based route pack is active
-        -- so that auto-navigation continues with compatible guides
-        if isRXPHC and currentPack ~= "RXP Hardcore" then
-            AegisPathfinder:SelectRoutePack("RXP Hardcore")
-        elseif isRXP and currentPack ~= "RestedXP" and currentPack ~= "Kamisayo Speedrun" then
-            AegisPathfinder:SelectRoutePack("RestedXP")
-        end
-
-        --[[ Picking a guide never closes the one you were reading. Left-click
-            opens it in a tab of its own -- or switches to it, if it already
-            has one. Right-click is the deliberate "replace what this tab
-            shows". ]]
-        if btn == "RightButton" then
-            AegisPathfinder:LoadGuideInTab(text)
-        else
-            AegisPathfinder:OpenGuideTab(text)
-        end
-        AegisPathfinder:UpdateGuideListPanel()
-    end
+local function Text(f, role, size, color)
+	local fs = f:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(fs, role, size)
+	Theme:TextColor(fs, color or "text")
+	fs:SetJustifyH("LEFT")
+	return fs
 end
 
--- Parented to UIParent, not the status card: the card is hidden by default and
--- a child of a hidden frame cannot be shown. It is still anchored to the card,
--- which keeps a position whether or not it is drawn.
+--[[ Picking a guide ---------------------------------------------------------- ]]
+
+local function PickGuide(name, button)
+	local self = AegisPathfinder
+	if not name then return end
+	if IsShiftKeyDown() then
+		self.db.char.completion[name] = nil
+		self.db.char.turnins[name] = {}
+		Theme:HideTip()
+		return Refresh()
+	end
+	-- A RestedXP guide picked by hand: a RestedXP route pack, so the route
+	-- goes on from it with guides that follow on.
+	local pack = self.db.char.routepack
+	if string.find(name, "^RXP_Hardcore/") and pack ~= "RXP Hardcore" then
+		self:SelectRoutePack("RXP Hardcore")
+	elseif string.find(name, "^RXP/") and pack ~= "RestedXP" and pack ~= "Kamisayo Speedrun" then
+		self:SelectRoutePack("RestedXP")
+	end
+	if button == "RightButton" then self:LoadGuideInTab(name) else self:OpenGuideTab(name) end
+	Refresh()
+end
+
+--[[ Where to go ---------------------------------------------------------------- ]]
+
+local function HideOptions()
+	if ui.options then ui.options:Hide() end
+end
+
+-- Clear the search box without its OnTextChanged starting a search.
+local function ClearSearch()
+	view.search = ""
+	if ui.search then
+		ui.quiet = true
+		ui.search:SetText("")
+		ui.quiet = nil
+		ui.search:ClearFocus()
+	end
+end
+
+--- Open a header tab ("home", "current", "recent"), or with `tab` nil a
+--- sidebar category.
+local function Open(tab, category)
+	view.tab, view.category, view.path, view.page, view.offset = tab, category, {}, nil, 0
+	Char().browsertab = tab or category
+	ClearSearch()
+	HideOptions()
+	Refresh()
+end
+
+local function Back()
+	view.offset = 0
+	if view.search ~= "" then
+		ClearSearch()
+	elseif view.page then
+		view.page = nil
+	elseif table.getn(view.path) > 0 then
+		table.remove(view.path)
+	end
+	Refresh()
+end
+
+--[[ The window ------------------------------------------------------------------ ]]
+
+-- Parented to UIParent, not the guide: a child of a hidden frame cannot be
+-- shown, and the guide window can be closed.
 local frame = CreateFrame("Frame", "AegisPathfinderGuideList", UIParent)
 AegisPathfinder.guidelistframe = frame
 frame:SetFrameStrata("DIALOG")
-frame:SetWidth(660)
-frame:SetHeight(CHROME_TOP + 305 + 14)
+frame:SetWidth(DEFAULT_W)
+frame:SetHeight(DEFAULT_H)
 frame:SetPoint("TOPRIGHT", AegisPathfinder.objectiveframe, "TOPLEFT", -8, 0)
 Theme:Panel(frame, "panel")
 frame:Hide()
 
--- The concept's window chrome: wordmark, close chip, drag handle, and a
--- subhead naming this window. It replaces the title that used to float
--- outside the frame, which is also why this panel could not be moved.
-local header, subhead = Theme:Chrome(frame, "Guide List",
-    Theme:PositionSaver("guidelistframe"))
--- Branch state belongs on the subhead now that there is one.
-frame.title = subhead.label
+local header = Theme:Chrome(frame, nil, Theme:PositionSaver("guidelistframe"))
+ui.header = header
 
--- Level filter, on the subhead strip rather than a row of its own -- the
--- panel is a list, and every pixel of chrome is a guide it cannot show.
-local filterCheck = Theme:StepCheck(subhead, 13)
-filterCheck:SetPoint("LEFT", subhead, "LEFT", 150, 0)
-local filterLabel = subhead:CreateFontString(nil, "OVERLAY")
-Theme:SetFont(filterLabel, "body", 10)
-filterLabel:SetPoint("LEFT", filterCheck, "RIGHT", 5, 0)
-filterLabel:SetText("Level filter (+/-5)")
-Theme:TextColor(filterLabel, "textDim")
-filterCheck:SetScript("OnClick", function()
-    levelFilterOn = not levelFilterOn
-    filterCheck:SetChecked(levelFilterOn)
-    offset = 0
-    AegisPathfinder:UpdateGuideListPanel()
-end)
-
---[[ Category tabs.
-
-    The concept uses a single-select tab bar here rather than the five
-    independent checkboxes this panel had. Single-select on its own would lose
-    the ability to see several categories at once, so ALL leads the bar and is
-    the default -- the concept's layout, none of the old capability removed.
-]]
-local CATEGORY_TABS = {
-    { key = "all",        label = "All" },
-    { key = "turtle",     label = "Custom" },
-    { key = "optimized",  label = "Optimized" },
-    { key = "rxp",        label = "RestedXP" },
-    { key = "rxp_hc",     label = "Hardcore" },
-    { key = "zone",       label = "Zones" },
-    { key = "dungeon",    label = "Dungeons" },
-    { key = "class",      label = "Class" },
-    { key = "profession", label = "Professions" },
-}
-
---[[ Nine tabs do not fit the 660-wide panel at one width, so each is as
-    wide as its label and a margin: CLASS narrow, PROFESSIONS wide. ]]
-local categoryTabs = {}
-local TAB_H, TAB_GAP, TAB_PAD, TAB_MIN = 22, 2, 14, 40
-
-local prevTab
-for idx, def in ipairs(CATEGORY_TABS) do
-    local tab = Theme:Tab(frame, def.label, TAB_MIN, TAB_H)
-    tab:SetWidth(math.max(TAB_MIN, math.ceil((tab.label:GetStringWidth() or 0) + TAB_PAD)))
-    if prevTab then
-        tab:SetPoint("TOPLEFT", prevTab, "TOPRIGHT", TAB_GAP, 0)
-    else
-        tab:SetPoint("TOPLEFT", frame, "TOPLEFT", 12, -(HEADER_H + SUBHEAD_H + 4))
-    end
-    prevTab = tab
-    tab.categoryKey = def.key
-
-    local key = def.key
-    tab:SetScript("OnClick", function()
-        AegisPathfinder.db.char.guidecategory = key
-        offset = 0
-        AegisPathfinder:UpdateGuideListPanel()
-    end)
-
-    table.insert(categoryTabs, tab)
+-- HOME, CURRENT, RECENT: the header's left, an accent line under the one open.
+local function HeaderTab(key, label)
+	local b = CreateFrame("Button", nil, header)
+	b:SetHeight(HEADER_H - 2)
+	local fs = Text(b, "display", 13, "textDim")
+	fs:SetPoint("CENTER", b, "CENTER", 0, 0)
+	fs:SetText(string.upper(label))
+	b:SetWidth(math.ceil(fs:GetStringWidth() or 40) + 18)
+	local line = b:CreateTexture(nil, "OVERLAY")
+	line:SetTexture(Theme.texture.solid)
+	line:SetHeight(2)
+	line:SetPoint("BOTTOMLEFT", b, "BOTTOMLEFT", 6, 0)
+	line:SetPoint("BOTTOMRIGHT", b, "BOTTOMRIGHT", -6, 0)
+	Theme:Tint(line, "accent")
+	b.label, b.line, b.key = fs, line, key
+	function b:SetActive(on)
+		self.active = on
+		Theme:TextColor(self.label, on and "accent" or "textDim")
+		if on then self.line:Show() else self.line:Hide() end
+	end
+	b:SetScript("OnClick", function() Open(this.key, nil) end)
+	b:SetScript("OnEnter", function() if not this.active then Theme:TextColor(this.label, "text") end end)
+	b:SetScript("OnLeave", function() if not this.active then Theme:TextColor(this.label, "textDim") end end)
+	b:SetActive(false)
+	return b
 end
 
-AegisPathfinder.guidecategorytabs = categoryTabs
+ui.tabs = {}
+for i, def in ipairs({ { "home", "Home" }, { "current", "Current" }, { "recent", "Recent" } }) do
+	local b = HeaderTab(def[1], def[2])
+	if i == 1 then b:SetPoint("LEFT", header, "LEFT", 10, 0)
+	else b:SetPoint("LEFT", ui.tabs[i - 1], "RIGHT", 4, 0) end
+	ui.tabs[i] = b
+end
 
--- Return to Main sits in the header beside the close chip, where the concept
--- puts window-level actions.
+-- Return to Main, beside the close chip, while a guide is open beside the route.
 local returnBtn = Theme:PanelButton(header, "Return to Main", 120, 18)
-returnBtn:SetPoint("RIGHT", frame.header, "RIGHT", -34, 0)
+returnBtn:SetPoint("RIGHT", header, "RIGHT", -34, 0)
 returnBtn:SetScript("OnClick", function()
-    AegisPathfinder:ReturnFromBranch()
-    AegisPathfinder:UpdateGuideListPanel()
+	AegisPathfinder:ReturnFromBranch()
+	Refresh()
 end)
 frame.returnBtn = returnBtn
 
--- Fill in the frame with guide CheckButtons (3-column layout)
-for i = 1, TOTALROWS do
-    local anchor, point = rows[i - 1], "BOTTOMLEFT"
-    if i == 1 then
-        anchor, point = frame, "TOPLEFT"
-    elseif i == (NUMROWS + 1) then
-        anchor, point = rows[1], "TOPRIGHT"
-    elseif i == (NUMROWS * 2 + 1) then
-        anchor, point = rows[NUMROWS + 1], "TOPRIGHT"
-    end
+--[[ The sidebar ------------------------------------------------------------------ ]]
 
-    local row = CreateFrame("CheckButton", nil, frame)
-    if i == 1 then
-        row:SetPoint("TOPLEFT", anchor, point, 15, -CHROME_TOP)
-    else
-        row:SetPoint("TOPLEFT", anchor, point)
-    end
-    row:SetHeight(ROWHEIGHT)
-    row:SetWidth(COLWIDTH)
+local side = CreateFrame("Frame", nil, frame)
+side:SetWidth(SIDE_W)
+side:SetPoint("TOPLEFT", frame, "TOPLEFT", 1, -HEADER_H - 1)
+side:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 1, 1)
+-- Rounded at the bottom, where it meets the window's corner.
+Theme:CapStrip(side, "panel3", "bottom")
+local sideEdge = side:CreateTexture(nil, "BORDER")
+sideEdge:SetTexture(Theme.texture.solid)
+sideEdge:SetWidth(1)
+sideEdge:SetPoint("TOPRIGHT", side, "TOPRIGHT", 0, 0)
+sideEdge:SetPoint("BOTTOMRIGHT", side, "BOTTOMRIGHT", 0, 0)
+Theme:Tint(sideEdge, "border")
+ui.side = side
 
-    local highlight = row:CreateTexture(nil, "HIGHLIGHT")
-    highlight:SetTexture(Theme.texture.solid)
-    highlight:SetAllPoints()
-    highlight:SetVertexColor(1, 1, 1, 0.06)
-    row:SetHighlightTexture(highlight)
-    row:SetCheckedTexture(highlight)
+-- The search box: a dark field, a magnifier, and a hint while it is empty.
+local search = CreateFrame("EditBox", nil, side)
+search:SetHeight(26)
+search:SetPoint("TOPLEFT", side, "TOPLEFT", 10, -12)
+search:SetPoint("TOPRIGHT", side, "TOPRIGHT", -10, -12)
+search:SetAutoFocus(false)
+search:SetTextInsets(24, 6, 0, 0)
+search:SetMaxLetters(40)
+Theme:SetFont(search, "body", 12)
+search:SetTextColor(Theme.color.text[1], Theme.color.text[2], Theme.color.text[3])
+Theme:NineSlice(search, Theme.texture.tabFill, "BACKGROUND", "panel2")
+Theme:NineSlice(search, Theme.texture.tabBorder, "BORDER", "subtle")
+local lens = Glyph(search, "search", 12)
+lens:SetPoint("LEFT", search, "LEFT", 7, 0)
+Theme:Tint(lens, "textDim")
+local hint = Text(search, "body", 12, "textDim")
+hint:SetPoint("LEFT", search, "LEFT", 24, 0)
+hint:SetText("Search guides")
+local function ShowHint()
+	if search:GetText() == "" and not search.focused then hint:Show() else hint:Hide() end
+end
+search:SetScript("OnTextChanged", function()
+	ShowHint()
+	if ui.quiet then return end
+	view.search, view.offset = this:GetText() or "", 0
+	HideOptions()
+	Refresh()
+end)
+search:SetScript("OnEditFocusGained", function() this.focused = true; ShowHint() end)
+search:SetScript("OnEditFocusLost", function() this.focused = nil; ShowHint() end)
+search:SetScript("OnEscapePressed", function() this:SetText(""); this:ClearFocus() end)
+search:SetScript("OnEnterPressed", function() this:ClearFocus() end)
+search:SetScript("OnHide", function() this:ClearFocus() end)
+ui.search = search
 
-    -- TPL badge, right-aligned so the guide names still line up. Only shown
-    -- for placeholder guides, which would otherwise look authored.
-    local badge = Theme:Badge(row, "TPL", "tpl")
-    badge:SetPoint("RIGHT", row, "RIGHT", -6, 0)
-    badge:Hide()
-
-    local text = row:CreateFontString(nil, "OVERLAY")
-    Theme:SetFont(text, "body", 11)
-    text:SetPoint("LEFT", row, "LEFT", 6, 0)
-    Theme:TextColor(text, "textDim")
-    text:SetWidth(COLWIDTH - 12)
-    text:SetHeight(ROWHEIGHT)
-    text:SetJustifyH("LEFT")
-
-    row:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-    row:SetScript("OnClick", OnClick)
-    row:SetScript("OnEnter", ShowTooltip)
-    row:SetScript("OnLeave", HideTooltip)
-
-    row.text = text
-    row.badge = badge
-    rows[i] = row
+-- A sidebar row: a category's badge or glyph, and its name.
+local function SideRow(def, y, h)
+	local b = CreateFrame("Button", nil, side)
+	b:SetHeight(h)
+	b:SetPoint("TOPLEFT", side, "TOPLEFT", 8, y)
+	b:SetPoint("TOPRIGHT", side, "TOPRIGHT", -9, y)
+	b.fill = Fill(b, "BACKGROUND", "tabbg")
+	b.fill:Hide()
+	b.bar = b:CreateTexture(nil, "BORDER")
+	b.bar:SetTexture(Theme.texture.solid)
+	b.bar:SetWidth(3)
+	b.bar:SetPoint("TOPLEFT", b, "TOPLEFT", 0, 0)
+	b.bar:SetPoint("BOTTOMLEFT", b, "BOTTOMLEFT", 0, 0)
+	Theme:Tint(b.bar, "accent")
+	b.bar:Hide()
+	Fill(b, "HIGHLIGHT", "text", 0.05)
+	if def.badge then
+		b.icon = Theme:Badge(b, def.badge, def.badge)
+		b.icon:SetPoint("LEFT", b, "LEFT", 10, 0)
+	else
+		b.icon = Glyph(b, def.glyph, 14)
+		b.icon:SetPoint("LEFT", b, "LEFT", 14, 0)
+		Theme:Tint(b.icon, def.key == "favorites" and "gold" or "textDim")
+	end
+	b.label = Text(b, "body", 13)
+	b.label:SetPoint("LEFT", b, "LEFT", 44, 0)
+	b.label:SetText(def.label)
+	b.key = def.key
+	return b
 end
 
--- The theme's scroll bar. UIPanelScrollBarTemplate brought Blizzard's gold
--- arrows and knob onto a flat panel, and its arrows moved by half the bar's
--- height in pixels -- a hundred-odd rows of a list that scrolls by row.
--- Three 210px columns from x=15 end at 645; the bar sits clear of them.
-local SCROLL_W = 10
-local slider = Theme:ScrollBar(frame, SCROLL_W)
-slider:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -4, -(CHROME_TOP + SCROLL_W))
-slider:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -4, 25 + SCROLL_W)
-slider:SetMinMaxValues(0, 100)
-slider:SetValueStep(1)
-slider.step = NUMROWS
-frame.slider = slider
+ui.categories = {}
+do
+	local y = -50
+	for _, def in ipairs(Browser.CATEGORIES) do
+		if not def.soon then
+			local b = SideRow(def, y, 28)
+			b:SetScript("OnClick", function() Open(nil, this.key) end)
+			table.insert(ui.categories, b)
+			y = y - 30
+		end
+	end
+	local soon = Text(side, "display", 11, "textDim")
+	soon:SetPoint("TOPLEFT", side, "TOPLEFT", 18, y - 10)
+	soon:SetText("COMING SOON")
+	y = y - 30
+	for _, def in ipairs(Browser.CATEGORIES) do
+		if def.soon then
+			local b = SideRow(def, y, 24)
+			b:SetAlpha(0.45)
+			b:SetScript("OnEnter", function() Theme:ShowTip(this, "RIGHT", "Coming soon") end)
+			b:SetScript("OnLeave", function() Theme:HideTip(this) end)
+			y = y - 25
+		end
+	end
+end
 
-slider:SetScript("OnValueChanged", function()
-    local val = arg1
-    if not slider.updating and AegisPathfinder.UpdateGuideListPanel then
-        offset = math.floor(val)
-        AegisPathfinder:UpdateGuideListPanel()
-    end
+-- Options, at the bottom: the addon's settings.
+local optionsRow = SideRow({ key = "options", label = "Options", glyph = "gear" }, 0, 30)
+optionsRow:ClearAllPoints()
+optionsRow:SetPoint("BOTTOMLEFT", side, "BOTTOMLEFT", 8, 10)
+optionsRow:SetPoint("BOTTOMRIGHT", side, "BOTTOMRIGHT", -9, 10)
+Theme:TextColor(optionsRow.label, "textDim")
+optionsRow:SetScript("OnClick", function() AegisPathfinder:ToggleConfigPanel() end)
+Theme:Divider(side, optionsRow, "TOPLEFT", 0, 6, SIDE_W - 17)
+
+--[[ The middle: a title bar, and the list or the Home panels under it ------------ ]]
+
+local content = CreateFrame("Frame", nil, frame)
+content:SetPoint("TOPLEFT", side, "TOPRIGHT", 0, 0)
+content:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -1 - PANE_W, 1)
+ui.content = content
+
+local bar = CreateFrame("Frame", nil, content)
+bar:SetHeight(BAR_H)
+bar:SetPoint("TOPLEFT", content, "TOPLEFT", 0, 0)
+bar:SetPoint("TOPRIGHT", content, "TOPRIGHT", 0, 0)
+local barRule = bar:CreateTexture(nil, "BORDER")
+barRule:SetTexture(Theme.texture.solid)
+barRule:SetHeight(1)
+barRule:SetPoint("BOTTOMLEFT", bar, "BOTTOMLEFT", 0, 0)
+barRule:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", 0, 0)
+Theme:Tint(barRule, "tabbg")
+ui.back = Theme:GlyphButton(bar, "chevronLeft", 12, 26)
+ui.back:SetPoint("LEFT", bar, "LEFT", 8, 0)
+ui.back:SetScript("OnClick", Back)
+ui.crumb = Text(bar, "body", 11, "textDim")
+ui.title = Text(bar, "display", 18)
+ui.title:SetPoint("TOPLEFT", ui.crumb, "BOTTOMLEFT", 0, -2)
+ui.dots = Theme:GlyphButton(bar, "dots", 14, 26)
+ui.dots:SetPoint("RIGHT", bar, "RIGHT", -8, 0)
+ui.dots:SetScript("OnClick", function()
+	if ui.options:IsShown() then ui.options:Hide() else ui.options:Show() end
 end)
-slider:SetValue(0)
+ui.dots:SetScript("OnEnter", function()
+	Theme:Tint(this.glyph, this.__hover)
+	Theme:ShowTip(this, "BOTTOM", view.tab == "home" and not view.page and "Home panels" or "List options")
+end)
+ui.dots:SetScript("OnLeave", function()
+	Theme:Tint(this.glyph, this.__idle)
+	Theme:HideTip(this)
+end)
+
+--[[ The list ---------------------------------------------------------------- ]]
+
+local list = CreateFrame("Frame", nil, content)
+list:SetPoint("TOPLEFT", bar, "BOTTOMLEFT", 0, -4)
+list:SetPoint("BOTTOMRIGHT", content, "BOTTOMRIGHT", -14, 4)
+ui.list = list
+
+local function ShowHover(row, on)
+	if not row.guide then on = false end
+	if on or row.favorite then row.star:Show() else row.star:Hide() end
+	if on then row.load:Show() else row.load:Hide() end
+end
+
+local function MarkSelection()
+	for _, row in ipairs(ui.rows) do
+		local on = row.guide ~= nil and row.guide == view.selected
+		if on then row.fill:Show(); row.bar:Show() else row.fill:Hide(); row.bar:Hide() end
+	end
+end
+
+local PaintPane
+
+local function RowEnter()
+	ShowHover(this, true)
+	if this.guide and view.selected ~= this.guide then
+		view.selected = this.guide
+		MarkSelection()
+		PaintPane()
+	end
+end
+
+local function RowLeave() ShowHover(this, false) end
+
+local function RowClick()
+	local row = this
+	if row.folder then
+		table.insert(view.path, row.folder)
+		view.offset = 0
+		Refresh()
+	elseif row.guide then
+		PickGuide(row.guide, arg1)
+	end
+end
+
+local function NewRow(i)
+	local row = CreateFrame("Button", nil, list)
+	row:SetHeight(ROW_H)
+	row:SetPoint("TOPLEFT", list, "TOPLEFT", 0, -(i - 1) * ROW_H)
+	row:SetPoint("TOPRIGHT", list, "TOPRIGHT", 0, -(i - 1) * ROW_H)
+	row.fill = Fill(row, "BACKGROUND", "tabbg")
+	row.bar = row:CreateTexture(nil, "BORDER")
+	row.bar:SetTexture(Theme.texture.solid)
+	row.bar:SetWidth(3)
+	row.bar:SetPoint("TOPLEFT", row, "TOPLEFT", 0, 0)
+	row.bar:SetPoint("BOTTOMLEFT", row, "BOTTOMLEFT", 0, 0)
+	Theme:Tint(row.bar, "accent")
+	row.hl = Fill(row, "HIGHLIGHT", "text", 0.05)
+	row.mark = row:CreateTexture(nil, "ARTWORK")
+	row.mark:SetWidth(12)
+	row.mark:SetHeight(12)
+	row.mark:SetPoint("LEFT", row, "LEFT", 14, 0)
+	row.badge = Theme:Badge(row, "XP", "xp")
+	row.badge:SetPoint("LEFT", row, "LEFT", 10, 0)
+	row.text = Text(row, "body", 13)
+	row.text:SetPoint("LEFT", row, "LEFT", 34, 0)
+	row.text:SetPoint("RIGHT", row, "RIGHT", -60, 0)
+	row.right = Text(row, "body", 11, "textDim")
+	row.right:SetPoint("RIGHT", row, "RIGHT", -10, 0)
+	row.right:SetJustifyH("RIGHT")
+	row.tpl = Theme:Badge(row, "TPL", "tpl")
+	row.tpl:SetPoint("RIGHT", row, "RIGHT", -54, 0)
+	row.star = Theme:GlyphButton(row, "star", 12, 22)
+	row.star:SetPoint("RIGHT", row, "RIGHT", -30, 0)
+	row.load = Theme:GlyphButton(row, "arrowRight", 10, 22)
+	row.load:SetPoint("RIGHT", row, "RIGHT", -6, 0)
+	row:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+	row:SetScript("OnClick", RowClick)
+	row:SetScript("OnEnter", RowEnter)
+	row:SetScript("OnLeave", RowLeave)
+	-- The row's buttons keep its hover icons up while the mouse is on them.
+	row.star:SetScript("OnEnter", function()
+		local r = this:GetParent()
+		ShowHover(r, true)
+		Theme:Tint(this.glyph, "gold")
+		Theme:ShowTip(this, "TOP", r.favorite and "Remove from Favorites" or "Add to Favorites")
+	end)
+	row.star:SetScript("OnLeave", function()
+		local r = this:GetParent()
+		ShowHover(r, false)
+		Theme:Tint(this.glyph, (r.favorite or r.suggested) and "gold" or "textDim")
+		Theme:HideTip(this)
+	end)
+	row.star:SetScript("OnClick", function()
+		local r = this:GetParent()
+		AegisPathfinder:ToggleFavoriteGuide(r.guide)
+		Refresh()
+	end)
+	row.load:SetScript("OnEnter", function()
+		ShowHover(this:GetParent(), true)
+		Theme:Tint(this.glyph, "accent")
+		Theme:ShowTip(this, "TOP", "Open beside the route")
+	end)
+	row.load:SetScript("OnLeave", function()
+		ShowHover(this:GetParent(), false)
+		Theme:Tint(this.glyph, "textDim")
+		Theme:HideTip(this)
+	end)
+	row.load:SetScript("OnClick", function() PickGuide(this:GetParent().guide, "LeftButton") end)
+	return row
+end
+
+ui.rows = {}
+for i = 1, MAX_ROWS do ui.rows[i] = NewRow(i) end
+
+ui.empty = Text(list, "body", 13, "textDim")
+ui.empty:SetPoint("TOPLEFT", list, "TOPLEFT", 16, -16)
+ui.empty:SetPoint("RIGHT", list, "RIGHT", -16, 0)
+
+local slider = Theme:ScrollBar(content, 8)
+slider:SetPoint("TOPRIGHT", content, "TOPRIGHT", -4, -BAR_H - 12)
+slider:SetPoint("BOTTOMRIGHT", content, "BOTTOMRIGHT", -4, 12)
+slider:SetMinMaxValues(0, 0)
+slider:SetValueStep(1)
+slider:SetScript("OnValueChanged", function()
+	if slider.updating then return end
+	view.offset = math.floor(arg1 or 0)
+	ui.PaintRows()
+end)
+frame.slider, ui.slider = slider, slider
+
+local function VisibleRows()
+	return math.max(1, math.min(MAX_ROWS, math.floor((frame:GetHeight() - HEADER_H - BAR_H - 10) / ROW_H)))
+end
+
+frame:EnableMouseWheel(true)
+frame:SetScript("OnMouseWheel", function()
+	if not ui.list:IsShown() then return end
+	local most = math.max(0, table.getn(entries) - VisibleRows())
+	local v = math.max(0, math.min(most, view.offset - (arg1 or 0) * 3))
+	if v ~= view.offset then
+		view.offset = v
+		ui.PaintRows()
+	end
+end)
+
+--[[ What a row says ---------------------------------------------------------- ]]
+
+-- How many guides a folder holds, its folders' included.
+local function CountGuides(folder)
+	local n = 0
+	for _, item in ipairs(folder.items) do
+		if item.guide then n = n + 1 else n = n + CountGuides(item.folder) end
+	end
+	return n
+end
+
+local function PaintGuideRow(row, e, level, opts)
+	local self = AegisPathfinder
+	local name = e.guide
+	row.guide = name
+	row.favorite = self:IsFavoriteGuide(name)
+	row.suggested = opts.suggested and opts.suggested[name] or false
+	row.text:SetText(Browser.Title(name))
+	local done = ((self.db.char.completion or {})[name] or 0) >= 1
+	local diff = Char().browsercolour and self:GuideDifficulty(name, level)
+	if done and Char().browserticks then
+		Theme:TextColor(row.text, "textDim")
+	elseif diff then
+		Theme:TextColor(row.text, Theme.LEVEL_COLORS[diff])
+	else
+		Theme:TextColor(row.text, "text")
+	end
+	if e.badge then
+		local kind, text = self:GuideBadge(name)
+		row.badge:SetKind(kind, text)
+		row.badge:Show()
+		row.mark:Hide()
+	else
+		row.badge:Hide()
+		if done and Char().browserticks then
+			row.mark:SetTexture(Theme.glyph.tick)
+			Theme:Tint(row.mark, "accent")
+		else
+			row.mark:SetTexture(Theme.texture.circleBorder)
+			Theme:Tint(row.mark, "subtle")
+		end
+		row.mark:Show()
+	end
+	local right = e.why
+	if not right and Char().isbranching and Char().branchsavedguide == name then right = "Your route" end
+	if not right then
+		local p = self:GuideProgress(name)
+		if p > 0 and p < 1 then right = math.floor(p * 100) .. "%" end
+	end
+	row.right:SetText(right or "")
+	if self:IsTemplateGuide(name) then row.tpl:Show() else row.tpl:Hide() end
+	Theme:Tint(row.star.glyph, (row.favorite or row.suggested) and "gold" or "textDim")
+end
+
+local function PaintRow(row, e, level, opts)
+	row.guide, row.folder, row.favorite, row.suggested = nil, nil, nil, nil
+	row.badge:Hide()
+	row.mark:Hide()
+	row.tpl:Hide()
+	row.right:SetText("")
+	if not e then
+		row:Hide()
+		return
+	end
+	row:Show()
+	if e.guide then
+		PaintGuideRow(row, e, level, opts)
+		row:Enable()
+	elseif e.folder then
+		row.folder = e.folder.title
+		row.mark:SetTexture(Theme.glyph.folder)
+		Theme:Tint(row.mark, "goldDeep")
+		row.mark:Show()
+		row.text:SetText(e.folder.title)
+		Theme:TextColor(row.text, "text")
+		row.right:SetText(tostring(CountGuides(e.folder)))
+		row:Enable()
+	elseif e.header then
+		row.text:SetText(string.upper(e.header))
+		Theme:TextColor(row.text, "accent")
+		row:Disable()
+	else
+		-- A line of information: the level tracker's page.
+		row.text:SetText(e.info)
+		Theme:TextColor(row.text, e.current and "accent" or "text")
+		row.right:SetText(e.right or "")
+		row:Disable()
+	end
+	ShowHover(row, false)
+end
+
+--- Draw the list's rows from where it is scrolled to.
+function ui.PaintRows()
+	local shown = VisibleRows()
+	local most = math.max(0, table.getn(entries) - shown)
+	if view.offset > most then view.offset = most end
+	if view.offset < 0 then view.offset = 0 end
+	if most > 0 then
+		slider.updating = true
+		slider:SetMinMaxValues(0, most)
+		slider:SetValue(view.offset)
+		slider.updating = nil
+		slider.step = 3
+		slider:Show()
+	else
+		slider:Hide()
+	end
+	local level = UnitLevel("player")
+	for i, row in ipairs(ui.rows) do
+		PaintRow(row, i <= shown and entries[i + view.offset] or nil, level, ui.opts or {})
+	end
+	MarkSelection()
+end
+
+--[[ Home ------------------------------------------------------------------------ ]]
+
+local home = CreateFrame("Frame", nil, content)
+home:SetPoint("TOPLEFT", bar, "BOTTOMLEFT", 0, 0)
+home:SetPoint("BOTTOMRIGHT", content, "BOTTOMRIGHT", 0, 0)
+ui.home = home
+
+local PANELS = {
+	{ key = "history", title = "Guides history" },
+	{ key = "suggested", title = "Suggested guides" },
+	{ key = "levels", title = "Level tracker" },
+	{ key = "gold", title = "Gold tracker" },
+}
+
+local function Card(def)
+	local c = CreateFrame("Frame", nil, home)
+	Theme:NineSlice(c, Theme.texture.panelFill, "BACKGROUND", "panel3")
+	Theme:NineSlice(c, Theme.texture.panelBorder, "BORDER", "border")
+	c.title = Text(c, "display", 15)
+	c.title:SetPoint("TOPLEFT", c, "TOPLEFT", 14, -12)
+	c.title:SetText(def.title)
+	c.key, c.rows = def.key, {}
+	c.empty = Text(c, "body", 12, "textDim")
+	c.empty:SetPoint("TOPLEFT", c, "TOPLEFT", 14, -40)
+	c.empty:SetPoint("RIGHT", c, "RIGHT", -14, 0)
+	return c
+end
+
+-- A guide on a Home panel: its badge, its name and, for a suggestion, why.
+local function CardGuideRow(c, i, h)
+	local b = CreateFrame("Button", nil, c)
+	b:SetHeight(h)
+	b:SetPoint("TOPLEFT", c, "TOPLEFT", 6, -36 - (i - 1) * h)
+	b:SetPoint("TOPRIGHT", c, "TOPRIGHT", -6, -36 - (i - 1) * h)
+	Fill(b, "HIGHLIGHT", "text", 0.05)
+	b.badge = Theme:Badge(b, "XP", "xp")
+	b.badge:SetPoint("LEFT", b, "LEFT", 8, 0)
+	b.text = Text(b, "body", 13)
+	b.text:SetPoint("LEFT", b, "LEFT", 40, h > 28 and 7 or 0)
+	b.text:SetPoint("RIGHT", b, "RIGHT", -26, h > 28 and 7 or 0)
+	b.why = Text(b, "body", 11, "textDim")
+	b.why:SetPoint("TOPLEFT", b.text, "BOTTOMLEFT", 0, -2)
+	b.arrow = Glyph(b, "chevronRight", 10)
+	b.arrow:SetPoint("RIGHT", b, "RIGHT", -8, 0)
+	Theme:Tint(b.arrow, "textDim")
+	b:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+	b:SetScript("OnClick", function() PickGuide(this.guide, arg1) end)
+	b:SetScript("OnEnter", function()
+		Theme:ShowTip(this, "RIGHT", this.guide, { "Left-click: Open beside the route", "Right-click: Load in this tab" })
+	end)
+	b:SetScript("OnLeave", function() Theme:HideTip(this) end)
+	return b
+end
+
+-- Two texts on one line, the right one right-aligned: a level and its time.
+local function CardLine(c, y)
+	local l = Text(c, "body", 13)
+	l:SetPoint("TOPLEFT", c, "TOPLEFT", 14, y)
+	local r = Text(c, "body", 13)
+	r:SetPoint("TOPRIGHT", c, "TOPRIGHT", -14, y)
+	r:SetJustifyH("RIGHT")
+	return { l, r }
+end
+
+ui.cards = {}
+for _, def in ipairs(PANELS) do ui.cards[def.key] = Card(def) end
+for i = 1, 5 do
+	ui.cards.history.rows[i] = CardGuideRow(ui.cards.history, i, 26)
+	ui.cards.suggested.rows[i] = CardGuideRow(ui.cards.suggested, i, 34)
+	ui.cards.levels.rows[i] = CardLine(ui.cards.levels, -38 - (i - 1) * 22)
+end
+ui.cards.gold.rows[1] = CardLine(ui.cards.gold, -44)
+ui.cards.gold.rows[2] = CardLine(ui.cards.gold, -72)
+ui.cards.gold.rows[1][1]:SetText("Today's earnings")
+ui.cards.gold.rows[2][1]:SetText("This week")
+do
+	local more = CreateFrame("Button", nil, ui.cards.levels)
+	more:SetHeight(20)
+	more:SetWidth(90)
+	more:SetPoint("BOTTOMLEFT", ui.cards.levels, "BOTTOMLEFT", 10, 10)
+	more.label = Text(more, "body2", 12, "accentGlow")
+	more.label:SetPoint("LEFT", more, "LEFT", 4, 0)
+	more.label:SetText("See more")
+	more.arrow = Glyph(more, "chevronRight", 9)
+	more.arrow:SetPoint("LEFT", more.label, "RIGHT", 4, 0)
+	Theme:Tint(more.arrow, "accentGlow")
+	more:SetScript("OnClick", function()
+		view.page, view.offset = "levels", 0
+		HideOptions()
+		Refresh()
+	end)
+	more:SetScript("OnEnter", function() Theme:TextColor(this.label, "text") end)
+	more:SetScript("OnLeave", function() Theme:TextColor(this.label, "accentGlow") end)
+	ui.cards.levels.more = more
+end
+
+-- Where each shown panel goes: two across, two down, in PANELS' order.
+local CORNERS = {
+	{ "TOPLEFT", "TOPLEFT", 12, -12, "BOTTOMRIGHT", "CENTER", -6, 6 },
+	{ "TOPLEFT", "TOP", 6, -12, "BOTTOMRIGHT", "RIGHT", -12, 6 },
+	{ "TOPLEFT", "LEFT", 12, -6, "BOTTOMRIGHT", "BOTTOM", -6, 12 },
+	{ "TOPLEFT", "CENTER", 6, -6, "BOTTOMRIGHT", "BOTTOMRIGHT", -12, 12 },
+}
+
+local function PlaceCards()
+	local hidden, n = Char().browserpanels or {}, 0
+	for _, def in ipairs(PANELS) do
+		local c = ui.cards[def.key]
+		if hidden[def.key] then
+			c:Hide()
+		else
+			n = n + 1
+			local at = CORNERS[n]
+			c:ClearAllPoints()
+			c:SetPoint(at[1], home, at[2], at[3], at[4])
+			c:SetPoint(at[5], home, at[6], at[7], at[8])
+			c:Show()
+		end
+	end
+	ui.homeEmpty = n == 0
+end
+
+local function CoinText(copper)
+	local out = {}
+	for _, part in ipairs(Browser.Coins(copper)) do
+		table.insert(out, Code(Theme.COIN_COLORS[part[2]]) .. part[1] .. part[2] .. "|r")
+	end
+	return table.concat(out, " ")
+end
+
+local function PaintGuideCard(c, list, empty)
+	for i, b in ipairs(c.rows) do
+		local s = list[i]
+		if s then
+			b.guide = s.guide
+			local kind, text = AegisPathfinder:GuideBadge(s.guide)
+			b.badge:SetKind(kind, text)
+			b.text:SetText(Browser.Title(s.guide))
+			b.why:SetText(s.why or "")
+			b:Show()
+		else
+			b.guide = nil
+			b:Hide()
+		end
+	end
+	c.empty:SetText(empty)
+	if list[1] then c.empty:Hide() else c.empty:Show() end
+end
+
+local function PaintHome()
+	local self = AegisPathfinder
+	PlaceCards()
+	local recent = {}
+	for _, g in ipairs(self:RecentGuides(5)) do table.insert(recent, { guide = g }) end
+	PaintGuideCard(ui.cards.history, recent, "The guides you open show here.")
+	PaintGuideCard(ui.cards.suggested, self:BrowserSuggestions(),
+		"Nothing new at your level just now: the categories have every guide.")
+	local times = self:LevelTimes()
+	for i, line in ipairs(ui.cards.levels.rows) do
+		local t = times[i]
+		if t then
+			line[1]:SetText("Level " .. t.level)
+			line[2]:SetText(Browser.Duration(t.seconds) .. (t.current and " so far" or ""))
+			Theme:TextColor(line[2], t.current and "accent" or "textDim")
+		else
+			line[1]:SetText("")
+			line[2]:SetText("")
+		end
+	end
+	ui.cards.levels.empty:SetText("Counted from now on, while you play.")
+	if times[1] then ui.cards.levels.empty:Hide() else ui.cards.levels.empty:Show() end
+	local today, week = self:GoldEarned()
+	ui.cards.gold.rows[1][2]:SetText(CoinText(today))
+	ui.cards.gold.rows[2][2]:SetText(CoinText(week))
+	ui.cards.gold.empty:Hide()
+end
+
+--[[ The right pane: the guide you point at ------------------------------------- ]]
+
+local pane = CreateFrame("Frame", nil, frame)
+pane:SetWidth(PANE_W)
+pane:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -1, -HEADER_H - 1)
+pane:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -1, 1)
+Theme:CapStrip(pane, "panel3", "bottom")
+local paneEdge = pane:CreateTexture(nil, "BORDER")
+paneEdge:SetTexture(Theme.texture.solid)
+paneEdge:SetWidth(1)
+paneEdge:SetPoint("TOPLEFT", pane, "TOPLEFT", 0, 0)
+paneEdge:SetPoint("BOTTOMLEFT", pane, "BOTTOMLEFT", 0, 0)
+Theme:Tint(paneEdge, "border")
+ui.pane = pane
+
+ui.picture = AegisPathfinder.Pictures:Create(pane, PIC_W, PIC_H)
+ui.picture:SetPoint("TOP", pane, "TOP", 0, -14)
+ui.name = Text(pane, "display", 17)
+ui.name:SetPoint("TOPLEFT", ui.picture, "BOTTOMLEFT", 0, -10)
+ui.name:SetWidth(PIC_W)
+ui.kind = Text(pane, "body", 12, "textDim")
+ui.kind:SetPoint("TOPLEFT", ui.name, "BOTTOMLEFT", 0, -4)
+ui.kind:SetWidth(PIC_W)
+ui.needs = Text(pane, "body", 12)
+ui.needs:SetPoint("TOPLEFT", ui.kind, "BOTTOMLEFT", 0, -2)
+ui.progress = Theme:ProgressBar(pane, 6)
+ui.progress:SetPoint("TOPLEFT", ui.needs, "BOTTOMLEFT", 0, -12)
+ui.progress:SetWidth(PIC_W - 44)
+ui.pct = Text(pane, "body", 11, "textDim")
+ui.pct:SetPoint("LEFT", ui.progress, "RIGHT", 8, 0)
+ui.load = Theme:PanelButton(pane, "Load", PIC_W, 26)
+ui.load:SetPoint("TOPLEFT", ui.progress, "BOTTOMLEFT", 0, -16)
+ui.load:SetScript("OnClick", function() PickGuide(view.selected, "RightButton") end)
+ui.beside = Theme:PanelButton(pane, "Open beside the route", PIC_W, 26)
+ui.beside:SetPoint("TOPLEFT", ui.load, "BOTTOMLEFT", 0, -6)
+ui.beside:SetScript("OnClick", function() PickGuide(view.selected, "LeftButton") end)
+ui.paneHint = Theme:FinePrint(pane, PIC_W)
+ui.paneHint:SetPoint("BOTTOMLEFT", pane, "BOTTOMLEFT", 14, 14)
+ui.paneHint:SetText("In the list: left-click a guide to open it beside the route, right-click to load it in this tab, shift-click to reset its progress.")
+
+local KINDS = {
+	optimized = "Optimized route", rxp = "RestedXP route", rxp_hc = "RestedXP Hardcore route",
+	zone = "Zone guide", turtle = "Custom zone", dungeon = "Dungeon guide",
+	class = "Class quest", profession = "Profession",
+}
+
+-- "Levels 20-21", "Level 10", "Skill 1-300".
+local function Needs(name, cat)
+	local lo, hi = AegisPathfinder:ParseGuideLevelRange(name)
+	if not lo then return "" end
+	if cat == "profession" then return string.format("Skill %d-%d", lo, hi) end
+	if lo == hi then return "Level " .. lo end
+	return string.format("Levels %d-%d", lo, hi)
+end
+
+PaintPane = function()
+	local self = AegisPathfinder
+	local name = view.selected
+	if name and not self.guides[name] then name = nil end
+	ui.picture:SetGuide(name)
+	if not name then
+		ui.name:SetText("Pick a guide")
+		ui.kind:SetText("Point at one in the list to see it here.")
+		ui.needs:SetText("")
+		ui.progress:Hide(); ui.pct:Hide(); ui.load:Hide(); ui.beside:Hide()
+		return
+	end
+	local cat = self:GetGuideCategory(name)
+	ui.name:SetText(Browser.Title(name))
+	ui.kind:SetText(KINDS[cat] or "Guide")
+	ui.needs:SetText(Needs(name, cat))
+	local diff = self:GuideDifficulty(name, UnitLevel("player"))
+	Theme:TextColor(ui.needs, diff and Theme.LEVEL_COLORS[diff] or "text")
+	local p = self:GuideProgress(name)
+	ui.progress:SetValue(p)
+	ui.pct:SetText(math.floor(p * 100) .. "%")
+	ui.progress:Show(); ui.pct:Show(); ui.load:Show(); ui.beside:Show()
+end
+
+--[[ The list's ⋮: its four switches, or on Home which panels show -------------- ]]
+
+local OPTIONS_W = 320
+local options = CreateFrame("Frame", nil, frame)
+options:SetWidth(OPTIONS_W)
+options:SetPoint("TOPRIGHT", ui.dots, "BOTTOMRIGHT", 0, -2)
+options:SetFrameLevel(frame:GetFrameLevel() + 30)
+Theme:Panel(options, "panel2", false)
+options:EnableMouse(true)
+options:Hide()
+ui.options = options
+
+local LIST_SWITCHES = {
+	{ "browsercolour", "Colour guides by difficulty" },
+	{ "browserticks", "Tick finished guides" },
+	{ "browserhidedone", "Hide finished and outlevelled guides" },
+	{ "browserstars", "Star suggested guides" },
+}
+
+-- A switch in the menu, under the one before it in its set: a label that
+-- wraps makes its row taller, and the next goes below it.
+local function OptionSwitch(prev, label, onChange)
+	local s = Theme:Switch(options, label, onChange)
+	if prev then
+		s:SetPoint("TOPLEFT", prev, "BOTTOMLEFT", 0, -6)
+	else
+		s:SetPoint("TOPLEFT", options, "TOPLEFT", 12, -10)
+	end
+	s.h = s:Fit(OPTIONS_W - 24)
+	return s
+end
+
+ui.listSwitches, ui.panelSwitches = {}, {}
+for i, def in ipairs(LIST_SWITCHES) do
+	local key = def[1]
+	ui.listSwitches[i] = OptionSwitch(ui.listSwitches[i - 1], def[2], function(on)
+		Char()[key] = on
+		Refresh()
+	end)
+	ui.listSwitches[i].key = key
+end
+for i, def in ipairs(PANELS) do
+	local key = def.key
+	ui.panelSwitches[i] = OptionSwitch(ui.panelSwitches[i - 1], "Show " .. string.lower(def.title), function(on)
+		local hidden = Char().browserpanels or {}
+		Char().browserpanels = hidden
+		hidden[key] = not on or nil
+		Refresh()
+	end)
+	ui.panelSwitches[i].key = key
+end
+
+-- As tall as the set it shows.
+local function OptionsHeight(set)
+	local h = 14
+	for _, s in ipairs(set) do h = h + s.h + 6 end
+	return h
+end
+
+local function PaintOptions(homeMenu)
+	local hidden = Char().browserpanels or {}
+	ui.options:SetHeight(OptionsHeight(homeMenu and ui.panelSwitches or ui.listSwitches))
+	for _, s in ipairs(ui.listSwitches) do
+		s:SetOn(Char()[s.key])
+		if homeMenu then s:Hide() else s:Show() end
+	end
+	for _, s in ipairs(ui.panelSwitches) do
+		s:SetOn(not hidden[s.key])
+		if homeMenu then s:Show() else s:Hide() end
+	end
+end
+
+--[[ Building the view ------------------------------------------------------------ ]]
+
+local function Label(key)
+	for _, c in ipairs(Browser.CATEGORIES) do
+		if c.key == key then return c.label end
+	end
+	return key or ""
+end
+
+-- The folder `view.path` names in category `key`; any of the path no
+-- longer there is dropped.
+local function OpenFolder(key)
+	local folder = AegisPathfinder:BrowserCategory(key)
+	-- The folders above the one open: it is the title, not a crumb.
+	local crumbs = {}
+	for i, title in ipairs(view.path) do
+		local found
+		for _, item in ipairs(folder.items) do
+			if item.folder and item.folder.title == title then found = item.folder end
+		end
+		if not found then
+			for n = table.getn(view.path), i, -1 do table.remove(view.path, n) end
+			break
+		end
+		table.insert(crumbs, folder.title)
+		folder = found
+	end
+	if not crumbs[1] then crumbs = { "Guides" } end
+	return folder, table.concat(crumbs, SEP)
+end
+
+local function GuideEntries(list, opts)
+	local out, level, hide = {}, UnitLevel("player"), Char().browserhidedone
+	for _, item in ipairs(list) do
+		-- A folder's items are tables; a search's, guide names.
+		local g = type(item) == "table" and item.guide or item
+		if type(item) == "table" and item.folder then
+			table.insert(out, item)
+		elseif not (hide and AegisPathfinder:IsGuideDoneWith(g, level)) then
+			table.insert(out, { guide = g, badge = opts.badge, why = type(item) == "table" and item.why or nil })
+		end
+	end
+	return out
+end
+
+-- The rows for what is open now, the bar's crumb and title, whether there is
+-- a way back, and what to say when there are no rows.
+local function Build()
+	local self = AegisPathfinder
+	if view.search ~= "" then
+		return GuideEntries(self:BrowserSearch(view.search), { badge = true }), "Search",
+			'"' .. view.search .. '"', true, "No guide's name has that in it."
+	end
+	if view.page == "levels" then
+		local out = {}
+		for _, t in ipairs(self:LevelTimes()) do
+			table.insert(out, { info = "Level " .. t.level, current = t.current,
+				right = Browser.Duration(t.seconds) .. (t.current and " so far" or "") })
+		end
+		return out, "Home", "Time at each level", true,
+			"Nothing counted yet: time is counted from now on, while you play."
+	end
+	if view.tab == "current" then
+		local out = {}
+		for i, tab in ipairs(self:EnsureTabs()) do
+			if tab.guide and self.guides[tab.guide] then
+				table.insert(out, { guide = tab.guide, badge = true, why = i == 1 and "Your route" or "Beside the route" })
+			end
+		end
+		return out, "Open in the guide window", "Current", false, "No guide is open."
+	end
+	if view.tab == "recent" then
+		local out, by = {}, {}
+		for _, g in ipairs(self:RecentGuides(Browser.RECENT_MAX)) do
+			local cat = self:BrowserCategoryOf(g)
+			by[cat] = by[cat] or {}
+			table.insert(by[cat], g)
+		end
+		for _, c in ipairs(Browser.CATEGORIES) do
+			if by[c.key] then
+				table.insert(out, { header = c.label })
+				for _, g in ipairs(by[c.key]) do table.insert(out, { guide = g, badge = true }) end
+			end
+		end
+		return out, "The guides you opened lately", "Recent", false, "The guides you open show here."
+	end
+	if view.category then
+		local folder, crumb = OpenFolder(view.category)
+		local empty = view.category == "favorites" and "Star a guide to keep it here: point at it in a list and click its star."
+			or "No guides here."
+		return GuideEntries(folder.items, { badge = view.category == "favorites" }), crumb, folder.title,
+			table.getn(view.path) > 0, empty
+	end
+	return {}, string.format("Level %d %s", UnitLevel("player") or 1, UnitClass("player") or ""), "Home", false, ""
+end
+
+local function PaintHeader()
+	local db = Char()
+	local noTab = view.search ~= "" or view.page
+	for _, b in ipairs(ui.tabs) do b:SetActive(not noTab and b.key == view.tab) end
+	for _, b in ipairs(ui.categories) do
+		local on = not noTab and view.tab == nil and b.key == view.category
+		if on then b.fill:Show(); b.bar:Show() else b.fill:Hide(); b.bar:Hide() end
+	end
+	if db.isbranching then frame.returnBtn:Show() else frame.returnBtn:Hide() end
+end
+
+--- Lay the middle out with or without the right pane beside it.
+local function ShowPane(on)
+	ui.content:ClearAllPoints()
+	ui.content:SetPoint("TOPLEFT", ui.side, "TOPRIGHT", 0, 0)
+	ui.content:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -1 - (on and PANE_W or 0), 1)
+	if on then ui.pane:Show() else ui.pane:Hide() end
+end
+
+function AegisPathfinder:UpdateGuideListPanel()
+	if not frame:IsVisible() then return end
+	PaintHeader()
+	local rows, crumb, title, back, empty = Build()
+	entries = rows
+	ui.crumb:SetText(crumb)
+	ui.title:SetText(title)
+	ui.crumb:ClearAllPoints()
+	ui.crumb:SetPoint("TOPLEFT", bar, "TOPLEFT", back and 40 or 16, -9)
+	if back then ui.back:Show() else ui.back:Hide() end
+	local homeView = view.tab == "home" and view.search == "" and not view.page
+	PaintOptions(homeView)
+	if homeView then
+		ui.list:Hide()
+		ui.slider:Hide()
+		ShowPane(false)
+		ui.home:Show()
+		PaintHome()
+		return
+	end
+	ui.home:Hide()
+	ui.list:Show()
+	ShowPane(view.page == nil)
+	-- The stars, worked out once rather than for every row.
+	local opts = {}
+	if Char().browserstars then
+		opts.suggested = {}
+		for _, s in ipairs(self:BrowserSuggestions()) do opts.suggested[s.guide] = true end
+	end
+	ui.opts = opts
+	ui.empty:SetText(empty)
+	if rows[1] then ui.empty:Hide() else ui.empty:Show() end
+	ui.PaintRows()
+	PaintPane()
+end
+
+--[[ Size --------------------------------------------------------------------------- ]]
+
+--- Size the browser `w` by `h`, kept to what fits its layout; `save` keeps
+--- it for next time. Nil sizes are the ones saved, or the default.
+function AegisPathfinder:SizeGuideBrowser(w, h, save)
+	local profile = self.db and self.db.profile or {}
+	w = math.max(MIN_W, math.min(MAX_W, math.floor(tonumber(w) or profile.guidelistwidth or DEFAULT_W)))
+	h = math.max(MIN_H, math.min(MAX_H, math.floor(tonumber(h) or profile.guidelistheight or DEFAULT_H)))
+	frame:SetWidth(w)
+	frame:SetHeight(h)
+	if save then profile.guidelistwidth, profile.guidelistheight = w, h end
+	if frame:IsVisible() and ui.list:IsShown() then ui.PaintRows() end
+	return w, h
+end
+
+-- Resize grip, bottom right: sized by hand rather than with StartSizing,
+-- which re-anchors the window as it sees fit (ObjectivesFrame.lua).
+do
+	local grip = CreateFrame("Frame", nil, frame)
+	grip:SetWidth(12)
+	grip:SetHeight(12)
+	grip:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 2)
+	grip:EnableMouse(true)
+	grip:SetFrameLevel(frame:GetFrameLevel() + 6)
+	local tex = grip:CreateTexture(nil, "OVERLAY")
+	tex:SetTexture(Theme.texture.grip)
+	tex:SetAllPoints(grip)
+	Theme:Tint(tex, "textDim", 0.55)
+	local function cursor()
+		local scale = frame:GetEffectiveScale()
+		local x, y = GetCursorPosition()
+		return x / scale, y / scale
+	end
+	local function stop()
+		grip.sizing = nil
+		grip:SetScript("OnUpdate", nil)
+		Theme:Tint(tex, "textDim", 0.55)
+	end
+	local function sizing()
+		local s = grip.sizing
+		if not s then return end
+		if s.poll and not IsMouseButtonDown("LeftButton") then return stop() end
+		local x, y = cursor()
+		AegisPathfinder:SizeGuideBrowser(s.w + x - s.x, s.h + s.y - y, true)
+	end
+	grip:SetScript("OnMouseDown", function()
+		Theme:Tint(tex, "accentGlow", 1)
+		Theme:AnchorTopLeft(frame)
+		local x, y = cursor()
+		grip.sizing = { x = x, y = y, w = frame:GetWidth(), h = frame:GetHeight(),
+			poll = IsMouseButtonDown and IsMouseButtonDown("LeftButton") and true or false }
+		grip:SetScript("OnUpdate", sizing)
+	end)
+	grip:SetScript("OnMouseUp", function()
+		sizing()
+		stop()
+		-- Grown from its top left: keep it there next time it opens.
+		Theme:PositionSaver("guidelistframe")(frame)
+	end)
+	grip:SetScript("OnEnter", function()
+		Theme:Tint(tex, "accent", 1)
+		Theme:ShowTip(this, "LEFT", "Drag to resize")
+	end)
+	grip:SetScript("OnLeave", function()
+		if not grip.sizing then Theme:Tint(tex, "textDim", 0.55) end
+		Theme:HideTip(this)
+	end)
+	frame.grip = grip
+end
+
+--[[ Opening and closing ------------------------------------------------------------ ]]
 
 frame:SetScript("OnShow", function()
-    offset = 0
-    -- Snap beside the status card only if the player has not dragged this
-    -- window somewhere of their own; otherwise reopening would undo the move.
-    if not Theme:RestorePosition(this, "guidelistframe") then
-        local quad, vhalf, hhalf = AegisPathfinder.GetQuadrant(AegisPathfinder.objectiveframe)
-        local anchpoint = (vhalf == "TOP" and "BOTTOM" or "TOP") .. hhalf
-        this:ClearAllPoints()
-        this:SetPoint(quad, AegisPathfinder.objectiveframe, anchpoint)
-    end
-    AegisPathfinder:UpdateGuideListPanel()
-    Theme:FadeIn(this, 0.7)
+	local self = AegisPathfinder
+	self:SizeGuideBrowser()
+	-- Snap beside the guide only while the player has not dragged frame
+	-- window somewhere of their own; reopening must not undo a move.
+	if not Theme:RestorePosition(frame, "guidelistframe") then
+		local quad, vhalf, hhalf = self.GetQuadrant(self.objectiveframe)
+		frame:ClearAllPoints()
+		frame:SetPoint(quad, self.objectiveframe, (vhalf == "TOP" and "BOTTOM" or "TOP") .. hhalf)
+	end
+	if not view.opened then
+		-- Where it was left, from one session to the next: a tab, or a
+		-- category's key.
+		view.opened = true
+		local where = self.db.char.browsertab
+		view.tab, view.category = "home", nil
+		if where == "current" or where == "recent" then
+			view.tab = where
+		else
+			for _, c in ipairs(Browser.CATEGORIES) do
+				if c.key == where and not c.soon then view.tab, view.category = nil, where end
+			end
+		end
+	end
+	self:UpdateGuideListPanel()
+	Theme:FadeIn(frame, 0.7)
 end)
-
-frame:EnableMouseWheel()
-frame:SetScript("OnMouseWheel", function()
-    local val = arg1
-    local oldOffset = offset
-    offset = offset - val * NUMROWS
-    local maxOffset = math.max(0, table.getn(displayList) - TOTALROWS)
-    if offset > maxOffset then offset = maxOffset end
-    if offset < 0 then offset = 0 end
-
-    if offset ~= oldOffset then
-        slider.updating = true
-        slider:SetValue(offset)
-        slider.updating = false
-        AegisPathfinder:UpdateGuideListPanel()
-    end
+frame:SetScript("OnHide", function()
+	HideOptions()
+	Theme:HideTip()
 end)
 
 table.insert(UISpecialFrames, "AegisPathfinderGuideList")
 
--- Public API: open guide list with optional level filter preset
-function AegisPathfinder:ShowGuideList(withLevelFilter)
-    if withLevelFilter then
-        levelFilterOn = true
-    end
-    self.guidelistframe:Show()
+--- Open the guide browser. `atLevel` opens it on Home, whose Suggested
+--- guides panel is what fits your level now (the old list's level filter).
+function AegisPathfinder:ShowGuideList(atLevel)
+	if atLevel then
+		view.opened = true
+		view.tab, view.category, view.path, view.page = "home", nil, {}, nil
+		self.db.char.browsertab = "home"
+	end
+	self.guidelistframe:Show()
 end
 
-function AegisPathfinder:UpdateGuideListPanel()
-    if not frame or not frame:IsVisible() then return end
-
-    -- Update title to show branch status
-    if self.db.char.isbranching then
-        frame.title:SetText("GUIDE LIST |cff00ff00(BRANCHING)|r")
-    else
-        frame.title:SetText("GUIDE LIST")
-    end
-
-    -- Show/hide Return to Main button
-    if self.db.char.isbranching then
-        frame.returnBtn:Show()
-        frame.returnBtn:Enable()
-    else
-        frame.returnBtn:Hide()
-    end
-
-    if self.db.char.guidecategory == nil then self.db.char.guidecategory = "all" end
-    local activeCategory = self.db.char.guidecategory
-
-    filterCheck:SetChecked(levelFilterOn)
-    for _, tab in ipairs(self.guidecategorytabs or {}) do
-        tab:SetActive(tab.categoryKey == activeCategory)
-    end
-
-    -- Build categorized display list (fresh table each time)
-    displayList = {}
-    local turtleGuides = {}
-    local optimizedGuides = {}
-    local rxpGuides = {}
-    local rxphcGuides = {}
-    local zoneGuides = {}
-    local classGuides = {}
-    local professionGuides = {}
-    local seen = {}
-
-    local playerLevel = UnitLevel("player") or 0
-    local margin = 5
-
-    for _, name in ipairs(self.guidelist) do
-        -- Class quest guides: your class's, that your race has.
-        if not self:IsRoutePackGuide(name) and not seen[name]
-            and (self:GetGuideCategory(name) ~= "class" or self:IsMyClassGuide(name)) then
-            seen[name] = true
-
-            local include = true
-            if levelFilterOn then
-                local minLevel, maxLevel = self:ParseGuideLevelRange(name)
-                if minLevel and maxLevel then
-                    if playerLevel < (minLevel - margin) or playerLevel > (maxLevel + margin) then
-                        include = false
-                    end
-                end
-            end
-
-            if include then
-                local cat = self:GetGuideCategory(name)
-                if activeCategory ~= "all" and cat ~= activeCategory then
-                    include = false
-                end
-            end
-
-            if include then
-                local cat = self:GetGuideCategory(name)
-                if cat == "turtle" then
-                    table.insert(turtleGuides, name)
-                elseif cat == "optimized" then
-                    table.insert(optimizedGuides, name)
-                elseif cat == "rxp" then
-                    table.insert(rxpGuides, name)
-                elseif cat == "rxp_hc" then
-                    table.insert(rxphcGuides, name)
-                elseif cat == "profession" then
-                    table.insert(professionGuides, name)
-                elseif cat == "class" then
-                    table.insert(classGuides, name)
-                else
-                    table.insert(zoneGuides, name)
-                end
-            end
-        end
-    end
-
-    table.sort(turtleGuides, SortGuidesByLevel)
-    table.sort(optimizedGuides, SortGuidesByLevel)
-    table.sort(rxpGuides, SortGuidesByLevel)
-    table.sort(rxphcGuides, SortGuidesByLevel)
-    table.sort(zoneGuides, SortGuidesByLevel)
-    table.sort(classGuides, SortGuidesByLevel)
-    table.sort(professionGuides, SortGuidesByLevel)
-
-    if table.getn(turtleGuides) > 0 then
-        table.insert(displayList, { header = true, text = "--- Turtle-lineage Custom Zones ---" })
-        for _, name in ipairs(turtleGuides) do
-            table.insert(displayList, { guide = name })
-        end
-    end
-
-    if table.getn(optimizedGuides) > 0 then
-        table.insert(displayList, { header = true, text = "--- Optimized Guides ---" })
-        for _, name in ipairs(optimizedGuides) do
-            table.insert(displayList, { guide = name })
-        end
-    end
-
-    if table.getn(rxpGuides) > 0 then
-        table.insert(displayList, { header = true, text = "--- RXP Guides ---" })
-        for _, name in ipairs(rxpGuides) do
-            table.insert(displayList, { guide = name })
-        end
-    end
-
-    if table.getn(rxphcGuides) > 0 then
-        table.insert(displayList, { header = true, text = "--- RXP Hardcore Guides ---" })
-        for _, name in ipairs(rxphcGuides) do
-            table.insert(displayList, { guide = name })
-        end
-    end
-
-    if table.getn(zoneGuides) > 0 then
-        table.insert(displayList, { header = true, text = "--- Zone Guides ---" })
-        for _, name in ipairs(zoneGuides) do
-            table.insert(displayList, { guide = name })
-        end
-    end
-
-    if table.getn(classGuides) > 0 then
-        table.insert(displayList, { header = true, text = "--- Class Quests ---" })
-        for _, name in ipairs(classGuides) do
-            table.insert(displayList, { guide = name })
-        end
-    end
-
-    if table.getn(professionGuides) > 0 then
-        table.insert(displayList, { header = true, text = "--- Professions ---" })
-        for _, name in ipairs(professionGuides) do
-            table.insert(displayList, { guide = name })
-        end
-    end
-
-    -- Clamp offset and update slider
-    local maxOffset = math.max(0, table.getn(displayList) - TOTALROWS)
-    if offset > maxOffset then offset = maxOffset end
-    if offset < 0 then offset = 0 end
-
-    if maxOffset > 0 then
-        slider:Show()
-        slider.updating = true
-        slider:SetMinMaxValues(0, maxOffset)
-        slider:SetValue(offset)
-        slider.updating = false
-    else
-        slider:Hide()
-    end
-
-    -- Update rows (never hide — just clear text for unused slots, matching original pattern)
-    for i, row in ipairs(rows) do
-        local entry = displayList[i + offset]
-        if entry and entry.header then
-            row.text:SetText("|cffffd100" .. entry.text .. "|r")
-            row.guide = nil
-            row.badge:Hide()
-            row:SetChecked(false)
-            row:Enable()
-        elseif entry and entry.guide then
-            row:Enable()
-            local name = entry.guide
-            row.guide = name
-
-            if self:IsTemplateGuide(name) then row.badge:Show() else row.badge:Hide() end
-
-            -- Color by level range: green = in range, yellow = +-5, red = out of range
-            local minLevel, maxLevel = self:ParseGuideLevelRange(name)
-            local colorCode
-            if minLevel and maxLevel then
-                if playerLevel >= minLevel and playerLevel <= maxLevel then
-                    colorCode = "|cff00ff00" -- green: in range
-                elseif playerLevel >= (minLevel - 5) and playerLevel <= (maxLevel + 5) then
-                    colorCode = "|cffffff00" -- yellow: within 5 levels
-                else
-                    colorCode = "|cffff4444" -- red: out of range
-                end
-            else
-                colorCode = "|cffcccccc" -- gray: no level info
-            end
-
-            -- Completion percentage
-            local complete
-            if self.db.char.currentguide == name and self.current and self.actions then
-                complete = (self.current - 1) / table.getn(self.actions)
-            else
-                complete = self.db.char.completion[name]
-            end
-
-            local text
-            if complete and complete ~= 0 then
-                local pct = math.floor(complete * 100)
-                text = string.format("%s%s (%d%%)|r", colorCode, name, pct)
-            else
-                text = colorCode .. name .. "|r"
-            end
-
-            if self.db.char.isbranching and self.db.char.branchsavedguide == name then
-                text = "|cff00ff00[Main]|r " .. text
-            end
-
-            row.text:SetText(text)
-            row:SetChecked(self.db.char.currentguide == name)
-        else
-            row.guide = nil
-            row.text:SetText("")
-            row.badge:Hide()
-            row:SetChecked(false)
-            row:Enable()
-        end
-    end
-end
+AegisPathfinder.browserview = view
+AegisPathfinder.browserui = ui

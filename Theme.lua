@@ -114,6 +114,7 @@ Theme.texture = {
 	shadow      = MEDIA .. "shadow",
 	progress    = MEDIA .. "progress-fill",
 	minimapLogo = MEDIA .. "minimap-logo",
+	logo        = MEDIA .. "logo",
 	wordmark    = MEDIA .. "wordmark",
 	grip        = MEDIA .. "grip",
 	navArrow    = MEDIA .. "nav-arrow",
@@ -145,6 +146,67 @@ Theme.glyph = {
 	party        = MEDIA .. "icons\\party",
 	caretUp      = MEDIA .. "icons\\caret-up",
 	caretDown    = MEDIA .. "icons\\caret-down",
+	-- The guide browser and the guide window's menu.
+	star         = MEDIA .. "icons\\star",
+	search       = MEDIA .. "icons\\search",
+	gear         = MEDIA .. "icons\\gear",
+	folder       = MEDIA .. "icons\\folder",
+	heart        = MEDIA .. "icons\\heart",
+	calendar     = MEDIA .. "icons\\calendar",
+	medal        = MEDIA .. "icons\\medal",
+	dots         = MEDIA .. "icons\\dots",
+	lock         = MEDIA .. "icons\\lock",
+	dashed       = MEDIA .. "icons\\dashed",
+	wand         = MEDIA .. "icons\\wand",
+	reload       = MEDIA .. "icons\\auto",
+	reset        = MEDIA .. "icons\\expand",
+	book         = MEDIA .. "icons\\train",
+}
+
+--[[ The guide browser's pictures (GuidePictures.lua) that are not in the
+	client's own 1.12 files. Turtle WoW's dungeon loading screens, by the
+	dungeon's name -- the ones its client shows on the way in, with the art
+	of its Mysteries of Azeroth, Lionel Schramm's among it. And the custom
+	zones' world maps, explored, as Turtle WoW draws them: built from the
+	client's tiles and pfUI's overlay data, as the other zones are, they
+	came out wrong in game. ]]
+Theme.loadscreen = {
+	["Ragefire Chasm"]     = MEDIA .. "loadscreens\\ragefire-chasm",
+	["Wailing Caverns"]    = MEDIA .. "loadscreens\\wailing-caverns",
+	["The Deadmines"]      = MEDIA .. "loadscreens\\deadmines",
+	["Blackfathom Deeps"]  = MEDIA .. "loadscreens\\blackfathom-deeps",
+	["The Stockade"]       = MEDIA .. "loadscreens\\stockade",
+	["Gnomeregan"]         = MEDIA .. "loadscreens\\gnomeregan",
+	["Razorfen Kraul"]     = MEDIA .. "loadscreens\\razorfen-kraul",
+	["Scarlet Monastery"]  = MEDIA .. "loadscreens\\scarlet-monastery",
+	["Razorfen Downs"]     = MEDIA .. "loadscreens\\razorfen-downs",
+	["Uldaman"]            = MEDIA .. "loadscreens\\uldaman",
+	["Zul'Farrak"]         = MEDIA .. "loadscreens\\zulfarrak",
+	["Maraudon"]           = MEDIA .. "loadscreens\\maraudon",
+	["Sunken Temple"]      = MEDIA .. "loadscreens\\sunken-temple",
+	["Blackrock Depths"]   = MEDIA .. "loadscreens\\blackrock-depths",
+	["Frostmane Hollow"]   = MEDIA .. "loadscreens\\frostmane-hollow",
+	["Windhorn Canyon"]    = MEDIA .. "loadscreens\\windhorn-canyon",
+	["Dragonmaw Retreat"]  = MEDIA .. "loadscreens\\dragonmaw-retreat",
+	["Stormwrought Ruins"] = MEDIA .. "loadscreens\\stormwrought-ruins",
+	["Crescent Grove"]     = MEDIA .. "loadscreens\\crescent-grove",
+	["Gilneas City"]       = MEDIA .. "loadscreens\\gilneas-city",
+	["Hateforge Quarry"]   = MEDIA .. "loadscreens\\hateforge-quarry",
+}
+Theme.zonemap = {
+	["Balor"]                = MEDIA .. "maps\\balor",
+	["Blackstone Island"]    = MEDIA .. "maps\\blackstone-island",
+	["Gillijim's Isle"]      = MEDIA .. "maps\\gillijims-isle",
+	["Gilneas"]              = MEDIA .. "maps\\gilneas",
+	["Grim Reaches"]         = MEDIA .. "maps\\grim-reaches",
+	["Hyjal"]                = MEDIA .. "maps\\hyjal",
+	["Icepoint Rock"]        = MEDIA .. "maps\\icepoint-rock",
+	["Lapidis Isle"]         = MEDIA .. "maps\\lapidis-isle",
+	["Moonwhisper Coast"]    = MEDIA .. "maps\\moonwhisper-coast",
+	["Northwind"]            = MEDIA .. "maps\\northwind",
+	["Scarlet Enclave"]      = MEDIA .. "maps\\scarlet-enclave",
+	["Tel'Abim"]             = MEDIA .. "maps\\tel-abim",
+	["Thalassian Highlands"] = MEDIA .. "maps\\thalassian-highlands",
 }
 
 Theme.font = {
@@ -204,6 +266,29 @@ Theme.actionIconByName = {
 	TRAIN          = Theme.actionIcon.t,
 	DIE            = Theme.actionIcon.D,
 	PET            = Theme.actionIcon.P,
+}
+
+--[[ The guide browser's colours (GuideListFrame.lua, GuidePictures.lua).
+
+	A guide by how it suits your level, as the quest log colours a quest:
+	grey once you have outlevelled it, green when you are in its range, then
+	yellow, orange and red the further short of it you are. The classes'
+	colours are the client's own, and the coins' those of a money frame. The
+	same in every theme, like the step bands. ]]
+Theme.LEVEL_COLORS = {
+	grey   = { 0.50, 0.50, 0.50 },
+	green  = { 0.25, 0.75, 0.25 },
+	yellow = { 1.00, 1.00, 0.00 },
+	orange = { 1.00, 0.50, 0.25 },
+	red    = { 1.00, 0.10, 0.10 },
+}
+Theme.CLASS_COLORS = {
+	WARRIOR = { 0.78, 0.61, 0.43 }, PALADIN = { 0.96, 0.55, 0.73 }, HUNTER  = { 0.67, 0.83, 0.45 },
+	ROGUE   = { 1.00, 0.96, 0.41 }, PRIEST  = { 1.00, 1.00, 1.00 }, SHAMAN  = { 0.00, 0.44, 0.87 },
+	MAGE    = { 0.41, 0.80, 0.94 }, WARLOCK = { 0.58, 0.51, 0.79 }, DRUID   = { 1.00, 0.49, 0.04 },
+}
+Theme.COIN_COLORS = {
+	g = { 1.00, 0.82, 0.00 }, s = { 0.78, 0.78, 0.81 }, c = { 0.78, 0.47, 0.25 },
 }
 
 Theme.CORNER = 10        -- --radius:10px

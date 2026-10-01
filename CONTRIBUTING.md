@@ -58,6 +58,7 @@ That runs everything that can run without a WoW client:
 | `Tools/tests/test_professions.lua` | Generated guides through the real parsers: skill bands tile 1–300 for each faction, every rank is reached, and a gathering guide never sends a faction into the other side's starting zones or capitals |
 | `Tools/tests/test_dungeons.lua` | Dungeon chips and the guide-reference scan |
 | `Tools/tests/test_guidelist.lua` | Guide categorisation, tabs and badges, and a class quest guide's one level |
+| `Tools/tests/test_guidebrowser.lua` | The guide browser: Leveling's folders (packs, zone guides by continent, custom zones), a long folder split by level, a guide's zone from its title or its steps, only your class's quests; search, favourites, the recent list; the suggestions; the level and gold trackers; each kind of guide's picture, the map's tiles and overlays cut as the client cuts them and the crop; and the window -- Home's panels and hiding them, the level page, folders and back, pointing at a guide, the clicks, the star, the RestedXP pack switch, the list's four switches, search, Current, Recent, Return to Main, scrolling, the size limits and reopening where it was left |
 | `Tools/tests/test_activeframes.lua` | Active Items, Active Targets and Macros: which items and targets each step offers, targeting and raid marks, the generated AegisTarget/AegisItem macros, placement, the key bindings |
 | `Tools/tests/test_setup.lua` | First-time setup: when it opens, which guides and dungeons it offers, Solo Self-Found holding the other features off, and what Finish writes |
 | `Tools/tests/test_zoneguide.lua` | The Moonwhisper Coast guides through the real parser: each side's own quests and not the other's; every quest step with an id, a zone and a place to go; picked up, done, handed in in that order, and each quest after the one it follows (the Moro'gai story, the Horde's trips to Azshara and Mulgore and back); the quest log never past 20; the quests you may not have optional; group quests, what follows them and a trip made only for them in Group mode alone; a race's quest shown to that race only |
@@ -72,12 +73,12 @@ That runs everything that can run without a WoW client:
 | `Tools/tests/test_craftroute.lua` | The crafting route window and planned guides: rank steps placed where the skill cap runs out, crafts contiguous and parsed as skill steps, saving and restoring, the window's totals, rows, status line, re-planning only on change, and the scan button |
 | `Tools/tests/test_partysync.lua` | Sharing a guide with the party: step names that survive different step numbering, holding a finished step for the slowest partner without pulling anyone back, skipping out of a hold, the messages both ways, the throttle and heartbeat, the popups, the members under the step, and the group changing |
 | `Tools/tests/test_objectivetabs.lua` | The objectives tab bar and branch state |
-| `Tools/tests/test_load.lua` | The whole addon loaded in `.toc` order with the real Ace2: every file to its end; starting up (the chat commands, the TurtleGuide progress import); the level-up and arrival handlers |
+| `Tools/tests/test_load.lua` | The whole addon loaded in `.toc` order with the real Ace2: every file to its end, the guides included; starting up (the chat commands, the TurtleGuide progress import); the level-up and arrival handlers; the guide browser over every guide, each category opened and every guide's picture drawn |
 | `Tools/tests/test_guideengine.lua` | The guide engine: which steps tick themselves, the step details the panel shows, collect notes ticking on the items in your bags |
-| `Tools/tests/test_objectivepanel.lua` | The objectives panel: header, nav row, step rows, the objective bars, resizing |
+| `Tools/tests/test_objectivepanel.lua` | The objectives panel: header, the ≡ menu (its items, Lock window, Transparency), nav row, step rows, the objective bars, resizing |
 | `Tools/tests/test_options.lua` | The options window: its pages, and every control driving the setting it shows |
 | `Tools/tests/test_stacking.lua` | Windows drawn in front stay in front, wherever they overlap |
-| `Tools/tests/test_scrolling.lua` | The theme's scrollbar on the guide list and the error log: carets, wheel, the ends of the range; the guide list's nine tabs fitting the panel |
+| `Tools/tests/test_scrolling.lua` | The theme's scrollbar on the guide browser and the error log: carets, wheel, the ends of the range, the bar clear of the rows |
 | `Tools/tests/test_minimap.lua` | The minimap button: drawn from the theme, its clicks, dragging round the edge, and the setting that hides it |
 | `Tools/tests/test_navcallout.lua` | The navigation arrow's maths: bearing relative to your facing, distance and time |
 | `Tools/tests/test_navigation.lua` | The waypoint addons and arrow switches, continent-map points, trainers found by name, and the zone a step is in |
@@ -185,6 +186,16 @@ raid, which quests reward gear, what reputation vendors sell, and what the
 professions make (`other_sources`) -- Turtle WoW's own from pfQuest-turtle, whose zones for them are listed
 in `TURTLE_INSTANCES`, and Turtle's changes to the vanilla ones laid over the
 CMaNGOS loot (`turtle_vanilla`).
+
+**`MapOverlays.lua` is generated** from [pfUI](https://github.com/shagu/pfUI)'s
+map reveal data (MIT; its notice is carried in the file) by
+`Tools/build/build_map_overlays.py`: where each area's explored art sits on its
+zone's map, for the guide browser's pictures, for the zones `GuideBrowser.lua`
+knows. To pick up a newer pfUI, check it out and run:
+
+```sh
+python3 Tools/build/build_map_overlays.py <path to pfUI>
+```
 
 **Recipe data in `Crafting/` is generated** from
 [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute)'s data files, with

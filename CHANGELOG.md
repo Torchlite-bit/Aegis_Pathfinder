@@ -18,6 +18,81 @@ reports.
 
 ---
 
+## [0.21.0] — restart
+
+### Added
+- **A guide browser like Zygor's,** in place of the old guide list. Open it
+  with the `+` on the tab bar, or **Guide menu** in the guide's ≡ menu.
+  - Down the left: a search box and the categories. **Leveling** holds
+    Optimized, RestedXP, RestedXP Hardcore, the zone guides (by continent)
+    and the custom zones. Then **Dungeons**, **Class Quests**,
+    **Professions** and **Favorites**.
+  - Reputations, Dailies, Events, Gold, Pets & Mounts and Titles are there,
+    greyed, as coming soon.
+  - A folder too long to read is split into levels 1-20, 20-40 and 40-60.
+  - Point at a guide and the right of the window shows it: a picture, the
+    levels it's for, how far through it you are, and **Load** and **Open
+    beside the route** buttons.
+  - Pointing at a guide also puts up a star, which keeps it in Favorites,
+    and an arrow, which opens it.
+  - The clicks are the old list's. Left-click opens a guide beside the one
+    you're on, right-click loads it in this tab, and shift-click resets it.
+- **Every guide has a picture.**
+  - A zone guide shows its zone's map **fully explored**: every area drawn
+    in, whether you've been there or not. A custom zone shows Turtle WoW's
+    own explored map of it, which the addon carries.
+  - A dungeon guide shows the loading screen Turtle WoW shows on the way
+    in, which the addon carries for every dungeon but Shadowfang Keep. So
+    does a route leg named for one, such as Optimized's Uldaman.
+  - A class quest shows your class's crest and colour, and the chain's spell
+    or reward.
+  - A profession shows its icon.
+- **HOME** is four panels:
+  - the guides you opened last;
+  - suggested guides: your route's next leg, class quests, and ticked
+    dungeons and custom zones at your level, each with why;
+  - a level tracker: the time you've spent at each level, the one you're on
+    counting up, with **See more** for every level;
+  - a gold tracker: what you've earned today and this week.
+  The time and gold are counted while you play, from the first time a
+  character runs this version. Gold earned is every rise in your money, with
+  nothing taken off for spending. The ⋮ hides any panel you don't want.
+- **CURRENT** lists the guides open in the guide window. **RECENT** lists the
+  last 30 you opened, by category.
+- **The list's ⋮** has four switches:
+  - colour guides by how they suit your level (grey once you've outlevelled
+    one, green, then yellow, orange and red the further short of it you
+    are);
+  - tick the guides you've finished;
+  - hide finished and outlevelled guides;
+  - star the suggested guides.
+- **The routes' dungeon runs are under Dungeons.** Optimized's Uldaman and
+  Sunken Temple legs, and RestedXP's Scholomance Key, are in an **On the
+  routes** folder at the top of Dungeons, each saying whose route it's on,
+  not among the route's zones.
+- The browser can be resized from its corner. It reopens at that size, where
+  you left it, on the tab or category you left it on.
+- **The guide window's ≡ menu,** like Zygor's: Guide menu, Setup wizard,
+  **Lock window** (no dragging or resizing until you untick it),
+  **Transparency** (a see-through panel), Reset window, Reload and Settings.
+  The ≡ chip used to open the settings straight away.
+
+### Changed
+- The guide list's level filter is gone. HOME's suggested guides, and the
+  list's switch that hides outlevelled guides, do its job.
+- Reset window also puts the browser back to its own size.
+
+### Not yet checked in game
+- Shadowfang Keep shows the game's generic dungeon screen until the addon
+  has its own.
+
+### Credits
+- The fully explored maps use pfUI's map reveal data (MIT, Shagu): where
+  each area's art sits on its zone's map.
+- The dungeon loading screens and the custom zones' maps are Turtle WoW's,
+  from its client: the art of its Mysteries of Azeroth, Lionel Schramm's
+  among it.
+
 ## [0.20.0] — restart
 
 ### Added
@@ -1009,6 +1084,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.21.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.20.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.19.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.18.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
