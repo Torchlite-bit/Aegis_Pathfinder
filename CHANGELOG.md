@@ -42,7 +42,7 @@ reports.
     in, whether you've been there or not. A custom zone shows Turtle WoW's
     own explored map of it, which the addon carries.
   - A dungeon guide shows the loading screen Turtle WoW shows on the way
-    in, which the addon carries for every dungeon but Shadowfang Keep. So
+    in, which the addon carries for every dungeon. So
     does a route leg named for one, such as Optimized's Uldaman.
   - A class quest shows your class's crest and colour, and the chain's spell
     or reward.
@@ -83,8 +83,8 @@ reports.
 - Reset window also puts the browser back to its own size.
 
 ### Not yet checked in game
-- Shadowfang Keep shows the game's generic dungeon screen until the addon
-  has its own.
+- The loading screens and custom zone maps the addon carries haven't all
+  been seen in game yet.
 
 ### Credits
 - The fully explored maps use pfUI's map reveal data (MIT, Shagu): where

@@ -292,17 +292,24 @@ check(pic("Dungeons/Scarlet Monastery (34-45)").texture == A.Theme.loadscreen["S
 	"a dungeon guide is Turtle WoW's loading screen for it, the addon's, shown whole")
 check(pic("Dungeons/Windhorn Canyon (26-30)").texture == A.Theme.loadscreen["Windhorn Canyon"],
 	"a Turtle WoW dungeon's too")
-check(pic("Dungeons/Shadowfang Keep (22-30)").texture == "Interface\\Glues\\LoadingScreens\\LoadScreenDungeon"
-	and pic("Dungeons/Shadowfang Keep (22-30)").coords == Pictures.SCREEN_COORDS,
-	"one the addon has no art for: the client's generic screen, cropped to its art")
--- Every dungeon the setup or the Dungeons page knows has its picture, but
--- Shadowfang Keep, still to come.
+-- One the addon had no art for would be the client's generic screen, cropped
+-- to its art.
+do
+	local art = A.Theme.loadscreen["Shadowfang Keep"]
+	A.Theme.loadscreen["Shadowfang Keep"] = nil
+	check(pic("Dungeons/Shadowfang Keep (22-30)").texture == "Interface\\Glues\\LoadingScreens\\LoadScreenDungeon"
+		and pic("Dungeons/Shadowfang Keep (22-30)").coords == Pictures.SCREEN_COORDS,
+		"one the addon has no art for: the client's generic screen, cropped to its art")
+	A.Theme.loadscreen["Shadowfang Keep"] = art
+end
+-- Every dungeon the setup or the Dungeons page knows has its picture.
 do
 	local src = io.open("SetupFrame.lua"):read("*a") .. io.open("OptionsFrame.lua"):read("*a")
 	local missing, seen = {}, 0
 	for name in string.gfind(src, 'code = "[%w]+",%s*name = "([^"]+)"') do
 		seen = seen + 1
-		if name ~= "Shadowfang Keep" and name ~= "Deadmines" and not A.Theme.loadscreen[name] then
+		-- The Dungeons page says "Deadmines"; its guide, "The Deadmines".
+		if name ~= "Deadmines" and not A.Theme.loadscreen[name] then
 			table.insert(missing, name)
 		end
 	end
