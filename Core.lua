@@ -576,7 +576,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.21.1"
+AegisPathfinder.version = "0.21.2"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -637,7 +637,10 @@ function AegisPathfinder:OnInitialize()
     -- Crafting routes loaded as guides in earlier sessions (CraftRouteFrame.lua),
     -- registered with the rest so the one you were on reopens.
     if self.RestoreCraftGuides then self:RestoreCraftGuides() end
-    if self.myfaction == nil then
+    -- Not on a ClassicAPI too old to run on, which OnEnable stops at: the
+    -- login would load the guides regardless, and before v1.3.11 ClassicAPI
+    -- hadn't put back the coroutine library the login loads them with.
+    if self.myfaction == nil and self:HasClassicAPI() then
         self:RegisterEvent("PLAYER_ENTERING_WORLD")
     end
     self:PositionActiveFrames()
@@ -657,12 +660,23 @@ function AegisPathfinder:OnInitialize()
     end
 end
 
+-- Hard requirement: ClassicAPI DLL v1.5.9+ (version encodes X*10000 + Y*100 + Z;
+-- untagged dev builds report 99999999). Quest tracking is built on its
+-- C_QuestLog functions and QUEST_ACCEPTED / QUEST_TURNED_IN events.
+function AegisPathfinder:HasClassicAPI()
+    return CLASSIC_API_VERSION ~= nil and CLASSIC_API_VERSION >= 10509
+end
+
 function AegisPathfinder:OnEnable()
-    -- Hard requirement: ClassicAPI DLL v1.5.9+ (version encodes X*10000 + Y*100 + Z;
-    -- untagged dev builds report 99999999). Quest tracking is built on its
-    -- C_QuestLog functions and QUEST_ACCEPTED / QUEST_TURNED_IN events.
-    if not CLASSIC_API_VERSION or CLASSIC_API_VERSION < 10509 then
-        self:Print("|cffff3333Aegis: Pathfinder requires ClassicAPI v1.5.9 or newer (https://github.com/brues-code/ClassicAPI). The addon will not load.|r")
+    if not self:HasClassicAPI() then
+        -- Which one this client has, so a bug report says.
+        local v, found = CLASSIC_API_VERSION, "none"
+        if v then
+            found = string.format("v%d.%d.%d", math.floor(v / 10000), math.floor(v / 100) - math.floor(v / 10000) * 100,
+                v - math.floor(v / 100) * 100)
+        end
+        self:Print("|cffff3333Aegis: Pathfinder requires ClassicAPI v1.5.9 or newer (https://github.com/brues-code/ClassicAPI); this client has "
+            .. found .. ". The addon will not load.|r")
         return
     end
 

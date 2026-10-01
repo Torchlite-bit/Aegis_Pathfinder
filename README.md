@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.21.1)
+# Aegis: Pathfinder (v0.21.2)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -198,7 +198,9 @@ Night — applied at once, no reload.
 ## Install
 
 1. Install **[ClassicAPI](https://github.com/brues-code/ClassicAPI) v1.5.9 or
-   newer**. It is required; the addon will not load without it.
+   newer**. It is required; the addon will not load without it. If yours
+   is missing or too old, Pathfinder says so in chat at login, with the
+   version it found.
 2. Put the addon in `Interface/AddOns/`, in a folder named `Aegis_Pathfinder`.
 3. **Restart the client.** A `/reload` does not pick up new files.
 
@@ -231,7 +233,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.21.1`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.21.2`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)** or open an

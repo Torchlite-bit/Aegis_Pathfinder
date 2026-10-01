@@ -223,6 +223,30 @@ if A and A.OnInitialize then
 	A:OnInitialize()
 	check(AegisPathfinderDB == mine and table.getn(said) == 0, "a Pathfinder save is never replaced by an old one")
 
+	--[[ A ClassicAPI too old to run on. OnEnable stopped with a message, but
+		OnInitialize had already asked for the login, which loaded the guides
+		regardless -- and before v1.3.11 ClassicAPI hasn't put back the
+		coroutine library the login uses: "Core.lua:799: attempt to index
+		global 'coroutine'" on OctoWoW, and no guides. ]]
+	local keepVersion, keepFaction = CLASSIC_API_VERSION, A.myfaction
+	A.myfaction, TurtleGuideDB, AegisPathfinderDB = nil, nil, nil
+	CLASSIC_API_VERSION, said = 10310, {}
+	A:OnInitialize()
+	check(not A:IsEventRegistered("PLAYER_ENTERING_WORLD"), "a ClassicAPI before v1.5.9 doesn't get the login")
+	A:OnEnable()
+	check(said[1] and string.find(said[1], "this client has v1.3.10.", 1, true)
+		and not A:IsEventRegistered("PLAYER_ENTERING_WORLD"), "OnEnable stops, saying which ClassicAPI it found, got %s",
+		tostring(said[1]))
+	CLASSIC_API_VERSION, said = nil, {}
+	A:OnEnable()
+	check(said[1] and string.find(said[1], "this client has none.", 1, true), "or that there's none, got %s",
+		tostring(said[1]))
+	CLASSIC_API_VERSION, AegisPathfinderDB = 10509, nil
+	A:OnInitialize()
+	check(A:IsEventRegistered("PLAYER_ENTERING_WORLD"), "v1.5.9 gets the login")
+	A:UnregisterEvent("PLAYER_ENTERING_WORLD")
+	CLASSIC_API_VERSION, A.myfaction = keepVersion, keepFaction
+
 	TurtleGuideDB, AegisPathfinderDB = nil, nil
 	for k in pairs(saved) do A[k] = saved[k] end
 	for k, f in pairs(themeSaved) do A.Theme[k] = f end
