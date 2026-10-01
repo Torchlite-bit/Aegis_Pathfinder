@@ -18,6 +18,18 @@ reports.
 
 ---
 
+## [0.21.3]
+
+### Fixed
+- **The minimap button was bigger than the others round the minimap.** The
+  logo is a solid disc, and at 32 pixels it filled the whole space a stock
+  button takes, where theirs is a 30-pixel gold ring round a 20-pixel icon.
+  It is now 26 pixels across.
+- **The minimap button was reported as not dragging round the minimap.** It
+  now switches the mouse and movement on itself, as pfQuest's button does,
+  rather than relying on the client's defaults. Drag it with the left
+  button; where you leave it is saved.
+
 ## [0.21.2]
 
 ### Fixed
@@ -1113,6 +1125,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.21.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.21.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.21.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.21.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

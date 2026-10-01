@@ -290,7 +290,8 @@ local function newFrame(frameType, name, parent)
 	function f:HookScript(event, fn) self.__scripts[event] = fn end
 	function f:RegisterEvent(e) self.__events = self.__events or {}; self.__events[e] = true end
 	function f:UnregisterEvent() end
-	function f:EnableMouse() end
+	function f:EnableMouse(v) self.__mouse = v and true or false end
+	function f:IsMouseEnabled() return self.__mouse and true or false end
 	function f:RegisterForClicks(...) self.__clicks = { ... } end
 	-- Drag state is recorded rather than ignored: "the panel is draggable" is a
 	-- claim a test can only check by looking at what was wired up.
