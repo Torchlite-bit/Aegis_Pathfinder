@@ -137,7 +137,7 @@ local function Reflow(p, width)
 	for _, e in ipairs(p.flow) do
 		if e.region then
 			e.region:ClearAllPoints()
-			e.region:SetPoint("TOPLEFT", p, "TOPLEFT", 0, -y)
+			e.region:SetPoint("TOPLEFT", p, "TOPLEFT", e.indent or 0, -y)
 			y = y + (type(e.height) == "function" and e.height(width) or e.height)
 		end
 		y = y + e.gap
@@ -186,17 +186,37 @@ end
 	upvalues. ]]
 local Build = {}
 
+-- How far a switch that belongs to the one above it sits in under it.
+local SUB_INDENT = 24
+
 --- A switch for a per-character setting, db.char[key], kept in frame.switches
 --- for RefreshConfigPanel; `after(on)` updates whatever it shows on screen.
-function Build.CharSwitch(k, key, label, after)
+--- `opts`: `parent`, the key of the switch it sits in under and is held off
+--- with; `defaultOn`, read as on until it is switched off (a setting older
+--- characters do not have yet).
+function Build.CharSwitch(k, key, label, after, opts)
+	opts = opts or {}
 	local sw = Theme:Switch(k.body(), label, function(on)
 		AegisPathfinder.db.char[key] = on
 		if after then after(on) end
 	end)
-	sw.settingKey = key
-	k.place(sw, function(w) return sw:Fit(w) end, 8)
+	sw.settingKey, sw.defaultOn = key, opts.defaultOn
+	local indent = opts.parent and SUB_INDENT or nil
+	k.place(sw, function(w) return sw:Fit(w - (indent or 0)) end, 8, indent)
 	k.frame.switches[key] = sw
+	if opts.parent then k.frame.subSwitches[key] = opts.parent end
 	return sw
+end
+
+--- A line of body text over the control it names.
+function Build.Label(k, text)
+	local fs = k.body():CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(fs, "body", 13)
+	Theme:TextColor(fs, "text")
+	fs:SetJustifyH("LEFT")
+	fs:SetText(text)
+	k.place(fs, 16, 6)
+	return fs
 end
 
 --- A switch whose setting has its own setter (`set(on)`), kept as frame[name].
@@ -244,11 +264,36 @@ end
 
 --- Automation: what the addon does for you. It replaced Behaviour.
 function Build.Automation(k)
+	local A = AegisPathfinder
 	k.page("Automation")
 	k.section("Quests")
-	Build.CharSwitch(k, "autoquest", "Accept and turn in the guide's quests")
+	Build.CharSwitch(k, "autoquest", "Accept and turn in the guide's quests", function() A:RefreshConfigPanel() end)
+	Build.CharSwitch(k, "allquests", "All quests, not only the guide's", nil, { parent = "autoquest" })
+	Build.CharSwitch(k, "autogossip", "Pick the guide's quest from an NPC's list", nil,
+		{ parent = "autoquest", defaultOn = true })
 	Build.CharSwitch(k, "trackquests", "Track quests automatically")
-	k.note("Hold Shift as you talk to an NPC and nothing happens by itself.")
+	k.note("Hold Shift as you talk to an NPC and nothing happens by itself. All quests takes "
+		.. "no grey quests, and leaves two places in your quest log for the guide's.")
+	k.space(k.SECTION_GAP)
+	k.section("Travel")
+	Build.CharSwitch(k, "autofly", "Take the step's flight when I open the flight master's map")
+	k.space(k.SECTION_GAP - 8)
+	k.section("Inventory")
+	Build.CharSwitch(k, "autobuy", "Buy what the step says to buy, at its vendor", nil, { defaultOn = true })
+	k.note("Only for steps that name the item and how many, and only as many as you still need.")
+	k.space(10)
+	Build.CharSwitch(k, "sellbutton", "\"Sell greys\" button on the vendor window", function()
+		if A.Automation then A.Automation:PlaceButton() end
+	end, { defaultOn = true })
+	Build.CharSwitch(k, "autosell", "Sell greys automatically")
+	Build.Label(k, "Repair automatically")
+	local repair = Theme:Dropdown(k.body(), k.BODY_W, function(v) A.db.char.autorepair = v end)
+	repair:SetItems({ { value = "off", label = "Don't repair" }, { value = "own", label = "With my own money" } })
+	k.place(repair, 30, 6)
+	k.wide(repair)
+	k.frame.repair = repair
+	table.insert(k.frame.lateDropdowns, repair)
+	k.note("1.12 has no guild bank, so there is no repairing with guild money.")
 	k.space(k.SECTION_GAP)
 end
 
@@ -357,10 +402,10 @@ function AegisPathfinder:CreateConfigPanel()
 	--[[ Lay a region out under the last, and remember it, so the page can be
 		laid out again at another width (Reflow). `height` is a number, or a
 		function of the width for what wraps. ]]
-	local function place(region, height, gap)
-		table.insert(body.flow, { region = region, height = height, gap = gap or 0 })
+	local function place(region, height, gap, indent)
+		table.insert(body.flow, { region = region, height = height, gap = gap or 0, indent = indent })
 		region:ClearAllPoints()
-		region:SetPoint("TOPLEFT", body, "TOPLEFT", 0, -y)
+		region:SetPoint("TOPLEFT", body, "TOPLEFT", indent or 0, -y)
 		y = y + (type(height) == "function" and height(BODY_W) or height) + (gap or 0)
 	end
 	local function space(n)
@@ -391,9 +436,10 @@ function AegisPathfinder:CreateConfigPanel()
 	frame.sections = {}
 	frame.switches = {}
 	-- What the page builders out of this function lay out with (Build).
-	local kit = { frame = frame, page = page, place = place, space = space, note = note,
+	frame.subSwitches, frame.lateDropdowns = {}, {}
+	local kit = { frame = frame, page = page, place = place, space = space, note = note, wide = wide,
 		section = function(title) table.insert(frame.sections, section(title)) end,
-		body = function() return body end, SECTION_GAP = SECTION_GAP }
+		body = function() return body end, SECTION_GAP = SECTION_GAP, BODY_W = BODY_W }
 
 	-- Race -----------------------------------------------------------------------
 	page("Route")
@@ -797,6 +843,7 @@ function AegisPathfinder:CreateConfigPanel()
 	-- Their lists hang off UIParent, so they are closed by hand when the
 	-- page or the window goes.
 	frame.dropdowns = { race, theme, waypoints, scorePage.spec }
+	for _, d in ipairs(frame.lateDropdowns) do table.insert(frame.dropdowns, d) end
 
 	--[[ The categories, down the left: Zygor's list, in this style -- a
 		quieter column than the page, the page shown marked with an accent
@@ -1123,10 +1170,14 @@ function AegisPathfinder:RefreshConfigPanel()
 	frame.guideTransparent:SetOn(profile.objframetransparent)
 	frame.askShare:SetOn(not db.sharenowarn)
 
-	-- The addon's own switches.
+	-- The addon's own switches; one under another is held off with it.
 	for key, sw in pairs(frame.switches) do
-		sw:SetOn(db[key])
+		if sw.defaultOn then sw:SetOn(db[key] ~= false) else sw:SetOn(db[key]) end
 	end
+	for key, parent in pairs(frame.subSwitches) do
+		frame.switches[key]:SetLocked(not db[parent])
+	end
+	frame.repair:SetValue(db.autorepair or "off")
 
 	-- Waypoint providers actually loaded, plus automatic.
 	local wp = { { value = "auto", label = "Automatic" } }

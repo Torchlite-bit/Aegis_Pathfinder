@@ -18,6 +18,32 @@ reports.
 
 ---
 
+## [0.22.3] — restart
+
+### Added
+- **The Automation page does more**, as Zygor's does:
+  - **All quests, not only the guide's**, under accepting and turning in
+    quests (off to start with). It takes every quest an NPC offers and
+    hands in every finished one, but never a grey quest, and it leaves two
+    places in your quest log for the guide's.
+  - **Pick the guide's quest from an NPC's list**, which it always did, is
+    now a setting (on). Off, the list is yours to click; the quest you open
+    is still accepted and handed in.
+  - **Take the step's flight when I open the flight master's map** (off).
+    "Fly to Orgrimmar" flies to the town; "Fly to Westfall" to the zone's
+    flight path, but only when you know just one there. With two, it says
+    to pick one rather than guess.
+  - **Buy what the step says to buy, at its vendor** (on). A buy step that
+    names its item buys as many as you still need, no more than the vendor
+    has or you can pay for.
+  - **A "Sell greys" button** on the vendor window (on), and **Sell greys
+    automatically** as the window opens (off). Either says how many went and
+    for how much.
+  - **Repair automatically**: not at all (to start with), or with your own
+    money. 1.12 has no guild bank, so there is no guild repair.
+- Hold Shift as you open a quest giver, a flight master or a vendor and none
+  of it happens, as Shift already did for quests.
+
 ## [0.22.2]
 
 ### Changed
@@ -1209,6 +1235,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

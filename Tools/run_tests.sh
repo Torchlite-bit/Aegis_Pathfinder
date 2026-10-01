@@ -33,6 +33,7 @@ lua5.1 Tools/tests/test_itemscore.lua
 lua5.1 Tools/tests/test_gearframe.lua
 lua5.1 Tools/tests/test_gearadvisor.lua
 lua5.1 Tools/tests/test_gearfinder.lua
+lua5.1 Tools/tests/test_automation.lua
 lua5.1 Tools/tests/test_guidelist.lua
 lua5.1 Tools/tests/test_guidebrowser.lua
 lua5.1 Tools/tests/test_materials.lua

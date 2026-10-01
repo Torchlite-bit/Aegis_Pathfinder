@@ -332,7 +332,7 @@ options have it: Route (Race, Route pack), Dungeons (Dungeons, Turtle WoW's
 own, Along the way -- with the middle-of-its-levels switch), Filters, then
 Zygor's pages in this style -- Appearance (Server theme, Window scale, Guide
 window, Minimap), Step Display (Between guides, Sync & Share), Automation
-(Quests), Action Buttons (Windows), Navigation (Waypoints, Arrows) -- then
+(Quests, Travel, Inventory), Action Buttons (Windows), Navigation (Waypoints, Arrows) -- then
 Gear and, set in under it, Item Score, Maintenance, About. Automation replaced
 Behaviour, whose switches went to Step Display, Automation, Action Buttons and
 Appearance with their saved values. The pages built out of `CreateConfigPanel`
@@ -343,6 +343,18 @@ a hairline on its right edge — and the page shown is marked with a 3px accent
 bar, a brighter row and white text. The subhead names the page (`CONFIG ·
 GEAR`). A page scrolls only when it is taller than the window, and every page
 opens at its top; changing page closes any dropdown list left open.
+
+A switch that belongs to the one above it -- *All quests* and *Pick the
+guide's quest from an NPC's list* under accepting the guide's quests -- sits
+24px in under it, stops at the same right edge, and is held off (45% alpha,
+not clickable) while that one is off. A dropdown with a name, *Repair
+automatically*, has it as a 13px body line above it.
+
+**The Sell greys button** (`Automation.lua`) is a `Theme:PanelButton`, 92 by
+20, on the client's vendor window: at its top right, 44px in and 44px down,
+clear of the title and the item grid, five levels over the window. It is the
+one control of ours on a Blizzard window besides the Gear Finder's tab, and
+it wears the theme, not Blizzard's button art.
 
 A grip in the bottom-right corner (the guide's `grip.tga`) resizes the window:
 wider or taller, never narrower than it opens, never shorter than 360px, never

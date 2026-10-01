@@ -323,6 +323,29 @@ local function AutomationSuspended()
 	return not AegisPathfinder.db.char.autoquest or IsShiftKeyDown()
 end
 
+--[[ The Automation page's two under it: "All quests, not only the guide's",
+	and picking the guide's quest from an NPC's list (on unless switched off;
+	it governs every pick from a list, all quests' too). ]]
+local function AllQuests() return AegisPathfinder.db.char.allquests end
+local function PicksFromList() return AegisPathfinder.db.char.autogossip ~= false end
+
+-- MAX_QUESTLOG_QUESTS less two: all quests leaves room for the guide's.
+local QUEST_ROOM = 18
+
+--[[ A quest worth taking for all quests: not grey to you -- the grey line by
+	level, as the client draws it -- and with room in the log to spare. ]]
+local function WorthTaking(questLevel)
+	local _, quests = GetNumQuestLogEntries()
+	if (quests or 0) >= QUEST_ROOM then return false end
+	local level = UnitLevel("player") or 1
+	local grey
+	if level <= 5 then grey = 0
+	elseif level <= 39 then grey = level - math.floor(level / 10) - 5
+	elseif level <= 59 then grey = level - math.floor(level / 5) - 1
+	else grey = level - 9 end
+	return not questLevel or questLevel > grey
+end
+
 -- Quest frame titles may carry a [level] prefix depending on server settings
 local function QuestFrameTitle()
 	return (string.gsub(GetTitleText() or "", "%[[0-9%+%-]+]%s", ""))
@@ -331,7 +354,7 @@ end
 -- Auto-select the pending step's quest from the gossip list, matched by QID
 -- (by title for untagged steps)
 function AegisPathfinder:GOSSIP_SHOW()
-	if AutomationSuspended() then return end
+	if AutomationSuspended() or not PicksFromList() then return end
 
 	local name, i = CurrentStepName("ACCEPT")
 	if name then
@@ -342,7 +365,6 @@ function AegisPathfinder:GOSSIP_SHOW()
 				return C_GossipInfo.SelectAvailableQuest(q.questID)
 			end
 		end
-		return
 	end
 
 	name, i = CurrentStepName("TURNIN")
@@ -355,12 +377,21 @@ function AegisPathfinder:GOSSIP_SHOW()
 			end
 		end
 	end
+
+	-- All quests: a finished one to hand in first, then one on offer.
+	if not AllQuests() then return end
+	for _, q in ipairs(C_GossipInfo.GetActiveQuests()) do
+		if q.isComplete then return C_GossipInfo.SelectActiveQuest(q.questID) end
+	end
+	for _, q in ipairs(C_GossipInfo.GetAvailableQuests()) do
+		if WorthTaking(q.questLevel) then return C_GossipInfo.SelectAvailableQuest(q.questID) end
+	end
 end
 
 -- Greeting panel (quest NPCs without gossip text). The greeting API is
 -- index-based and carries no questIDs, so titles are the only match key.
 function AegisPathfinder:QUEST_GREETING()
-	if AutomationSuspended() then return end
+	if AutomationSuspended() or not PicksFromList() then return end
 
 	local name = CurrentStepName("ACCEPT")
 	if name then
@@ -370,7 +401,6 @@ function AegisPathfinder:QUEST_GREETING()
 				return SelectAvailableQuest(i)
 			end
 		end
-		return
 	end
 
 	name = CurrentStepName("TURNIN")
@@ -382,6 +412,20 @@ function AegisPathfinder:QUEST_GREETING()
 			end
 		end
 	end
+
+	--[[ All quests. The greeting's own API has titles alone; ClassicAPI's
+		lists say which are finished and at what level, and are matched back
+		to the greeting's rows by title. ]]
+	if not AllQuests() then return end
+	local done, levels = {}, {}
+	for _, q in ipairs(C_GossipInfo.GetActiveQuests()) do if q.isComplete then done[q.title] = true end end
+	for _, q in ipairs(C_GossipInfo.GetAvailableQuests()) do levels[q.title] = q.questLevel end
+	for i = 1, GetNumActiveQuests() do
+		if done[GetActiveTitle(i)] then return SelectActiveQuest(i) end
+	end
+	for i = 1, GetNumAvailableQuests() do
+		if WorthTaking(levels[GetAvailableTitle(i)]) then return SelectAvailableQuest(i) end
+	end
 end
 
 function AegisPathfinder:QUEST_DETAIL()
@@ -389,6 +433,9 @@ function AegisPathfinder:QUEST_DETAIL()
 		local name = CurrentStepName("ACCEPT")
 		if name and QuestFrameTitle() == name then
 			self:Debug(string.format("Auto-accepting %q", name))
+			AcceptQuest()
+		elseif AllQuests() and WorthTaking(nil) then
+			self:Debug(string.format("Auto-accepting %q (all quests)", QuestFrameTitle()))
 			AcceptQuest()
 		end
 	end
@@ -398,8 +445,8 @@ end
 function AegisPathfinder:QUEST_PROGRESS()
 	if AutomationSuspended() then return end
 	local name = CurrentStepName("TURNIN")
-	if name and QuestFrameTitle() == name and IsQuestCompletable() then
-		self:Debug(string.format("Auto-completing %q", name))
+	if ((name and QuestFrameTitle() == name) or AllQuests()) and IsQuestCompletable() then
+		self:Debug(string.format("Auto-completing %q", QuestFrameTitle()))
 		CompleteQuest()
 	end
 end
@@ -409,10 +456,11 @@ end
 function AegisPathfinder:QUEST_COMPLETE()
 	if not AutomationSuspended() then
 		local name = CurrentStepName("TURNIN")
-		if name and QuestFrameTitle() == name and GetNumQuestChoices() <= 1 then
-			self:Debug(string.format("Auto-claiming reward for %q", name))
+		local ours = (name and QuestFrameTitle() == name) or AllQuests()
+		if ours and GetNumQuestChoices() <= 1 then
+			self:Debug(string.format("Auto-claiming reward for %q", QuestFrameTitle()))
 			GetQuestReward(GetNumQuestChoices())
-		elseif name and QuestFrameTitle() == name and self.GearAdvisor then
+		elseif ours and self.GearAdvisor then
 			self.GearAdvisor:MarkReward(true)
 		end
 	end

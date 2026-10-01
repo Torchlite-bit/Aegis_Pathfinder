@@ -578,6 +578,55 @@ check(frame.switches.autoquest:IsOn(), "switches start from the saved settings")
 check(not frame.switches.trackquests:IsOn(), "off ones included")
 click(frame.switches.trackquests)
 check(db.trackquests == true, "and write back to them")
+
+-- Automation's own: all quests and picking from a list under accepting, the
+-- flight master, the vendor.
+local autoPage = pageNamed("Automation")
+for _, key in ipairs({ "allquests", "autogossip", "autofly", "autobuy", "sellbutton", "autosell" }) do
+	check(frame.switches[key] and frame.switches[key]:GetParent() == autoPage, "%s is on the Automation page", key)
+end
+check(not frame.switches.allquests:IsOn() and frame.switches.autogossip:IsOn(),
+	"all quests off and picking from a list on, to start with")
+check(frame.switches.autobuy:IsOn() and frame.switches.sellbutton:IsOn(), "buying and the Sell greys button on")
+check(not frame.switches.autosell:IsOn() and not frame.switches.autofly:IsOn(), "selling and flying by themselves off")
+do
+	local _, _, _, parentX = frame.switches.autoquest:GetPoint()
+	local _, _, _, subX = frame.switches.allquests:GetPoint()
+	check(subX > parentX, "all quests sits in under accepting the guide's (%s, %s)", tostring(subX), tostring(parentX))
+	check(frame.switches.allquests:GetWidth() < frame.switches.autoquest:GetWidth(), "and stops at the same edge")
+end
+click(frame.switches.autoquest)
+check(not db.autoquest and not frame.switches.allquests:IsEnabled() and not frame.switches.autogossip:IsEnabled(),
+	"accepting off holds the two under it off")
+click(frame.switches.autoquest)
+check(frame.switches.allquests:IsEnabled() and frame.switches.autogossip:IsEnabled(), "and lets them go")
+click(frame.switches.allquests)
+check(db.allquests == true, "all quests switches on")
+click(frame.switches.allquests)
+click(frame.switches.autogossip)
+check(db.autogossip == false and not frame.switches.autogossip:IsOn(), "picking from a list switches off")
+click(frame.switches.autogossip)
+click(frame.switches.autofly)
+check(db.autofly == true, "flying by itself switches on")
+click(frame.switches.autofly)
+do
+	local keepAuto = AegisPathfinder.Automation
+	AegisPathfinder.Automation = { PlaceButton = function() AegisPathfinder.__placed = true end }
+	click(frame.switches.sellbutton)
+	check(db.sellbutton == false and AegisPathfinder.__placed, "the Sell greys button goes at once")
+	click(frame.switches.sellbutton)
+	AegisPathfinder.Automation = keepAuto
+end
+check(frame.repair:GetParent() == autoPage and frame.repair.label:GetText() == "Don't repair",
+	"repairing: a dropdown, not repairing to start with, got %s", tostring(frame.repair.label:GetText()))
+click(frame.repair)
+click(frame.repair.rows[2])
+check(db.autorepair == "own" and frame.repair.label:GetText() == "With my own money", "and with your own money")
+click(frame.repair)
+check(frame.repair.list:IsShown(), "its list opens")
+click(navNamed("Gear"))
+check(not frame.repair.list:IsShown(), "and closes with the page, as the others do")
+click(navNamed("Automation"))
 check(frame.switches.shownavcallout == nil,
 	"our arrow's switch is in the Arrows section, with the others")
 check(frame.switches.showminimapbutton ~= nil and frame.switches.showminimapbutton:IsOn(),

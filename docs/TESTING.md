@@ -118,6 +118,22 @@ are only found at startup.
       on its new page as it was set.
 - [ ] Appearance → *Lock window* and *Transparency* do what the guide's ≡ menu
       does, and each shows what the other set.
+- [ ] Automation → *All quests*: an NPC with a quest the guide does not want
+      gives it, and takes a finished one; a grey quest is left; with 18
+      quests in the log, nothing more is taken. Off: only the guide's.
+- [ ] Automation → *Pick the guide's quest from an NPC's list* off: the list
+      stays open for you; the quest you click is still accepted.
+- [ ] Automation → *Take the step's flight*: on a "Fly to …" step, opening the
+      flight master's map flies there. On a zone with two flight paths you
+      know, it says to pick one.
+- [ ] Automation → buying: on a buy step (Soothing Spices in Southshore), the
+      vendor sells you what is still needed, and says so.
+- [ ] The **Sell greys** button sits on the vendor window, clear of its
+      title and items (with pfUI too), and sells the greys, saying for how
+      much. *Sell greys automatically* does it as the window opens.
+- [ ] *Repair automatically* → *With my own money* repairs at a repairing
+      vendor and says the cost; not with too little money.
+- [ ] Holding Shift as any of these windows opens: nothing happens by itself.
 - [ ] Step Display → *Ask before inviting my party* off: the party icon shares
       without the popup; the popup's "don't ask again" turns it off here.
 - [ ] Drag the corner grip: the window grows wider and taller, and every page

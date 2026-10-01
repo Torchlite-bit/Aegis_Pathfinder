@@ -423,6 +423,30 @@ when the guide gets there. A step the addon can finish for you
 has a small ⟳ inside its circle, so you know when not to reach for it; an
 empty circle is one only you can tick, and a filled one is done.
 
+**Automation.** The options window's **Automation** page, as Zygor's:
+
+- **Quests.** *Accept and turn in the guide's quests*, and under it *All
+  quests, not only the guide's* (off to start with) and *Pick the guide's
+  quest from an NPC's list* (on). All quests takes every quest an NPC offers
+  and hands in every finished one, but never a grey quest, and it leaves two
+  places in your quest log for the guide's. With picking from a list off,
+  the quest you open is still accepted and handed in; the list is yours.
+  *Track quests automatically* is here too.
+- **Travel.** *Take the step's flight when I open the flight master's map*
+  (off to start with). "Fly to Orgrimmar" flies to the town; "Fly to
+  Westfall" to the zone's flight path, only when you know one there -- with
+  two, it asks you to pick rather than guess.
+- **Inventory.** *Buy what the step says to buy, at its vendor* (on): open
+  the vendor on a buy step that names its item and it buys as many as you
+  still need, no more than the vendor has or you can pay for. A **Sell
+  greys** button on the vendor window (on), and *Sell greys automatically*
+  as the window opens (off); either says how many went and for how much.
+  *Repair automatically*: not at all (to start with), or with your own
+  money. 1.12 has no guild bank, so there is no guild repair.
+
+Hold Shift as you open a quest giver, a flight master or a vendor and none
+of it happens.
+
 **One step, or all of them.** The panel opens on the step you are on and
 nothing else, with its note in full and a meter underneath: a line for each
 thing the quest wants killed or collected, with its count and a bar filled to

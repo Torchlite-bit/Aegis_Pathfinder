@@ -107,6 +107,14 @@ local defaults = {
     showmacros = true,        -- the Macros window, and the AegisTarget/AegisItem macros
     skipfollowups = true,
     autoquest = true,
+    -- The Automation page (QuestTracker.lua, Automation.lua)
+    allquests = false,            -- accept and turn in every quest, not only the guide's
+    autogossip = true,            -- pick the quest from an NPC's list
+    autofly = false,              -- take the step's flight on the flight master's map
+    autobuy = true,               -- buy what a buy step names, at its vendor
+    sellbutton = true,            -- the "Sell greys" button on the vendor window
+    autosell = false,             -- sell greys as a vendor's window opens
+    autorepair = "off",           -- "off", or "own": repair with your own money
     petskills = {},
     completedquests = {},
     completedquestsbyid = {}, -- {[questId] = true} from server
@@ -576,7 +584,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.22.2"
+AegisPathfinder.version = "0.22.3"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
