@@ -18,6 +18,19 @@ reports.
 
 ---
 
+## [0.21.2]
+
+### Fixed
+- **An old ClassicAPI gave a Lua error and an empty guide list.** On a
+  ClassicAPI older than v1.5.9, Pathfinder said in chat that it wouldn't
+  load, but went on loading the guides at login anyway. Before v1.3.11,
+  ClassicAPI doesn't add the `coroutine` library that loading uses, so this
+  threw `Core.lua:799: attempt to index global 'coroutine'` and the guide
+  browser showed "No guides here." Pathfinder now stops cleanly, and the
+  chat message says which ClassicAPI version it found ("none" if it isn't
+  installed). To fix it, update
+  [ClassicAPI](https://github.com/brues-code/ClassicAPI) to v1.5.9 or newer.
+
 ## [0.21.1] — restart
 
 ### Added
@@ -1100,6 +1113,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.21.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.21.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.21.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.20.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
