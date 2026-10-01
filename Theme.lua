@@ -174,6 +174,7 @@ Theme.loadscreen = {
 	["Ragefire Chasm"]     = MEDIA .. "loadscreens\\ragefire-chasm",
 	["Wailing Caverns"]    = MEDIA .. "loadscreens\\wailing-caverns",
 	["The Deadmines"]      = MEDIA .. "loadscreens\\deadmines",
+	["Shadowfang Keep"]    = MEDIA .. "loadscreens\\shadowfang-keep",
 	["Blackfathom Deeps"]  = MEDIA .. "loadscreens\\blackfathom-deeps",
 	["The Stockade"]       = MEDIA .. "loadscreens\\stockade",
 	["Gnomeregan"]         = MEDIA .. "loadscreens\\gnomeregan",

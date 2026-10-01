@@ -67,8 +67,15 @@ local tomtomuids = {}
 providers.tomtom = {
 	label = "TomTom",
 
+	--[[ Loaded is not enough: TomTom must have started. TomTom-TWOW makes
+		its waypoint lists in OnProfileEnable, after putting its arrow back
+		where it was saved; a saved place the client will not take stops it
+		there, and every call after that fails on the lists it never made
+		("TomTom.lua:1180: bad argument #1 to `pairs'"). Such a TomTom is
+		treated as absent, and the next provider takes the waypoints. ]]
 	IsAvailable = function()
-		return TomTom and TomTom.AddMFWaypoint and true or nil
+		return TomTom and TomTom.AddMFWaypoint and type(TomTom.waypoints) == "table"
+			and type(TomTom.waypointprofile) == "table" or nil
 	end,
 
 	Add = function(wp)

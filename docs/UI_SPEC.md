@@ -572,7 +572,7 @@ own files, and Turtle WoW's dungeon loading screens, which the client lacks:
 - A dungeon guide, or a route leg named for a dungeon ("Optimized/Uldaman"),
   shows the loading screen Turtle WoW shows on the way in. The 1.12 client
   has no file for most of them, so the addon carries them (`Theme.loadscreen`,
-  every dungeon but Shadowfang Keep): the art between the screen's bars,
+  every dungeon with a guide): the art between the screen's bars,
   below the logo, at 16:9, squeezed into a 256x128 texture and shown whole.
   A dungeon without one, and the raids when they have guides, get the
   instance's own 1.12 screen where there is one, else one of the six generic

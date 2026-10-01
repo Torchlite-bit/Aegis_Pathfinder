@@ -162,8 +162,7 @@ are only found at startup.
       Scarlet Enclave and the rest) shows its own map, whole, with no
       glitches.
 - [ ] Every dungeon shows the loading screen Turtle WoW shows on the way in,
-      whole, not squashed, with no logo or bars; Shadowfang Keep the generic
-      dungeon screen.
+      whole, not squashed, with no logo or bars.
 - [ ] Dungeons starts with **On the routes**: Optimized's Uldaman and Sunken
       Temple (and RestedXP's Scholomance Key), each saying whose route; they
       are no longer in Optimized's Levels 40-60.
