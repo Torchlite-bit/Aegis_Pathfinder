@@ -228,6 +228,74 @@ if A and A.OnInitialize then
 	for k, f in pairs(themeSaved) do A.Theme[k] = f end
 end
 
+--[[ The guide browser over every guide the addon has: the guides the .toc's
+	Guides.xml files load, every category opened, every folder walked, and
+	every guide pointed at, so its picture is drawn. ]]
+if A and A.ShowGuideList then
+	for line in io.lines("Aegis_Pathfinder.toc") do
+		line = string.gsub(string.gsub(line, "\r", ""), "\\", "/")
+		if not string.find(line, "^#") and string.find(line, "%.xml$") then
+			local dir = string.gsub(line, "[^/]+$", "")
+			for f in string.gfind(io.open(line):read("*a"), '<Script%s+file="([^"]+)"') do
+				local chunk, err = loadfile(dir .. string.gsub(f, "\\", "/"))
+				local ok, e = chunk and pcall(chunk)
+				check(ok, "%s loads: %s", f, tostring(err or e))
+			end
+		end
+	end
+	check(table.getn(A.guidelist) > 300, "the Alliance's guides are registered, got %d", table.getn(A.guidelist))
+	local saved = A.db
+	A.db = { char = { completion = {}, turnins = {}, favorites = {}, recentguides = {}, leveltime = {}, gold = {},
+		completedquestsbyid = {}, completedquests = {}, browsertab = "home", browsercolour = true,
+		browserticks = true, browserpanels = {}, Dungeons = { DM = true, WC = true },
+		tabs = { { guide = "Optimized/Ashenvale (24-25)", step = 1 } }, currentguide = "Optimized/Ashenvale (24-25)" },
+		profile = {} }
+	IsShiftKeyDown = function() return false end
+	local keepLevel = UnitLevel
+	UnitLevel = function() return 24 end
+	local ok, err = pcall(function()
+		local list, ui = A.guidelistframe, A.browserui
+		list:Show()
+		this = list
+		list:GetScript("OnShow")()
+		check(ui.cards.suggested.rows[1].guide == "Optimized/Wetlands (25-27)", "Home suggests the route's next leg, got %s",
+			tostring(ui.cards.suggested.rows[1].guide))
+		local pointed, pictures = 0, {}
+		local function walk(depth)
+			for _, r in ipairs(ui.rows) do
+				if r:IsShown() and r.guide then
+					this = r
+					r:GetScript("OnEnter")()
+					r:GetScript("OnLeave")()
+					pointed = pointed + 1
+					pictures[ui.picture.kind] = true
+				end
+			end
+			local folders = {}
+			for i, r in ipairs(ui.rows) do if r:IsShown() and r.folder then table.insert(folders, i) end end
+			for _, i in ipairs(folders) do
+				this, arg1 = ui.rows[i], "LeftButton"
+				ui.rows[i]:GetScript("OnClick")()
+				if depth < 3 then walk(depth + 1) end
+				this = ui.back
+				ui.back:GetScript("OnClick")()
+			end
+		end
+		for _, c in ipairs(ui.categories) do
+			this, arg1 = c, "LeftButton"
+			c:GetScript("OnClick")()
+			walk(1)
+		end
+		check(pointed > 100, "guides pointed at across the categories, got %d", pointed)
+		check(pictures.map and pictures.screen and pictures.class and pictures.icon,
+			"and every kind of picture drawn: maps, loading screens, class crests, profession icons")
+		list:Hide()
+	end)
+	check(ok, "the browser runs over every guide: %s", tostring(err))
+	UnitLevel = keepLevel
+	A.db = saved
+end
+
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end
 print(string.format("Load: %d checks", checks))
 if table.getn(failures) == 0 then

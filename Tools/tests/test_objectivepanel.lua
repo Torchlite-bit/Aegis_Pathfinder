@@ -302,23 +302,85 @@ end
 
 -- Panels open beside the guide, not instead of it ------------------------------
 
---[[ The ☰ chip used to hide the panel before showing Config, so opening
-	settings closed the guide you were reading. The concept has both on screen
-	at once -- #options at right:456px, #objectives at right:40px. ]]
+--[[ The ≡ chip opens the guide window's menu, as Zygor's does: the guide
+	browser, the setup wizard, Lock window, Transparency, Reset window,
+	Reload and Settings. What it opens sits beside the guide -- it used to
+	hide the panel before showing Config, so opening settings closed the
+	guide you were reading. ]]
 local menuChip
 for _, child in ipairs(frame.header.__children) do
 	if child.glyph and child.glyph:GetTexture() == Theme.glyph.menu then menuChip = child end
 end
 check(menuChip ~= nil, "the header has no menu chip")
 
+local menu = AegisPathfinder.guidemenu
+local function item(label)
+	for _, row in ipairs(menu.rows) do
+		if row.label:GetText() == label then return row end
+	end
+end
+local labels = {}
+for _, row in ipairs(menu.rows) do table.insert(labels, row.label:GetText()) end
+check(table.concat(labels, ", ") == "Guide menu, Setup wizard, Lock window, Transparency, Reset window, Reload, Settings",
+	"the menu's items, got %s", table.concat(labels, ", "))
+
 frame:Show()
 AegisPathfinder.optionsframe:Hide()
+this = menuChip
 menuChip:GetScript("OnClick")()
+check(menu:IsShown(), "the chip opens the menu")
+this = item("Settings")
+item("Settings"):GetScript("OnClick")()
+check(not menu:IsShown(), "an item closes the menu")
 check(frame:IsShown(), "opening Config must not close the guide")
 check(AegisPathfinder.optionsframe:IsShown(), "and Config should be open")
-menuChip:GetScript("OnClick")()
+this = item("Settings")
+item("Settings"):GetScript("OnClick")()
 check(frame:IsShown(), "closing Config leaves the guide alone")
 check(not AegisPathfinder.optionsframe:IsShown(), "and Config is shut")
+
+AegisPathfinder.guidelistframe:Hide()
+this = item("Guide menu")
+item("Guide menu"):GetScript("OnClick")()
+check(AegisPathfinder.guidelistframe:IsShown() and frame:IsShown(), "Guide menu opens the browser beside the guide")
+AegisPathfinder.guidelistframe:Hide()
+
+local setup = 0
+function AegisPathfinder:ShowSetup() setup = setup + 1 end
+this = item("Setup wizard")
+item("Setup wizard"):GetScript("OnClick")()
+check(setup == 1, "Setup wizard opens the setup")
+local reloads = 0
+ReloadUI = function() reloads = reloads + 1 end
+this = item("Reload")
+item("Reload"):GetScript("OnClick")()
+check(reloads == 1, "Reload reloads the UI")
+
+-- Lock window: no drag, no grip; and it is remembered.
+menu:Show()
+this = item("Lock window")
+item("Lock window"):GetScript("OnClick")()
+check(AegisPathfinder.db.profile.objframelocked and item("Lock window").on, "Lock window ticks")
+check(menu:IsShown(), "and a switch leaves the menu open")
+check(not frame.grip:IsShown(), "a locked window has no grip")
+frame.__moving = false
+frame.header:GetScript("OnDragStart")()
+check(not frame.__moving, "and does not move")
+item("Lock window"):GetScript("OnClick")()
+check(not AegisPathfinder.db.profile.objframelocked and frame.grip:IsShown(), "unlocked, the grip is back")
+frame.header:GetScript("OnDragStart")()
+check(frame.__moving, "and it moves")
+frame:StopMovingOrSizing()
+
+-- Transparency: the panel's body at half strength.
+local fillPiece = AegisPathfinder.objectiveskin.fill.center
+this = item("Transparency")
+item("Transparency"):GetScript("OnClick")()
+check(AegisPathfinder.db.profile.objframetransparent and fillPiece.__color[4] == 0.5, "Transparency, got %s",
+	tostring(fillPiece.__color[4]))
+item("Transparency"):GetScript("OnClick")()
+check(fillPiece.__color[4] == 1, "and solid again")
+menu:Hide()
 
 -- Same for the + that opens the guide list.
 local addTab = frame.addTab

@@ -28,7 +28,7 @@ Colour is **not** baked into most files. Shapes are white masks that
 `Theme.lua` tints with `SetVertexColor`, which is why a single 32×32
 rounded-rectangle serves every panel, tab, pill and band. Only genuinely
 multi-colour art bakes colour in: `nav-arrow.tga`, `progress-fill.tga`, and
-`minimap-logo.tga`, which is the owner's logo art scaled down.
+`minimap-logo.tga` and `logo.tga`, which are the owner's logo art scaled down.
 
 ## Contents
 
@@ -48,11 +48,14 @@ multi-colour art bakes colour in: `nav-arrow.tga`, `progress-fill.tga`, and
 | `scroll-thumb.tga` | 32×32 | Scrollbar knob, stadium |
 | `switch-track.tga` | 64×32 | Options toggle track, stadium |
 | `minimap-logo.tga` | 64×64 | The minimap button: the Aegis: Pathfinder logo in full colour, from `Tools/data/aegis-pathfinder-logo.webp` |
+| `logo.tga` | 128×128 | The same logo, larger: the guide browser's right pane before you point at a guide |
 | `wordmark.tga` | 256×32 | PATHFINDER wordmark, pre-rendered |
 | `icons/*.tga` | 32×32 | One glyph per guide action code (17) |
 | `icons/{menu,close,plus,tick,bang,pin,expand}.tga` | 32×32 | Chrome glyphs the 1.12 font cannot render |
 | `icons/caret-{up,down}.tga` | 32×32 | Scrollbar step buttons |
 | `icons/{arrow,chevron}-{left,right}.tga` | 32×32 | Nav row arrows and status bar chevrons |
+| `icons/{star,search,gear,folder,heart,calendar,medal,dots}.tga` | 32×32 | The guide browser: favourites, search, Options, folders, the coming-soon categories, the list's ⋮ |
+| `icons/{lock,dashed,wand}.tga` | 32×32 | The guide window's ≡ menu: Lock window, Transparency, Setup wizard |
 
 The nine-slice masks are 32×32 with a 10px corner, so the slice boundaries sit
 at 10/32 and 22/32. `Theme.CORNER` and the `S0`/`S1` constants in `Theme.lua`

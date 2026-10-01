@@ -114,6 +114,7 @@ Theme.texture = {
 	shadow      = MEDIA .. "shadow",
 	progress    = MEDIA .. "progress-fill",
 	minimapLogo = MEDIA .. "minimap-logo",
+	logo        = MEDIA .. "logo",
 	wordmark    = MEDIA .. "wordmark",
 	grip        = MEDIA .. "grip",
 	navArrow    = MEDIA .. "nav-arrow",
@@ -145,6 +146,21 @@ Theme.glyph = {
 	party        = MEDIA .. "icons\\party",
 	caretUp      = MEDIA .. "icons\\caret-up",
 	caretDown    = MEDIA .. "icons\\caret-down",
+	-- The guide browser and the guide window's menu.
+	star         = MEDIA .. "icons\\star",
+	search       = MEDIA .. "icons\\search",
+	gear         = MEDIA .. "icons\\gear",
+	folder       = MEDIA .. "icons\\folder",
+	heart        = MEDIA .. "icons\\heart",
+	calendar     = MEDIA .. "icons\\calendar",
+	medal        = MEDIA .. "icons\\medal",
+	dots         = MEDIA .. "icons\\dots",
+	lock         = MEDIA .. "icons\\lock",
+	dashed       = MEDIA .. "icons\\dashed",
+	wand         = MEDIA .. "icons\\wand",
+	reload       = MEDIA .. "icons\\auto",
+	reset        = MEDIA .. "icons\\expand",
+	book         = MEDIA .. "icons\\train",
 }
 
 Theme.font = {
@@ -204,6 +220,29 @@ Theme.actionIconByName = {
 	TRAIN          = Theme.actionIcon.t,
 	DIE            = Theme.actionIcon.D,
 	PET            = Theme.actionIcon.P,
+}
+
+--[[ The guide browser's colours (GuideListFrame.lua, GuidePictures.lua).
+
+	A guide by how it suits your level, as the quest log colours a quest:
+	grey once you have outlevelled it, green when you are in its range, then
+	yellow, orange and red the further short of it you are. The classes'
+	colours are the client's own, and the coins' those of a money frame. The
+	same in every theme, like the step bands. ]]
+Theme.LEVEL_COLORS = {
+	grey   = { 0.50, 0.50, 0.50 },
+	green  = { 0.25, 0.75, 0.25 },
+	yellow = { 1.00, 1.00, 0.00 },
+	orange = { 1.00, 0.50, 0.25 },
+	red    = { 1.00, 0.10, 0.10 },
+}
+Theme.CLASS_COLORS = {
+	WARRIOR = { 0.78, 0.61, 0.43 }, PALADIN = { 0.96, 0.55, 0.73 }, HUNTER  = { 0.67, 0.83, 0.45 },
+	ROGUE   = { 1.00, 0.96, 0.41 }, PRIEST  = { 1.00, 1.00, 1.00 }, SHAMAN  = { 0.00, 0.44, 0.87 },
+	MAGE    = { 0.41, 0.80, 0.94 }, WARLOCK = { 0.58, 0.51, 0.79 }, DRUID   = { 1.00, 0.49, 0.04 },
+}
+Theme.COIN_COLORS = {
+	g = { 1.00, 0.82, 0.00 }, s = { 0.78, 0.78, 0.81 }, c = { 0.78, 0.47, 0.25 },
 }
 
 Theme.CORNER = 10        -- --radius:10px

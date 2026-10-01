@@ -292,9 +292,17 @@ BLIZZARD_CHROME = [
     (re.compile(r"Interface\\{1,2}Minimap\\{1,2}"), "Blizzard minimap-button art -- use the theme's disc and ring"),
 ]
 
+# The guide browser's pictures are the game's own art by design -- a class
+# quest's spell, a profession's icon -- shown as a picture, not as chrome.
+THEME_ALLOWED = {
+    "GuidePictures.lua": {"Blizzard icon art -- use Theme.actionIcon / Theme.glyph"},
+}
+
+
 def check_theme(rep):
     files = [p for p in sorted(walk({".lua"})) if is_shipped(p)]
     for path in files:
+        allowed = THEME_ALLOWED.get(os.path.basename(path), set())
         # Comments only: every pattern here names a texture path or a frame
         # template, and both live inside string literals. Scanning the
         # string-blanked source made this check silently vacuous, which is how
@@ -302,7 +310,7 @@ def check_theme(rep):
         code = strip_lua_comments(open(path, encoding="utf-8", errors="replace").read())
         for lineno, line in enumerate(code.splitlines(), 1):
             for pattern, why in BLIZZARD_CHROME:
-                if pattern.search(line):
+                if why not in allowed and pattern.search(line):
                     rep.fail("theme", path, "line %d uses %s" % (lineno, why))
     rep.ok("theme", len(files))
 

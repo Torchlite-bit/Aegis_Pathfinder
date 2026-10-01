@@ -303,6 +303,139 @@ local function HideTooltip()
 end
 
 
+--[[ The ≡ menu.
+
+	The header's first chip, as Zygor's: the guide browser, the setup wizard,
+	locking the window where it is, a see-through panel, putting the windows
+	back, reloading the UI, and the settings. It opens under the chip, above
+	every window, and an item closes it.
+]]
+local GUIDE_MENU = {
+	{ label = "Guide menu", glyph = "book", run = function() AegisPathfinder.guidelistframe:Show() end },
+	{ label = "Setup wizard", glyph = "wand", run = function() AegisPathfinder:ShowSetup() end },
+	"-",
+	{ label = "Lock window", glyph = "lock", key = "objframelocked",
+		run = function(on) AegisPathfinder:SetGuideLocked(on) end },
+	{ label = "Transparency", glyph = "dashed", key = "objframetransparent",
+		run = function(on) AegisPathfinder:SetGuideTransparent(on) end },
+	"-",
+	{ label = "Reset window", glyph = "reset", run = function() AegisPathfinder:ResetWindowLayout() end },
+	{ label = "Reload", glyph = "reload", run = function() ReloadUI() end },
+	"-",
+	{ label = "Settings", glyph = "gear", run = function() AegisPathfinder:ToggleConfigPanel() end },
+}
+local MENU_W, MENU_ROW = 220, 28
+
+--- Hold the guide where it is: no dragging it, and no grip to size it by.
+function AegisPathfinder:SetGuideLocked(on)
+	self.db.profile.objframelocked = on and true or nil
+	if on then frame.grip:Hide() else frame.grip:Show() end
+end
+
+--- A see-through panel: its body at half strength, and no shadow.
+function AegisPathfinder:SetGuideTransparent(on)
+	self.db.profile.objframetransparent = on and true or nil
+	local skin = self.objectiveskin
+	skin.fill:SetTint("panel", on and 0.5 or 1)
+	if skin.shadow then skin.shadow:SetTint({ 0, 0, 0 }, on and 0 or 0.62) end
+end
+
+-- A menu row's box, ticked while what it stands for is on.
+local function MenuBox(row)
+	local edge = row:CreateTexture(nil, "ARTWORK")
+	edge:SetTexture(Theme.texture.solid)
+	edge:SetWidth(14); edge:SetHeight(14)
+	edge:SetPoint("RIGHT", row, "RIGHT", -12, 0)
+	Theme:Tint(edge, "textDim")
+	local fill = row:CreateTexture(nil, "OVERLAY")
+	fill:SetTexture(Theme.texture.solid)
+	fill:SetPoint("TOPLEFT", edge, "TOPLEFT", 1, -1)
+	fill:SetPoint("BOTTOMRIGHT", edge, "BOTTOMRIGHT", -1, 1)
+	local tick = row:CreateTexture(nil, "OVERLAY")
+	tick:SetTexture(Theme.glyph.tick)
+	tick:SetWidth(12); tick:SetHeight(12)
+	tick:SetPoint("CENTER", edge, "CENTER", 0, 0)
+	Theme:Tint(tick, "text")
+	function row:SetChecked(on)
+		self.on = on
+		Theme:Tint(fill, on and "accentDeep" or "panel2")
+		if on then tick:Show() else tick:Hide() end
+	end
+end
+
+local function MenuRow(menu, item, y)
+	local row = CreateFrame("Button", nil, menu)
+	row:SetHeight(MENU_ROW)
+	row:SetPoint("TOPLEFT", menu, "TOPLEFT", 1, y)
+	row:SetPoint("TOPRIGHT", menu, "TOPRIGHT", -1, y)
+	local hl = row:CreateTexture(nil, "HIGHLIGHT")
+	hl:SetTexture(Theme.texture.solid)
+	hl:SetAllPoints(row)
+	Theme:Tint(hl, "text", 0.06)
+	local g = row:CreateTexture(nil, "ARTWORK")
+	g:SetTexture(Theme.glyph[item.glyph])
+	g:SetWidth(14); g:SetHeight(14)
+	g:SetPoint("LEFT", row, "LEFT", 12, 0)
+	Theme:Tint(g, "textDim")
+	local fs = row:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(fs, "body", 13)
+	fs:SetPoint("LEFT", row, "LEFT", 36, 0)
+	fs:SetText(item.label)
+	Theme:TextColor(fs, "text")
+	row.item, row.label = item, fs
+	if item.key then MenuBox(row) end
+	row:SetScript("OnClick", function()
+		local it = this.item
+		if it.key then
+			it.run(not this.on)
+			this:SetChecked(AegisPathfinder.db.profile[it.key])
+		else
+			AegisPathfinder.guidemenu:Hide()
+			it.run()
+		end
+	end)
+	return row
+end
+
+--- Build the ≡ menu under `chip`.
+function AegisPathfinder:BuildGuideMenu(chip)
+	local menu = CreateFrame("Frame", "AegisPathfinderGuideMenu", UIParent)
+	menu:SetFrameStrata("FULLSCREEN_DIALOG")
+	menu:SetWidth(MENU_W)
+	menu:SetPoint("TOPLEFT", chip, "BOTTOMLEFT", -2, -4)
+	Theme:Panel(menu, "panel2")
+	Theme:Scaled(menu)
+	menu:EnableMouse(true)
+	menu:Hide()
+	menu.rows = {}
+	local y = -6
+	for _, item in ipairs(GUIDE_MENU) do
+		if item == "-" then
+			local rule = menu:CreateTexture(nil, "ARTWORK")
+			rule:SetTexture(Theme.texture.solid)
+			rule:SetHeight(1)
+			rule:SetPoint("TOPLEFT", menu, "TOPLEFT", 12, y - 4)
+			rule:SetPoint("TOPRIGHT", menu, "TOPRIGHT", -12, y - 4)
+			Theme:Tint(rule, "tabbg")
+			y = y - 9
+		else
+			table.insert(menu.rows, MenuRow(menu, item, y))
+			y = y - MENU_ROW
+		end
+	end
+	menu:SetHeight(6 - y)
+	menu:SetScript("OnShow", function()
+		for _, row in ipairs(this.rows) do
+			if row.item.key then row:SetChecked(AegisPathfinder.db.profile[row.item.key]) end
+		end
+	end)
+	-- The guide closing closes its menu.
+	chip:SetScript("OnHide", function() menu:Hide() end)
+	table.insert(UISpecialFrames, "AegisPathfinderGuideMenu")
+	self.guidemenu = menu
+	return menu
+end
+
 function AegisPathfinder:UpdateObjectivePanel()
 	frame:SetScript("OnShow", nil)
 
@@ -314,18 +447,26 @@ function AegisPathfinder:UpdateObjectivePanel()
 	]]
 	local header = Theme:Header(frame, G.HEADER_H)
 	header:MakeDragHandle(frame, Theme:PositionSaver("objframe"))
+	-- A locked window stays where it is.
+	header:SetScript("OnDragStart", function()
+		if not AegisPathfinder.db.profile.objframelocked then frame:StartMoving() end
+	end)
 
+	-- The ≡ menu. What it opens sits beside the guide, never instead of it.
 	local menuChip = Theme:ChipButton(header, "menu")
 	menuChip:SetPoint("LEFT", header, "LEFT", 8, 0)
+	AegisPathfinder:BuildGuideMenu(menuChip)
+	AegisPathfinder:SetGuideLocked(AegisPathfinder.db.profile.objframelocked)
+	AegisPathfinder:SetGuideTransparent(AegisPathfinder.db.profile.objframetransparent)
 	menuChip:SetScript("OnClick", function()
-		-- Beside the guide, not instead of it: the concept puts #options at
-		-- right:456px and #objectives at right:40px, both on screen at once.
-		AegisPathfinder:ToggleConfigPanel()
+		local menu = AegisPathfinder.guidemenu
+		Theme:HideTip(this)
+		if menu:IsShown() then menu:Hide() else menu:Show() end
 	end)
 	menuChip:SetScript("OnEnter", function()
 		this.fill:SetTint("text", 0.10)
 		Theme:Tint(this.glyph, "text")
-		Theme:ShowTip(this, "BOTTOM", L["Config"])
+		Theme:ShowTip(this, "BOTTOM", "Menu")
 	end)
 	menuChip:SetScript("OnLeave", function()
 		this.fill:SetTint("text", 0.04)
@@ -1141,6 +1282,8 @@ function AegisPathfinder:ResetWindowLayout()
 	profile.objframewidth, profile.objframemaxheight, profile.objframeheight = nil, nil, nil
 	profile.optionswidth, profile.optionsheight = nil, nil
 	if self.optionsframe and self.SizeConfigWindow then self:SizeConfigWindow() end
+	profile.guidelistwidth, profile.guidelistheight = nil, nil
+	if self.SizeGuideBrowser then self:SizeGuideBrowser() end
 
 	frame:ClearAllPoints()
 	frame:SetPoint(G.DEFAULT_ANCHOR[1], UIParent, G.DEFAULT_ANCHOR[2], G.DEFAULT_ANCHOR[3], G.DEFAULT_ANCHOR[4])

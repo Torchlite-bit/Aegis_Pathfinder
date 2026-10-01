@@ -34,6 +34,7 @@ lua5.1 Tools/tests/test_gearframe.lua
 lua5.1 Tools/tests/test_gearadvisor.lua
 lua5.1 Tools/tests/test_gearfinder.lua
 lua5.1 Tools/tests/test_guidelist.lua
+lua5.1 Tools/tests/test_guidebrowser.lua
 lua5.1 Tools/tests/test_materials.lua
 lua5.1 Tools/tests/test_craftplanner.lua
 lua5.1 Tools/tests/test_craftroute.lua

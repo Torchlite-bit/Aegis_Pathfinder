@@ -630,11 +630,13 @@ local MAX_CLASS = MAX_MIDLEVEL
 local CLASS_PAST = 5         -- levels past a class quest's that it is still offered
 
 --- The class quest guides to offer at `level`, lowest first: { guide,
---- level }.
-function AegisPathfinder:GetClassMilestones(level)
+--- level }. `browsing` is the guide browser asking what to suggest: there
+--- one already offered still counts, and the switch, which is about offers,
+--- does not apply.
+function AegisPathfinder:GetClassMilestones(level, browsing)
 	local db = self.db.char
 	local out = {}
-	if not db.setupdone or db.classquests == false or not level then return out end
+	if not level or not browsing and (not db.setupdone or db.classquests == false) then return out end
 	local _, class = UnitClass("player")
 	local side = UnitFactionGroup("player")
 	local list = self.CLASS_MILESTONES[side or ""] and self.CLASS_MILESTONES[side][class or ""]
@@ -645,7 +647,7 @@ function AegisPathfinder:GetClassMilestones(level)
 	for _, m in ipairs(list) do
 		local mine = m.races[race]
 		if mine and level >= mine.level and level <= mine.level + CLASS_PAST
-			and not offered[m.guide] and self.guides[m.guide]
+			and (browsing or not offered[m.guide]) and self.guides[m.guide]
 			and (grouped or not m.group)
 			and (completion[m.guide] or 0) < 1
 			and not self:IsQuestCompletedOnServer(mine.last)

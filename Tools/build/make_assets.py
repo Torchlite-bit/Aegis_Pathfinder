@@ -496,6 +496,94 @@ def _auto(d, s):             # step check -- the addon ticks this one itself
                (px - nx * half, py - ny * half)], fill=W)
 
 
+def _star(d, s):             # guide browser -- a favourite, or a suggestion
+    import math
+    pts = []
+    for i in range(10):
+        r = s * (.42 if i % 2 == 0 else .18)
+        t = math.radians(-90 + i * 36)
+        pts.append((s * .5 + r * math.cos(t), s * .53 + r * math.sin(t)))
+    d.polygon(pts, fill=W)
+
+
+def _search(d, s):           # guide browser -- the search box's magnifier
+    w = int(s * .11)
+    d.ellipse([s * .14, s * .14, s * .64, s * .64], outline=W, width=w)
+    d.line([s * .58, s * .58, s * .86, s * .86], fill=W, width=int(s * .14))
+
+
+def _gear(d, s):             # guide browser -- Options; the menu's Settings
+    import math
+    for i in range(8):
+        t = math.radians(i * 45)
+        cx, cy = s * .5 + s * .32 * math.cos(t), s * .5 + s * .32 * math.sin(t)
+        d.ellipse([cx - s * .09, cy - s * .09, cx + s * .09, cy + s * .09], fill=W)
+    d.ellipse([s * .20, s * .20, s * .80, s * .80], fill=W)
+    d.ellipse([s * .38, s * .38, s * .62, s * .62], fill=(0, 0, 0, 0))
+
+
+def _folder(d, s):           # guide browser -- a folder of guides
+    d.rounded_rectangle([s * .10, s * .20, s * .46, s * .36], radius=s * .05, fill=W)
+    d.rounded_rectangle([s * .10, s * .28, s * .90, s * .80], radius=s * .07, fill=W)
+
+
+def _heart(d, s):            # guide browser -- Reputations
+    d.ellipse([s * .12, s * .18, s * .52, s * .58], fill=W)
+    d.ellipse([s * .48, s * .18, s * .88, s * .58], fill=W)
+    d.polygon([(s * .14, s * .46), (s * .86, s * .46), (s * .50, s * .86)], fill=W)
+
+
+def _calendar(d, s):         # guide browser -- Events
+    d.rounded_rectangle([s * .14, s * .20, s * .86, s * .84], radius=s * .08, fill=W)
+    clear = (0, 0, 0, 0)
+    d.rectangle([s * .22, s * .40, s * .78, s * .76], fill=clear)
+    for x in (.32, .52):
+        d.rectangle([s * x, s * .48, s * (x + .12), s * .58], fill=W)
+    d.rectangle([s * .32, s * .62, s * .44, s * .70], fill=W)
+    for x in (.30, .62):
+        d.rounded_rectangle([s * x, s * .10, s * (x + .08), s * .28], radius=s * .03, fill=W)
+
+
+def _medal(d, s):            # guide browser -- Titles
+    d.polygon([(s * .26, s * .10), (s * .42, s * .10), (s * .56, s * .46), (s * .44, s * .50)], fill=W)
+    d.polygon([(s * .74, s * .10), (s * .58, s * .10), (s * .44, s * .46), (s * .56, s * .50)], fill=W)
+    d.ellipse([s * .26, s * .42, s * .74, s * .90], fill=W)
+    d.ellipse([s * .38, s * .54, s * .62, s * .78], fill=(0, 0, 0, 0))
+
+
+def _dots(d, s):             # guide browser -- the list's options, a vertical ellipsis
+    for y in (.22, .50, .78):
+        d.ellipse([s * .40, s * (y - .10), s * .60, s * (y + .10)], fill=W)
+
+
+def _lock(d, s):             # guide window menu -- Lock window
+    d.arc([s * .28, s * .12, s * .72, s * .60], 180, 360, fill=W, width=int(s * .10))
+    d.rectangle([s * .28, s * .34, s * .37, s * .48], fill=W)
+    d.rectangle([s * .63, s * .34, s * .72, s * .48], fill=W)
+    d.rounded_rectangle([s * .18, s * .44, s * .82, s * .88], radius=s * .07, fill=W)
+
+
+def _dashed(d, s):           # guide window menu -- Transparency, a see-through square
+    w = int(s * .09)
+    for a, b in ((.16, .36), (.44, .56), (.64, .84)):
+        d.line([s * a, s * .16, s * b, s * .16], fill=W, width=w)
+        d.line([s * a, s * .84, s * b, s * .84], fill=W, width=w)
+        d.line([s * .16, s * a, s * .16, s * b], fill=W, width=w)
+        d.line([s * .84, s * a, s * .84, s * b], fill=W, width=w)
+
+
+def _wand(d, s):             # guide window menu -- the Setup wizard
+    d.line([s * .16, s * .84, s * .60, s * .40], fill=W, width=int(s * .11))
+    import math
+    cx, cy = s * .70, s * .30
+    pts = []
+    for i in range(8):
+        r = s * (.20 if i % 2 == 0 else .07)
+        t = math.radians(-90 + i * 45)
+        pts.append((cx + r * math.cos(t), cy + r * math.sin(t)))
+    d.polygon(pts, fill=W)
+
+
 CHROME = {
     "auto": _auto,
     "menu": _menu,
@@ -512,6 +600,17 @@ CHROME = {
     "party": _party,
     "caret-up": lambda d, s: _caret(d, s, "up"),
     "caret-down": lambda d, s: _caret(d, s, "down"),
+    "star": _star,
+    "search": _search,
+    "gear": _gear,
+    "folder": _folder,
+    "heart": _heart,
+    "calendar": _calendar,
+    "medal": _medal,
+    "dots": _dots,
+    "lock": _lock,
+    "dashed": _dashed,
+    "wand": _wand,
 }
 
 
@@ -643,6 +742,19 @@ def minimap_logo(size=64):
     return write_tga(img, os.path.join(MEDIA, "minimap-logo.tga"))
 
 
+def logo(size=128):
+    """The guide browser's empty right pane: the logo, as on the minimap but
+    larger. Full colour, made the same way."""
+    img = Image.open(LOGO_SOURCE).convert("RGBA")
+    side = min(img.size)
+    img = img.crop(((img.size[0] - side) // 2, (img.size[1] - side) // 2,
+                    (img.size[0] + side) // 2, (img.size[1] + side) // 2))
+    while img.size[0] >= size * 4:
+        img = img.resize((img.size[0] // 2, img.size[1] // 2), Image.LANCZOS)
+    img = img.resize((size, size), Image.LANCZOS)
+    return write_tga(img, os.path.join(MEDIA, "logo.tga"))
+
+
 def wordmark(w=256, h=32):
     """PATHFINDER wordmark, pre-rendered in the display face.
 
@@ -696,6 +808,7 @@ def main():
     record("progress-fill.tga", progress_fill())
     record("progress-mask.tga", progress_mask())
     record("minimap-logo.tga", minimap_logo())
+    record("logo.tga", logo())
     record("wordmark.tga", wordmark())
     record("scroll-thumb.tga", scroll_thumb())
     record("switch-track.tga", switch_track())

@@ -17,29 +17,38 @@ stub.install(_G)
 
 UISpecialFrames = {}
 UnitLevel = function() return 10 end
+UnitClass = function() return "Warrior", "WARRIOR" end
+IsShiftKeyDown = function() return false end
 
 AegisPathfinder = {
-	guidelist = {}, qsplusguides = {},
-	db = { char = { completion = {}, guidecategory = "all" }, profile = {} },
+	guides = {}, guidelist = {}, qsplusguides = {},
+	db = { char = { completion = {}, turnins = {}, browsertab = "zone", browserpanels = {} }, profile = {} },
 }
 function AegisPathfinder:Debug() end
 function AegisPathfinder:Print() end
 function AegisPathfinder.GetQuadrant() return "TOPRIGHT", "TOP", "RIGHT" end
 function AegisPathfinder:IsRoutePackGuide() return false end
-function AegisPathfinder:GetGuideCategory() return "zone" end
+function AegisPathfinder:GetGuideCategory() return "dungeon" end
 function AegisPathfinder:ParseGuideLevelRange() return nil, nil end
 function AegisPathfinder:IsTemplateGuide() return false end
-function AegisPathfinder:GuideBadge() return "xp", "XP" end
+function AegisPathfinder:GuideBadge() return "dg", "DG" end
+function AegisPathfinder:GuideZone() return nil end
 function AegisPathfinder:ReturnFromBranch() end
+function AegisPathfinder:EnsureTabs() return {} end
 
--- Two columns' worth more guides than the list shows at once.
+-- Far more guides than the list shows at once.
 for i = 1, 80 do
-	table.insert(AegisPathfinder.guidelist, string.format("Guide %02d", i))
+	local name = string.format("Dungeons/Guide %02d", i)
+	AegisPathfinder.guides[name] = function() return "" end
+	table.insert(AegisPathfinder.guidelist, name)
 end
 
 AegisPathfinder.objectiveframe = CreateFrame("Frame", nil, UIParent)
 
 dofile("Theme.lua")
+dofile("GuideBrowser.lua")
+dofile("MapOverlays.lua")
+dofile("GuidePictures.lua")
 dofile("GuideListFrame.lua")
 
 local failures, checks = {}, 0
@@ -48,58 +57,46 @@ local function check(cond, fmt, ...)
 	if not cond then table.insert(failures, string.format(fmt, ...)) end
 end
 
--- Guide list -------------------------------------------------------------------------
+-- Guide browser ----------------------------------------------------------------------
 
 local list = AegisPathfinder.guidelistframe
+local ui = AegisPathfinder.browserui
+AegisPathfinder.db.char.browsertab = "dungeons"
 list:Show()
-AegisPathfinder:UpdateGuideListPanel()
+list:GetScript("OnShow")()
 local bar = list.slider
 
 check(bar.track ~= nil and bar.up ~= nil and bar.down ~= nil,
-	"the guide list scrolls with the theme's bar")
+	"the guide browser scrolls with the theme's bar")
 check(bar:IsShown(), "which shows once there are more guides than rows")
 
--- One "Zone Guides" header plus 80 guides, 48 shown at a time.
+local shown = 0
+for _, r in ipairs(ui.rows) do if r:IsShown() then shown = shown + 1 end end
 local _, hi = bar:GetMinMaxValues()
-check(hi == 81 - 48, "the range is what does not fit, got %s", tostring(hi))
-
--- Nine category tabs, Class among them, each as wide as its label: they
--- fit the panel.
-local tabs, right = AegisPathfinder.guidecategorytabs, 12
-local keys = {}
-for i, t in ipairs(tabs) do
-	right = right + t:GetWidth() + (i > 1 and 2 or 0)
-	table.insert(keys, t.categoryKey)
-end
-check(table.getn(tabs) == 9 and table.concat(keys, ",") == "all,turtle,optimized,rxp,rxp_hc,zone,dungeon,class,profession",
-	"the tabs, Class between Dungeons and Professions, got %s", table.concat(keys, ","))
-check(right <= list:GetWidth() - 12, "and they fit the %d-wide panel, ending at %d", list:GetWidth(), right)
-check(tabs[9]:GetWidth() > tabs[8]:GetWidth(), "PROFESSIONS wider than CLASS")
+check(hi == 80 - shown, "the range is what does not fit, got %s for %d rows", tostring(hi), shown)
 
 local function firstGuide()
-	for _, r in ipairs({ list:GetChildren() }) do
-		if r.guide then return r.guide end
-	end
+	return ui.rows[1].guide
 end
-check(firstGuide() == "Guide 01", "the list starts at the top, got %s", tostring(firstGuide()))
+check(firstGuide() == "Dungeons/Guide 01", "the list starts at the top, got %s", tostring(firstGuide()))
 
--- The carets move a column, as the wheel does. The template's moved by half
--- the bar's height in pixels, which for this list is most of it.
+-- The carets move a few rows, as the wheel does.
 bar.down:GetScript("OnClick")()
-check(bar:GetValue() == 16, "the down caret moves one column of 16, got %s", tostring(bar:GetValue()))
-check(firstGuide() == "Guide 16", "and the list follows, got %s", tostring(firstGuide()))
+check(bar:GetValue() == 3, "the down caret moves three rows, got %s", tostring(bar:GetValue()))
+check(firstGuide() == "Dungeons/Guide 04", "and the list follows, got %s", tostring(firstGuide()))
 bar.up:GetScript("OnClick")()
 check(bar:GetValue() == 0, "the up caret moves back, got %s", tostring(bar:GetValue()))
-for _ = 1, 10 do bar.down:GetScript("OnClick")() end
+for _ = 1, 40 do bar.down:GetScript("OnClick")() end
 check(bar:GetValue() == hi, "and neither runs past the end, got %s", tostring(bar:GetValue()))
-for _ = 1, 10 do bar.up:GetScript("OnClick")() end
+check(ui.rows[shown].guide == "Dungeons/Guide 80", "the last guide is reachable")
+for _ = 1, 40 do bar.up:GetScript("OnClick")() end
 check(bar:GetValue() == 0, "or past the top, got %s", tostring(bar:GetValue()))
 
--- The bar keeps clear of the third column.
+-- The bar keeps clear of the rows.
 local _, _, _, barX = bar:GetPoint(1)
-check(15 + 3 * 210 <= list:GetWidth() + barX - bar:GetWidth(),
-	"the bar must not sit over the third column (%d vs %d)",
-	15 + 3 * 210, list:GetWidth() + barX - bar:GetWidth())
+local _, _, _, listX = ui.list:GetPoint(2)
+check(-barX + bar:GetWidth() <= -listX, "the bar must not sit over the rows (%d vs %d)",
+	-barX + bar:GetWidth(), -listX)
 
 -- Error log --------------------------------------------------------------------------
 

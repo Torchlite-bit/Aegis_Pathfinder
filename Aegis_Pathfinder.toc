@@ -3,7 +3,7 @@
 ## Title: Aegis: Pathfinder
 ## Notes: Classic+ leveling guide for the Turtle WoW-lineage 1.12 client family.|nPart of the Aegis addon suite.
 ## Author: Aegis: Pathfinder Contributors (see CONTRIBUTORS.md)
-## Version: 0.20.0
+## Version: 0.21.0
 ## X-Category: Quest
 
 ## SavedVariables: AegisPathfinderDB, TurtleGuideDB
@@ -43,6 +43,11 @@ NavCallout.lua
 # themselves to it at load, so it has to exist before they do.
 ObjectivesFrame.lua
 OptionsFrame.lua
+# The guide browser: what it lists, the map reveal data (pfUI, MIT) and
+# the guides' pictures, then the window
+GuideBrowser.lua
+MapOverlays.lua
+GuidePictures.lua
 GuideListFrame.lua
 MaterialsFrame.lua
 CraftRouteFrame.lua

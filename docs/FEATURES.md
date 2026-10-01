@@ -60,6 +60,38 @@ tab remembers its own place. A badge on each tab says what the guide is: XP
 for leveling, PF for a profession, DG for a dungeon, CL for a class quest, HC for hardcore. Every tab can be closed; close them all and the
 panel waits, empty, for you to pick one.
 
+**The guide browser.** The `+` on the tab bar, or **Guide menu** in the guide
+window's ≡ menu, opens it, laid out like Zygor's. Down the left: a search box
+and the categories -- **Leveling** (Optimized, RestedXP, RestedXP Hardcore,
+the zone guides by continent, and the custom zones), **Dungeons**, **Class
+Quests**, **Professions** and **Favorites** -- with Reputations, Dailies,
+Events, Gold, Pets & Mounts and Titles greyed as coming soon. A long folder
+is split by level. Point at a guide and the right of the window shows it: a
+picture, its levels, how far through it you are, and **Load** and **Open
+beside the route**. The picture is the game's own art: a zone guide's zone
+on the world map with every area explored, a dungeon's loading screen, a
+class quest's crest and spell, a profession's icon. Pointing at a guide also
+puts up a star, which keeps it in Favorites, and an arrow, which opens it.
+The list's ⋮ colours guides by how they suit your level (grey once you have
+outlevelled one, green, then yellow, orange and red the further short of it
+you are), ticks the ones you have finished, hides finished and outlevelled
+ones, and stars the suggested ones.
+
+**HOME** is four panels -- the guides you opened last, suggested guides (the
+route's next leg, class quests, ticked dungeons and custom zones at your
+level, each with why), the time you have spent at each level, and the gold
+you have earned today and this week -- and the ⋮ hides any of them. Time and
+gold are counted while you play, from the first time a character runs
+0.21.0; gold earned is every rise in your money, with nothing taken off for
+spending. **CURRENT** is the guides open in the guide window; **RECENT** the
+last 30 you opened, by category. The window can be resized from its corner
+and remembers where you left it.
+
+**The guide window's menu.** The ≡ chip at the top left of the guide: **Guide
+menu**, **Setup wizard**, **Lock window** (it cannot be dragged or resized
+until unlocked), **Transparency** (a see-through panel), **Reset window**,
+**Reload** and **Settings**.
+
 **Dungeons.** Toggle which of 15 dungeons you intend to run. Opting in promotes
 their setup and prerequisite steps to mandatory; opting out hides them. A blue
 dot marks the dungeons the guide you are currently on actually has steps for.
@@ -87,7 +119,7 @@ up, when you log in and when you finish the setup. *Offer a dungeon's guide at
 the middle of its levels*, on the Dungeons page, turns it off; Solo Self-Found
 holds it off.
 
-**Dungeon guides.** The guide list's **Dungeons** tab has a guide for each
+**Dungeon guides.** The guide browser's **Dungeons** category has a guide for each
 dungeon, for your side: every leveling dungeon from Ragefire Chasm to
 Blackrock Depths, and Turtle WoW's own -- Frostmane Hollow, Windhorn Canyon
 (new in patch 1.18.1), Dragonmaw Retreat, Crescent Grove, Stormwrought Ruins,
@@ -115,7 +147,7 @@ Which quests belong to a dungeon comes from InstanceJournal, a Turtle WoW
 addon that lists every instance's quests, and the quests themselves from
 pfQuest-turtle, patch 1.18.1's included (`Tools/build/build_dungeon_guides.py`).
 
-**Class quest guides.** The guide list's **Class** tab has a guide for each of
+**Class quest guides.** The guide browser's **Class Quests** category has a guide for each of
 your class's quest chains -- the warlock's Voidwalker, Succubus, Felhunter,
 Felsteed, Infernal and Dreadsteed; the druid's Bear Form, Aquatic Form and
 Cure Poison; the hunter's Taming the Beast and Rhok'delar; the paladin's
