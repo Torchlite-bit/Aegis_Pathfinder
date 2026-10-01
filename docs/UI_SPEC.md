@@ -503,7 +503,11 @@ zones; a folder of more than 24 guides is split into Levels 1-20, 20-40 and
 40-60 by the level each starts at. A zone guide's zone is the one its title
 names, or a place in it does ("Coldridge Valley" is Dun Morogh), or else the
 one most of its steps' `|Z|` tags name. Dungeons and Class Quests are by
-level, Professions and Favorites by name. Class Quests holds only yours
+level, Professions and Favorites by name. A route leg that is a dungeon run
+-- a title naming a dungeon or raid (`Browser.DungeonIn`), such as
+Optimized's Uldaman and Sunken Temple, or RestedXP's Scholomance Key -- is
+not in its pack's folder but in **On the routes**, the first folder under
+Dungeons, each saying whose route it is on. Class Quests holds only yours
 (`IsMyClassGuide`: your class's, and one your race has a chain for). Search
 looks through every title, any case.
 
@@ -549,7 +553,8 @@ not taken off. Both start from the first time a character runs 0.21.0.
 **CURRENT** is the guides open in the guide window, the route first.
 **RECENT** is the last 30 opened, under their categories.
 
-**Pictures** (`GuidePictures.lua`), 240x135, all the game's own art:
+**Pictures** (`GuidePictures.lua`), 240x135, the game's art -- the client's
+own files, and Turtle WoW's dungeon loading screens, which the client lacks:
 
 - A zone guide shows its zone's map **explored**: the twelve 256px tiles, and
   every area's overlay where pfUI's map reveal data puts it
@@ -563,7 +568,11 @@ not taken off. Both start from the first time a character runs 0.21.0.
 - A dungeon guide, or a route leg named for a dungeon ("Optimized/Uldaman"),
   shows its loading screen, cropped to its art at about 16:9: the instance's
   own where 1.12 has one, else one of the six generic screens chosen from
-  the art (`Pictures.SCREEN_FOR`).
+  the art (`Pictures.SCREEN_FOR`). Turtle WoW's own dungeons have art the
+  1.12 client has no file for, so the addon carries it where it has it
+  (`Theme.loadscreen`: Windhorn Canyon, Dragonmaw Retreat, Stormwrought
+  Ruins -- Lionel Schramm's paintings for Turtle WoW), 16:9 squeezed into a
+  512x256 texture and shown whole; the rest get the generic dungeon screen.
 - A class quest shows the class's crest from the character creation sheet
   in the corner, the panel in the class's colour (`Theme.CLASS_COLORS`), and
   the chain's spell, mount or reward in the middle, else an icon that says

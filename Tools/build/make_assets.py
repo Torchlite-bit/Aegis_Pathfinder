@@ -755,6 +755,22 @@ def logo(size=128):
     return write_tga(img, os.path.join(MEDIA, "logo.tga"))
 
 
+# Turtle WoW's own dungeons' loading screens, painted by Lionel Schramm for
+# Turtle WoW's Mysteries of Azeroth, for the guide browser's pictures. The
+# sources are under Tools/data/loadscreens (they do not ship), 16:9.
+LOADSCREENS = os.path.join(ROOT, "Tools", "data", "loadscreens")
+
+
+def loadscreen(name, w=512, h=256):
+    """One loading screen as a 512x256 texture: squeezed from 16:9 to 2:1,
+    which the picture's 16:9 frame stretches back, so nothing is cut off."""
+    img = Image.open(os.path.join(LOADSCREENS, name + ".webp")).convert("RGBA")
+    while img.size[0] >= w * 4:
+        img = img.resize((img.size[0] // 2, img.size[1] // 2), Image.LANCZOS)
+    img = img.resize((w, h), Image.LANCZOS)
+    return write_tga(img, os.path.join(MEDIA, "loadscreens", name + ".tga"))
+
+
 def wordmark(w=256, h=32):
     """PATHFINDER wordmark, pre-rendered in the display face.
 
@@ -784,6 +800,7 @@ def wordmark(w=256, h=32):
 
 def main():
     os.makedirs(os.path.join(MEDIA, "icons"), exist_ok=True)
+    os.makedirs(os.path.join(MEDIA, "loadscreens"), exist_ok=True)
     total = 0
     made = []
 
@@ -809,6 +826,10 @@ def main():
     record("progress-mask.tga", progress_mask())
     record("minimap-logo.tga", minimap_logo())
     record("logo.tga", logo())
+    for f in sorted(os.listdir(LOADSCREENS)):
+        if f.endswith(".webp"):
+            name = f[:-len(".webp")]
+            record("loadscreens/%s.tga" % name, loadscreen(name))
     record("wordmark.tga", wordmark())
     record("scroll-thumb.tga", scroll_thumb())
     record("switch-track.tga", switch_track())

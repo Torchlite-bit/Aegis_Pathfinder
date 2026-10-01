@@ -163,6 +163,15 @@ Theme.glyph = {
 	book         = MEDIA .. "icons\\train",
 }
 
+--[[ Turtle WoW's own dungeons' loading screens, which the client has no
+	1.12 file for: the guide browser's pictures (GuidePictures.lua), by the
+	dungeon's name. Lionel Schramm's art for Turtle WoW. ]]
+Theme.loadscreen = {
+	["Windhorn Canyon"]    = MEDIA .. "loadscreens\\windhorn-canyon",
+	["Dragonmaw Retreat"]  = MEDIA .. "loadscreens\\dragonmaw-retreat",
+	["Stormwrought Ruins"] = MEDIA .. "loadscreens\\stormwrought-ruins",
+}
+
 Theme.font = {
 	display  = MEDIA .. "fonts\\Rajdhani-Bold.ttf",
 	display2 = MEDIA .. "fonts\\Rajdhani-SemiBold.ttf",

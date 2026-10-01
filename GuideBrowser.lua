@@ -119,6 +119,15 @@ Browser.ZONES = {
 }
 Browser.CONTINENTS = { { "EK", "Eastern Kingdoms" }, { "K", "Kalimdor" } }
 
+-- The instances besides the dungeons the setup and the Dungeons page list
+-- (DUNGEON_INFO, TURTLE_DUNGEON_INFO): the later dungeons and the raids.
+Browser.INSTANCES = {
+	"Blackrock Spire", "Dire Maul", "Scholomance", "Stratholme", "Onyxia's Lair", "Molten Core",
+	"Blackwing Lair", "Zul'Gurub", "Ruins of Ahn'Qiraj", "Temple of Ahn'Qiraj", "Naxxramas",
+}
+-- What the Dungeons category calls the route legs that are dungeon runs.
+Browser.ROUTE_LEGS = "On the routes"
+
 --[[ Guides ---------------------------------------------------------------- ]]
 
 --- A guide's title without its pack prefix: "Optimized/Duskwood (28-29)"
@@ -140,6 +149,25 @@ function Browser.ByLevel(a, b)
 end
 
 local function ByName(a, b) return Browser.Title(a) < Browser.Title(b) end
+
+--- The dungeon or raid a title names -- "Optimized/Uldaman (45-46)" is a
+--- route's run through Uldaman -- the longest name that fits, or nil.
+function Browser.DungeonIn(title)
+	local best
+	local function try(name)
+		if name and string.find(title, name, 1, true) and string.len(name) > string.len(best or "") then best = name end
+	end
+	for _, list in ipairs({ AegisPathfinder.DUNGEON_INFO or {}, AegisPathfinder.TURTLE_DUNGEON_INFO or {} }) do
+		for _, d in ipairs(list) do try(d.name) end
+	end
+	for _, name in ipairs(Browser.INSTANCES) do try(name) end
+	return best
+end
+
+-- A leveling guide that is a dungeon run: it is listed under Dungeons.
+local function RouteLeg(name)
+	return Browser.DungeonIn(Browser.Title(name)) ~= nil
+end
 
 --- The guides the browser lists: every one registered for you -- a class
 --- quest guide only when it is your class's and your race has its chain.
@@ -223,11 +251,15 @@ end
 --- Category `key`'s folder, as the browser shows it now.
 function AegisPathfinder:BrowserCategory(key)
 	local guides = self:BrowserGuides()
-	local by = {}
+	local by, legs = {}, {}
 	for _, g in ipairs(guides) do
 		local cat = self:GetGuideCategory(g)
-		by[cat] = by[cat] or {}
-		table.insert(by[cat], g)
+		if cat ~= "dungeon" and cat ~= "class" and cat ~= "profession" and RouteLeg(g) then
+			table.insert(legs, g)
+		else
+			by[cat] = by[cat] or {}
+			table.insert(by[cat], g)
+		end
 	end
 	local label
 	for _, c in ipairs(Browser.CATEGORIES) do
@@ -256,7 +288,17 @@ function AegisPathfinder:BrowserCategory(key)
 		if by.turtle then table.insert(items, { folder = Folder("Custom zones", by.turtle) }) end
 		return { title = label, items = items }
 	elseif key == "dungeons" then
-		return Folder(label, by.dungeon or {})
+		-- The dungeon guides; and first, the routes' own runs through a
+		-- dungeon, each saying whose route it is on.
+		local folder = Folder(label, by.dungeon or {})
+		if legs[1] then
+			local packs = {}
+			for _, pack in ipairs(PACKS) do packs[pack[1]] = pack[2] end
+			local runs = Folder(Browser.ROUTE_LEGS, legs)
+			for _, item in ipairs(runs.items) do item.why = packs[self:GetGuideCategory(item.guide)] end
+			table.insert(folder.items, 1, { folder = runs })
+		end
+		return folder
 	elseif key == "class" then
 		return Folder(label, by.class or {})
 	elseif key == "professions" then
@@ -290,6 +332,7 @@ function AegisPathfinder:BrowserCategoryOf(name)
 	if cat == "dungeon" then return "dungeons" end
 	if cat == "class" then return "class" end
 	if cat == "profession" then return "professions" end
+	if RouteLeg(name) then return "dungeons" end
 	return "leveling"
 end
 

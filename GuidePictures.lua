@@ -2,7 +2,8 @@
 	GuidePictures.lua -- the picture of a guide, at the top of the guide
 	browser's right pane.
 
-	Every picture is the game's own art, nothing shipped:
+	Every picture is the game's art, from the client's own files but for
+	Turtle WoW's dungeon loading screens, which the addon carries:
 
 	  * a zone guide shows its zone's map with every area explored -- the
 	    map's twelve tiles, and each area's overlay where pfUI's map reveal
@@ -32,7 +33,9 @@ local CREST = "Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes"
 	and the later dungeons; every other instance used one of six generic
 	ones. Which generic one each dungeon had is a best guess from the art --
 	the cave for the caves, the ruined city for the troll and titan ruins.
-	Turtle WoW's own dungeons get the plain dungeon screen. ]]
+	Turtle WoW's own dungeons have art of their own, which the addon carries
+	(Theme.loadscreen) where it has it; the rest get the plain dungeon
+	screen. ]]
 Pictures.SCREEN_FOR = {
 	["Ragefire Chasm"] = "LoadScreenCave",
 	["Wailing Caverns"] = "LoadScreenCave",
@@ -45,7 +48,6 @@ Pictures.SCREEN_FOR = {
 	["Uldaman"] = "LoadScreenRuinedCity",
 	["Zul'Farrak"] = "LoadScreenRuinedCity",
 	["Sunken Temple"] = "LoadScreenRuinedCity",
-	["Stormwrought Ruins"] = "LoadScreenRuinedCity",
 	["Dire Maul"] = "LoadScreenDireMaul",
 	["Scholomance"] = "LoadScreenScholomance",
 	["Stratholme"] = "LoadScreenStrathome",          -- sic: the client's spelling
@@ -61,8 +63,9 @@ Pictures.SCREEN_FOR = {
 Pictures.SCREEN_DEFAULT = "LoadScreenDungeon"
 --[[ A loading screen is a 512x512 texture the client stretches to 4:3, its
 	art between two bars. This is the art's middle at about 16:9, the
-	picture's shape. ]]
+	picture's shape. The addon's own are 16:9 already, squeezed into 2:1. ]]
 Pictures.SCREEN_COORDS = { 0.144, 0.856, 0.2656, 0.7969 }
+Pictures.ART_COORDS = { 0, 1, 0, 1 }
 
 --[[ Class quests ------------------------------------------------------------
 
@@ -134,26 +137,17 @@ local CLASS_KEYS = {
 	["Mage"] = "MAGE", ["Warlock"] = "WARLOCK", ["Druid"] = "DRUID",
 }
 
--- The dungeon a route leg is named for -- "Optimized/Uldaman (45-46)" --
--- whose loading screen says more than the city its steps start in.
-local function DungeonIn(title)
-	for dungeon in pairs(Pictures.SCREEN_FOR) do
-		if string.find(title, dungeon, 1, true) then return dungeon end
-	end
-	for _, list in ipairs({ AegisPathfinder.DUNGEON_INFO or {}, AegisPathfinder.TURTLE_DUNGEON_INFO or {} }) do
-		for _, d in ipairs(list) do
-			if d.name and string.find(title, d.name, 1, true) then return d.name end
-		end
-	end
-end
-
+-- A dungeon's loading screen: the addon's art for it, else the client's.
 local function Screen(dungeon)
-	return { kind = "screen", texture = SCREENS .. (Pictures.SCREEN_FOR[dungeon] or Pictures.SCREEN_DEFAULT) }
+	local art = dungeon and Theme.loadscreen[dungeon]
+	if art then return { kind = "screen", texture = art, coords = Pictures.ART_COORDS } end
+	return { kind = "screen", texture = SCREENS .. (Pictures.SCREEN_FOR[dungeon or ""] or Pictures.SCREEN_DEFAULT),
+		coords = Pictures.SCREEN_COORDS }
 end
 
 --- The picture for guide `name`: { kind = "map", map }, { kind = "screen",
---- texture }, { kind = "class", class, icon }, { kind = "icon", icon } or
---- { kind = "logo" }.
+--- texture, coords }, { kind = "class", class, icon }, { kind = "icon", icon }
+--- or { kind = "logo" }.
 function AegisPathfinder:GuidePicture(name)
 	if not name or not self.guides or not self.guides[name] then return { kind = "logo" } end
 	local cat = self:GetGuideCategory(name)
@@ -173,7 +167,9 @@ function AegisPathfinder:GuidePicture(name)
 		local icon = Pictures.PROFESSION_ICON[prof or title]
 		if icon then return { kind = "icon", icon = ICONS .. icon } end
 	else
-		local dungeon = DungeonIn(title)
+		-- A route leg named for a dungeon -- "Optimized/Uldaman (45-46)" --
+		-- is its loading screen, not the city its steps start in.
+		local dungeon = self.Browser.DungeonIn(title)
 		if dungeon then return Screen(dungeon) end
 		local zone = self.GuideBrowserZone and self:GuideBrowserZone(name)
 		local info = zone and self.Browser.ZONES[zone]
@@ -326,7 +322,7 @@ local function Paint(pic, picture)
 		DrawMap(pic, picture.map)
 	elseif picture.kind == "screen" then
 		pic.screen:SetTexture(picture.texture)
-		local c = Pictures.SCREEN_COORDS
+		local c = picture.coords or Pictures.SCREEN_COORDS
 		pic.screen:SetTexCoord(c[1], c[2], c[3], c[4])
 		pic.screen:Show()
 	elseif picture.kind == "class" or picture.kind == "icon" then

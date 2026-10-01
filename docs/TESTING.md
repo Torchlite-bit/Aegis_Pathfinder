@@ -162,6 +162,11 @@ are only found at startup.
       lends them to addons is still to be seen.
 - [ ] A custom zone (Northwind, Gilneas, Tel'Abim) shows its own map;
       Moonwhisper Coast and Scarlet Enclave the logo.
+- [ ] Windhorn Canyon, Dragonmaw Retreat and Stormwrought Ruins show their
+      own Turtle WoW loading screens, whole and not squashed.
+- [ ] Dungeons starts with **On the routes**: Optimized's Uldaman and Sunken
+      Temple (and RestedXP's Scholomance Key), each saying whose route; they
+      are no longer in Optimized's Levels 40-60.
 - [ ] Left-click a guide: it opens beside the route. Right-click: it loads in
       the tab you are on. Load and Open beside the route do the same. Shift-
       click resets a finished guide.

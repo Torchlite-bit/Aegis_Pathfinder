@@ -76,6 +76,9 @@ shows the guides you opened last, what fits your level now, the time you've
 spent at each level and the gold you've made today and this week. The guide's
 ≡ menu adds Lock window, Transparency, Reset window and Reload.
 
+| <img src="docs/images/guide-browser-home.png" width="400" alt="The guide browser's Home: guides history, suggested guides with why, the level tracker and the gold tracker"> | <img src="docs/images/guide-browser-folder.png" width="400" alt="Leveling, Optimized, Levels 20-40: guides coloured by level, Darkshore picked, its map fully explored on the right"> |
+|:---:|:---:|
+
 **Dungeon guides.** Pick a dungeon under the guide browser's **Dungeons** category and
 it takes you round the towns to pick up every quest for it -- the quests
 before them included -- puts the arrow on the entrance, walks you through what

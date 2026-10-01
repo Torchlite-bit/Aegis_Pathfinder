@@ -972,7 +972,7 @@ local function GuideEntries(list, opts)
 		if type(item) == "table" and item.folder then
 			table.insert(out, item)
 		elseif not (hide and AegisPathfinder:IsGuideDoneWith(g, level)) then
-			table.insert(out, { guide = g, badge = opts.badge })
+			table.insert(out, { guide = g, badge = opts.badge, why = type(item) == "table" and item.why or nil })
 		end
 	end
 	return out

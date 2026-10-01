@@ -95,7 +95,7 @@ A.qsplusguides["Tailoring (1-300)"] = { category = "Profession", steps = {} }
 guide("Fishing (1-300)")
 A.qsplusguides["Fishing (1-300)"] = { category = "Profession", template = true, steps = {} }
 A.DUNGEON_INFO = { { code = "DM", name = "The Deadmines" }, { code = "SFK", name = "Shadowfang Keep" },
-	{ code = "SM", name = "Scarlet Monastery" } }
+	{ code = "SM", name = "Scarlet Monastery" }, { code = "ULDA", name = "Uldaman" } }
 A.TURTLE_DUNGEON_INFO = { { code = "WHC", name = "Windhorn Canyon" } }
 
 A.objectiveframe = CreateFrame("Frame", nil, UIParent)
@@ -276,8 +276,15 @@ check(pic("RXP/1-6 Coldridge Valley").map == "DunMorogh", "by the zone a place i
 check(pic("Northwind (28-34)").map == "Northwind", "a custom zone too")
 check(pic("Dungeons/Scarlet Monastery (34-45)").texture == "Interface\\Glues\\LoadingScreens\\LoadScreenMonastery",
 	"a dungeon guide is its loading screen")
-check(pic("Dungeons/Windhorn Canyon (26-30)").texture == "Interface\\Glues\\LoadingScreens\\LoadScreenDungeon",
-	"or the generic one")
+check(pic("Dungeons/Windhorn Canyon (26-30)").texture == A.Theme.loadscreen["Windhorn Canyon"]
+	and pic("Dungeons/Windhorn Canyon (26-30)").coords == Pictures.ART_COORDS,
+	"a Turtle WoW dungeon its own art, the addon's, shown whole")
+check(pic("Dungeons/Scarlet Monastery (34-45)").coords == Pictures.SCREEN_COORDS, "the client's cropped to its art")
+guide("Dungeons/Crescent Grove (33-39)")
+check(pic("Dungeons/Crescent Grove (33-39)").texture == "Interface\\Glues\\LoadingScreens\\LoadScreenDungeon",
+	"one the addon has no art for, the generic screen")
+A.guides["Dungeons/Crescent Grove (33-39)"] = nil
+table.remove(A.guidelist)
 local vw = pic("Class/Warlock: Voidwalker (10)")
 check(vw.kind == "class" and vw.class == "WARLOCK" and vw.icon == "Interface\\Icons\\Spell_Shadow_SummonVoidWalker",
 	"a class quest: the crest and the chain's spell")
@@ -288,6 +295,18 @@ check(pic(nil).kind == "logo" and pic("Nope").kind == "logo", "nothing is the lo
 guide("Optimized/Uldaman (45-46)", "A Go|Z|Ironforge|\n")
 check(pic("Optimized/Uldaman (45-46)").texture == "Interface\\Glues\\LoadingScreens\\LoadScreenRuinedCity",
 	"a route leg named for a dungeon is its loading screen, not the city it starts in")
+-- And it is listed with the dungeons, not among the route's zones.
+check(titles(find(A:BrowserCategory("leveling"), "Optimized")) == "Optimized/Elwynn Forest (1-10), "
+	.. "Optimized/Redridge (18-20), Optimized/Darkshore (20-21)", "not in the pack's folder, got %s",
+	titles(find(A:BrowserCategory("leveling"), "Optimized")))
+local dungeons = A:BrowserCategory("dungeons")
+local legs = dungeons.items[1].folder
+check(legs and legs.title == Browser.ROUTE_LEGS and legs.items[1].guide == "Optimized/Uldaman (45-46)"
+	and legs.items[1].why == "Optimized", "but first under Dungeons, saying whose route it is on")
+check(dungeons.items[2].guide == "Dungeons/The Deadmines (17-24)", "before the dungeon guides")
+check(A:BrowserCategoryOf("Optimized/Uldaman (45-46)") == "dungeons", "and Recent files it there too")
+check(Browser.DungeonIn("RXP/Scholomance Key (A)") == "Scholomance" and Browser.DungeonIn("Westfall (12-17)") == nil,
+	"the later dungeons and raids are known by name too")
 guide("Moonwhisper Coast (52-60)", "A Go|Z|Teldrassil|\n")
 check(pic("Moonwhisper Coast (52-60)").kind == "logo", "a custom zone without a map does not borrow another's")
 for _, g in ipairs({ "Optimized/Uldaman (45-46)", "Moonwhisper Coast (52-60)" }) do

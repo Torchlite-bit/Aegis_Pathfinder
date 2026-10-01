@@ -395,7 +395,8 @@ A zone guide goes under its continent, and its picture is its zone's map, by
 the zone its name says (`Browser.ZONES` in `GuideBrowser.lua`, which also knows
 places such as "Coldridge Valley"); a name with no zone in it is filed by the
 zone most of its `|Z|` tags name. A route leg named for a dungeon
-(`Optimized/Uldaman (45-46)`) shows the dungeon's loading screen. A new custom
+(`Optimized/Uldaman (45-46)`) is listed under Dungeons, in **On the routes**,
+rather than in its pack, and shows the dungeon's loading screen. A new custom
 zone wants a line in `Browser.ZONES` with its map's folder name, and
 `Tools/build/build_map_overlays.py` run again so its map shows explored.
 
