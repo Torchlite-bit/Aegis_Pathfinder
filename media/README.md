@@ -29,7 +29,7 @@ Colour is **not** baked into most files. Shapes are white masks that
 rounded-rectangle serves every panel, tab, pill and band. Only genuinely
 multi-colour art bakes colour in: `nav-arrow.tga`, `progress-fill.tga`, and
 `minimap-logo.tga` and `logo.tga`, which are the owner's logo art scaled down,
-and the loading screens in `loadscreens/`.
+and the pictures in `loadscreens/` and `maps/`.
 
 ## Contents
 
@@ -57,7 +57,8 @@ and the loading screens in `loadscreens/`.
 | `icons/{arrow,chevron}-{left,right}.tga` | 32×32 | Nav row arrows and status bar chevrons |
 | `icons/{star,search,gear,folder,heart,calendar,medal,dots}.tga` | 32×32 | The guide browser: favourites, search, Options, folders, the coming-soon categories, the list's ⋮ |
 | `icons/{lock,dashed,wand}.tga` | 32×32 | The guide window's ≡ menu: Lock window, Transparency, Setup wizard |
-| `loadscreens/*.tga` | 512×256 | Turtle WoW's own dungeons' loading screens (Lionel Schramm's art), for the guide browser's pictures: made from the 16:9 originals in `Tools/data/loadscreens/`, squeezed to 2:1 and stretched back when shown. To add one, put its `.webp` there under the dungeon's slug, re-run `make_assets.py`, and name it in `Theme.loadscreen` |
+| `loadscreens/*.tga` | 256×128 | Turtle WoW's dungeon loading screens, for the guide browser's pictures: from the originals in `Tools/data/loadscreens/` -- a 4:3 screen as the client shows it is cropped to its art between the bars and below the logo, a 16:9 painting kept whole -- squeezed from 16:9 to 2:1 and stretched back when shown. To add one, put it there under the dungeon's slug (`.webp`, `.jpg` or `.png`), re-run `make_assets.py`, and name it in `Theme.loadscreen` |
+| `maps/*.tga` | 256×128 | The explored world maps of the custom zones pfUI has no map data for (Moonwhisper Coast, Scarlet Enclave): the middle 16:9 of the originals in `Tools/data/maps/`, named in `Theme.zonemap` |
 
 The nine-slice masks are 32×32 with a 10px corner, so the slice boundaries sit
 at 10/32 and 22/32. `Theme.CORNER` and the `S0`/`S1` constants in `Theme.lua`

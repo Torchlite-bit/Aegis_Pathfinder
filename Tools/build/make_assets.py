@@ -755,20 +755,53 @@ def logo(size=128):
     return write_tga(img, os.path.join(MEDIA, "logo.tga"))
 
 
-# Turtle WoW's own dungeons' loading screens, painted by Lionel Schramm for
-# Turtle WoW's Mysteries of Azeroth, for the guide browser's pictures. The
-# sources are under Tools/data/loadscreens (they do not ship), 16:9.
+# Turtle WoW's dungeon loading screens and the maps of its zones the client
+# cannot draw for the browser, for the guide browser's pictures. The sources
+# are under Tools/data (they do not ship): loading screens as the client
+# shows them, 4:3 with the logo bars, or a 16:9 painting; maps as the world
+# map draws them, 1002x668 or near it.
 LOADSCREENS = os.path.join(ROOT, "Tools", "data", "loadscreens")
+ZONEMAPS = os.path.join(ROOT, "Tools", "data", "maps")
+PICTURE_W, PICTURE_H = 256, 128      # 16:9 squeezed into 2:1; stretched back when shown
+# A 4:3 loading screen's art, at 800x600: between the bars, and below the
+# logo's ribbon, which reaches down to row 155.
+SCREEN_ART = (114, 160, 686, 482)
 
 
-def loadscreen(name, w=512, h=256):
-    """One loading screen as a 512x256 texture: squeezed from 16:9 to 2:1,
-    which the picture's 16:9 frame stretches back, so nothing is cut off."""
-    img = Image.open(os.path.join(LOADSCREENS, name + ".webp")).convert("RGBA")
-    while img.size[0] >= w * 4:
+def _sources(folder):
+    return sorted(f for f in os.listdir(folder) if os.path.splitext(f)[1] in (".webp", ".jpg", ".png"))
+
+
+def _picture(img, path):
+    """A 16:9 picture as a 256x128 texture."""
+    img = img.convert("RGBA")
+    while img.size[0] >= PICTURE_W * 4:
         img = img.resize((img.size[0] // 2, img.size[1] // 2), Image.LANCZOS)
-    img = img.resize((w, h), Image.LANCZOS)
-    return write_tga(img, os.path.join(MEDIA, "loadscreens", name + ".tga"))
+    return write_tga(img.resize((PICTURE_W, PICTURE_H), Image.LANCZOS), path)
+
+
+def loadscreen(name):
+    """A dungeon's loading screen: the art between its bars, below the logo,
+    or a 16:9 painting whole."""
+    src = next(f for f in _sources(LOADSCREENS) if os.path.splitext(f)[0] == name)
+    img = Image.open(os.path.join(LOADSCREENS, src))
+    w, h = img.size
+    if abs(w / h - 4 / 3) < 0.05:
+        k = w / 800.0
+        img = img.crop(tuple(int(round(v * k)) for v in SCREEN_ART))
+    elif abs(w / h - 16 / 9) > 0.05:
+        raise ValueError("%s is %dx%d: neither a 4:3 loading screen nor 16:9" % (src, w, h))
+    return _picture(img, os.path.join(MEDIA, "loadscreens", name + ".tga"))
+
+
+def zonemap(name):
+    """A zone's world map, explored: its middle at 16:9, the whole width."""
+    src = next(f for f in _sources(ZONEMAPS) if os.path.splitext(f)[0] == name)
+    img = Image.open(os.path.join(ZONEMAPS, src))
+    w, h = img.size
+    ch = int(round(w * 9 / 16))
+    top = (h - ch) // 2
+    return _picture(img.crop((0, top, w, top + ch)), os.path.join(MEDIA, "maps", name + ".tga"))
 
 
 def wordmark(w=256, h=32):
@@ -801,6 +834,7 @@ def wordmark(w=256, h=32):
 def main():
     os.makedirs(os.path.join(MEDIA, "icons"), exist_ok=True)
     os.makedirs(os.path.join(MEDIA, "loadscreens"), exist_ok=True)
+    os.makedirs(os.path.join(MEDIA, "maps"), exist_ok=True)
     total = 0
     made = []
 
@@ -826,10 +860,12 @@ def main():
     record("progress-mask.tga", progress_mask())
     record("minimap-logo.tga", minimap_logo())
     record("logo.tga", logo())
-    for f in sorted(os.listdir(LOADSCREENS)):
-        if f.endswith(".webp"):
-            name = f[:-len(".webp")]
-            record("loadscreens/%s.tga" % name, loadscreen(name))
+    for f in _sources(LOADSCREENS):
+        name = os.path.splitext(f)[0]
+        record("loadscreens/%s.tga" % name, loadscreen(name))
+    for f in _sources(ZONEMAPS):
+        name = os.path.splitext(f)[0]
+        record("maps/%s.tga" % name, zonemap(name))
     record("wordmark.tga", wordmark())
     record("scroll-thumb.tga", scroll_thumb())
     record("switch-track.tga", switch_track())

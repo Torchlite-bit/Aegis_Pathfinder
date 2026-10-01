@@ -106,6 +106,9 @@ Browser.ZONES = {
 	["Winterspring"]         = { "Winterspring", "K" },
 	-- Turtle WoW's own, where pfUI's map data names their maps.
 	["Balor"]                = { "Balor" },
+	-- No map data; their pictures are maps the addon carries (Theme.zonemap).
+	["Moonwhisper Coast"]    = { "MoonwhisperCoast" },
+	["Scarlet Enclave"]      = { "ScarletEnclave" },
 	["Blackstone Island"]    = { "BlackstoneIsland" },
 	["Gillijim's Isle"]      = { "Gillijim" },
 	["Gilneas"]              = { "Gilneas" },

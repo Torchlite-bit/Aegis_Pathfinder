@@ -39,11 +39,12 @@ reports.
     you're on, right-click loads it in this tab, and shift-click resets it.
 - **Every guide has a picture.**
   - A zone guide shows its zone's map **fully explored**: every area drawn
-    in, whether you've been there or not.
-  - A dungeon guide shows the dungeon's loading screen. So does a route leg
-    named for one, such as Optimized's Uldaman.
-  - Windhorn Canyon, Dragonmaw Retreat and Stormwrought Ruins show Turtle
-    WoW's own loading screens, which the addon carries.
+    in, whether you've been there or not. Moonwhisper Coast and Scarlet
+    Enclave, which the game has no map data for, show a map the addon
+    carries.
+  - A dungeon guide shows the loading screen Turtle WoW shows on the way
+    in, which the addon carries for every dungeon but Shadowfang Keep. So
+    does a route leg named for one, such as Optimized's Uldaman.
   - A class quest shows your class's crest and colour, and the chain's spell
     or reward.
   - A profession shows its icon.
@@ -83,18 +84,14 @@ reports.
 - Reset window also puts the browser back to its own size.
 
 ### Not yet checked in game
-- Which of the client's generic loading screens each vanilla dungeon used is
-  a best guess from the art.
-- Frostmane Hollow, Crescent Grove, Gilneas City and Hateforge Quarry show
-  the generic dungeon screen until the addon has their own art.
-- Moonwhisper Coast and Scarlet Enclave have no map data yet, so they show
-  the logo.
+- Shadowfang Keep shows the game's generic dungeon screen until the addon
+  has its own.
 
 ### Credits
 - The fully explored maps use pfUI's map reveal data (MIT, Shagu): where
   each area's art sits on its zone's map.
-- The Turtle WoW dungeons' loading screens are Lionel Schramm's paintings
-  for Turtle WoW's Mysteries of Azeroth.
+- The dungeon loading screens and the two maps are Turtle WoW's, from its
+  client: the art of its Mysteries of Azeroth, Lionel Schramm's among it.
 
 ## [0.20.0] — restart
 

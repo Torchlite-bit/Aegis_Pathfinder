@@ -398,7 +398,11 @@ zone most of its `|Z|` tags name. A route leg named for a dungeon
 (`Optimized/Uldaman (45-46)`) is listed under Dungeons, in **On the routes**,
 rather than in its pack, and shows the dungeon's loading screen. A new custom
 zone wants a line in `Browser.ZONES` with its map's folder name, and
-`Tools/build/build_map_overlays.py` run again so its map shows explored.
+`Tools/build/build_map_overlays.py` run again so its map shows explored --
+or, where pfUI has no data for it, its explored world map in
+`Tools/data/maps/` and a line in `Theme.zonemap` (see `media/README.md`). A
+new dungeon's loading screen goes in `Tools/data/loadscreens/` and
+`Theme.loadscreen` the same way.
 
 ## Research Resources
 

@@ -562,17 +562,19 @@ own files, and Turtle WoW's dungeon loading screens, which the client lacks:
   Shagu), cut into tiles as the client's `WorldMapFrame_Update` cuts them,
   inside a ScrollFrame that clips them to the picture. The crop is the
   explored areas and a margin at the picture's shape, at least 560 map
-  pixels across. A city has no areas and is shown whole. A custom zone with
-  no data (Moonwhisper Coast, Scarlet Enclave) shows the logo rather than
+  pixels across. A city has no areas and is shown whole. The two custom
+  zones pfUI has no data for, Moonwhisper Coast and Scarlet Enclave, show
+  their explored world map as Turtle WoW draws it, which the addon carries
+  (`Theme.zonemap`); a custom zone with neither shows the logo rather than
   borrow another zone's map.
 - A dungeon guide, or a route leg named for a dungeon ("Optimized/Uldaman"),
-  shows its loading screen, cropped to its art at about 16:9: the instance's
-  own where 1.12 has one, else one of the six generic screens chosen from
-  the art (`Pictures.SCREEN_FOR`). Turtle WoW's own dungeons have art the
-  1.12 client has no file for, so the addon carries it where it has it
-  (`Theme.loadscreen`: Windhorn Canyon, Dragonmaw Retreat, Stormwrought
-  Ruins -- Lionel Schramm's paintings for Turtle WoW), 16:9 squeezed into a
-  512x256 texture and shown whole; the rest get the generic dungeon screen.
+  shows the loading screen Turtle WoW shows on the way in. The 1.12 client
+  has no file for most of them, so the addon carries them (`Theme.loadscreen`,
+  every dungeon but Shadowfang Keep): the art between the screen's bars,
+  below the logo, at 16:9, squeezed into a 256x128 texture and shown whole.
+  A dungeon without one, and the raids when they have guides, get the
+  instance's own 1.12 screen where there is one, else one of the six generic
+  ones chosen from the art (`Pictures.SCREEN_FOR`), cropped to its art.
 - A class quest shows the class's crest from the character creation sheet
   in the corner, the panel in the class's colour (`Theme.CLASS_COLORS`), and
   the chain's spell, mount or reward in the middle, else an icon that says

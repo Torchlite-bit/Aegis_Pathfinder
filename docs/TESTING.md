@@ -157,13 +157,12 @@ are only found at startup.
       guide's map whole; a dungeon (The Deadmines, Scarlet Monastery) its
       loading screen, not stretched; a class quest (Voidwalker) the class
       crest in the corner, the panel in the class's colour, the spell in the
-      middle; a profession its icon. Note any that are blank: the loading
-      screens and the crest are glue-screen textures, and whether the client
-      lends them to addons is still to be seen.
-- [ ] A custom zone (Northwind, Gilneas, Tel'Abim) shows its own map;
-      Moonwhisper Coast and Scarlet Enclave the logo.
-- [ ] Windhorn Canyon, Dragonmaw Retreat and Stormwrought Ruins show their
-      own Turtle WoW loading screens, whole and not squashed.
+      middle; a profession its icon. Note any that are blank.
+- [ ] A custom zone (Northwind, Gilneas, Tel'Abim) shows its own map, and
+      Moonwhisper Coast and Scarlet Enclave theirs.
+- [ ] Every dungeon shows the loading screen Turtle WoW shows on the way in,
+      whole, not squashed, with no logo or bars; Shadowfang Keep the generic
+      dungeon screen.
 - [ ] Dungeons starts with **On the routes**: Optimized's Uldaman and Sunken
       Temple (and RestedXP's Scholomance Key), each saying whose route; they
       are no longer in Optimized's Levels 40-60.

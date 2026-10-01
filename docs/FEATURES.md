@@ -69,8 +69,8 @@ Events, Gold, Pets & Mounts and Titles greyed as coming soon. A long folder
 is split by level. Point at a guide and the right of the window shows it: a
 picture, its levels, how far through it you are, and **Load** and **Open
 beside the route**. The picture is the game's art: a zone guide's zone
-on the world map with every area explored, a dungeon's loading screen (Turtle
-WoW's own art for Windhorn Canyon, Dragonmaw Retreat and Stormwrought Ruins), a
+on the world map with every area explored, the loading screen Turtle WoW shows
+on the way into a dungeon, a
 class quest's crest and spell, a profession's icon. Pointing at a guide also
 puts up a star, which keeps it in Favorites, and an arrow, which opens it.
 The list's ⋮ colours guides by how they suit your level (grey once you have

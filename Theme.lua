@@ -163,13 +163,38 @@ Theme.glyph = {
 	book         = MEDIA .. "icons\\train",
 }
 
---[[ Turtle WoW's own dungeons' loading screens, which the client has no
-	1.12 file for: the guide browser's pictures (GuidePictures.lua), by the
-	dungeon's name. Lionel Schramm's art for Turtle WoW. ]]
+--[[ The guide browser's pictures (GuidePictures.lua) that are not in the
+	client's own 1.12 files. Turtle WoW's dungeon loading screens, by the
+	dungeon's name -- the ones its client shows on the way in, with the art
+	of its Mysteries of Azeroth, Lionel Schramm's among it. And the world
+	maps of the custom zones the browser cannot build from the client's map
+	tiles, explored. ]]
 Theme.loadscreen = {
+	["Ragefire Chasm"]     = MEDIA .. "loadscreens\\ragefire-chasm",
+	["Wailing Caverns"]    = MEDIA .. "loadscreens\\wailing-caverns",
+	["The Deadmines"]      = MEDIA .. "loadscreens\\deadmines",
+	["Blackfathom Deeps"]  = MEDIA .. "loadscreens\\blackfathom-deeps",
+	["The Stockade"]       = MEDIA .. "loadscreens\\stockade",
+	["Gnomeregan"]         = MEDIA .. "loadscreens\\gnomeregan",
+	["Razorfen Kraul"]     = MEDIA .. "loadscreens\\razorfen-kraul",
+	["Scarlet Monastery"]  = MEDIA .. "loadscreens\\scarlet-monastery",
+	["Razorfen Downs"]     = MEDIA .. "loadscreens\\razorfen-downs",
+	["Uldaman"]            = MEDIA .. "loadscreens\\uldaman",
+	["Zul'Farrak"]         = MEDIA .. "loadscreens\\zulfarrak",
+	["Maraudon"]           = MEDIA .. "loadscreens\\maraudon",
+	["Sunken Temple"]      = MEDIA .. "loadscreens\\sunken-temple",
+	["Blackrock Depths"]   = MEDIA .. "loadscreens\\blackrock-depths",
+	["Frostmane Hollow"]   = MEDIA .. "loadscreens\\frostmane-hollow",
 	["Windhorn Canyon"]    = MEDIA .. "loadscreens\\windhorn-canyon",
 	["Dragonmaw Retreat"]  = MEDIA .. "loadscreens\\dragonmaw-retreat",
 	["Stormwrought Ruins"] = MEDIA .. "loadscreens\\stormwrought-ruins",
+	["Crescent Grove"]     = MEDIA .. "loadscreens\\crescent-grove",
+	["Gilneas City"]       = MEDIA .. "loadscreens\\gilneas-city",
+	["Hateforge Quarry"]   = MEDIA .. "loadscreens\\hateforge-quarry",
+}
+Theme.zonemap = {
+	["Moonwhisper Coast"] = MEDIA .. "maps\\moonwhisper-coast",
+	["Scarlet Enclave"]   = MEDIA .. "maps\\scarlet-enclave",
 }
 
 Theme.font = {

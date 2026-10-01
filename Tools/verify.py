@@ -404,6 +404,11 @@ def check_texture_paths(rep):
     paths = set(ADDON_TEXTURE.findall(src))
     for suffix in re.findall(r'MEDIA \.\. "([^"]+)"', src):
         paths.add(prefix + suffix)
+    # "\\\\" in the source is two backslashes in the path: the check below
+    # would find the file, and the client would not.
+    for path in sorted(paths):
+        if "\\\\\\\\" in path:
+            rep.fail("textures", "Theme.lua", "%s has a doubled separator" % path)
 
     checked = 0
     for path in sorted(paths):

@@ -274,17 +274,28 @@ check(pic("Optimized/Darkshore (20-21)").kind == "map" and pic("Optimized/Darksh
 	"a zone guide is its map")
 check(pic("RXP/1-6 Coldridge Valley").map == "DunMorogh", "by the zone a place is in")
 check(pic("Northwind (28-34)").map == "Northwind", "a custom zone too")
-check(pic("Dungeons/Scarlet Monastery (34-45)").texture == "Interface\\Glues\\LoadingScreens\\LoadScreenMonastery",
-	"a dungeon guide is its loading screen")
-check(pic("Dungeons/Windhorn Canyon (26-30)").texture == A.Theme.loadscreen["Windhorn Canyon"]
-	and pic("Dungeons/Windhorn Canyon (26-30)").coords == Pictures.ART_COORDS,
-	"a Turtle WoW dungeon its own art, the addon's, shown whole")
-check(pic("Dungeons/Scarlet Monastery (34-45)").coords == Pictures.SCREEN_COORDS, "the client's cropped to its art")
-guide("Dungeons/Crescent Grove (33-39)")
-check(pic("Dungeons/Crescent Grove (33-39)").texture == "Interface\\Glues\\LoadingScreens\\LoadScreenDungeon",
-	"one the addon has no art for, the generic screen")
-A.guides["Dungeons/Crescent Grove (33-39)"] = nil
-table.remove(A.guidelist)
+check(pic("Dungeons/Scarlet Monastery (34-45)").texture == A.Theme.loadscreen["Scarlet Monastery"]
+	and pic("Dungeons/Scarlet Monastery (34-45)").coords == Pictures.ART_COORDS,
+	"a dungeon guide is Turtle WoW's loading screen for it, the addon's, shown whole")
+check(pic("Dungeons/Windhorn Canyon (26-30)").texture == A.Theme.loadscreen["Windhorn Canyon"],
+	"a Turtle WoW dungeon's too")
+check(pic("Dungeons/Shadowfang Keep (22-30)").texture == "Interface\\Glues\\LoadingScreens\\LoadScreenDungeon"
+	and pic("Dungeons/Shadowfang Keep (22-30)").coords == Pictures.SCREEN_COORDS,
+	"one the addon has no art for: the client's generic screen, cropped to its art")
+-- Every dungeon the setup or the Dungeons page knows has its picture, but
+-- Shadowfang Keep, still to come.
+do
+	local src = io.open("SetupFrame.lua"):read("*a") .. io.open("OptionsFrame.lua"):read("*a")
+	local missing, seen = {}, 0
+	for name in string.gfind(src, 'code = "[%w]+",%s*name = "([^"]+)"') do
+		seen = seen + 1
+		if name ~= "Shadowfang Keep" and name ~= "Deadmines" and not A.Theme.loadscreen[name] then
+			table.insert(missing, name)
+		end
+	end
+	check(seen >= 22, "the dungeon lists are read, got %d", seen)
+	check(table.getn(missing) == 0, "every dungeon has its loading screen, missing %s", table.concat(missing, ", "))
+end
 local vw = pic("Class/Warlock: Voidwalker (10)")
 check(vw.kind == "class" and vw.class == "WARLOCK" and vw.icon == "Interface\\Icons\\Spell_Shadow_SummonVoidWalker",
 	"a class quest: the crest and the chain's spell")
@@ -293,7 +304,7 @@ check(pic("Class/Warlock: Enchanted Gold Bloodrobe (31)").icon == "Interface\\Ic
 check(pic("Tailoring (1-300)").icon == "Interface\\Icons\\Trade_Tailoring", "a profession its icon")
 check(pic(nil).kind == "logo" and pic("Nope").kind == "logo", "nothing is the logo")
 guide("Optimized/Uldaman (45-46)", "A Go|Z|Ironforge|\n")
-check(pic("Optimized/Uldaman (45-46)").texture == "Interface\\Glues\\LoadingScreens\\LoadScreenRuinedCity",
+check(pic("Optimized/Uldaman (45-46)").texture == A.Theme.loadscreen["Uldaman"],
 	"a route leg named for a dungeon is its loading screen, not the city it starts in")
 -- And it is listed with the dungeons, not among the route's zones.
 check(titles(find(A:BrowserCategory("leveling"), "Optimized")) == "Optimized/Elwynn Forest (1-10), "
@@ -308,7 +319,18 @@ check(A:BrowserCategoryOf("Optimized/Uldaman (45-46)") == "dungeons", "and Recen
 check(Browser.DungeonIn("RXP/Scholomance Key (A)") == "Scholomance" and Browser.DungeonIn("Westfall (12-17)") == nil,
 	"the later dungeons and raids are known by name too")
 guide("Moonwhisper Coast (52-60)", "A Go|Z|Teldrassil|\n")
-check(pic("Moonwhisper Coast (52-60)").kind == "logo", "a custom zone without a map does not borrow another's")
+local mwc = pic("Moonwhisper Coast (52-60)")
+check(mwc.kind == "image" and mwc.texture == A.Theme.zonemap["Moonwhisper Coast"] and mwc.coords == Pictures.ART_COORDS,
+	"a custom zone with no map data: the map the addon carries")
+-- Without that, it would not borrow the map of the zone its steps are in.
+do
+	local zone, art = Browser.ZONES["Moonwhisper Coast"], A.Theme.zonemap["Moonwhisper Coast"]
+	Browser.ZONES["Moonwhisper Coast"], A.Theme.zonemap["Moonwhisper Coast"] = nil, nil
+	Browser.zoneCache = nil
+	check(pic("Moonwhisper Coast (52-60)").kind == "logo", "a custom zone without a map does not borrow another's")
+	Browser.ZONES["Moonwhisper Coast"], A.Theme.zonemap["Moonwhisper Coast"] = zone, art
+	Browser.zoneCache = nil
+end
 for _, g in ipairs({ "Optimized/Uldaman (45-46)", "Moonwhisper Coast (52-60)" }) do
 	A.guides[g] = nil
 	table.remove(A.guidelist)
@@ -317,7 +339,8 @@ end
 -- Every zone's map has its explored areas, but the cities, which have none.
 local cities = { Darnassis = true, Ironforge = true, Ogrimmar = true, Stormwind = true, ThunderBluff = true, Undercity = true }
 for zone, info in pairs(Browser.ZONES) do
-	check(cities[info[1]] or A.MAP_OVERLAYS[info[1]], "%s (%s) has map overlay data", zone, info[1])
+	check(cities[info[1]] or A.MAP_OVERLAYS[info[1]] or A.Theme.zonemap[zone],
+		"%s (%s) has map overlay data, or a map of its own", zone, info[1])
 end
 
 -- An overlay wider than a tile is cut as the client cuts it.
@@ -346,7 +369,8 @@ local over = 0
 for _, t in ipairs(frame.overlays) do if t:IsShown() then over = over + 1 end end
 check(shown == 12 and over > 5, "Darkshore: its tiles and its areas, got %d and %d", shown, over)
 frame:SetGuide("Dungeons/Scarlet Monastery (34-45)")
-check(frame.screen:IsShown() and frame.screen.__texcoord[1] == Pictures.SCREEN_COORDS[1], "a loading screen, cropped")
+check(frame.screen:IsShown() and frame.screen:GetTexture() == A.Theme.loadscreen["Scarlet Monastery"]
+	and frame.screen.__texcoord[1] == 0 and frame.screen.__texcoord[2] == 1, "a loading screen, whole")
 over = 0
 for _, t in ipairs(frame.overlays) do if t:IsShown() then over = over + 1 end end
 check(over == 0 and not frame.tiles[1]:IsShown(), "and the map put away")

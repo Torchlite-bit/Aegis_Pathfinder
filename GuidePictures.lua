@@ -33,9 +33,9 @@ local CREST = "Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes"
 	and the later dungeons; every other instance used one of six generic
 	ones. Which generic one each dungeon had is a best guess from the art --
 	the cave for the caves, the ruined city for the troll and titan ruins.
-	Turtle WoW's own dungeons have art of their own, which the addon carries
-	(Theme.loadscreen) where it has it; the rest get the plain dungeon
-	screen. ]]
+	Turtle WoW shows a loading screen of its own for every dungeon, which
+	the addon carries (Theme.loadscreen); this is for one it has none for,
+	and for the raids, when they have guides. ]]
 Pictures.SCREEN_FOR = {
 	["Ragefire Chasm"] = "LoadScreenCave",
 	["Wailing Caverns"] = "LoadScreenCave",
@@ -63,7 +63,8 @@ Pictures.SCREEN_FOR = {
 Pictures.SCREEN_DEFAULT = "LoadScreenDungeon"
 --[[ A loading screen is a 512x512 texture the client stretches to 4:3, its
 	art between two bars. This is the art's middle at about 16:9, the
-	picture's shape. The addon's own are 16:9 already, squeezed into 2:1. ]]
+	picture's shape. The addon's own pictures are 16:9 already, squeezed into
+	2:1, and are shown whole. ]]
 Pictures.SCREEN_COORDS = { 0.144, 0.856, 0.2656, 0.7969 }
 Pictures.ART_COORDS = { 0, 1, 0, 1 }
 
@@ -146,8 +147,9 @@ local function Screen(dungeon)
 end
 
 --- The picture for guide `name`: { kind = "map", map }, { kind = "screen",
---- texture, coords }, { kind = "class", class, icon }, { kind = "icon", icon }
---- or { kind = "logo" }.
+--- texture, coords } (a loading screen), { kind = "image", texture, coords }
+--- (a map the addon carries), { kind = "class", class, icon }, { kind =
+--- "icon", icon } or { kind = "logo" }.
 function AegisPathfinder:GuidePicture(name)
 	if not name or not self.guides or not self.guides[name] then return { kind = "logo" } end
 	local cat = self:GetGuideCategory(name)
@@ -172,6 +174,10 @@ function AegisPathfinder:GuidePicture(name)
 		local dungeon = self.Browser.DungeonIn(title)
 		if dungeon then return Screen(dungeon) end
 		local zone = self.GuideBrowserZone and self:GuideBrowserZone(name)
+		-- A custom zone whose map the client cannot build: the addon's own.
+		if zone and Theme.zonemap[zone] then
+			return { kind = "image", texture = Theme.zonemap[zone], coords = Pictures.ART_COORDS }
+		end
 		local info = zone and self.Browser.ZONES[zone]
 		-- A custom zone is shown as itself or not at all: one without map
 		-- data must not borrow the map of the zone its steps start in.
@@ -320,7 +326,7 @@ local function Paint(pic, picture)
 	Theme:Tint(pic.bg, "panel3")
 	if picture.kind == "map" then
 		DrawMap(pic, picture.map)
-	elseif picture.kind == "screen" then
+	elseif picture.kind == "screen" or picture.kind == "image" then
 		pic.screen:SetTexture(picture.texture)
 		local c = picture.coords or Pictures.SCREEN_COORDS
 		pic.screen:SetTexCoord(c[1], c[2], c[3], c[4])
