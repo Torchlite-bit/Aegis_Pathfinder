@@ -463,7 +463,9 @@ Text, gold, danger and the green/red step bands keep their meaning everywhere.
 Not in the concept, which has no minimap. It is the addon's own:
 `minimap-logo.tga`, the Aegis: Pathfinder logo on its dark disc with a red and
 gold rune ring, so it needs no border; hovering puts an accent ring
-(`circle-border.tga`) round it.
+(`circle-border.tga`) round it. It is 26px across: a stock minimap button is
+a 30px gold ring round a 20px icon, and the logo, a solid disc, stood out as
+bigger than the rest at 32.
 
 Click toggles the guide, right-click toggles the options panel, and dragging
 walks it round the minimap's edge at 80px from its centre; the angle is saved

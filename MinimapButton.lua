@@ -13,7 +13,9 @@
 local AegisPathfinder = AegisPathfinder
 local Theme = AegisPathfinder.Theme
 
-local SIZE = 32              -- the stock minimap buttons' size, so the logo reads
+-- A stock minimap button is a 30-pixel gold ring round a 20-pixel icon; the
+-- logo is a solid disc, so at 32 it stood out as bigger than the rest.
+local SIZE = 26
 local RADIUS = 80           -- from the minimap's centre, where its buttons sit
 local DEFAULT_ANGLE = 215   -- degrees anticlockwise from east: lower left
 
@@ -23,6 +25,11 @@ button:SetWidth(SIZE)
 button:SetHeight(SIZE)
 button:SetFrameStrata("MEDIUM")
 button:SetFrameLevel(Minimap:GetFrameLevel() + 8)
+-- Mouse and movement switched on outright, as pfQuest's button does, rather
+-- than left to the client's defaults: the button was reported as not
+-- dragging round the minimap.
+button:EnableMouse(true)
+button:SetMovable(true)
 button:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 button:RegisterForDrag("LeftButton")
 button:Hide()

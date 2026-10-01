@@ -44,8 +44,10 @@ check(button:GetParent() == Minimap, "the button lives on the minimap")
 check(button.icon:GetTexture() == Theme.texture.minimapLogo,
 	"it carries the Aegis: Pathfinder logo, not Blizzard's quest-log book, got %s",
 	tostring(button.icon:GetTexture()))
-check(button.icon:GetWidth() == button:GetWidth() and button:GetWidth() == 32,
-	"filling a button the stock minimap buttons' size, got %s", tostring(button:GetWidth()))
+-- 32 filled the stock buttons' whole frame with a solid disc, and was
+-- reported as bigger than the other buttons round the minimap.
+check(button.icon:GetWidth() == button:GetWidth() and button:GetWidth() == 26,
+	"filling a button inside the stock buttons' 30-pixel ring, got %s", tostring(button:GetWidth()))
 check(button.icon.__color == nil or (button.icon.__color[1] == 1 and button.icon.__color[2] == 1
 	and button.icon.__color[3] == 1), "in its own colours, not tinted")
 check(button.ring:GetTexture() == Theme.texture.circleBorder and not button.ring:IsShown(),
@@ -79,6 +81,7 @@ check(AegisPathfinder.__config == 1 and AegisPathfinder.__guide == 1,
 -- Dragging round the edge -------------------------------------------------------------
 
 check(button.__dragButton == "LeftButton", "it drags with the left button")
+check(button:IsMouseEnabled() and button:IsMovable(), "with the mouse and movement switched on outright")
 fire(button, "OnDragStart")
 local drag = button:GetScript("OnUpdate")
 check(drag ~= nil, "dragging follows the cursor")

@@ -24,7 +24,8 @@ are only found at startup.
 - [ ] A character that used TurtleGuide, on a fresh install with no
       Pathfinder save, keeps its progress, and chat says it was imported.
 - [ ] The minimap button is the Aegis: Pathfinder logo, round, in its own
-      colours; hovering it shows a green ring and a tooltip.
+      colours, no bigger than the other buttons round the minimap; hovering
+      it shows a green ring and a tooltip.
 - [ ] Click toggles the guide; right-click opens the options; dragging walks it
       round the minimap and it stays there after `/reload`.
 
