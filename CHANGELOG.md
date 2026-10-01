@@ -82,6 +82,13 @@ reports.
   list's switch that hides outlevelled guides, do its job.
 - Reset window also puts the browser back to its own size.
 
+### Fixed
+- **Picking a guide threw TomTom errors when TomTom hadn't started.**
+  TomTom-TWOW stops starting up when the arrow position it saved is one the
+  game won't take, and every call into it after that fails. Pathfinder now
+  treats a TomTom that didn't start as not there, and uses the next arrow
+  addon or its own.
+
 ### Not yet checked in game
 - The loading screens and custom zone maps the addon carries haven't all
   been seen in game yet.

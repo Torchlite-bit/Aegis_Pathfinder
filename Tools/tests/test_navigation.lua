@@ -41,7 +41,7 @@ local ForceWaypointUpdate = AegisPathfinder.ForceWaypointUpdate
 
 -- TomTom-TWOW, as far as these tests reach into it.
 local DEFAULT_CALLBACKS = { minimap = { tooltip_show = "pin tooltip" }, world = { tooltip_show = "map tooltip" } }
-TomTom = { waypoints = {}, autoqueue = true }
+TomTom = { waypoints = {}, waypointprofile = {}, autoqueue = true }
 function TomTom:DefaultCallbacks()
 	return { minimap = DEFAULT_CALLBACKS.minimap, world = DEFAULT_CALLBACKS.world }
 end
@@ -402,6 +402,24 @@ do
 		"a zone the map really has not got is still reported, and falls back to where you are")
 
 	A.Print, A.GetObjectiveInfo = keepPrint, keepInfo
+end
+
+--[[ A TomTom that did not start. TomTom-TWOW puts its arrow back where it
+	was saved before it makes its waypoint lists; a saved place the client
+	will not take stops it there, and picking a guide then failed in
+	TomTom's RemoveWaypoint, on a list it never made. Such a TomTom is
+	absent as far as the waypoints go. ]]
+do
+	local lists, profile = TomTom.waypoints, TomTom.waypointprofile
+	TomTom.waypoints, TomTom.waypointprofile = nil, nil
+	local ok, err = pcall(function()
+		AegisPathfinder:ParseAndMapCoords(nil, "RUN", "Head for Goldshire (42.1, 65.3)", "Goldshire", "Elwynn Forest")
+		AegisPathfinder:ClearWaypoint()
+	end)
+	check(ok, "a TomTom that did not start takes no waypoints and throws nothing: %s", tostring(err))
+	TomTom.waypoints, TomTom.waypointprofile = lists, profile
+	local wp2 = travel()
+	check(wp2 ~= nil, "and once it has started, it takes them again")
 end
 
 -- Report ---------------------------------------------------------------------
