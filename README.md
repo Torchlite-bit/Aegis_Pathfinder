@@ -180,16 +180,24 @@ finished step waits for the slowest.
 
 Every setting in one window, a page a category down the left: your route,
 dungeons, filters, appearance, step display, automation, action buttons,
-navigation, gear and item score.
+navigation, maps, gear and item score.
 Resize it from the corner.
 
 | Route | Dungeons |
 | :---: | :---: |
 | <img src="docs/images/options-route.png" width="380" alt="Options, Route page: your race and route pack, with a preview of the route"> | <img src="docs/images/options-dungeons.png" width="380" alt="Options, Dungeons page: a chip for each dungeon"> |
 
-| Behaviour | Gear |
+| Automation | Action Buttons |
 | :---: | :---: |
-| <img src="docs/images/options-behaviour.png" width="380" alt="Options, Behaviour page: how the guide behaves, and its windows"> | <img src="docs/images/options-gear.png" width="380" alt="Options, Gear page: the item score, the Gear Advisor and the Gear Finder"> |
+| <img src="docs/images/options-automation.png" width="380" alt="Options, Automation page: accepting and turning in quests, taking the step's flight, buying, selling greys and repairing"> | <img src="docs/images/options-action-buttons.png" width="380" alt="Options, Action Buttons page: the windows, which way they grow, button size, which buttons to show and raid marks"> |
+
+| Maps | Gear |
+| :---: | :---: |
+| <img src="docs/images/options-maps.png" width="380" alt="Options, Maps page: revealing the world map, the step on the map, the ant trail and its style, and rare creatures near your level"> | <img src="docs/images/options-gear.png" width="380" alt="Options, Gear page: the item score, the Gear Advisor and the Gear Finder"> |
+
+<sub>Automation, Action Buttons and Maps are drawn from the addon's own code by
+its offline renderer, not captured in game. Route, Dungeons and Gear were
+captured in game before the pages took Zygor's order.</sub>
 
 ### 🎨 Your server's colours
 
