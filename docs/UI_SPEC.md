@@ -383,10 +383,39 @@ same way.
 Level-ups, *Announce level-ups to:* as a `Build.Boxes` grid of three boxes
 (Emote, Party chat / Guild chat). Emote is ticked until unticked; Party chat
 and Guild chat are the first boxes off until ticked (`true` as a box's third
-field). Under Talent Advisor, *Talent Advisor (coming soon)*: a switch held
-off (45% alpha, not clickable) that no setting lets go, with a note. The
-reputation line is an ordinary chat line from the addon, after the client's
-own.
+field). Under Talent Advisor: its switch (`Build.CharSwitch`, on until
+switched off); *Build to follow*, a full-width dropdown (`Build.CharDropdown`)
+dimmed to 45% and not clickable while the advisor is off, its items rebuilt on
+every refresh so the first names your spec; a note; *Name the talent to take
+in chat when I level up* set in under the switch and held off with it; and an
+*Open the talent window* pill (170 by 26). The reputation line is an ordinary
+chat line from the addon, after the client's own.
+
+**The talent window** (`TalentWindow.lua`) is Blizzard's own, loaded on demand
+(Blizzard_TalentUI), and the advisor only lays marks over it. Its functions
+are called by name -- `TalentFrame_Update` on showing, a tab clicked and points
+spent, `TalentFrame_OnShow` on showing -- so each is wrapped where it is kept,
+once, when Blizzard_TalentUI loads (`ADDON_LOADED`, or at once if another
+addon loaded it first); `GameTooltip.SetTalent` is wrapped the same way, as
+Pathfinder loads, for the tooltip line.
+
+- *The strip*: a frame on `TalentFrame`, above its art (12 in from the left,
+  34 from the right, its bottom 10 under the frame's top) or on pfUI's
+  `TalentFrame.backdrop`, its width; `panel2` with rounded top corners
+  (`CapStrip`). PATHFINDER in the display face (12, `accentGlow`) and
+  *Following* (12, `textDim`), then a full-width `Theme:Dropdown`, then the
+  line (12, white) and the warning (11, amber `#f0b43c`). 80 high, 96 with
+  both lines. The mock-up had the dropdown beside *Following*; the frame is
+  too narrow there for the builds' names, so it has a row of its own.
+- *A badge* on each talent button: 16 high, pill-shaped (`pillFill` and
+  `pillBorder`, 8px corners), centred on the button's top right corner (its
+  rank is at the bottom right), the display face at 11. *todo*: `accentDeep`
+  fill, `accent` edge, white text; *done*: near-black fill, `accentDeep`
+  edge, `accentGlow` text; *off*: amber fill and edge, dark text.
+- *The next point*: `UI-ActionButton-Border`, 64 square, additive, tinted
+  `accent`, over the button; and a 38 by 13 `accent` tag reading NEXT (display
+  face, 10, near-black) 3 above it.
+- *The tab dot*: `circleFill`, 8 square, `accent`, left of the tab's name.
 
 **On the world map** (`Maps.lua`) everything is drawn on the zone's own map,
 1002 by 668 like the client's. The unexplored overlays are tiles of our own on

@@ -13,9 +13,9 @@
 
 	  * Show Pathfinder chat messages: AegisPathfinder:Say, below, which the
 	    routine lines go through.
-	  * For the Talent Advisor to come: `/apg talents` saves your class's
-	    talent trees as the game has them -- Turtle WoW has changed some --
-	    for the builds to be checked against.
+	  * For the Talent Advisor: `/apg talents` saves your class's talent
+	    trees as the game has them -- Turtle WoW has changed some -- for its
+	    builds to be checked against (Tools/build/talent_builds.py).
 ]]
 
 local AegisPathfinder = AegisPathfinder
@@ -176,7 +176,7 @@ function Extras:AnnounceLevel(level)
 	return sent
 end
 
---[[ The talent trees, for the Talent Advisor to come --------------------------------- ]]
+--[[ The talent trees, for the Talent Advisor's builds ---------------------------------- ]]
 
 local talentTip
 --- A talent's tooltip, a line at a time: its rank and what it does. Tests

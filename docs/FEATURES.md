@@ -18,7 +18,7 @@ version.
 | `/apg share` | Share the guide you are on with your party, or stop sharing (beta) |
 | `/apg gear` | The options at **Item Score**: the stat weights behind the item score |
 | `/apg finder` | The Gear Finder tab on the character panel: upgrades in the dungeons you run |
-| `/apg talents` | Save your class's talent trees, as the game has them, for the Talent Advisor to come |
+| `/apg talents` | Save your class's talent trees, as the game has them, for checking the Talent Advisor's builds |
 | `/apg ssf` | Solo Self-Found on or off |
 | `/apg setup` | Run the first-time setup again: your guide, its features and your dungeons |
 | `/apg target` | Target and mark the step's next active target (put it in a macro) |
@@ -59,8 +59,8 @@ pages down the left, after Zygor's from Appearance on:
   the waypoint, and the rares near your level -- see **Maps**, below.
 - **Gear** and under it **Item Score** (the stat weights).
 - **Extras**: the addon's routine chat lines, detailed reputation gains,
-  level-up announcements, and the Talent Advisor to come -- see **Extras**,
-  below.
+  level-up announcements, and the Talent Advisor -- see **Extras** and
+  **Talent Advisor**, below.
 - **Maintenance** (rescan, error log, setup) and **About** (version and
   credits).
 
@@ -584,15 +584,53 @@ continent's:
   tracker, and is left out for a level it did not count from the start (the
   one you were on when you installed the addon). Nothing goes to a party or
   guild you are not in.
-- **Talent Advisor (coming soon)**: its switch is shown, held off, until the
-  advisor arrives in a later update. Its builds -- a levelling build and one
-  at 60 for each spec, for every class -- are made on the trees the game
-  has, as Turtle WoW has reworked every class's: `/apg talents` saves your
-  class's trees -- every talent's place, ranks, prerequisites and tooltip --
-  for your account. Once on a character of each class (a level-1 one will
-  do) and all nine are in the saved settings file,
-  `WTF\Account\<account>\SavedVariables\Aegis_Pathfinder.lua`; again after a
-  game update that changes the trees.
+- **Talent Advisor** (on): marks where your points go on the talent window --
+  see **Talent Advisor**, below. *Build to follow*: levelling, then your spec
+  (to start with), your class's levelling build, or any spec's build at 60.
+  *Name the talent to take in chat when I level up* (on). *Open the talent
+  window*.
+
+**Talent Advisor** (`TalentAdvisor.lua`, `TalentWindow.lua`). Which talent
+each point goes to, on Blizzard's own talent window (and pfUI's skin of it):
+
+- **The build.** Your class's levelling build until 60 -- a point a level from
+  10 -- then your spec's: the spec picked on the Item Score page, or the one
+  your talents lean to. At 60 it keeps the levelling build while every point
+  is on it, and once all 51 are spent says your spec's build is ready for
+  when you respec; after a respec it follows your spec's. Pick another on the
+  Extras page or from the strip above the talent window.
+- **On the window.** Each talent of the tree shown has a badge with the points
+  the build puts there: filled in the theme's colour while some are still to
+  take, quiet once you have them all, amber "+N" for points you have that the
+  build does not put there. The talent your next point goes to has a glow
+  and "NEXT", and its tree's tab a dot; the window opens on that tree.
+- **The strip** above the window: *Following* and the build, as a menu; where
+  the next point goes ("Next: Deep Wounds, rank 3 of 3", "Your point at level
+  30 goes to Impale", "Next, after a respec: ..."), and how many points are
+  off the build. Off the build it carries on from the build's closest point
+  you can take; it never says to respec.
+- **The tooltip** of a talent adds "Pathfinder: Warrior levelling puts 3
+  points here." -- ": done." once you have them, "; you have N" past them --
+  and "Your next point goes here."
+- **In chat**: on a level up, "Level 22: a talent point to spend. Take Deep
+  Wounds (rank 3 of 3) in Arms."; at 60 with all 51 spent on the levelling
+  build, once, "All 51 points are spent. Your Fury build is ready for when you
+  respec: pick it under Following on the talent window to see it."
+- **Checked first.** Each build is checked against the tree your game has:
+  every talent there, no more ranks than it has, each point learnable in its
+  order, 51 in all. One that does not fit says why, in the strip and once in
+  chat ("The Warrior levelling build doesn't fit your talent tree (it has no
+  Master Strike), so the Talent Advisor won't follow it."), and is not
+  followed.
+- It only marks and names; it never spends a point.
+
+The builds (`TalentBuilds.lua`, written by `Tools/build/talent_builds.py`) are
+made on Turtle WoW's own trees: `/apg talents` saves your class's trees --
+every talent's place, ranks, prerequisites and tooltip -- for your account.
+Once on a character of each class (a level-1 one will do) and all nine are in
+the saved settings file,
+`WTF\Account\<account>\SavedVariables\Aegis_Pathfinder.lua`; again after a
+game update that changes the trees.
 
 **One step, or all of them.** The panel opens on the step you are on and
 nothing else, with its note in full and a meter underneath: a line for each

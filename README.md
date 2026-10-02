@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.22.11)
+# Aegis: Pathfinder (v0.22.12)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -151,6 +151,18 @@ the guides of the dungeons you ticked are offered beside the next zone.
 <!-- Screenshot to come: the Gear Advisor pop-up. Put it in docs/images/ and
      add it here. -->
 
+### 🌳 Talent Advisor
+
+On Blizzard's own talent window, each talent shows how many points the build
+puts there, and the talent your next point goes to glows, with a dot on its
+tree's tab. A strip above the window names the build and where the next point
+goes, and says when you have points elsewhere — it carries on from the
+closest point, never asks you to respec. Your class's levelling build to 60,
+then your spec's; or pick any of them. On a level up it names the talent to
+take in chat. The builds are made on Turtle WoW's own trees, and each is
+checked against the tree your game has before it is followed. It never spends
+a point.
+
 ### ⚒️ Professions
 
 All fourteen, 1–300, with trainers, reagents and a shopping list — and the
@@ -189,7 +201,7 @@ Resize it from the corner.
 
 | Route | Dungeons |
 | :---: | :---: |
-| <img src="docs/images/options-route.png" width="380" alt="Options, Route page: your race and route pack, with a preview of the route"> | <img src="docs/images/options-dungeons.png" width="380" alt="Options, Dungeons page: a chip for each dungeon"> |
+| <img src="docs/images/options-route.png" width="380" alt="Options, Route page: your race and route pack, with a preview of the route"> | <img src="docs/images/options-dungeons.png" width="380" alt="Options, Dungeons page: a chip for each dungeon, Turtle WoW's own, the dungeon guides along the way, and your role for the boss notes"> |
 
 | Automation | Action Buttons |
 | :---: | :---: |
@@ -197,7 +209,7 @@ Resize it from the corner.
 
 | Maps | Extras |
 | :---: | :---: |
-| <img src="docs/images/options-maps.png" width="380" alt="Options, Maps page: revealing the world map, the step on the map, the ant trail and its style, and rare creatures near your level"> | <img src="docs/images/options-extras.png" width="380" alt="Options, Extras page: Pathfinder's chat messages, detailed reputation gains, level-up announcements, and the Talent Advisor coming soon"> |
+| <img src="docs/images/options-maps.png" width="380" alt="Options, Maps page: revealing the world map, the step on the map, the ant trail and its style, and rare creatures near your level"> | <img src="docs/images/options-extras.png" width="380" alt="Options, Extras page: Pathfinder's chat messages, detailed reputation gains, level-up announcements, and the Talent Advisor: its switch, the build to follow and the talent named in chat"> |
 
 | Gear |
 | :---: |
@@ -241,7 +253,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 | `/apg setup` | Run the first-time setup again |
 | `/apg gear` | Your stat weights (options → Item Score) |
 | `/apg finder` | The Gear Finder tab: upgrades in the dungeons you run |
-| `/apg talents` | Save your class's talent trees for the Talent Advisor to come |
+| `/apg talents` | Save your class's talent trees, for checking the Talent Advisor's builds |
 | `/apg craft` | Cheapest route to 300 in a profession |
 | `/apg share` | Share your guide with your party |
 | `/apg ssf` | Solo Self-Found on or off |
@@ -252,7 +264,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.22.11`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.22.12`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)** or open an

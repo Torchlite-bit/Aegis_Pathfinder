@@ -542,13 +542,34 @@ function Build.Extras(k)
 		.. "up from 22 to 23! (2 hours 1 minute)\". The time is how long you spent at the level, "
 		.. "when the guide counted all of it. Nothing goes to a party or guild you are not in.")
 	k.space(k.SECTION_GAP)
-	-- Part 4's switch, shown ahead of it: held off until the advisor is built.
+	Build.TalentAdvisor(k)
+end
+
+--- The Talent Advisor (TalentAdvisor.lua, TalentWindow.lua), on Extras.
+function Build.TalentAdvisor(k)
+	local A = AegisPathfinder
+	local function redraw()
+		if A.TalentAdvisor then A.TalentAdvisor:Refresh() end
+	end
 	k.section("Talent Advisor")
-	local talents = Build.Switch(k, "talentAdvisor", "Talent Advisor (coming soon)", function() end)
-	talents:SetOn(false)
-	talents:SetLocked(true)
-	k.note("Coming soon: which talent each point should go to, marked on the talent window -- a "
-		.. "levelling build to 60, then your spec's.")
+	Build.CharSwitch(k, "talentadvisor", "Talent Advisor: mark where my points go on the talent window", function()
+		redraw()
+		A:RefreshConfigPanel()
+	end, { defaultOn = true })
+	Build.CharDropdown(k, "talentBuild", "Build to follow", "talentbuild",
+		A.TalentAdvisor and A.TalentAdvisor:BuildItems() or {}, redraw)
+	k.note("Your spec is the one picked on the Item Score page, or the one your talents lean to. "
+		.. "Until 60 it follows your class's levelling build, and at 60 it says when your spec's is "
+		.. "ready for a respec. Pick another here or above the talent window. It never spends a point.")
+	k.space(10)
+	Build.CharSwitch(k, "talentchat", "Name the talent to take in chat when I level up", nil,
+		{ parent = "talentadvisor", defaultOn = true })
+	local open = Theme:Pill(k.body(), "Open the talent window", 170, 26)
+	open:SetScript("OnClick", function()
+		if A.TalentAdvisor then A.TalentAdvisor:OpenWindow() end
+	end)
+	k.place(open, 26, 6)
+	k.frame.openTalents = open
 	k.space(k.SECTION_GAP)
 end
 
@@ -1443,6 +1464,17 @@ function AegisPathfinder:RefreshConfigPanel()
 	frame.askShare:SetLocked(db.partysync == false)
 	frame.focusSteps:SetValue(db.focussteps or 1)
 	frame.dungeonRole:SetValue(db.dungeonrole or "all")
+	-- The Talent Advisor's build, held off with the advisor; the menu names
+	-- your spec, which the Item Score page can change.
+	local TA = self.TalentAdvisor
+	if TA then
+		frame.talentBuild:SetItems(TA:BuildItems(TA:State()))
+		frame.talentBuild:SetValue(db.talentbuild or "auto")
+		local on = db.talentadvisor ~= false
+		frame.talentBuild:SetAlpha(on and 1 or 0.45)
+		frame.talentBuild:EnableMouse(on)
+		if not on then frame.talentBuild.list:Hide() end
+	end
 
 	-- The addon's own switches; one under another is held off with it.
 	for key, sw in pairs(frame.switches) do

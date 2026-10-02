@@ -18,6 +18,38 @@ reports.
 
 ---
 
+## [0.22.12] — restart
+
+### Added
+- **The Talent Advisor**, on Blizzard's own talent window (and pfUI's skin of
+  it), as the mock-up showed:
+  - each talent shows a badge with the points the build puts there: green
+    while some are still to take, quiet once you have them all, amber "+N"
+    for points the build doesn't put there;
+  - the talent your next point goes to glows, with NEXT over it, and its
+    tree's tab has a dot; the window opens on that tree;
+  - a strip above the window: *Following* and the build, as a menu to pick
+    another; where the next point goes ("Next: Deep Wounds, rank 3 of 3");
+    and how many points are off the build. Off the build, it carries on from
+    the closest point; it never says to respec;
+  - a talent's tooltip says how many points the build puts there, and "Your
+    next point goes here." on the next one.
+- **What it follows:** your class's levelling build until 60, then your
+  spec's: the one picked on the Item Score page, or the one your talents lean
+  to. At 60, with all 51 points on the levelling build, it says once in chat
+  that your spec's build is ready for when you respec.
+- **On a level up** it names the talent to take: "Level 22: a talent point to
+  spend. Take Deep Wounds (rank 3 of 3) in Arms."
+- **Extras -> Talent Advisor:** its switch (on), *Build to follow*, *Name the
+  talent to take in chat when I level up* (on), and *Open the talent window*.
+- Each build is checked against the talent tree your game has before it is
+  followed. One that doesn't fit says why, in the strip and once in chat,
+  and isn't followed. It never spends a point.
+
+### Changed
+- The README's Extras and Dungeons page pictures are drawn again from the
+  current code: the Talent Advisor's settings, and the boss notes' role.
+
 ## [0.22.11]
 
 ### Added
@@ -1387,6 +1419,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.12]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.11]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.10]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.9]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

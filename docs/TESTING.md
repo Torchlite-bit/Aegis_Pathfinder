@@ -191,7 +191,33 @@ are only found at startup.
       with how long the level took (none for the level you installed on).
       Party and Guild, once ticked: "Pathfinder: I leveled up from X to Y!"
       there; nothing when you are in neither.
-- [ ] *Talent Advisor (coming soon)* is dimmed and can't be switched on.
+- [ ] **Talent Advisor** (Extras): on to start with. *Open the talent window*
+      opens it (from level 10; before, it says when talents come).
+- [ ] The talent window opens on the tree your next point goes to. Each of its
+      talents in the build has a badge with the build's points: green while
+      some are to take, quiet once you have them; the next one glows with
+      NEXT over it, and its tab has a dot. Click another tab: its talents are
+      marked, no glow, the dot stays.
+- [ ] The strip above the window: PATHFINDER, *Following* and the build; "Next:
+      <talent>, rank r of n" with a point to spend, "Your point at level N goes
+      to ..." without. It sits on the window's top edge, as wide as it, and
+      moves with it; with pfUI, on pfUI's frame.
+- [ ] Put a point where the build doesn't: that talent's badge says "+1" in
+      amber, the strip "1 point off the build. It carries on from the closest
+      point.", and the glow moves to the build's next point you can take.
+- [ ] Hover a talent in the build: the tooltip ends "Pathfinder: <build> puts N
+      points here." (": done." once you have them), and "Your next point goes
+      here." on the glowing one.
+- [ ] Pick another build from the strip's menu: the marks follow it, and the
+      Extras page's *Build to follow* shows it; and the other way round.
+- [ ] Switch the Talent Advisor off: the window has no strip, badges or glow,
+      and the tooltip no line, at once. On again: back.
+- [ ] Level up (10+): "Level N: a talent point to spend. Take <talent> (rank r
+      of n) in <tree>." in chat; nothing with *Name the talent to take in chat*
+      off.
+- [ ] At 60, spend the 51st point on the levelling build: chat says once that
+      your spec's build is ready; the strip says so, and the menu reads
+      "Levelling (done), then <spec>". After a respec it follows your spec's.
 - [ ] `/apg talents` says it saved your class's trees, with each tree's number
       of talents and the classes saved so far; after logging out, the saved
       settings file has them under `talenttrees`, with each talent's tooltip.

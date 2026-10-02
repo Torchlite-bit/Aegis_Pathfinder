@@ -14,7 +14,8 @@
 	for when you do.
 
 	This is the engine: reading the tree, choosing the build, the next point,
-	what is off the build, and the lines it says.
+	what is off the build, the lines it says, and the chat on a level up.
+	TalentWindow.lua draws it on Blizzard's talent window.
 ]]
 
 local AegisPathfinder = AegisPathfinder
@@ -252,6 +253,9 @@ function TA:State(tree, level, unspent)
 	local builds = self:ClassBuilds()
 	if not (s and builds) then return nil end
 	tree = tree or TA.ReadTree()
+	-- No talents read (the client has not sent them yet): nothing to say,
+	-- rather than a build found not to fit for the rest of the session.
+	if not next(tree.talent) then return nil end
 	level = level or UnitLevel("player")
 	if not unspent then unspent = (UnitCharacterPoints("player")) or 0 end
 	local ranks = TA.Ranks(tree)
@@ -264,7 +268,7 @@ function TA:State(tree, level, unspent)
 		TA.fit[build] = fit
 	end
 	local state = { tree = tree, ranks = ranks, build = build, ready = ready, level = level,
-		unspent = unspent, fits = fit.ok, why = fit.why, builds = builds }
+		unspent = unspent, fits = fit.ok, why = fit.why, builds = builds, choice = s.talentbuild }
 	if not fit.ok then return state end
 	local points = TA.Points(build)
 	state.targets = TA.Targets(points)
@@ -299,3 +303,161 @@ function TA.UnfitLine(label, why)
 	return "The " .. label .. " build doesn't fit your talent tree (" .. why
 		.. "), so the Talent Advisor won't follow it."
 end
+
+local function Points(n) return n .. (n == 1 and " point" or " points") end
+
+--- The name of the build followed now: "Warrior levelling", "Fury at 60".
+function TA:Label(state)
+	return TA.BuildLabel(state.builds, state.build, (UnitClass("player")))
+end
+
+--- What "Levelling, then my spec at 60" says now: your spec by name, and
+--- at 60 which of the two it is following.
+function TA.AutoLabel(state, preferred)
+	if not preferred then return "Levelling, then my spec at 60" end
+	if not state or state.choice ~= "auto" or (state.level or 0) < 60 then
+		return "Levelling, then " .. preferred.spec .. " at 60"
+	end
+	if state.build == state.builds.levelling then return "Levelling (done), then " .. preferred.spec end
+	return preferred.spec .. ", my spec"
+end
+
+--- "Build to follow", as a dropdown's items: levelling then your spec, the
+--- levelling build, and each spec's build at 60, yours marked.
+function TA:BuildItems(state)
+	local builds = state and state.builds or self:ClassBuilds()
+	if not builds then return {} end
+	local preferred = self:PreferredBuild(builds)
+	local items = {
+		{ value = "auto", label = TA.AutoLabel(state, preferred) },
+		{ value = "levelling", label = ((UnitClass("player")) or "Class") .. " levelling" },
+	}
+	for _, b in ipairs(builds.specs) do
+		table.insert(items, { value = b.spec, label = b.spec .. " at 60" .. (b == preferred and " (my spec)" or "") })
+	end
+	return items
+end
+
+--- What the strip over the talent window says: where the next point goes,
+--- and how many points are off the build (or why the build is not
+--- followed). Returns the line and the warning, either may be nil.
+function TA:StripLines(state)
+	if not state.fits then return nil, TA.UnfitLine(self:Label(state), state.why) end
+	local line
+	local preferred = self:PreferredBuild(state.builds)
+	local t = state.next and state.tree.talent[state.next]
+	if state.ready and preferred then
+		line = "All 51 points spent. Your " .. preferred.spec .. " build is ready for when you respec."
+	elseif state.waiting then
+		line = state.waiting .. " needs more points in its tree first."
+	elseif not t then
+		line = "Every point of this build is spent."
+	elseif state.unspent > 0 then
+		line = "Next: " .. state.next .. ", rank " .. state.rank .. " of " .. t.max
+			.. (state.unspent > 1 and " (" .. state.unspent .. " points to spend)" or "")
+	elseif state.level < 60 then
+		line = "Your point at level " .. (state.level + 1) .. " goes to " .. state.next .. "."
+	else
+		line = "Next, after a respec: " .. state.next .. "."
+	end
+	local warn
+	if (state.offTotal or 0) > 0 then
+		warn = Points(state.offTotal) .. " off the build. It carries on from the closest point."
+	end
+	return line, warn
+end
+
+--- How a talent is marked on the window: "todo" with the points the build
+--- puts there, "done" once you have them all, "off" with the points you
+--- have past them; nil for a talent the build leaves alone. And whether
+--- the next point goes there.
+function TA.Mark(state, name)
+	local have, want = state.ranks[name] or 0, state.targets[name] or 0
+	local kind, text
+	if have > want then
+		kind, text = "off", "+" .. (have - want)
+	elseif want > 0 then
+		kind, text = have >= want and "done" or "todo", tostring(want)
+	end
+	return kind, text, state.next == name
+end
+
+--- The advisor's lines on a talent's tooltip.
+function TA:TipLines(state, name)
+	local lines = {}
+	local have, want = state.ranks[name] or 0, state.targets[name] or 0
+	local label = self:Label(state)
+	if want > 0 then
+		local line = label .. " puts " .. Points(want) .. " here"
+		if have > want then line = line .. "; you have " .. have
+		elseif have == want then line = line .. ": done" end
+		table.insert(lines, "Pathfinder: " .. line .. ".")
+	elseif have > 0 then
+		table.insert(lines, "Pathfinder: " .. label .. " puts no points here.")
+	end
+	if state.next == name then table.insert(lines, "Your next point goes here.") end
+	return lines
+end
+
+--[[ Chat ------------------------------------------------------------------------ ]]
+
+-- Builds already said not to fit, this session: once is enough.
+TA.warned = {}
+
+--- Say once a session that a build does not fit the tree. A warning, so it
+--- shows with Pathfinder's chat messages off.
+function TA:WarnUnfit(state)
+	if TA.warned[state.build] then return end
+	TA.warned[state.build] = true
+	local c = AegisPathfinder.Theme and AegisPathfinder.Theme:Code("goldDeep") or ""
+	AegisPathfinder:Print(c .. TA.UnfitLine(self:Label(state), state.why) .. "|r")
+end
+
+--- On a level up: the talent to take with the new point. `level` is the
+--- event's; the point may not be counted yet, so there is at least one.
+function TA:LevelUp(level)
+	local s = self:Settings()
+	if not (s and s.talentadvisor and level and level >= TA.FIRST_LEVEL) then return end
+	local state = self:State(nil, level, math.max(1, (UnitCharacterPoints("player")) or 0))
+	if not state then return end
+	if not state.fits then return self:WarnUnfit(state) end
+	if s.talentchat == false or not state.next then return end
+	local t = state.tree.talent[state.next]
+	AegisPathfinder:Say(TA.LevelLine(level, state.next, state.rank, t.max, state.tree.tabs[t.tab].name))
+end
+
+--- When points are spent or given: at 60 with all 51 on the levelling
+--- build, say once that your spec's is ready; a respec says it again later.
+function TA:PointsChanged()
+	local s = self:Settings()
+	if not (s and s.talentadvisor) then return end
+	local state = self:State()
+	if not (state and state.fits) then return end
+	if not state.ready then
+		s.talentready = nil
+		return
+	end
+	if s.talentready then return end
+	s.talentready = true
+	local preferred = self:PreferredBuild(state.builds)
+	if preferred then AegisPathfinder:Say(TA.ReadyLine(preferred.spec)) end
+end
+
+--- Draw the talent window again, if it is open: the settings changed.
+function TA:Refresh()
+	if TA.Window then TA.Window:Repaint() end
+end
+
+-- Registered as the file loads; until the settings are there they are let go.
+local events = CreateFrame("Frame")
+TA.events = events
+events:RegisterEvent("PLAYER_LEVEL_UP")
+events:RegisterEvent("CHARACTER_POINTS_CHANGED")
+events:SetScript("OnEvent", function()
+	if not AegisPathfinder.db then return end
+	if event == "PLAYER_LEVEL_UP" then
+		TA:LevelUp(tonumber(arg1))
+	else
+		TA:PointsChanged()
+	end
+end)

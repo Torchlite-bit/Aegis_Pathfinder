@@ -3,7 +3,7 @@
 ## Title: Aegis: Pathfinder
 ## Notes: Classic+ leveling guide for the Turtle WoW-lineage 1.12 client family.|nPart of the Aegis addon suite.
 ## Author: Aegis: Pathfinder Contributors (see CONTRIBUTORS.md)
-## Version: 0.22.11
+## Version: 0.22.12
 ## X-Category: Quest
 
 ## SavedVariables: AegisPathfinderDB, TurtleGuideDB
@@ -67,6 +67,11 @@ Rares.lua
 Maps.lua
 # The Extras page: detailed reputation gains and level-up announcements
 Extras.lua
+# The Talent Advisor: the builds, which talent each point goes to, and its
+# marks on Blizzard's talent window
+TalentBuilds.lua
+TalentAdvisor.lua
+TalentWindow.lua
 NextGuideFrame.lua
 DungeonQuests.lua
 SetupFrame.lua

@@ -119,6 +119,12 @@ dofile("Theme.lua")
 dofile("ItemScoreData.lua")
 dofile("ItemScore.lua")
 local scoreSettings = AegisPathfinder.ItemScore.Settings()
+-- The Talent Advisor is the real one, without a talent tree: its settings are on Extras.
+dofile("TalentBuilds.lua")
+dofile("TalentAdvisor.lua")
+local talentRefreshes, talentOpened = 0, 0
+function AegisPathfinder.TalentAdvisor:Refresh() talentRefreshes = talentRefreshes + 1 end
+function AegisPathfinder.TalentAdvisor:OpenWindow() talentOpened = talentOpened + 1 end
 dofile("GearFrame.lua")
 dofile("Credits.lua")
 dofile("OptionsFrame.lua")
@@ -819,13 +825,40 @@ do
 	AegisPathfinder:RefreshConfigPanel()
 	check(frame.boxes.levelparty:IsOn() and not frame.boxes.levelemote:IsOn() and not frame.boxes.levelguild:IsOn(),
 		"and they stay as set")
-	-- The Talent Advisor: shown, held off, until Part 4.
-	check(frame.talentAdvisor and frame.talentAdvisor:GetParent() == extras and not frame.talentAdvisor:IsOn()
-		and not frame.talentAdvisor:IsEnabled() and frame.talentAdvisor:GetAlpha() < 1,
-		"the Talent Advisor's switch is there, off and held")
-	check(string.find(frame.talentAdvisor.label:GetText(), "coming soon", 1, true), "and says it is coming soon")
+	-- The Talent Advisor: on to start with, the chat line too, following
+	-- levelling then your spec.
+	local TA = AegisPathfinder.TalentAdvisor
+	local advisor, talentChat = frame.switches.talentadvisor, frame.switches.talentchat
+	check(advisor and advisor:GetParent() == extras and advisor:IsOn() and advisor:IsEnabled(),
+		"the Talent Advisor's switch is on Extras, on to start with")
+	check(talentChat and talentChat:IsOn() and talentChat:IsEnabled(), "and naming the talent in chat, under it")
+	check(frame.talentBuild and frame.talentBuild:GetParent() == extras and frame.talentBuild:GetValue() == "auto",
+		"the build to follow: levelling, then your spec")
+	local labels, order = {}, {}
+	for _, item in ipairs(frame.talentBuild.items) do
+		labels[item.value] = item.label
+		table.insert(order, item.value)
+	end
+	local preferred = TA:PreferredBuild(AegisPathfinder.TalentBuilds.PALADIN)
+	check(preferred and labels.auto == "Levelling, then " .. preferred.spec .. " at 60",
+		"it names your spec, got %s", tostring(labels.auto))
+	check(labels.levelling == "Paladin levelling" and table.concat(order, ",") == "auto,levelling,Holy,Protection,Retribution",
+		"then the class's levelling build and each spec's, got %s", table.concat(order, ","))
+	check(preferred and labels[preferred.spec] == preferred.spec .. " at 60 (my spec)", "yours marked")
+	check(labels.Holy == "Holy at 60" or preferred.spec == "Holy", "the others not")
+	click(advisor)
+	check(db.talentadvisor == false and talentRefreshes == 1, "switched off, the talent window is drawn again")
+	check(not talentChat:IsEnabled() and frame.talentBuild:GetAlpha() < 1, "and the chat line and the build are held")
+	click(advisor)
+	check(db.talentadvisor == true and talentChat:IsEnabled() and frame.talentBuild:GetAlpha() == 1, "on again")
+	fire(frame.talentBuild.rows[3], "OnClick")
+	check(db.talentbuild == "Holy" and talentRefreshes == 3, "picking Holy follows it, and redraws, got %s",
+		tostring(db.talentbuild))
 	AegisPathfinder:RefreshConfigPanel()
-	check(not frame.talentAdvisor:IsOn() and not frame.talentAdvisor:IsEnabled(), "a refresh leaves it off and held")
+	check(frame.talentBuild:GetValue() == "Holy", "a refresh keeps it")
+	click(frame.openTalents)
+	check(talentOpened == 1, "Open the talent window opens it")
+	db.talentbuild = "auto"
 	check(frame.boxes.btnkill:IsOn(), "the Action Buttons boxes still read on to start with")
 	db.chatmessages, db.repdetail, db.levelparty, db.levelemote = nil, nil, nil, nil
 	AegisPathfinder:RefreshConfigPanel()

@@ -40,6 +40,7 @@ lua5.1 Tools/tests/test_automation.lua
 lua5.1 Tools/tests/test_maps.lua
 lua5.1 Tools/tests/test_extras.lua
 lua5.1 Tools/tests/test_talentadvisor.lua
+lua5.1 Tools/tests/test_talentwindow.lua
 lua5.1 Tools/tests/test_guidelist.lua
 lua5.1 Tools/tests/test_guidebrowser.lua
 lua5.1 Tools/tests/test_materials.lua
