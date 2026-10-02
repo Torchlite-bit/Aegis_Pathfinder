@@ -29,7 +29,7 @@ local CREDITS = {
 		"The Turtle WoW team and the servers continuing it",
 		"ryanmr82 and the Hydra guild -- the Moonwhisper Coast quest data",
 		"rivi-s -- pfQuest-turtle-HDB, filling its gaps",
-		"Arthur-Helias -- InstanceJournal: every dungeon's quests, its entrance, and Windhorn Canyon's and Frostmane Hollow's loot",
+		"Arthur-Helias -- InstanceJournal: every dungeon's quests, its entrance, its bosses, and Windhorn Canyon's and Frostmane Hollow's loot",
 		"The Kludge Bureau -- pfQuest-turtle's patch 1.18.1 quests",
 	} },
 	{ "Libraries and data", {
@@ -40,7 +40,7 @@ local CREDITS = {
 		"Cladhaire, laytya and the TWOW porters -- TomTom-TWOW",
 		"Kitymeowmeow -- CraftRoute, the recipe data behind crafting routes",
 		"iGreed -- OctoPawn, the stat weights behind the item score (MIT)",
-		"The CMaNGOS team -- classic-db, trainers, gathering data and quest rules",
+		"The CMaNGOS team -- classic-db and mangos-classic: trainers, gathering data, quest rules and what dungeon bosses do",
 	} },
 	{ "Fonts", {
 		"Rajdhani -- (c) 2014 Indian Type Foundry, SIL OFL 1.1",

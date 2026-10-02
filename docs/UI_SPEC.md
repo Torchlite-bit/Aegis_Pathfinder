@@ -329,7 +329,8 @@ is sections now.
 sections added, one scrolling body grew too long to find anything in, so the
 sections are grouped into pages with a category list down the left, as Zygor's
 options have it: Route (Race, Route pack), Dungeons (Dungeons, Turtle WoW's
-own, Along the way -- with the middle-of-its-levels switch), Filters, then
+own, Along the way -- with the middle-of-its-levels switch -- and Boss notes,
+whose *My role in dungeons* dropdown picks the boss steps' role lines), Filters, then
 Zygor's pages in this style -- Appearance (Server theme, Window scale, Guide
 window, Minimap), Step Display (Between guides, Sync & Share), Automation
 (Quests, Travel, Inventory), Action Buttons (Windows), Navigation (Waypoints, Arrows),

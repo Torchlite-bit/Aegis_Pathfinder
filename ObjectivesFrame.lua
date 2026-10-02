@@ -1541,6 +1541,9 @@ function AegisPathfinder:UpdateOHPanel(value)
 			local checked = turnedin or action == "ACCEPT" and logi or action == "COMPLETE" and complete
 
 			local note = self:GetObjectiveTag("N", idx)
+			-- A boss step's lines for your role, under its note: shown in
+			-- full in focus mode, and in the overview row's tooltip.
+			local fullnote = self.GetStepNote and self:GetStepNote(idx) or note
 
 			-- In overview the objective folds into the note line, which is
 			-- what the concept does with it there. In focus mode the meter
@@ -1553,7 +1556,7 @@ function AegisPathfinder:UpdateOHPanel(value)
 			end
 
 			local qid = self:GetObjectiveTag("QID", idx)
-			row.__tip = (qid and ("QID " .. qid .. (note and " \194\183 " or "")) or "") .. (note or "")
+			row.__tip = (qid and ("QID " .. qid .. (fullnote and " \194\183 " or "")) or "") .. (fullnote or "")
 			if row.__tip == "" then row.__tip = nil end
 
 			--[[ Band or row.
@@ -1638,15 +1641,17 @@ function AegisPathfinder:UpdateOHPanel(value)
 					row.text:SetHeight(titleH)
 					row.detail:Hide()
 					row.note:SetWidth(NoteWidth())
-					row.note:SetText(note or "")
+					row.note:SetText(fullnote or "")
 					row.note:Show()
 					local noteH = 0
-					if note and note ~= "" then
+					if fullnote and fullnote ~= "" then
 						noteH = row.note:GetHeight() or 0
 						-- A client that will not measure wrapped text: estimate
-						-- the lines from the unwrapped width.
+						-- the lines from the unwrapped width, and a line more
+						-- for each role line under the note.
 						if noteH < 1 then
-							noteH = math.ceil(row.note:GetStringWidth() / NoteWidth()) * G.NOTE_LINE
+							local _, breaks = string.gsub(fullnote, "\n", "")
+							noteH = (math.ceil(row.note:GetStringWidth() / NoteWidth()) + breaks) * G.NOTE_LINE
 						end
 					end
 					row:SetHeight(math.max(G.ROWHEIGHT, G.NOTE_TOP + (titleH - G.TITLE_H) + noteH + G.NOTE_BOTTOM))

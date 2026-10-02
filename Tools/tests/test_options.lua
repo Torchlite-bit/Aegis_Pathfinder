@@ -155,7 +155,7 @@ check(frame.subhead.label:GetText() == "CONFIG \194\183 ROUTE",
 
 local order = {}
 for _, h in ipairs(frame.sections) do table.insert(order, h.label:GetText()) end
-local want = { "RACE", "ROUTE PACK", "DUNGEONS", "TURTLE WOW'S OWN", "ALONG THE WAY", "FILTERS", "SERVER THEME" }
+local want = { "RACE", "ROUTE PACK", "DUNGEONS", "TURTLE WOW'S OWN", "ALONG THE WAY", "BOSS NOTES", "FILTERS", "SERVER THEME" }
 for i, name in ipairs(want) do
 	check(order[i] == name, "section %d should be %s, got %s", i, name, tostring(order[i]))
 end

@@ -109,6 +109,45 @@ function AegisPathfinder:GetObjectiveTag(tag, i)
 	return self.select(3, string.find(tags, "|" .. tag .. "|([^|]*)|?"))
 end
 
+--[[ What a boss step says for each role.
+
+	A dungeon guide's boss steps carry a line for each role -- |TANK|, |HEAL|
+	and |DPS| -- beside the note: what the tank, the healer and damage dealers
+	should do about what the boss does. The guide window shows the lines for
+	the role picked on the Dungeons page, or all three. ]]
+AegisPathfinder.DUNGEON_ROLES = {
+	{ key = "tank", tag = "TANK", label = "Tank", color = "blue" },
+	{ key = "heal", tag = "HEAL", label = "Healer", color = "accentGlow" },
+	{ key = "dps", tag = "DPS", label = "Damage", color = "danger" },
+}
+
+--- The role lines a step has for the role picked: { { role, text } }.
+function AegisPathfinder:GetRoleLines(i)
+	local pick = self.db and self.db.char and self.db.char.dungeonrole or "all"
+	local out = {}
+	for _, role in ipairs(self.DUNGEON_ROLES) do
+		if pick == "all" or pick == role.key then
+			local text = self:GetObjectiveTag(role.tag, i)
+			if text and text ~= "" then table.insert(out, { role = role, text = text }) end
+		end
+	end
+	return out
+end
+
+--- A step's note with its role lines under it, each labelled in its role's
+--- colour; the note alone for a step with none.
+function AegisPathfinder:GetStepNote(i)
+	local note = self:GetObjectiveTag("N", i)
+	local lines = self:GetRoleLines(i)
+	if table.getn(lines) == 0 then return note end
+	local out = {}
+	if note and note ~= "" then table.insert(out, note) end
+	for _, line in ipairs(lines) do
+		table.insert(out, self.Theme:Code(line.role.color) .. line.role.label .. ":|r " .. line.text)
+	end
+	return table.concat(out, "\n")
+end
+
 --[[ Which dungeons a guide has steps for.
 
 	The |D| filter runs at parse time, so a step for a dungeon the player has

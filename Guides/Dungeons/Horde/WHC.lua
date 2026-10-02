@@ -29,7 +29,14 @@ A Destroy the Deathtotem |QID|41982| |N|Cairne Bloodhoof (60.3, 51.7)| |Z|Thunde
 R Windhorn Canyon |N|Into the Windhorn Caverns, in the east of Thousand Needles by the meeting stone (64, 53.7): the canyon is at their far end (64.6, 45.9)| |Z|Thousand Needles|
 C Relics of the Windhorn Tribe |QID|41977| |N|Gather 8 Windhorn Relics in the canyon|
 C The Wrath of Malgan |QID|41978| |N|Kill 20 Blackwind Villagers|
+K Pathun Duskhide |N|Pathfinder has no notes on this fight yet.| |BOSS|Pathun Duskhide|
+K Ahgk'tos the Pure |N|Pathfinder has no notes on this fight yet.| |BOSS|Ahgk'tos the Pure|
+K Ambassador Vortalus |N|Gust of Wind stuns a player for 4 seconds, and Chain Lightning jumps between everyone.| |HEAL|Chain Lightning hits the whole group.| |DPS|Interrupt both, Gust of Wind first.| |BOSS|Ambassador Vortalus|
+K Walgan Bloodcaller |N|Pathfinder has no notes on this fight yet.| |BOSS|Walgan Bloodcaller|
+K Bonespeaker Narlgom |N|Pathfinder has no notes on this fight yet.| |BOSS|Bonespeaker Narlgom|
+K Prophet Stormhoof |N|Corruption, a curse, burns a player over time.| |HEAL|Remove Corruption (Curse: Mage, Druid).| |BOSS|Prophet Stormhoof|
 C Destroy the Deathtotem |QID|41982| |N|Kill Prophet Stormhoof, the leader of the Deathtotem|
+K Chieftain Shalk Blackwind |N|Pathfinder has no notes on this fight yet.| |BOSS|Chieftain Shalk Blackwind|
 
 N Back outside |N|Out of Windhorn Canyon, in Thousand Needles|
 T Relics of the Windhorn Tribe |QID|41977| |N|Sagh (30.7, 44.9)| |Z|Thousand Needles|
@@ -46,6 +53,7 @@ A Vortalus’ Edict |QID|41939| |N|Shovu (46.9, 71.9)| |Z|Stonetalon Mountains| 
 N Windhorn Canyon again |N|What you have handed in leads back to Windhorn Canyon|
 
 R Windhorn Canyon |N|Into the Windhorn Caverns, in the east of Thousand Needles by the meeting stone (64, 53.7): the canyon is at their far end (64.6, 45.9)| |Z|Thousand Needles|
+K Ambassador Vortalus |N|Gust of Wind stuns a player for 4 seconds, and Chain Lightning jumps between everyone.| |HEAL|Chain Lightning hits the whole group.| |DPS|Interrupt both, Gust of Wind first.| |BOSS|Ambassador Vortalus|
 C Vortalus’ Edict |QID|41939| |N|Banish Ambassador Vortalus, the elemental figurehead| |C|Shaman| |O|
 
 F Sun Rock Retreat |N|Fly to Sun Rock Retreat in the Stonetalon Mountains| |Z|Stonetalon Mountains|

@@ -15,7 +15,7 @@ AegisPathfinder.TrackEvents = {
 	"CRAFT_SHOW", "PLAYER_DEAD", "SKILL_LINES_CHANGED", "SPELLS_CHANGED",
 	"QUEST_ACCEPTED", "QUEST_TURNED_IN", "QUEST_REMOVED", "HEARTHSTONE_BOUND",
 	"BAG_UPDATE_DELAYED", "GOSSIP_SHOW", "QUEST_GREETING", "QUEST_DETAIL",
-	"QUEST_PROGRESS", "QUEST_COMPLETE"
+	"QUEST_PROGRESS", "QUEST_COMPLETE", "CHAT_MSG_COMBAT_HOSTILE_DEATH"
 }
 
 
@@ -94,6 +94,44 @@ function AegisPathfinder:CHAT_MSG_SYSTEM(msg)
 		if text and quest == text then
 			self:Debug(string.format("Detected pet skill train %q", quest))
 			return self:SetTurnedIn()
+		end
+	end
+end
+
+--- Who died, from the combat log: "<name> dies." (UNITDIESOTHER), "You have
+--- slain <name>!" when the killing blow is yours (SELFKILLOTHER), or "<name>
+--- is slain by <who>!" (PARTYKILLOTHER); nil for any other line.
+function AegisPathfinder:DeathName(msg)
+	if not msg then return end
+	local formats = { UNITDIESOTHER or "%s dies.", SELFKILLOTHER or "You have slain %s!",
+		PARTYKILLOTHER or "%s is slain by %s!" }
+	for _, format in ipairs(formats) do
+		-- The name is the first %s; any other is someone else.
+		local pattern, first = string.gsub(format, "([%^%$%(%)%.%[%]%*%+%-%?])", "%%%1"), true
+		pattern = string.gsub(pattern, "%%s", function()
+			if first then first = false return "(.+)" end
+			return ".+"
+		end)
+		local _, _, name = string.find(msg, "^" .. pattern .. "$")
+		if name then return name end
+	end
+end
+
+--[[ A dungeon guide's boss step (|BOSS|) ticks itself when the boss dies: the
+	first step not yet ticked that names it, which is the one for this visit
+	when a guide goes in more than once. ]]
+function AegisPathfinder:CHAT_MSG_COMBAT_HOSTILE_DEATH(msg)
+	local name = self:DeathName(msg)
+	if not name or not self.actions or not self.turnedin then return end
+	for i in ipairs(self.actions) do
+		local list = self:GetObjectiveTag("BOSS", i)
+		if list and not self.turnedin[self.quests[i]] then
+			for boss in string.gfind(list, "[^;]+") do
+				if boss == name then
+					self:Debug(string.format("Detected the death of %q", name))
+					return self:SetTurnedIn(i, true)
+				end
+			end
 		end
 	end
 end

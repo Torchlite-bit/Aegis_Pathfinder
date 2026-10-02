@@ -87,7 +87,7 @@ That runs everything that can run without a WoW client:
 | `Tools/tests/test_minimap.lua` | The minimap button: drawn from the theme, its clicks, dragging round the edge, and the setting that hides it |
 | `Tools/tests/test_navcallout.lua` | The navigation arrow's maths: bearing relative to your facing, distance and time |
 | `Tools/tests/test_navigation.lua` | The waypoint addons and arrow switches, continent-map points, trainers found by name, and the zone a step is in |
-| `Tools/tests/test_dungeonguides.lua` | The dungeon guides: current with their generator, listed, parsed, an entrance to point at, and no loose ends |
+| `Tools/tests/test_dungeonguides.lua` | The dungeon guides: current with their generator, listed, parsed, an entrance to point at, and no loose ends; a step for each boss after the way in, with a note and a death to tick it, the role lines your role setting picks, and the combat log's death line ticking the step |
 | `Tools/tests/test_classguides.lua` | The class quest guides: current with their generator, listed, a milestone for each; parsed as every race of the class sees it -- its own chain and no other race's, no loose ends, ending with the quest the offer takes for its last; and the chains that must come out right (the Voidwalker by home city, the Charger's horse feed before the spirit) |
 | `Tools/tests/test_professionsteps.lua` | Profession training: ranks waiting for their level, your side's trainers, tomes and Artisan quests, completing on skill and cap |
 
@@ -170,6 +170,18 @@ To refresh it, check both out and run:
 
 ```sh
 python3 Tools/build/build_gathering.py --pfquest <pfQuest> <pfQuest-turtle> --cmangos <classic-db full dump .sql[.gz]>
+```
+
+**The dungeon guides' boss steps** come from `Tools/data/dungeon_bosses.json`,
+written by `Tools/build/build_dungeon_bosses.py` from an InstanceJournal
+checkout, the CMaNGOS classic-db dump and mangos-classic's ScriptDevAI
+scripts; the notes on each fight are written by hand in
+`Tools/build/dungeon_tactics.py`. See
+[docs/GUIDE_AUTHORING.md](docs/GUIDE_AUTHORING.md#dungeon-guides):
+
+```sh
+python3 Tools/build/build_dungeon_bosses.py --instancejournal <InstanceJournal> --cmangos <classic-db full dump .sql[.gz]> --scripts <mangos-classic>/src/game/AI/ScriptDevAI/scripts
+python3 Tools/build/build_dungeon_guides.py
 ```
 
 **`ItemScoreData.lua` is generated** from

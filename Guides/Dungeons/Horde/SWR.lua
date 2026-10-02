@@ -32,17 +32,29 @@ A It Can't Rain All the Time |QID|41833| |N|Kilrogg Deadeye (71, 46.6)| |Z|Balor
 A The Dead Can’t Complain |QID|41844| |N|Rikki Fizmask (28.6, 11.2)| |Z|Balor|
 
 R Stormwrought Ruins |N|Stormwrought Castle, on the cliffs of Balor (57.1, 60.1)| |Z|Balor|
-C Mycellakos |QID|41824| |N|Slay Mycellakos and bring back Core of Mycellakos back|
 C Skull And Bones |QID|41760| |N|Enter Stormwrought Castle and retrieve the Balor Sigil Ring|
 C The Late Duke Balor |QID|41814| |N|Return the Crown of Balor to Olmir Halfhorn|
-C Innocence Lost |QID|41821| |N|Slay Remains of the Innocent|
 C The Dead Can’t Complain |QID|41844| |N|Rikki Fizmask wants you to pillage the Stormwrought Ruins on Balor: Balorian Treasure|
-C The Power of Uth'okk |QID|41730| |N|Slay Oronok Torn-Heart and recover the Pendant of Uth'okk from Stormwrought Ruins| |O|
-C It Can't Rain All the Time |QID|41833| |N|Slay Dagar the Glutton, Oronok Torn-Heart, Ighal'for|
 A The Will of Balor |QID|41845| |N|Arthur Vandris|
 C The Will of Balor |QID|41845| |N|Slay the succubus keeping hold over Arthur’s soul: Arthur's Soul Fragment|
 T The Will of Balor |QID|41845| |N|Arthur Vandris|
 C Crystal Clear Impression |QID|41879| |N|Find a Stormwrought Crystal|
+K Oronok Torn-Heart |N|Pathfinder has no notes on this fight yet.| |BOSS|Oronok Torn-Heart|
+C The Power of Uth'okk |QID|41730| |N|Slay Oronok Torn-Heart and recover the Pendant of Uth'okk from Stormwrought Ruins| |O|
+C It Can't Rain All the Time |QID|41833| |N|Slay Dagar the Glutton, Oronok Torn-Heart, Ighal'for|
+K Dagar the Glutton |N|Pathfinder has no notes on this fight yet.| |BOSS|Dagar the Glutton|
+K Librarian Theodorus |N|Pathfinder has no notes on this fight yet.| |BOSS|Librarian Theodorus|
+K Duke Balor the IV |N|Pathfinder has no notes on this fight yet.| |BOSS|Duke Balor the IV|
+K Chieftain Stormsong |N|Pathfinder has no notes on this fight yet.| |BOSS|Chieftain Stormsong|
+K Deathlord Tidebane |N|Pathfinder has no notes on this fight yet.| |BOSS|Deathlord Tidebane|
+K Subjugator Halthas Shadecrest |N|Pathfinder has no notes on this fight yet.| |BOSS|Subjugator Halthas Shadecrest|
+K Mycellakos |N|Pathfinder has no notes on this fight yet.| |BOSS|Mycellakos|
+C Mycellakos |QID|41824| |N|Slay Mycellakos and bring back Core of Mycellakos back|
+K Eldermaw the Primordial |N|Pathfinder has no notes on this fight yet.| |BOSS|Eldermaw the Primordial|
+K Lady Drazare |N|Pathfinder has no notes on this fight yet.| |BOSS|Lady Drazare|
+K Remains of the Innocent |N|Pathfinder has no notes on this fight yet.| |BOSS|Remains of the Innocent|
+C Innocence Lost |QID|41821| |N|Slay Remains of the Innocent|
+K Ighal'for |N|Pathfinder has no notes on this fight yet.| |BOSS|Ighal'for|
 
 N Back outside |N|Out of Stormwrought Ruins, in Balor|
 T Mycellakos |QID|41824| |N|Uda'pe Sungrass (70.8, 47.8)| |Z|Balor|

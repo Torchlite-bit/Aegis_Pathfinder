@@ -178,6 +178,32 @@ Which quests belong to a dungeon comes from InstanceJournal, a Turtle WoW
 addon that lists every instance's quests, and the quests themselves from
 pfQuest-turtle, patch 1.18.1's included (`Tools/build/build_dungeon_guides.py`).
 
+**Boss steps.** Inside, a dungeon guide has a step for each boss, in the order
+InstanceJournal lists them, and a quest that needs a boss dead comes straight
+after that boss's step. Each step says what the fight does, then what to watch
+for as each role:
+
+- **Tank** (blue): where to face him, what to pick up, when you lose threat;
+- **Healer**: who takes the damage, what to dispel or cure and which classes
+  can;
+- **Damage** (red): what to interrupt or kill first, when to stop or move.
+
+Hover the step for its lines, or see them under it in focus mode. Options ->
+Dungeons -> **My role in dungeons** shows only your role's line: All roles
+(to start), Tank, Healer or Damage. A boss's step ticks itself when the combat
+log says he dies; a fight with several bosses ticks on the last (the Seven in
+Blackrock Depths on Doom'rel). A rare boss's step says he is not always there
+and can be passed over. The arrow does not point inside a dungeon.
+
+What each boss does comes from InstanceJournal's abilities for Turtle WoW's
+own and from CMaNGOS -- its spells and its scripts -- for the rest
+(`Tools/build/build_dungeon_bosses.py`); the notes are written in
+`Tools/build/dungeon_tactics.py`. Some Turtle WoW bosses have no data
+anywhere yet -- Dragonmaw Retreat, Crescent Grove, Stormwrought Ruins, Gilneas
+City, Hateforge Quarry, most of Windhorn Canyon, and those Turtle added to
+older dungeons -- and their steps say "Pathfinder has no notes on this fight
+yet." They still tick themselves.
+
 **Class quest guides.** The guide browser's **Class Quests** category has a guide for each of
 your class's quest chains -- the warlock's Voidwalker, Succubus, Felhunter,
 Felsteed, Infernal and Dreadsteed; the druid's Bear Form, Aquatic Form and

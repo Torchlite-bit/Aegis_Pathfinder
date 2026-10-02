@@ -29,6 +29,11 @@ R Hateforge Quarry |N|At the far eastern edge of the Burning Steppes (97.5, 59.1
 C Miners Union Mutiny II |QID|40468| |N|Slay 20 Hateforge Miners at the Hateforge Quarry|
 C The True High Foreman |QID|40463| |N|Slay Bargul Blackhammer, and recover the Senate's Orders|
 C Rumors of Hateforge Brew |QID|40490| |N|Delve into the Hateforge Quarry and recover a Dark Iron Vial, and the Hateforge Chemistry Documents|
+K High Foreman Bargul Blackhammer |N|Pathfinder has no notes on this fight yet.| |BOSS|High Foreman Bargul Blackhammer|
+K Engineer Figgles |N|Pathfinder has no notes on this fight yet.| |BOSS|Engineer Figgles|
+K Corrosis |N|Pathfinder has no notes on this fight yet.| |BOSS|Corrosis|
+K Hatereaver Annihilator |N|Pathfinder has no notes on this fight yet.| |BOSS|Hatereaver Annihilator|
+K Har'gesh Doomcaller |N|Pathfinder has no notes on this fight yet.| |BOSS|Har'gesh Doomcaller|
 
 N Back outside |N|Out of Hateforge Quarry, in Burning Steppes|
 T Miners Union Mutiny II |QID|40468| |N|Morgrim Firepike (75.6, 68.3)| |Z|Burning Steppes|

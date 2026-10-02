@@ -50,6 +50,14 @@ Theme.color = {
 	switchOn   = hex("2e850e"),   -- an on switch's track, in the theme's colours
 }
 
+--- A colour as a chat colour code, "|cffrrggbb", for text that mixes colours
+--- in one font string.
+function Theme:Code(name)
+	local c = Theme.color[name] or Theme.color.text
+	return string.format("|cff%02x%02x%02x", math.floor(c[1] * 255 + 0.5), math.floor(c[2] * 255 + 0.5),
+		math.floor(c[3] * 255 + 0.5))
+end
+
 --[[ Themes.
 
 	The concept is green; the servers that continued Turtle WoW each have a

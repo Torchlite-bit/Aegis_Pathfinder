@@ -46,6 +46,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 CACHE = os.path.join(ROOT, "Tools", "data", "dungeon_guides.json")
+BOSSES = os.path.join(ROOT, "Tools", "data", "dungeon_bosses.json")
 OUT = os.path.join(ROOT, "Guides", "Dungeons")
 
 ALLIANCE, HORDE = 1 | 4 | 8 | 64 | 512, 2 | 16 | 32 | 128 | 256
@@ -577,6 +578,46 @@ class Guide:
                 self.core.append(q)
         self.left_out = []
         self.lines = []
+        self.bosses = model.get("bosses", {}).get(code, [])
+
+    # -- the bosses ----------------------------------------------------------
+
+    def boss_for(self, q):
+        """Which boss a quest's objective is about, by its name in the task
+        ("Kill Edwin VanCleef", "Bring Mutanus's head"): its index in
+        self.bosses, or None."""
+        v = self.q[q]
+        text = "%s %s" % (v["task"], v["text"])
+        best = None
+        for i, b in enumerate(self.bosses):
+            for name in {b["name"], b.get("creature") or b["name"]}:
+                if name in text and (best is None or len(name) > best[1]):
+                    best = (i, len(name))
+        return best and best[0]
+
+    def boss_step(self, b):
+        """K <boss>: what it does, what each role does about it, and whose
+        death ticks it. A rare one is optional: it is not always there."""
+        import dungeon_tactics as tactics
+        t = tactics.TACTICS.get(b["id"])
+        if t:
+            note = t["note"]
+        elif b.get("creature") and not b.get("spells") and not b["journal"]:
+            note = "No special abilities known."
+        else:
+            note = "Pathfinder has no notes on this fight yet."
+        if b["rare"]:
+            note = "Rare: not always here. " + note
+        tags = ["|N|%s|" % note]
+        for role in ("tank", "heal", "dps"):
+            if t and t[role]:
+                tags.append("|%s|%s|" % (role.upper(), t[role]))
+        watch = tactics.WATCH.get(b["id"], [b.get("creature") or b["name"]])
+        if watch:
+            tags.append("|BOSS|%s|" % ";".join(watch))
+        if b["rare"]:
+            tags.append("|O|")
+        self.lines.append(" ".join(["K %s" % b["name"]] + tags))
 
     # -- where things are ----------------------------------------------------
 
@@ -908,25 +949,46 @@ class Guide:
             enter = self.d[self.side].get("enter") or self.d["enter"]
             self.step("R", self.d["name"], note="%s %s" % (enter, fmt(self.d["entrance"])),
                       zone=self.d["zone"])
-            for action, q, w in there:
-                v = self.q[q]
-                if action == "C":
-                    # The points outside are in the entrance's zone: say so,
-                    # or the step's zone is the guide's -- the dungeon, which
-                    # is not a map the arrow can point on.
-                    outside = " ".join(fmt(p) for p in v["obj"].get(self.d["zone"], []))
-                    self.step("C", v["title"], q, v["task"] + (", outside too %s" % outside if outside else ""),
-                              self.d["zone"] if outside else None)
-                elif w.item:
-                    self.step("A", v["title"], q, "%s: right-click it to start the quest" % w.name, use=w.item)
+            # The bosses in the order you meet them -- all of them the first
+            # time in, and after that those a quest sends you back for -- each
+            # with the quest objectives that are about it, and their hand-ins
+            # where those are inside, straight after.
+            after = {}
+            tied = {q: self.boss_for(q) for a, q, _ in there if a == "C"}
+            tied = {q: i for q, i in tied.items() if i is not None}
+            rest = []
+            for s in there:
+                if s[1] in tied and s[0] in ("C", "T"):
+                    after.setdefault(tied[s[1]], []).append(s)
                 else:
-                    self.step(action, v["title"], q, w.name)
+                    rest.append(s)
+            self.inside_steps(rest)
+            for i, b in enumerate(self.bosses):
+                if run == 1 or i in after:
+                    self.boss_step(b)
+                    self.inside_steps(after.get(i, []))
             for zone in self.back:
                 write_town(zone, in_town(zone, True), True)
             if len(done) == before:
                 break
         self.unfinished = [q for q in self.take if q not in done and q not in self.optional]
         return self.lines
+
+    def inside_steps(self, steps):
+        """Write steps inside the dungeon."""
+        for action, q, w in steps:
+            v = self.q[q]
+            if action == "C":
+                # The points outside are in the entrance's zone: say so, or
+                # the step's zone is the guide's -- the dungeon, which is not
+                # a map the arrow can point on.
+                outside = " ".join(fmt(p) for p in v["obj"].get(self.d["zone"], []))
+                self.step("C", v["title"], q, v["task"] + (", outside too %s" % outside if outside else ""),
+                          self.d["zone"] if outside else None)
+            elif w.item:
+                self.step("A", v["title"], q, "%s: right-click it to start the quest" % w.name, use=w.item)
+            else:
+                self.step(action, v["title"], q, w.name)
 
     def report(self):
         out = []
@@ -976,6 +1038,9 @@ def main():
             json.dump(model, fh, indent=0, sort_keys=True, ensure_ascii=False)
             fh.write("\n")
     model = json.load(open(CACHE, encoding="utf-8"))
+    # The bosses, from build_dungeon_bosses.py; the notes on them are in
+    # dungeon_tactics.py.
+    model["bosses"] = json.load(open(BOSSES, encoding="utf-8"))
     files = {}
     for code in DUNGEONS:
         for side, mask in SIDES:

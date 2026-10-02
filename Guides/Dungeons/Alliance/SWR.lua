@@ -52,6 +52,18 @@ A The Will of Balor |QID|41845| |N|Arthur Vandris|
 C The Will of Balor |QID|41845| |N|Slay the succubus keeping hold over Arthur’s soul: Arthur's Soul Fragment|
 T The Will of Balor |QID|41845| |N|Arthur Vandris|
 C Crystal Clear Impression |QID|41879| |N|Find a Stormwrought Crystal|
+K Oronok Torn-Heart |N|Pathfinder has no notes on this fight yet.| |BOSS|Oronok Torn-Heart|
+K Dagar the Glutton |N|Pathfinder has no notes on this fight yet.| |BOSS|Dagar the Glutton|
+K Librarian Theodorus |N|Pathfinder has no notes on this fight yet.| |BOSS|Librarian Theodorus|
+K Duke Balor the IV |N|Pathfinder has no notes on this fight yet.| |BOSS|Duke Balor the IV|
+K Chieftain Stormsong |N|Pathfinder has no notes on this fight yet.| |BOSS|Chieftain Stormsong|
+K Deathlord Tidebane |N|Pathfinder has no notes on this fight yet.| |BOSS|Deathlord Tidebane|
+K Subjugator Halthas Shadecrest |N|Pathfinder has no notes on this fight yet.| |BOSS|Subjugator Halthas Shadecrest|
+K Mycellakos |N|Pathfinder has no notes on this fight yet.| |BOSS|Mycellakos|
+K Eldermaw the Primordial |N|Pathfinder has no notes on this fight yet.| |BOSS|Eldermaw the Primordial|
+K Lady Drazare |N|Pathfinder has no notes on this fight yet.| |BOSS|Lady Drazare|
+K Remains of the Innocent |N|Pathfinder has no notes on this fight yet.| |BOSS|Remains of the Innocent|
+K Ighal'for |N|Pathfinder has no notes on this fight yet.| |BOSS|Ighal'for|
 
 N Back outside |N|Out of Stormwrought Ruins, in Balor|
 T Skull And Bones |QID|41760| |N|Lord Olivert Grahan (35.6, 66)| |Z|Balor|

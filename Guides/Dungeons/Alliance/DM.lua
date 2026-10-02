@@ -36,6 +36,16 @@ C Collecting Memories |QID|168| |N|Retrieve 4 Miners' Union Cards, outside too (
 C Oh Brother. . . |QID|167| |N|Get Foreman Thistlenettle's Explorers' League Badge, outside too (42.2, 82.6)| |Z|Westfall|
 C Underground Assault |QID|2040| |N|Retrieve the Gnoam Sprecklesprocket from the Deadmines| |O|
 A The Unsent Letter |QID|373| |N|An Unsent Letter: right-click it to start the quest| |U|2874| |O|
+K Jared Voss |N|Pathfinder has no notes on this fight yet.| |BOSS|Jared Voss|
+K Rhahk'Zor |N|Rhahk'Zor Slam hits hard and stuns his target for 3 seconds.| |TANK|Build threat before the others go all out: you'll be stunned now and then.| |HEAL|Expect sudden damage on the tank.| |BOSS|Rhahk'Zor|
+K Miner Johnson |N|Rare: not always here. Pierce Armor lowers his target's armour by 10%.| |TANK|He hits harder as your armour drops.| |BOSS|Miner Johnson| |O|
+K Sneed |N|Sneed fights in his Shredder first, and jumps out when it breaks. He disarms his target.| |TANK|Disarm takes your weapon for 5 seconds: have threat to spare when it comes.| |BOSS|Sneed|
+K Gilnid |N|Molten Metal burns his target and slows their movement and attacks.| |HEAL|Molten Metal burns the tank for 15 seconds.| |DPS|Interrupt Molten Metal.| |BOSS|Gilnid|
+K Masterpiece Harvester |N|Pathfinder has no notes on this fight yet.| |BOSS|Masterpiece Harvester|
+K Mr. Smite |N|At two-thirds and at one-third health he stuns everyone with Smite Stomp and goes to his chest to change weapons: two axes, then a hammer whose Smite Slam stuns. He parries far more at first.| |TANK|Pick him up again when he comes back from his chest.| |HEAL|Use his trips to the chest to top everyone up and drink.| |DPS|Attack from behind: he parries a lot early on.| |BOSS|Mr. Smite|
+K Captain Greenskin |N|Captain Greenskin cleaves everyone in front of him, and his Poisoned Harpoon ticks for a minute.| |TANK|Face him away from the group.| |HEAL|Cure the harpoon's poison (Poison: Druid, Shaman, Paladin).| |DPS|Interrupt Poisoned Harpoon; stay behind him.| |BOSS|Captain Greenskin|
+K Edwin VanCleef |N|At half health he calls two Defias Blackguards, and Thrash gives him extra attacks.| |TANK|Pick up the Blackguards when they come.| |HEAL|Thrash makes his damage spiky: keep the tank topped up.| |DPS|Kill the Blackguards, then VanCleef.| |BOSS|Edwin VanCleef|
+K Cookie |N|Acid Splash poisons everyone near him; at half health he eats to heal himself.| |HEAL|Cure the Acid Splash poison (Poison: Druid, Shaman, Paladin).| |DPS|Interrupt Cookie's Cooking.| |BOSS|Cookie|
 C Captain Grayson's Revenge |QID|40396| |N|End Cookie: Grayson's Pendant|
 
 N Back outside |N|Out of The Deadmines, in Westfall|
@@ -100,7 +110,9 @@ A Red Silk Bandanas |QID|214| |N|Scout Riell (56.7, 47.3)| |Z|Westfall|
 
 R The Deadmines |N|In Moonbrook: through the Defias hideout under the inn, and down the mine (42.5, 72.7)| |Z|Westfall|
 C Red Silk Bandanas |QID|214| |N|Scout Riell at the Sentinel Hill Tower wants you to bring her 10 Red Silk Bandanas, outside too (41.9, 77.1)| |Z|Westfall|
+K Masterpiece Harvester |N|Pathfinder has no notes on this fight yet.| |BOSS|Masterpiece Harvester|
 C The Harvest Golem Mystery |QID|40478| |N|Venture into the Deadmines and slay the Masterpiece Harvester. Once done|
+K Edwin VanCleef |N|At half health he calls two Defias Blackguards, and Thrash gives him extra attacks.| |TANK|Pick up the Blackguards when they come.| |HEAL|Thrash makes his damage spiky: keep the tank topped up.| |DPS|Kill the Blackguards, then VanCleef.| |BOSS|Edwin VanCleef|
 C The Defias Brotherhood |QID|166| |N|Kill Edwin VanCleef and bring his head to Gryan Stoutmantle|
 
 N Back outside |N|Out of The Deadmines, in Westfall|

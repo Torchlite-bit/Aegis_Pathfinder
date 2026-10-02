@@ -147,6 +147,119 @@ check(guides[WHC .. "@Horde"] and string.find(guides[WHC .. "@Horde"].text,
 check(guides[WHC .. "@Horde"] and string.find(guides[WHC .. "@Horde"].text,
 	"A Vortalus.- Edict |QID|41939|[^\n]*|C|Shaman|"), "Vortalus' Edict is the Shaman's")
 
+-- The bosses ------------------------------------------------------------------------
+
+C_Timer.NewTicker = function() end
+GetMapContinents = function() return "Kalimdor", "Eastern Kingdoms" end
+GetMapZones = function(c) if c == 1 then return "Durotar" end return "Elwynn Forest" end
+dofile("Locale.lua")
+AegisPathfinder.Locale = AEGISPATHFINDER_LOCALE
+dofile("Theme.lua")
+dofile("QuestTracker.lua")
+
+-- Steps ticked by hand: three dwarves dying in any order, a family, an arena.
+local BY_HAND = { ["The Lost Dwarves"] = true, ["Harlow Family"] = true, ["Farraki Arena"] = true }
+local bosses = 0
+for _, g in pairs(guides) do
+	local _, _, title = string.find(g.name, "^Dungeons/(.+) %(")
+	local inside, first = false, true
+	for line in string.gfind(g.text, "[^\n]+") do
+		if string.find(line, "^R ") and string.find(line, "|N|", 1, true) and not string.find(line, "|QID|", 1, true)
+			and string.find(line, "^R [^|]+ |N|[^|]*%(%d") then
+			inside = inside or not string.find(line, "Travel to", 1, true)
+		end
+		local _, _, boss = string.find(line, "^K ([^|]-) |")
+		if boss then
+			bosses = bosses + 1
+			if first then
+				check(inside, "%s (%s): %s comes before the way in", g.name, g.side, boss)
+				first = false
+			end
+			check(string.find(line, "|N|[^|]+|"), "%s (%s): %s has no note", g.name, g.side, boss)
+			check(BY_HAND[boss] or string.find(line, "|BOSS|[^|]+|"), "%s (%s): %s has no death to tick it", g.name,
+				g.side, boss)
+			for tag in string.gfind(line, "|(%u+)|") do
+				check(tag ~= "TANKS" and tag ~= "HEALER" and tag ~= "DAMAGE", "%s: a role tag misspelt: %s", boss, tag)
+			end
+		end
+	end
+	check(not first, "%s (%s): no boss steps", g.name, g.side)
+end
+check(bosses > 300, "a step for each boss, both sides: got %d", bosses)
+
+local DM = guides["Dungeons/The Deadmines (17-24)@Alliance"]
+check(DM and string.find(DM.text, "\nK Edwin VanCleef |[^\n]*\nC The Defias Brotherhood |QID|166|"),
+	"Kill Edwin VanCleef follows his step, on the visit the quest sends you in")
+check(DM and string.find(DM.text, "K Miner Johnson |N|Rare: not always here%.[^\n]*|O|"),
+	"a rare boss is optional, and says it may not be there")
+
+-- Both sides register under one name; load the Alliance guide.
+local function load(name)
+	for _, g in ipairs(registered) do
+		if g.name == name and g.faction == "Alliance" then AegisPathfinder.guides[name] = g.loader end
+	end
+	AegisPathfinder.db.char.currentguide = nil
+	AegisPathfinder:LoadGuide(name)
+end
+
+-- What the step says for each role.
+load("Dungeons/The Deadmines (17-24)")
+local smite, cookie
+for i, name in ipairs(AegisPathfinder.quests) do
+	-- The parser keeps each step's title as "Title@index@".
+	name = string.gsub(name, "@%d+@$", "")
+	if name == "Mr. Smite" then smite = i elseif name == "Jared Voss" then cookie = i end
+end
+check(smite, "the Deadmines has Mr. Smite's step")
+if smite then
+	local function says(role)
+		AegisPathfinder.db.char.dungeonrole = role
+		local note = AegisPathfinder:GetStepNote(smite) or ""
+		return string.find(note, "Tank:|r", 1, true) ~= nil, string.find(note, "Healer:|r", 1, true) ~= nil,
+			string.find(note, "Damage:|r", 1, true) ~= nil, note
+	end
+	local t, h, d, note = says("all")
+	check(t and h and d and string.find(note, "^At two%-thirds"), "all roles: the note, then a line each, got %s", note)
+	t, h, d = says("tank")
+	check(t and not h and not d, "the tank's alone")
+	t, h, d = says("heal")
+	check(h and not t and not d, "the healer's alone")
+	t, h, d = says("dps")
+	check(d and not t and not h, "damage dealers' alone")
+	AegisPathfinder.db.char.dungeonrole = "all"
+end
+check(cookie and AegisPathfinder:GetStepNote(cookie) == "Pathfinder has no notes on this fight yet.",
+	"a boss with no notes: the note alone")
+
+-- A boss's death ticks its step.
+UNITDIESOTHER = "%s dies."
+check(AegisPathfinder:DeathName("Mr. Smite dies.") == "Mr. Smite", "who died, from the combat log")
+check(AegisPathfinder:DeathName("You have slain Mr. Smite!") == "Mr. Smite", "or your own killing blow")
+check(AegisPathfinder:DeathName("Mr. Smite is slain by Thrall!") == "Mr. Smite", "or a party member's")
+check(AegisPathfinder:DeathName("Ok'thor the Breaker dies.") == "Ok'thor the Breaker", "a name with an apostrophe")
+check(AegisPathfinder:DeathName("You die.") == nil and AegisPathfinder:DeathName("Mr. Smite hits you for 20.") == nil,
+	"and nothing from other lines")
+local ticked = {}
+local realTick = AegisPathfinder.SetTurnedIn
+function AegisPathfinder:SetTurnedIn(i) table.insert(ticked, i) end
+AegisPathfinder.turnedin = AegisPathfinder.turnedin or {}
+AegisPathfinder:CHAT_MSG_COMBAT_HOSTILE_DEATH("Defias Pirate dies.")
+check(table.getn(ticked) == 0, "a trash mob's death ticks nothing")
+AegisPathfinder:CHAT_MSG_COMBAT_HOSTILE_DEATH("You have slain Mr. Smite!")
+check(ticked[1] == smite, "Mr. Smite's death ticks his step, got %s", tostring(ticked[1]))
+ticked = {}
+load("Dungeons/Blackrock Depths (52-60)")
+AegisPathfinder.turnedin = AegisPathfinder.turnedin or {}
+local seven
+for i, name in ipairs(AegisPathfinder.quests) do
+	if string.gsub(name, "@%d+@$", "") == "The Seven" then seven = i end
+end
+AegisPathfinder:CHAT_MSG_COMBAT_HOSTILE_DEATH("Dope'rel dies.")
+check(table.getn(ticked) == 0, "the first of the Seven dying ticks nothing")
+AegisPathfinder:CHAT_MSG_COMBAT_HOSTILE_DEATH("Doom'rel dies.")
+check(seven and ticked[1] == seven, "Doom'rel, the last, ticks the Seven's step")
+AegisPathfinder.SetTurnedIn = realTick
+
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end
 print(string.format("Dungeon guides: %d checks", checks))
 if table.getn(failures) == 0 then

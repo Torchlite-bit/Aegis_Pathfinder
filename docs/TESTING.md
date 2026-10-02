@@ -223,6 +223,20 @@ are only found at startup.
       in the setup, level up to 21 (their guides say 17-24): a small window
       offers the dungeon guide. Open puts it in a tab beside the route; Not now
       closes it, and it is not offered again after a `/reload` or relog.
+- [ ] **Boss steps**: open The Deadmines' guide. After the entrance there is a
+      step for each boss, Rhahk'Zor to Cookie; Kill Edwin VanCleef comes
+      straight after VanCleef's step on the run the quest sends you in; Miner
+      Johnson's says he is rare, and is passed over. Hover Mr. Smite's step:
+      the note, then Tank (blue), Healer and Damage (red) lines. Turn on focus
+      mode: the same lines under the step.
+- [ ] Options -> Dungeons -> **My role in dungeons**: All roles to start; pick
+      Healer and only the Healer line shows, on the tooltip and in focus mode,
+      at once. Back to All roles.
+- [ ] Kill a boss with his step showing: it ticks itself, and the guide moves
+      on. In Blackrock Depths, the Seven's step ticks on Doom'rel, not before.
+- [ ] A Turtle WoW boss with no data (Jared Voss in The Deadmines) says
+      "Pathfinder has no notes on this fight yet." and still ticks on his
+      death.
 
 ## 5a. The guide browser (the `+` on the tab bar, or ≡ → Guide menu)
 

@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.22.10)
+# Aegis: Pathfinder (v0.22.11)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -85,7 +85,9 @@ before them included -- puts the arrow on the entrance, walks you through what
 each quest wants inside, and hands them all in after. Every leveling dungeon,
 and Turtle WoW's own: Windhorn Canyon (new in 1.18.1), Frostmane Hollow,
 Dragonmaw Retreat, Crescent Grove, Stormwrought Ruins, Gilneas City and
-Hateforge Quarry.
+Hateforge Quarry. Inside, a step for each boss says what the fight does and
+what to watch for as tank, healer or damage -- set your role on the Dungeons
+page to see only yours -- and ticks itself when he dies.
 
 **Class quest guides.** Every class quest chain, a guide each, under the guide
 browser's **Class Quests** category: the Voidwalker to the Dreadsteed, Bear Form, Taming the
@@ -250,7 +252,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.22.10`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.22.11`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)** or open an
@@ -281,7 +283,8 @@ and Zeroji). Data from [pfQuest](https://github.com/shagu/pfQuest) and
 [InstanceJournal](https://github.com/Arthur-Helias/InstanceJournal) (**Arthur-Helias**),
 [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) (**Kitymeowmeow**),
 [OctoPawn](https://github.com/iGreed1993/OctoPawn) (**iGreed**) and
-[CMaNGOS](https://github.com/cmangos/classic-db).
+[CMaNGOS](https://github.com/cmangos/classic-db) (classic-db and
+[mangos-classic](https://github.com/cmangos/mangos-classic)).
 
 Everyone is listed in [CONTRIBUTORS.md](CONTRIBUTORS.md), and in game under
 options → About → **Credits**.

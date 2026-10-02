@@ -315,6 +315,33 @@ may lack their objectives), and any it picks up and never hands in.
 `Tools/tests/test_dungeonguides.lua` fails if the guides are stale, or a quest is
 handed in before it is picked up, or picked up and never handed in.
 
+**Boss steps.** Each boss's step is `K <boss> |N|<note>| |TANK|..| |HEAL|..|
+|DPS|..| |BOSS|<name>;<name>|`. `|TANK|`, `|HEAL|` and `|DPS|` are the role
+lines Options -> Dungeons -> *My role in dungeons* picks from (Parser.lua's
+`GetStepNote`); `|BOSS|` names who must die to tick it, from the combat log
+(QuestTracker.lua's `CHAT_MSG_COMBAT_HOSTILE_DEATH`). A rare boss's step is
+`|O|`. The bosses, in order, are in `Tools/data/dungeon_bosses.json`, written
+by `Tools/build/build_dungeon_bosses.py` from InstanceJournal (the list, the
+rares, Turtle WoW's abilities), the CMaNGOS classic-db dump (each boss's
+spells, its scripted health points, what he summons) and mangos-classic's
+ScriptDevAI scripts:
+
+```sh
+python3 Tools/build/build_dungeon_bosses.py --instancejournal ../InstanceJournal \
+    --cmangos ../classic-db/Full_DB/ClassicDB_1_12_1_z2815.sql.gz \
+    --scripts ../mangos-classic/src/game/AI/ScriptDevAI/scripts
+python3 Tools/build/build_dungeon_guides.py                  # then write the guides
+```
+
+The notes are written by hand in `Tools/build/dungeon_tactics.py`: `TACTICS`,
+keyed by InstanceJournal's boss id, holds each boss's note and role lines
+(`T(note, tank=, heal=, dps=)`), and `WATCH` the names whose deaths tick a
+step when it is not the boss's own (a group fight, a boss Turtle renamed), or
+`None` for a step ticked by hand. Say which classes can dispel what with
+`MAGIC`, `CURSE`, `POISON` and `DISEASE`. A boss with no entry gets "No special
+abilities known." when the data has him and nothing he casts, and
+"Pathfinder has no notes on this fight yet." when it does not have him at all.
+
 ## Class Quest Guides
 
 `Guides/Class/` is written by `Tools/build/build_class_guides.py`: do not edit

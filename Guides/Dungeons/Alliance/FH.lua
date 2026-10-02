@@ -27,7 +27,11 @@ C Searching for Archaeologist Evenpike |QID|42006| |N|Search for Archeologist Ev
 T Searching for Archaeologist Evenpike |QID|42006| |N|Archaeologist Evenpike|
 A The Shattered Disc |QID|42007| |N|Archaeologist Evenpike|
 C The Finest Pelt |QID|42008| |N|Enter Frostmane Hollow in Dun Morogh and acquire a flawless leopard pelt|
+K Tan'sha the Sleek |N|Tan'sha the Sleek fights with Handler Oboka.| |BOSS|Tan'sha the Sleek|
+K Battlemaster Ubukaz |N|At 20% he enrages and hits much harder.| |TANK|Save a cooldown for 20%.| |HEAL|Expect big hits from 20%.| |DPS|Burn the last 20% fast.| |BOSS|Battlemaster Ubukaz|
 C Chieftain Ubukaz |QID|42039| |N|Slay Battlemaster Ubukaz deep within Frostmane Hollow|
+K Kan'za the Seer |N|He starts with two Frostmane Snowcallers, and casts Blizzard and Frostbolt.| |HEAL|Move out of Blizzard.| |DPS|Kill the Snowcallers first; interrupt Blizzard and Frostbolt.| |BOSS|Kan'za the Seer|
+K Hailar the Frigid |N|Five Frostmane Ritualists heal him while they live. Flash Freeze hits and freezes everyone within 10 yards for up to 5 seconds.| |TANK|Flash Freeze roots you: keep him away from the group.| |HEAL|Stand more than 10 yards from him.| |DPS|Kill the Ritualists first: he can't die while they heal him. Interrupt Frostbolt.| |BOSS|Hailar the Frigid|
 
 N Back outside |N|Out of Frostmane Hollow, in Dun Morogh|
 T Chieftain Ubukaz |QID|42039| |N|Mountaineer Granitebeard (70.9, 35.5)| |Z|Dun Morogh|

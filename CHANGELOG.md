@@ -18,6 +18,27 @@ reports.
 
 ---
 
+## [0.22.11]
+
+### Added
+- **Boss steps in the dungeon guides.** Inside, each guide has a step for
+  every boss, in order, saying what the fight does -- "At two-thirds and at
+  one-third health he stuns everyone with Smite Stomp and goes to his chest
+  to change weapons" -- with a line each for the **Tank**, **Healer** and
+  **Damage**: where to face him, what to dispel and which classes can, what
+  to interrupt or kill first. Hover the step, or see them under it in focus
+  mode. A quest that needs a boss dead comes straight after his step.
+- **My role in dungeons** (Options -> Dungeons -> Boss notes): All roles to
+  start; pick Tank, Healer or Damage to see only your line.
+- **A boss's step ticks itself when he dies**, from the combat log. The Seven
+  in Blackrock Depths tick on Doom'rel, the last. A rare boss's step says he
+  is not always there, and is passed over.
+- What the bosses do comes from InstanceJournal and CMaNGOS. Some Turtle WoW
+  bosses have no data yet -- Dragonmaw Retreat, Crescent Grove, Stormwrought
+  Ruins, Gilneas City, Hateforge Quarry, most of Windhorn Canyon, and those
+  Turtle added to older dungeons: their steps say "Pathfinder has no notes on
+  this fight yet." and still tick themselves.
+
 ## [0.22.10]
 
 ### Fixed
@@ -1366,6 +1387,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.11]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.10]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.9]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.8]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

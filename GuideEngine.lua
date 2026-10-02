@@ -49,6 +49,8 @@ function AegisPathfinder:IsAutoDetectable(action, i)
 		return true
 	end
 	if i and self:IsSkillObjective(i) then return true end
+	-- A boss step ticks itself when the boss dies (QuestTracker.lua).
+	if i and action == "KILL" and self:GetObjectiveTag("BOSS", i) then return true end
 	-- Rank steps complete on the skill cap, level gates on the level.
 	if i and self:GetObjectiveTag("RANK", i) then return true end
 	if i and action == "GRIND" and self:GetObjectiveTag("LV", i) then return true end

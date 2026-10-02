@@ -289,6 +289,10 @@ function Build.AppearanceGuide(k)
 	k.space(k.SECTION_GAP - 8)
 end
 
+-- Whose lines a dungeon guide's boss steps show.
+local DUNGEON_ROLES = { { value = "all", label = "All roles" }, { value = "tank", label = "Tank" },
+	{ value = "heal", label = "Healer" }, { value = "dps", label = "Damage" } }
+
 local FOCUS_STEPS = { { value = 1, label = "1 (the step you are on)" }, { value = 2, label = "2" },
 	{ value = 3, label = "3" }, { value = 4, label = "4" }, { value = 5, label = "5" } }
 
@@ -827,6 +831,17 @@ function AegisPathfinder:CreateConfigPanel()
 	note("On reaching the middle of a ticked dungeon's levels -- The Deadmines (17-24) at 21 -- "
 		.. "its dungeon guide is offered once, to open in a tab of its own. For the dungeons the "
 		.. "setup asks about, not Turtle WoW's own.")
+	space(SECTION_GAP)
+
+	--[[ Boss notes: whose lines a dungeon guide's boss steps show
+		(Parser.lua, GetStepNote). ]]
+	table.insert(frame.sections, section("Boss notes"))
+	Build.CharDropdown(kit, "dungeonRole", "My role in dungeons", "dungeonrole", DUNGEON_ROLES, function()
+		AegisPathfinder:UpdateOHPanel()
+	end)
+	note("Inside, a dungeon guide has a step for each boss: what it does, and what the tank, the healer "
+		.. "and damage dealers should do about it. Pick your role to see only yours. The step ticks "
+		.. "itself when the boss dies.")
 	space(SECTION_GAP)
 
 	-- Filters ------------------------------------------------------------------------
@@ -1427,6 +1442,7 @@ function AegisPathfinder:RefreshConfigPanel()
 	frame.askShare:SetOn(not db.sharenowarn)
 	frame.askShare:SetLocked(db.partysync == false)
 	frame.focusSteps:SetValue(db.focussteps or 1)
+	frame.dungeonRole:SetValue(db.dungeonrole or "all")
 
 	-- The addon's own switches; one under another is held off with it.
 	for key, sw in pairs(frame.switches) do
