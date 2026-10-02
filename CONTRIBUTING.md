@@ -33,7 +33,7 @@ pushed anyway is released too.
 | `libs/` | Ace2 |
 | `Tools/run_tests.sh`, `Tools/verify.py` | The checks (below) |
 | `Tools/tests/` | The Lua tests, and `wow_stub.lua`, the 1.12 API they run against |
-| `Tools/build/` | The generators and importers: dungeon, class quest, zone and profession guides, gear and item-score data, recipes, textures, the filter review, and the RestedXP converter |
+| `Tools/build/` | The generators and importers: dungeon, class quest, zone and profession guides, gear and item-score data, recipes, textures, the filter review, the talent builds, and the RestedXP converter |
 | `Tools/data/` | What the generators read and cache, and the filter review's candidates and answers |
 | `docs/` | Features, guide authoring, the QuestShell+ format, the UI spec and design concept, and the in-game test pass |
 
@@ -51,6 +51,7 @@ That runs everything that can run without a WoW client:
 |---|---|
 | `Tools/verify.py` | Lua syntax, Lua 5.0 compatibility for shipped files, `.toc` paths, `Guides.xml` completeness, TGA validity, no Blizzard chrome, the 32-upvalue ceiling, the class and race names in the guides' class and race tags, that every step with coordinates is on a zone the world map knows, that no `AegisPathfinder` method is defined twice (a later definition replaces the first) except as a wrapper |
 | `Tools/build/convert_professions.py --check` | The profession source document still parses and is internally consistent; the gathering guides cover 1–300 for each faction with somewhere named in every band; the committed guides are what the generator writes |
+| `Tools/build/talent_builds.py --check` | Every talent build for the Talent Advisor against the trees the game has (`Tools/data/turtle_talent_trees.json`, saved by `/apg talents`): talents the class has, their ranks, 5 points a row, prerequisites at full rank, 51 points, and each levelling build learnable point by point in its order; the committed builds are what it writes |
 | `Tools/tests/test_theme.lua` | The theme layer against a stubbed 1.12 API |
 | `Tools/tests/test_smartskip.lua` | Where a guide opens: a new character at the top, a quest in progress or ready to hand in at its step, otherwise the first step not done |
 | `Tools/tests/test_yourplace.lua` | Right-clicking the step arrows: back or on to your place after clicking round, every mark and completion the arrows changed put back (a completion earned meanwhile kept), only in the arrow's direction, and with no clicking round, to where the guide would open |

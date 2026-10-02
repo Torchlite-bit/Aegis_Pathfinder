@@ -15,6 +15,9 @@ echo
 echo "== profession source document =="
 python3 Tools/build/convert_professions.py --check
 
+echo
+echo "== talent builds against the game's trees =="
+python3 Tools/build/talent_builds.py --check
 
 echo
 echo "== lua tests =="

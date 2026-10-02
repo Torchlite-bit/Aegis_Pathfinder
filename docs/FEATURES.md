@@ -559,12 +559,14 @@ continent's:
   one you were on when you installed the addon). Nothing goes to a party or
   guild you are not in.
 - **Talent Advisor (coming soon)**: its switch is shown, held off, until the
-  advisor arrives in a later update. Its builds are drafted on the original
-  1.12 trees, and Turtle WoW has changed some, so they are checked against
-  the trees the game has: `/apg talents` saves your class's trees -- every
-  talent's place, ranks, prerequisites and tooltip -- for your account. Once
-  on a character of each class (a level-1 one will do) and all nine are in
-  the saved settings file, `WTF\Account\<account>\SavedVariables\Aegis_Pathfinder.lua`.
+  advisor arrives in a later update. Its builds -- a levelling build and one
+  at 60 for each spec, for every class -- are made on the trees the game
+  has, as Turtle WoW has reworked every class's: `/apg talents` saves your
+  class's trees -- every talent's place, ranks, prerequisites and tooltip --
+  for your account. Once on a character of each class (a level-1 one will
+  do) and all nine are in the saved settings file,
+  `WTF\Account\<account>\SavedVariables\Aegis_Pathfinder.lua`; again after a
+  game update that changes the trees.
 
 **One step, or all of them.** The panel opens on the step you are on and
 nothing else, with its note in full and a meter underneath: a line for each
