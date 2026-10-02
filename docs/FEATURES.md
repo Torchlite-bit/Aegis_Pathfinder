@@ -18,6 +18,7 @@ version.
 | `/apg share` | Share the guide you are on with your party, or stop sharing (beta) |
 | `/apg gear` | The options at **Item Score**: the stat weights behind the item score |
 | `/apg finder` | The Gear Finder tab on the character panel: upgrades in the dungeons you run |
+| `/apg talents` | Save your class's talent trees, as the game has them, for the Talent Advisor to come |
 | `/apg ssf` | Solo Self-Found on or off |
 | `/apg setup` | Run the first-time setup again: your guide, its features and your dungeons |
 | `/apg target` | Target and mark the step's next active target (put it in a macro) |
@@ -555,7 +556,12 @@ continent's:
   one you were on when you installed the addon). Nothing goes to a party or
   guild you are not in.
 - **Talent Advisor (coming soon)**: its switch is shown, held off, until the
-  advisor arrives in a later update.
+  advisor arrives in a later update. Its builds are drafted on the original
+  1.12 trees, and Turtle WoW has changed some, so they are checked against
+  the trees the game has: `/apg talents` saves your class's trees -- every
+  talent's place, ranks, prerequisites and tooltip -- for your account. Once
+  on a character of each class (a level-1 one will do) and all nine are in
+  the saved settings file, `WTF\Account\<account>\SavedVariables\Aegis_Pathfinder.lua`.
 
 **One step, or all of them.** The panel opens on the step you are on and
 nothing else, with its note in full and a meter underneath: a line for each

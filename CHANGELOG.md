@@ -18,6 +18,16 @@ reports.
 
 ---
 
+## [0.22.9]
+
+### Added
+- **`/apg talents`**, for the Talent Advisor to come: saves your class's
+  talent trees as the game has them -- every talent's place, ranks,
+  prerequisites and tooltip -- for your account. Turtle WoW has changed some
+  trees, and the advisor's builds are checked against these. Once on a
+  character of each class (a level-1 one will do); it says which classes
+  are in so far.
+
 ## [0.22.8]
 
 ### Changed
@@ -1340,6 +1350,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.9]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.8]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.7]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.6]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

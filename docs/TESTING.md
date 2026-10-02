@@ -192,6 +192,9 @@ are only found at startup.
       Party and Guild, once ticked: "Pathfinder: I leveled up from X to Y!"
       there; nothing when you are in neither.
 - [ ] *Talent Advisor (coming soon)* is dimmed and can't be switched on.
+- [ ] `/apg talents` says it saved your class's trees, with each tree's number
+      of talents and the classes saved so far; after logging out, the saved
+      settings file has them under `talenttrees`, with each talent's tooltip.
 - [ ] *Rare creatures near my level*: rare icons on the zone's map at a few
       levels either side of yours (Westfall at 18: Foe Reaper 4000), named
       with their level on mouseover; *Icon size* and *See-through icons* change

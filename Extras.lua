@@ -13,6 +13,9 @@
 
 	  * Show Pathfinder chat messages: AegisPathfinder:Say, below, which the
 	    routine lines go through.
+	  * For the Talent Advisor to come: `/apg talents` saves your class's
+	    talent trees as the game has them -- Turtle WoW has changed some --
+	    for the builds to be checked against.
 ]]
 
 local AegisPathfinder = AegisPathfinder
@@ -171,6 +174,75 @@ function Extras:AnnounceLevel(level)
 		sent = sent + 1
 	end
 	return sent
+end
+
+--[[ The talent trees, for the Talent Advisor to come --------------------------------- ]]
+
+local talentTip
+--- A talent's tooltip, a line at a time: its rank and what it does. Tests
+--- replace this.
+function Extras.TalentLines(tab, index)
+	if not talentTip then
+		talentTip = CreateFrame("GameTooltip", "AegisPathfinderTalentTip", nil, "GameTooltipTemplate")
+	end
+	talentTip:SetOwner(WorldFrame, "ANCHOR_NONE")
+	talentTip:ClearLines()
+	talentTip:SetTalent(tab, index)
+	local lines = {}
+	for i = 1, talentTip:NumLines() do
+		local l = getglobal("AegisPathfinderTalentTipTextLeft" .. i)
+		local text = l and l:GetText()
+		if text and text ~= "" then table.insert(lines, text) end
+	end
+	talentTip:Hide()
+	return lines
+end
+
+-- The talent each prerequisite names: the client gives them as tier,
+-- column and whether it is met, three at a time (read one by one: whether
+-- it is met can be nil, and a table with a hole has no sure length).
+local function Prereqs(tab, index)
+	local out = {}
+	local t1, c1, _, t2, c2, _, t3, c3 = GetTalentPrereqs(tab, index)
+	if t1 then table.insert(out, { tier = t1, column = c1 }) end
+	if t2 then table.insert(out, { tier = t2, column = c2 }) end
+	if t3 then table.insert(out, { tier = t3, column = c3 }) end
+	return out
+end
+
+--- Save this character's class talent trees, as the client has them, for
+--- the builds to be checked against: each tree's talents with their tier,
+--- column, ranks, prerequisites and tooltip. Kept for the account, so a
+--- character of each class can add theirs. Returns how many talents.
+function Extras:SaveTalentTrees()
+	local A = AegisPathfinder
+	local className, token = UnitClass("player")
+	if not (A.db and token and GetNumTalentTabs) then return 0 end
+	local saved = { class = className, saved = date and date("%Y-%m-%d") or nil, version = A.version, trees = {} }
+	local count, sizes = 0, {}
+	for tab = 1, GetNumTalentTabs() do
+		local tree = { name = (GetTalentTabInfo(tab)), talents = {} }
+		for i = 1, GetNumTalents(tab) do
+			local name, _, tier, column, _, maxRank = GetTalentInfo(tab, i)
+			if name then
+				table.insert(tree.talents, { name = name, tier = tier, column = column, max = maxRank,
+					prereqs = Prereqs(tab, i), text = table.concat(Extras.TalentLines(tab, i), " | ") })
+				count = count + 1
+			end
+		end
+		table.insert(saved.trees, tree)
+		table.insert(sizes, tree.name .. " " .. table.getn(tree.talents))
+	end
+	local all = A.db.account.talenttrees or {}
+	A.db.account.talenttrees = all
+	all[token] = saved
+	local have = {}
+	for _, t in pairs(all) do table.insert(have, t.class) end
+	table.sort(have)
+	A:Print(string.format("Saved %s's talent trees (%s). Saved so far: %s (%d of 9). They reach the "
+		.. "saved settings file when you log out or /reload.", className, table.concat(sizes, ", "),
+		table.concat(have, ", "), table.getn(have)))
+	return count
 end
 
 --[[ Events ------------------------------------------------------------------------- ]]

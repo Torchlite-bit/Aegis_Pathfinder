@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.22.8)
+# Aegis: Pathfinder (v0.22.9)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -239,6 +239,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 | `/apg setup` | Run the first-time setup again |
 | `/apg gear` | Your stat weights (options → Item Score) |
 | `/apg finder` | The Gear Finder tab: upgrades in the dungeons you run |
+| `/apg talents` | Save your class's talent trees for the Talent Advisor to come |
 | `/apg craft` | Cheapest route to 300 in a profession |
 | `/apg share` | Share your guide with your party |
 | `/apg ssf` | Solo Self-Found on or off |
@@ -249,7 +250,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.22.8`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.22.9`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)** or open an

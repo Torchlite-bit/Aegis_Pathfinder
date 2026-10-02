@@ -204,6 +204,58 @@ do
 	A.db = saved
 end
 
+-- The talent trees, for the Talent Advisor to come ----------------------------------
+
+do
+	-- Two trees of a made-up class, the second talent of the first needing
+	-- the first; the client's prerequisite comes as tier, column, met.
+	local TREES = {
+		{ name = "Arms", talents = { { "Deflection", 1, 2, 5 }, { "Tactical Mastery", 2, 2, 5, { 1, 2 } } } },
+		{ name = "Fury", talents = { { "Cruelty", 1, 3, 5 } } },
+	}
+	UnitClass = function() return "Warrior", "WARRIOR" end
+	GetNumTalentTabs = function() return table.getn(TREES) end
+	GetTalentTabInfo = function(t) return TREES[t].name, "icon", 0, "bg" end
+	GetNumTalents = function(t) return table.getn(TREES[t].talents) end
+	GetTalentInfo = function(t, i)
+		local x = TREES[t].talents[i]
+		return x[1], "icon", x[2], x[3], 0, x[4], nil, 1
+	end
+	GetTalentPrereqs = function(t, i)
+		local pre = TREES[t].talents[i][5]
+		if pre then return pre[1], pre[2], nil end
+	end
+	local asked = {}
+	local savedLines = X.TalentLines
+	X.TalentLines = function(t, i)
+		table.insert(asked, t .. ":" .. i)
+		return { TREES[t].talents[i][1], "Rank 0/5", "Next rank:", "Does something." }
+	end
+	A.db.account = {}
+	printed = {}
+	check(X:SaveTalentTrees() == 3, "three talents saved")
+	local w = A.db.account.talenttrees and A.db.account.talenttrees.WARRIOR
+	check(w and w.class == "Warrior" and table.getn(w.trees) == 2 and w.trees[1].name == "Arms",
+		"for the account, by class: both trees, by name")
+	local tm = w and w.trees[1].talents[2]
+	check(tm and tm.name == "Tactical Mastery" and tm.tier == 2 and tm.column == 2 and tm.max == 5,
+		"each talent's place and ranks")
+	check(tm and table.getn(tm.prereqs) == 1 and tm.prereqs[1].tier == 1 and tm.prereqs[1].column == 2,
+		"and what it needs first")
+	check(tm and tm.text == "Tactical Mastery | Rank 0/5 | Next rank: | Does something.", "and its tooltip, got %s",
+		tostring(tm and tm.text))
+	check(table.getn(w.trees[1].talents[1].prereqs) == 0, "a talent that needs nothing first: none")
+	check(string.find(printed[1] or "", "Warrior", 1, true) and string.find(printed[1], "1 of 9", 1, true),
+		"says so, and how many classes are in, got %s", tostring(printed[1]))
+	-- Another class adds to them.
+	UnitClass = function() return "Mage", "MAGE" end
+	X:SaveTalentTrees()
+	check(A.db.account.talenttrees.WARRIOR and A.db.account.talenttrees.MAGE, "a second class adds its own")
+	check(string.find(printed[2] or "", "Mage, Warrior (2 of 9)", 1, true), "listed, got %s", tostring(printed[2]))
+	X.TalentLines = savedLines
+	printed = {}
+end
+
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end
 print(string.format("Extras: %d checks", checks))
 if table.getn(failures) == 0 then

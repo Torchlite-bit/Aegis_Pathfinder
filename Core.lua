@@ -239,6 +239,12 @@ local options = {
             type = "execute",
             func = function() AegisPathfinder:ToggleGearFinder() end,
         },
+        Talents = {
+            name = "Talents",
+            desc = "Save your class's talent trees for the Talent Advisor to come: once on a character of each class",
+            type = "execute",
+            func = function() AegisPathfinder.Extras:SaveTalentTrees() end,
+        },
         Share = {
             name = "Share",
             desc = "Share the guide you are on with your party, or stop sharing (beta)",
@@ -598,7 +604,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.22.8"
+AegisPathfinder.version = "0.22.9"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
