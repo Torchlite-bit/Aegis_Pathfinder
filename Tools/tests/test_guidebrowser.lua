@@ -491,14 +491,18 @@ check(not ui.rows[3].load:IsShown() and ui.rows[3].fill:IsShown(), "it stays mar
 -- Clicks.
 arg1 = "LeftButton"
 this = ui.rows[3]
+local openedAt = table.getn(opened)
 click(ui.rows[3])
-check(opened[table.getn(opened)] == "Optimized/Darkshore (20-21)", "left-click opens it beside the route")
+check(table.getn(opened) == openedAt + 1 and opened[table.getn(opened)] == "Optimized/Darkshore (20-21)",
+	"a click opens it in a new tab")
+arg1 = "RightButton"
 click(ui.rows[3], "RightButton")
-check(loaded[table.getn(loaded)] == "Optimized/Darkshore (20-21)", "right-click loads it in this tab")
-click(ui.load)
-check(table.getn(loaded) == 2, "and so does Load")
-click(ui.beside)
-check(table.getn(opened) == 3, "Open beside the route opens it beside")
+arg1 = "LeftButton"
+check(table.getn(opened) == openedAt + 2 and table.getn(loaded) == 0,
+	"a right-click too: nothing loads over the tab you are on")
+click(ui.open)
+check(table.getn(opened) == openedAt + 3, "and so does Open in a new tab")
+check(ui.load == nil and ui.beside == nil, "the Load button, which replaced the guide you were on, is gone")
 A.db.char.completion["Optimized/Darkshore (20-21)"] = 1
 shift = true
 click(ui.rows[3])
@@ -513,14 +517,18 @@ check(ui.rows[3].star:IsShown(), "and a favourite's star stays up")
 click(ui.categories[5])
 check(ui.rows[1].guide == "Optimized/Darkshore (20-21)" and ui.rows[1].badge:IsShown(), "Favorites has it, with its badge")
 
--- A RestedXP guide switches the route pack.
+-- A RestedXP guide opens in a tab of its own and leaves the route pack alone:
+-- switching packs loaded the pack's guide over the one you were on.
 click(ui.categories[1])
 arg1 = "LeftButton"
 click(ui.rows[2])
 check(ui.title:GetText() == "RestedXP", "into RestedXP")
 check(ui.crumb:GetText() == "Leveling", "under Leveling, got %s", ui.crumb:GetText())
+local packsBefore, openedBefore = table.getn(packs), table.getn(opened)
 click(ui.rows[1])
-check(packs[table.getn(packs)] == "RestedXP", "picking a RestedXP guide picks the RestedXP pack")
+check(table.getn(packs) == packsBefore, "picking a RestedXP guide does not switch the route pack")
+check(table.getn(opened) == openedBefore + 1 and string.find(opened[table.getn(opened)], "^RXP"),
+	"it opens in a new tab, got %s", tostring(opened[table.getn(opened)]))
 click(ui.back)
 check(ui.title:GetText() == "Leveling", "back up to Leveling")
 

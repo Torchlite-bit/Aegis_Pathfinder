@@ -80,9 +80,13 @@ after level 12.
 four at a time — fewer on a narrow panel — and arrows either side (or the
 mouse wheel over the bar) scroll through the rest; the tab you are on is
 always brought into view. The first is your main route — what the addon
-advances along on its own. Left-click a guide in the list to open it beside
-what you are reading, or right-click to load it into the tab you are on; each
-tab remembers its own place. A badge on each tab says what the guide is: XP
+advances along on its own. A guide picked in the guide browser opens in a tab
+of its own -- or its tab, if it has one -- so the guide you are reading keeps
+its tab and its place; picking a guide never changes your route pack. When a
+class quest or other branch guide finishes, it closes and hands back to the
+first tab, which keeps its guide unless you have out-levelled it; then it
+moves on to that guide's next one at your level. Each tab remembers its own
+place. A badge on each tab says what the guide is: XP
 for leveling, PF for a profession, DG for a dungeon, CL for a class quest, HC for hardcore. Every tab can be closed; close them all and the
 panel waits, empty, for you to pick one.
 
@@ -93,8 +97,7 @@ the zone guides by continent, and the custom zones), **Dungeons**, **Class
 Quests**, **Professions** and **Favorites** -- with Reputations, Dailies,
 Events, Gold, Pets & Mounts and Titles greyed as coming soon. A long folder
 is split by level. Point at a guide and the right of the window shows it: a
-picture, its levels, how far through it you are, and **Load** and **Open
-beside the route**. The picture is the game's art: a zone guide's zone
+picture, its levels, how far through it you are, and **Open in a new tab**. The picture is the game's art: a zone guide's zone
 on the world map with every area explored, the loading screen Turtle WoW shows
 on the way into a dungeon, a
 class quest's crest and spell, a profession's icon. Pointing at a guide also

@@ -72,7 +72,14 @@ end
 
 --[[ Picking a guide ---------------------------------------------------------- ]]
 
-local function PickGuide(name, button)
+--[[ A guide picked from the browser opens in a tab of its own, or its tab if
+	it has one: the guide you are reading keeps its tab and its place. Picking
+	one changes nothing else -- not the guide in another tab, not your route
+	pack (the Route page's to choose); a guide picked off your route goes on
+	by its own next link. Loading over the tab you were on, and switching to a
+	RestedXP pack when a RestedXP guide was picked, are what put a Hardcore
+	guide in place of the one you were on. ]]
+local function PickGuide(name)
 	local self = AegisPathfinder
 	if not name then return end
 	if IsShiftKeyDown() then
@@ -81,15 +88,7 @@ local function PickGuide(name, button)
 		Theme:HideTip()
 		return Refresh()
 	end
-	-- A RestedXP guide picked by hand: a RestedXP route pack, so the route
-	-- goes on from it with guides that follow on.
-	local pack = self.db.char.routepack
-	if string.find(name, "^RXP_Hardcore/") and pack ~= "RXP Hardcore" then
-		self:SelectRoutePack("RXP Hardcore")
-	elseif string.find(name, "^RXP/") and pack ~= "RestedXP" and pack ~= "Kamisayo Speedrun" then
-		self:SelectRoutePack("RestedXP")
-	end
-	if button == "RightButton" then self:LoadGuideInTab(name) else self:OpenGuideTab(name) end
+	self:OpenGuideTab(name)
 	Refresh()
 end
 
@@ -386,7 +385,7 @@ local function RowClick()
 		view.offset = 0
 		Refresh()
 	elseif row.guide then
-		PickGuide(row.guide, arg1)
+		PickGuide(row.guide)
 	end
 end
 
@@ -446,14 +445,14 @@ local function NewRow(i)
 	row.load:SetScript("OnEnter", function()
 		ShowHover(this:GetParent(), true)
 		Theme:Tint(this.glyph, "accent")
-		Theme:ShowTip(this, "TOP", "Open beside the route")
+		Theme:ShowTip(this, "TOP", "Open in a new tab")
 	end)
 	row.load:SetScript("OnLeave", function()
 		ShowHover(this:GetParent(), false)
 		Theme:Tint(this.glyph, "textDim")
 		Theme:HideTip(this)
 	end)
-	row.load:SetScript("OnClick", function() PickGuide(this:GetParent().guide, "LeftButton") end)
+	row.load:SetScript("OnClick", function() PickGuide(this:GetParent().guide) end)
 	return row
 end
 
@@ -651,9 +650,9 @@ local function CardGuideRow(c, i, h)
 	b.arrow:SetPoint("RIGHT", b, "RIGHT", -8, 0)
 	Theme:Tint(b.arrow, "textDim")
 	b:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-	b:SetScript("OnClick", function() PickGuide(this.guide, arg1) end)
+	b:SetScript("OnClick", function() PickGuide(this.guide) end)
 	b:SetScript("OnEnter", function()
-		Theme:ShowTip(this, "RIGHT", this.guide, { "Left-click: Open beside the route", "Right-click: Load in this tab" })
+		Theme:ShowTip(this, "RIGHT", this.guide, { "Click: Open in a new tab" })
 	end)
 	b:SetScript("OnLeave", function() Theme:HideTip(this) end)
 	return b
@@ -812,15 +811,12 @@ ui.progress:SetPoint("TOPLEFT", ui.needs, "BOTTOMLEFT", 0, -12)
 ui.progress:SetWidth(PIC_W - 44)
 ui.pct = Text(pane, "body", 11, "textDim")
 ui.pct:SetPoint("LEFT", ui.progress, "RIGHT", 8, 0)
-ui.load = Theme:PanelButton(pane, "Load", PIC_W, 26)
-ui.load:SetPoint("TOPLEFT", ui.progress, "BOTTOMLEFT", 0, -16)
-ui.load:SetScript("OnClick", function() PickGuide(view.selected, "RightButton") end)
-ui.beside = Theme:PanelButton(pane, "Open beside the route", PIC_W, 26)
-ui.beside:SetPoint("TOPLEFT", ui.load, "BOTTOMLEFT", 0, -6)
-ui.beside:SetScript("OnClick", function() PickGuide(view.selected, "LeftButton") end)
+ui.open = Theme:PanelButton(pane, "Open in a new tab", PIC_W, 26)
+ui.open:SetPoint("TOPLEFT", ui.progress, "BOTTOMLEFT", 0, -16)
+ui.open:SetScript("OnClick", function() PickGuide(view.selected) end)
 ui.paneHint = Theme:FinePrint(pane, PIC_W)
 ui.paneHint:SetPoint("BOTTOMLEFT", pane, "BOTTOMLEFT", 14, 14)
-ui.paneHint:SetText("In the list: left-click a guide to open it beside the route, right-click to load it in this tab, shift-click to reset its progress.")
+ui.paneHint:SetText("In the list: click a guide to open it in a new tab, shift-click to reset its progress. The guide you are on keeps its tab.")
 
 local KINDS = {
 	optimized = "Optimized route", rxp = "RestedXP route", rxp_hc = "RestedXP Hardcore route",
@@ -846,7 +842,7 @@ PaintPane = function()
 		ui.name:SetText("Pick a guide")
 		ui.kind:SetText("Point at one in the list to see it here.")
 		ui.needs:SetText("")
-		ui.progress:Hide(); ui.pct:Hide(); ui.load:Hide(); ui.beside:Hide()
+		ui.progress:Hide(); ui.pct:Hide(); ui.open:Hide()
 		return
 	end
 	local cat = self:GetGuideCategory(name)
@@ -858,7 +854,7 @@ PaintPane = function()
 	local p = self:GuideProgress(name)
 	ui.progress:SetValue(p)
 	ui.pct:SetText(math.floor(p * 100) .. "%")
-	ui.progress:Show(); ui.pct:Show(); ui.load:Show(); ui.beside:Show()
+	ui.progress:Show(); ui.pct:Show(); ui.open:Show()
 end
 
 --[[ The list's ⋮: its four switches, or on Home which panels show -------------- ]]

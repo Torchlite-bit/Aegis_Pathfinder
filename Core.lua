@@ -604,7 +604,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.22.9"
+AegisPathfinder.version = "0.22.10"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -1989,9 +1989,13 @@ end
 
 --[[ Go back to the main route, closing the tab you were on.
 
-    If the player has out-levelled the guide sitting in tab 1 while they were
-    away, tab 1 is re-pointed at the level-appropriate one rather than sending
-    them back to content they have grown out of.
+    Tab 1 keeps the guide you had in it. Only if you have out-levelled it
+    while you were away -- your level is past the top of its range -- does it
+    move on, along that guide's own way forward, to the first guide you have
+    not out-levelled; the route pack's guide for your level is the last
+    resort. It used to take the route pack's guide whenever that differed,
+    which put a RestedXP Hardcore guide over an Optimized one still at your
+    level when a class quest guide finished.
 ]]
 function AegisPathfinder:ReturnFromBranch()
     local tabs = self:EnsureTabs()
@@ -2006,13 +2010,15 @@ function AegisPathfinder:ReturnFromBranch()
     self:SyncBranchState()
 
     local savedGuide = tabs[1] and tabs[1].guide
-    local optimalGuide = self:GetOptimizedGuideForLevel(UnitLevel("player"))
+    local level = UnitLevel("player")
+    local guide = savedGuide and self:GuideForLevelFrom(savedGuide, level)
+        or self:GetOptimizedGuideForLevel(level)
 
-    if optimalGuide and optimalGuide ~= savedGuide and self.guides[optimalGuide] then
-        self:Print("Returning to optimized path: " .. optimalGuide)
-        tabs[1].guide = optimalGuide
+    if guide and guide ~= savedGuide and self.guides[guide] then
+        self:Print("Returning to " .. guide .. ": you have out-levelled " .. tostring(savedGuide) .. ".")
+        tabs[1].guide = guide
         tabs[1].step = 1
-        self:LoadGuide(optimalGuide)
+        self:LoadGuide(guide)
     elseif savedGuide and self.guides[savedGuide] then
         self:Print("Returning to: " .. savedGuide)
         self:LoadGuide(savedGuide)
@@ -2023,6 +2029,20 @@ function AegisPathfinder:ReturnFromBranch()
 
     self:UpdateStatusFrame()
     self:UpdateGuideListPanel()
+end
+
+--- `name`, or if you have out-levelled it, the first guide after it that you
+--- have not: its route's next leg, or its own next link, so an Optimized
+--- guide goes on to Optimized ones. nil when the way forward runs out.
+function AegisPathfinder:GuideForLevelFrom(name, level)
+    local seen = {}
+    while name and self.guides[name] and not seen[name] do
+        local _, hi = self:ParseGuideLevelRange(name)
+        if not hi or not level or level <= hi then return name end
+        seen[name] = true
+        name = self:GetRouteSuccessor(name) or self.nextzones[name]
+    end
+    return nil
 end
 
 -- Get the optimized guide for a given level based on the player's race route

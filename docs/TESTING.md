@@ -254,9 +254,13 @@ are only found at startup.
 - [ ] Dungeons starts with **On the routes**: Optimized's Uldaman and Sunken
       Temple (and RestedXP's Scholomance Key), each saying whose route; they
       are no longer in Optimized's Levels 40-60.
-- [ ] Left-click a guide: it opens beside the route. Right-click: it loads in
-      the tab you are on. Load and Open beside the route do the same. Shift-
-      click resets a finished guide.
+- [ ] Click a guide (left or right) or **Open in a new tab**: it opens in a
+      new tab, and the guide you were on keeps its tab and place. A RestedXP
+      guide does the same and leaves the route pack as it was (Options ->
+      Route). Shift-click resets a finished guide.
+- [ ] On Optimized Redridge (18-20) at 20, take a class quest guide (a
+      paladin's Tome of Valor) to its end: its tab closes and you are back on
+      Optimized Redridge, whatever the route pack.
 - [ ] The row's star keeps a guide in Favorites, and stays lit there; the
       arrow opens it.
 - [ ] The list's ⋮: colours by level (grey outlevelled, green in range,

@@ -18,6 +18,22 @@ reports.
 
 ---
 
+## [0.22.10]
+
+### Fixed
+- **A class quest guide finishing no longer replaces the guide in your first
+  tab.** Handing back, it took your route pack's guide for your level
+  whenever that was a different one -- so a paladin on Optimized Redridge
+  (18-20) was put on RestedXP Hardcore's Redridge guide when Tome of Valor
+  finished. The first tab now keeps its guide unless you have out-levelled
+  it, and then goes on to that guide's next one at your level.
+- **Picking a guide in the guide browser opens it in a new tab and changes
+  nothing else.** Right-click and the pane's **Load** button loaded it over
+  the guide you were on; they are gone, and the pane's button is **Open in a
+  new tab**. Picking a RestedXP guide no longer switches your route pack
+  either: the switch loaded the pack's own guide in place of yours. Choose
+  the pack on Options -> Route.
+
 ## [0.22.9]
 
 ### Added
@@ -1350,6 +1366,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.10]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.9]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.8]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.7]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

@@ -630,7 +630,7 @@ columns under the header:
 - **Right pane** (268px, `panel3`), beside a list: the guide you point at --
   its picture, its name, what it is ("Optimized route", "Dungeon guide"),
   the levels it is for in the colour below, a progress bar with its
-  percentage, **Load** and **Open beside the route**; the logo and "Pick a
+  percentage, **Open in a new tab**; the logo and "Pick a
   guide" while you have pointed at none. A line at its foot says what the
   clicks do.
 
@@ -663,11 +663,12 @@ guide: a ring, or a tick once finished; its title without the pack's prefix,
 which carries its levels; on the right its progress, or "Your route" for the
 main route while you branch. Pointing at a guide marks it (`tabbg`, an
 accent bar), shows it on the right, and puts up a star and an arrow on the
-row: the star keeps it in Favorites, the arrow opens it beside the route. A
-favourite's star stays up. Left-click opens a guide beside the one you are
-on; right-click loads it in the tab you are on; shift-click resets its
-progress. Picking a RestedXP guide switches to a RestedXP route pack, so the
-route goes on from it. Placeholder guides carry the grey `TPL` badge.
+row: the star keeps it in Favorites, the arrow opens it in a new tab. A
+favourite's star stays up. A click, left or right, opens a guide in a new tab
+(or its own tab, if it has one) and leaves the tab you are on alone;
+shift-click resets its progress. Picking a guide leaves the route pack alone:
+a guide off your route goes on by its own next link. Placeholder guides
+carry the grey `TPL` badge.
 
 **The list's ⋮** has four switches, saved per character: colour guides by how
 they suit your level (`Theme.LEVEL_COLORS`, the quest log's colours -- grey

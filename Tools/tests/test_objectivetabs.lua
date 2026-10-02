@@ -225,6 +225,47 @@ check(table.getn(AegisPathfinder.db.char.tabs) == 1,
 check(AegisPathfinder.db.char.activetab == 1, "and lands on the main route")
 check(AegisPathfinder.db.char.isbranching == false, "which is not a branch")
 
+--[[ A class quest guide finishing hands back to tab 1 without changing its
+	guide while it is still at your level: a paladin on Optimized Redridge
+	(18-20) at 20, whose route pack is RestedXP Hardcore, was put on the
+	Hardcore Redridge guide when Tome of Valor finished. Out-levelled, tab 1
+	moves on along its own guides, not the pack's. ]]
+do
+	local A = AegisPathfinder
+	local savedParse, savedOpt, savedSucc, savedLevel = A.ParseGuideLevelRange, A.GetOptimizedGuideForLevel,
+		A.GetRouteSuccessor, UnitLevel
+	A.nextzones = A.nextzones or {}
+	A.nextzones["Optimized/Redridge (18-20)"] = "Optimized/Darkshore (20-21)"
+	A.nextzones["Optimized/Darkshore (20-21)"] = "Optimized/Ashenvale (21-22)"
+	function A:ParseGuideLevelRange(name)
+		local _, _, lo, hi = string.find(name or "", "%((%d+)%-(%d+)%)")
+		return tonumber(lo), tonumber(hi)
+	end
+	function A:GetOptimizedGuideForLevel() return "RXP_Hardcore/19-20 Redridge" end
+	function A:GetRouteSuccessor() return nil end
+	local level = 20
+	UnitLevel = function() return level end
+	local function handBack()
+		A.db.char.tabs = { { guide = "Optimized/Redridge (18-20)", step = 12 },
+			{ guide = "Class/Paladin: Tome of Valor (20)", step = 3 } }
+		A.db.char.activetab = 2
+		A:ReturnFromBranch()
+		return A.db.char.tabs[1].guide
+	end
+	check(handBack() == "Optimized/Redridge (18-20)",
+		"at 20, the class guide hands back to Optimized Redridge, got %s", tostring(A.db.char.tabs[1].guide))
+	check(table.getn(A.db.char.tabs) == 1 and A.db.char.activetab == 1, "and its own tab closes")
+	level = 21
+	check(handBack() == "Optimized/Darkshore (20-21)",
+		"out-levelled at 21, tab 1 goes on to the next Optimized guide, got %s", tostring(A.db.char.tabs[1].guide))
+	level = 23
+	check(handBack() == "RXP_Hardcore/19-20 Redridge",
+		"past every guide it leads to, the route pack's guide is the last resort, got %s",
+		tostring(A.db.char.tabs[1].guide))
+	A.ParseGuideLevelRange, A.GetOptimizedGuideForLevel, A.GetRouteSuccessor, UnitLevel = savedParse, savedOpt,
+		savedSucc, savedLevel
+end
+
 -- The + button --------------------------------------------------------------------
 
 AegisPathfinder:UpdateObjectiveTabs()
