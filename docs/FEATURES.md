@@ -57,8 +57,9 @@ pages down the left, after Zygor's from Appearance on:
 - **Maps**: revealing the world map, the step's places on it, an ant trail to
   the waypoint, and the rares near your level -- see **Maps**, below.
 - **Gear** and under it **Item Score** (the stat weights).
-- **Extras**: the addon's routine chat lines, detailed reputation gains, and
-  level-up announcements -- see **Extras**, below.
+- **Extras**: the addon's routine chat lines, detailed reputation gains,
+  level-up announcements, and the Talent Advisor to come -- see **Extras**,
+  below.
 - **Maintenance** (rescan, error log, setup) and **About** (version and
   credits).
 
@@ -545,14 +546,16 @@ continent's:
   "Stormwind +25: Honored 4,350 / 12,000, 7,650 to Revered". A faction under
   a header you have closed on the reputation panel is found too, and the
   header is closed again.
-- **Announce level-ups to:** Emote, Party chat, Guild chat -- each off until
-  ticked, since others see them. The emote reads "<you> Aegis: Pathfinder: I
-  just leveled up from 22 to 23! (2 hours 1 minute)"; party and guild get "I
-  leveled up from 22 to 23! (2 hours 1 minute)". The time is how long you
-  spent at the level just left, from the guide browser's level tracker, and
-  is left out for a level it did not count from the start (the one you were
-  on when you installed the addon). Nothing goes to a party or guild you are
-  not in.
+- **Announce level-ups to:** Emote (ticked to start with), Party chat and
+  Guild chat (each off until ticked). The emote reads "<you> Pathfinder: I
+  just leveled up from 22 to 23! (2 hours 1 minute)"; party and guild get
+  "Pathfinder: I leveled up from 22 to 23! (2 hours 1 minute)". The time is
+  how long you spent at the level just left, from the guide browser's level
+  tracker, and is left out for a level it did not count from the start (the
+  one you were on when you installed the addon). Nothing goes to a party or
+  guild you are not in.
+- **Talent Advisor (coming soon)**: its switch is shown, held off, until the
+  advisor arrives in a later update.
 
 **One step, or all of them.** The panel opens on the step you are on and
 nothing else, with its note in full and a meter underneath: a line for each

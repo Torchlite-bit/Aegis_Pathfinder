@@ -805,19 +805,32 @@ do
 	local labels = {}
 	for _, key in ipairs({ "levelemote", "levelparty", "levelguild" }) do
 		local box = frame.boxes[key]
-		check(box and box:GetParent():GetParent() == extras and not box:IsOn(), "the %s box is on Extras, unticked", key)
+		check(box and box:GetParent():GetParent() == extras, "the %s box is on Extras", key)
 		if box then table.insert(labels, box.label:GetText()) end
 	end
 	check(table.concat(labels, ", ") == "Emote, Party chat, Guild chat", "Emote, Party chat, Guild chat; got %s",
 		table.concat(labels, ", "))
+	check(frame.boxes.levelemote:IsOn() and not frame.boxes.levelparty:IsOn() and not frame.boxes.levelguild:IsOn(),
+		"the emote ticked to start with, party and guild not")
+	click(frame.boxes.levelemote)
+	check(db.levelemote == false, "the emote can be unticked")
 	click(frame.boxes.levelparty)
 	check(db.levelparty == true and frame.boxes.levelparty:IsOn(), "ticking one turns it on")
 	AegisPathfinder:RefreshConfigPanel()
-	check(frame.boxes.levelparty:IsOn() and not frame.boxes.levelemote:IsOn(), "and it stays so; the others stay off")
-	check(frame.boxes.btnkill:IsOn(), "the Action Buttons boxes still read on to start with")
-	db.chatmessages, db.repdetail, db.levelparty = nil, nil, nil
+	check(frame.boxes.levelparty:IsOn() and not frame.boxes.levelemote:IsOn() and not frame.boxes.levelguild:IsOn(),
+		"and they stay as set")
+	-- The Talent Advisor: shown, held off, until Part 4.
+	check(frame.talentAdvisor and frame.talentAdvisor:GetParent() == extras and not frame.talentAdvisor:IsOn()
+		and not frame.talentAdvisor:IsEnabled() and frame.talentAdvisor:GetAlpha() < 1,
+		"the Talent Advisor's switch is there, off and held")
+	check(string.find(frame.talentAdvisor.label:GetText(), "coming soon", 1, true), "and says it is coming soon")
 	AegisPathfinder:RefreshConfigPanel()
-	check(frame.switches.chatmessages:IsOn() and not frame.boxes.levelparty:IsOn(), "a character without them: messages on, no announcements")
+	check(not frame.talentAdvisor:IsOn() and not frame.talentAdvisor:IsEnabled(), "a refresh leaves it off and held")
+	check(frame.boxes.btnkill:IsOn(), "the Action Buttons boxes still read on to start with")
+	db.chatmessages, db.repdetail, db.levelparty, db.levelemote = nil, nil, nil, nil
+	AegisPathfinder:RefreshConfigPanel()
+	check(frame.switches.chatmessages:IsOn() and frame.boxes.levelemote:IsOn() and not frame.boxes.levelparty:IsOn(),
+		"a character without them: messages on, the emote only")
 end
 check(frame.switches.shownavcallout == nil,
 	"our arrow's switch is in the Arrows section, with the others")

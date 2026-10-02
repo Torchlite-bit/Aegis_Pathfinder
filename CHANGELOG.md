@@ -18,6 +18,21 @@ reports.
 
 ---
 
+## [0.22.8]
+
+### Changed
+- **Level-up announcements** are worded "Pathfinder: ...": the emote reads
+  "<you> Pathfinder: I just leveled up from 22 to 23! (2 hours 1 minute)",
+  and party and guild get "Pathfinder: I leveled up from 22 to 23! (2 hours
+  1 minute)". The emote is ticked to start with; party and guild are still
+  off until ticked.
+
+### Added
+- **Talent Advisor (coming soon)** on the Extras page: its switch, dimmed
+  and held off, until the advisor arrives.
+- The README's options pictures are all of the current pages now, drawn
+  from the addon's code, the Extras page among them.
+
 ## [0.22.7] — restart
 
 ### Added
@@ -1325,6 +1340,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.8]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.7]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.6]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.5]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

@@ -157,38 +157,40 @@ printed = {}
 
 -- Level-ups ------------------------------------------------------------------------
 
-check(X:AnnounceLevel(23) == 0 and table.getn(sent) == 0, "none ticked: nothing goes out")
-A.db.char.levelemote = true
-X:AnnounceLevel(23)
-check(sent[1] == "EMOTE: Aegis: Pathfinder: I just leveled up from 22 to 23! (2 hours 1 minute)",
+-- A character that has not touched them: the emote, and nothing else.
+check(X:AnnounceLevel(23) == 1, "to start with, one goes out")
+check(sent[1] == "EMOTE: Pathfinder: I just leveled up from 22 to 23! (2 hours 1 minute)",
 	"the emote, got %s", tostring(sent[1]))
 check(asked == 22, "with the time at the level just left")
 sent = {}
-A.db.char.levelemote, A.db.char.levelparty, A.db.char.levelguild = nil, true, true
+A.db.char.levelemote = false
+check(X:AnnounceLevel(23) == 0 and table.getn(sent) == 0, "the emote unticked, none ticked: nothing goes out")
+A.db.char.levelparty, A.db.char.levelguild = true, true
 check(X:AnnounceLevel(23) == 0, "party and guild ticked, in neither: nothing goes out")
 party, guild = 2, true
 check(X:AnnounceLevel(23) == 2, "in both: two")
-check(sent[1] == "PARTY: I leveled up from 22 to 23! (2 hours 1 minute)"
-	and sent[2] == "GUILD: I leveled up from 22 to 23! (2 hours 1 minute)", "worded for them, got %s / %s",
+check(sent[1] == "PARTY: Pathfinder: I leveled up from 22 to 23! (2 hours 1 minute)"
+	and sent[2] == "GUILD: Pathfinder: I leveled up from 22 to 23! (2 hours 1 minute)", "worded for them, got %s / %s",
 	tostring(sent[1]), tostring(sent[2]))
 sent = {}
 levelTime = { secs = 65, whole = true }
 X:AnnounceLevel(2)
-check(sent[1] == "PARTY: I leveled up from 1 to 2! (1 minute)", "one minute, got %s", tostring(sent[1]))
+check(sent[1] == "PARTY: Pathfinder: I leveled up from 1 to 2! (1 minute)", "one minute, got %s", tostring(sent[1]))
 sent = {}
 levelTime = { secs = 600, whole = false }
 X:AnnounceLevel(23)
-check(sent[1] == "PARTY: I leveled up from 22 to 23!", "a level not counted from its start: no time, got %s",
+check(sent[1] == "PARTY: Pathfinder: I leveled up from 22 to 23!", "a level not counted from its start: no time, got %s",
 	tostring(sent[1]))
 sent = {}
 levelTime = { secs = 7260, whole = true }
-A.db.char.levelemote = true
+A.db.char.levelemote = nil
 fire("PLAYER_LEVEL_UP", "23")
 check(table.getn(sent) == 3, "the level-up event announces to all three ticked")
 sent = {}
-A.db.char.levelemote, A.db.char.levelparty, A.db.char.levelguild = nil, nil, nil
+A.db.char.levelemote, A.db.char.levelparty, A.db.char.levelguild = false, nil, nil
 fire("PLAYER_LEVEL_UP", "24")
-check(table.getn(sent) == 0, "unticked again: nothing")
+check(table.getn(sent) == 0, "all unticked: nothing")
+A.db.char.levelemote = nil
 do
 	local saved = A.db
 	A.db = nil

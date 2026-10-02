@@ -380,9 +380,12 @@ same way.
 
 **The Extras page.** Two switches under Chat, each with its note; under
 Level-ups, *Announce level-ups to:* as a `Build.Boxes` grid of three boxes
-(Emote, Party chat / Guild chat), the first grid whose boxes are off until
-ticked (`true` as a box's third field). The reputation line is an ordinary
-chat line from the addon, after the client's own.
+(Emote, Party chat / Guild chat). Emote is ticked until unticked; Party chat
+and Guild chat are the first boxes off until ticked (`true` as a box's third
+field). Under Talent Advisor, *Talent Advisor (coming soon)*: a switch held
+off (45% alpha, not clickable) that no setting lets go, with a note. The
+reputation line is an ordinary chat line from the addon, after the client's
+own.
 
 **On the world map** (`Maps.lua`) everything is drawn on the zone's own map,
 1002 by 668 like the client's. The unexplored overlays are tiles of our own on

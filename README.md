@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.22.7)
+# Aegis: Pathfinder (v0.22.8)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -142,7 +142,9 @@ the guides of the dungeons you ticked are offered beside the next zone.
 
 | Stat weights, per spec | The Gear Finder |
 | :---: | :---: |
-| <img src="docs/images/options-itemscore.png" width="380" alt="Options, Item Score page: a Retribution Paladin's stat weights, with Holy and Protection scored as well and Share weights to import or export"> | <img src="docs/images/gear-finder.png" width="380" alt="The Gear Finder tab on the character panel, for a level 23 Mage: a cell per slot with its biggest upgrade, how much better it is and where it drops, and Shadowfang Keep suggested for four of them"> |
+| <img src="docs/images/options-itemscore.png" width="380" alt="Options, Item Score page: a Protection Paladin's stat weights, picked from the talents, with Holy and Retribution to score as well and Share weights to import or export"> | <img src="docs/images/gear-finder.png" width="380" alt="The Gear Finder tab on the character panel, for a level 23 Mage: a cell per slot with its biggest upgrade, how much better it is and where it drops, and Shadowfang Keep suggested for four of them"> |
+
+<sub>Both drawn from the addon's own code by its offline renderer, not captured in game.</sub>
 
 <!-- Screenshot to come: the Gear Advisor pop-up. Put it in docs/images/ and
      add it here. -->
@@ -191,13 +193,16 @@ Resize it from the corner.
 | :---: | :---: |
 | <img src="docs/images/options-automation.png" width="380" alt="Options, Automation page: accepting and turning in quests, taking the step's flight, buying, selling greys and repairing"> | <img src="docs/images/options-action-buttons.png" width="380" alt="Options, Action Buttons page: the windows, which way they grow, button size, which buttons to show and raid marks"> |
 
-| Maps | Gear |
+| Maps | Extras |
 | :---: | :---: |
-| <img src="docs/images/options-maps.png" width="380" alt="Options, Maps page: revealing the world map, the step on the map, the ant trail and its style, and rare creatures near your level"> | <img src="docs/images/options-gear.png" width="380" alt="Options, Gear page: the item score, the Gear Advisor and the Gear Finder"> |
+| <img src="docs/images/options-maps.png" width="380" alt="Options, Maps page: revealing the world map, the step on the map, the ant trail and its style, and rare creatures near your level"> | <img src="docs/images/options-extras.png" width="380" alt="Options, Extras page: Pathfinder's chat messages, detailed reputation gains, level-up announcements, and the Talent Advisor coming soon"> |
 
-<sub>Automation, Action Buttons and Maps are drawn from the addon's own code by
-its offline renderer, not captured in game. Route, Dungeons and Gear were
-captured in game before the pages took Zygor's order.</sub>
+| Gear |
+| :---: |
+| <img src="docs/images/options-gear.png" width="380" alt="Options, Gear page: the item score, the Gear Advisor, and the Gear Finder with its five upgrade sources"> |
+
+<sub>Drawn from the addon's own code by its offline renderer, with a new
+character's settings in the Day theme -- not captured in game.</sub>
 
 ### 🎨 Your server's colours
 
@@ -244,7 +249,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.22.7`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.22.8`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)** or open an

@@ -531,13 +531,20 @@ function Build.Extras(k)
 		.. "\"Stormwind +25: Honored 4,350 / 12,000, 7,650 to Revered\".")
 	k.space(k.SECTION_GAP)
 	k.section("Level-ups")
-	Build.Boxes(k, "Announce level-ups to:", { { "levelemote", "Emote", true }, { "levelparty", "Party chat", true },
+	Build.Boxes(k, "Announce level-ups to:", { { "levelemote", "Emote" }, { "levelparty", "Party chat", true },
 		{ "levelguild", "Guild chat", true } })
-	k.note("Others see these, so they are off to start with. The emote reads \"<you> Aegis: "
-		.. "Pathfinder: I just leveled up from 22 to 23! (2 hours 1 minute)\"; your party and guild "
-		.. "get \"I leveled up from 22 to 23! (2 hours 1 minute)\". The time is how long you spent "
-		.. "at the level, when the guide counted all of it. Nothing goes to a party or guild you "
-		.. "are not in.")
+	k.note("The emote, on to start with, reads \"<you> Pathfinder: I just leveled up from 22 to "
+		.. "23! (2 hours 1 minute)\"; your party and guild, once ticked, get \"Pathfinder: I leveled "
+		.. "up from 22 to 23! (2 hours 1 minute)\". The time is how long you spent at the level, "
+		.. "when the guide counted all of it. Nothing goes to a party or guild you are not in.")
+	k.space(k.SECTION_GAP)
+	-- Part 4's switch, shown ahead of it: held off until the advisor is built.
+	k.section("Talent Advisor")
+	local talents = Build.Switch(k, "talentAdvisor", "Talent Advisor (coming soon)", function() end)
+	talents:SetOn(false)
+	talents:SetLocked(true)
+	k.note("Coming soon: which talent each point should go to, marked on the talent window -- a "
+		.. "levelling build to 60, then your spec's.")
 	k.space(k.SECTION_GAP)
 end
 

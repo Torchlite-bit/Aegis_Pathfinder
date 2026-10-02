@@ -186,10 +186,12 @@ are only found at startup.
       "Faction +N: Rank x / y, z to Next" after the client's line, with the
       numbers the reputation panel shows; also for a faction under a header
       you closed, which stays closed.
-- [ ] *Announce level-ups to* Emote: on a level up others nearby see the
-      emote, with how long the level took (none for the level you installed
-      on). Party and Guild: the shorter line there; nothing when you are in
-      neither.
+- [ ] *Announce level-ups to* Emote, ticked to start with: on a level up
+      others nearby see "<you> Pathfinder: I just leveled up from X to Y!",
+      with how long the level took (none for the level you installed on).
+      Party and Guild, once ticked: "Pathfinder: I leveled up from X to Y!"
+      there; nothing when you are in neither.
+- [ ] *Talent Advisor (coming soon)* is dimmed and can't be switched on.
 - [ ] *Rare creatures near my level*: rare icons on the zone's map at a few
       levels either side of yours (Westfall at 18: Foe Reaper 4000), named
       with their level on mouseover; *Icon size* and *See-through icons* change

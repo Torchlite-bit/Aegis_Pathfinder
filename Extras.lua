@@ -3,12 +3,13 @@
 	  * Detailed reputation gains: when a reputation goes up, where it stands
 	    and how far it is to the next rank -- "Stormwind +25: Honored 4,350 /
 	    12,000, 7,650 to Revered" -- after the client's own line.
-	  * Level-up announcements, each off until ticked: an emote others nearby
-	    see ("<name> Aegis: Pathfinder: I just leveled up from 22 to 23! (2
-	    hours 1 minute)"), and the same news to your party and guild ("I
-	    leveled up from 22 to 23! (2 hours 1 minute)"). The time is how long
-	    you spent at the level just left, from the guide browser's level
-	    tracker, and only when it counted all of it.
+	  * Level-up announcements: an emote others nearby see, on until unticked
+	    ("<name> Pathfinder: I just leveled up from 22 to 23! (2 hours 1
+	    minute)"), and the same news to your party and guild, each off until
+	    ticked ("Pathfinder: I leveled up from 22 to 23! (2 hours 1
+	    minute)"). The time is how long you spent at the level just left,
+	    from the guide browser's level tracker, and only when it counted all
+	    of it.
 
 	  * Show Pathfinder chat messages: AegisPathfinder:Say, below, which the
 	    routine lines go through.
@@ -143,12 +144,13 @@ end
 --- at the level (nil: not known).
 function Extras.LevelMessages(from, to, secs)
 	local time = secs and (" (" .. Extras.Duration(secs) .. ")") or ""
-	return "Aegis: Pathfinder: I just leveled up from " .. from .. " to " .. to .. "!" .. time,
-		"I leveled up from " .. from .. " to " .. to .. "!" .. time
+	return "Pathfinder: I just leveled up from " .. from .. " to " .. to .. "!" .. time,
+		"Pathfinder: I leveled up from " .. from .. " to " .. to .. "!" .. time
 end
 
---- Announce a level up to `level` where it is ticked: the emote, and the
---- party and guild when you are in one. Returns how many went out.
+--- Announce a level up to `level` where it is ticked: the emote (ticked
+--- until unticked), and the party and guild when you are in one. Returns
+--- how many went out.
 function Extras:AnnounceLevel(level)
 	local char = Char()
 	if not char or not level then return 0 end
@@ -156,7 +158,7 @@ function Extras:AnnounceLevel(level)
 	local secs, whole = AegisPathfinder:TimeAtLevel(from)
 	local emote, group = Extras.LevelMessages(from, level, whole and secs or nil)
 	local sent = 0
-	if char.levelemote then
+	if char.levelemote ~= false then
 		SendChatMessage(emote, "EMOTE")
 		sent = sent + 1
 	end
