@@ -26,6 +26,7 @@ AegisPathfinder = {
 local A = AegisPathfinder
 A.actions = {}
 function A:Print(msg) table.insert(printed, msg) end
+function A:Say(msg) self:Print(msg) end   -- Extras.lua's, always on here
 function A:Debug() end
 function A:UpdateStatusFrame() end
 function A:ScheduleStatusUpdate() end

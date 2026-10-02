@@ -18,6 +18,26 @@ reports.
 
 ---
 
+## [0.22.7] — restart
+
+### Added
+- **An Extras page**, after Gear and Item Score, as Zygor's has (a new file,
+  Extras.lua):
+  - **Show Pathfinder chat messages** (on). Off, the routine lines stay out
+    of your chat: the load message, the login's progress summary, flights
+    taken, what was bought, sold, repaired or deleted, upgrades found and put
+    on, a branch or starting zone handed over. Errors, warnings and replies
+    to what you click or type still show.
+  - **Show detailed reputation gains** (off): after the client's line, where
+    the faction stands and how far to the next rank -- "Stormwind +25:
+    Honored 4,350 / 12,000, 7,650 to Revered".
+  - **Announce level-ups to:** Emote, Party chat and Guild chat, each off
+    until ticked. The emote reads "<you> Aegis: Pathfinder: I just leveled up
+    from 22 to 23! (2 hours 1 minute)"; party and guild get "I leveled up
+    from 22 to 23! (2 hours 1 minute)". The time comes from the guide
+    browser's level tracker, and is left out for a level it did not count
+    from the start. Nothing goes to a party or guild you are not in.
+
 ## [0.22.6] — restart
 
 ### Added
@@ -1305,6 +1325,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.7]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.6]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.5]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.4]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

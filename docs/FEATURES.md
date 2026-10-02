@@ -57,6 +57,8 @@ pages down the left, after Zygor's from Appearance on:
 - **Maps**: revealing the world map, the step's places on it, an ant trail to
   the waypoint, and the rares near your level -- see **Maps**, below.
 - **Gear** and under it **Item Score** (the stat weights).
+- **Extras**: the addon's routine chat lines, detailed reputation gains, and
+  level-up announcements -- see **Extras**, below.
 - **Maintenance** (rescan, error log, setup) and **About** (version and
   credits).
 
@@ -529,6 +531,28 @@ continent's:
   icons** under it: every place a rare or rare elite within four levels of
   yours can spawn, from pfQuest-turtle's database (Rares.lua, about 440 of
   them). Whether one is up right now, 1.12 can't say.
+
+**Extras.** On the options window's **Extras** page:
+
+- **Show Pathfinder chat messages** (on). Off, the routine lines stay out of
+  your chat: the load message, the login's progress summary, flights taken,
+  what was bought, sold, repaired or deleted, upgrades found and put on, a
+  branch or starting zone handed over, follow-ups skipped. Errors, warnings
+  and replies to what you click or type -- a button, a slash command, Rescan
+  -- still show.
+- **Show detailed reputation gains** (off). When a reputation goes up, a line
+  after the client's own says where it stands and how far to the next rank:
+  "Stormwind +25: Honored 4,350 / 12,000, 7,650 to Revered". A faction under
+  a header you have closed on the reputation panel is found too, and the
+  header is closed again.
+- **Announce level-ups to:** Emote, Party chat, Guild chat -- each off until
+  ticked, since others see them. The emote reads "<you> Aegis: Pathfinder: I
+  just leveled up from 22 to 23! (2 hours 1 minute)"; party and guild get "I
+  leveled up from 22 to 23! (2 hours 1 minute)". The time is how long you
+  spent at the level just left, from the guide browser's level tracker, and
+  is left out for a level it did not count from the start (the one you were
+  on when you installed the addon). Nothing goes to a party or guild you are
+  not in.
 
 **One step, or all of them.** The panel opens on the step you are on and
 nothing else, with its note in full and a meter underneath: a line for each

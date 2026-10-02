@@ -16,6 +16,7 @@ GetTime = function() return now end
 local printed = {}
 AegisPathfinder = { db = { char = {}, profile = {} } }
 function AegisPathfinder:Print(msg) table.insert(printed, msg) end
+function AegisPathfinder:Say(msg) self:Print(msg) end   -- Extras.lua's, always on here
 function AegisPathfinder.FormatCopper(c) return c .. "c" end
 
 UnitClass = function() return "Warrior", "WARRIOR" end

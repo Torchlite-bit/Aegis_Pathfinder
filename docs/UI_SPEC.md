@@ -334,7 +334,7 @@ Zygor's pages in this style -- Appearance (Server theme, Window scale, Guide
 window, Minimap), Step Display (Between guides, Sync & Share), Automation
 (Quests, Travel, Inventory), Action Buttons (Windows), Navigation (Waypoints, Arrows),
 Maps (World map, Ant trail, Points of interest) -- then
-Gear and, set in under it, Item Score, Maintenance, About. Automation replaced
+Gear and, set in under it, Item Score, then Extras (Chat, Level-ups), Maintenance, About. Automation replaced
 Behaviour, whose switches went to Step Display, Automation, Action Buttons and
 Appearance with their saved values. The pages built out of `CreateConfigPanel`
 (`Build.*`) take its layout helpers as a kit, which keeps that function inside
@@ -377,6 +377,12 @@ scale (`Theme:SetScaleFactor`).
 held off with it like a slider (`Build.ProfileDropdown`, `Build.Hold`). *Icon
 size*, 60% to 160%, and *See-through icons* sit in under the rares' switch the
 same way.
+
+**The Extras page.** Two switches under Chat, each with its note; under
+Level-ups, *Announce level-ups to:* as a `Build.Boxes` grid of three boxes
+(Emote, Party chat / Guild chat), the first grid whose boxes are off until
+ticked (`true` as a box's third field). The reputation line is an ordinary
+chat line from the addon, after the client's own.
 
 **On the world map** (`Maps.lua`) everything is drawn on the zone's own map,
 1002 by 668 like the client's. The unexplored overlays are tiles of our own on

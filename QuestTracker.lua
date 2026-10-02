@@ -125,7 +125,7 @@ function AegisPathfinder:QUEST_LOG_UPDATE(event)
 		local skipNext = self:GetObjectiveTag("S")
 		if self.db.char.skipfollowups and skipNext and QuestFrame:IsVisible() then
 			CloseQuest()
-			AegisPathfinder:Print(L["Automatically skipping the follow-up"])
+			AegisPathfinder:Say(L["Automatically skipping the follow-up"])
 		end
 	end
 end

@@ -114,7 +114,7 @@ are only found at startup.
 - [ ] No label is cut off or crowded, on any page (Gear and Action Buttons especially).
 - [ ] The pages are Route, Dungeons, Filters, Appearance, Step Display,
       Automation, Action Buttons, Navigation, Maps, Gear (Item Score under it),
-      Maintenance, About; no Behaviour. Each setting that was on Behaviour is
+      Extras, Maintenance, About; no Behaviour. Each setting that was on Behaviour is
       on its new page as it was set.
 - [ ] Appearance → *Lock window* and *Transparency* do what the guide's ≡ menu
       does, and each shows what the other set.
@@ -178,6 +178,18 @@ are only found at startup.
       world map, marching toward it and following you as you move; *Dashes*
       draws dashes. With TomTom-TWOW loaded, dots on the minimap too, inside
       its edge, at every zoom and indoors.
+- [ ] Extras → *Show Pathfinder chat messages* off, then `/reload`: no load
+      message or progress summary; selling greys or taking a flight says
+      nothing; a button with nothing to do still says why, and Rescan still
+      answers.
+- [ ] *Show detailed reputation gains*: a reputation quest's hand-in adds
+      "Faction +N: Rank x / y, z to Next" after the client's line, with the
+      numbers the reputation panel shows; also for a faction under a header
+      you closed, which stays closed.
+- [ ] *Announce level-ups to* Emote: on a level up others nearby see the
+      emote, with how long the level took (none for the level you installed
+      on). Party and Guild: the shorter line there; nothing when you are in
+      neither.
 - [ ] *Rare creatures near my level*: rare icons on the zone's map at a few
       levels either side of yours (Westfall at 18: Foe Reaper 4000), named
       with their level on mouseover; *Icon size* and *See-through icons* change

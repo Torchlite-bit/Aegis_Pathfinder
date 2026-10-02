@@ -168,7 +168,7 @@ check(AegisPathfinder.ToggleDungeonPanel == nil and AegisPathfinder.ToggleFilter
 
 -- The pages, and the list that picks them.
 local PAGES = { "Route", "Dungeons", "Filters", "Appearance", "Step Display", "Automation", "Action Buttons",
-	"Navigation", "Maps", "Gear", "Item Score", "Maintenance", "About" }
+	"Navigation", "Maps", "Gear", "Item Score", "Extras", "Maintenance", "About" }
 local names = {}
 for _, p in ipairs(frame.pages) do table.insert(names, p.pageName) end
 check(table.concat(names, ", ") == table.concat(PAGES, ", "), "the pages, in order: %s", table.concat(names, ", "))
@@ -789,6 +789,35 @@ do
 	check(frame.antStyle.dropdown.label:GetText() == "Dots" and frame.rareSize.value:GetText() == "100%",
 		"a profile without them reads dots and 100%%")
 	AegisPathfinder.Maps = savedMaps
+end
+
+-- Extras: chat messages, detailed reputation, level-up announcements.
+do
+	local extras = pageNamed("Extras")
+	check(frame.switches.chatmessages and frame.switches.chatmessages:GetParent() == extras
+		and frame.switches.chatmessages:IsOn(), "Pathfinder's chat messages: on Extras, on to start with")
+	check(frame.switches.repdetail and frame.switches.repdetail:GetParent() == extras
+		and not frame.switches.repdetail:IsOn(), "detailed reputation gains: off to start with")
+	click(frame.switches.chatmessages)
+	check(db.chatmessages == false, "the chat messages can be switched off")
+	click(frame.switches.repdetail)
+	check(db.repdetail == true, "and the reputation detail on")
+	local labels = {}
+	for _, key in ipairs({ "levelemote", "levelparty", "levelguild" }) do
+		local box = frame.boxes[key]
+		check(box and box:GetParent():GetParent() == extras and not box:IsOn(), "the %s box is on Extras, unticked", key)
+		if box then table.insert(labels, box.label:GetText()) end
+	end
+	check(table.concat(labels, ", ") == "Emote, Party chat, Guild chat", "Emote, Party chat, Guild chat; got %s",
+		table.concat(labels, ", "))
+	click(frame.boxes.levelparty)
+	check(db.levelparty == true and frame.boxes.levelparty:IsOn(), "ticking one turns it on")
+	AegisPathfinder:RefreshConfigPanel()
+	check(frame.boxes.levelparty:IsOn() and not frame.boxes.levelemote:IsOn(), "and it stays so; the others stay off")
+	check(frame.boxes.btnkill:IsOn(), "the Action Buttons boxes still read on to start with")
+	db.chatmessages, db.repdetail, db.levelparty = nil, nil, nil
+	AegisPathfinder:RefreshConfigPanel()
+	check(frame.switches.chatmessages:IsOn() and not frame.boxes.levelparty:IsOn(), "a character without them: messages on, no announcements")
 end
 check(frame.switches.shownavcallout == nil,
 	"our arrow's switch is in the Arrows section, with the others")

@@ -89,7 +89,7 @@ function Auto:TakeFlight()
 		return
 	end
 	local node = TaxiNodeName(pick)
-	AegisPathfinder:Print("Flying to " .. node .. ".")
+	AegisPathfinder:Say("Flying to " .. node .. ".")
 	TakeTaxiNode(pick)
 	return node
 end
@@ -127,7 +127,7 @@ function Auto:BuyStepItems()
 			else
 				for _ = 1, buys do BuyMerchantItem(i) end
 			end
-			AegisPathfinder:Print(string.format("Bought %d %s for the guide.", buys * per, itemName or "items"))
+			AegisPathfinder:Say(string.format("Bought %d %s for the guide.", buys * per, itemName or "items"))
 			return buys * per
 		end
 	end
@@ -162,7 +162,7 @@ function Auto:SellGreys(quiet)
 	for _, g in ipairs(greys) do UseContainerItem(g[1], g[2]) end
 	local function report()
 		local gained = GetMoney() - before
-		AegisPathfinder:Print(string.format("Sold %d grey item%s%s.", n, n == 1 and "" or "s",
+		AegisPathfinder:Say(string.format("Sold %d grey item%s%s.", n, n == 1 and "" or "s",
 			gained > 0 and (" for " .. Auto.Money(gained)) or ""))
 	end
 	-- The money arrives with the server's answer, not here.
@@ -286,7 +286,7 @@ function Auto:DeleteCheapest(entry, confirmed)
 	PickupContainerItem(entry.bag, entry.slot)
 	if not CursorHasItem() then return false end
 	DeleteCursorItem()
-	AegisPathfinder:Print("Deleted " .. Named(entry) .. " to make room.")
+	AegisPathfinder:Say("Deleted " .. Named(entry) .. " to make room.")
 	return true
 end
 
@@ -345,7 +345,7 @@ function Auto:Repair()
 		return
 	end
 	RepairAllItems()
-	AegisPathfinder:Print("Repaired for " .. Auto.Money(cost) .. ".")
+	AegisPathfinder:Say("Repaired for " .. Auto.Money(cost) .. ".")
 	return cost
 end
 

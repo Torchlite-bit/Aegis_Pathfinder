@@ -384,7 +384,8 @@ end
 local BOX_COL, BOX_ROW = 170, 26
 
 --- A label over boxes, two to a row, each a per-character setting that is on
---- until it is unticked; kept in frame.boxes for RefreshConfigPanel.
+--- until it is unticked -- or off until ticked, with `true` as its third
+--- field; kept in frame.boxes for RefreshConfigPanel.
 function Build.Boxes(k, label, defs, after)
 	local rows = math.ceil(table.getn(defs) / 2)
 	local h = 17 + rows * BOX_ROW
@@ -404,6 +405,7 @@ function Build.Boxes(k, label, defs, after)
 		end)
 		box:Fit()
 		box:SetPoint("TOPLEFT", fs, "BOTTOMLEFT", math.mod(i - 1, 2) * BOX_COL, -(4 + math.floor((i - 1) / 2) * BOX_ROW))
+		box.defaultOff = def[3]
 		k.frame.boxes[key] = box
 	end
 	k.place(holder, h, 4)
@@ -512,6 +514,30 @@ function Build.Maps(k)
 	Build.ProfileSwitch(k, "raresseethru", "See-through icons", redraw, { parent = "maprares" })
 	k.note("From pfQuest-turtle's database: 293 rares and 147 rare elites, shown within four "
 		.. "levels of yours. Where they can spawn, not whether one is up.")
+	k.space(k.SECTION_GAP)
+end
+
+--- Extras: what the addon says in chat (Extras.lua, and Say in Core.lua).
+function Build.Extras(k)
+	k.page("Extras")
+	k.section("Chat")
+	Build.CharSwitch(k, "chatmessages", "Show Pathfinder chat messages", nil, { defaultOn = true })
+	k.note("Off, the routine lines stay out of your chat: the load message, flights taken, greys "
+		.. "sold, upgrades put on, guides handed over. Errors, warnings and replies to what you "
+		.. "click or type still show.")
+	k.space(10)
+	Build.CharSwitch(k, "repdetail", "Show detailed reputation gains")
+	k.note("When a reputation goes up, where it stands and how far it is to the next rank: "
+		.. "\"Stormwind +25: Honored 4,350 / 12,000, 7,650 to Revered\".")
+	k.space(k.SECTION_GAP)
+	k.section("Level-ups")
+	Build.Boxes(k, "Announce level-ups to:", { { "levelemote", "Emote", true }, { "levelparty", "Party chat", true },
+		{ "levelguild", "Guild chat", true } })
+	k.note("Others see these, so they are off to start with. The emote reads \"<you> Aegis: "
+		.. "Pathfinder: I just leveled up from 22 to 23! (2 hours 1 minute)\"; your party and guild "
+		.. "get \"I leveled up from 22 to 23! (2 hours 1 minute)\". The time is how long you spent "
+		.. "at the level, when the guide counted all of it. Nothing goes to a party or guild you "
+		.. "are not in.")
 	k.space(k.SECTION_GAP)
 end
 
@@ -1013,6 +1039,7 @@ function AegisPathfinder:CreateConfigPanel()
 	local scorePage = AegisPathfinder:CreateItemScorePage(body, BODY_W, y, PAD_BOTTOM)
 	body.ownHeight = true
 	stretchy(function(w) scorePage:Resize(w) end)
+	Build.Extras(kit)
 
 	page("Maintenance")
 	table.insert(frame.sections, section("Maintenance"))
@@ -1406,7 +1433,9 @@ function AegisPathfinder:RefreshConfigPanel()
 	frame.itemsGrow:SetValue(db.itemsgrow or "right")
 	frame.targetsGrow:SetValue(db.targetsgrow or "right")
 	frame.buttonSize:SetValue(db.buttonscale or 1)
-	for key, box in pairs(frame.boxes) do box:SetOn(db[key] ~= false) end
+	for key, box in pairs(frame.boxes) do
+		if box.defaultOff then box:SetOn(db[key]) else box:SetOn(db[key] ~= false) end
+	end
 	-- The Maps page: its switches are in frame.pswitches, above.
 	frame.antStyle.dropdown:SetValue(profile.antstyle or "dots")
 	Build.Hold(frame.antStyle, profile.anttrail == false)

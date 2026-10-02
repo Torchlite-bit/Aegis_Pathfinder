@@ -505,6 +505,9 @@ function AegisPathfinder:TrackerEvent(event, a1)
 		Bank()
 		clock.level = tonumber(a1) or UnitLevel("player")
 		clock.since = Now()
+		-- Counted from its first minute: its time is the whole of it.
+		db.levelwhole = db.levelwhole or {}
+		db.levelwhole[clock.level] = true
 	elseif event == "PLAYER_LOGOUT" or event == "PLAYER_LEAVING_WORLD" then
 		-- Banked before every loading screen too, so the time is in the saved
 		-- table well before the client writes it out.
@@ -540,6 +543,16 @@ function AegisPathfinder:LevelTimes()
 	end
 	table.sort(out, function(a, b) return a.level > b.level end)
 	return out
+end
+
+--- Seconds played at `level` so far, and whether that is all of it: the
+--- level began while the tracker was counting. Right after a level up, the
+--- level just left, whichever of the level-up handlers runs first.
+function AegisPathfinder:TimeAtLevel(level)
+	local db = self.db.char
+	local secs = (db.leveltime or {})[level]
+	if clock.since and clock.level == level then secs = (secs or 0) + (Now() - clock.since) end
+	return secs, (db.levelwhole or {})[level] == true
 end
 
 --- Gold earned today and this week, in copper.

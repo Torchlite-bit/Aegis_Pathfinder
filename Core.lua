@@ -598,7 +598,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.22.6"
+AegisPathfinder.version = "0.22.7"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -677,7 +677,7 @@ function AegisPathfinder:OnInitialize()
         self:Print(L["Imported your saved progress from TurtleGuide."])
     end
     -- As every Aegis addon says it: the version to quote in a bug report.
-    if DEFAULT_CHAT_FRAME then
+    if DEFAULT_CHAT_FRAME and self.db.char.chatmessages ~= false then
         DEFAULT_CHAT_FRAME:AddMessage(self.title .. " v" .. self.version .. " loaded \226\128\148 /apg")
     end
 end
@@ -753,7 +753,7 @@ function AegisPathfinder:InitializeRoute()
                 if not message then
                     message = "You have been assigned the %s leveling route."
                 end
-                self:Print(string.format(message, tostring(race)))
+                self:Say(string.format(message, tostring(race)))
             else
                 -- Fallback to default start guides (including Turtle WoW races)
                 local startguides = {
@@ -1493,15 +1493,17 @@ function AegisPathfinder:QueryServerCompletedQuests(force)
         end
     end
 
+    -- Said at every login as routine lines; when Rescan asks, as its answer.
+    local say = force and self.Print or self.Say
     -- Check pfQuest availability
     local hasPfQuest = pfDB and pfDB["quests"] and pfDB["quests"]["data"]
     if hasPfQuest then
-        self:Print("|cff00ff00pfQuest database detected - using prerequisite chain inference|r")
+        say(self, "|cff00ff00pfQuest database detected - using prerequisite chain inference|r")
     else
-        self:Print("|cffff9900pfQuest not found - prerequisite inference unavailable|r")
+        say(self, "|cffff9900pfQuest not found - prerequisite inference unavailable|r")
     end
 
-    self:Print(string.format("|cff88aaff%d quests tracked by name, %d by QID|r", localCountByName, localCountByQid))
+    say(self, string.format("|cff88aaff%d quests tracked by name, %d by QID|r", localCountByName, localCountByQid))
 
     -- Re-run SmartSkipToStep to re-evaluate guide progress
     if self.actions and self.quests then
@@ -1510,12 +1512,12 @@ function AegisPathfinder:QueryServerCompletedQuests(force)
         local newCurrent = self.current or 1
 
         if newCurrent > oldCurrent then
-            self:Print(string.format("|cff00ff00Skipped to step %d (was %d)|r", newCurrent, oldCurrent))
+            say(self, string.format("|cff00ff00Skipped to step %d (was %d)|r", newCurrent, oldCurrent))
         else
-            self:Print("|cff88ff88Guide progress is up to date|r")
+            say(self, "|cff88ff88Guide progress is up to date|r")
         end
     else
-        self:Print("|cffff9900No guide loaded|r")
+        say(self, "|cffff9900No guide loaded|r")
     end
 
     self:UpdateStatusFrame()
@@ -2418,8 +2420,8 @@ function AegisPathfinder:TransitionFromStartingZone()
     self.db.char.startingzonecomplete = true
     self.db.char.completion[self.db.char.currentguide] = 1
 
-    self:Print("|cff00ff00" .. L["Starting zone complete!"] .. "|r")
-    self:Print(L["Transitioning to shared leveling path..."])
+    self:Say("|cff00ff00" .. L["Starting zone complete!"] .. "|r")
+    self:Say(L["Transitioning to shared leveling path..."])
 
     -- Get the rejoin guide
     local rejoinGuide = self:GetRejoinGuide()
@@ -2606,10 +2608,10 @@ function AegisPathfinder:SelectStartingZone(zoneInfo)
         local playerRoute = self:GetRouteForRace()
 
         if zoneInfo.race ~= playerRoute then
-            self:Print(string.format(L["Cross-race start: %s"], zoneInfo.zone))
+            self:Say(string.format(L["Cross-race start: %s"], zoneInfo.zone))
         end
 
-        self:Print(string.format(L["You have been assigned the %s leveling route."], zoneInfo.zone))
+        self:Say(string.format(L["You have been assigned the %s leveling route."], zoneInfo.zone))
     else
         self:Print("|cffff0000Error: Guide not found: " .. zoneInfo.guide .. "|r")
     end

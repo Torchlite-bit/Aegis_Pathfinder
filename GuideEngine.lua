@@ -329,7 +329,7 @@ function AegisPathfinder:UpdateStatusFrame()
 
 	-- Check if we're on a branch and it's complete
 	if not nextstep and self.db.char.isbranching then
-		self:Print("Branch guide complete! Returning to main route.")
+		self:Say("Branch guide complete! Returning to main route.")
 		self:ReturnFromBranch()
 		return
 	end

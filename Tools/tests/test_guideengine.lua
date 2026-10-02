@@ -30,6 +30,7 @@ AegisPathfinder = {
 }
 function AegisPathfinder:Debug() end
 function AegisPathfinder:Print() end
+function AegisPathfinder:Say(msg) self:Print(msg) end   -- Extras.lua's, always on here
 function AegisPathfinder.trim(s) return (string.gsub(s or "", "^%s*(.-)%s*$", "%1")) end
 function AegisPathfinder.select(index, ...)
 	if index == "#" then return table.getn(arg) end

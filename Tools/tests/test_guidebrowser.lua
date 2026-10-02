@@ -238,12 +238,24 @@ now = now + 600
 local times = A:LevelTimes()
 check(times[1].level == 21 and times[1].seconds == 600 and times[1].current, "level 21 counting up: 10 minutes")
 now = now + 60
+do
+	-- The Extras page's level-up announcement asks for the level just left,
+	-- before or after the tracker banks it.
+	local secs, whole = A:TimeAtLevel(21)
+	check(secs == 660 and not whole, "21 so far, before the bank: 11 minutes, not counted from its start")
+end
 A:TrackerEvent("PLAYER_LEVEL_UP", 22)
 level = 22
+check(A:TimeAtLevel(21) == 660, "and the same after it")
 now = now + 30
 times = A:LevelTimes()
 check(times[1].level == 22 and times[1].seconds == 30 and times[2].level == 21 and times[2].seconds == 660,
 	"a level up banks the last level, got %s/%s", tostring(times[2] and times[2].seconds), tostring(times[1].seconds))
+do
+	local secs, whole = A:TimeAtLevel(22)
+	check(secs == 30 and whole, "22, begun while counting: 30 seconds, all of it")
+	check(A:TimeAtLevel(30) == nil, "a level not reached: no time")
+end
 A:TrackerEvent("PLAYER_LOGOUT")
 check(A.db.char.leveltime[22] == 30, "logging out banks the level you are at")
 check(Browser.Duration(4320) == "1h 12m" and Browser.Duration(3520) == "58m 40s" and Browser.Duration(40) == "40s",
