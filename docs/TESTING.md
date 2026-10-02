@@ -113,7 +113,7 @@ are only found at startup.
       doesn't show a scroll bar.
 - [ ] No label is cut off or crowded, on any page (Gear and Action Buttons especially).
 - [ ] The pages are Route, Dungeons, Filters, Appearance, Step Display,
-      Automation, Action Buttons, Navigation, Gear (Item Score under it),
+      Automation, Action Buttons, Navigation, Maps, Gear (Item Score under it),
       Maintenance, About; no Behaviour. Each setting that was on Behaviour is
       on its new page as it was set.
 - [ ] Appearance → *Lock window* and *Transparency* do what the guide's ≡ menu
@@ -167,6 +167,21 @@ are only found at startup.
       without a raid marker; quest icons still mark on mouseover.
 - [ ] Step Display → *Ask before inviting my party* off: the party icon shares
       without the popup; the popup's "don't ask again" turns it off here.
+- [ ] Maps → *Reveal the whole map*: on a zone you have only partly explored,
+      the rest shows, a little dimmer, lined up with what you have explored;
+      off, it goes at once. With pfUI's own reveal on, only pfUI's shows.
+- [ ] *Show the step on the map* (with pfQuest): on an accept step the giver's
+      icon is on the zone's map, named on mouseover; on a kill step, spots
+      where they are; a step whose note gives "(x, y)" has the note icon there.
+      Another zone's map shows none of them.
+- [ ] *A trail from me to the waypoint*: dots from you to the waypoint on the
+      world map, marching toward it and following you as you move; *Dashes*
+      draws dashes. With TomTom-TWOW loaded, dots on the minimap too, inside
+      its edge, at every zoom and indoors.
+- [ ] *Rare creatures near my level*: rare icons on the zone's map at a few
+      levels either side of yours (Westfall at 18: Foe Reaper 4000), named
+      with their level on mouseover; *Icon size* and *See-through icons* change
+      them at once.
 - [ ] Drag the corner grip: the window grows wider and taller, and every page
       re-lays itself without gaps; it keeps the size after `/reload`.
 - [ ] `/apg resetpanels` puts it back to its first size and place.

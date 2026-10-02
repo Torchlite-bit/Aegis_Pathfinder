@@ -3,7 +3,7 @@
 ## Title: Aegis: Pathfinder
 ## Notes: Classic+ leveling guide for the Turtle WoW-lineage 1.12 client family.|nPart of the Aegis addon suite.
 ## Author: Aegis: Pathfinder Contributors (see CONTRIBUTORS.md)
-## Version: 0.22.5
+## Version: 0.22.6
 ## X-Category: Quest
 
 ## SavedVariables: AegisPathfinderDB, TurtleGuideDB
@@ -61,6 +61,10 @@ ActiveFrames.lua
 # for the Automation and Action Buttons pages; what vendors pay (CMaNGOS)
 SellPrices.lua
 Automation.lua
+# What the Maps page draws on the world map and minimap: where the rares can
+# spawn (pfQuest-turtle), then the reveal, the step's places and the ant trail
+Rares.lua
+Maps.lua
 NextGuideFrame.lua
 DungeonQuests.lua
 SetupFrame.lua

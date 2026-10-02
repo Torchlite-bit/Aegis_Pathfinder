@@ -54,6 +54,8 @@ pages down the left, after Zygor's from Appearance on:
   quest icons; which way the windows grow and their size; which buttons they
   show; the target buttons' raid marker -- see **Action Buttons**, below.
 - **Navigation**: waypoints and arrows.
+- **Maps**: revealing the world map, the step's places on it, an ant trail to
+  the waypoint, and the rares near your level -- see **Maps**, below.
 - **Gear** and under it **Item Score** (the stat weights).
 - **Maintenance** (rescan, error log, setup) and **About** (version and
   credits).
@@ -503,6 +505,30 @@ empty circle is one only you can tick, and a filled one is done.
 
 Hold Shift as you open a quest giver, a flight master or a vendor and none
 of it happens.
+
+**Maps.** What the addon draws on the world map and the minimap, on the
+options window's **Maps** page. All of it on the zone's own map, never a
+continent's:
+
+- **Reveal the whole map** (on): the places you have not been, drawn a little
+  dimmer than the ones you have, from pfUI's reveal data (MapOverlays.lua).
+  It stands down while pfUI's own map reveal is on, and for Cartographer or
+  MetaMap's fog of war module.
+- **Show the step on the map** (on): the step's quest givers, hand-ins and
+  kill areas -- and the creatures that drop what it collects -- from
+  pfQuest's database, as icons and spots on the zone you are looking at, with
+  their names when you mouse over them; and the place the step's note gives.
+  Without pfQuest, only the note's place.
+- **A trail from me to the waypoint** (on), and its **Style**, dots or dashes:
+  in the theme's colour, marching toward the waypoint, when you and it are in
+  the zone the map shows. On the minimap too when Astrolabe is loaded
+  (TomTom-TWOW brings it): eight dots from you toward it, as far as the
+  minimap reaches. Without Astrolabe there is no minimap trail -- 1.12 alone
+  can't say how many yards the minimap shows.
+- **Rare creatures near my level** (off), with **Icon size** and **See-through
+  icons** under it: every place a rare or rare elite within four levels of
+  yours can spawn, from pfQuest-turtle's database (Rares.lua, about 440 of
+  them). Whether one is up right now, 1.12 can't say.
 
 **One step, or all of them.** The panel opens on the step you are on and
 nothing else, with its note in full and a meter underneath: a line for each

@@ -179,7 +179,7 @@ local function ReloadCurrentGuide()
 end
 
 --[[ The pages laid out along Zygor's -- Appearance's guide settings, Step
-	Display, Automation, Action Buttons -- built from the layout kit
+	Display, Automation, Action Buttons, Maps -- built from the layout kit
 	CreateConfigPanel hands them (`k`): its page, place, section, note and
 	space, the page being built (k.body()) and the window (k.frame). They are
 	out here so that function stays inside Lua 5.0's limits on locals and
@@ -226,10 +226,13 @@ function Build.Slider(k, label, lo, hi, step, onChange, indent)
 	return row
 end
 
---- Hold a slider off, as a switch is held: dimmed, and not to be dragged.
+--- Hold a slider or a dropdown's row off, as a switch is held: dimmed, and
+--- not to be dragged or opened.
 function Build.Hold(row, held)
 	row:SetAlpha(held and 0.45 or 1)
-	row.slider:EnableMouse(not held)
+	local control = row.slider or row.dropdown
+	control:EnableMouse(not held)
+	if held and control.list then control.list:Hide() end
 end
 
 --- A line of body text over the control it names.
@@ -444,6 +447,71 @@ function Build.ActionButtons(k)
 	Build.CharSwitch(k, "raidmark", "Mark whoever the target buttons target", nil, { defaultOn = true })
 	k.note("A star to talk, a square to interact, a skull to kill, a cross to loot. Off, the "
 		.. "buttons only target. Quest icons mark by themselves either way.")
+	k.space(k.SECTION_GAP)
+end
+
+local TRAIL_STYLES = { { value = "dots", label = "Dots" }, { value = "dashes", label = "Dashes" } }
+local SMALL_DROPDOWN_W = 140
+
+--- A short dropdown for db.profile[key] with its label beside it, set in under
+--- the switch above; the row is kept as frame[name], its dropdown as
+--- row.dropdown.
+function Build.ProfileDropdown(k, name, label, key, items, after)
+	local row = CreateFrame("Frame", nil, k.body())
+	row:SetHeight(30)
+	row:SetWidth(k.BODY_W - SUB_INDENT)
+	local fs = row:CreateFontString(nil, "OVERLAY")
+	Theme:SetFont(fs, "body", 13)
+	Theme:TextColor(fs, "text")
+	fs:SetPoint("LEFT", row, "LEFT", 0, 0)
+	fs:SetText(label)
+	local d = Theme:Dropdown(row, SMALL_DROPDOWN_W, function(v)
+		AegisPathfinder.db.profile[key] = v
+		if after then after(v) end
+	end)
+	d:SetPoint("LEFT", fs, "RIGHT", 10, 0)
+	d:SetItems(items)
+	row.dropdown = d
+	k.place(row, 30, 8, SUB_INDENT)
+	k.frame[name] = row
+	table.insert(k.frame.lateDropdowns, d)
+	return row
+end
+
+--- Maps: what Pathfinder draws on the world map and the minimap (Maps.lua).
+function Build.Maps(k)
+	local A = AegisPathfinder
+	local function redraw() if A.Maps then A.Maps:Refresh() end end
+	local function redrawAndHold()
+		redraw()
+		A:RefreshConfigPanel()
+	end
+	k.page("Maps")
+	k.section("World map")
+	Build.ProfileSwitch(k, "mapreveal", "Reveal the whole map", redraw, { defaultOn = true })
+	k.note("Places you have not been are drawn a little dimmer. Held off while pfUI's own map "
+		.. "reveal is on, or Cartographer or MetaMap's fog of war draws them.")
+	k.space(10)
+	Build.ProfileSwitch(k, "mapmarkers", "Show the step on the map: quest givers, hand-ins and kill areas",
+		redraw, { defaultOn = true })
+	k.note("Quest givers, hand-ins and kill areas come from pfQuest; without it, only the place "
+		.. "the step's note gives. On the zone you are looking at.")
+	k.space(k.SECTION_GAP)
+	k.section("Ant trail")
+	Build.ProfileSwitch(k, "anttrail", "A trail from me to the waypoint", redrawAndHold, { defaultOn = true })
+	Build.ProfileDropdown(k, "antStyle", "Style", "antstyle", TRAIL_STYLES, redraw)
+	k.note("On the world map, in the theme's colour, when you and the waypoint are in the zone it "
+		.. "shows. On the minimap too when Astrolabe is loaded (TomTom-TWOW brings it).")
+	k.space(k.SECTION_GAP)
+	k.section("Points of interest")
+	Build.ProfileSwitch(k, "maprares", "Rare creatures near my level", redrawAndHold)
+	k.frame.rareSize = Build.Slider(k, "Icon size", 0.6, 1.6, 0.1, function(v)
+		A.db.profile.raresize = v
+		redraw()
+	end, SUB_INDENT)
+	Build.ProfileSwitch(k, "raresseethru", "See-through icons", redraw, { parent = "maprares" })
+	k.note("From pfQuest-turtle's database: 293 rares and 147 rare elites, shown within four "
+		.. "levels of yours. Where they can spawn, not whether one is up.")
 	k.space(k.SECTION_GAP)
 end
 
@@ -833,6 +901,7 @@ function AegisPathfinder:CreateConfigPanel()
 	local arrowNote = fine(Theme:FinePrint(body, BODY_W))
 	place(arrowNote, 58, SECTION_GAP)
 	frame.arrowNote = arrowNote
+	Build.Maps(kit)
 
 	--[[ Gear: the item score on tooltips, and the window with its weights. ]]
 	page("Gear")
@@ -1338,6 +1407,11 @@ function AegisPathfinder:RefreshConfigPanel()
 	frame.targetsGrow:SetValue(db.targetsgrow or "right")
 	frame.buttonSize:SetValue(db.buttonscale or 1)
 	for key, box in pairs(frame.boxes) do box:SetOn(db[key] ~= false) end
+	-- The Maps page: its switches are in frame.pswitches, above.
+	frame.antStyle.dropdown:SetValue(profile.antstyle or "dots")
+	Build.Hold(frame.antStyle, profile.anttrail == false)
+	frame.rareSize:SetValue(profile.raresize or 1)
+	Build.Hold(frame.rareSize, not profile.maprares)
 
 	-- Waypoint providers actually loaded, plus automatic.
 	local wp = { { value = "auto", label = "Automatic" } }

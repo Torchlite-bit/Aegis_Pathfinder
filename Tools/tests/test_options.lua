@@ -168,7 +168,7 @@ check(AegisPathfinder.ToggleDungeonPanel == nil and AegisPathfinder.ToggleFilter
 
 -- The pages, and the list that picks them.
 local PAGES = { "Route", "Dungeons", "Filters", "Appearance", "Step Display", "Automation", "Action Buttons",
-	"Navigation", "Gear", "Item Score", "Maintenance", "About" }
+	"Navigation", "Maps", "Gear", "Item Score", "Maintenance", "About" }
 local names = {}
 for _, p in ipairs(frame.pages) do table.insert(names, p.pageName) end
 check(table.concat(names, ", ") == table.concat(PAGES, ", "), "the pages, in order: %s", table.concat(names, ", "))
@@ -736,6 +736,59 @@ do
 	AegisPathfinder:RefreshConfigPanel()
 	check(frame.itemsGrow.label:GetText() == "Right" and frame.buttonSize.value:GetText() == "100%",
 		"a character without them reads right and 100%%")
+end
+
+-- Maps: the reveal, the step's places, the trail and its style, the rares.
+do
+	local profile = AegisPathfinder.db.profile
+	local mapsPage = pageNamed("Maps")
+	local redrawn = 0
+	local savedMaps = AegisPathfinder.Maps
+	AegisPathfinder.Maps = { Refresh = function() redrawn = redrawn + 1 end }
+	for _, key in ipairs({ "mapreveal", "mapmarkers", "anttrail", "maprares", "raresseethru" }) do
+		check(frame.pswitches[key] and frame.pswitches[key]:GetParent() == mapsPage, "%s is on Maps, kept per profile", key)
+	end
+	check(frame.pswitches.mapreveal:IsOn() and frame.pswitches.mapmarkers:IsOn() and frame.pswitches.anttrail:IsOn(),
+		"the reveal, the step's places and the trail are on to start with")
+	check(not frame.pswitches.maprares:IsOn() and not frame.pswitches.raresseethru:IsEnabled(),
+		"the rares off, and see-through held with them")
+	click(frame.pswitches.mapreveal)
+	check(profile.mapreveal == false and redrawn == 1, "switching the reveal off redraws the map")
+	click(frame.pswitches.mapreveal)
+	-- The trail's style: a short dropdown in under its switch.
+	check(frame.antStyle:GetParent() == mapsPage and frame.antStyle.dropdown.label:GetText() == "Dots",
+		"the trail is dots to start with")
+	do
+		local _, _, _, sx = frame.antStyle:GetPoint()
+		local _, _, _, tx = frame.pswitches.anttrail:GetPoint()
+		check(sx > tx, "its style sits in under the trail's switch")
+	end
+	check(frame.antStyle:GetAlpha() == 1, "and is let go while the trail is on")
+	click(frame.antStyle.dropdown)
+	click(frame.antStyle.dropdown.rows[2])
+	check(profile.antstyle == "dashes" and frame.antStyle.dropdown.label:GetText() == "Dashes", "dashes, picked")
+	click(frame.pswitches.anttrail)
+	check(profile.anttrail == false and frame.antStyle:GetAlpha() < 1, "the trail off holds its style")
+	check(not frame.antStyle.dropdown:IsMouseEnabled(), "which cannot be opened then")
+	click(frame.pswitches.anttrail)
+	-- The rares: the size held, and see-through, until they are on.
+	check(frame.rareSize:GetParent() == mapsPage and frame.rareSize.value:GetText() == "100%"
+		and frame.rareSize:GetAlpha() < 1, "the icon size is 100%%, held while the rares are off")
+	click(frame.pswitches.maprares)
+	check(profile.maprares == true and frame.rareSize:GetAlpha() == 1 and frame.pswitches.raresseethru:IsEnabled(),
+		"rares on: the size and see-through let go")
+	local before = redrawn
+	frame.rareSize.slider:SetValue(1.3)
+	check(math.abs(profile.raresize - 1.3) < 1e-6 and redrawn > before, "a bigger icon redraws them, got %s",
+		tostring(profile.raresize))
+	click(frame.pswitches.raresseethru)
+	check(profile.raresseethru == true, "and they can be see-through")
+	profile.mapreveal, profile.anttrail, profile.antstyle, profile.maprares = nil, nil, nil, nil
+	profile.raresize, profile.raresseethru = nil, nil
+	AegisPathfinder:RefreshConfigPanel()
+	check(frame.antStyle.dropdown.label:GetText() == "Dots" and frame.rareSize.value:GetText() == "100%",
+		"a profile without them reads dots and 100%%")
+	AegisPathfinder.Maps = savedMaps
 end
 check(frame.switches.shownavcallout == nil,
 	"our arrow's switch is in the Arrows section, with the others")

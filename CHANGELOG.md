@@ -18,6 +18,27 @@ reports.
 
 ---
 
+## [0.22.6] — restart
+
+### Added
+- **A Maps page**, after Navigation, as Zygor's has: what the addon draws on
+  the world map and the minimap, on the zone's own map.
+  - **Reveal the whole map** (on): the places you have not been, a little
+    dimmer than the ones you have. It stands down while pfUI's own map reveal
+    is on, and for Cartographer or MetaMap's fog of war module.
+  - **Show the step on the map** (on): the step's quest givers, hand-ins and
+    kill areas, and the creatures that drop what it collects, from pfQuest's
+    database; and the place the step's note gives. Each is named when you
+    mouse over it. Without pfQuest, only the note's place.
+  - **A trail from me to the waypoint** (on), dots or dashes, marching
+    toward it on the world map when you and it are on the zone it shows. On
+    the minimap too when Astrolabe is loaded (TomTom-TWOW brings it), as far
+    as the minimap reaches.
+  - **Rare creatures near my level** (off), with **Icon size** and
+    **See-through icons**: where the rares and rare elites within four levels
+    of yours can spawn -- 293 rares and 147 rare elites, from pfQuest-turtle's
+    database (a new file, Rares.lua). Whether one is up, 1.12 can't say.
+
 ## [0.22.5]
 
 ### Added
@@ -1284,6 +1305,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.6]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.5]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.4]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

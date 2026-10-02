@@ -34,8 +34,8 @@ local CREDITS = {
 	} },
 	{ "Libraries and data", {
 		"The Ace Development Team -- Ace2",
-		"shagu -- pfQuest, the herb and ore nodes, and Turtle dungeon loot",
-		"shagu -- pfUI's map reveal data, behind the guide browser's explored maps (MIT)",
+		"shagu -- pfQuest, the herb and ore nodes, Turtle dungeon loot and where the rares spawn",
+		"shagu -- pfUI's map reveal data, behind the guide browser's explored maps and the revealed world map (MIT)",
 		"The Turtle WoW team and Lionel Schramm -- the dungeon loading screens and maps in the guide browser",
 		"Cladhaire, laytya and the TWOW porters -- TomTom-TWOW",
 		"Kitymeowmeow -- CraftRoute, the recipe data behind crafting routes",

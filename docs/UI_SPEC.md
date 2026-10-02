@@ -332,7 +332,8 @@ options have it: Route (Race, Route pack), Dungeons (Dungeons, Turtle WoW's
 own, Along the way -- with the middle-of-its-levels switch), Filters, then
 Zygor's pages in this style -- Appearance (Server theme, Window scale, Guide
 window, Minimap), Step Display (Between guides, Sync & Share), Automation
-(Quests, Travel, Inventory), Action Buttons (Windows), Navigation (Waypoints, Arrows) -- then
+(Quests, Travel, Inventory), Action Buttons (Windows), Navigation (Waypoints, Arrows),
+Maps (World map, Ant trail, Points of interest) -- then
 Gear and, set in under it, Item Score, Maintenance, About. Automation replaced
 Behaviour, whose switches went to Step Display, Automation, Action Buttons and
 Appearance with their saved values. The pages built out of `CreateConfigPanel`
@@ -370,6 +371,29 @@ two to a row 170px apart (`Build.Boxes`). *Active items grow* and *Active
 targets grow* are named dropdowns (Right, Left, Up, Down); *Button size* a
 `Theme:Slider`, 60% to 150%, applied as a scale factor on top of the window
 scale (`Theme:SetScaleFactor`).
+
+**The Maps page.** The trail's *Style* (Dots, Dashes) is a short dropdown,
+140px, with its 13px label beside it, set 24px in under the trail's switch and
+held off with it like a slider (`Build.ProfileDropdown`, `Build.Hold`). *Icon
+size*, 60% to 160%, and *See-through icons* sit in under the rares' switch the
+same way.
+
+**On the world map** (`Maps.lua`) everything is drawn on the zone's own map,
+1002 by 668 like the client's. The unexplored overlays are tiles of our own on
+`WorldMapDetailFrame`, cut as the client cuts the explored ones (256px tiles,
+the last of a row or column in the next power of two up) and tinted to 55%
+grey. The step's places are pins on `WorldMapButton`: the accept, turn-in and
+note icons, 14px, in gold (gold, gold, accent), for the quest giver, the
+hand-in and the note's place; 7px filled circles for kill spots (danger) and
+the creatures that drop the item (gold); at most 60 in all, 25 of them kill
+spots. A pin names itself in the theme's tooltip. The trail is 5px accent
+circles 14px apart -- dashes are 4px circles 4px apart, three on and three off
+-- moving a gap toward the waypoint every 1.2 seconds, redrawn ten times a
+second while the map is open. The minimap trail is eight 4px accent circles
+placed by Astrolabe, reaching 85% of the way to the minimap's edge or to the
+waypoint, whichever is nearer. A rare is the kill icon, 16px times *Icon
+size*, gold (a rare elite in the danger colour), at half alpha when
+see-through.
 
 **The Active Items and Active Targets windows** lay their tiles out the way
 each grows: a row from the left (right) or the right (left), or a column from
