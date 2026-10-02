@@ -350,6 +350,20 @@ guide's quest from an NPC's list* under accepting the guide's quests -- sits
 not clickable) while that one is off. A dropdown with a name, *Repair
 automatically*, has it as a 13px body line above it.
 
+**Sliders** written as percentages (`Build.Slider`): the guide window's
+opacity, set in 24px under Transparency and held off (45% alpha, not
+draggable) while it is off; the guide browser's opacity; the step text size.
+
+**The guide window with the Appearance and Step Display settings.** Opacity
+tints only the panel's fill, so the text stays solid; the browser's opacity is
+the whole window's alpha, which its fade-in now stops at (`frame.fadeTo`).
+Step text size scales the titles (12px base), notes (11px), the band labels
+and the row height (44px) together. With the progress bar off the chrome is
+82px instead of 86px and everything hung from it moves up. Growing upward pins
+the panel by its bottom-left corner, as it is saved when dragged. In focus
+mode, the steps after the current one (up to four more) sit under its meter
+and party block, each its full height.
+
 **Boxes to a row.** The Gear page's Upgrade sources and the Action Buttons
 page's *Buttons to show* are both `Theme:Checkbox` grids under a 13px label,
 two to a row 170px apart (`Build.Boxes`). *Active items grow* and *Active

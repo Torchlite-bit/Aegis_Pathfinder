@@ -628,6 +628,81 @@ click(navNamed("Gear"))
 check(not frame.repair.list:IsShown(), "and closes with the page, as the others do")
 click(navNamed("Automation"))
 
+-- Appearance's guide settings and the hiding switches; Step Display's steps,
+-- skips and party sync.
+do
+	local profile = AegisPathfinder.db.profile
+	local calls = {}
+	local function stubCall(name) AegisPathfinder[name] = function(_, v) table.insert(calls, name .. " " .. tostring(v)) end end
+	for _, name in ipairs({ "SetGuideOpacity", "SetBrowserOpacity", "SetStepTextSize", "SetGuideProgressShown",
+		"SetGuideUpward" }) do stubCall(name) end
+	local appearance, steps = pageNamed("Appearance"), pageNamed("Step Display")
+	check(frame.guideOpacity:GetParent() == appearance and frame.browserOpacity:GetParent() == appearance
+		and frame.textSize:GetParent() == appearance, "the opacity and text size sliders are on Appearance")
+	check(frame.guideOpacity.value:GetText() == "50%" and frame.browserOpacity.value:GetText() == "100%"
+		and frame.textSize.value:GetText() == "100%", "at 50%%, 100%% and 100%% to start with")
+	check(frame.guideOpacity:GetAlpha() < 1, "the guide's opacity is held while Transparency is off")
+	do
+		local _, _, _, ox = frame.guideOpacity:GetPoint()
+		local _, _, _, tx = frame.guideTransparent:GetPoint()
+		check(ox > tx, "and sits in under Transparency")
+	end
+	profile.objframetransparent = true
+	AegisPathfinder:RefreshConfigPanel()
+	check(frame.guideOpacity:GetAlpha() == 1, "and let go with it on")
+	profile.objframetransparent = nil
+	frame.guideOpacity.slider:SetValue(0.3)
+	frame.browserOpacity.slider:SetValue(0.6)
+	frame.textSize.slider:SetValue(1.2)
+	check(calls[1] == "SetGuideOpacity 0.3" and calls[2] == "SetBrowserOpacity 0.6" and string.find(calls[3], "SetStepTextSize 1.2", 1, true),
+		"each slider sets its own, got %s", table.concat(calls, ", "))
+	check(frame.guideProgress:IsOn() and not frame.guideUpward:IsOn(), "the progress bar on and growing upward off, to start with")
+	click(frame.guideProgress)
+	click(frame.guideUpward)
+	check(calls[4] == "SetGuideProgressShown false" and calls[5] == "SetGuideUpward true", "the switches say so, got %s %s",
+		tostring(calls[4]), tostring(calls[5]))
+	-- Hiding the guide.
+	for _, key in ipairs({ "hideininstance", "showafterinstance", "hideincombat", "hidebuttonscombat" }) do
+		check(frame.pswitches[key] and frame.pswitches[key]:GetParent() == appearance, "%s is on Appearance", key)
+	end
+	check(not frame.pswitches.hideininstance:IsOn() and frame.pswitches.showafterinstance:IsOn()
+		and not frame.pswitches.showafterinstance:IsEnabled(), "hiding in dungeons off; showing again on, held with it")
+	click(frame.pswitches.hideininstance)
+	check(profile.hideininstance == true and frame.pswitches.showafterinstance:IsEnabled(), "on, the one under it is let go")
+	click(frame.pswitches.showafterinstance)
+	check(profile.showafterinstance == false, "and can be switched off")
+	click(frame.pswitches.hideincombat)
+	click(frame.pswitches.hidebuttonscombat)
+	check(profile.hideincombat and profile.hidebuttonscombat, "hiding in combat, and the buttons with it")
+	profile.hideininstance, profile.showafterinstance, profile.hideincombat, profile.hidebuttonscombat = nil, nil, nil, nil
+	-- Step Display.
+	check(frame.focusSteps:GetParent() == steps and frame.focusSteps.label:GetText() == "1 (the step you are on)",
+		"steps shown in focus mode: one to start with")
+	click(frame.focusSteps)
+	click(frame.focusSteps.rows[3])
+	check(db.focussteps == 3, "and up to five, got %s", tostring(db.focussteps))
+	db.focussteps = nil
+	local reloads = AegisPathfinder.__reloaded or 0
+	check(frame.switches.skiphearth:GetParent() == steps and not frame.switches.skiphearth:IsOn(), "skipping hearthstones off to start with")
+	click(frame.switches.skiphearth)
+	check(db.skiphearth == true and (AegisPathfinder.__reloaded or 0) > reloads, "on, the guide is read again without them")
+	click(frame.switches.skipflightpaths)
+	check(db.skipflightpaths == true, "and flight paths")
+	click(frame.switches.skiphearth)
+	click(frame.switches.skipflightpaths)
+	local stopped
+	AegisPathfinder.shareState = { active = true }
+	function AegisPathfinder:StopSharing() stopped = true end
+	function AegisPathfinder:PaintShareButton() self.__sharePainted = true end
+	check(frame.switches.partysync:IsOn() and frame.askShare:IsEnabled(), "party sync on, asking before inviting let go")
+	click(frame.switches.partysync)
+	check(db.partysync == false and stopped and AegisPathfinder.__sharePainted, "off, sharing stops and the icon goes")
+	check(not frame.askShare:IsEnabled(), "and asking is held off with it")
+	click(frame.switches.partysync)
+	check(frame.askShare:IsEnabled(), "back on, let go")
+	AegisPathfinder.shareState = nil
+end
+
 -- Action Buttons: which way the windows grow, their size, which buttons, the mark.
 do
 	local abPage = pageNamed("Action Buttons")

@@ -134,6 +134,25 @@ are only found at startup.
 - [ ] *Repair automatically* → *With my own money* repairs at a repairing
       vendor and says the cost; not with too little money.
 - [ ] Holding Shift as any of these windows opens: nothing happens by itself.
+- [ ] Appearance → *Guide window opacity* changes how see-through
+      Transparency makes the guide (held off while Transparency is off);
+      *Guide browser opacity* fades the browser, and it fades in to that.
+- [ ] *Step text size* at 140%: titles and notes bigger, rows taller, nothing
+      overlapping, in focus mode and overview.
+- [ ] *Show the progress bar* off: the bar goes and the steps move up.
+- [ ] *Grow upward*: with the guide near the bottom of the screen, a long step
+      grows it upward; drag it, reload, and its bottom edge is where you left it.
+- [ ] *Hide the guide in dungeons and raids*: entering an instance hides it;
+      leaving shows it again (or not, with *Show it again* off). A battleground
+      leaves it alone.
+- [ ] *Hide the guide in combat* (and the action buttons): gone in a fight,
+      back after it; a guide you had closed stays closed.
+- [ ] Step Display → *Steps shown in focus mode* 3: the step and the next two,
+      under its objective meter.
+- [ ] *Skip setting my hearthstone* / *Skip discovering new flight paths*: those
+      steps leave the guide at once.
+- [ ] *Party sync* off: no party icon; an invitation from a party member is
+      declined with no popup.
 - [ ] Action Buttons → *Active items grow* Left, Up, Down: the buttons run
       that way; drag the window, change it again, and it grows from the
       matching corner where you left it.

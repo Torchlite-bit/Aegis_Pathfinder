@@ -387,6 +387,22 @@ arg1 = "AegisPF"
 run(A.shareEvents, "OnEvent")
 check(share.members.Ghanndraine, "ours are")
 
+-- Party sync off (the Step Display page): no party icon, and invitations
+-- answered no without a popup.
+A:StopSharing(true)
+dialog:Hide()
+A.db.char.partysync = false
+A:PaintShareButton()
+check(not button:IsShown(), "party sync off: no party icon")
+local _, countRel = navrow.count:GetPoint()
+check(countRel == navrow, "and the step count takes its place")
+hear("Ghanndraine", "INV^Westfall (10-20)^ACCEPT:184:1")
+check(not dialog:IsShown() and lastSent().msg == "DEC^Westfall (10-20)", "an invitation is declined, without a popup")
+A.db.char.partysync = nil
+A:PaintShareButton()
+_, countRel = navrow.count:GetPoint()
+check(button:IsShown() and countRel == button, "back on, the icon is back beside the count")
+
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end
 if table.getn(failures) > 0 then
 	for _, f in ipairs(failures) do print("FAIL: " .. f) end

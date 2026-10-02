@@ -57,7 +57,13 @@ G.NOTE_TOP = 31      -- where the note starts in a row: title's top, its line, a
 G.TITLE_H = 16       -- one line of title
 G.TITLE_LINE = 15    -- each line a wrapped title adds
 G.NOTE_BOTTOM = 8
+G.NOTE_LINE = 14     -- a note line, where the client will not measure one
 G.MAX_ROWS = 30
+G.MAX_FOCUS = 5      -- the most steps focus mode shows (the Step Display page)
+-- The text size's base sizes: Appearance's Step text size scales them.
+G.BASE = { ROWHEIGHT = 44, TITLE_H = 16, TITLE_LINE = 15, NOTE_TOP = 31, NOTE_LINE = 14,
+	TITLE_FONT = 12, NOTE_FONT = 11, DETAIL_H = 15 }
+G.TEXT_SCALE = 1
 local NUMROWS = 1
 
 
@@ -334,13 +340,22 @@ function AegisPathfinder:SetGuideLocked(on)
 	if self.optionsframe and self.optionsframe:IsShown() and self.RefreshConfigPanel then self:RefreshConfigPanel() end
 end
 
---- A see-through panel: its body at half strength, and no shadow.
+--- A see-through panel: its body at the Appearance page's opacity (half to
+--- start with), and no shadow.
 function AegisPathfinder:SetGuideTransparent(on)
 	self.db.profile.objframetransparent = on and true or nil
 	local skin = self.objectiveskin
-	skin.fill:SetTint("panel", on and 0.5 or 1)
+	skin.fill:SetTint("panel", on and (self.db.profile.objframeopacity or 0.5) or 1)
 	if skin.shadow then skin.shadow:SetTint({ 0, 0, 0 }, on and 0 or 0.62) end
 	if self.optionsframe and self.optionsframe:IsShown() and self.RefreshConfigPanel then self:RefreshConfigPanel() end
+end
+
+--- How see-through Transparency makes the guide: 20% to 100%.
+function AegisPathfinder:SetGuideOpacity(v)
+	v = math.max(0.2, math.min(1, v or 0.5))
+	self.db.profile.objframeopacity = v
+	if self.db.profile.objframetransparent then self:SetGuideTransparent(true) end
+	return v
 end
 
 -- A menu row's box, ticked while what it stands for is on.
@@ -449,7 +464,13 @@ function AegisPathfinder:UpdateObjectivePanel()
 		it had a floating title above the frame and no handle at all.
 	]]
 	local header = Theme:Header(frame, G.HEADER_H)
-	header:MakeDragHandle(frame, Theme:PositionSaver("objframe"))
+	-- Growing upward, the panel is pinned, and kept, by its bottom edge.
+	local savePosition = Theme:PositionSaver("objframe")
+	header:MakeDragHandle(frame, function(f)
+		if AegisPathfinder.db.profile.objframeupward then AegisPathfinder:AnchorGuideBottom() end
+		savePosition(f)
+	end)
+	frame.savePosition = savePosition
 	-- A locked window stays where it is.
 	header:SetScript("OnDragStart", function()
 		if not AegisPathfinder.db.profile.objframelocked then frame:StartMoving() end
@@ -1026,6 +1047,9 @@ function AegisPathfinder:UpdateObjectivePanel()
 	end
 	Theme:RestorePosition(frame, "objframe")
 	frame.expandChip:SetActive(self.db.char.overviewmode)
+	-- The Appearance page's step text size and progress bar.
+	self:SetStepTextSize(self.db.profile.steptextsize, true)
+	self:SetGuideProgressShown(self.db.profile.showprogress ~= false, true)
 
 	self:OnObjectiveFrameResized()
 
@@ -1186,6 +1210,12 @@ function AegisPathfinder:PanelContentHeight()
 	if frame.partyblock and frame.partyblock:IsShown() then
 		h = h + 2 + frame.partyblock:GetHeight()
 	end
+	-- The steps after it that the Step Display page asks for.
+	local n = self:VisibleRowCount()
+	if n > 1 then h = h + 2 end
+	for i = 2, n do
+		if rows[i] and rows[i]:IsShown() then h = h + rows[i]:GetHeight() end
+	end
 	return h + 8
 end
 
@@ -1200,8 +1230,11 @@ function AegisPathfinder:LayoutPanelHeight()
 
 	frame.layoutlock = true
 	local point = frame:GetPoint(1)
-	if frame:GetNumPoints() ~= 1 or not point or not string.find(point, "^TOP") then
-		Theme:AnchorTopLeft(frame)
+	-- Growing upward (the Appearance page), from the bottom edge; else down
+	-- from the top.
+	local edge = self.db.profile.objframeupward and "^BOTTOM" or "^TOP"
+	if frame:GetNumPoints() ~= 1 or not point or not string.find(point, edge) then
+		if edge == "^BOTTOM" then self:AnchorGuideBottom() else Theme:AnchorTopLeft(frame) end
 	end
 	frame:SetHeight(h)
 	frame.layoutlock = nil
@@ -1215,7 +1248,13 @@ end
 	left the list a paint behind whichever changed last.
 ]]
 function AegisPathfinder:VisibleRowCount()
-	if not self.db.char.overviewmode then return 1 end
+	if not self.db.char.overviewmode then
+		-- The step you are on, and as many after it as the Step Display page
+		-- asks for, where the guide has them.
+		local want = math.max(1, math.min(G.MAX_FOCUS, self.db.char.focussteps or 1))
+		local left = (self.actions and self.current) and (table.getn(self.actions) - self.current + 1) or 1
+		return math.max(1, math.min(want, left))
+	end
 	local fits = math.floor((frame:GetHeight() - G.CHROME_TOP - G.FOOTER_H) / G.ROWHEIGHT)
 	return math.max(1, math.min(fits, G.MAX_ROWS))
 end
@@ -1607,7 +1646,7 @@ function AegisPathfinder:UpdateOHPanel(value)
 						-- A client that will not measure wrapped text: estimate
 						-- the lines from the unwrapped width.
 						if noteH < 1 then
-							noteH = math.ceil(row.note:GetStringWidth() / NoteWidth()) * 14
+							noteH = math.ceil(row.note:GetStringWidth() / NoteWidth()) * G.NOTE_LINE
 						end
 					end
 					row:SetHeight(math.max(G.ROWHEIGHT, G.NOTE_TOP + (titleH - G.TITLE_H) + noteH + G.NOTE_BOTTOM))
@@ -1627,8 +1666,11 @@ function AegisPathfinder:UpdateOHPanel(value)
 	end
 
 	-- Focus mode's height is the step's, which is only known once it is
-	-- painted.
-	if not overview then self:LayoutPanelHeight() end
+	-- painted; the steps after it go under its meter.
+	if not overview then
+		self:PlaceFocusRows()
+		self:LayoutPanelHeight()
+	end
 
 	--[[ Nav row and the progress rule.
 
@@ -1674,3 +1716,136 @@ function AegisPathfinder:UpdateOHPanel(value)
 	end
 	footerCount:SetText(string.format("%d of %d steps completed", doneCount, total))
 end
+
+--[[ The Appearance and Step Display pages' settings for this window. ]]
+
+--- Pin the panel by its bottom-left corner, where that is now: growing
+--- upward keeps its bottom edge where you left it.
+function AegisPathfinder:AnchorGuideBottom()
+	local left, bottom = frame:GetLeft(), frame:GetBottom()
+	if not left or not bottom then return false end
+	frame:ClearAllPoints()
+	frame:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", left, bottom)
+	return true
+end
+
+--- Grow upward from where the panel is (for a guide at the bottom of the
+--- screen), or down from its top as it did. Kept where it is either way.
+function AegisPathfinder:SetGuideUpward(on)
+	self.db.profile.objframeupward = on and true or nil
+	if on then self:AnchorGuideBottom() else Theme:AnchorTopLeft(frame) end
+	if frame.savePosition then frame.savePosition(frame) end
+	self:LayoutPanelHeight()
+end
+
+--- Focus mode with more than one step: the steps after the one you are on go
+--- under its meter and the party block, not under the step itself.
+function AegisPathfinder:PlaceFocusRows()
+	local second = rows[2]
+	if not second or not rows[1] then return end
+	local y = G.CHROME_TOP + rows[1]:GetHeight()
+	if meter and meter:IsShown() then y = y + 2 + meter:GetHeight() end
+	if frame.partyblock and frame.partyblock:IsShown() then y = y + 2 + frame.partyblock:GetHeight() end
+	second:ClearAllPoints()
+	second:SetPoint("TOPLEFT", frame, "TOPLEFT", 1, -(y + 2))
+	second:SetPoint("RIGHT", frame, "RIGHT", -1, 0)
+end
+
+--- The steps' text size, 80% to 140%: titles and notes, and the rows that
+--- hold them, scale together. `quiet`: no repaint (the panel is building).
+function AegisPathfinder:SetStepTextSize(v, quiet)
+	v = math.max(0.8, math.min(1.4, v or 1))
+	self.db.profile.steptextsize = v ~= 1 and v or nil
+	local function at(n) return math.floor(n * v + 0.5) end
+	local b = G.BASE
+	G.TEXT_SCALE = v
+	G.ROWHEIGHT, G.TITLE_H, G.TITLE_LINE = at(b.ROWHEIGHT), at(b.TITLE_H), at(b.TITLE_LINE)
+	G.NOTE_TOP, G.NOTE_LINE = at(b.NOTE_TOP), at(b.NOTE_LINE)
+	for _, row in ipairs(rows) do
+		Theme:SetFont(row.text, "body", at(b.TITLE_FONT))
+		Theme:SetFont(row.detail, "body", at(b.NOTE_FONT))
+		Theme:SetFont(row.note, "body", at(b.NOTE_FONT))
+		Theme:SetFont(row.band.label, "body", at(b.TITLE_FONT))
+		row.detail:SetHeight(at(b.DETAIL_H))
+		row.check:ClearAllPoints()
+		row.check:SetPoint("TOPLEFT", row, "TOPLEFT", G.ROWPAD, -(G.ROWHEIGHT - G.DOTSIZE) / 2)
+	end
+	if frame.emptyState then frame.emptyState:SetHeight(G.ROWHEIGHT) end
+	if not quiet then
+		self:LayoutPanelHeight()
+		self:OnObjectiveFrameResized()
+		self:UpdateOHPanel()
+	end
+	return v
+end
+
+--- The 4px rule of guide completion under the step row, on or off; off, the
+--- steps move up into its place.
+function AegisPathfinder:SetGuideProgressShown(on, quiet)
+	-- Off is saved as false; on, the default, as nothing.
+	if on then self.db.profile.showprogress = nil else self.db.profile.showprogress = false end
+	G.CHROME_TOP = G.HEADER_H + G.TABBAR_H + G.NAVROW_H + (on and G.PROGRESS_H or 0)
+	if guideProgress then
+		if on then guideProgress:Show() else guideProgress:Hide() end
+	end
+	-- Everything hung from the top of the list, hung again.
+	rowsOverview = nil
+	if rows[1] then AnchorRows(self.db.char.overviewmode and true or false) end
+	if scrollbar then scrollbar:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -7, -(G.CHROME_TOP + 14)) end
+	if frame.emptyState then frame.emptyState:SetPoint("TOPLEFT", frame, "TOPLEFT", 1, -G.CHROME_TOP) end
+	if not quiet and frame.footer then
+		self:LayoutPanelHeight()
+		self:OnObjectiveFrameResized()
+		self:UpdateOHPanel()
+	end
+end
+
+--[[ Hiding the guide, from the Appearance page: in dungeons and raids,
+	showing it again as you leave if you ask; in combat, and the action
+	buttons with it if you ask. Hidden so, the guide still counts as open --
+	it comes back at login, and its own ✕ is what closes it. ]]
+function AegisPathfinder:OnGuideHideEvent(ev)
+	local p = self.db and self.db.profile
+	if not p then return end
+	if ev == "PLAYER_REGEN_DISABLED" then
+		if not p.hideincombat then return end
+		if frame:IsShown() then
+			frame:Hide()
+			self.hiddenForCombat = true
+		end
+		if p.hidebuttonscombat then
+			self.buttonsHidden = true
+			if self.PaintActiveFrames then self:PaintActiveFrames() end
+		end
+	elseif ev == "PLAYER_REGEN_ENABLED" then
+		if self.hiddenForCombat then
+			self.hiddenForCombat = nil
+			if not self.hiddenForInstance then frame:Show() end
+		end
+		if self.buttonsHidden then
+			self.buttonsHidden = nil
+			if self.PaintActiveFrames then self:PaintActiveFrames() end
+		end
+	else
+		local inside, kind = false, nil
+		if IsInInstance then inside, kind = IsInInstance() end
+		local dungeon = inside and (kind == "party" or kind == "raid")
+		if dungeon and p.hideininstance then
+			if frame:IsShown() then
+				frame:Hide()
+				self.hiddenForInstance = true
+			end
+		elseif not dungeon and self.hiddenForInstance then
+			self.hiddenForInstance = nil
+			if p.showafterinstance ~= false and not self.hiddenForCombat then frame:Show() end
+		end
+	end
+end
+
+local hider = CreateFrame("Frame")
+hider:RegisterEvent("PLAYER_ENTERING_WORLD")
+hider:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+hider:RegisterEvent("PLAYER_REGEN_DISABLED")
+hider:RegisterEvent("PLAYER_REGEN_ENABLED")
+hider:SetScript("OnEvent", function() AegisPathfinder:OnGuideHideEvent(event) end)
+AegisPathfinder.guideHider = hider

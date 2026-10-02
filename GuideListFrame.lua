@@ -1181,6 +1181,7 @@ frame:SetScript("OnShow", function()
 		end
 	end
 	self:UpdateGuideListPanel()
+	frame.fadeTo = self.db and self.db.profile.browseropacity or 1
 	Theme:FadeIn(frame, 0.7)
 end)
 frame:SetScript("OnHide", function()
@@ -1203,3 +1204,13 @@ end
 
 AegisPathfinder.browserview = view
 AegisPathfinder.browserui = ui
+
+--- The guide browser's opacity, from the Appearance page: 40% to 100%, the
+--- whole window. Applied now if it is open, and as it fades in next time.
+function AegisPathfinder:SetBrowserOpacity(v)
+	v = math.max(0.4, math.min(1, v or 1))
+	self.db.profile.browseropacity = v
+	frame.fadeTo = v
+	if frame:IsShown() and not frame:GetScript("OnUpdate") then frame:SetAlpha(v) end
+	return v
+end

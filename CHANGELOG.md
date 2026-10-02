@@ -18,6 +18,31 @@ reports.
 
 ---
 
+## [0.22.5]
+
+### Added
+- **The Appearance page: more for the guide window.**
+  - **Guide window opacity**, under Transparency: how see-through it makes
+    the guide, 20% to 100% (half, as before, to start with). The text stays
+    solid.
+  - **Guide browser opacity**, 40% to 100%.
+  - **Step text size**, 80% to 140%: the steps' titles and notes, and the
+    rows that hold them.
+  - **Show the progress bar**, on as before. Off, the steps move up into its
+    place.
+  - **Grow upward from where I put it**, for a guide at the bottom of the
+    screen: its bottom edge stays where you left it. The header stays on top.
+  - **Hide the guide in dungeons and raids**, with **Show it again when I
+    leave** under it; **Hide the guide in combat**, with **Hide the action
+    buttons in combat too** under it. Hidden so, the guide still counts as
+    open.
+- **The Step Display page:**
+  - **Steps shown in focus mode**, 1 to 5: the step you are on and the ones
+    after it.
+  - **Skip setting my hearthstone** and **Skip discovering new flight paths**.
+  - **Party sync**, on as before. Off, there is no party icon and invitations
+    are declined without a popup.
+
 ## [0.22.4] — restart
 
 ### Added
@@ -1259,6 +1284,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.5]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.4]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

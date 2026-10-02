@@ -196,16 +196,40 @@ local SUB_INDENT = 24
 --- characters do not have yet).
 function Build.CharSwitch(k, key, label, after, opts)
 	opts = opts or {}
+	local store = opts.profile and "profile" or "char"
 	local sw = Theme:Switch(k.body(), label, function(on)
-		AegisPathfinder.db.char[key] = on
+		AegisPathfinder.db[store][key] = on
 		if after then after(on) end
 	end)
 	sw.settingKey, sw.defaultOn = key, opts.defaultOn
 	local indent = opts.parent and SUB_INDENT or nil
 	k.place(sw, function(w) return sw:Fit(w - (indent or 0)) end, 8, indent)
-	k.frame.switches[key] = sw
-	if opts.parent then k.frame.subSwitches[key] = opts.parent end
+	local list = opts.profile and k.frame.pswitches or k.frame.switches
+	list[key] = sw
+	if opts.parent then (opts.profile and k.frame.psubSwitches or k.frame.subSwitches)[key] = opts.parent end
 	return sw
+end
+
+--- The same for a setting kept per profile: db.profile[key], in frame.pswitches.
+function Build.ProfileSwitch(k, key, label, after, opts)
+	opts = opts or {}
+	opts.profile = true
+	return Build.CharSwitch(k, key, label, after, opts)
+end
+
+local function Percent(v) return string.format("%d%%", math.floor(v * 100 + 0.5)) end
+
+--- A slider written as a percentage; `indent` sets it in under the row above.
+function Build.Slider(k, label, lo, hi, step, onChange, indent)
+	local row = Theme:Slider(k.body(), label, lo, hi, step, onChange, Percent)
+	k.place(row, function(w) return row:Fit(w - (indent or 0)) end, 6, indent)
+	return row
+end
+
+--- Hold a slider off, as a switch is held: dimmed, and not to be dragged.
+function Build.Hold(row, held)
+	row:SetAlpha(held and 0.45 or 1)
+	row.slider:EnableMouse(not held)
 end
 
 --- A line of body text over the control it names.
@@ -220,9 +244,9 @@ function Build.Label(k, text)
 end
 
 --- A switch whose setting has its own setter (`set(on)`), kept as frame[name].
-function Build.Switch(k, name, label, set)
+function Build.Switch(k, name, label, set, indent)
 	local sw = Theme:Switch(k.body(), label, function(on) set(on) end)
-	k.place(sw, function(w) return sw:Fit(w) end, 8)
+	k.place(sw, function(w) return sw:Fit(w - (indent or 0)) end, 8, indent)
 	k.frame[name] = sw
 	return sw
 end
@@ -233,32 +257,72 @@ local function RefreshActive() AegisPathfinder:RefreshActiveFrames() end
 --- minimap button.
 function Build.AppearanceGuide(k)
 	local A = AegisPathfinder
+	local f = k.frame
 	k.section("Guide window")
 	-- The same settings as the guide's ≡ menu has, and kept in step with it.
 	Build.Switch(k, "guideLock", "Lock window", function(on) A:SetGuideLocked(on) end)
-	Build.Switch(k, "guideTransparent", "Transparency", function(on) A:SetGuideTransparent(on) end)
-	k.note("Lock window holds the guide where it is, with no grip to size it by; Transparency "
-		.. "lets the game show through it. Both are in the menu at the guide's top left too.")
+	Build.Switch(k, "guideTransparent", "Transparency", function(on)
+		A:SetGuideTransparent(on)
+		A:RefreshConfigPanel()
+	end)
+	f.guideOpacity = Build.Slider(k, "Guide window opacity", 0.2, 1, 0.05, function(v) A:SetGuideOpacity(v) end,
+		SUB_INDENT)
+	f.browserOpacity = Build.Slider(k, "Guide browser opacity", 0.4, 1, 0.05, function(v) A:SetBrowserOpacity(v) end)
+	f.textSize = Build.Slider(k, "Step text size", 0.8, 1.4, 0.05, function(v) A:SetStepTextSize(v) end)
+	Build.Switch(k, "guideProgress", "Show the progress bar", function(on) A:SetGuideProgressShown(on) end)
+	Build.Switch(k, "guideUpward", "Grow upward from where I put it", function(on) A:SetGuideUpward(on) end)
+	k.note("Growing upward suits a guide at the bottom of the screen: its bottom edge stays where "
+		.. "you left it. Lock window and Transparency are in the menu at the guide's top left too.")
 	k.space(k.SECTION_GAP)
+	k.section("Hiding the guide")
+	Build.ProfileSwitch(k, "hideininstance", "Hide the guide in dungeons and raids", function() A:RefreshConfigPanel() end)
+	Build.ProfileSwitch(k, "showafterinstance", "Show it again when I leave", nil,
+		{ parent = "hideininstance", defaultOn = true })
+	Build.ProfileSwitch(k, "hideincombat", "Hide the guide in combat", function() A:RefreshConfigPanel() end)
+	Build.ProfileSwitch(k, "hidebuttonscombat", "Hide the action buttons in combat too", nil, { parent = "hideincombat" })
+	k.space(k.SECTION_GAP - 8)
 	k.section("Minimap")
 	Build.CharSwitch(k, "showminimapbutton", "Minimap button", function() A:UpdateMinimapButton() end)
 	k.space(k.SECTION_GAP - 8)
 end
 
---- Step Display: what comes between guides, and sharing with your party.
+local FOCUS_STEPS = { { value = 1, label = "1 (the step you are on)" }, { value = 2, label = "2" },
+	{ value = 3, label = "3" }, { value = 4, label = "4" }, { value = 5, label = "5" } }
+
+--- Step Display: how many steps, which to skip, what comes between guides,
+--- and sharing with your party.
 function Build.StepDisplay(k)
+	local A = AegisPathfinder
 	k.page("Step Display")
+	k.section("Steps")
+	Build.CharDropdown(k, "focusSteps", "Steps shown in focus mode", "focussteps", FOCUS_STEPS, function()
+		if A.OnObjectiveFrameResized and A.objectiveframe and A.objectiveframe.footer then
+			A:OnObjectiveFrameResized()
+			A:UpdateOHPanel()
+		end
+	end)
+	k.note("Up to five: the step you are on and the ones after it. Overview still shows the whole guide.")
+	k.space(10)
+	Build.CharSwitch(k, "skiphearth", "Skip setting my hearthstone", ReloadCurrentGuide)
+	Build.CharSwitch(k, "skipflightpaths", "Skip discovering new flight paths", ReloadCurrentGuide)
+	k.note("A later step may still say to hearth or fly there: it is not rewritten.")
+	k.space(k.SECTION_GAP)
 	k.section("Between guides")
 	Build.CharSwitch(k, "skipfollowups", "Skip suggested follow-ups")
 	Build.CharSwitch(k, "offercustomzones", "Offer custom zones between guides")
 	Build.CharSwitch(k, "classquests", "Offer class quests at their level")
 	k.space(k.SECTION_GAP - 8)
 	k.section("Sync & Share")
+	Build.CharSwitch(k, "partysync", "Party sync", function(on)
+		if not on and A.shareState and A.shareState.active then A:StopSharing(true) end
+		if A.PaintShareButton then A:PaintShareButton() end
+		A:RefreshConfigPanel()
+	end, { defaultOn = true })
 	-- The share popup's "don't ask again", as a setting you can take back.
 	Build.Switch(k, "askShare", "Ask before inviting my party", function(on)
 		AegisPathfinder.db.char.sharenowarn = not on or nil
-	end)
-	k.note("The party icon on the step row invites your party to share the guide you are on.")
+	end, SUB_INDENT)
+	k.note("The party icon on the step row, and invitations from your party to share their guide.")
 	k.space(k.SECTION_GAP)
 end
 
@@ -512,6 +576,7 @@ function AegisPathfinder:CreateConfigPanel()
 	frame.switches = {}
 	-- What the page builders out of this function lay out with (Build).
 	frame.subSwitches, frame.lateDropdowns, frame.boxes = {}, {}, {}
+	frame.pswitches, frame.psubSwitches = {}, {}
 	local kit = { frame = frame, page = page, place = place, space = space, note = note, wide = wide,
 		section = function(title) table.insert(frame.sections, section(title)) end,
 		body = function() return body end, SECTION_GAP = SECTION_GAP, BODY_W = BODY_W }
@@ -1239,11 +1304,26 @@ function AegisPathfinder:RefreshConfigPanel()
 	frame.redGreen:SetOn(Theme.switchColours == "redgreen")
 	frame.scale:SetValue(Theme.windowScale)
 
-	-- The guide's lock and transparency, which its ≡ menu sets too.
+	-- The guide's lock and transparency, which its ≡ menu sets too, and the
+	-- rest of the Appearance page's guide settings.
 	local profile = self.db.profile
 	frame.guideLock:SetOn(profile.objframelocked)
 	frame.guideTransparent:SetOn(profile.objframetransparent)
+	frame.guideOpacity:SetValue(profile.objframeopacity or 0.5)
+	Build.Hold(frame.guideOpacity, not profile.objframetransparent)
+	frame.browserOpacity:SetValue(profile.browseropacity or 1)
+	frame.textSize:SetValue(profile.steptextsize or 1)
+	frame.guideProgress:SetOn(profile.showprogress ~= false)
+	frame.guideUpward:SetOn(profile.objframeupward)
+	for key, sw in pairs(frame.pswitches) do
+		if sw.defaultOn then sw:SetOn(profile[key] ~= false) else sw:SetOn(profile[key]) end
+	end
+	for key, parent in pairs(frame.psubSwitches) do
+		frame.pswitches[key]:SetLocked(not profile[parent])
+	end
 	frame.askShare:SetOn(not db.sharenowarn)
+	frame.askShare:SetLocked(db.partysync == false)
+	frame.focusSteps:SetValue(db.focussteps or 1)
 
 	-- The addon's own switches; one under another is held off with it.
 	for key, sw in pairs(frame.switches) do

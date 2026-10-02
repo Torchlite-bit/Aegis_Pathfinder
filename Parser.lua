@@ -201,6 +201,15 @@ end
 
 
 local myclass, myrace = UnitClass("player"), UnitRace("player")
+--- Whether a step of guide action `code` is left out on the Step Display
+--- page's say: setting your hearthstone at an inn (h), or discovering a
+--- flight path at a flight master (f).
+function AegisPathfinder:SkipsStep(code)
+	local db = self.db and self.db.char
+	if not db then return false end
+	return (code == "h" and db.skiphearth) or (code == "f" and db.skipflightpaths) or false
+end
+
 local function StepParse(guide)
 	local accepts, turnins, completes = {}, {}, {}
 	--[[ A step's key is its name and its place among ALL the guide's steps,
@@ -292,7 +301,7 @@ local function StepParse(guide)
 		local hasTrade = not not string.find(text, "|TRADE|", 1, true)
 		if text ~= "" and matchFilter(class, myclass) and matchFilter(race, myrace)
 			and matchDungeonFilter(dungeon) and matchPlayStyleFilter(playstyle)
-			and matchAHFilter(hasAH, hasTrade) then
+			and matchAHFilter(hasAH, hasTrade) and not AegisPathfinder:SkipsStep(action) then
 			if action and actiontypes[action] then
 				quest = AegisPathfinder.trim(quest)
 				

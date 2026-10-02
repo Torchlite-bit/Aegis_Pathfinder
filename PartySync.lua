@@ -322,6 +322,11 @@ function AegisPathfinder:OnShareMessage(msg, sender)
 	if not kind or not guide then return end
 
 	if kind == "INV" then
+		-- Party sync off (the Step Display page): no, without a popup.
+		if self.db.char.partysync == false then
+			Send("DEC", guide)
+			return
+		end
 		if share.active and share.guide == guide and share.members[sender] then
 			Send("ACC", guide)
 			return
@@ -413,7 +418,27 @@ end
 
 function AegisPathfinder:PaintShareButton()
 	local b = self.sharebutton
-	if not b or b.hover then return end
+	if not b then return end
+	-- Party sync off (the Step Display page): no party icon, and the step
+	-- count takes its place.
+	local count = b:GetParent() and b:GetParent().count
+	if self.db.char.partysync == false then
+		if b:IsShown() then
+			b:Hide()
+			if count then
+				count:ClearAllPoints()
+				count:SetPoint("RIGHT", b:GetParent(), "RIGHT", -14, 0)
+			end
+		end
+		return
+	elseif not b:IsShown() then
+		b:Show()
+		if count then
+			count:ClearAllPoints()
+			count:SetPoint("RIGHT", b, "LEFT", -6, 0)
+		end
+	end
+	if b.hover then return end
 	if not share.active then
 		Theme:Tint(b.glyph, "textDim")
 	elseif next(share.members) then

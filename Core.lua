@@ -124,6 +124,11 @@ local defaults = {
     btnkill = true,               -- kill (and loot) enemies
     btndelete = true,             -- delete the cheapest item, when the bags are full
     raidmark = true,              -- the target buttons mark whom they target
+    -- The Step Display page (ObjectivesFrame.lua, Parser.lua, PartySync.lua)
+    focussteps = 1,               -- steps focus mode shows: the one you are on, and up to four after it
+    skiphearth = false,           -- leave out steps that set your hearthstone
+    skipflightpaths = false,      -- and those that discover a flight path
+    partysync = true,             -- the party icon, and invitations to share a guide
     petskills = {},
     completedquests = {},
     completedquestsbyid = {}, -- {[questId] = true} from server
@@ -593,7 +598,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.22.4"
+AegisPathfinder.version = "0.22.5"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be

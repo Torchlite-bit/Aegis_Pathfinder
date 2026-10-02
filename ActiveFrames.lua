@@ -1077,6 +1077,14 @@ function AegisPathfinder:PaintActiveFrames()
 	self:PaintTargetBorders()
 
 	PaintMacros(self, char, targets:IsShown() and targets or items:IsShown() and items or guide)
+	-- In combat, with the Appearance page's "hide the action buttons in
+	-- combat too": worked out as ever, for the macros and the quest icons,
+	-- but not shown.
+	if self.buttonsHidden then
+		items:Hide()
+		targets:Hide()
+		macros:Hide()
+	end
 end
 
 --- Light the tile of whoever is targeted now.

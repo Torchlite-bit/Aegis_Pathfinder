@@ -40,10 +40,14 @@ pages down the left, after Zygor's from Appearance on:
 - **Route**: race and route pack.
 - **Dungeons** and **Filters**.
 - **Appearance**: server theme, switch colours, window scale; the guide
-  window's *Lock window* and *Transparency* (also in its ≡ menu); the minimap
-  button.
-- **Step Display**: what comes between guides (follow-ups, custom zones,
-  class quests), and *Ask before inviting my party* for sharing.
+  window -- *Lock window* and *Transparency* (also in its ≡ menu), how
+  see-through Transparency makes it, the guide browser's opacity, the steps'
+  text size, the progress bar, growing upward; hiding the guide in dungeons
+  and raids or in combat; the minimap button. See **The guide window's
+  look**, below.
+- **Step Display**: how many steps focus mode shows, skipping hearthstone and
+  flight path steps, what comes between guides (follow-ups, custom zones,
+  class quests), and party sync. See **Step Display**, below.
 - **Automation**: quests (the guide's or all of them), flights, buying,
   selling greys and repairing -- see **Automation**, below.
 - **Action Buttons**: the Active Items, Active Targets and Macros windows and
@@ -445,6 +449,36 @@ when the item is in your bags, and one you pick up ahead of its note ticks
 when the guide gets there. A step the addon can finish for you
 has a small ⟳ inside its circle, so you know when not to reach for it; an
 empty circle is one only you can tick, and a filled one is done.
+
+**The guide window's look.** On the options window's **Appearance** page:
+
+- **Transparency**, and under it **Guide window opacity** (20% to 100%, half
+  to start with): how much of the game shows through the guide's panel; its
+  text stays solid. **Guide browser opacity** (40% to 100%) fades the whole
+  guide browser.
+- **Step text size**, 80% to 140%: the steps' titles and notes, and the rows
+  that hold them.
+- **Show the progress bar**: the 4px rule of how far through the guide you
+  are. Off, the steps move up into its place.
+- **Grow upward from where I put it**, for a guide at the bottom of the
+  screen: its bottom edge stays where you left it, and it grows up when a
+  step needs more room. (Zygor flips its viewer upside-down; here the header
+  stays on top.)
+- **Hide the guide in dungeons and raids**, with **Show it again when I
+  leave** under it (on); **Hide the guide in combat**, with **Hide the action
+  buttons in combat too** under it. Hidden so, the guide still counts as open;
+  only its ✕ closes it.
+
+**Step Display.** On the page of that name:
+
+- **Steps shown in focus mode**, 1 to 5: the step you are on and the ones
+  after it, under its objectives. Overview still shows the whole guide.
+- **Skip setting my hearthstone** and **Skip discovering new flight paths**:
+  those steps are left out of the guide. A later step may still say to hearth
+  or fly there; it is not rewritten.
+- **Party sync** (on): the party icon on the step row and invitations from
+  your party. Off, the icon goes and invitations are declined without a
+  popup. **Ask before inviting my party** sits under it.
 
 **Automation.** The options window's **Automation** page, as Zygor's:
 

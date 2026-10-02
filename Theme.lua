@@ -1007,17 +1007,20 @@ function Theme:Header(frame, height)
 	return h
 end
 
---[[ Fade a window in as it opens: from clear to solid over `seconds`. ]]
+--[[ Fade a window in as it opens: from clear to solid over `seconds` -- or
+	to `frame.fadeTo`, a window with an opacity of its own (the guide
+	browser's, on the Appearance page). ]]
 function Theme:FadeIn(frame, seconds)
 	local elapsed = 0
 	frame:SetAlpha(0)
 	frame:SetScript("OnUpdate", function()
 		elapsed = elapsed + (arg1 or 0)
+		local to = frame.fadeTo or 1
 		if elapsed >= seconds then
 			frame:SetScript("OnUpdate", nil)
-			frame:SetAlpha(1)
+			frame:SetAlpha(to)
 		else
-			frame:SetAlpha(elapsed / seconds)
+			frame:SetAlpha(to * elapsed / seconds)
 		end
 	end)
 end
