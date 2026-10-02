@@ -5,9 +5,14 @@ The offline checks (`sh Tools/run_tests.sh`) prove the logic against a stubbed
 or that the server answers the way the stub does. This list is what only a
 real client can check. Run it before a release.
 
-**How to use it.** Copy it into a GitHub issue, where the boxes can be ticked,
-and work down it. For anything wrong, add a screenshot, the version (Options →
-About), and what the **Error log** says (Options → Maintenance), under the item.
+**How to use it.** A ticked box has passed in game; an empty one has not been
+tried yet, or has changed since it last passed (its wording changes with it, so
+the old tick doesn't carry over). Say which ones passed and they get ticked
+here. For anything wrong, add a screenshot, the version (Options → About), and
+what the **Error log** says (Options → Maintenance).
+
+Passed so far: the 2026-09-28 pass (sections 1–11 as they were then; party
+sharing only lightly) and the Gear Finder tab at 0.22.1 (2026-10-01).
 
 Start with a **full client restart** (not `/reload`): new textures and files
 are only found at startup.
@@ -16,8 +21,8 @@ are only found at startup.
 
 ## 1. Loading
 
-- [ ] The load message in chat names the version you installed.
-- [ ] No Lua error on login (the Error log is empty).
+- [x] The load message in chat names the version you installed.
+- [x] No Lua error on login (the Error log is empty).
 - [ ] `/apg` and `/pathfinder` open and close the guide; `/vg` is not
       Pathfinder's any more (the client says it doesn't know it).
 - [ ] The guide, the options window and the guide browser fade in as they open.
@@ -26,65 +31,65 @@ are only found at startup.
 - [ ] The minimap button is the Aegis: Pathfinder logo, round, in its own
       colours, no bigger than the other buttons round the minimap; hovering
       it shows a green ring and a tooltip.
-- [ ] Click toggles the guide; right-click opens the options; dragging walks it
+- [x] Click toggles the guide; right-click opens the options; dragging walks it
       round the minimap and it stays there after `/reload`.
 
 ## 2. First-time setup (a new character, or `/apg setup`)
 
-- [ ] Step 1 offers only guides with a route for your race.
-- [ ] Step 2: turning **Solo Self-Found** on dims Auction House, Group quests
+- [x] Step 1 offers only guides with a route for your race.
+- [x] Step 2: turning **Solo Self-Found** on dims Auction House, Group quests
       and Dungeons, and they can't be clicked; off again, they come back as they
       were.
-- [ ] With Dungeons on (and Self-Found off) there is a step 3; the list shows
+- [x] With Dungeons on (and Self-Found off) there is a step 3; the list shows
       levels and the quests each adds; Recommended / All / None work, and
       Recommended changes with the guide picked in step 1 (RestedXP ticks
       many, Optimized few). Untick the Deadmines: the Stockade says "(+4 with
       Deadmines)"; tick it again and the count goes back up.
-- [ ] Finishing a guide on RestedXP as a Human at 19 goes on to Redridge; as a
+- [x] Finishing a guide on RestedXP as a Human at 19 goes on to Redridge; as a
       Night Elf, to Darkshore/Ashenvale. On Optimized, finishing the 30 guide
       goes on to 30-31, and the 40 one to 40-41.
-- [ ] Finish: the chat line says what was set up, and the guide reloads.
+- [x] Finish: the chat line says what was set up, and the guide reloads.
 
 ## 3. The guide
 
-- [ ] A new character opens at step 1, not at the end.
+- [x] A new character opens at step 1, not at the end.
 - [ ] In a fight, Escape clears your target and the guide stays open; its ✕
       still closes it. Escape still closes the options and the guide browser.
-- [ ] Loch Modan (17-18), Crocolisk Hunting: Active Targets and the
+- [x] Loch Modan (17-18), Crocolisk Hunting: Active Targets and the
       AegisTarget macro name Loch Crocolisk, not the Wetlands or Stranglethorn
       crocolisks.
-- [ ] The Macros window's AegisTarget tile, and the macro on an action bar,
+- [x] The Macros window's AegisTarget tile, and the macro on an action bar,
       show Hunter's Mark's icon, not a blank square; AegisItem shows the quest
       item's own icon.
 - [ ] Tick a few steps, then switch group mode or a dungeon chip: the ticks
       stay on the same steps, and after `/reload` too.
 - [ ] Tabs: a leveling guide says XP, a profession guide or crafting route PF,
       a dungeon guide DG, a class quest guide CL, a hardcore guide HC.
-- [ ] A guide opened partway -- Loch Modan (17-18) with Crocolisk Hunting in
+- [x] A guide opened partway -- Loch Modan (17-18) with Crocolisk Hunting in
       the log -- opens at that quest and stays there as the log updates and
       after `/reload`; it does not drop back to step 1, 0 done.
-- [ ] A quest with two things to collect (Crocolisk Hunting: meat and skins)
+- [x] A quest with two things to collect (Crocolisk Hunting: meat and skins)
       shows a bar for each under the step, each filled to its count (4 of 5
       is four fifths full, 4 of 6 two thirds); a finished one stays, full.
       The guide's own progress bar under the step number matches "N of M".
-- [ ] The step's accent bar down the left edge runs on past the bars to the
+- [x] The step's accent bar down the left edge runs on past the bars to the
       footer.
-- [ ] A step the addon ticks itself (a quest objective, travel with a waypoint
+- [x] A step the addon ticks itself (a quest objective, travel with a waypoint
       addon) has a small ⟳ in its circle; a note has an empty circle; a done
       step is filled, with no ⟳.
-- [ ] Accepting, completing and handing in a quest ticks its steps by itself.
+- [x] Accepting, completing and handing in a quest ticks its steps by itself.
 - [ ] Optimized Loch Modan, Bingles' tools (Bingles' Supplies): each of the
       four notes has a ⟳ and ticks when that tool is in your bags. Pick up
       one ahead of its note and it ticks as soon as the guide reaches it.
-- [ ] ◀ and ▶ step back and on; the tick marks the step done.
-- [ ] Click ◀ a few times, then **right-click ▶**: back at your place, with the
+- [x] ◀ and ▶ step back and on; the tick marks the step done.
+- [x] Click ◀ a few times, then **right-click ▶**: back at your place, with the
       steps ticked as they were. Same the other way (▶ a few times, right-click ◀).
-- [ ] Right-clicking the arrow pointing away from your place says which to use.
-- [ ] Hovering ◀ / ▶ mentions the right-click.
-- [ ] Several tabs: open a second guide beside the first; each keeps its place.
-- [ ] Finishing a guide next to a custom zone at your level asks **Where next?**
-- [ ] The expand button swaps one step for the whole guide; the grip resizes it.
-- [ ] **Moonwhisper Coast** (52-60, both sides): Where next? offers it from 51;
+- [x] Right-clicking the arrow pointing away from your place says which to use.
+- [x] Hovering ◀ / ▶ mentions the right-click.
+- [x] Several tabs: open a second guide beside the first; each keeps its place.
+- [x] Finishing a guide next to a custom zone at your level asks **Where next?**
+- [x] The expand button swaps one step for the whole guide; the grip resizes it.
+- [x] **Moonwhisper Coast** (52-60, both sides): Where next? offers it from 51;
       the arrow points where each step says. Its quest data is gathered by
       players, so note any step that sends you to the wrong place, any quest
       it never mentions, and any it asks for that you can't get. In Solo mode
@@ -92,24 +97,24 @@ are only found at startup.
 
 ## 4. Arrow and waypoints
 
-- [ ] With TomTom or pfQuest, the arrow points at the step and counts down the
+- [x] With TomTom or pfQuest, the arrow points at the step and counts down the
       distance.
 - [ ] With TomTom, a RestedXP "Travel to Kalimdor" or "Travel to Eastern
       Kingdoms" step (the Onyxia attunement guides have them) gets a pin on
       the continent's map, and TomTom's arrow and ours point at it. With
       only pfQuest there is no waypoint for the step, and nothing in chat.
-- [ ] Options → Navigation → Arrows: each switch turns its arrow on and off,
+- [x] Options → Navigation → Arrows: each switch turns its arrow on and off,
       and any two or all three can point at once. With TomTom taking the
       waypoints, pfQuest's arrow still points at the step when it is on.
-- [ ] pfQuest's switch off hides pfQuest's arrow altogether; `/db arrow` turns
+- [x] pfQuest's switch off hides pfQuest's arrow altogether; `/db arrow` turns
       it back on and the switch shows it on. An addon that isn't loaded has
       its switch dimmed, and the note names it.
 
 ## 5. Options window
 
-- [ ] Opens beside the guide; categories down the left; the page shown is
+- [x] Opens beside the guide; categories down the left; the page shown is
       marked and named in the strip under the title.
-- [ ] Every page opens at its top; a long page (Gear) scrolls, a short one
+- [x] Every page opens at its top; a long page (Gear) scrolls, a short one
       doesn't show a scroll bar.
 - [ ] No label is cut off or crowded, on any page (Gear and Action Buttons especially).
 - [ ] The pages are Route, Dungeons, Filters, Appearance, Step Display,
@@ -225,23 +230,23 @@ are only found at startup.
       levels either side of yours (Westfall at 18: Foe Reaper 4000), named
       with their level on mouseover; *Icon size* and *See-through icons* change
       them at once.
-- [ ] Drag the corner grip: the window grows wider and taller, and every page
+- [x] Drag the corner grip: the window grows wider and taller, and every page
       re-lays itself without gaps; it keeps the size after `/reload`.
-- [ ] `/apg resetpanels` puts it back to its first size and place.
-- [ ] A dropdown left open closes when you change page or close the window.
-- [ ] **Filters**: turning Solo Self-Found on holds Group mode, Auction House
+- [x] `/apg resetpanels` puts it back to its first size and place.
+- [x] A dropdown left open closes when you change page or close the window.
+- [x] **Filters**: turning Solo Self-Found on holds Group mode, Auction House
       and every dungeon chip off (dimmed, unclickable), and the Dungeons page
       says why; off again, they are as they were.
-- [ ] **Appearance**: each theme recolours everything at once, no reload.
-- [ ] Switches follow the theme; RavenCraft's on switch is near white. Turn on
+- [x] **Appearance**: each theme recolours everything at once, no reload.
+- [x] Switches follow the theme; RavenCraft's on switch is near white. Turn on
       **Red and green switches**: every switch is green when on and red when
       off, in every theme; off again, they follow the theme. It is kept after
       `/reload`.
-- [ ] Drag the **Scale** slider: only its number moves while you hold it; let
+- [x] Drag the **Scale** slider: only its number moves while you hold it; let
       go and every window takes that size. It never jumps to 60%.
-- [ ] **Route**: the preview reaches the bottom of the page; drag the window
+- [x] **Route**: the preview reaches the bottom of the page; drag the window
       taller and it shows more legs.
-- [ ] **Dungeons**: Turtle WoW's own dungeons have chips. Turn on *Offer
+- [x] **Dungeons**: Turtle WoW's own dungeons have chips. Turn on *Offer
       dungeon guides along the way*, tick one at your level, and finish a
       guide: Where next? lists its dungeon guide under the custom zones, and
       it opens in a tab beside the route.
@@ -357,49 +362,49 @@ are only found at startup.
 
 ## 6. Gear
 
-- [ ] Item tooltips show the item score line: `+12%` green for an upgrade,
+- [x] Item tooltips show the item score line: `+12%` green for an upgrade,
       red for worse, *empty slot*, *not for you*.
-- [ ] **Item Score** page (under Gear): the spec picker, every weight on one
+- [x] **Item Score** page (under Gear): the spec picker, every weight on one
       line each (no wrapped names), editing a box changes the tooltips,
       Show all stats lengthens the page, Export → Import round-trips.
-- [ ] `/apg gear` opens the options at Item Score, and again closes them.
-- [ ] Gear Advisor: loot an upgrade → a pop-up with Equip / Decline; Equip puts
+- [x] `/apg gear` opens the options at Item Score, and again closes them.
+- [x] Gear Advisor: loot an upgrade → a pop-up with Equip / Decline; Equip puts
       it on; Decline is remembered; in a fight Equip waits.
-- [ ] A quest with reward choices: the best one is marked.
-- [ ] Upgrades are bordered in the bags.
+- [x] A quest with reward choices: the best one is marked.
+- [x] Upgrades are bordered in the bags.
 
 ## 7. Gear Finder (`/apg finder`)
 
-- [ ] The character panel has a **Gear Finder** tab after Honor (after
+- [x] The character panel has a **Gear Finder** tab after Honor (after
       Reputation's neighbour when there is no Pet tab), looking like the
       others; clicking it shows the Gear Finder over the panel, wider than
       it, with the tabs still underneath.
-- [ ] Only the page's own ✕ shows at its top right, not the character
+- [x] Only the page's own ✕ shows at its top right, not the character
       panel's as well; back on the character sheet, the panel's ✕ is back.
-- [ ] Clicking Character, or pressing C, goes back to the character sheet;
+- [x] Clicking Character, or pressing C, goes back to the character sheet;
       the ✕ and Escape close the panel.
-- [ ] Dragging the page moves the character panel, with or without pfUI.
-- [ ] With **pfUI**: the tab is skinned like pfUI's tabs and sits in their
+- [x] Dragging the page moves the character panel, with or without pfUI.
+- [x] With **pfUI**: the tab is skinned like pfUI's tabs and sits in their
       row, and the page lines up with pfUI's panel.
-- [ ] At a levelling character: a cell per slot with its biggest upgrade,
+- [x] At a levelling character: a cell per slot with its biggest upgrade,
       the gain, where it drops, and *at level N* for one you cannot wear
       yet; *No upgrade found* with the slot's empty picture where there is
       none; *Empty slot* for a slot you wear nothing in. Long names end in
       "..." rather than running into the next line.
-- [ ] Hovering a cell shows the item's tooltip.
-- [ ] Clicking a cell opens its list beside it: every upgrade, biggest
+- [x] Hovering a cell shows the item's tooltip.
+- [x] Clicking a cell opens its list beside it: every upgrade, biggest
       first, with the drop chance; picking one marks the cell *Your pick*,
       and **Clear my pick** undoes it. A pick survives a /reload, and goes
       once you equip the item.
-- [ ] The suggested dungeon shows its loading screen, the dungeon with most
+- [x] The suggested dungeon shows its loading screen, the dungeon with most
       of the cells' items, its levels and slots; the arrows step through the
       rest and go round; picks that move the most upgrades elsewhere change
       it at once. **Open the guide** opens that dungeon's guide.
-- [ ] The spec dropdown changes the spec, and the cells follow. A spec with
+- [x] The spec dropdown changes the spec, and the cells follow. A spec with
       no dungeon to suggest keeps the dropdown, to switch back.
-- [ ] Slots fill from dungeons unticked on the Dungeons page too, and from
+- [x] Slots fill from dungeons unticked on the Dungeons page too, and from
       quest rewards (most need no level).
-- [ ] Quest, reputation and crafted gear (*Quest: …*, *Revered with …*,
+- [x] Quest, reputation and crafted gear (*Quest: …*, *Revered with …*,
       *Blacksmithing 300 …*) have cells but are never the suggestion.
 - [ ] Options → Gear: **Upgrade sources** has five boxes, two to a row:
       **Dungeons**, **Raids**, **Quest rewards**, **Reputation vendors**,
@@ -408,31 +413,31 @@ are only found at startup.
       chat it takes a minute or two, and the cells fill in as items load.
       With nothing ticked the footer says it has nowhere to look. The cog in the footer opens the options at this
       page, whether or not they were open.
-- [ ] At 60: every dungeon, Turtle's own included; Molten Core shows Turtle's
+- [x] At 60: every dungeon, Turtle's own included; Molten Core shows Turtle's
       bosses (Incindis, Basalthar).
-- [ ] Walking into a dungeon names its upgrades in chat.
-- [ ] Switching the Gear Finder off in the options takes the tab away.
-- [ ] With Solo Self-Found on: no dungeons, and crafted gear only from your own
+- [x] Walking into a dungeon names its upgrades in chat.
+- [x] Switching the Gear Finder off in the options takes the tab away.
+- [x] With Solo Self-Found on: no dungeons, and crafted gear only from your own
       professions.
 
 ## 8. Professions
 
 - [ ] A profession guide from the guide browser advances on your skill.
-- [ ] **Shopping list** (`/apg materials`): counts what your bags hold, and
+- [x] **Shopping list** (`/apg materials`): counts what your bags hold, and
       **This step** / **Whole route** switch.
-- [ ] **Cheapest route** (`/apg craft`): plans, **Scan prices** at the auction
+- [x] **Cheapest route** (`/apg craft`): plans, **Scan prices** at the auction
       house fills prices in, **Load as guide** adds the planned guide.
-- [ ] With Aegis: Exchange loaded: **Send to Exchange** puts the crafts on its
+- [x] With Aegis: Exchange loaded: **Send to Exchange** puts the crafts on its
       Crafting tab, and Remove takes them back out.
 
 ## 9. Quest helpers
 
-- [ ] **Active Items**: a button for the step's quest item; clicking uses it.
-- [ ] **Active Targets**: a button for the step's NPC or mob; clicking targets
+- [x] **Active Items**: a button for the step's quest item; clicking uses it.
+- [x] **Active Targets**: a button for the step's NPC or mob; clicking targets
       and marks it.
-- [ ] Quest icons: mousing over a quest NPC or mob puts the right raid marker
+- [x] Quest icons: mousing over a quest NPC or mob puts the right raid marker
       on it (star to talk, skull to kill, cross to loot, square to interact).
-- [ ] **Macros**: AegisTarget and AegisItem appear in your character macros and
+- [x] **Macros**: AegisTarget and AegisItem appear in your character macros and
       follow the guide from an action bar.
 - [ ] With several of a step's mobs around (Crocolisk Hunting), AegisTarget
       takes the nearest, each press after it the next one out, then back to
@@ -441,15 +446,15 @@ are only found at startup.
 
 ## 10. Party sharing
 
-- [ ] In a party, the party icon asks to share; your partner gets a pop-up and
+- [x] In a party, the party icon asks to share; your partner gets a pop-up and
       the guide opens in a new tab.
-- [ ] Each of you shows under the step with your progress; a finished step
+- [x] Each of you shows under the step with your progress; a finished step
       waits for the other.
-- [ ] Leaving the group stops sharing.
+- [x] Leaving the group stops sharing.
 
 ## 11. The rest
 
-- [ ] Options → About → **Credits** opens beside the options and closes with
+- [x] Options → About → **Credits** opens beside the options and closes with
       them.
-- [ ] Options → Maintenance: **Rescan progress**, **Error log**, **Run setup**.
-- [ ] The slash commands in the README all do what they say.
+- [x] Options → Maintenance: **Rescan progress**, **Error log**, **Run setup**.
+- [x] The slash commands in the README all do what they say.
