@@ -659,6 +659,12 @@ finished. Without clicking round, a right-click takes you to where the guide
 would open: the quest your log shows work at, else the first step not done.
 If your place is the other way, it says which arrow to right-click.
 
+**Hints beside the guide.** Hovering anything on the guide -- the arrows, a
+tab, a step -- opens its hint beside the guide, not over the steps: on its
+right when the guide is on the left of the screen, on its left when it is on
+the right, level with what you hover. With no room beside it, the hint goes
+under the guide in the top half of the screen and over it in the bottom half.
+
 **Where a guide opens.** At the quest your log shows work at. The notes, runs,
 flight paths and hearths before it can't be read from the log, so each counts
 as done when the next quest after it is one you have picked up or finished;

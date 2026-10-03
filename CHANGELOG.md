@@ -18,6 +18,16 @@ reports.
 
 ---
 
+## [0.22.17]
+
+### Changed
+- **Hints open beside the guide, not over it.** Hovering the step arrows, a
+  tab, a step or any other part of the guide used to put the hint over the
+  steps. Now it opens beside the guide: on its right when the guide is on the
+  left of the screen, on its left when it is on the right, level with what
+  you hover. With no room beside it, the hint goes under the guide in the top
+  half of the screen and over it in the bottom half.
+
 ## [0.22.16]
 
 ### Changed
@@ -1479,6 +1489,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.17]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.16]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.15]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.14]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

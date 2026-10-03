@@ -1574,9 +1574,60 @@ local TIP_ANCHOR = {
 	LEFT   = { "BOTTOMRIGHT", "TOPLEFT", 0, 0 },
 }
 
+-- Windows whose hints open outside them rather than over them.
+local tipOutside = {}
+local TIP_CLEAR = 4        -- between such a window and a hint beside it
+
+--- Hints for anything in `window` open beside the window, not over it.
+function Theme:TipOutside(window)
+	tipOutside[window] = true
+end
+
+--[[ Where a hint goes when its owner is in a TipOutside window: beside
+	the window on the side facing the middle of the screen, level with the
+	owner -- a window on the left half has them on its right, one on the
+	right half on its left. That side has the more room; with too little
+	even there, below the window when it is in the top half of the screen
+	and above it in the bottom half, lined up with the owner. Worked in screen
+	pixels, so the window's own scale does not matter. False when it fits
+	nowhere outside, and the hint opens where it was asked. ]]
+local function PlaceOutside(owner)
+	local w = owner
+	while w and not tipOutside[w] do w = w:GetParent() end
+	if not w or not w:GetLeft() or not owner:GetLeft() then return false end
+	local ws, os_, ts = w:GetEffectiveScale(), owner:GetEffectiveScale(), tip:GetEffectiveScale()
+	local L, R, T, B = w:GetLeft() * ws, w:GetRight() * ws, w:GetTop() * ws, w:GetBottom() * ws
+	local us = UIParent:GetEffectiveScale()
+	local SW, SH = UIParent:GetWidth() * us, UIParent:GetHeight() * us
+	local tw, th, gap = tip:GetWidth() * ts, tip:GetHeight() * ts, TIP_CLEAR * ts
+	local x, y
+	if (L + R) / 2 < SW / 2 then
+		x = SW - R >= tw + gap and R + gap
+	else
+		x = L >= tw + gap and L - gap - tw
+	end
+	if x then
+		y = math.min(math.max(owner:GetTop() * os_, th), SH)
+	else
+		local below, above = B - gap - th >= 0, SH - T >= th + gap
+		if below and ((T + B) / 2 > SH / 2 or not above) then
+			y = B - gap
+		elseif above then
+			y = T + gap + th
+		else
+			return false
+		end
+		x = math.min(math.max(owner:GetLeft() * os_, 0), SW - tw)
+	end
+	tip:ClearAllPoints()
+	tip:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", x / ts, y / ts)
+	return true
+end
+
 --- Show the tooltip for `owner`, opening on its `side` ("TOP", "BOTTOM",
---- "LEFT" or "RIGHT"). `text` is the hint; `detail`, a list of further
---- lines; `color`, a theme colour for the hint (default "text").
+--- "LEFT" or "RIGHT") -- or outside its window, for a TipOutside one.
+--- `text` is the hint; `detail`, a list of further lines; `color`, a theme
+--- colour for the hint (default "text").
 function Theme:ShowTip(owner, side, text, detail, color)
 	if not tip then
 		tip = CreateFrame("Frame", "AegisPathfinderTip", UIParent)
@@ -1627,9 +1678,11 @@ function Theme:ShowTip(owner, side, text, detail, color)
 
 	tip:SetWidth(width + TIP_PAD * 2)
 	tip:SetHeight(height + TIP_PAD * 2)
-	local a = TIP_ANCHOR[side] or TIP_ANCHOR.BOTTOM
-	tip:ClearAllPoints()
-	tip:SetPoint(a[1], owner, a[2], a[3], a[4])
+	if not PlaceOutside(owner) then
+		local a = TIP_ANCHOR[side] or TIP_ANCHOR.BOTTOM
+		tip:ClearAllPoints()
+		tip:SetPoint(a[1], owner, a[2], a[3], a[4])
+	end
 	tip.owner = owner
 	tip:Show()
 end

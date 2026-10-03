@@ -972,6 +972,23 @@ do
 	IsInInstance = nil
 end
 
+-- Hints over the guide open beside it ------------------------------------------
+
+-- The step arrows' hint covered the steps; now every hint inside the guide
+-- opens outside it (Theme:TipOutside), here on its right, since it sits on
+-- the left of the screen.
+frame:ClearAllPoints()
+frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 40, -100)
+local hovered = CreateFrame("Button", nil, frame)
+hovered:SetWidth(20); hovered:SetHeight(20)
+hovered:SetPoint("TOPLEFT", frame, "TOPLEFT", 10, -40)
+Theme:ShowTip(hovered, "BOTTOM", "Skip to next objective", "Right-click: on to your place in the guide")
+local tp, trel, trelP, tx = Theme.tip:GetPoint(1)
+check(tp == "TOPLEFT" and trel == UIParent and trelP == "BOTTOMLEFT"
+	and tx and tx >= frame:GetRight(),
+	"a hint inside the guide opens beside it, got %s at %s", tostring(tp), tostring(tx))
+Theme:HideTip()
+
 -- Report ---------------------------------------------------------------------
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end

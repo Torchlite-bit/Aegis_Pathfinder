@@ -74,7 +74,13 @@ client's equivalent, `GameTooltip`, is Blizzard's bevelled card in FrizQuadrata
 addon's tooltips too. `Theme:ShowTip(owner, side, text, detail, color)` is the
 addon's own: a `panel-2` card in the body face, the hint in `--text` over dimmer
 detail lines, as wide as its longest line up to 260px, in the `TOOLTIP` strata,
-hiding itself if its owner disappears under the cursor. Only the Active Items
+hiding itself if its owner disappears under the cursor. A window can ask for
+its hints to open outside it, `Theme:TipOutside(window)`, and the guide does,
+so a hint never covers its steps. Such a hint opens beside the window on the
+side facing the middle of the screen, which has the more room, its top level
+with what is hovered; with no room there, below the window when it is in the
+top half of the screen and above it in the bottom half. It is placed in screen
+pixels, so the guide's own scale does not move it. Only the Active Items
 buttons still open `GameTooltip`, since only it can show a game item, and
 `Tools/verify.py` fails any other file that does. Those buttons are the theme's
 rounded tile around the item's icon, not `ItemButtonTemplate`'s square

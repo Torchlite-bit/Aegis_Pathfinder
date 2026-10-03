@@ -86,6 +86,10 @@ are only found at startup.
       steps ticked as they were. Same the other way (▶ a few times, right-click ◀).
 - [x] Right-clicking the arrow pointing away from your place says which to use.
 - [x] Hovering ◀ / ▶ mentions the right-click.
+- [ ] Hints over the guide open beside it, not over the steps: with the guide
+      on the left of the screen, on its right, level with what you hover; on
+      the right of the screen, on its left. Drag the guide wide across the
+      screen: under it near the top of the screen, over it near the bottom.
 - [x] Several tabs: open a second guide beside the first; each keeps its place.
 - [x] Finishing a guide next to a custom zone at your level asks **Where next?**
 - [x] The expand button swaps one step for the whole guide; the grip resizes it.

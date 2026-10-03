@@ -133,6 +133,8 @@ local tabFirst, shownActive, shownCount = 1, nil, nil
 
 local frame = CreateFrame("Frame", "AegisPathfinderObjectives", UIParent)
 AegisPathfinder.objectiveframe = frame
+-- Its hints open beside it, not over the steps they are about.
+Theme:TipOutside(frame)
 frame:SetFrameStrata("DIALOG")
 frame:SetWidth(G.DEFAULT_WIDTH)
 frame:SetHeight(G.CHROME_TOP + G.ROWHEIGHT + G.FOOTER_H)
