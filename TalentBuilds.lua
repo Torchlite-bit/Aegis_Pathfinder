@@ -17,6 +17,16 @@ AegisPathfinder.TalentBuilds = {
 			"Improved Nature's Grasp", 4, "Natural Weapons", 3, "Natural Shapeshifter", 2,
 			"Omen of Clarity", 1, "Open Wounds", 3, "Carnage", 2, "Feral Charge", 1, "Furor", 5,
 		} },
+		alts = {
+			{ name = "Bear", spec = "Feral Combat", split = "11/40/0", order = {
+				"Ferocity", 5, "Thick Hide", 3, "Feral Instinct", 2, "Sharpened Claws", 3, "Primal Fury", 2,
+				"Predatory Strikes", 3, "Feral Charge", 1, "Feral Swiftness", 2, "Feral Instinct", 3,
+				"Ancient Brutality", 2, "Berserk", 1, "Heart of the Wild", 5, "Leader of the Pack", 1,
+				"Carnage", 2, "Blood Frenzy", 2, "Feral Aggression", 5, "Nature's Grasp", 1,
+				"Improved Nature's Grasp", 4, "Natural Weapons", 3, "Natural Shapeshifter", 2,
+				"Omen of Clarity", 1,
+			} },
+		},
 		specs = {
 			{ spec = "Balance", split = "35/0/16", order = {
 				"Improved Wrath", 5, "Guidance of the Dream", 2, "Improved Moonfire", 2, "Natural Weapons", 3,
@@ -108,6 +118,15 @@ AegisPathfinder.TalentBuilds = {
 			"Vengeance", 5, "Vengeful Strikes", 5, "Divine Strength", 5, "Vindication", 3, "Repentance", 1,
 			"Improved Devotion Aura", 5, "Precision", 3, "Toughness", 3,
 		} },
+		alts = {
+			{ name = "Sword and Board", spec = "Protection", split = "10/41/0", order = {
+				"Redoubt", 5, "Precision", 3, "Toughness", 2, "Blessing of Sanctuary", 1,
+				"Shield Specialization", 3, "Toughness", 5, "Improved Hammer of Justice", 3, "Holy Shield", 1,
+				"Reckoning", 5, "Righteous Strikes", 5, "Bulwark of the Righteous", 1,
+				"Improved Righteous Fury", 3, "Righteous Defense", 3, "Anticipation", 3, "Divine Strength", 5,
+				"Divine Intellect", 5,
+			} },
+		},
 		specs = {
 			{ spec = "Holy", split = "35/5/11", order = {
 				"Divine Intellect", 5, "Holy Judgement", 3, "Spiritual Focus", 2, "Healing Light", 3,
@@ -256,6 +275,15 @@ AegisPathfinder.TalentBuilds = {
 			"Deflection", 1, "Mortal Strike", 1, "Cruelty", 5, "Unbridled Wrath", 5, "Improved Shouts", 5,
 			"Enrage", 5,
 		} },
+		alts = {
+			{ name = "Sword and Board", spec = "Protection", split = "16/0/35", order = {
+				"Shield Specialization", 5, "Toughness", 5, "Improved Revenge", 3, "Improved Bloodrage", 2,
+				"Last Stand", 1, "Defiance", 4, "Shield Slam", 1, "One-Handed Weapon Specialization", 5,
+				"Improved Shield Slam", 2, "Reprisal", 2, "Concussion Blow", 1, "Defiance", 5,
+				"Defensive Tactics", 3, "Improved Heroic Strike", 3, "Tactical Mastery", 5, "Improved Rend", 2,
+				"Deep Wounds", 3, "Improved Charge", 2, "Deflection", 1,
+			} },
+		},
 		specs = {
 			{ spec = "Arms", split = "31/20/0", order = {
 				"Improved Heroic Strike", 3, "Tactical Mastery", 5, "Improved Rend", 2, "Improved Charge", 2,

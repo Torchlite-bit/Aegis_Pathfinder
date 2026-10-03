@@ -96,9 +96,10 @@ do
 		local builds = A.TalentBuilds[class]
 		check(table.getn(builds.specs) == 3, "%s: a build at 60 for each of three specs", class)
 		local all = { builds.levelling }
+		for _, b in ipairs(builds.alts or {}) do table.insert(all, b) end
 		for _, b in ipairs(builds.specs) do table.insert(all, b) end
 		for _, b in ipairs(all) do
-			local label = class .. " " .. (b == builds.levelling and "levelling" or b.spec)
+			local label = class .. " " .. (b == builds.levelling and "levelling" or b.name and b.name .. " levelling" or b.spec)
 			local ok, why = TA.Fits(tree, b)
 			check(ok, "%s fits the tree, got %s", label, tostring(why))
 			-- Learn it as the advisor says, from no points: each point the
@@ -214,6 +215,22 @@ do
 	check(TA.Choose(builds, "auto", fury, 60, elsewhere) == fury, "at 60 with points off levelling: your spec's")
 	check(TA.Choose(builds, "auto", nil, 60, {}) == lev, "no spec known: levelling")
 	check(TA.Choose(builds, "levelling", fury, 60, {}) == lev, "levelling chosen: levelling")
+
+	-- Sword and Board: another levelling build, alone or then your spec.
+	local snb = TA.LevellingBuild(builds, "Sword and Board")
+	check(snb and snb ~= lev and snb.spec == "Protection", "a Warrior has a Sword and Board levelling build")
+	check(TA.Choose(builds, "levelling:Sword and Board", fury, 60, {}) == snb, "chosen alone, it is followed at 60 too")
+	check(TA.Choose(builds, "auto:Sword and Board", fury, 30, {}) == snb, "then your spec: Sword and Board before 60")
+	b, ready = TA.Choose(builds, "auto:Sword and Board", fury, 60, TA.Targets(TA.Points(snb)))
+	check(b == snb and ready, "and at 60 with all 51 on it, your spec's is ready")
+	check(TA.Choose(builds, "auto:Sword and Board", fury, 60, {}) == fury, "after a respec, your spec's")
+	check(TA.Choose(builds, "auto:Nope", fury, 30, {}) == lev, "a levelling build the class lacks: its usual one")
+	check(TA.BuildLabel(builds, snb, "Warrior") == "Warrior Sword and Board leveling", "named for what it is")
+	check(TA.AutoLabel({ choice = "auto:Sword and Board", level = 60, build = snb, builds = builds }, fury, "Sword and Board")
+		== "Sword and Board (done), then Fury", "and at 60 says it is done")
+	check(TA.LevellingBuild(A.TalentBuilds.PALADIN, "Sword and Board").spec == "Protection"
+		and TA.LevellingBuild(A.TalentBuilds.DRUID, "Bear").spec == "Feral Combat",
+		"a Paladin has Sword and Board too, and a Druid Bear")
 	check(TA.Choose(builds, "Protection", fury, 20, {}) == TA.SpecBuild(builds, "Protection"), "a spec chosen: that one")
 	check(TA.SpecBuild(A.TalentBuilds.HUNTER, "BeastMastery").spec == "Beast Mastery", "Item Score's BeastMastery")
 	check(TA.SpecBuild(A.TalentBuilds.DRUID, "FeralBear").spec == "Feral Combat", "and FeralBear")

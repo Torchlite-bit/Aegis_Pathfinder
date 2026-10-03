@@ -222,6 +222,10 @@ are only found at startup.
       here." on the glowing one.
 - [ ] Pick another build from the strip's menu: the marks follow it, and the
       Extras page's *Build to follow* shows it; and the other way round.
+- [ ] Warrior or Paladin: the menu has "Sword and Board, then <spec> at 60"
+      and "<Class> Sword and Board leveling"; a Druid "Bear, then …" and
+      "Druid Bear leveling". Picking one marks Protection's (or Feral's)
+      talents from 10.
 - [ ] Switch the Talent Advisor off: the window has no strip, badges or glow,
       and the tooltip no line, at once. On again: back.
 - [ ] Level up (10+): "Level N: a talent point to spend. Take <talent> (rank r

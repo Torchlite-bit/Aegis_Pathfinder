@@ -595,6 +595,8 @@ continent's:
 - **Talent Advisor** (on): marks where your points go on the talent window --
   see **Talent Advisor**, below. *Build to follow*: levelling, then your spec
   (to start with), your class's levelling build, or any spec's build at 60.
+  A Warrior or Paladin can level as **Sword and Board** instead, and a Druid
+  as **Bear**: each on its own, or then your spec at 60.
   *Name the talent to take in chat when I level up* (on). *Open the talent
   window*.
 
@@ -606,7 +608,11 @@ each point goes to, on Blizzard's own talent window (and pfUI's skin of it):
   your talents lean to. At 60 it keeps the levelling build while every point
   is on it, and once all 51 are spent says your spec's build is ready for
   when you respec; after a respec it follows your spec's. Pick another on the
-  Extras page or from the strip above the talent window.
+  Extras page or from the strip above the talent window. Some classes have
+  another levelling build: Sword and Board for a Warrior (Protection, Shield
+  Slam at 30 and Concussion Blow at 40) or a Paladin (Holy Shield at 30,
+  Bulwark of the Righteous at 41), and Bear for a Druid (Feral Charge at 28,
+  Leader of the Pack at 40).
 - **On the window.** Each talent of the tree shown has a badge with the points
   the build puts there: filled in the theme's colour while some are still to
   take, quiet once you have them all, amber "+N" for points you have that the

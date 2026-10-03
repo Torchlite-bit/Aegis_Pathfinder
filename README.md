@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.22.18)
+# Aegis: Pathfinder (v0.22.19)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -158,7 +158,8 @@ puts there, and the talent your next point goes to glows, with a dot on its
 tree's tab. A strip above the window names the build and where the next point
 goes, and says when you have points elsewhere — it carries on from the
 closest point, never asks you to respec. Your class's levelling build to 60,
-then your spec's; or pick any of them. On a level up it names the talent to
+then your spec's; or pick any of them — Sword and Board for a Warrior or
+Paladin, Bear for a Druid. On a level up it names the talent to
 take in chat. The builds are made on Turtle WoW's own trees, and each is
 checked against the tree your game has before it is followed. It never spends
 a point.
@@ -266,7 +267,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.22.18`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.22.19`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)** or open an

@@ -2,7 +2,8 @@
 
 	Two builds a character: the levelling build for your class, followed
 	until 60, then the build for your preferred spec -- the one picked on the
-	Item Score page -- or whichever you choose. The builds are data, by
+	Item Score page -- or whichever you choose. Some classes have another
+	levelling build to choose instead (Sword and Board, Bear). The builds are data, by
 	talent name (TalentBuilds.lua, written by Tools/build/talent_builds.py),
 	and each is checked against the tree the game has before it is followed:
 	one that does not fit says so and is not followed.
@@ -81,6 +82,23 @@ function TA:ClassBuilds(class)
 		_, class = UnitClass("player")
 	end
 	return AegisPathfinder.TalentBuilds and AegisPathfinder.TalentBuilds[class]
+end
+
+--- What a "Build to follow" choice is: "auto", "levelling" or a spec's
+--- name, and the other levelling build it names, if any -- "auto:Bear" is
+--- Bear until 60, then your spec's; "levelling:Bear" is Bear alone.
+function TA.ParseChoice(choice)
+	local _, _, kind, alt = string.find(choice or "auto", "^(%a+):(.+)$")
+	if kind then return kind, alt end
+	return choice or "auto", nil
+end
+
+--- The levelling build: the class's, or the other one named `alt`.
+function TA.LevellingBuild(builds, alt)
+	for _, b in ipairs(alt and builds.alts or {}) do
+		if b.name == alt then return b end
+	end
+	return builds.levelling
 end
 
 --- A class's build at 60 for a spec, by its tree's name or Item Score's.
@@ -222,18 +240,20 @@ function TA.Off(ranks, targets)
 	return off, total
 end
 
---- The build to follow. `choice` is "auto", "levelling" or a spec's name.
+--- The build to follow. `choice` is "auto", "levelling" or a spec's name,
+--- either of the first two with ":" and another levelling build's name.
 --- Auto follows the levelling build until 60, and at 60 while every point
 --- you have is on it (then `ready` is true once all 51 are spent); after a
 --- respec, or with points elsewhere, your preferred spec's.
 function TA.Choose(builds, choice, preferred, level, ranks)
 	if not builds then return nil end
-	if choice == "levelling" then return builds.levelling end
-	if choice and choice ~= "auto" then
-		local b = TA.SpecBuild(builds, choice)
+	local kind, alt = TA.ParseChoice(choice)
+	local lev = TA.LevellingBuild(builds, alt)
+	if kind == "levelling" then return lev end
+	if kind ~= "auto" then
+		local b = TA.SpecBuild(builds, kind)
 		if b then return b end
 	end
-	local lev = builds.levelling
 	if not preferred or (level or 0) < 60 then return lev end
 	local total = TA.Total(ranks)
 	local _, off = TA.Off(ranks, TA.Targets(TA.Points(lev)))
@@ -283,6 +303,7 @@ end
 --- A build's name, as the window's menu and chat give it.
 function TA.BuildLabel(builds, build, className)
 	if build == builds.levelling then return (className or "Class") .. " leveling" end
+	if build.name then return (className or "Class") .. " " .. build.name .. " leveling" end
 	return build.spec .. " at 60"
 end
 
@@ -311,27 +332,36 @@ function TA:Label(state)
 	return TA.BuildLabel(state.builds, state.build, (UnitClass("player")))
 end
 
---- What "Leveling, then my spec at 60" says now: your spec by name, and
---- at 60 which of the two it is following.
-function TA.AutoLabel(state, preferred)
-	if not preferred then return "Leveling, then my spec at 60" end
-	if not state or state.choice ~= "auto" or (state.level or 0) < 60 then
-		return "Leveling, then " .. preferred.spec .. " at 60"
+--- What "Leveling, then my spec at 60" says now -- or "Bear, then my spec
+--- at 60" for another levelling build `alt`: your spec by name, and at 60
+--- which of the two it is following.
+function TA.AutoLabel(state, preferred, alt)
+	local lead = alt or "Leveling"
+	if not preferred then return lead .. ", then my spec at 60" end
+	local current = state and state.choice == (alt and "auto:" .. alt or "auto")
+	if not current or (state.level or 0) < 60 then
+		return lead .. ", then " .. preferred.spec .. " at 60"
 	end
-	if state.build == state.builds.levelling then return "Leveling (done), then " .. preferred.spec end
+	if state.build ~= preferred then return lead .. " (done), then " .. preferred.spec end
 	return preferred.spec .. ", my spec"
 end
 
---- "Build to follow", as a dropdown's items: levelling then your spec, the
---- levelling build, and each spec's build at 60, yours marked.
+--- "Build to follow", as a dropdown's items: levelling then your spec (and
+--- each other levelling build then your spec), the levelling builds alone,
+--- and each spec's build at 60, yours marked.
 function TA:BuildItems(state)
 	local builds = state and state.builds or self:ClassBuilds()
 	if not builds then return {} end
 	local preferred = self:PreferredBuild(builds)
-	local items = {
-		{ value = "auto", label = TA.AutoLabel(state, preferred) },
-		{ value = "levelling", label = ((UnitClass("player")) or "Class") .. " leveling" },
-	}
+	local className = (UnitClass("player")) or "Class"
+	local items = { { value = "auto", label = TA.AutoLabel(state, preferred) } }
+	for _, a in ipairs(builds.alts or {}) do
+		table.insert(items, { value = "auto:" .. a.name, label = TA.AutoLabel(state, preferred, a.name) })
+	end
+	table.insert(items, { value = "levelling", label = className .. " leveling" })
+	for _, a in ipairs(builds.alts or {}) do
+		table.insert(items, { value = "levelling:" .. a.name, label = className .. " " .. a.name .. " leveling" })
+	end
 	for _, b in ipairs(builds.specs) do
 		table.insert(items, { value = b.spec, label = b.spec .. " at 60" .. (b == preferred and " (my spec)" or "") })
 	end

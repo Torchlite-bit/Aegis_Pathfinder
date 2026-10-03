@@ -245,11 +245,14 @@ check(strip:IsShown() and Marks("Impale").glow:IsShown(), "on again")
 -- Picking another build from the strip: the options' setting.
 local order = {}
 for _, item in ipairs(strip.drop.items) do table.insert(order, item.value) end
-check(table.concat(order, ",") == "auto,levelling,Arms,Fury,Protection", "the menu: auto, levelling and each spec, got %s",
-	table.concat(order, ","))
-check(strip.drop.items[4].label == "Fury at 60 (my spec)", "your spec marked")
+check(table.concat(order, ",") == "auto,auto:Sword and Board,levelling,levelling:Sword and Board,Arms,Fury,Protection",
+	"the menu: auto, then Sword and Board, the levelling builds and each spec, got %s", table.concat(order, ","))
+check(strip.drop.items[2].label == "Sword and Board, then Fury at 60"
+	and strip.drop.items[4].label == "Warrior Sword and Board leveling", "Sword and Board named both ways, got %s / %s",
+	strip.drop.items[2].label, strip.drop.items[4].label)
+check(strip.drop.items[6].label == "Fury at 60 (my spec)", "your spec marked")
 refreshedOptions = 0
-fire(strip.drop.rows[5], "OnClick")
+fire(strip.drop.rows[7], "OnClick")
 check(A.db.char.talentbuild == "Protection" and refreshedOptions == 1, "picking Protection follows it, the options too")
 check(strip.drop.label:GetText() == "Protection at 60", "the strip names it")
 PanelTemplates_SetTab(TalentFrame, 3)

@@ -10,7 +10,9 @@ Tools/data/turtle_talent_trees.json). Turtle WoW has reworked every class,
 so nothing here comes from the original game's trees.
 
   * A levelling build for every class: the order its points go in, one a
-    level from 10, so that by 60 all 51 are spent.
+    level from 10, so that by 60 all 51 are spent. Some classes have another
+    to choose instead -- Sword and Board for a Warrior or Paladin who levels
+    with a shield, Bear for a Druid who tanks.
   * A build at 60 for each of the class's three specs: the talents and their
     ranks, which is all a build at 60 needs, as the points are spent at once.
 
@@ -245,6 +247,85 @@ LEVELLING = {
         Feral Charge 1
         Furor 5
     """),
+}
+
+# The other levelling builds a class may choose: name, spec, why, and the
+# order, as LEVELLING's.
+LEVELLING_ALTS = {
+    "WARRIOR": [
+        ("Sword and Board", "Protection", "Protection with a shield from 10. Shield Specialization gives rage on "
+         "every block, Improved Revenge stuns, Last Stand at 25, Shield Slam at 30 and Concussion Blow at 40; "
+         "then Arms' Tactical Mastery and Deep Wounds.", """
+            Shield Specialization 5
+            Toughness 5
+            Improved Revenge 3
+            Improved Bloodrage 2
+            Last Stand 1
+            Defiance 4
+            Shield Slam 1
+            One-Handed Weapon Specialization 5
+            Improved Shield Slam 2
+            Reprisal 2
+            Concussion Blow 1
+            Defiance 5
+            Defensive Tactics 3
+            Improved Heroic Strike 3
+            Tactical Mastery 5
+            Improved Rend 2
+            Deep Wounds 3
+            Improved Charge 2
+            Deflection 1
+        """),
+    ],
+    "PALADIN": [
+        ("Sword and Board", "Protection", "Protection with a shield from 10. Redoubt and Shield Specialization "
+         "block and give mana back, Holy Shield at 30 with Reckoning's extra attacks, Righteous Strikes and "
+         "Bulwark of the Righteous at 41; then Holy's Divine Strength and Divine Intellect.", """
+            Redoubt 5
+            Precision 3
+            Toughness 2
+            Blessing of Sanctuary 1
+            Shield Specialization 3
+            Toughness 5
+            Improved Hammer of Justice 3
+            Holy Shield 1
+            Reckoning 5
+            Righteous Strikes 5
+            Bulwark of the Righteous 1
+            Improved Righteous Fury 3
+            Righteous Defense 3
+            Anticipation 3
+            Divine Strength 5
+            Divine Intellect 5
+        """),
+    ],
+    "DRUID": [
+        ("Bear", "Feral Combat", "Bear form from 10. Ferocity, Thick Hide and Feral Instinct to tank, Sharpened "
+         "Claws and Primal Fury for rage, Feral Charge at 28, Heart of the Wild by 39 and Leader of the Pack at "
+         "40; Balance's Omen of Clarity at 60.", """
+            Ferocity 5
+            Thick Hide 3
+            Feral Instinct 2
+            Sharpened Claws 3
+            Primal Fury 2
+            Predatory Strikes 3
+            Feral Charge 1
+            Feral Swiftness 2
+            Feral Instinct 3
+            Ancient Brutality 2
+            Berserk 1
+            Heart of the Wild 5
+            Leader of the Pack 1
+            Carnage 2
+            Blood Frenzy 2
+            Feral Aggression 5
+            Nature's Grasp 1
+            Improved Nature's Grasp 4
+            Natural Weapons 3
+            Natural Shapeshifter 2
+            Omen of Clarity 1
+        """),
+    ],
 }
 
 # Builds at 60: the spec, what it is for, and its talents, "talent rank" a line.
@@ -610,6 +691,14 @@ def lua_builds(classes):
         out.append("\t\tlevelling = { spec = %s, split = %s, order = {" % (lua_str(spec), lua_str(split)))
         out.append(lua_order(order, "\t\t\t"))
         out.append("\t\t} },")
+        if e.get("alts"):
+            out.append("\t\talts = {")
+            for name, aspec, asplit, aorder in e["alts"]:
+                out.append("\t\t\t{ name = %s, spec = %s, split = %s, order = {"
+                           % (lua_str(name), lua_str(aspec), lua_str(asplit)))
+                out.append(lua_order(aorder, "\t\t\t\t"))
+                out.append("\t\t\t} },")
+            out.append("\t\t},")
         out.append("\t\tspecs = {")
         for sname, ssplit, learn in e["specs"]:
             out.append("\t\t\t{ spec = %s, split = %s, order = {" % (lua_str(sname), lua_str(ssplit)))
@@ -689,7 +778,24 @@ def main():
         }
         if rxp and cls in rxp.get("classes", {}):
             entry["rxp_gone"] = rxp_gone(trees, [g for g in rxp["classes"][cls] if not g["survival"]])
-        lua_entry = {"levelling": (spec, entry["levelling"]["split"], order), "specs": []}
+        lua_entry = {"levelling": (spec, entry["levelling"]["split"], order), "specs": [], "alts": []}
+        for aname, aspec, awhy, abody in LEVELLING_ALTS.get(cls, []):
+            aorder = parse_ranks(abody, "\n")
+            abad, apoints = check_order(trees, aorder)
+            problems += ["%s %s levelling: %s" % (cls, aname, b) for b in abad]
+            afinal = {}
+            for _, _, name, rank in apoints:
+                afinal[name] = rank
+            alast = {}
+            for level, _, name, rank in apoints:
+                alast[(name, rank)] = level
+            asplit = "/".join(str(n) for n in trees.split(afinal))
+            entry.setdefault("alts", []).append({
+                "name": aname, "spec": aspec, "why": awhy, "split": asplit,
+                "order": [[name, rank, alast.get((name, rank))] for name, rank in aorder],
+                "points": [[level, tab + 1, name, rank] for level, tab, name, rank in apoints],
+            })
+            lua_entry["alts"].append((aname, aspec, asplit, aorder))
         for sname, swhy, sbody in SPECS[cls]:
             ranks = parse_ranks(sbody, ",")
             alloc = dict(ranks)
@@ -734,7 +840,8 @@ def main():
                 stale.append(path)
         for path in stale:
             print("%s is not what talent_builds.py writes: run it" % os.path.relpath(path, ROOT))
-        print("%d classes, %d builds, %d problems" % (len(out["classes"]), len(out["classes"]) * 4, len(problems)))
+        builds = sum(4 + len(c.get("alts", [])) for c in out["classes"].values())
+        print("%d classes, %d builds, %d problems" % (len(out["classes"]), builds, len(problems)))
         return 1 if problems or stale else 0
     for path, text in written.items():
         with open(path, "w", encoding="utf-8", newline="\n") as fh:

@@ -842,8 +842,9 @@ do
 	local preferred = TA:PreferredBuild(AegisPathfinder.TalentBuilds.PALADIN)
 	check(preferred and labels.auto == "Leveling, then " .. preferred.spec .. " at 60",
 		"it names your spec, got %s", tostring(labels.auto))
-	check(labels.levelling == "Paladin leveling" and table.concat(order, ",") == "auto,levelling,Holy,Protection,Retribution",
-		"then the class's levelling build and each spec's, got %s", table.concat(order, ","))
+	check(labels.levelling == "Paladin leveling" and labels["levelling:Sword and Board"] == "Paladin Sword and Board leveling"
+		and table.concat(order, ",") == "auto,auto:Sword and Board,levelling,levelling:Sword and Board,Holy,Protection,Retribution",
+		"then Sword and Board, the levelling builds and each spec's, got %s", table.concat(order, ","))
 	check(preferred and labels[preferred.spec] == preferred.spec .. " at 60 (my spec)", "yours marked")
 	check(labels.Holy == "Holy at 60" or preferred.spec == "Holy", "the others not")
 	click(advisor)
@@ -851,7 +852,7 @@ do
 	check(not talentChat:IsEnabled() and frame.talentBuild:GetAlpha() < 1, "and the chat line and the build are held")
 	click(advisor)
 	check(db.talentadvisor == true and talentChat:IsEnabled() and frame.talentBuild:GetAlpha() == 1, "on again")
-	fire(frame.talentBuild.rows[3], "OnClick")
+	fire(frame.talentBuild.rows[5], "OnClick")
 	check(db.talentbuild == "Holy" and talentRefreshes == 3, "picking Holy follows it, and redraws, got %s",
 		tostring(db.talentbuild))
 	AegisPathfinder:RefreshConfigPanel()

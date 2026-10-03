@@ -18,6 +18,25 @@ reports.
 
 ---
 
+## [0.22.19]
+
+### Added
+- **Sword and Board and Bear leveling builds.** A Warrior or Paladin can
+  level with a shield, and a Druid as a bear. The Talent Advisor's *Build to
+  follow* (on the Extras page and the strip over the talent window) lists
+  each on its own ("Warrior Sword and Board leveling") or then your spec at 60
+  ("Sword and Board, then Protection at 60"). All three are checked point by
+  point against Turtle WoW's trees.
+  - **Warrior:** Shield Specialization, Toughness and Improved Revenge first,
+    Last Stand at 25, Shield Slam at 30, Concussion Blow at 40, then Arms'
+    Tactical Mastery and Deep Wounds (16/0/35).
+  - **Paladin:** Redoubt and Precision first, Shield Specialization, Holy
+    Shield at 30 with Reckoning, Righteous Strikes, Bulwark of the Righteous
+    at 41, then Holy's Divine Strength and Divine Intellect (10/41/0).
+  - **Druid:** Ferocity, Thick Hide and Feral Instinct first, Feral Charge at
+    28, Heart of the Wild by 39, Leader of the Pack at 40, then Balance's
+    Omen of Clarity at 60 (11/40/0).
+
 ## [0.22.18]
 
 ### Fixed
@@ -1513,6 +1532,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.19]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.18]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.17]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.16]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
