@@ -13,6 +13,9 @@ what the **Error log** says (Options → Maintenance).
 
 Passed so far: the 2026-09-28 pass (sections 1–11 as they were then; party
 sharing only lightly) and the Gear Finder tab at 0.22.1 (2026-10-01).
+Screenshots at 0.22.23 (2026-10-03) showed the talent strips and marks on
+Blizzard's window, with pfUI and on Modern Spellbook (the README's pictures);
+0.22.24 tidied what they showed, so those items wait for a look on 0.22.24.
 
 Start with a **full client restart** (not `/reload`): new textures and files
 are only found at startup.
@@ -223,8 +226,9 @@ are only found at startup.
 - [ ] The talent window opens on the tree your next point goes to. Each of its
       talents in the build has a badge with the build's points: green while
       some are to take, a tick once you have them; the next one has a gold
-      ring with NEXT over it, and its tab a gold dot and light. Click another
-      tab: its talents are marked, no ring, the tab stays lit.
+      ring with NEXT over it, clear of the badge on its top right, and its tab
+      a gold dot and light. Click another tab: its talents are marked, no
+      ring, the tab stays lit.
 - [ ] The strip above the window: PATHFINDER, *Following* and the build on one
       row; under it a card with the talent's icon in gold, "Take <talent>" and
       "Rank r of n in <tree> · 1 point to spend" ("Next: <talent>" and "… at
@@ -238,10 +242,12 @@ are only found at startup.
       spent. Neither with *Point out a talent point* off.
 - [ ] **With Modern Spellbook** (and `/msb talents` on): open the talents. A
       strip over its window: PATHFINDER, *Following*, the card, and *Plan to my
-      level*, *Whole build as a plan*, *Share*. Every tree's talents have their
-      badges, the next one the gold ring and NEXT, and its tree "NEXT POINT
-      HERE" by its name. Expand a tree: its talents are marked too. Switch it
-      to a plan: the marks go, the strip stays.
+      level*, *Whole build as a plan*, *Share*. The menu and the card's two
+      lines are not cut short, and the card reaches the buttons. Every tree's
+      talents have their badges, the next one the gold ring and NEXT (clear of
+      its badge), and its tree "NEXT POINT HERE" by its name. Expand a tree:
+      its talents are marked too. Switch it to a plan: the marks go, the strip
+      stays.
 - [ ] Modern Spellbook: *Plan to my level* -- chat says "Saved "Pathfinder: …
       to <level>" in Modern Spellbook's plans: N points"; its window shows the
       plan, its list has it, and its *Apply* learns the points. *Whole build as
@@ -263,7 +269,9 @@ are only found at startup.
 - [ ] Warrior or Paladin: the menu has "Protection leveling, then <spec> at
       60" and "<Class> Protection leveling"; a Druid "Bear leveling, then …" and
       "Druid Bear leveling". Picking one marks Protection's (or Feral's)
-      talents from 10.
+      talents from 10. A character that followed Sword and Board on 0.22.23
+      follows Protection on 0.22.24 with nothing to pick, and its Modern
+      Spellbook plan is "Pathfinder: Protection leveling to <level>".
 - [ ] Switch the Talent Advisor off: the window has no strip, badges or glow,
       and the tooltip no line, at once. On again: back.
 - [ ] Level up (10+): "Level N: a talent point to spend. Take <talent> (rank r

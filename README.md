@@ -49,7 +49,7 @@ and feature ideas.
 
 ## Contents
 
-- [What it does](#what-it-does) — guides, arrow, filters, gear, professions
+- [What it does](#what-it-does) — guides, arrow, filters, gear, talents, professions
 - [Install](#install) · [Using it](#using-it)
 - [Something broken?](#something-broken) · [Contributing](#contributing)
 - [Credits](#credits) · [License](#license)
@@ -64,7 +64,10 @@ Every feature in full detail: **[docs/FEATURES.md](docs/FEATURES.md)**.
 
 1–60 for every race: **Optimized** (Joana's routes), **RestedXP** and **RXP
 Hardcore**. Steps tick themselves off as you accept, complete and turn in
-quests. Finish a guide and it offers the next — or one of your server's custom
+quests, and a travel step ("Travel to Westfall") as you get there, or as soon
+as you are on what comes after it. A quest under a zone you collapsed in the
+quest log still counts: the guide opens the zone again to see it. Finish a
+guide and it offers the next — or one of your server's custom
 zones, if one fits your level: Moonwhisper Coast, new in 1.18.1, included.
 
 **A guide browser like Zygor's.** Categories down the left (Leveling,
@@ -102,6 +105,12 @@ each, per side: Molten Core, Onyxia's Lair, Blackwing Lair, Naxxramas, Upper
 Blackrock Spire, Scholomance, Blackrock Depths, and Turtle WoW's Emerald
 Sanctum, Lower and Upper Karazhan and the Karazhan Crypts. The browser says
 which you're attuned to.
+
+<p align="center">
+  <img src="docs/images/guide-browser-attunements.png" width="720" alt="The guide browser in game, Dungeons, Attunements and keys: the raid attunements from Onyxia's Lair to Naxxramas, then the dungeon keys, each saying Raid or Dungeon, then RestedXP's Onyxia Attunement and Scholomance Key; Blackrock Depths: Shadowforge Key pointed at, with its loading screen, level and progress on the right"><br>
+  <sub>In game, on 0.22.23. Since 0.22.24 a row's words move aside for the star
+  and arrow that show over "Dungeon" here.</sub>
+</p>
 
 **First-time setup.** The first time you log in, three quick steps pick your
 guide, what it includes, and the dungeons you mean to run -- each with how
@@ -159,20 +168,40 @@ the guides of the dungeons you ticked are offered beside the next zone.
 
 ### 🌳 Talent Advisor
 
-On Blizzard's own talent window, each talent shows how many points the build
-puts there, and the talent your next point goes to glows, with a dot on its
-tree's tab. A strip above the window names the build and where the next point
-goes, and says when you have points elsewhere — it carries on from the
-closest point, never asks you to respec. Your class's levelling build to 60,
-then your spec's; or pick any of them — Protection for a Warrior or Paladin,
-Bear for a Druid. On a level up a card names the talent to take, and
-the talents button lights up until you spend the point. With
-[Modern Spellbook](https://github.com/lioryx/ModernSpellBook), its talent
-window is marked the same way, and the build saves as one of its plans for its
-Apply to learn, or shares as its build string — and a string someone shares
-with you can be followed. The builds are made on Turtle WoW's own trees, and each is
-checked against the tree your game has before it is followed. It never spends
-a point.
+Your class's levelling build to 60, then your spec's — or pick any of them:
+Protection for a Warrior or Paladin, Bear for a Druid. On Blizzard's own
+talent window each talent in the build has a badge with the build's points,
+and a tick once you have them; the talent your next point goes to has a gold
+ring with NEXT over it, and its tree's tab a gold dot. A strip on the window's
+top edge names the build and the next talent, and says when you have points
+elsewhere — it carries on from the closest point, never asks you to respec.
+With pfUI it sits on pfUI's frame.
+
+| Blizzard's talent window | With pfUI |
+| :---: | :---: |
+| <img src="docs/images/talent-window.jpg" width="340" alt="Blizzard's talent window in game for a Paladin, on Protection: the Pathfinder strip on its top edge with the build to follow and a card, Next: Shield Specialization, rank 1 of 3; the talents taken ticked, the rest with the build's points, Shield Specialization ringed in gold with NEXT over it, and a gold dot on the Protection tab"> | <img src="docs/images/talent-window-pfui.jpg" width="340" alt="The same talent window with pfUI's skin: the strip sits on pfUI's frame, with the same marks on the talents and the gold dot on the Protection tab"> |
+
+On a level up a card names the talent to take, and the talents button lights
+up until you spend the point.
+
+**With [Modern Spellbook](https://github.com/lioryx/ModernSpellBook)**, its
+talent window is marked the same way, with NEXT POINT HERE over the tree your
+point goes to, and the strip has three buttons. **Plan to my level** and
+**Whole build as a plan** save the build as one of its plans, for its Apply to
+learn. **Share** gives the build as its build string, and follows a string
+someone shares with you.
+
+<p align="center">
+  <img src="docs/images/talent-modern-spellbook.jpg" width="820" alt="Modern Spellbook's talent window in game for a Paladin, all three trees side by side: the Pathfinder strip across its top with the build to follow, the card naming Shield Specialization, and Plan to my level, Whole build as a plan and Share; NEXT POINT HERE beside Protection, the talents taken ticked, the rest with the build's points, and Shield Specialization ringed in gold with NEXT over it">
+</p>
+
+<p align="center"><sub>In game, on 0.22.23. Since 0.22.24 the shield build is
+called Protection ("Protection leveling, then Protection at 60"), the card's
+second line fits ("Rank 1 of 3 in Protection · at level 21"), and NEXT sits
+clear of the talent's badge.</sub></p>
+
+The builds are made on Turtle WoW's own trees, and each is checked against the
+tree your game has before it is followed. It never spends a point.
 
 ### ⚒️ Professions
 
@@ -222,7 +251,7 @@ Resize it from the corner.
 
 | Maps | Extras |
 | :---: | :---: |
-| <img src="docs/images/options-maps.png" width="380" alt="Options, Maps page: revealing the world map, the step on the map, the ant trail and its style, and rare creatures near your level"> | <img src="docs/images/options-extras.png" width="380" alt="Options, Extras page: Pathfinder's chat messages, detailed reputation gains, level-up announcements, and the Talent Advisor: its switch, the build to follow and the talent named in chat"> |
+| <img src="docs/images/options-maps.png" width="380" alt="Options, Maps page: revealing the world map, the step on the map, the ant trail and its style, and rare creatures near your level"> | <img src="docs/images/options-extras.png" width="380" alt="Options, Extras page: Pathfinder's chat messages, detailed reputation gains, level-up announcements, and the Talent Advisor: its switch, the build to follow, the talent named in chat, the card and lit talents button on a level up, and a note on Modern Spellbook"> |
 
 | Gear |
 | :---: |
