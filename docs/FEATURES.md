@@ -510,7 +510,12 @@ options window does not shrink out from under the cursor.
 
 **Automatic advancement.** Accepting, completing and turning in quests, binding
 a hearthstone, and collecting tagged items all resolve themselves. So do travel
-steps, once a waypoint provider is active. A note that has you pick something
+steps, once a waypoint provider is active, and on reaching the zone or subzone
+they name -- "Travel to Westfall" by any road or by flight. An optional travel
+step, RestedXP's way to a place rather than a stop, is passed once you are in
+the next step's zone or have done the next step, as RestedXP does. Quests
+under a collapsed header in the quest log are out of the client's sight; when
+one of the guide's is, the headers are opened so the guide can follow it. A note that has you pick something
 up for a quest -- Bingles' four tools in Loch Modan, one note each -- ticks
 when the item is in your bags, and one you pick up ahead of its note ticks
 when the guide gets there. A step the addon can finish for you

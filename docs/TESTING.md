@@ -84,6 +84,17 @@ are only found at startup.
 - [ ] A RestedXP "Grind to level 10" step (Teldrassil 6-11) has a ⟳ and holds
       the guide until 10, then ticks; an optional one ("Grind to 6", Elwynn)
       does not hold it.
+- [ ] RestedXP 13-15 Westfall opens on "Travel to Elwynn Forest". Fly from
+      Stormwind to Sentinel Hill: it ticks as you land, and the guide moves on
+      to Farmer Furlbrow and follows the Westfall quests as you do them.
+      Walking in through Elwynn ticks it too.
+- [ ] RestedXP Hardcore 13-15 Westfall's "Travel to Westfall" ticks as you
+      cross into Westfall, wherever you cross.
+- [ ] On an optional travel step, talk to the next step's NPC: the quest is
+      picked and accepted, and the guide moves past the travel step.
+- [ ] Collapse the quest log's header over a quest the guide is on: the
+      header opens again within a moment, chat says why once, and the guide
+      still ticks that quest's progress and hand-in.
 - [x] ◀ and ▶ step back and on; the tick marks the step done.
 - [x] Click ◀ a few times, then **right-click ▶**: back at your place, with the
       steps ticked as they were. Same the other way (▶ a few times, right-click ◀).

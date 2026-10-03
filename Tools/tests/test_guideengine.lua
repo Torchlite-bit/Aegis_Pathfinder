@@ -508,6 +508,144 @@ do
 	AegisPathfinder.SetTurnedIn, AegisPathfinder.GetLootRequirement = nil, nil
 end
 
+-- Travel steps: by any road, and the way there behind you ------------------------
+
+--[[ RestedXP's 13-15 Westfall opens on "Travel to Elwynn Forest (19.0, 81.0)
+	|O|", RestedXP's "#sticky .zone Westfall": the way out of Elwynn, done on
+	entering Westfall. It only ticked within yards of its point, so a player
+	who flew from Stormwind into Westfall had the guide stay on it while the
+	Westfall quests went by. These are the guide's own lines. ]]
+do
+	local lines = {}
+	for l in io.lines("Guides/RXP/Alliance/13_15_Westfall.lua") do
+		if string.find(l, "^[RA] ") then table.insert(lines, l) end
+		if table.getn(lines) == 2 then break end
+	end
+	local function step(line)
+		local _, _, a, title, tags = string.find(line or "", "^(%a) (.-) (|.*)$")
+		return a, title, tags
+	end
+	local _, title1, tags1 = step(lines[1])
+	local _, title2, tags2 = step(lines[2])
+	check(title1 == "Travel to Elwynn Forest" and string.find(tags1 or "", "|O|", 1, true)
+		and string.find(tags1 or "", "|Z|Elwynn Forest|", 1, true),
+		"the guide still opens on its optional way out of Elwynn, got %s", tostring(lines[1]))
+	check(title2 == "The Forgotten Heirloom" and string.find(tags2 or "", "|Z|Westfall|", 1, true),
+		"then Farmer Furlbrow's quest in Westfall, got %s", tostring(lines[2]))
+
+	function AegisPathfinder:SetTurnedIn(i, value)
+		self.turnedin[self.quests[i]] = value and true or nil
+		self:UpdateStatusFrame()
+	end
+	function AegisPathfinder:GetLootRequirement() return nil end
+	local inLog = {}
+	function AegisPathfinder:GetObjectiveStatus(i)
+		local qid = tonumber((self:GetObjectiveTag("QID", i)))
+		return self.turnedin[self.quests[i]], qid and inLog[qid] and 1 or nil
+	end
+	local zone, subzone = "Stormwind City", "Trade District"
+	GetZoneText = function() return zone end
+	GetSubZoneText = function() return subzone end
+	local function westfall(at, sub)
+		zone, subzone = at, sub or ""
+		AegisPathfinder.actions = { "RUN", "ACCEPT", "NOTE" }
+		AegisPathfinder.quests = { title1 .. "@1@", title2 .. "@2@", "After@3@" }
+		AegisPathfinder.tags = { tags1, tags2, "|N|after|" }
+		AegisPathfinder.turnedin, AegisPathfinder.current = {}, 1
+		AegisPathfinder:UpdateStatusFrame()
+		return AegisPathfinder.current
+	end
+	check(westfall("Stormwind City", "Trade District") == 1, "in Stormwind the guide points the way out of Elwynn")
+	check(westfall("Westfall", "Sentinel Hill") == 2,
+		"flown into Westfall, the way there is behind you: on to Furlbrow, got step %d", AegisPathfinder.current)
+	check(AegisPathfinder.turnedin[title1 .. "@1@"], "and it is ticked, so leaving Westfall does not bring it back")
+	check(westfall("Elwynn Forest", "Goldshire") == 2, "in Elwynn it is done as it says: Travel to Elwynn Forest")
+	inLog[64] = true
+	check(westfall("Stormwind City", "Trade District") == 3,
+		"with Furlbrow's quest already taken, it is behind you too, and so is the accept; got step %d",
+		AegisPathfinder.current)
+	inLog[64] = nil
+
+	-- "Travel to Westfall (60.0, 19.4)", not optional, in RestedXP Hardcore.
+	local tagsTo = "|N|(60.0, 19.4)| |Z|Westfall|"
+	local function travel(name, tags, at, sub)
+		zone, subzone = at, sub or ""
+		AegisPathfinder.actions = { "RUN", "NOTE" }
+		AegisPathfinder.quests = { name .. "@1@", "After@2@" }
+		AegisPathfinder.tags = { tags, "|N|after|" }
+		AegisPathfinder.turnedin, AegisPathfinder.current = {}, 1
+		AegisPathfinder:UpdateStatusFrame()
+		return AegisPathfinder.current
+	end
+	check(travel("Travel to Westfall", tagsTo, "Westfall", "Sentinel Hill") == 2,
+		"Travel to Westfall is done anywhere in Westfall, not only at its point")
+	check(travel("Travel to Westfall", tagsTo, "Elwynn Forest", "Goldshire") == 1, "and not before")
+	check(travel("the Westfall Lighthouse", "|N|(30.0, 86.0)| |O| |Z|Westfall|", "Westfall", "Westfall Lighthouse") == 2,
+		"the Westfall Lighthouse is done at the Westfall Lighthouse")
+	check(travel("Travel towards Lakeshire", "|N|(30.7, 60.0)| |Z|Redridge Mountains|", "Redridge Mountains", "Lakeshire") == 2,
+		"Travel towards Lakeshire is done in Lakeshire")
+	check(travel("Westbrook Garrison", "|N|(24.8, 76.2)| |Z|Elwynn Forest|", "Elwynn Forest", "Goldshire") == 1,
+		"a stop in the zone you are in still waits for you to get there")
+	check(travel("Stormwind City", "|SZ|Stormwind City|", "Stormwind City", "Trade District") == 2,
+		"a step's |SZ| is still read")
+	-- The way there passes on only for an optional step: a stop waits.
+	zone, subzone = "Westfall", ""
+	AegisPathfinder.actions = { "RUN", "ACCEPT" }
+	AegisPathfinder.quests = { "Westbrook Garrison@1@", "The Forgotten Heirloom@2@" }
+	AegisPathfinder.tags = { "|N|(24.8, 76.2)| |Z|Elwynn Forest|", "|QID|64| |Z|Westfall|" }
+	AegisPathfinder.turnedin, AegisPathfinder.current = {}, 1
+	AegisPathfinder:UpdateStatusFrame()
+	check(AegisPathfinder.current == 1, "a travel step that is not optional is not passed over by zone")
+	check(AegisPathfinder:IsWayThere(1) == false, "nor is it a way there")
+	AegisPathfinder.tags[1] = "|N|(24.8, 76.2)| |O| |PRE|41377| |Z|Elwynn Forest|"
+	check(AegisPathfinder:IsWayThere(1) == false, "nor one that waits on a quest")
+
+	AegisPathfinder.SetTurnedIn, AegisPathfinder.GetObjectiveStatus = nil, nil
+	AegisPathfinder.GetLootRequirement = nil
+	GetZoneText = function() return "Elwynn Forest" end
+	GetSubZoneText = function() return "" end
+end
+
+-- Quests under a collapsed header ---------------------------------------------------
+
+--[[ The quest log's functions see only the rows in sight. A guide quest under
+	a collapsed header looked never accepted, so the headers are opened: once,
+	not again for ten seconds, and only for a quest of the guide's. ]]
+do
+	local rows = { { "Westfall", true }, { "The Forgotten Heirloom", false, 64 } }
+	local quests, onList, expanded, said = 3, { [64] = true, [36] = true }, 0, {}
+	GetNumQuestLogEntries = function() return table.getn(rows), quests end
+	GetQuestLogTitle = function(i) return rows[i][1], 10, nil, rows[i][2] and 1 or nil end
+	C_QuestLog = { GetQuestIDForLogIndex = function(i) return rows[i][3] end,
+		IsOnQuest = function(q) return onList[q] == true end }
+	ExpandQuestHeader = function(i) if i == 0 then expanded = expanded + 1 end end
+	local now = 1000
+	GetTime = function() return now end
+	function AegisPathfinder:Say(msg) table.insert(said, msg) end
+	AegisPathfinder.actions = { "ACCEPT", "TURNIN" }
+	AegisPathfinder.quests = { "The Forgotten Heirloom@1@", "Westfall Stew@2@" }
+	AegisPathfinder.tags = { "|QID|64|", "|QID|36|" }
+
+	check(AegisPathfinder:RevealGuideQuests() and expanded == 1,
+		"Westfall Stew is on the quest list but out of sight: the headers open")
+	check(table.getn(said) == 1 and string.find(said[1], "collapsed", 1, true), "and the guide says why")
+	now = 1005
+	check(not AegisPathfinder:RevealGuideQuests() and expanded == 1, "not again within ten seconds")
+	now = 1011
+	AegisPathfinder:RevealGuideQuests()
+	check(expanded == 2 and table.getn(said) == 1, "again after, without saying it twice")
+	table.insert(rows, { "Westfall Stew", false, 36 })
+	now = 1030
+	check(not AegisPathfinder:RevealGuideQuests() and expanded == 2, "with every quest in sight, nothing to open")
+	table.remove(rows)
+	AegisPathfinder.tags = { "|QID|64|", "|QID|99|" }
+	check(not AegisPathfinder:RevealGuideQuests() and expanded == 2,
+		"a hidden quest that is not the guide's is left where you put it")
+
+	GetNumQuestLogEntries, GetQuestLogTitle, C_QuestLog, ExpandQuestHeader, GetTime = nil, nil, nil, nil, nil
+	function AegisPathfinder:Say(msg) self:Print(msg) end
+end
+
 -- Report ---------------------------------------------------------------------
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end

@@ -49,6 +49,11 @@ local function step(action, name, tags)
 	steps = { { action, name, tags or {} } }
 	A.actions = { action }
 end
+-- GuideEngine.lua's, for these steps: an optional travel step with no |PRE|.
+function A:IsWayThere(i)
+	local s = steps[i or self.current]
+	return s ~= nil and s[1] == "RUN" and s[3].O ~= nil and s[3].PRE == nil
+end
 
 -- The quest windows and the gossip lists, as the client and ClassicAPI give them.
 local shift = false
@@ -115,6 +120,25 @@ check(did[1] == "accept", "and accepted")
 title = "A Fishy Peril"
 reset(); A:QUEST_DETAIL()
 check(did[1] == nil, "not another quest, with all quests off")
+
+-- On an optional way there (RestedXP's "Travel to Elwynn Forest |O|" before
+-- Farmer Furlbrow), talking to Furlbrow means you got there: his quest is the
+-- one the windows take. A stop that is not optional is still the step.
+steps = { { "RUN", "Travel to Elwynn Forest", { O = "" } }, { "ACCEPT", "The Forgotten Heirloom", { QID = "64" } } }
+A.actions, A.current = { "RUN", "ACCEPT" }, 1
+gossip.available = { { questID = 64, title = "The Forgotten Heirloom", questLevel = 10 } }
+reset(); A:GOSSIP_SHOW()
+check(picked[1] == "available 64", "past a way there, the next step's quest is picked, got %s", tostring(picked[1]))
+title = "The Forgotten Heirloom"
+reset(); A:QUEST_DETAIL()
+check(did[1] == "accept", "and accepted")
+steps[1][3] = {}
+reset(); A:QUEST_DETAIL()
+check(did[1] == nil, "but not past a stop that is not optional")
+title = "The Fargodeep Mine"
+step("ACCEPT", "The Fargodeep Mine", { QID = "62" })
+gossip.available = { { questID = 40, title = "A Fishy Peril", questLevel = 20 },
+	{ questID = 62, title = "The Fargodeep Mine", questLevel = 20 } }
 
 -- Picking from a list, off: the windows still accept, the list is yours.
 A.db.char.autogossip = false

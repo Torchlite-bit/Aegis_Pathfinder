@@ -142,6 +142,115 @@ function AegisPathfinder:ScheduleStatusUpdate()
 	end)
 end
 
+-- Travel steps.
+local TRAVEL = { RUN = true, FLY = true, BOAT = true, HEARTH = true }
+
+function AegisPathfinder:IsTravelStep(i)
+	return self.actions and TRAVEL[self.actions[i or self.current]] or false
+end
+
+--- An optional travel step that waits on nothing: RestedXP's #sticky and
+--- #completewith ones, the way to a place rather than a stop.
+function AegisPathfinder:IsWayThere(i)
+	i = i or self.current
+	return self:IsTravelStep(i) and self:GetObjectiveTag("O", i) ~= nil and not self:GetObjectiveTag("PRE", i)
+end
+
+-- What RestedXP's travel steps put before the place.
+local TRAVEL_WORDS = { "^travel towards? ", "^travel to ", "^run to ", "^go to ", "^head to ",
+	"^return to ", "^fly to ", "^enter " }
+
+local function Place(s)
+	s = string.lower(AegisPathfinder.trim(s or ""))
+	return (string.gsub(s, "^the ", ""))
+end
+
+--[[ Whether travel step `i` is where you are: its name, its |SZ|, or the
+	place after RestedXP's "Travel to" in its name is the zone or subzone you
+	are in. "Travel to Westfall" is done on entering Westfall by any road, or
+	by flight, and not only within yards of its point. ]]
+function AegisPathfinder:ArrivedAt(i)
+	i = i or self.current
+	if not self:IsTravelStep(i) then return false end
+	local zone, subzone = Place(GetZoneText()), Place(GetSubZoneText())
+	local function here(place)
+		place = place and Place(place)
+		return place ~= nil and place ~= "" and (place == zone or place == subzone)
+	end
+	local name = string.gsub(self.quests[i] or "", "@.*@", "")
+	if here(self:GetObjectiveTag("SZ", i)) or here(name) then return true end
+	local place = string.lower(name)
+	for _, words in ipairs(TRAVEL_WORDS) do place = string.gsub(place, words, "") end
+	return here(place)
+end
+
+--[[ A way there (IsWayThere) is behind you once you are in the zone of the
+	step after it, when that is not its own, or once the step after it is
+	done. In RestedXP such steps never hold the guide; here they did until you
+	passed within yards of their point, so flying into Westfall left 13-15
+	Westfall on "Travel to Elwynn Forest" while its quests went by. ]]
+function AegisPathfinder:PassedTravel(i)
+	if not self:IsWayThere(i) then return false end
+	local j = i + 1
+	local after = self.actions[j]
+	if not after then return false end
+	local there = self:GetObjectiveTag("Z", j) or self.zonename
+	if there and there ~= (self:GetObjectiveTag("Z", i) or self.zonename) and GetZoneText() == there then
+		return true
+	end
+	if self.turnedin[self.quests[j]] then return true end
+	if TRAVEL[after] then return self:ArrivedAt(j) or self:PassedTravel(j) end
+	local turnedin, logi, complete = self:GetObjectiveStatus(j)
+	return (turnedin or (after == "ACCEPT" and logi) or (after == "COMPLETE" and complete)) and true or false
+end
+
+--[[ Quests under a collapsed header are missing from the quest log as far as
+	its functions go: GetNumQuestLogEntries counts only the rows in sight. A
+	guide quest hidden so looked never accepted -- the guide went back to its
+	accept, skipped its hand-in and showed no progress. 1.12 keeps which
+	headers are collapsed by their place in the list rather than by zone, so a
+	header collapsed in Elwynn can land on Westfall's as the list changes.
+	When one of the guide's quests is on your quest list but out of sight, the
+	headers are opened, as RestedXP does: at most every ten seconds, in case
+	something closes them again. ]]
+local REVEAL_EVERY = 10
+local guideQids, guideQidsFor
+function AegisPathfinder:RevealGuideQuests()
+	if not (GetNumQuestLogEntries and ExpandQuestHeader and C_QuestLog and C_QuestLog.IsOnQuest
+		and C_QuestLog.GetQuestIDForLogIndex) or not self.actions then return end
+	local rows, quests = GetNumQuestLogEntries()
+	if not quests then return end
+	local seen, shown = {}, 0
+	for li = 1, rows or 0 do
+		local _, _, _, isHeader = GetQuestLogTitle(li)
+		if not isHeader then
+			shown = shown + 1
+			local qid = C_QuestLog.GetQuestIDForLogIndex(li)
+			if qid then seen[qid] = true end
+		end
+	end
+	if shown >= quests then return end
+	if self.revealedat and GetTime() - self.revealedat < REVEAL_EVERY then return end
+	if guideQidsFor ~= self.tags then
+		guideQidsFor, guideQids = self.tags, {}
+		for i in ipairs(self.actions) do
+			local qid = tonumber((self:GetObjectiveTag("QID", i)))
+			if qid then guideQids[qid] = true end
+		end
+	end
+	for qid in pairs(guideQids) do
+		if not seen[qid] and C_QuestLog.IsOnQuest(qid) then
+			self.revealedat = GetTime()
+			ExpandQuestHeader(0)
+			if not self.revealsaid then
+				self.revealsaid = true
+				self:Say("Opened the quest log's collapsed zones: the guide can't see the quests under them.")
+			end
+			return true
+		end
+	end
+end
+
 --[[ Whether a step's |PRE| prerequisite has been handed in. An optional
 	accept is offered once it has: the next quest in a chain you may or may
 	not be on. The guides write it as a quest id, or a comma-separated list of
@@ -189,6 +298,8 @@ function AegisPathfinder:UpdateStatusFrame()
 
 	self:Debug("UpdateStatusFrame", self.current)
 	local oldcurrent = self.current
+	-- Should the headers open, the log may rebuild after this scan too.
+	if self:RevealGuideQuests() then self:ScheduleStatusUpdate() end
 
 	if self.updatedelay then
 		local _, logi = self:GetObjectiveStatus(self.updatedelay)
@@ -227,9 +338,7 @@ function AegisPathfinder:UpdateStatusFrame()
 			-- Test for completed objectives and mark them done
 			if action == "SETHEARTH" and self.db.char.hearth == name then return self:SetTurnedIn(i, true) end
 
-			local zonetext, subzonetext, subzonetag = GetZoneText(), GetSubZoneText(), self:GetObjectiveTag("SZ")
-			if (action == "RUN" or action == "FLY" or action == "HEARTH" or action == "BOAT") and (subzonetext == name or subzonetext == subzonetag or zonetext == name or zonetext == subzonetag) then return
-				self:SetTurnedIn(i, true) end
+			if self:ArrivedAt(i) or self:PassedTravel(i) then return self:SetTurnedIn(i, true) end
 
 			-- A level note ("Level 10 Required") or grind ("Grind to level 10")
 			-- is done at that level.

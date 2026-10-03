@@ -142,6 +142,24 @@ on a `C` step instead, or an `\|L\|itemid qty\|` tag for item collects.
 | `OBJ` | Object ID | `\|OBJ\|12345\|` |
 | `AYG` | "As You Go" reference | `\|AYG\|41190\|` |
 
+### Travel steps
+
+An `R`, `F`, `b` or `H` step is done when you arrive. That can mean:
+
+- within about 15 yards of its first coordinates, in its `Z` zone;
+- in the zone or subzone its title names: `R Westfall` in Westfall, `R the Westfall Lighthouse` at the lighthouse;
+- the same with a leading "Travel to", "Travel towards", "Run to", "Go to", "Head to", "Return to", "Fly to" or "Enter" dropped: `R Travel to Westfall` anywhere in Westfall;
+- in its `SZ` subzone or zone.
+
+A travel step marked `|O|` with no `|PRE|` is a *way there*, not a stop. RestedXP's `#sticky` and `#completewith` steps convert to these. A way there is also behind you, and ticked, when either:
+
+- you are in the next step's zone, and that is not its own `Z`; or
+- the next step is done, such as its quest already in your log.
+
+The automation looks past it to the next step's NPC. RestedXP's 13-15 Westfall opens on `R Travel to Elwynn Forest |N|(19.0, 81.0)| |O| |Z|Elwynn Forest|`: walk through Elwynn and it ticks there; fly to Sentinel Hill and it ticks on landing in Westfall.
+
+A travel step without `|O|` is a stop and waits for one of the first four.
+
 ### Profession Tags
 
 Profession guides do not advance on quest events -- there is no quest to accept

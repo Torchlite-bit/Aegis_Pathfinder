@@ -18,6 +18,32 @@ reports.
 
 ---
 
+## [0.22.21]
+
+### Fixed
+- **The guide follows your quests after you change zone.** RestedXP's 13-15
+  Westfall opens on "Travel to Elwynn Forest", its way out of Elwynn. It only
+  ticked within yards of one spot near the Westfall border, so a player who
+  flew from Stormwind into Westfall had the guide stay on it while the
+  Westfall quests went by. In RestedXP such steps never hold the guide up,
+  and here they no longer do:
+  - A travel step is done on reaching the zone or subzone its title names,
+    with "Travel to", "Travel towards", "Run to" and the like dropped.
+    "Travel to Westfall" ticks anywhere in Westfall, not only at its point.
+  - An optional travel step (RestedXP's `#sticky` and `#completewith`) is
+    passed once you are in the next step's zone, or once the next step is
+    done. The 1,885 travel and hearth steps marked so in the two RestedXP
+    packs no longer wait at their spot.
+  - Talking to the next step's NPC on such a step picks and accepts the quest
+    as usual.
+- **Quests under a collapsed header.** The quest log's functions only see the
+  rows in sight, so a guide quest under a collapsed header looked never
+  accepted: its hand-in was skipped and its progress stood still. The game
+  keeps which headers are collapsed by their place in the list, so one
+  collapsed in Elwynn can land on Westfall's. When one of the guide's quests is
+  hidden like this, the headers open (as RestedXP does), and chat says why
+  once. A hand-in for a quest on your quest list is never skipped as missing.
+
 ## [0.22.20] — restart
 
 ### Added
@@ -1554,6 +1580,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.21]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.20]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.19]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.18]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

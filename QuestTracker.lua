@@ -62,14 +62,16 @@ function AegisPathfinder:PLAYER_LEVEL_UP(newlevel)
 	end
 end
 
-function AegisPathfinder:ZONE_CHANGED(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19,
-								  a20)
-	local zonetext, subzonetext, subzonetag, action, quest = GetZoneText(), GetSubZoneText(), self:GetObjectiveTag("SZ"),
-		self:GetObjectiveInfo()
-	if (action == "RUN" or action == "FLY" or action == "HEARTH" or action == "BOAT") and (subzonetext == quest or subzonetext == subzonetag or zonetext == quest or zonetext == subzonetag) then
-		self:Debug(string.format("Detected zone change %q - %q", action, quest))
-		self:SetTurnedIn()
+--[[ A travel step is done on reaching its zone or subzone (GuideEngine.lua,
+	ArrivedAt). An optional one may be behind you now that you are in the next
+	step's zone (PassedTravel), which the scan decides. ]]
+function AegisPathfinder:ZONE_CHANGED()
+	if not self:IsTravelStep() then return end
+	if self:ArrivedAt() then
+		self:Debug(string.format("Detected zone change %q - %q", self:GetObjectiveInfo()))
+		return self:SetTurnedIn()
 	end
+	if self:IsWayThere() then self:ScheduleStatusUpdate() end
 end
 
 AegisPathfinder.ZONE_CHANGED_INDOORS = AegisPathfinder.ZONE_CHANGED
@@ -149,10 +151,16 @@ function AegisPathfinder:QUEST_LOG_UPDATE(event)
 
 	self:Debug("QUEST_LOG_UPDATE", action, logi, complete)
 
+	-- A header collapsed over one of the guide's quests (GuideEngine.lua).
+	if self:RevealGuideQuests() then self:ScheduleStatusUpdate() end
+
 	-- UpdateStatusFrame gates on the delayed step itself, so run it whenever a
 	-- delayed update is pending; checking the current step's logi here would
-	-- miss turnins recorded for a step other than the current one
-	if self.updatedelay or action == "ACCEPT" or action == "COMPLETE" then self:ScheduleStatusUpdate() end
+	-- miss turnins recorded for a step other than the current one. An optional
+	-- way there is behind you once the step after it is done (PassedTravel).
+	if self.updatedelay or action == "ACCEPT" or action == "COMPLETE" or self:IsWayThere() then
+		self:ScheduleStatusUpdate()
+	end
 
 	if action == "KILL" or action == "NOTE" then
 		local quest, questtext = self:GetObjectiveTag("Q"), self:GetObjectiveTag("QO")
@@ -256,11 +264,12 @@ end
 -- just-finished step happens on the next quest log update, often after the
 -- follow-up QUEST_DETAIL or reopened gossip has already fired. Resolve the
 -- first step at or after current that is not already turned in, so automation
--- never keys off a stale step.
+-- never keys off a stale step. An optional way there (GuideEngine.lua,
+-- IsWayThere) is passed too: talking to the next step's NPC means you got there.
 local function PendingStep()
 	local i = AegisPathfinder.current
 	if not i or not AegisPathfinder.actions then return end
-	while AegisPathfinder.actions[i] and AegisPathfinder:GetObjectiveStatus(i) do
+	while AegisPathfinder.actions[i] and (AegisPathfinder:GetObjectiveStatus(i) or AegisPathfinder:IsWayThere(i)) do
 		i = i + 1
 	end
 	if AegisPathfinder.actions[i] then return i end

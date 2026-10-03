@@ -790,6 +790,8 @@ end
 -- Smart guide switching: scan quest log and skip completed content
 function AegisPathfinder:SmartSkipToStep(look)
 	if not self.actions or not self.quests then return end
+	-- Quests under a collapsed header are not scanned below (GuideEngine.lua).
+	if self.RevealGuideQuests then self:RevealGuideQuests() end
 
 	-- Name-keyed maps serve steps without a |QID| tag; QID-keyed maps are
 	-- authoritative for tagged steps and immune to duplicate quest names

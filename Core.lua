@@ -615,7 +615,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.22.20"
+AegisPathfinder.version = "0.22.21"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -1359,11 +1359,13 @@ function AegisPathfinder:GetObjectiveStatus(i)
     -- Skip TURNIN step if the quest is not accepted (not in log) and not
     -- completed. Flagged in the fourth return so UpdateStatusFrame can warn
     -- when it passes over such a step: this silent skip is how a missed
-    -- accept cascades into the guide jumping ahead.
+    -- accept cascades into the guide jumping ahead. A quest on your quest
+    -- list but under a collapsed header is not missing (RevealGuideQuests).
     local skippednotinlog
     if not turnedin and not (self.manuallyUnchecked and self.manuallyUnchecked[self.quests[i]]) then
         local action = self.actions[i]
-        if action == "TURNIN" and not logi then
+        local hidden = qidNum and C_QuestLog and C_QuestLog.IsOnQuest and C_QuestLog.IsOnQuest(qidNum)
+        if action == "TURNIN" and not logi and not hidden then
             local cleanQuest = string.gsub(self.quests[i], "@.*@", "")
             cleanQuest = string.gsub(cleanQuest, AegisPathfinder.Locale.PART_GSUB, "")
             local isCompleted = (qidNum and self:IsQuestCompletedOnServer(qidNum)) or (self.db.char.completedquests and self.db.char.completedquests[cleanQuest])

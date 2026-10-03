@@ -177,6 +177,20 @@ A.current = 9
 A:ReturnToPlace(-1)
 check(A.current == 7, "and back to a hand-in the log says is ready, got %s", tostring(A.current))
 
+-- A hand-in whose quest is not in the log is passed over -- unless the quest
+-- is on your quest list under a collapsed header, out of the log's sight.
+log = {}
+local tSecond
+for i, q in ipairs(A.quests) do if A.actions[i] == "TURNIN" and string.find(q, "^Second Quest") then tSecond = i end end
+db.completedquestsbyid[2] = nil
+A.manuallyUnchecked[A.quests[tSecond]] = nil
+local skipped, _, _, flagged = A:GetObjectiveStatus(tSecond)
+check(skipped and flagged, "a hand-in for a quest you don't have is passed over")
+C_QuestLog.IsOnQuest = function(q) return q == 2 end
+skipped, _, _, flagged = A:GetObjectiveStatus(tSecond)
+check(not skipped and not flagged, "but not one whose quest is on your list under a collapsed header")
+C_QuestLog.IsOnQuest = nil
+
 -- Another guide: the snapshot belongs to the one you leave.
 A:RememberPlace()
 check(A.place ~= nil, "a snapshot is taken")
