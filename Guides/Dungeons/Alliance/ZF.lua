@@ -9,10 +9,10 @@ N Zul'Farrak |N|Every quest for Zul'Farrak: picked up, then the way in, what eac
 
 N Given elsewhere |N|Also for Zul'Farrak, not on this guide's way: Nekrum's Medallion, from Thadius Grimshade in Blasted Lands|
 
-R Dustwallow Marsh |N|Travel to Dustwallow Marsh| |Z|Dustwallow Marsh|
+R Dustwallow Marsh |N|Travel to Dustwallow Marsh| |Z|Dustwallow Marsh| |O| |PRE|2861|
 A Tiara of the Deep |QID|2846| |N|Tabetha (46, 57.1)| |Z|Dustwallow Marsh| |O| |PRE|2861|
 
-R Thousand Needles |N|Travel to Thousand Needles| |Z|Thousand Needles|
+R Thousand Needles |N|Travel to Thousand Needles| |Z|Thousand Needles| |O| |PRE|2769|
 A Gahz'rilla |QID|2770| |N|Wizzle Brassbolts (78.1, 77.1)| |Z|Thousand Needles| |O| |PRE|2769|
 
 F Gadgetzan |N|Fly to Gadgetzan in Tanaris| |Z|Tanaris|
@@ -57,10 +57,10 @@ T The Farraki Ancient |QID|41811| |N|Zalsu the Wanderer (38.9, 34.4)| |Z|Tanaris
 T The Prophecy of Mosh'aru |QID|3527| |N|Yeh'kinya (67, 22.4)| |Z|Tanaris|
 T Drifting Across the Sand |QID|40519| |N|Hansu Go'sha (40.6, 72.5)| |Z|Tanaris|
 
-R Thousand Needles |N|Travel to Thousand Needles| |Z|Thousand Needles|
+R Thousand Needles |N|Travel to Thousand Needles| |Z|Thousand Needles| |O| |PRE|2769|
 T Gahz'rilla |QID|2770| |N|Wizzle Brassbolts (78.1, 77.1)| |Z|Thousand Needles| |O|
 
-R Dustwallow Marsh |N|Travel to Dustwallow Marsh| |Z|Dustwallow Marsh|
+R Dustwallow Marsh |N|Travel to Dustwallow Marsh| |Z|Dustwallow Marsh| |O| |PRE|2861|
 T Tiara of the Deep |QID|2846| |N|Tabetha (46, 57.1)| |Z|Dustwallow Marsh| |O|
 
 N Done |N|That is every quest for Zul'Farrak|

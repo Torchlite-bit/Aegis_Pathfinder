@@ -106,7 +106,9 @@ DUNGEONS = {
         "areas": [209, 236, 5132, 5150, 5161, 5169, 5173, 5177], "journal": ["sfk"],
         "zone": "Silverpine Forest", "entrance": (42.8, 67.5),
         "enter": "The keep stands on the hill above Pyrewood Village",
-        "Alliance": {"towns": ["Darnassus", "Stormwind City", "Silverpine Forest"]},
+        # Stormwind first: the Alliance's 22-30s are round it, and Darnassus
+        # is a detour from anywhere.
+        "Alliance": {"towns": ["Stormwind City", "Darnassus", "Silverpine Forest"]},
         "Horde": {"towns": ["Undercity", "Silverpine Forest"]},
     },
     "STOCKADES": {
@@ -775,7 +777,7 @@ class Guide:
             out += "%s-- also in %s" % (" " if out else "", "; ".join(others))
         return " " + out if out else ""
 
-    def step(self, action, title, q=None, note="", zone=None, use=None):
+    def step(self, action, title, q=None, note="", zone=None, use=None, extra=None):
         tags = []
         if q:
             tags.append("|QID|%d|" % q)
@@ -795,7 +797,32 @@ class Guide:
                 tags.append("|O|")
             if self.optional.get(q) and action == "A":
                 tags.append("|PRE|%s|" % ", ".join(str(p) for p in self.optional[q]))
+        tags.extend(extra or [])
         self.lines.append(" ".join(["%s %s" % (action, title)] + tags))
+
+    def trip_tags(self, steps):
+        """What a trip to a town is for: only the classes, or races, that
+        every quest there is for -- Darnassus for Shadowfang Keep is one
+        Priest, Mage, Warlock and Druid quest -- and, when every quest there
+        is optional and waits on the same quest first, that wait."""
+        tags, classes, races = [], 0, 0
+        for _, q, _ in steps:
+            v = self.q[q]
+            c = v["class"] if v["class"] and v["class"] & ALL_CLASSES != ALL_CLASSES else 0
+            r = v["race"] if v["race"] and v["race"] & self.mask != self.mask else 0
+            if classes is not None:
+                classes = classes | c if c else None
+            if races is not None:
+                races = races | r if r else None
+        if classes:
+            tags.append("|C|%s|" % "/".join(n for b, n in CLASSES if classes & b))
+        if races:
+            tags.append("|R|%s|" % "/".join(n for b, n in RACES if races & b))
+        pres = {tuple(self.optional[q]) if self.optional.get(q) else None for _, q, _ in steps}
+        if len(pres) == 1 and None not in pres and all(q in self.optional for _, q, _ in steps):
+            tags.append("|O|")
+            tags.append("|PRE|%s|" % ", ".join(str(p) for p in pres.pop()))
+        return tags
 
     def gap(self):
         if self.lines and self.lines[-1] != "":
@@ -913,9 +940,10 @@ class Guide:
                 self.step("N", "Back outside", note="Out of %s, in %s" % (self.d["title"], ARTICLE.get(zone, zone)))
             elif zone in self.travel:
                 action, where, note = self.travel[zone]
-                self.step(action, where, note=note, zone=zone)
+                self.step(action, where, note=note, zone=zone, extra=self.trip_tags(steps))
             else:
-                self.step("R", zone, note="Travel to %s" % ARTICLE.get(zone, zone), zone=zone)
+                self.step("R", zone, note="Travel to %s" % ARTICLE.get(zone, zone), zone=zone,
+                          extra=self.trip_tags(steps))
             for action, q, w in steps:
                 v = self.q[q]
                 if action == "C":

@@ -14,7 +14,7 @@ R Dustwallow Marsh |N|Travel to Dustwallow Marsh| |Z|Dustwallow Marsh|
 T Tabetha's Task |QID|2861| |N|Tabetha (46, 57.1)| |Z|Dustwallow Marsh|
 A Tiara of the Deep |QID|2846| |N|Tabetha (46, 57.1)| |Z|Dustwallow Marsh|
 
-F Freewind Post |N|Fly to Freewind Post in Thousand Needles| |Z|Thousand Needles|
+F Freewind Post |N|Fly to Freewind Post in Thousand Needles| |Z|Thousand Needles| |O| |PRE|40526|
 A End Ukorz Sandscalp |QID|40527| |N|Champion Taza'go (85.7, 91)| |Z|Thousand Needles| |O| |PRE|40526|
 
 F Gadgetzan |N|Fly to Gadgetzan in Tanaris| |Z|Tanaris|
@@ -59,13 +59,13 @@ T The Farraki Ancient |QID|41811| |N|Zalsu the Wanderer (38.9, 34.4)| |Z|Tanaris
 T The Prophecy of Mosh'aru |QID|3527| |N|Yeh'kinya (67, 22.4)| |Z|Tanaris|
 T Drifting Across the Sand |QID|40519| |N|Hansu Go'sha (40.6, 72.5)| |Z|Tanaris|
 
-F Freewind Post |N|Fly to Freewind Post in Thousand Needles| |Z|Thousand Needles|
+F Freewind Post |N|Fly to Freewind Post in Thousand Needles| |Z|Thousand Needles| |O| |PRE|40526|
 T End Ukorz Sandscalp |QID|40527| |N|Champion Taza'go (85.7, 91)| |Z|Thousand Needles| |O|
 
 R Dustwallow Marsh |N|Travel to Dustwallow Marsh| |Z|Dustwallow Marsh|
 T Tiara of the Deep |QID|2846| |N|Tabetha (46, 57.1)| |Z|Dustwallow Marsh|
 
-R Durotar |N|Travel to Durotar| |Z|Durotar|
+R Durotar |N|Travel to Durotar| |Z|Durotar| |O| |PRE|2935|
 A The Spider God |QID|2936| |N|Master Gadrin (55.9, 74.7)| |Z|Durotar| |O| |PRE|2935|
 
 N Zul'Farrak again |N|What you have handed in leads back to Zul'Farrak|

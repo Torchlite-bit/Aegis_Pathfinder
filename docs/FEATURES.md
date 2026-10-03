@@ -167,6 +167,10 @@ Gilneas City and Hateforge Quarry. Pick one and it:
   that needs another visit -- Uldaman's necklace, Gnomeregan's formulas --
   gets another run.
 
+A trip to a town is only for those its quests are for: a Warrior's Shadowfang
+Keep guide never goes to Darnassus, whose one quest is a Priest's, Mage's,
+Warlock's and Druid's, and theirs goes only once the quest before it is done.
+
 A quest whose chain starts somewhere the guide does not go (another dungeon's,
 a class chain in a far zone) is in it but optional: it shows once you have
 the quest before it done. Class quests show only for that class. Quests given

@@ -16,7 +16,7 @@ R Darnassus |N|Travel to Darnassus| |Z|Darnassus|
 A In Search of Thaelrid |QID|1198| |N|Dawnwatcher Shaedlass (55.4, 25)| |Z|Darnassus|
 A Twilight Falls |QID|1199| |N|Argent Guard Manados (55.2, 24)| |Z|Darnassus|
 
-F Auberdine |N|Fly to Auberdine in Darkshore| |Z|Darkshore|
+F Auberdine |N|Fly to Auberdine in Darkshore| |Z|Darkshore| |O| |PRE|3765|
 A Researching the Corruption |QID|1275| |N|Gershala Nightwhisper (38.3, 43)| |Z|Darkshore| |O| |PRE|3765|
 
 F Astranaar |N|Fly to Astranaar in Ashenvale| |Z|Ashenvale|
@@ -42,7 +42,7 @@ K Aku'mai |N|Poison Cloud poisons everyone near her; at 30% Frenzied Rage makes 
 N Back outside |N|Out of Blackfathom Deeps, in Ashenvale|
 T The Moonshrine Ruins |QID|41812| |N|Aelennia Starbloom (17.3, 26)| |Z|Ashenvale|
 
-F Auberdine |N|Fly to Auberdine in Darkshore| |Z|Darkshore|
+F Auberdine |N|Fly to Auberdine in Darkshore| |Z|Darkshore| |O| |PRE|3765|
 T Researching the Corruption |QID|1275| |N|Gershala Nightwhisper (38.3, 43)| |Z|Darkshore| |O|
 
 R Darnassus |N|Travel to Darnassus| |Z|Darnassus|

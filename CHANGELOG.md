@@ -18,6 +18,17 @@ reports.
 
 ---
 
+## [0.22.14]
+
+### Fixed
+- **Dungeon guides send you to a town only if its quests are for you.**
+  Shadowfang Keep sent every Alliance player to Darnassus first and then to
+  Stormwind, for one quest only Priests, Mages, Warlocks and Druids can
+  take, and only once they have done the quest before it. That trip now
+  carries the quest's classes and waits on that quest. Thirteen other
+  dungeon guides had trips like it.
+- **Shadowfang Keep starts in Stormwind**, where the Alliance's 22-30s are.
+
 ## [0.22.13]
 
 ### Fixed
@@ -1436,6 +1447,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.14]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.13]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.12]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.11]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

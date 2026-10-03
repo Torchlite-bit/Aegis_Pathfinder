@@ -61,7 +61,7 @@ N Gnomeregan again |N|What you have handed in leads back to Gnomeregan|
 R Gnomeregan |N|Gnomeregan's front door is in the valley west of Kharanos (24.4, 39.6)| |Z|Dun Morogh|
 C Gnome Improvement |QID|2948| |N|Get the Brilliant Gold Ring, a Silver Bar, a Moss Agate, and 30 silver coins, outside too (30.5, 27.1) (21.5, 37.1)| |Z|Dun Morogh| |O|
 
-R Ironforge |N|Travel to Ironforge| |Z|Ironforge|
+R Ironforge |N|Travel to Ironforge| |Z|Ironforge| |O| |PRE|2947|
 T Gnome Improvement |QID|2948| |N|Talvash del Kissel (36.4, 3.6)| |Z|Ironforge| |O|
 
 N Done |N|That is every quest for Gnomeregan|

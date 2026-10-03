@@ -7,7 +7,7 @@ return [[
 
 N Razorfen Kraul |N|Every quest for Razorfen Kraul: picked up, then the way in, what each asks for inside, and the hand-ins after|
 
-R Stormwind City |N|Travel to Stormwind City| |Z|Stormwind City|
+R Stormwind City |N|Travel to Stormwind City| |Z|Stormwind City| |C|Warrior| |O| |PRE|1702|
 A Fire Hardened Mail |QID|1701| |N|Furen Longbeard (64.6, 37.2)| |Z|Stormwind City| |C|Warrior| |O| |PRE|1702|
 
 R The Barrens |N|Travel to The Barrens| |Z|The Barrens|
@@ -51,13 +51,13 @@ T Grimand Elmore |QID|1700| |N|Grimand Elmore (59.7, 33.8)| |Z|Stormwind City| |
 
 N Razorfen Kraul again |N|What you have handed in leads back to Razorfen Kraul|
 
-R Darnassus |N|Travel to Darnassus| |Z|Darnassus|
+R Darnassus |N|Travel to Darnassus| |Z|Darnassus| |C|Warrior| |R|Night Elf| |O| |PRE|1701|
 T Mathiel |QID|1703| |N|Mathiel (59.5, 45.4)| |Z|Darnassus| |C|Warrior| |R|Night Elf| |O|
 
 R Razorfen Kraul |N|In the south of the Barrens, west of the Thousand Needles road, among the thorns (40.8, 89.4)| |Z|The Barrens|
 C The Crone of the Kraul |QID|1101| |N|Get Razorflank's Medallion| |O|
 
-F Thalanaar |N|Fly to Thalanaar in Feralas| |Z|Feralas|
+F Thalanaar |N|Fly to Thalanaar in Feralas| |Z|Feralas| |O| |PRE|1100|
 T The Crone of the Kraul |QID|1101| |N|Falfindel Waywarder (89.6, 46.6)| |Z|Feralas| |O|
 
 N Done |N|That is every quest for Razorfen Kraul|

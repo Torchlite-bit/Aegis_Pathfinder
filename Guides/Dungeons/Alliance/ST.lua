@@ -113,7 +113,7 @@ F Marshal's Refuge |N|Fly to Marshal's Refuge in Un'Goro Crater| |Z|Un'Goro Crat
 T Haze of Evil |QID|4143| |N|Muigin (42.9, 9.6)| |Z|Un'Goro Crater|
 T A Better Ingredient |QID|9053| |N|Torwa Pathfinder (71.6, 76)| |Z|Un'Goro Crater| |C|Druid|
 
-F Gadgetzan |N|Fly to Gadgetzan in Tanaris| |Z|Tanaris|
+F Gadgetzan |N|Fly to Gadgetzan in Tanaris| |Z|Tanaris| |O| |PRE|4787|
 T The God Hakkar |QID|3528| |N|Yeh'kinya (67, 22.4)| |Z|Tanaris| |O|
 
 N Done |N|That is every quest for Sunken Temple|

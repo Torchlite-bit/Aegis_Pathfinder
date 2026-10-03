@@ -9,7 +9,7 @@ N Scarlet Monastery |N|Every quest for Scarlet Monastery: picked up, then the wa
 
 N Given elsewhere |N|Also for Scarlet Monastery, not on this guide's way: Rituals of Power (Mage), from Magus Tirth in Thousand Needles|
 
-R Thunder Bluff |N|Travel to Thunder Bluff| |Z|Thunder Bluff|
+R Thunder Bluff |N|Travel to Thunder Bluff| |Z|Thunder Bluff| |R|Orc/Tauren/Troll/Goblin|
 A Compendium of the Fallen |QID|1049| |N|Sage Truthseeker (34.4, 46.9)| |Z|Thunder Bluff| |R|Orc/Tauren/Troll/Goblin|
 
 R Undercity |N|Travel to the Undercity| |Z|Undercity|
@@ -56,7 +56,7 @@ T Test of Lore |QID|6628| |N|Parqual Fintallas (57.8, 65.4)| |Z|Undercity| |O|
 T Into The Scarlet Monastery |QID|1048| |N|Varimathras (56.3, 92.2)| |Z|Undercity|
 T Reminiscent of Steel |QID|41368| |N|Basil Frye (60.2, 29.1)| |Z|Undercity| |O|
 
-R Thunder Bluff |N|Travel to Thunder Bluff| |Z|Thunder Bluff|
+R Thunder Bluff |N|Travel to Thunder Bluff| |Z|Thunder Bluff| |R|Orc/Tauren/Troll/Goblin|
 T Compendium of the Fallen |QID|1049| |N|Sage Truthseeker (34.4, 46.9)| |Z|Thunder Bluff| |R|Orc/Tauren/Troll/Goblin|
 
 N Done |N|That is every quest for Scarlet Monastery|

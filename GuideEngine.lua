@@ -290,6 +290,11 @@ function AegisPathfinder:UpdateStatusFrame()
 				incomplete = not complete and (not optional or logi)
 			elseif action == "NOTE" or action == "KILL" then
 				incomplete = not optional or haslootitem
+			elseif (action == "RUN" or action == "FLY" or action == "BOAT") and optional and prereq then
+				-- A trip only for optional quests (a dungeon guide's to
+				-- Darnassus, for a Priest's quest that needs another first)
+				-- waits on that quest, as its accept does.
+				incomplete = prereqturnedin and not logi
 			elseif action == "GRIND" then
 				-- A level gate waits on the level; a gathering step on the
 				-- skill, which is not there yet or it would have completed.

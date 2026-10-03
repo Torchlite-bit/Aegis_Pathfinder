@@ -430,6 +430,35 @@ do
 	AegisPathfinder.SetTurnedIn, AegisPathfinder.GetLootRequirement = nil, nil
 end
 
+-- An optional trip waits on its quest's prerequisite ---------------------------------
+
+-- A dungeon guide's trip to Darnassus for Blood of Vorgendor, which needs
+-- quest 41377 first: passed over until it is done, then taken.
+do
+	function AegisPathfinder:SetTurnedIn(i, value)
+		self.turnedin[self.quests[i]] = value and true or nil
+		self:UpdateStatusFrame()
+	end
+	function AegisPathfinder:GetLootRequirement() return nil end
+	local prereqDone = false
+	local keepPre = AegisPathfinder.IsPrereqTurnedIn
+	function AegisPathfinder:IsPrereqTurnedIn() return prereqDone end
+	AegisPathfinder.actions = { "RUN", "ACCEPT", "RUN" }
+	AegisPathfinder.quests = { "Darnassus@1@", "Blood of Vorgendor@2@", "Shadowfang Keep@3@" }
+	AegisPathfinder.tags = { "|N|Travel to Darnassus| |Z|Darnassus| |O| |PRE|41377|",
+		"|QID|41378| |O| |PRE|41377|", "|N|The keep (42.8, 67.5)| |Z|Silverpine Forest|" }
+	AegisPathfinder.turnedin, AegisPathfinder.current = {}, 1
+	AegisPathfinder:UpdateStatusFrame()
+	check(AegisPathfinder.current == 3, "without the first quest, the trip and the accept are passed over; at %s",
+		tostring(AegisPathfinder.current))
+	prereqDone = true
+	AegisPathfinder.turnedin, AegisPathfinder.current = {}, 1
+	AegisPathfinder:UpdateStatusFrame()
+	check(AegisPathfinder.current == 1, "with it, the guide goes to Darnassus; at %s", tostring(AegisPathfinder.current))
+	AegisPathfinder.IsPrereqTurnedIn = keepPre
+	AegisPathfinder.SetTurnedIn, AegisPathfinder.GetLootRequirement = nil, nil
+end
+
 -- Report ---------------------------------------------------------------------
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end

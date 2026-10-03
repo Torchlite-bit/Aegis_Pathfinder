@@ -14,7 +14,7 @@ A The Smoldering Ruins of Thaurissan |QID|3702| |N|Royal Historian Archesonus (3
 T The Smoldering Ruins of Thaurissan |QID|3702| |N|Royal Historian Archesonus (38.4, 55.3)| |Z|Ironforge|
 A The Smoldering Ruins of Thaurissan |QID|3701| |N|Royal Historian Archesonus (38.4, 55.3)| |Z|Ironforge|
 
-R Badlands |N|Travel to the Badlands| |Z|Badlands|
+R Badlands |N|Travel to the Badlands| |Z|Badlands| |O| |PRE|4324|
 A Ribbly Screwspigot |QID|4136| |N|Yuka Screwspigot (4.9, 94.7)| |Z|Badlands| |O| |PRE|4324|
 
 F Thorium Point |N|Fly to Thorium Point in the Searing Gorge| |Z|Searing Gorge|
@@ -110,7 +110,7 @@ C Overmaster Pyron |QID|4262| |N|Slay Overmaster Pyron (25, 76)| |Z|Searing Gorg
 C A Taste of Flame |QID|4022| |N|Show Cyrus Therepentous the Black Dragonflight Molt you received from Kalaran Windblade (43.5, 35.9) (37.3, 45.1) (44, 52.7)| |Z|Searing Gorge|
 C A Taste of Flame |QID|4023| |N|Show Cyrus Therepentous proof of your worth.  You have a feeling that Cyrus already knows that you are unworthy: Black Dragonflight Molt (43.5, 35.9) (37.3, 45.1) (44, 52.7)| |Z|Searing Gorge|
 
-R Badlands |N|Travel to the Badlands| |Z|Badlands|
+R Badlands |N|Travel to the Badlands| |Z|Badlands| |O| |PRE|4324|
 T Ribbly Screwspigot |QID|4136| |N|Yuka Screwspigot (4.9, 94.7)| |Z|Badlands| |O|
 
 R Ironforge |N|Travel to Ironforge| |Z|Ironforge|

@@ -193,6 +193,23 @@ check(DM and string.find(DM.text, "\nK Edwin VanCleef |[^\n]*\nC The Defias Brot
 check(DM and string.find(DM.text, "K Miner Johnson |N|Rare: not always here%.[^\n]*|O|"),
 	"a rare boss is optional, and says it may not be there")
 
+-- A trip to a town is for whoever its quests are for. Darnassus, for
+-- Shadowfang Keep, is one Priest, Mage, Warlock and Druid quest that needs
+-- another first: everyone was sent there, from Stormwind, and back.
+do
+	local SFK = guides["Dungeons/Shadowfang Keep (22-30)@Alliance"]
+	local text = SFK and SFK.text or ""
+	local sw, dn = string.find(text, "\nR Stormwind City "), string.find(text, "\nR Darnassus ")
+	check(sw and dn and sw < dn, "Shadowfang Keep goes to Stormwind first")
+	check(string.find(text, "R Darnassus |N|Travel to Darnassus| |Z|Darnassus| |C|Priest/Mage/Warlock/Druid| |O| |PRE|41377|",
+		1, true), "and to Darnassus only for its quest's classes, once its first quest is done")
+	for line in string.gfind(text, "[^\n]+") do
+		if string.find(line, "^R Stormwind City") then
+			check(not string.find(line, "|C|", 1, true), "Stormwind is for everyone: %s", line)
+		end
+	end
+end
+
 -- Both sides register under one name; load the Alliance guide.
 local function load(name)
 	for _, g in ipairs(registered) do
@@ -200,6 +217,17 @@ local function load(name)
 	end
 	AegisPathfinder.db.char.currentguide = nil
 	AegisPathfinder:LoadGuide(name)
+end
+
+-- A Warrior's Shadowfang Keep has no trip to Darnassus at all.
+load("Dungeons/Shadowfang Keep (22-30)")
+do
+	local trips = {}
+	for i, name in ipairs(AegisPathfinder.quests) do
+		if AegisPathfinder.actions[i] == "RUN" then table.insert(trips, (string.gsub(name, "@%d+@$", ""))) end
+	end
+	check(table.concat(trips, ", ") == "Stormwind City, Shadowfang Keep, Stormwind City",
+		"a Warrior's trips: Stormwind, the keep, Stormwind; got %s", table.concat(trips, ", "))
 end
 
 -- What the step says for each role.

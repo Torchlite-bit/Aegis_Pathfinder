@@ -41,7 +41,7 @@ T Into The Jaws |QID|40281| |N|Pierce Shackleton (85.5, 13.5)| |Z|Undercity| |O|
 A Darlthos Legacy |QID|40282| |N|Pierce Shackleton (85.5, 13.5)| |Z|Undercity| |O| |PRE|40281|
 T The Book of Ur |QID|1013| |N|Keeper Bel'dugur (53.7, 54.5)| |Z|Undercity|
 
-F The Sepulcher |N|Fly to the Sepulcher in Silverpine Forest| |Z|Silverpine Forest|
+F The Sepulcher |N|Fly to the Sepulcher in Silverpine Forest| |Z|Silverpine Forest| |O| |PRE|40281|
 T Darlthos Legacy |QID|40282| |N|Duchess Grelda (42, 10.2)| |Z|Silverpine Forest| |O|
 
 N Done |N|That is every quest for Shadowfang Keep|

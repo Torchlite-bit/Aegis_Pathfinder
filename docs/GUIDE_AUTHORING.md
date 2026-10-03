@@ -315,6 +315,12 @@ may lack their objectives), and any it picks up and never hands in.
 `Tools/tests/test_dungeonguides.lua` fails if the guides are stale, or a quest is
 handed in before it is picked up, or picked up and never handed in.
 
+**Trips.** A trip to a town carries the class or race tags every quest there
+shares (Darnassus, for Shadowfang Keep, is one Priest, Mage, Warlock and Druid
+quest), so nobody else is sent; and when every quest there is optional and
+waits on the same quest first, the trip carries that |O| |PRE| too, and the
+engine passes it over until the first quest is done, as it does the accept.
+
 **Boss steps.** Each boss's step is `K <boss> |N|<note>| |TANK|..| |HEAL|..|
 |DPS|..| |BOSS|<name>;<name>|`. `|TANK|`, `|HEAL|` and `|DPS|` are the role
 lines Options -> Dungeons -> *My role in dungeons* picks from (Parser.lua's

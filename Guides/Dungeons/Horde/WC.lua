@@ -7,7 +7,7 @@ return [[
 
 N Wailing Caverns |N|Every quest for Wailing Caverns: picked up, then the way in, what each asks for inside, and the hand-ins after|
 
-R Orgrimmar |N|Travel to Orgrimmar| |Z|Orgrimmar|
+R Orgrimmar |N|Travel to Orgrimmar| |Z|Orgrimmar| |C|Mage|
 A Mastering the Arcane |QID|80311| |N|Ureda (37.2, 85.2)| |Z|Orgrimmar| |C|Mage|
 
 R Thunder Bluff |N|Travel to Thunder Bluff| |Z|Thunder Bluff|
