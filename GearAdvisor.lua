@@ -122,7 +122,7 @@ end
 function GA:Equip(rec)
 	if UnitAffectingCombat("player") then
 		pending = rec
-		AegisPathfinder:Print("Upgrade: " .. rec.link .. " goes on when this fight is over.")
+		AegisPathfinder:Say("Upgrade: " .. rec.link .. " goes on when this fight is over.")
 		return "combat"
 	end
 	if not relocate(rec) then return false end
@@ -171,7 +171,7 @@ function GA:NotifySpecs()
 						local key = up.spec .. "|" .. link
 						if not told[key] then
 							told[key] = true
-							AegisPathfinder:Print(string.format("%s is an upgrade for your %s gear (%s).",
+							AegisPathfinder:Say(string.format("%s is an upgrade for your %s gear (%s).",
 								link, IS:SpecLabel(up.spec), GA.Gain(up.compare)))
 						end
 					end
@@ -195,7 +195,7 @@ function GA:Process()
 		offered[rec.item] = true
 		if s.autoequip and not rec.boe and not UnitAffectingCombat("player") then
 			if self:Equip(rec) == true then
-				AegisPathfinder:Print("Equipped " .. rec.link .. " " .. GA.Gain(rec.compare) .. ".")
+				AegisPathfinder:Say("Equipped " .. rec.link .. " " .. GA.Gain(rec.compare) .. ".")
 			end
 		elseif s.popups then
 			table.insert(queue, rec)

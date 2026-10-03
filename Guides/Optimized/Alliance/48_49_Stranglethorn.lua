@@ -72,7 +72,7 @@ A Cortello's Riddle (Part 2) |QID|625| |N|A Soggy Scroll (22.9, 48.2)| |Z|Swamp 
 
 R Blasted Lands |QID|625| |N|Travel south to Blasted Lands| |Z|Blasted Lands|
 
-N Level 49 |N|You should be level 49 now. Continue to Blasted Lands|
+N Level 49 |N|You should be level 49 now. Continue to Blasted Lands| |LV|49|
 
 ]]
 end)

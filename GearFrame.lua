@@ -280,7 +280,7 @@ function AegisPathfinder:UpdateItemScorePage()
 
 	local whence = (why == "picked" and "the spec you picked")
 		or (why == "talents" and "your talents")
-		or "your class's usual levelling spec, until you have talents"
+		or "your class's usual leveling spec, until you have talents"
 	page.note:SetText("Scoring as " .. IS:SpecLabel(spec) .. ", from " .. whence .. ".\n"
 		.. (IS:IsCustom(class, spec) and "You are using your own weights." or "These are the default weights."))
 	page.status:SetText(page.said or "")

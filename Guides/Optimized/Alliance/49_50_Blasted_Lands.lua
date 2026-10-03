@@ -83,7 +83,7 @@ A The Hunter's Charm |QID|4186| |N|Accept if you're a Hunter| |Z|Ironforge| |C|H
 h Ironforge |QID|4186| |N|Set hearth in Ironforge| |Z|Ironforge|
 A Assisting Arch Druid Staghelm |QID|3763| |N|Innkeeper Firebrew (18.41, 51.49)| |Z|Ironforge|
 
-N Level 50 |N|You should be level 50 now (1-2 bars in if you did ZF). Continue to the next guide!|
+N Level 50 |N|You should be level 50 now (1-2 bars in if you did ZF). Continue to the next guide!| |LV|50|
 
 F Thelsamar |QID|4186| |N|Fly to Thelsamar| |Z|Loch Modan|
 R Searing Gorge |QID|4186| |N|Travel west through Badlands to (1, 62) and enter Searing Gorge| |Z|Badlands|

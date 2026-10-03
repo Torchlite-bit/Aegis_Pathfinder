@@ -56,7 +56,7 @@ A Vital Intelligence |QID|383| |N|Executor Arren in Deathknell (32.14, 65.96)|
 A A Rogue's Deal (Part 1) |QID|8| |N|Calvin Montague in Deathknell (38.18, 56.84)|
 A Fields of Grief (Part 1) |QID|365| |N|Deathguard Simmer in Deathknell (40.88, 54.24)|
 A Gordo's Task |QID|5481| |N|Gordo in Nightmare Vale (48.58, 59.00)|
-N Level 6 Required |N|Grind to level 6 as you go to Brill so you can pick up all the quests (58.2, 51.5)|
+N Level 6 Required |N|Grind to level 6 as you go to Brill so you can pick up all the quests (58.2, 51.5)| |LV|6|
 
 R Brill |QID|404| |N|Travel to Brill (58.2, 51.5)|
 A A Putrid Task |QID|404| |N|Deathguard Dillinger in Brill (58.2, 51.46)|

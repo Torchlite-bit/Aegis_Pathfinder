@@ -45,7 +45,7 @@ C Collect Ship Schedule (x1) |QID|2876| |L|9250 1| |N|Kill Southsea Pirates, Sou
 N Do not Accept the quest for this yet |N|(72.2, 46.8)| |Z|Tanaris|
 N If you don't find it by the time you are 49, skip it |N|(72.2, 46.8)| |Z|Tanaris|
 C Collect OOX-17/TN Distress Beacon (x1) |QID|351| |L|8623 1| |N|Kill any type of Southsea Pirate. Loot them for the [OOX-17/TN Distress Beacon] (72.2, 46.8)| |Z|Tanaris|
-G Grind to level 49 Southsea Swashbuckler |Z|Tanaris|
+G Grind to level 49 Southsea Swashbuckler |Z|Tanaris| |LV|49|
 N Equip the [Gahz'ridian Detector] |O| |C|!Hunter| |Z|Tanaris|
 N You will complete this later, you don't need to finish it right now |O| |C|!Hunter| |Z|Tanaris|
 C The Dunemaul Compound |QID|5863| |OIDX|1| |N|Kill Dunemaul Brutes and Dunemaul Enforcers| |O| |C|!Hunter| |Z|Tanaris|

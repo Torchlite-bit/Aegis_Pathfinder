@@ -134,7 +134,7 @@ T Guarding Secrets |QID|4883| |N|Nara Wildmane in Elder Rise (75.64, 31.51)| |Z|
 R Flame Crest |QID|4810| |N|Travel to Flame Crest in Burning Steppes (65.23, 23.95)| |Z|Burning Steppes| |PRE|4809|
 T Return to Tinkee |QID|4810| |N|Tinkee Steamboil in Flame Crest (65.23, 23.95)| |Z|Burning Steppes| |PRE|4809|
 
-N Level 60 |N|Congratulations! You should be level 60 now!|
+N Level 60 |N|Congratulations! You should be level 60 now!| |LV|60|
 N Grind owls |N|If you are not level 60 yet, continue grinding Moontouched Owlbeast in Owl Wing Thicket or Winterfall furbolgs for reputation|
 
 ]]

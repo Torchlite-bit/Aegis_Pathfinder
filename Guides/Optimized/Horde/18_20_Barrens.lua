@@ -89,7 +89,7 @@ T The Guns of Northwatch |QID|891| |N|Captain Thalo'thas Brightsun in Ratchet (6
 
 N Wailing Caverns |N|You can now run Wailing Caverns dungeon for extra XP and gear. Look for a group in Ratchet or The Crossroads| |P|GROUP| |D|WC|
 
-N Level 20 Required |N|You should be close to level 20. Grind nearby mobs if needed to reach level 20|
+N Level 20 Required |N|You should be close to level 20. Grind nearby mobs if needed to reach level 20| |LV|20|
 
 N Guide Complete |N|You have completed the 12-20 Barrens guide. Continue to Stonetalon Mountains|
 

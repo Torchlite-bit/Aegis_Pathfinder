@@ -74,7 +74,7 @@ N Draenethyst Shard |QID|1373| |N|Withdraw Draenethyst Shard at the bank. Tick t
 N Jeweled Pendant |QID|1262| |N|Store Jeweled Pendant at the bank. Tick this step (47.4, 58.8)| |Z|Thunder Bluff| |L|5942| |O|
 N Seaforium Booster |QID|1188| |N|Store Seaforium Booster at the bank. Tick this step (47.4, 58.8)| |Z|Thunder Bluff| |L|5862| |O|
 
-N Level 44 |N|You should be around level 44 now. Continue to Tanaris|
+N Level 44 |N|You should be around level 44 now. Continue to Tanaris| |LV|44|
 
 ]]
 end)

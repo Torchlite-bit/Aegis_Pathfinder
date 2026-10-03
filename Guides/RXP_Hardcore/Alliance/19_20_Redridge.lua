@@ -178,7 +178,7 @@ T Redridge Goulash |QID|92| |N|(22.7, 43.8)| |Z|Redridge Mountains|
 N Darcy walks around inside the Inn |N|(26.8, 44.3)| |Z|Redridge Mountains|
 T Delivering Daffodils |QID|131| |N|Darcy - (26.8, 44.3)| |Z|Redridge Mountains|
 T Assessing the Threat |QID|246| |N|Deputy Feldon - (30.7, 60.0)| |Z|Redridge Mountains|
-G Ensure you are level 20 before flying to Stormwind |Z|Redridge Mountains|
+G Ensure you are level 20 before flying to Stormwind |Z|Redridge Mountains| |LV|20|
 F Fly to Stormwind City |N|Ariena Stormfeather - (30.6, 59.4)| |Z|Redridge Mountains|
 R Travel to Stormwind City |N|(29.2, 74.0)| |O| |C|Warlock| |Z|Stormwind City|
 R The Slaughtered Lamb and go downstairs |N|(27.2, 78.1)| |O| |C|Warlock| |Z|Stormwind City|

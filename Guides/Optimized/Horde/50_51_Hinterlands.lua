@@ -56,7 +56,7 @@ T Rescue OOX-17/TN! |QID|648| |N|Oglethorpe Obnoticus in Booty Bay (28.36, 76.35
 T An OOX of Your Own |QID|3721| |N|Oglethorpe Obnoticus in Booty Bay (28.36, 76.35)| |Z|Stranglethorn Vale| |PRE|836, 2767, 648|
 T Whiskey Slim's Lost Grog |QID|580| |N|Whiskey Slim in The Salty Sailor Tavern (27.13, 77.45)| |Z|Stranglethorn Vale| |O|
 
-N Level 51 |N|You should be around level 51 now. Continue to the next guide|
+N Level 51 |N|You should be around level 51 now. Continue to the next guide| |LV|51|
 
 ]]
 end)

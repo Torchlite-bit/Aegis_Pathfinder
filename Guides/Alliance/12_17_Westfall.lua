@@ -2,7 +2,7 @@ AegisPathfinder:RegisterGuide("Westfall (12-17)", "Loch Modan (17-18)", "Allianc
 
 return [[
 
-N Level 12 Required |N|You need to be at least level 12 to continue this guide; Grind until you reach level 12|
+N Level 12 Required |N|You need to be at least level 12 to continue this guide; Grind until you reach level 12| |LV|12|
 N Linen Cloth |QID|1644| |N|You need at least 10 Linen Cloth to complete the Paladin quest line. Grind any Humanoid mobs or purchase from the auction house for later| |OID|1778| |L|2589 10| |C|Paladin|
 
 A Tome of Divinity (Part 1) |QID|3681| |N|Brandur Ironhammer in Hall of Mysteries. You need to be level 12 to get this quest (23.25, 6.34)| |C|Paladin| |R|Human| |O| |Z|Ironforge|
@@ -143,7 +143,7 @@ R Sentinel Hill |OID|14| |N|Travel to Sentinel Hill (56.32, 47.55)|
 T The People's Militia (Part 2) |QID|13| |N|Gryan Stoutmantle in Sentinel Hill (56.32, 47.55)|
 A The People's Militia (Part 3) |QID|14| |N|Gryan Stoutmantle in Sentinel Hill (56.32, 47.55)|
 
-N Level 14 Required |N|Grind nearby enemies until you're at level 14 to accept 'The Defias Brotherhood (Part 1)'| |Z|Redridge Mountains|
+N Level 14 Required |N|Grind nearby enemies until you're at level 14 to accept 'The Defias Brotherhood (Part 1)'| |Z|Redridge Mountains| |LV|14|
 A The Defias Brotherhood (Part 1) |QID|65| |N|Gryan Stoutmantle in Sentinel Hill (56.33, 47.52)|
 
 R Three Corners |QID|244| |N|Travel to Three Corners in Redridge Mountains (15.32, 71.42)| |Z|Redridge Mountains|

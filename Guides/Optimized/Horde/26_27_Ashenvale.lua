@@ -87,7 +87,7 @@ T Satyr Horns |QID|6441| |N|Pixel in Splintertree Post (73.10, 61.48)| |Z|Ashenv
 
 F Sun Rock Retreat |QID|1088| |N|Fly to Sun Rock Retreat, Stonetalon Mountains|
 
-N Level 27 |N|You should be around level 27 now. Continue to the next guide|
+N Level 27 |N|You should be around level 27 now. Continue to the next guide| |LV|27|
 
 ]]
 end)

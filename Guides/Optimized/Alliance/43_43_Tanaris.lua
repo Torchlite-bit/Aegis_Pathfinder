@@ -79,7 +79,7 @@ N About 3/4 to 44 |N|You should be about 3/4 to level 44 now|
 
 F Feathermoon Stronghold |QID|2821| |N|Fly to Feathermoon Stronghold in Feralas| |Z|Feralas|
 
-N Level 43 |N|You should still be level 43. Continue to Feralas|
+N Level 43 |N|You should still be level 43. Continue to Feralas| |LV|43|
 
 ]]
 end)

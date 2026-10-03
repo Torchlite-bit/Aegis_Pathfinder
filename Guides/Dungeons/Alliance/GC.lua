@@ -33,8 +33,16 @@ C Vilest of Men |QID|40953| |N|Collect 20 Vials of Blood from the Greymane loyal
 C The Deed to Ravenshire |QID|40966| |N|Find the Deed: Deed to Ravenshire|
 C Ravencroft's Ambition |QID|41112| |N|Recover the Book of Ur : Volume Two from the library in Gilneas City|
 C A Royal Heist |QID|41113| |N|Steal the painting from the library in Gilneas City: Portrait of Mia Greymane|
-C The Judge and the Phantom |QID|40975| |N|Slay Judge Sutherland within Gilneas City for the Angered Phantom at the Glaymore Stead in Gilneas|
 C Undoing Draconic Presence |QID|40943| |N|End the Draconic Influence over Gilneas by slaying Regent-Lady Celia Harlow, and Regent-Lord Mortimer Harlow| |O|
+K Matthias Holtz |N|Pathfinder has no notes on this fight yet.| |BOSS|Matthias Holtz|
+K Packmaster Ragetooth |N|Pathfinder has no notes on this fight yet.| |BOSS|Packmaster Ragetooth|
+K Judge Sutherland |N|Pathfinder has no notes on this fight yet.| |BOSS|Judge Sutherland|
+C The Judge and the Phantom |QID|40975| |N|Slay Judge Sutherland within Gilneas City for the Angered Phantom at the Glaymore Stead in Gilneas|
+K Dustivan Blackcowl |N|Pathfinder has no notes on this fight yet.| |BOSS|Dustivan Blackcowl|
+K Marshal Magnus Greystone |N|Pathfinder has no notes on this fight yet.| |BOSS|Marshal Magnus Greystone|
+K Horsemaster Levvin |N|Pathfinder has no notes on this fight yet.| |BOSS|Horsemaster Levvin|
+K Harlow Family |N|Pathfinder has no notes on this fight yet.|
+K Genn Greymane |N|Pathfinder has no notes on this fight yet.| |BOSS|Genn Greymane|
 
 N Back outside |N|Out of Gilneas City, in Gilneas|
 T Vilest of Men |QID|40953| |N|Moranna Rosenberg (32.7, 75.4)| |Z|Gilneas|

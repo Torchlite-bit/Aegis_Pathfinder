@@ -27,7 +27,7 @@ A Against Lord Shalzaru |QID|2870| |N|Latronicus Moonspear in Feathermoon Strong
 
 R Shalzaru's Lair |QID|2870| |N|Travel to Shalzaru's Lair (25.90, 67.13)| |Z|Feralas|
 C Against Lord Shalzaru |QID|2870| |N|Kill Lord Shalzaru and collect Mysterious Relic in Shalzaru's Lair (27.40, 69.76) (28.47, 70.44)| |Z|Feralas|
-N Level 45 |N|You should be close to level 45 and this is a good place to grind. Kill Nagas until you're about 2900 XP to level 45 (27.40, 69.76)|
+N Level 45 |N|You should be close to level 45 and this is a good place to grind. Kill Nagas until you're about 2900 XP to level 45 (27.40, 69.76)| |LV|45|
 
 R Feathermoon Stronghold |QID|2871| |N|Travel or Hearthstone to Feathermoon Stronghold, or die and ressurect (25.90, 67.13) (30.39, 46.18)| |Z|Feralas|
 T Against Lord Shalzaru |QID|2870| |N|Latronicus Moonspear in Feathermoon Stronghold (30.39, 46.18)| |Z|Feralas|

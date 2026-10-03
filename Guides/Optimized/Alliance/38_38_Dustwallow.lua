@@ -95,7 +95,7 @@ T The Deserters |QID|1287| |N|Captain Garran Vimes in Foothold Citadel (68.23, 4
 T Mudrock Soup and Bugs |QID|1204| |N|Morgan Stern in Theramore Isle - skip follow up (66.34, 45.47)| |Z|Dustwallow Marsh|
 A ... and Bugs |QID|1258| |N|Morgan Stern in Theramore Isle (66.34, 45.47)| |Z|Dustwallow Marsh|
 
-N Level 38 |N|You should be around level 38 now. Continue to the next guide|
+N Level 38 |N|You should be around level 38 now. Continue to the next guide| |LV|38|
 
 ]]
 end)

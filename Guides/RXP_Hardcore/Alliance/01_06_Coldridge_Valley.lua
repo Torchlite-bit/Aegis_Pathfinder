@@ -17,7 +17,7 @@ t Train [Immolate] |N|Alamar Grimm - (28.6, 66.1)| |C|Warlock| |Z|Dun Morogh|
 A Beginnings |QID|1599| |N|Alamar Grimm - (28.6, 66.1)| |C|Warlock| |Z|Dun Morogh|
 N Equip any Cloth Armor you loot off the Young Wolves |N|(26.7, 75.6)| |C|Warlock| |Z|Dun Morogh|
 C Dwarven Outfitters |QID|179| |OIDX|1| |N|Ragged Young Wolves and Ragged Timber Wolves. Loot them for their Tough Wolf Meat Collect Tough Wolf Meat (x8)| |Z|Dun Morogh|
-G Grind to 2 |Z|Dun Morogh|
+G Grind to 2 |Z|Dun Morogh| |LV|2|
 T Dwarven Outfitters |QID|179| |N|Sten Stoutarm - (29.9, 71.2)| |C|Warlock| |Z|Dun Morogh|
 A Tainted Memorandum |QID|3115| |N|Sten Stoutarm - (29.9, 71.2)| |C|Warlock| |R|Gnome| |Z|Dun Morogh|
 A Coldridge Valley Mail Delivery |QID|233| |N|Sten Stoutarm - (29.9, 71.2)| |C|Warlock| |Z|Dun Morogh|
@@ -55,7 +55,7 @@ T The Boar Hunter |QID|183| |N|Talin Keeneye - (22.6, 71.4)| |Z|Dun Morogh|
 G Grind to 1130+/1400xp |N|(23.0, 75.0)| |C|Paladin/Mage/Warlock/Hunter| |Z|Dun Morogh|
 T Coldridge Valley Mail Delivery |QID|234| |N|Grelin Whitebeard - (25.1, 75.7)| |Z|Dun Morogh|
 A The Troll Cave |QID|182| |N|Grelin Whitebeard - (25.1, 75.7)| |Z|Dun Morogh|
-G Grind to level 4 |C|Paladin/Mage/Warlock/Hunter| |Z|Dun Morogh|
+G Grind to level 4 |C|Paladin/Mage/Warlock/Hunter| |Z|Dun Morogh| |LV|4|
 C A New Threat |QID|170| |OIDX|1| |N|Rockjaw Troggs and Burly Rockjaw Troggs Kill Rockjaw Trogg (x6)| |C|Paladin/Mage/Warlock/Hunter| |Z|Dun Morogh|
 A Scalding Mornbrew Delivery |QID|3364| |N|Nori Pridedrift - (25.0, 76.0)| |C|Paladin/Mage/Warlock/Hunter| |Z|Dun Morogh|
 R Anvilmar |N|(28.8, 68.5)| |O| |C|Paladin/Mage/Warlock/Hunter| |Z|Dun Morogh|
@@ -79,7 +79,7 @@ C A New Threat |QID|170| |OIDX|1| |N|Kill Rockjaw Troggs and Burly Rockjaw Trogg
 C The Troll Cave |QID|182| |OIDX|1| |N|Frostmane Troll Whelps Kill Frostmane Troll Whelp (x14)| |C|Paladin/Mage/Warlock/Hunter| |Z|Dun Morogh|
 C The Troll Cave |QID|182| |OIDX|1| |N|Frostmane Troll Whelps Kill Frostmane Troll Whelp (x14)| |C|!Paladin/!Mage/!Warlock/!Hunter| |Z|Dun Morogh|
 C A New Threat |QID|170| |OIDX|1| |N|Rockjaw Troggs and Burly Rockjaw Troggs Kill Rockjaw Trogg (x6)| |C|!Paladin/!Mage| |Z|Dun Morogh|
-G Grind to 4 |C|!Paladin/!Mage/!Warlock/!Hunter| |Z|Dun Morogh|
+G Grind to 4 |C|!Paladin/!Mage/!Warlock/!Hunter| |Z|Dun Morogh| |LV|4|
 T The Troll Cave |QID|182| |N|Grelin Whitebeard - (25.1, 75.7)| |C|!Paladin/!Mage/!Warlock/!Hunter| |Z|Dun Morogh|
 A The Stolen Journal |QID|218| |N|Grelin Whitebeard - (25.1, 75.7)| |C|!Paladin/!Mage/!Warlock/!Hunter| |Z|Dun Morogh|
 T The Troll Cave |QID|182| |N|Grelin Whitebeard - (25.1, 75.7)| |C|Paladin/Mage/Warlock/Hunter| |Z|Dun Morogh|

@@ -33,7 +33,7 @@ T Crushridge Bounty |QID|500| |N|Marshal Redpath in Southshore (49.67, 58.73)| |
 T Noble Deaths |QID|512| |N|Magistrate Henry Maleb in Southshore (48.15, 59.12)| |Z|Hillsbrad Foothills|
 T Dark Council |QID|537| |N|Magistrate Henry Maleb in Southshore (48.15, 59.12)| |Z|Hillsbrad Foothills|
 
-N Level 37 |N|You should be around level 37 now. Continue to the next guide|
+N Level 37 |N|You should be around level 37 now. Continue to the next guide| |LV|37|
 
 ]]
 end)

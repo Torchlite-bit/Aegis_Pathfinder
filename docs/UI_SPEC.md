@@ -74,7 +74,13 @@ client's equivalent, `GameTooltip`, is Blizzard's bevelled card in FrizQuadrata
 addon's tooltips too. `Theme:ShowTip(owner, side, text, detail, color)` is the
 addon's own: a `panel-2` card in the body face, the hint in `--text` over dimmer
 detail lines, as wide as its longest line up to 260px, in the `TOOLTIP` strata,
-hiding itself if its owner disappears under the cursor. Only the Active Items
+hiding itself if its owner disappears under the cursor. A window can ask for
+its hints to open outside it, `Theme:TipOutside(window)`, and the guide does,
+so a hint never covers its steps. Such a hint opens beside the window on the
+side facing the middle of the screen, which has the more room, its top level
+with what is hovered; with no room there, below the window when it is in the
+top half of the screen and above it in the bottom half. It is placed in screen
+pixels, so the guide's own scale does not move it. Only the Active Items
 buttons still open `GameTooltip`, since only it can show a game item, and
 `Tools/verify.py` fails any other file that does. Those buttons are the theme's
 rounded tile around the item's icon, not `ItemButtonTemplate`'s square
@@ -214,7 +220,8 @@ nav row, a 4px progress rule, the step list, and the footer.
 screen while you play, as the quest tracker does, and Escape is what clears a
 target or cancels a spell in a fight, so it kept closing the guide in combat.
 Its close chip closes it. The windows opened from it (options, guide browser,
-Gear finder, Where next?) still close on Escape.
+Where next?) still close on Escape, as does the character panel the Gear
+Finder is a tab of.
 
 **The ≡ menu**, Zygor's: the header's first chip opens it under itself, in
 `FULLSCREEN_DIALOG` above every window -- **Guide menu** (the guide browser),
@@ -328,13 +335,168 @@ is sections now.
 sections added, one scrolling body grew too long to find anything in, so the
 sections are grouped into pages with a category list down the left, as Zygor's
 options have it: Route (Race, Route pack), Dungeons (Dungeons, Turtle WoW's
-own, Along the way -- with the middle-of-its-levels switch), Filters, Appearance (Server theme, Window scale), Gear and, set in under it, Item Score, Behaviour, Navigation
-(Waypoints, Arrow), Maintenance, About. The concept's 396px pane is unchanged, with the 150px list beside it
+own, Along the way -- with the middle-of-its-levels switch -- and Boss notes,
+whose *My role in dungeons* dropdown picks the boss steps' role lines), Filters, then
+Zygor's pages in this style -- Appearance (Server theme, Window scale, Guide
+window, Minimap), Step Display (Between guides, Sync & Share), Automation
+(Quests, Travel, Inventory), Action Buttons (Windows), Navigation (Waypoints, Arrows),
+Maps (World map, Ant trail, Points of interest) -- then
+Gear and, set in under it, Item Score, then Extras (Chat, Level-ups), Maintenance, About. Automation replaced
+Behaviour, whose switches went to Step Display, Automation, Action Buttons and
+Appearance with their saved values. The pages built out of `CreateConfigPanel`
+(`Build.*`) take its layout helpers as a kit, which keeps that function inside
+Lua 5.0's limits. The concept's 396px pane is unchanged, with the 150px list beside it
 (546px in all). The list is a quieter column than the pane — a 3% text tint and
 a hairline on its right edge — and the page shown is marked with a 3px accent
 bar, a brighter row and white text. The subhead names the page (`CONFIG ·
 GEAR`). A page scrolls only when it is taller than the window, and every page
 opens at its top; changing page closes any dropdown list left open.
+
+A switch that belongs to the one above it -- *All quests* and *Pick the
+guide's quest from an NPC's list* under accepting the guide's quests -- sits
+24px in under it, stops at the same right edge, and is held off (45% alpha,
+not clickable) while that one is off. A dropdown with a name, *Repair
+automatically*, has it as a 13px body line above it.
+
+**Sliders** written as percentages (`Build.Slider`): the guide window's
+opacity, set in 24px under Transparency and held off (45% alpha, not
+draggable) while it is off; the guide browser's opacity; the step text size.
+
+**The guide window with the Appearance and Step Display settings.** Opacity
+tints only the panel's fill, so the text stays solid; the browser's opacity is
+the whole window's alpha, which its fade-in now stops at (`frame.fadeTo`).
+Step text size scales the titles (12px base), notes (11px), the band labels
+and the row height (44px) together. With the progress bar off the chrome is
+82px instead of 86px and everything hung from it moves up. Growing upward pins
+the panel by its bottom-left corner, as it is saved when dragged. In focus
+mode, the steps after the current one (up to four more) sit under its meter
+and party block, each its full height.
+
+**Boxes to a row.** The Gear page's Upgrade sources and the Action Buttons
+page's *Buttons to show* are both `Theme:Checkbox` grids under a 13px label,
+two to a row 170px apart (`Build.Boxes`). *Active items grow* and *Active
+targets grow* are named dropdowns (Right, Left, Up, Down); *Button size* a
+`Theme:Slider`, 60% to 150%, applied as a scale factor on top of the window
+scale (`Theme:SetScaleFactor`).
+
+**The Maps page.** The trail's *Style* (Dots, Dashes) is a short dropdown,
+140px, with its 13px label beside it, set 24px in under the trail's switch and
+held off with it like a slider (`Build.ProfileDropdown`, `Build.Hold`). *Icon
+size*, 60% to 160%, and *See-through icons* sit in under the rares' switch the
+same way.
+
+**The Extras page.** Two switches under Chat, each with its note; under
+Level-ups, *Announce level-ups to:* as a `Build.Boxes` grid of three boxes
+(Emote, Party chat / Guild chat). Emote is ticked until unticked; Party chat
+and Guild chat are the first boxes off until ticked (`true` as a box's third
+field). Under Talent Advisor: its switch (`Build.CharSwitch`, on until
+switched off); *Build to follow*, a full-width dropdown (`Build.CharDropdown`)
+dimmed to 45% and not clickable while the advisor is off, its items rebuilt on
+every refresh so the first names your spec; a note; *Name the talent to take
+in chat when I level up* and *Point out a talent point* set in under the switch
+and held off with it; a note on Modern Spellbook; and an *Open the talent
+window* pill (170 by 26). The reputation line is an ordinary
+chat line from the addon, after the client's own.
+
+**The talent window** (`TalentWindow.lua`) is Blizzard's own, loaded on demand
+(Blizzard_TalentUI), and the advisor only lays marks over it. Its functions
+are called by name -- `TalentFrame_Update` on showing, a tab clicked and points
+spent, `TalentFrame_OnShow` on showing -- so each is wrapped where it is kept,
+once, when Blizzard_TalentUI loads (`ADDON_LOADED`, or at once if another
+addon loaded it first); `GameTooltip.SetTalent` is wrapped the same way, as
+Pathfinder loads, for the tooltip line.
+
+- *The strip*: a frame on `TalentFrame`, above its art (12 in from the left,
+  34 from the right, its bottom 10 under the frame's top) or on pfUI's
+  `TalentFrame.backdrop`, its width; `panel2` with rounded top corners
+  (`CapStrip`). PATHFINDER in the display face (12, `accentGlow`) and
+  *Following* (12, `textDim`), then a full-width `Theme:Dropdown` (the mock-up
+  had it beside *Following*; the frame is too narrow there for the builds'
+  names, so it has a row of its own). Under it the card for the next point,
+  44 high: a dark gold ground (`#2e2a1c`), the talent's icon (36, trimmed) in
+  a 2px gold (`#ffd100`) edge, its title (body, 14, gold) and a line under it
+  (body, 12, `#e8e2c8`). With no next point, the line (12, white) in its
+  place; the warning (11, amber `#f0b43c`) under either. 116 high with the
+  card, 134 with the warning too; 86 and 104 with the line.
+- *A badge* on each talent button: 16 high, pill-shaped (`pillFill` and
+  `pillBorder`, 8px corners), centred on the button's top right corner (its
+  rank is at the bottom right), the display face at 11. *todo*: `accent`
+  fill and edge, near-black text; *done*: grey (`#5a5a5a`) with a white
+  `tick` glyph, 10 square, in place of the number; *off*: amber fill and
+  edge, dark text.
+- *The next point*: `UI-ActionButton-Border`, 72 square, additive, tinted
+  gold, over the button; and a 40 by 14 gold tag reading NEXT (display face,
+  10, near-black) 10 above it, clear of the badge.
+- *The tab*: a gold `circleFill`, 8 square, left of the tab's name, and the
+  tab lit with `UI-Character-Tab-Highlight`, additive, tinted gold.
+- *The card on a level up*: 340 wide, `DIALOG` strata, 24 in from the right
+  and 150 up from the bottom of the screen, a `panel` with its shadow,
+  registered with the window stacking. The talent's icon (40) in a gold edge;
+  "Level N: a talent point" (display, 15, gold); the talent to take (body, 13);
+  *Open talents* (an active pill, 110 by 24) and *Later* (70 by 24). It hides
+  after 30 seconds, on either button, and when a talent window opens.
+- *The talents button*: on `TalentMicroButton`, `UI-ActionButton-Border`
+  additive and gold, 2.4 times its width; a 16 square gold pill at its top
+  right with the points to spend (display, 10, near-black).
+
+**Modern Spellbook's talent window** (`TalentModern.lua`) is its own
+`TalentTree` (frame `ModernTalentTreeFrame`), made when it loads; the advisor
+lays the same marks over it. Its `Refresh`, which it calls on opening, a point
+spent, a plan changed and a tree expanded, is wrapped on that window once, when
+it loads (`ADDON_LOADED` for ModernSpellBook, or `PLAYER_LOGIN`); its frame's
+OnShow and OnHide are chained.
+
+- *The strip*: 60 high, 10 above its frame, as wide as it, a `panel` without a
+  shadow, every piece hung from its top at set places. PATHFINDER (display,
+  14, `accentGlow`), a 1px rule 128 in, *Following* (11, `textDim`) over a 340
+  by 24 `Theme:Dropdown`, the card (46 high, the icon 30) filling the room up
+  to the buttons, and at the right *Plan to my level* (active pill, 140),
+  *Whole build as a plan* (180) and *Share* (80), 30 high. A warning adds an
+  18 high row underneath. The plan buttons dim to 45% without
+  its plans; all three while the build doesn't fit.
+- *The marks*: the badge, ring (62 square) and NEXT of Blizzard's window, on
+  each icon's frame, centred on its `border_frame`, five levels up. A gold
+  pill, 16 high, reading NEXT POINT HERE (display, 10), right of the next
+  point's tree's header. None while it shows a plan.
+- *Share and plan*: 560 by 340, `DIALOG` strata, a `panel` with its shadow
+  and a 40 high header (title SHARE AND PLAN, display 16; a close chip),
+  dragged by its header, closed by Escape and by its window closing. The
+  share string in a field (28 high, a hairline edge on black) that can't be
+  typed over; *Follow a shared build* with a field and *Follow it* (100), its
+  answer under it (`accentGlow`, or amber); *Plan to my level · N points*
+  (active) and *Whole build · N points*, 34 high, side by side.
+
+**On the world map** (`Maps.lua`) everything is drawn on the zone's own map,
+1002 by 668 like the client's. The unexplored overlays are tiles of our own on
+`WorldMapDetailFrame`, cut as the client cuts the explored ones (256px tiles,
+the last of a row or column in the next power of two up) and tinted to 55%
+grey. The step's places are pins on `WorldMapButton`: the accept, turn-in and
+note icons, 14px, in gold (gold, gold, accent), for the quest giver, the
+hand-in and the note's place; 7px filled circles for kill spots (danger) and
+the creatures that drop the item (gold); at most 60 in all, 25 of them kill
+spots. A pin names itself in the theme's tooltip. The trail is 5px accent
+circles 14px apart -- dashes are 4px circles 4px apart, three on and three off
+-- moving a gap toward the waypoint every 1.2 seconds, redrawn ten times a
+second while the map is open. The minimap trail is eight 4px accent circles
+placed by Astrolabe, reaching 85% of the way to the minimap's edge or to the
+waypoint, whichever is nearer. A rare is the kill icon, 16px times *Icon
+size*, gold (a rare elite in the danger colour), at half alpha when
+see-through.
+
+**The Active Items and Active Targets windows** lay their tiles out the way
+each grows: a row from the left (right) or the right (left), or a column from
+the top (down) or the bottom (up), 32px tiles 4px apart. Dragged, a window is
+pinned by the corner it grows from -- top left, top right or bottom left -- so
+it grows away from where you left it. The delete tile wears the cheapest
+item's icon with a `close` glyph in the danger colour at its corner and a
+danger border on hover; its question is a small themed window ("Make room")
+with **Delete** and **Keep it**.
+
+**The Sell greys button** (`Automation.lua`) is a `Theme:PanelButton`, 92 by
+20, on the client's vendor window: at its top right, 44px in and 44px down,
+clear of the title and the item grid, five levels over the window. It is the
+one control of ours on a Blizzard window besides the Gear Finder's tab, and
+it wears the theme, not Blizzard's button art.
 
 A grip in the bottom-right corner (the guide's `grip.tga`) resizes the window:
 wider or taller, never narrower than it opens, never shorter than 360px, never
@@ -351,6 +513,14 @@ A switch's label wraps under itself when it is too long for the row, and the
 row grows to hold it (`Switch:Fit`): the lines are counted from the label's
 unwrapped width, since a wrapped font string's own height is not reliable on
 1.12. Labels used to run under the scroll bar and be cut off.
+
+**Checkboxes** (`Theme:Checkbox`) are for a few choices side by side that are
+each on or off, where a column of switches would read as one list: the Gear
+page's **Upgrade sources** -- **Dungeons** and **Raids**, as Zygor lays out its
+dungeon and raid sources, then **Quest rewards**, **Reputation vendors** and
+**Crafted gear** -- two to a row, 170px apart, three rows. Off, an outlined box; on, a box in the theme's
+switchOn colour with a tick. They hold off with the Gear Finder, as its
+switches do.
 
 **Item Score** (`GearFrame.lua`) is Zygor's page of the same name: the spec
 picker and your class, a note on where the spec came from and whether the
@@ -469,9 +639,53 @@ bigger than the rest at 32.
 
 Click toggles the guide, right-click toggles the options panel, and dragging
 walks it round the minimap's edge at 80px from its centre; the angle is saved
-per profile. "Minimap button" in the options panel's Guide behaviour section,
+per profile. "Minimap button" on the options panel's Appearance page,
 or `/apg minimapbutton`, hides it. `Tools/verify.py` fails on Blizzard
 quest-log or minimap art, in either backslash form.
+
+### Gear Finder tab -- `GearFinderTab.lua`, `GearFinder.lua`
+
+Not in the concept, which has no character panel: Zygor's Gear Finder, in the
+addon's language. **A tab on the client's character panel**, after its own
+(Character, Pet, Reputation, Skills, Honor): `CharacterFrameTab6` -- the
+first free number, as the client's PanelTemplates walk the tabs by number --
+from the client's `CharacterFrameTabButtonTemplate`, so it looks like its
+neighbours. It is placed after the last tab shown, which moves as the Pet tab
+comes and goes, at the gap the tabs before it keep (Blizzard's -16 overlap,
+or a skin's spacing); under pfUI it is skinned with pfUI's `SkinTab`, as pfUI
+skins tabs one to five. Its page is one of `CHARACTERFRAME_SUBFRAMES`, so the
+client's own `ToggleCharacter` swaps it with the other pages and closing it
+closes the panel. The tab is the one Blizzard-looking control the addon
+makes, there because it sits in Blizzard's row.
+
+**The page** is 714 wide, over the character panel's frame (or pfUI's
+backdrop of it) down to where its tabs hang, and running past the panel to
+the right. Header: GEAR FINDER and the character's level, race and class,
+and a close chip; the panel's own close button, which would sit over the
+header, is hidden while the page shows. Footer: where it looked, and a cog
+that opens the options at the Gear page. Dragging the page moves the
+character panel it hangs from, as pfUI lets you drag the panel's other
+pages.
+
+- **Cells**, 227 by 41 in two columns of eight -- Head, Neck, Shoulder, Back,
+  Chest, Wrist, Main hand, Off hand; Hands, Waist, Legs, Feet, Finger 1 and
+  2, Trinket 1 and 2 -- and Ranged under the suggested dungeon. The item's
+  icon in a 1px frame of its quality's colour, its name in that colour, where
+  it comes from in grey (in the accent when it drops in the dungeon on the
+  right), *at level N* in gold; the gain in the display face, and *YOUR PICK*
+  under it. Text stops short of what is beside it and ends in "..." rather
+  than wrapping. An empty slot: the client's empty-slot picture, dimmed, and
+  *No upgrade found*.
+- **A slot's list**, opened from its cell, beside it over the other column
+  (over the left one for the ranged cell), kept inside the page: up to eight
+  rows, the wheel for more, the one shown marked *Biggest* or *Your pick*,
+  and **Clear my pick**.
+- **The suggested dungeon**, 222 wide: the loading screen
+  (`pic:SetDungeon`, GuidePictures.lua), *Scoring for* and a spec dropdown,
+  SUGGESTED DUNGEON, the name between arrows, its levels, *N upgrades here*,
+  the slots, *1 of N*, and **Open the guide** in the accent, hidden for a
+  dungeon with no guide. With nothing to suggest: the logo in the loading
+  screen's place, the spec row still there to switch back, and why under it.
 
 ### Guide browser -- `GuideListFrame.lua`, `GuideBrowser.lua`, `GuidePictures.lua`
 
@@ -495,7 +709,7 @@ columns under the header:
 - **Right pane** (268px, `panel3`), beside a list: the guide you point at --
   its picture, its name, what it is ("Optimized route", "Dungeon guide"),
   the levels it is for in the colour below, a progress bar with its
-  percentage, **Load** and **Open beside the route**; the logo and "Pick a
+  percentage, **Open in a new tab**; the logo and "Pick a
   guide" while you have pointed at none. A line at its foot says what the
   clicks do.
 
@@ -507,9 +721,12 @@ names, or a place in it does ("Coldridge Valley" is Dun Morogh), or else the
 one most of its steps' `|Z|` tags name. Dungeons and Class Quests are by
 level, Professions and Favorites by name. A route leg that is a dungeon run
 -- a title naming a dungeon or raid (`Browser.DungeonIn`), such as
-Optimized's Uldaman and Sunken Temple, or RestedXP's Scholomance Key -- is
-not in its pack's folder but in **On the routes**, the first folder under
-Dungeons, each saying whose route it is on. Class Quests holds only yours
+Optimized's Uldaman and Sunken Temple -- is not in its pack's folder but in
+**On the routes**, the first folder under Dungeons, each saying whose route it
+is on. A pack's attunement or key -- RestedXP's Onyxia Attunement and
+Scholomance Key, which have no level range to file them by
+(`Browser.AccessChain`) -- is in **Attunements and keys**, the folder after
+it. Class Quests holds only yours
 (`IsMyClassGuide`: your class's, and one your race has a chain for). Search
 looks through every title, any case.
 
@@ -528,11 +745,12 @@ guide: a ring, or a tick once finished; its title without the pack's prefix,
 which carries its levels; on the right its progress, or "Your route" for the
 main route while you branch. Pointing at a guide marks it (`tabbg`, an
 accent bar), shows it on the right, and puts up a star and an arrow on the
-row: the star keeps it in Favorites, the arrow opens it beside the route. A
-favourite's star stays up. Left-click opens a guide beside the one you are
-on; right-click loads it in the tab you are on; shift-click resets its
-progress. Picking a RestedXP guide switches to a RestedXP route pack, so the
-route goes on from it. Placeholder guides carry the grey `TPL` badge.
+row: the star keeps it in Favorites, the arrow opens it in a new tab. A
+favourite's star stays up. A click, left or right, opens a guide in a new tab
+(or its own tab, if it has one) and leaves the tab you are on alone;
+shift-click resets its progress. Picking a guide leaves the route pack alone:
+a guide off your route goes on by its own next link. Placeholder guides
+carry the grey `TPL` badge.
 
 **The list's ⋮** has four switches, saved per character: colour guides by how
 they suit your level (`Theme.LEVEL_COLORS`, the quest log's colours -- grey
@@ -701,7 +919,7 @@ server (`IsQuestCompletedOnServer` of the race's `last`), open in a tab, or
 still to come on your route (`RouteHasQuests`: a leg from the one in tab 1 on
 has a `|QID|` of the race's chain in a step your class and race would see, each
 guide read once). A `group` milestone only in Group mode without Solo
-Self-Found. Nothing before `setupdone` or with `classquests` false (Behaviour's
+Self-Found. Nothing before `setupdone` or with `classquests` false (Step Display's
 *Offer class quests at their level*, on by default). Up to four, lowest level
 first. `OfferClassMilestones` shows them, marking each offered;
 `OpenClassMilestone` opens one in a tab, and the guide's end takes you back
@@ -752,8 +970,8 @@ made, want, reagents = { { name, count, itemId } } }`, priced at the auction
 house. The button writes one project per craft still ahead, in route order
 with the next craft on top: `want` is the craft count and `made` is 1, so
 Exchange's `reagent count x crafts` lands on the same totals as the list here
-(`Tools/tests/test_materials.lua` checks this against the reference document's
-Alchemy list). The same craft on two steps is one project with both counts.
+(`Tools/tests/test_materials.lua` checks this against the Alchemy guide's own
+steps, multiplied out). The same craft on two steps is one project with both counts.
 Item ids come from the bags, then Exchange's own name map, then pfQuest's item
 database; anything unmatched is reported in chat, since Exchange's list only
 shows reagents it can resolve.

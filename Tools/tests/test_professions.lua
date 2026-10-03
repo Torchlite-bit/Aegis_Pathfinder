@@ -159,37 +159,84 @@ end
 check(book and string.find(book.title, "Expert Fishing", 1, true), "Expert Fishing is a book you buy")
 check(pagle and not pagle.faction, "Nat Pagle's hand-in raises the cap to 300 for either side")
 
--- Engineering, authored from CraftRoute's route --------------------------------
+-- The crafting guides, authored from CraftRoute's routes -----------------------
 
-local eng = AegisPathfinder.qsplusguides["Engineering (1-300)"]
-check(eng and not eng.template, "Engineering is authored, not a placeholder")
-if eng then
-	local ranks, crafts, reagentless, trainers = {}, 0, 0, {}
-	local lastSkill = 1
-	for _, s in ipairs(eng.steps) do
-		if s.skill then
-			crafts = crafts + 1
-			if not s.reagents or table.getn(s.reagents) == 0 then reagentless = reagentless + 1 end
-			lastSkill = s.skill.to
+-- Cooking is a secondary profession: its Expert is a book and its Artisan a
+-- quest at 225 (test_professionsteps covers those), so it trains only the
+-- first two ranks at a trainer.
+local ROUTED = { Alchemy = 4, Blacksmithing = 4, Cooking = 2, Enchanting = 4, Engineering = 4,
+	Jewelcrafting = 4, Leatherworking = 4, Survival = 4, Tailoring = 4 }
+local NEEDS = { [75] = 1, [150] = 50, [225] = 125, [300] = 200 }
+for name, trained in pairs(ROUTED) do
+	local g = AegisPathfinder.qsplusguides[name .. " (1-300)"]
+	check(g and not g.template, "%s is authored, not a placeholder", name)
+	if g then
+		local ranks, crafts, reagentless, trainers = {}, 0, 0, {}
+		local cursor, lastSkill = 1, 1
+		for _, s in ipairs(g.steps) do
+			if s.skill then
+				crafts = crafts + 1
+				if not s.reagents or table.getn(s.reagents) == 0 then reagentless = reagentless + 1 end
+				check(s.skill.from == cursor, "%s: a craft starts at %d after one ending at %d",
+					name, s.skill.from, cursor)
+				-- A craft raises a skill one point at most. (Soulminer's report: the
+				-- old Jewelcrafting route had 10 Malachite Rings for 50-70.)
+				check(s.craft and s.craft.count >= s.skill.to - s.skill.from,
+					"%s: %s for %d-%d is fewer crafts than points", name, s.title, s.skill.from, s.skill.to)
+				cursor, lastSkill = s.skill.to, s.skill.to
+			end
+			if s.rank and s.type == "TRAIN" then
+				ranks[s.rank.cap] = (ranks[s.rank.cap] or 0) + 1
+				-- Each rank is trained once the skill it needs is reached and
+				-- before the old cap stops you: 50, 125 and 200.
+				check(lastSkill >= NEEDS[s.rank.cap] and lastSkill <= s.rank.cap - 75 or s.rank.cap == 75,
+					"%s: the rank to %d comes at skill %d", name, s.rank.cap, lastSkill)
+				for _, n in ipairs(s.npcs or {}) do trainers[n] = true end
+			end
 		end
-		if s.rank then
-			ranks[s.rank.cap] = (ranks[s.rank.cap] or 0) + 1
-			-- Each rank is trained once the skill it needs is reached and
-			-- before the old cap stops you: 50, 125 and 200.
-			local needs = { [75] = 1, [150] = 50, [225] = 125, [300] = 200 }
-			check(lastSkill >= needs[s.rank.cap] and lastSkill <= s.rank.cap - 75 or s.rank.cap == 75,
-				"Engineering: the rank to %d comes at skill %d", s.rank.cap, lastSkill)
-			for _, n in ipairs(s.npcs or {}) do trainers[n] = true end
+		check(cursor == 300, "%s: the crafts reach 300, not %d", name, cursor)
+		check(crafts > 0, "%s has craft steps", name)
+		check(reagentless == 0, "every %s craft lists its reagents", name)
+		local caps = { 75, 150, 225, 300 }
+		for i = 1, trained do
+			check(ranks[caps[i]] == 2, "%s trains the rank to %d, once per faction (%s)",
+				name, caps[i], tostring(ranks[caps[i]]))
+		end
+		check(string.find(g.steps[1].note, "CraftRoute", 1, true),
+			"%s says its route is CraftRoute's", name)
+		if name == "Engineering" then
+			check(trainers["Buzzek Bracketswing"] and trainers["Roxxik"] and trainers["Springspindle Fizzlegear"],
+				"Engineering's rank steps name their trainers")
 		end
 	end
-	check(crafts == 22, "Engineering has CraftRoute's 22 craft steps (%d)", crafts)
-	check(reagentless == 0, "every Engineering craft lists its reagents")
-	for _, cap in ipairs({ 75, 150, 225, 300 }) do
-		check(ranks[cap] == 2, "Engineering trains the rank to %d, once per faction (%s)", cap, tostring(ranks[cap]))
-	end
-	check(trainers["Buzzek Bracketswing"] and trainers["Roxxik"] and trainers["Springspindle Fizzlegear"],
-		"Engineering's rank steps name their trainers")
 end
+
+-- First Aid: rebuilt on the bandages' skill colours. The document's route
+-- asked for 29 Linen Bandages for 1-45 and 5 Heavy Linen for 45-100, and
+-- trained Journeyman at 45, five points before it can be.
+local fa = AegisPathfinder.qsplusguides["First Aid (1-300)"]
+local faCursor, faSkill, faJourneyman = 1, 1, nil
+for _, s in ipairs(fa and fa.steps or {}) do
+	if s.skill then
+		check(s.skill.from == faCursor, "First Aid: a craft starts at %d after one ending at %d", s.skill.from, faCursor)
+		check(s.craft.count >= s.skill.to - s.skill.from,
+			"First Aid: %s for %d-%d is fewer crafts than points", s.title, s.skill.from, s.skill.to)
+		faCursor, faSkill = s.skill.to, s.skill.to
+	elseif s.type == "TRAIN" and s.rank and s.rank.cap == 150 then
+		faJourneyman = faJourneyman or faSkill
+	end
+end
+check(faCursor == 300, "First Aid reaches 300, not %d", faCursor)
+check(faJourneyman == 50, "First Aid trains Journeyman at skill 50, got %s", tostring(faJourneyman))
+
+-- What CraftRoute makes for a later recipe says so.
+local keeps = 0
+for _, s in ipairs(AegisPathfinder.qsplusguides["Tailoring (1-300)"].steps) do
+	if s.craft and s.craft.item == "Bolt of Linen Cloth" and string.find(s.note, "Keep them for", 1, true) then
+		keeps = keeps + 1
+	end
+end
+check(keeps > 0, "Tailoring's Bolts of Linen Cloth say what they are kept for")
 
 -- Tag round trip -------------------------------------------------------------
 
@@ -199,35 +246,42 @@ check(table.getn(actions) > 0, "Alchemy produced no parsed steps")
 
 AegisPathfinder.actions, AegisPathfinder.quests, AegisPathfinder.tags = actions, quests, tags
 
+-- The first craft after Journeyman training, as the guide table has it.
+local want
+for _, s in ipairs(AegisPathfinder.qsplusguides["Alchemy (1-300)"].steps) do
+	if s.craft and s.skill.from >= 50 then want = s break end
+end
 local craftIndex
 for i = 1, table.getn(tags) do
-	if string.find(tags[i], "|CRAFT|40 Minor Healing Potion|", 1, true) then
+	if want and string.find(tags[i], "|CRAFT|" .. want.craft.count .. " " .. want.craft.item .. "|", 1, true) then
 		craftIndex = i
 		break
 	end
 end
-check(craftIndex ~= nil, "no step emitted |CRAFT|40 Minor Healing Potion|")
+check(craftIndex ~= nil, "no step emitted the CRAFT tag of Alchemy's first craft past 50")
 
 if craftIndex then
 	local profession, from, to = AegisPathfinder:GetObjectiveTag("SKILL", craftIndex)
 	check(profession == "Alchemy", "SKILL profession round-tripped as '%s'", tostring(profession))
-	check(from == 1 and to == 63, "SKILL range round-tripped as %s-%s",
+	check(from == want.skill.from and to == want.skill.to, "SKILL range round-tripped as %s-%s",
 		tostring(from), tostring(to))
 
 	local item, count = AegisPathfinder:GetObjectiveTag("CRAFT", craftIndex)
-	check(item == "Minor Healing Potion", "CRAFT item round-tripped as '%s'", tostring(item))
-	check(count == 40, "CRAFT count round-tripped as %s", tostring(count))
+	check(item == want.craft.item, "CRAFT item round-tripped as '%s'", tostring(item))
+	check(count == want.craft.count, "CRAFT count round-tripped as %s", tostring(count))
 
 	local src = AegisPathfinder:GetObjectiveTag("SRC", craftIndex)
-	check(src == "Auto-learned", "SRC round-tripped as '%s'", tostring(src))
+	check(src == want.source, "SRC round-tripped as '%s'", tostring(src))
 
 	local reagents = AegisPathfinder:GetStepReagents(craftIndex)
-	check(reagents ~= nil and table.getn(reagents) == 3,
-		"expected 3 reagents, got %s", reagents and table.getn(reagents) or "nil")
+	check(reagents ~= nil and table.getn(reagents) == table.getn(want.reagents),
+		"expected %d reagents, got %s", table.getn(want.reagents), reagents and table.getn(reagents) or "nil")
 	if reagents then
-		check(reagents[1].item == "Peacebloom", "first reagent is '%s'", reagents[1].item)
-		-- 40 crafts x 1 Peacebloom each
-		check(reagents[1].need == 40, "Peacebloom need should be 40, got %d", reagents[1].need)
+		local r = want.reagents[2]
+		check(reagents[2].item == r.item, "second reagent is '%s'", reagents[2].item)
+		-- each craft takes qty of it
+		check(reagents[2].need == r.qty * want.craft.count, "%s need should be %d, got %d",
+			r.item, r.qty * want.craft.count, reagents[2].need)
 	end
 end
 
@@ -303,21 +357,24 @@ check(AegisPathfinder:GetSkillRank("Cooking") == 75, "Cooking rank should be fou
 -- Auto-completion fires only once the target is reached.
 AegisPathfinder.actions, AegisPathfinder.quests, AegisPathfinder.tags = actions, quests, tags
 AegisPathfinder.current = craftIndex
-ranks = { { name = "Alchemy", header = nil, rank = 62 } }
+local wantFrom, wantTo = want and want.skill.from or 0, want and want.skill.to or 0
+ranks = { { name = "Alchemy", header = nil, rank = wantTo - 1 } }
 AegisPathfinder.__turnedIn = nil
 AegisPathfinder:CheckSkillObjective()
 check(AegisPathfinder.__turnedIn == nil,
 	"a step must not complete one point short of its target")
 
-ranks = { { name = "Alchemy", header = nil, rank = 63 } }
+ranks = { { name = "Alchemy", header = nil, rank = wantTo } }
 AegisPathfinder:CheckSkillObjective()
 check(AegisPathfinder.__turnedIn == true, "reaching the target should complete the step")
 
 -- Progress reporting.
-ranks = { { name = "Alchemy", header = nil, rank = 32 } }
+local mid = math.floor((wantFrom + wantTo) / 2)
+ranks = { { name = "Alchemy", header = nil, rank = mid } }
 local ratio = AegisPathfinder:GetSkillProgress(craftIndex)
-check(ratio > 0.49 and ratio < 0.51, "skill 32 of 1-63 should read ~50%%, got %s",
-	tostring(ratio))
+local expect = (mid - wantFrom) / (wantTo - wantFrom)
+check(math.abs(ratio - expect) < 0.001, "skill %d of %d-%d should read %d%%, got %s",
+	mid, wantFrom, wantTo, math.floor(expect * 100 + 0.5), tostring(ratio))
 ranks = {}
 check(AegisPathfinder:GetSkillProgress(craftIndex) == nil,
 	"progress should be nil when the player lacks the profession")

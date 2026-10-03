@@ -76,7 +76,7 @@ R Ratchet |QID|1270| |N|Travel to Ratchet (62.40, 37.64)| |Z|The Barrens|
 T Stinky's Escape |QID|1270| |N|Mebok Mizzyrix in Ratchet (62.40, 37.64)| |Z|The Barrens|
 N Bank Items |N|Withdraw Sample Elven Gem from the bank if you have it (62.6, 37.4)| |Z|The Barrens|
 
-N Level 38 |N|You should still be around level 38. Continue to the next guide|
+N Level 38 |N|You should still be around level 38. Continue to the next guide| |LV|38|
 
 ]]
 end)

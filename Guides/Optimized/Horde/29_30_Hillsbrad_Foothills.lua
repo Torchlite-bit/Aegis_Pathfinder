@@ -63,7 +63,7 @@ R Tarren Mill |QID|527| |N|Return to Tarren Mill (62.39, 20.33)| |Z|Hillsbrad Fo
 T Battle of Hillsbrad (Part 1) |QID|527| |N|High Executor Darthalia in Tarren Mill (62.39, 20.33)| |Z|Hillsbrad Foothills|
 A Battle of Hillsbrad (Part 2) |QID|528| |N|High Executor Darthalia in Tarren Mill (62.39, 20.33)| |Z|Hillsbrad Foothills|
 
-N Level 30 |N|You should be level 30 now. This guide is complete!|
+N Level 30 |N|You should be level 30 now. This guide is complete!| |LV|30|
 N Continue to Alterac Mountains |N|The next guide covers levels 30+ in Alterac Mountains and beyond|
 
 ]]

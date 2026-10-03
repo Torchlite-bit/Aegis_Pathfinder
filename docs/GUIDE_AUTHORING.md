@@ -142,6 +142,24 @@ on a `C` step instead, or an `\|L\|itemid qty\|` tag for item collects.
 | `OBJ` | Object ID | `\|OBJ\|12345\|` |
 | `AYG` | "As You Go" reference | `\|AYG\|41190\|` |
 
+### Travel steps
+
+An `R`, `F`, `b` or `H` step is done when you arrive. That can mean:
+
+- within about 15 yards of its first coordinates, in its `Z` zone;
+- in the zone or subzone its title names: `R Westfall` in Westfall, `R the Westfall Lighthouse` at the lighthouse;
+- the same with a leading "Travel to", "Travel towards", "Run to", "Go to", "Head to", "Return to", "Fly to" or "Enter" dropped: `R Travel to Westfall` anywhere in Westfall;
+- in its `SZ` subzone or zone.
+
+A travel step marked `|O|` with no `|PRE|` is a *way there*, not a stop. RestedXP's `#sticky` and `#completewith` steps convert to these. A way there is also behind you, and ticked, when either:
+
+- you are in the next step's zone, and that is not its own `Z`; or
+- the next step is done, such as its quest already in your log.
+
+RestedXP's 13-15 Westfall opens on `R Travel to Elwynn Forest |N|(19.0, 81.0)| |O| |Z|Elwynn Forest|`: walk through Elwynn and it ticks there; fly to Sentinel Hill and it ticks on landing in Westfall.
+
+A travel step without `|O|` is a stop and waits for one of the first four. One with a `|QID|` is also done once that quest is in your log. Teldrassil (1-12)'s `R Gnarlpine Hold |QID|930|` is done once The Glowing Fruit is taken. A change to the quest log rechecks any travel step. The quest automation looks past any travel step to the next step's NPC or object: talking to them means you got there.
+
 ### Profession Tags
 
 Profession guides do not advance on quest events -- there is no quest to accept
@@ -166,15 +184,20 @@ A range with no craftable recipe (open-world gathering, for instance) uses a
 `G` step with a `SKILL` tag and no `CRAFT`; it waits for the skill. A `G` step
 with an `LV` tag and no `SKILL` is a level gate: it holds the guide until the
 character reaches that level, and clears itself at once for anyone already
-there. Every step with a `SKILL` or `RANK` completes as soon as the player's
+there. A grind to a level ("Grind to level 10") is the same: give it `LV`.
+One marked `|O|` does not hold the guide, and still ticks at the level. Every step with a `SKILL` or `RANK` completes as soon as the player's
 skill or cap is there, so someone opening a guide part-way through moves
 straight to where they are.
 
 **Profession guides in `Guides/Professions/` are generated** from
-`Tools/data/Professions_Reference.docx` (routes, trainers) and
+CraftRoute's routes for the crafting professions
+(`Tools/data/craftroute_routes.json`, planned by `Tools/build/import_routes.py`),
+`Tools/data/Professions_Reference.docx` (Mining's route,
+trainers) and
 `Tools/data/profession_training.json` (rank levels and costs, the secondary
 professions' tomes and Artisan quests, trainers the reference lacks -- taken
-from the owner-supplied FAQ in `Tools/data/Profession_FAQ.md`) by
+from the owner-supplied FAQ in `Tools/data/Profession_FAQ.md` -- and First
+Aid's route and its bandages' skill colours) by
 `Tools/build/convert_professions.py`. Editing them by hand will be overwritten, and
 `python3 Tools/build/convert_professions.py --check` -- part of `Tools/run_tests.sh`
 -- fails when the committed guides differ from what it would write. They are written in QuestShell+
@@ -315,6 +338,39 @@ may lack their objectives), and any it picks up and never hands in.
 `Tools/tests/test_dungeonguides.lua` fails if the guides are stale, or a quest is
 handed in before it is picked up, or picked up and never handed in.
 
+**Trips.** A trip to a town carries the class or race tags every quest there
+shares (Darnassus, for Shadowfang Keep, is one Priest, Mage, Warlock and Druid
+quest), so nobody else is sent; and when every quest there is optional and
+waits on the same quest first, the trip carries that |O| |PRE| too, and the
+engine passes it over until the first quest is done, as it does the accept.
+
+**Boss steps.** Each boss's step is `K <boss> |N|<note>| |TANK|..| |HEAL|..|
+|DPS|..| |BOSS|<name>;<name>|`. `|TANK|`, `|HEAL|` and `|DPS|` are the role
+lines Options -> Dungeons -> *My role in dungeons* picks from (Parser.lua's
+`GetStepNote`); `|BOSS|` names who must die to tick it, from the combat log
+(QuestTracker.lua's `CHAT_MSG_COMBAT_HOSTILE_DEATH`). A rare boss's step is
+`|O|`. The bosses, in order, are in `Tools/data/dungeon_bosses.json`, written
+by `Tools/build/build_dungeon_bosses.py` from InstanceJournal (the list, the
+rares, Turtle WoW's abilities), the CMaNGOS classic-db dump (each boss's
+spells, its scripted health points, what he summons) and mangos-classic's
+ScriptDevAI scripts:
+
+```sh
+python3 Tools/build/build_dungeon_bosses.py --instancejournal ../InstanceJournal \
+    --cmangos ../classic-db/Full_DB/ClassicDB_1_12_1_z2815.sql.gz \
+    --scripts ../mangos-classic/src/game/AI/ScriptDevAI/scripts
+python3 Tools/build/build_dungeon_guides.py                  # then write the guides
+```
+
+The notes are written by hand in `Tools/build/dungeon_tactics.py`: `TACTICS`,
+keyed by InstanceJournal's boss id, holds each boss's note and role lines
+(`T(note, tank=, heal=, dps=)`), and `WATCH` the names whose deaths tick a
+step when it is not the boss's own (a group fight, a boss Turtle renamed), or
+`None` for a step ticked by hand. Say which classes can dispel what with
+`MAGIC`, `CURSE`, `POISON` and `DISEASE`. A boss with no entry gets "No special
+abilities known." when the data has him and nothing he casts, and
+"Pathfinder has no notes on this fight yet." when it does not have him at all.
+
 ## Class Quest Guides
 
 `Guides/Class/` is written by `Tools/build/build_class_guides.py`: do not edit
@@ -350,6 +406,34 @@ parses every guide as each race of its class sees it, and fails if the guides
 are stale, a race's chain is missing a quest or has another race's, a quest is
 handed in before it is picked up or never handed in, or a guide does not end
 with the quest the offer takes for its last.
+
+## Attunement Guides
+
+`Guides/Attunements/` is written by `Tools/build/build_attunement_guides.py`:
+do not edit the guides there, change the script. Its `ATTUNEMENTS` table names
+each attunement by the quest that finishes it, per side; the chain is found
+from the data, going back through the quests before each, keeping only those
+the side can get (someone gives it, its races allow the side). Of quests only
+one of which can be done -- "A Call to Arms" from each city -- it keeps the one
+given in the side's first city. The steps are written by the class quest
+guides' `ClassGuide`, with no class and the side's cities as home. `SPOTS`
+corrects where the data puts someone (Stormwind Keep is on Northwind's map in
+pfQuest-turtle), and `DOORS` gives the ways into Turtle WoW's own instances.
+At the end of each side's file, `RegisterAttunements` gives the browser each
+guide's instance, raid or dungeon, level, and the quests that mean you are
+attuned.
+
+```sh
+python3 Tools/build/build_attunement_guides.py --list       # each side's chains
+python3 Tools/build/build_attunement_guides.py              # write the guides
+python3 Tools/build/build_attunement_guides.py --pfquest ../pfQuest --pfquest-turtle ../kludge-pfQuest-turtle \
+    --cmangos ../classic-db/full.sql                        # read the data again first
+```
+
+What it reads is kept in `Tools/data/attunements.json`.
+`Tools/tests/test_attunements.lua` fails if the guides are stale, a side lacks
+one, a quest is handed in before it is picked up, or a guide does not hand in
+the quest that attunes.
 
 ## Routes and Dungeon Quests
 
@@ -396,7 +480,10 @@ the zone its name says (`Browser.ZONES` in `GuideBrowser.lua`, which also knows
 places such as "Coldridge Valley"); a name with no zone in it is filed by the
 zone most of its `|Z|` tags name. A route leg named for a dungeon
 (`Optimized/Uldaman (45-46)`) is listed under Dungeons, in **On the routes**,
-rather than in its pack, and shows the dungeon's loading screen. A new custom
+rather than in its pack, and shows the dungeon's loading screen. A pack's
+chain that opens a dungeon or raid -- a title with the word "Attunement" or
+"Key" (`Browser.ACCESS_WORDS`), such as `RXP/Onyxia Attunement (A)` -- is
+listed under Dungeons in **Attunements and keys**. A new custom
 zone wants a line in `Browser.ZONES`, its explored world map in
 `Tools/data/maps/` and a line in `Theme.zonemap` (see `media/README.md`):
 custom zones' maps built from the client's tiles and pfUI's overlays came

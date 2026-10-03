@@ -61,7 +61,7 @@ check(page.spec:GetValue() == "auto", "Auto chosen until you pick")
 check(page.class:GetText() == "Paladin", "the class beside it")
 local _, _, _, _, specY = page.spec:GetPoint()
 check(specY == -TOP, "under the section header, got %s", tostring(specY))
-check(string.find(page.note:GetText(), "levelling spec", 1, true), "the note says where the spec came from")
+check(string.find(page.note:GetText(), "leveling spec", 1, true), "the note says where the spec came from")
 check(string.find(page.note:GetText(), "default weights", 1, true), "and that the weights are the defaults")
 
 -- The weights listed, one to a row down the left: the spec's, then all of them.

@@ -63,7 +63,7 @@ A Tramping Paws |QID|276| |N|Rethiel the Greenwarden - (56.4, 40.4)| |Z|Wetlands
 N This item has a low droprate, don't go out of your way to find the Oozes, you can complete this objective later |O| |Z|Wetlands|
 C Digging Through the Ooze |QID|470| |OIDX|1| |N|You might pass a pair of Black Oozes while heading south to the Gnolls. Kill them and loot for [Sida's Bag]| |O| |Z|Wetlands|
 C Tramping Paws |QID|276| |OIDX|1| |N|Mosshide Gnolls and Mosshide Mongrels (62.3, 69.3)| |Z|Wetlands|
-G Grind to level 24 |Z|Wetlands|
+G Grind to level 24 |Z|Wetlands| |LV|24|
 T Tramping Paws |QID|276| |N|Rethiel the Greenwarden - (56.4, 40.4)| |Z|Wetlands|
 A Fire Taboo |QID|277| |N|Rethiel the Greenwarden - (56.4, 40.4)| |Z|Wetlands|
 N You will need to get to Ironforge soon. You can either run there through the Loch Modan tunnel (slower and simpler) or use Blizzards character unstuck website after hearthing back to Menethil Harbor (faster and more advanced) |O| |R|Night Elf| |Z|Wetlands|

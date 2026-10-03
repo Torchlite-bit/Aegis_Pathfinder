@@ -42,7 +42,7 @@ R Thistleshrub Valley |QID|3362| |N|Travel west to Thistleshrub Valley (29.66)| 
 K Thistleshrub Dew Collector |QID|2605| |L|8428| |N|Kill Thistleshrub Dew Collector until Laden Dew Gland drops (28.18, 63.86)| |Z|Tanaris|
 C Thistleshrub Valley |QID|3362| |N|Kill 8 Gnarled Thistleshrub and 8 Thistleshrub Rootshaper (28, 65)| |Z|Tanaris|
 
-N Level 48 |N|You should hit level 48 around here|
+N Level 48 |N|You should hit level 48 around here| |LV|48|
 
 A Tooga's Quest |QID|1560| |N|Find Tooga wandering around the valley (29, 73) - he follows you| |Z|Tanaris| |O|
 

@@ -170,7 +170,7 @@ T Wait for Sirra to Finish |QID|401| |N|Sirra Von'Indi in Darkshire (72.63, 47.6
 A Translation to Ello |QID|252| |N|Sirra Von'Indi in Darkshire (72.63, 47.60)| |Z|Duskwood|
 T Translation to Ello |QID|252| |N|Lord Ello Ebonlocke in Darkshire (71.96, 46.43)| |Z|Duskwood|
 
-N Level 29 |N|You should be around level 29 now. Continue to the next guide|
+N Level 29 |N|You should be around level 29 now. Continue to the next guide| |LV|29|
 
 ]]
 end)

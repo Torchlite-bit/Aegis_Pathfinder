@@ -46,6 +46,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 CACHE = os.path.join(ROOT, "Tools", "data", "dungeon_guides.json")
+BOSSES = os.path.join(ROOT, "Tools", "data", "dungeon_bosses.json")
 OUT = os.path.join(ROOT, "Guides", "Dungeons")
 
 ALLIANCE, HORDE = 1 | 4 | 8 | 64 | 512, 2 | 16 | 32 | 128 | 256
@@ -105,7 +106,9 @@ DUNGEONS = {
         "areas": [209, 236, 5132, 5150, 5161, 5169, 5173, 5177], "journal": ["sfk"],
         "zone": "Silverpine Forest", "entrance": (42.8, 67.5),
         "enter": "The keep stands on the hill above Pyrewood Village",
-        "Alliance": {"towns": ["Darnassus", "Stormwind City", "Silverpine Forest"]},
+        # Stormwind first: the Alliance's 22-30s are round it, and Darnassus
+        # is a detour from anywhere.
+        "Alliance": {"towns": ["Stormwind City", "Darnassus", "Silverpine Forest"]},
         "Horde": {"towns": ["Undercity", "Silverpine Forest"]},
     },
     "STOCKADES": {
@@ -577,6 +580,46 @@ class Guide:
                 self.core.append(q)
         self.left_out = []
         self.lines = []
+        self.bosses = model.get("bosses", {}).get(code, [])
+
+    # -- the bosses ----------------------------------------------------------
+
+    def boss_for(self, q):
+        """Which boss a quest's objective is about, by its name in the task
+        ("Kill Edwin VanCleef", "Bring Mutanus's head"): its index in
+        self.bosses, or None."""
+        v = self.q[q]
+        text = "%s %s" % (v["task"], v["text"])
+        best = None
+        for i, b in enumerate(self.bosses):
+            for name in {b["name"], b.get("creature") or b["name"]}:
+                if name in text and (best is None or len(name) > best[1]):
+                    best = (i, len(name))
+        return best and best[0]
+
+    def boss_step(self, b):
+        """K <boss>: what it does, what each role does about it, and whose
+        death ticks it. A rare one is optional: it is not always there."""
+        import dungeon_tactics as tactics
+        t = tactics.TACTICS.get(b["id"])
+        if t:
+            note = t["note"]
+        elif b.get("creature") and not b.get("spells") and not b["journal"]:
+            note = "No special abilities known."
+        else:
+            note = "Pathfinder has no notes on this fight yet."
+        if b["rare"]:
+            note = "Rare: not always here. " + note
+        tags = ["|N|%s|" % note]
+        for role in ("tank", "heal", "dps"):
+            if t and t[role]:
+                tags.append("|%s|%s|" % (role.upper(), t[role]))
+        watch = tactics.WATCH.get(b["id"], [b.get("creature") or b["name"]])
+        if watch:
+            tags.append("|BOSS|%s|" % ";".join(watch))
+        if b["rare"]:
+            tags.append("|O|")
+        self.lines.append(" ".join(["K %s" % b["name"]] + tags))
 
     # -- where things are ----------------------------------------------------
 
@@ -734,7 +777,7 @@ class Guide:
             out += "%s-- also in %s" % (" " if out else "", "; ".join(others))
         return " " + out if out else ""
 
-    def step(self, action, title, q=None, note="", zone=None, use=None):
+    def step(self, action, title, q=None, note="", zone=None, use=None, extra=None):
         tags = []
         if q:
             tags.append("|QID|%d|" % q)
@@ -754,7 +797,32 @@ class Guide:
                 tags.append("|O|")
             if self.optional.get(q) and action == "A":
                 tags.append("|PRE|%s|" % ", ".join(str(p) for p in self.optional[q]))
+        tags.extend(extra or [])
         self.lines.append(" ".join(["%s %s" % (action, title)] + tags))
+
+    def trip_tags(self, steps):
+        """What a trip to a town is for: only the classes, or races, that
+        every quest there is for -- Darnassus for Shadowfang Keep is one
+        Priest, Mage, Warlock and Druid quest -- and, when every quest there
+        is optional and waits on the same quest first, that wait."""
+        tags, classes, races = [], 0, 0
+        for _, q, _ in steps:
+            v = self.q[q]
+            c = v["class"] if v["class"] and v["class"] & ALL_CLASSES != ALL_CLASSES else 0
+            r = v["race"] if v["race"] and v["race"] & self.mask != self.mask else 0
+            if classes is not None:
+                classes = classes | c if c else None
+            if races is not None:
+                races = races | r if r else None
+        if classes:
+            tags.append("|C|%s|" % "/".join(n for b, n in CLASSES if classes & b))
+        if races:
+            tags.append("|R|%s|" % "/".join(n for b, n in RACES if races & b))
+        pres = {tuple(self.optional[q]) if self.optional.get(q) else None for _, q, _ in steps}
+        if len(pres) == 1 and None not in pres and all(q in self.optional for _, q, _ in steps):
+            tags.append("|O|")
+            tags.append("|PRE|%s|" % ", ".join(str(p) for p in pres.pop()))
+        return tags
 
     def gap(self):
         if self.lines and self.lines[-1] != "":
@@ -872,9 +940,10 @@ class Guide:
                 self.step("N", "Back outside", note="Out of %s, in %s" % (self.d["title"], ARTICLE.get(zone, zone)))
             elif zone in self.travel:
                 action, where, note = self.travel[zone]
-                self.step(action, where, note=note, zone=zone)
+                self.step(action, where, note=note, zone=zone, extra=self.trip_tags(steps))
             else:
-                self.step("R", zone, note="Travel to %s" % ARTICLE.get(zone, zone), zone=zone)
+                self.step("R", zone, note="Travel to %s" % ARTICLE.get(zone, zone), zone=zone,
+                          extra=self.trip_tags(steps))
             for action, q, w in steps:
                 v = self.q[q]
                 if action == "C":
@@ -908,25 +977,46 @@ class Guide:
             enter = self.d[self.side].get("enter") or self.d["enter"]
             self.step("R", self.d["name"], note="%s %s" % (enter, fmt(self.d["entrance"])),
                       zone=self.d["zone"])
-            for action, q, w in there:
-                v = self.q[q]
-                if action == "C":
-                    # The points outside are in the entrance's zone: say so,
-                    # or the step's zone is the guide's -- the dungeon, which
-                    # is not a map the arrow can point on.
-                    outside = " ".join(fmt(p) for p in v["obj"].get(self.d["zone"], []))
-                    self.step("C", v["title"], q, v["task"] + (", outside too %s" % outside if outside else ""),
-                              self.d["zone"] if outside else None)
-                elif w.item:
-                    self.step("A", v["title"], q, "%s: right-click it to start the quest" % w.name, use=w.item)
+            # The bosses in the order you meet them -- all of them the first
+            # time in, and after that those a quest sends you back for -- each
+            # with the quest objectives that are about it, and their hand-ins
+            # where those are inside, straight after.
+            after = {}
+            tied = {q: self.boss_for(q) for a, q, _ in there if a == "C"}
+            tied = {q: i for q, i in tied.items() if i is not None}
+            rest = []
+            for s in there:
+                if s[1] in tied and s[0] in ("C", "T"):
+                    after.setdefault(tied[s[1]], []).append(s)
                 else:
-                    self.step(action, v["title"], q, w.name)
+                    rest.append(s)
+            self.inside_steps(rest)
+            for i, b in enumerate(self.bosses):
+                if run == 1 or i in after:
+                    self.boss_step(b)
+                    self.inside_steps(after.get(i, []))
             for zone in self.back:
                 write_town(zone, in_town(zone, True), True)
             if len(done) == before:
                 break
         self.unfinished = [q for q in self.take if q not in done and q not in self.optional]
         return self.lines
+
+    def inside_steps(self, steps):
+        """Write steps inside the dungeon."""
+        for action, q, w in steps:
+            v = self.q[q]
+            if action == "C":
+                # The points outside are in the entrance's zone: say so, or
+                # the step's zone is the guide's -- the dungeon, which is not
+                # a map the arrow can point on.
+                outside = " ".join(fmt(p) for p in v["obj"].get(self.d["zone"], []))
+                self.step("C", v["title"], q, v["task"] + (", outside too %s" % outside if outside else ""),
+                          self.d["zone"] if outside else None)
+            elif w.item:
+                self.step("A", v["title"], q, "%s: right-click it to start the quest" % w.name, use=w.item)
+            else:
+                self.step(action, v["title"], q, w.name)
 
     def report(self):
         out = []
@@ -976,6 +1066,9 @@ def main():
             json.dump(model, fh, indent=0, sort_keys=True, ensure_ascii=False)
             fh.write("\n")
     model = json.load(open(CACHE, encoding="utf-8"))
+    # The bosses, from build_dungeon_bosses.py; the notes on them are in
+    # dungeon_tactics.py.
+    model["bosses"] = json.load(open(BOSSES, encoding="utf-8"))
     files = {}
     for code in DUNGEONS:
         for side, mask in SIDES:

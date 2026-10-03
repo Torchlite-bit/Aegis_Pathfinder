@@ -27,7 +27,7 @@ A Rites of the Earthmother (Part 1) |QID|755| |N|Chief Hawkwind in Camp Narache 
 C The Hunt Continues |QID|750| |N|Kill Mountain Cougar and collect 10 Mountain Cougar Pelt in Red Cloud Mesa (42.52, 89.28)|
 T Rites of the Earthmother (Part 1) |QID|755| |N|Seer Graytongue in Red Cloud Mesa (42.53, 92.08)|
 A Rite of Strength |QID|757| |N|Seer Graytongue in Red Cloud Mesa (42.53, 92.08)|
-N Level 4 |QID|780| |N|Make sure you're about 250 XP to level 4 so you can train new skills after quest turn in, kill more cougars if you're not.|
+N Level 4 |QID|780| |N|Make sure you're about 250 XP to level 4 so you can train new skills after quest turn in, kill more cougars if you're not.| |LV|4|
 T The Hunt Continues |QID|750| |N|Grull Hawkwind in Camp Narache (44.91, 77.15)|
 A The Battleboars |QID|780| |N|Grull Hawkwind in Camp Narache (44.91, 77.15)|
 A Break Sharptusk! |QID|3376| |N|Brave Windfeather in Camp Narache (44.50, 76.46)|

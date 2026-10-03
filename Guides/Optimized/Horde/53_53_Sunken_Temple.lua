@@ -32,7 +32,7 @@ R Shadra'Alor |QID|1446| |N|Ride west to Shadra'Alor (33.74, 75.16)| |D|ST| |Z|T
 T Jammal'an the Prophet |QID|1446| |N|Atal'ai Exile in Shadra'Alor (33.74, 75.16)| |D|ST| |Z|The Hinterlands|
 
 N Zapper Fuel |N|Larion takes Zapper Fuel back, in Marshal's Refuge in Un'Goro Crater: on the way to Silithus| |D|ST|
-N Level 53 |N|Continue to Azshara: fly to the Undercity, take the zeppelin to Orgrimmar and fly to Valormok| |D|ST|
+N Level 53 |N|Continue to Azshara: fly to the Undercity, take the zeppelin to Orgrimmar and fly to Valormok| |D|ST| |LV|53|
 
 ]]
 end)

@@ -93,7 +93,7 @@ A Magical Analysis |QID|602| |N|Baron Revilgaz - (27.2, 76.9)| |Z|Stranglethorn 
 T Goblin Sponsorship |QID|1182| |N|Baron Revilgaz - (27.2, 76.9)| |Z|Stranglethorn Vale|
 A Goblin Sponsorship |QID|1183| |N|Baron Revilgaz - (27.2, 76.9)| |Z|Stranglethorn Vale|
 T Some Assembly Required |QID|577| |N|Drizzlik - (28.3, 77.6)| |Z|Stranglethorn Vale|
-G Make sure you are level 38 before starting the next segment |Z|Stranglethorn Vale|
+G Make sure you are level 38 before starting the next segment |Z|Stranglethorn Vale| |LV|38|
 F Fly to Stormwind |N|Gyll - (27.5, 77.8)| |C|!Mage| |Z|Stranglethorn Vale|
 N Buy 400 [Wicked Throwing Daggers] |N|(58.4, 61.7)| |C|Warrior| |Z|Stormwind City|
 B Buy Wicked Throwing Dagger (x400) |L|15327 400| |N|Thurman Mullby - (58.4, 61.7)| |C|Warrior| |Z|Stormwind City|

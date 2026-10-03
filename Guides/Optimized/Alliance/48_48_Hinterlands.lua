@@ -30,7 +30,7 @@ T Becoming a Parent |QID|4298| |N|Agnar Beastamer - receive pet gryphon (14.15, 
 H Ironforge |QID|1469| |N|Hearth to Ironforge| |D|ST| |Z|Ironforge|
 F Booty Bay |QID|1469| |N|Fly to Booty Bay| |D|ST| |Z|Stranglethorn Vale|
 
-N Level 48 |N|You should still be level 48. Continue to Stranglethorn Vale|
+N Level 48 |N|You should still be level 48. Continue to Stranglethorn Vale| |LV|48|
 
 ]]
 end)

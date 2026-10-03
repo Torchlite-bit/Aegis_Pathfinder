@@ -147,11 +147,11 @@ N Keep in mind Mist is a timed quest, you need to turn it in within 10 minutes o
 T The Enchanted Glade |QID|937| |N|Sentinel Arynia Cloudsbreak - (38.3, 34.4)| |C|!Hunter| |Z|Teldrassil|
 A Teldrassil |QID|940| |N|Sentinel Arynia Cloudsbreak - (38.3, 34.4)| |C|!Hunter| |Z|Teldrassil|
 T Mist |QID|938| |N|Sentinel Arynia Cloudsbreak - (38.3, 34.4)| |C|!Hunter| |Z|Teldrassil|
-G Grind to level 10 |C|Druid| |Z|Teldrassil|
-G Grind to level 10 |C|!Hunter/!Druid| |Z|Teldrassil|
+G Grind to level 10 |C|Druid| |Z|Teldrassil| |LV|10|
+G Grind to level 10 |C|!Hunter/!Druid| |Z|Teldrassil| |LV|10|
 C Collect Small Spider Leg (x7) |QID|4161| |L|5465 7| |N|Finish off collecting 7 Small Spider Legs (38.6, 58.0)| |Z|Teldrassil|
 R If you're still behind on xp do the harpy quest north |N|(38.3, 34.4)| |C|Druid| |Z|Teldrassil|
-G Grind to level 10 |C|!Druid| |Z|Teldrassil|
+G Grind to level 10 |C|!Druid| |Z|Teldrassil| |LV|10|
 T Rellian Greenspyre |QID|922| |N|Rellian Greenspyre - (38.2, 21.6)| |C|!Rogue| |Z|Darnassus|
 A Tumors |QID|923| |N|Rellian Greenspyre - (38.2, 21.6)| |C|!Rogue| |Z|Darnassus|
 T Teldrassil |QID|940| |N|Arch Druid Fandral Staghelm atop the Tree - (35.0, 9.0)| |C|!Hunter/!Rogue| |Z|Darnassus|
@@ -186,7 +186,7 @@ T The Moss-twined Heart |QID|927| |N|Denalan - (60.9, 68.5)| |Z|Teldrassil|
 T Planting the Heart |QID|941| |N|on Denalans Planter - (60.8, 68.6)| |Z|Teldrassil|
 N You must right click your Pet Frame and Dismiss your pet before you can tame another one |N|(62.6, 72.2)| |C|Hunter| |Z|Teldrassil|
 C Taming the Beast |QID|6101| |OIDX|1| |N|Use the [Taming Rod] on a Nightsaber Stalker Tame a Nightsaber Stalker| |C|Hunter| |Z|Teldrassil|
-G Grind to level 10 |Z|Teldrassil|
+G Grind to level 10 |Z|Teldrassil| |LV|10|
 N Die and respawn at the Spirit Healer |O| |Z|Teldrassil|
 t Train your class spells |N|Laurna Morninglight - (55.6, 56.7)| |C|Priest| |Z|Teldrassil|
 t Train your class spells |N|Kyra Windblade - (56.2, 59.2)| |C|Warrior| |Z|Teldrassil|

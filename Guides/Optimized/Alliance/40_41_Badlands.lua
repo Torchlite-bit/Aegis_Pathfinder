@@ -106,7 +106,7 @@ A In Search of The Temple |QID|1448| |N|Brohann Caskbelly in Dwarven District (6
 F Darkshire |QID|1477| |N|Fly to Darkshire, make it your home|
 h Darkshire |QID|1477| |N|Set hearth at Scarlet Raven Tavern in Darkshire (73.9, 44.4)| |Z|Duskwood|
 
-N Level 41 |N|You should be level 41 now. Continue to Swamp of Sorrows|
+N Level 41 |N|You should be level 41 now. Continue to Swamp of Sorrows| |LV|41|
 
 ]]
 end)

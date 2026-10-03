@@ -39,12 +39,18 @@ A The Stockade Riots |QID|391| |N|Warden Thelwater (51.5, 69.4)| |Z|Stormwind Ci
 
 R The Stockade |N|The prison's door is on the canal between the Mage Quarter and the Trade District (50.8, 67.6)| |Z|Stormwind City|
 C The Stockade Search |QID|55221| |N|Delve into the Stockades and find information on Martin Corinth. Report your findings to Mathias Shaw|
-C What Comes Around... |QID|386| |N|Get the head of Targorr the Dread|
-C Crime and Punishment |QID|377| |N|Councilman Millstipe of Darkshire wants you to bring him the hand of Dextren Ward|
 C Quell The Uprising |QID|387| |N|Warden Thelwater of Stormwind wants you to kill 10 Defias Prisoners, 8 Defias Convicts, and 8 Defias Insurgents in The Stockade|
 C The Color of Blood |QID|388| |N|Nikova Raskol of Stormwind wants you to collect 10 Red Wool Bandanas|
+K Targorr the Dread |N|He dual wields with Thrash, and enrages at 30% health.| |TANK|Save a cooldown for his enrage at 30%.| |HEAL|Damage on the tank jumps when he enrages.| |DPS|Burn him down from 30%.| |BOSS|Targorr the Dread|
+C What Comes Around... |QID|386| |N|Get the head of Targorr the Dread|
+K Kam Deepfury |N|A warrior in Defensive Stance: Shield Slam stuns for 2 seconds, and Shield Wall cuts the damage he takes by 60% for 12 seconds.| |DPS|Hold your big cooldowns while Shield Wall is up.| |BOSS|Kam Deepfury|
 C The Fury Runs Deep |QID|378| |N|Motley Garmason wants Kam Deepfury's head brought to him at Dun Modr|
+K Hamhock |N|Chain Lightning jumps between three players, and Bloodlust speeds up him and his allies.| |HEAL|Don't stand bunched up, or Chain Lightning hits more of you.| |DPS|Interrupt Chain Lightning; Purge or Dispel Magic his Bloodlust (Shaman, Priest).| |BOSS|Hamhock|
+K Bazil Thredd |N|Smoke Bomb stuns everyone near him for 4 seconds, and Battle Shout raises his attack power.| |HEAL|Stand out of Smoke Bomb's reach so you can keep healing.| |DPS|Ranged stand back from the smoke.| |BOSS|Bazil Thredd|
 C The Stockade Riots |QID|391| |N|Kill Bazil Thredd and bring his head back| |O|
+K Bruegal Ironknuckle |N|Rare: not always here. No special abilities known.| |BOSS|Bruegal Ironknuckle| |O|
+K Dextren Ward |N|Intimidating Shout fears everyone near him for 6 seconds.| |TANK|Clear the cells around him first: feared players run into more prisoners.| |HEAL|Fear Ward or Tremor Totem help; stand at range.| |DPS|Ranged stand back out of the shout.| |BOSS|Dextren Ward|
+C Crime and Punishment |QID|377| |N|Councilman Millstipe of Darkshire wants you to bring him the hand of Dextren Ward|
 
 N Back outside |N|Out of The Stockade, in Stormwind City|
 T The Stockade Search |QID|55221| |N|Master Mathias Shaw (78.3, 70.7)| |Z|Stormwind City|

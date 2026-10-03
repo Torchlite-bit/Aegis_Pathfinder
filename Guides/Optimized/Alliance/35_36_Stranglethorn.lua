@@ -97,7 +97,7 @@ A Ironband Wants You! |QID|707| |N|Prospector Stormpike in The Library (74.53, 1
 T Letter to Stormpike |QID|514| |N|Prospector Stormpike in The Library (74.59, 11.68)| |Z|Ironforge| |O|
 A Further Mysteries |QID|525| |N|Prospector Stormpike in The Library (74.59, 11.68)| |Z|Ironforge|
 
-N Level 36 |N|You should be around level 36 now. Continue to the next guide|
+N Level 36 |N|You should be around level 36 now. Continue to the next guide| |LV|36|
 
 ]]
 end)

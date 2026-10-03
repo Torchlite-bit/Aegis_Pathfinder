@@ -15,6 +15,9 @@ echo
 echo "== profession source document =="
 python3 Tools/build/convert_professions.py --check
 
+echo
+echo "== talent builds against the game's trees =="
+python3 Tools/build/talent_builds.py --check
 
 echo
 echo "== lua tests =="
@@ -26,6 +29,7 @@ lua5.1 Tools/tests/test_navcallout.lua
 lua5.1 Tools/tests/test_dungeons.lua
 lua5.1 Tools/tests/test_dungeonguides.lua
 lua5.1 Tools/tests/test_classguides.lua
+lua5.1 Tools/tests/test_attunements.lua
 lua5.1 Tools/tests/test_filtertags.lua
 lua5.1 Tools/tests/test_smartskip.lua
 lua5.1 Tools/tests/test_yourplace.lua
@@ -33,6 +37,12 @@ lua5.1 Tools/tests/test_itemscore.lua
 lua5.1 Tools/tests/test_gearframe.lua
 lua5.1 Tools/tests/test_gearadvisor.lua
 lua5.1 Tools/tests/test_gearfinder.lua
+lua5.1 Tools/tests/test_automation.lua
+lua5.1 Tools/tests/test_maps.lua
+lua5.1 Tools/tests/test_extras.lua
+lua5.1 Tools/tests/test_talentadvisor.lua
+lua5.1 Tools/tests/test_talentwindow.lua
+lua5.1 Tools/tests/test_talentmodern.lua
 lua5.1 Tools/tests/test_guidelist.lua
 lua5.1 Tools/tests/test_guidebrowser.lua
 lua5.1 Tools/tests/test_materials.lua

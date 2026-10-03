@@ -119,7 +119,7 @@ T Winterfall Activity |QID|8464| |N|Salfa in Frostfire Hot Springs (27.75, 34.58
 T Mystery Goo |QID|5085| |N|Donova Snowden in Frostfire Hot Springs (31.27, 45.15)| |Z|Winterspring|
 A Toxic Horrors |QID|5086| |N|Donova Snowden in Frostfire Hot Springs (31.27, 45.15)| |Z|Winterspring|
 
-N Level 55 |N|You should be around level 55 now. Continue to Burning Steppes|
+N Level 55 |N|You should be around level 55 now. Continue to Burning Steppes| |LV|55|
 
 ]]
 end)

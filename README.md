@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.21.3)
+# Aegis: Pathfinder (v0.22.24)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -49,7 +49,7 @@ and feature ideas.
 
 ## Contents
 
-- [What it does](#what-it-does) — guides, arrow, filters, gear, professions
+- [What it does](#what-it-does) — guides, arrow, filters, gear, talents, professions
 - [Install](#install) · [Using it](#using-it)
 - [Something broken?](#something-broken) · [Contributing](#contributing)
 - [Credits](#credits) · [License](#license)
@@ -64,7 +64,10 @@ Every feature in full detail: **[docs/FEATURES.md](docs/FEATURES.md)**.
 
 1–60 for every race: **Optimized** (Joana's routes), **RestedXP** and **RXP
 Hardcore**. Steps tick themselves off as you accept, complete and turn in
-quests. Finish a guide and it offers the next — or one of your server's custom
+quests, and a travel step ("Travel to Westfall") as you get there, or as soon
+as you are on what comes after it. A quest under a zone you collapsed in the
+quest log still counts: the guide opens the zone again to see it. Finish a
+guide and it offers the next — or one of your server's custom
 zones, if one fits your level: Moonwhisper Coast, new in 1.18.1, included.
 
 **A guide browser like Zygor's.** Categories down the left (Leveling,
@@ -85,7 +88,9 @@ before them included -- puts the arrow on the entrance, walks you through what
 each quest wants inside, and hands them all in after. Every leveling dungeon,
 and Turtle WoW's own: Windhorn Canyon (new in 1.18.1), Frostmane Hollow,
 Dragonmaw Retreat, Crescent Grove, Stormwrought Ruins, Gilneas City and
-Hateforge Quarry.
+Hateforge Quarry. Inside, a step for each boss says what the fight does and
+what to watch for as tank, healer or damage -- set your role on the Dungeons
+page to see only yours -- and ticks itself when he dies.
 
 **Class quest guides.** Every class quest chain, a guide each, under the guide
 browser's **Class Quests** category: the Voidwalker to the Dreadsteed, Bear Form, Taming the
@@ -94,6 +99,18 @@ Turtle WoW's High Elves and Goblins included, each race by the chain that
 starts at home. Reach a chain's level and, if your route doesn't do it
 already, it's offered: open it beside the route, and when it's done you're
 back on the route.
+
+**Attunement guides.** Every raid and dungeon attunement and key, a guide
+each, per side: Molten Core, Onyxia's Lair, Blackwing Lair, Naxxramas, Upper
+Blackrock Spire, Scholomance, Blackrock Depths, and Turtle WoW's Emerald
+Sanctum, Lower and Upper Karazhan and the Karazhan Crypts. The browser says
+which you're attuned to.
+
+<p align="center">
+  <img src="docs/images/guide-browser-attunements.png" width="720" alt="The guide browser in game, Dungeons, Attunements and keys: the raid attunements from Onyxia's Lair to Naxxramas, then the dungeon keys, each saying Raid or Dungeon, then RestedXP's Onyxia Attunement and Scholomance Key; Blackrock Depths: Shadowforge Key pointed at, with its loading screen, level and progress on the right"><br>
+  <sub>In game, on 0.22.23. Since 0.22.24 a row's words move aside for the star
+  and arrow that show over "Dungeon" here.</sub>
+</p>
 
 **First-time setup.** The first time you log in, three quick steps pick your
 guide, what it includes, and the dungeons you mean to run -- each with how
@@ -133,22 +150,65 @@ the guides of the dungeons you ticked are offered beside the next zone.
   does.
 - **Gear Advisor** offers upgrades as you loot them and marks the best quest
   reward.
-- **Gear finder** lists the upgrades waiting in the dungeons you run — who
-  drops them, where, and how often — and the quest rewards, reputation gear
-  and crafted gear within your reach. At 60 that is every dungeon, and the
-  raids too if you ask it.
+- **Gear Finder**, a tab on the character panel as Zygor's is: the biggest
+  upgrade for every slot, how much better it is and where it drops, with the
+  rest of the slot's upgrades a click away. Pick the ones you want and it
+  suggests the dungeon to run for most of them, with its guide a click away.
+  Quest rewards, reputation gear and crafted gear within reach too, and the
+  raids at 60 when you tick them.
 
-| Stat weights, per spec | The Gear finder |
+| Stat weights, per spec | The Gear Finder |
 | :---: | :---: |
-| <img src="docs/images/options-itemscore.png" width="380" alt="Options, Item Score page: a Retribution Paladin's stat weights, with Holy and Protection scored as well and Share weights to import or export"> | <img src="docs/images/gear-finder.png" width="380" alt="The Gear finder: upgrades for Retribution by slot, from the Deadmines, Wailing Caverns, quests and crafting, with who drops each, the chance, and how much better it is"> |
+| <img src="docs/images/options-itemscore.png" width="380" alt="Options, Item Score page: a Protection Paladin's stat weights, picked from the talents, with Holy and Retribution to score as well and Share weights to import or export"> | <img src="docs/images/gear-finder.png" width="380" alt="The Gear Finder tab on the character panel, for a level 23 Mage: a cell per slot with its biggest upgrade, how much better it is and where it drops, and Shadowfang Keep suggested for four of them"> |
+
+<sub>Both drawn from the addon's own code by its offline renderer, not captured in game.</sub>
 
 <!-- Screenshot to come: the Gear Advisor pop-up. Put it in docs/images/ and
      add it here. -->
 
+### 🌳 Talent Advisor
+
+Your class's levelling build to 60, then your spec's — or pick any of them:
+Protection for a Warrior or Paladin, Bear for a Druid. On Blizzard's own
+talent window each talent in the build has a badge with the build's points,
+and a tick once you have them; the talent your next point goes to has a gold
+ring with NEXT over it, and its tree's tab a gold dot. A strip on the window's
+top edge names the build and the next talent, and says when you have points
+elsewhere — it carries on from the closest point, never asks you to respec.
+With pfUI it sits on pfUI's frame.
+
+| Blizzard's talent window | With pfUI |
+| :---: | :---: |
+| <img src="docs/images/talent-window.jpg" width="340" alt="Blizzard's talent window in game for a Paladin, on Protection: the Pathfinder strip on its top edge with the build to follow and a card, Next: Shield Specialization, rank 1 of 3; the talents taken ticked, the rest with the build's points, Shield Specialization ringed in gold with NEXT over it, and a gold dot on the Protection tab"> | <img src="docs/images/talent-window-pfui.jpg" width="340" alt="The same talent window with pfUI's skin: the strip sits on pfUI's frame, with the same marks on the talents and the gold dot on the Protection tab"> |
+
+<p align="center"><sub>In game, on 0.22.23. Since 0.22.24 the shield build is
+called Protection ("Protection leveling, then Protection at 60"), the card's
+second line fits, and NEXT sits clear of the talent's badge.</sub></p>
+
+On a level up a card names the talent to take, and the talents button lights
+up until you spend the point.
+
+**With [Modern Spellbook](https://github.com/lioryx/ModernSpellBook)**, its
+talent window is marked the same way, with NEXT POINT HERE over the tree your
+point goes to, and the strip has three buttons. **Plan to my level** and
+**Whole build as a plan** save the build as one of its plans, for its Apply to
+learn. **Share** gives the build as its build string, and follows a string
+someone shares with you.
+
+<p align="center">
+  <img src="docs/images/talent-modern-spellbook.jpg" width="820" alt="Modern Spellbook's talent window in game for a Paladin, all three trees side by side: the Pathfinder strip across its top, following Paladin Protection leveling, the card saying Next: Shield Specialization, rank 1 of 3 in Protection at level 21, and Plan to my level, Whole build as a plan and Share; NEXT POINT HERE beside Protection, the talents taken ticked, the rest with the build's points, and Shield Specialization ringed in gold with NEXT over it"><br>
+  <sub>In game, on 0.22.24.</sub>
+</p>
+
+The builds are made on Turtle WoW's own trees, and each is checked against the
+tree your game has before it is followed. It never spends a point.
+
 ### ⚒️ Professions
 
-All fourteen, 1–300, with trainers, reagents and a shopping list — and the
-**cheapest route to 300** at today's auction house prices. With
+All fourteen, 1–300, with trainers, reagents and a shopping list. The crafting
+routes are [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute)'s
+cheapest — and the **cheapest route to 300** plans one at today's auction house
+prices. With
 [Aegis: Exchange](https://github.com/Torchlite-bit/Aegis_Exchange), the shopping
 list goes straight onto its Crafting tab.
 
@@ -177,16 +237,28 @@ finished step waits for the slowest.
 ### ⚙️ Settings, laid out like Zygor's
 
 Every setting in one window, a page a category down the left: your route,
-dungeons, filters, appearance, gear and item score, behaviour, navigation.
+dungeons, filters, appearance, step display, automation, action buttons,
+navigation, maps, gear, item score and extras.
 Resize it from the corner.
 
 | Route | Dungeons |
 | :---: | :---: |
-| <img src="docs/images/options-route.png" width="380" alt="Options, Route page: your race and route pack, with a preview of the route"> | <img src="docs/images/options-dungeons.png" width="380" alt="Options, Dungeons page: a chip for each dungeon"> |
+| <img src="docs/images/options-route.png" width="380" alt="Options, Route page: your race and route pack, with a preview of the route"> | <img src="docs/images/options-dungeons.png" width="380" alt="Options, Dungeons page: a chip for each dungeon, Turtle WoW's own, the dungeon guides along the way, and your role for the boss notes"> |
 
-| Behaviour | Gear |
+| Automation | Action Buttons |
 | :---: | :---: |
-| <img src="docs/images/options-behaviour.png" width="380" alt="Options, Behaviour page: how the guide behaves, and its windows"> | <img src="docs/images/options-gear.png" width="380" alt="Options, Gear page: the item score, the Gear Advisor and the Gear finder"> |
+| <img src="docs/images/options-automation.png" width="380" alt="Options, Automation page: accepting and turning in quests, taking the step's flight, buying, selling greys and repairing"> | <img src="docs/images/options-action-buttons.png" width="380" alt="Options, Action Buttons page: the windows, which way they grow, button size, which buttons to show and raid marks"> |
+
+| Maps | Extras |
+| :---: | :---: |
+| <img src="docs/images/options-maps.png" width="380" alt="Options, Maps page: revealing the world map, the step on the map, the ant trail and its style, and rare creatures near your level"> | <img src="docs/images/options-extras.png" width="380" alt="Options, Extras page: Pathfinder's chat messages, detailed reputation gains, level-up announcements, and the Talent Advisor: its switch, the build to follow, the talent named in chat, the card and lit talents button on a level up, and a note on Modern Spellbook"> |
+
+| Gear |
+| :---: |
+| <img src="docs/images/options-gear.png" width="380" alt="Options, Gear page: the item score, the Gear Advisor, and the Gear Finder with its five upgrade sources"> |
+
+<sub>Drawn from the addon's own code by its offline renderer, with a new
+character's settings in the Day theme -- not captured in game.</sub>
 
 ### 🎨 Your server's colours
 
@@ -222,7 +294,8 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 | `/apg` | Open the guide |
 | `/apg setup` | Run the first-time setup again |
 | `/apg gear` | Your stat weights (options → Item Score) |
-| `/apg finder` | Upgrades in the dungeons you run |
+| `/apg finder` | The Gear Finder tab: upgrades in the dungeons you run |
+| `/apg talents` | Save your class's talent trees, for checking the Talent Advisor's builds |
 | `/apg craft` | Cheapest route to 300 in a profession |
 | `/apg share` | Share your guide with your party |
 | `/apg ssf` | Solo Self-Found on or off |
@@ -233,7 +306,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.21.3`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.22.24`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)** or open an
@@ -264,7 +337,8 @@ and Zeroji). Data from [pfQuest](https://github.com/shagu/pfQuest) and
 [InstanceJournal](https://github.com/Arthur-Helias/InstanceJournal) (**Arthur-Helias**),
 [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) (**Kitymeowmeow**),
 [OctoPawn](https://github.com/iGreed1993/OctoPawn) (**iGreed**) and
-[CMaNGOS](https://github.com/cmangos/classic-db).
+[CMaNGOS](https://github.com/cmangos/classic-db) (classic-db and
+[mangos-classic](https://github.com/cmangos/mangos-classic)).
 
 Everyone is listed in [CONTRIBUTORS.md](CONTRIBUTORS.md), and in game under
 options → About → **Credits**.

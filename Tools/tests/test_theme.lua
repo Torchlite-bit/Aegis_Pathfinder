@@ -124,6 +124,66 @@ check(tip:IsShown(), "another frame's OnLeave does not hide a tip it does not ow
 Theme:HideTip(owner)
 check(not tip:IsShown(), "its owner's does")
 
+-- A window can ask for its hints to open outside it (the guide does), so a
+-- hint never covers the steps. The screen here is 1024 x 768.
+local win = CreateFrame("Frame", nil, UIParent)
+win:SetWidth(300); win:SetHeight(400)
+Theme:TipOutside(win)
+local inner = CreateFrame("Frame", nil, win)
+local arrow = CreateFrame("Button", nil, inner)
+arrow:SetWidth(20); arrow:SetHeight(20)
+arrow:SetPoint("TOPLEFT", win, "TOPLEFT", 10, -30)
+local function placed(x, y, why)
+	local p, rel, relP, px, py = tip:GetPoint(1)
+	check(p == "TOPLEFT" and rel == UIParent and relP == "BOTTOMLEFT"
+		and math.abs((px or -1) - x) < 0.01 and math.abs((py or -1) - y) < 0.01,
+		"%s: at %s,%s, got %s %s,%s", why, x, y, tostring(p), tostring(px), tostring(py))
+end
+
+-- On the left half: beside its right edge, level with what is hovered.
+win:ClearAllPoints(); win:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 40, -100)
+Theme:ShowTip(arrow, "BOTTOM", "Skip to next objective", "Right-click: on to your place in the guide")
+placed(340 + 4, 768 - 100 - 30, "a guide on the left half has its hints on its right")
+-- On the right half: beside its left edge.
+win:ClearAllPoints(); win:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", -40, -100)
+Theme:ShowTip(arrow, "BOTTOM", "Skip to next objective", "Right-click: on to your place in the guide")
+placed(1024 - 40 - 300 - 4 - tip:GetWidth(), 768 - 100 - 30, "one on the right half, on its left")
+-- Its middle just past the screen's: the left still, though it is nearer.
+win:SetWidth(700)
+win:ClearAllPoints(); win:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 300, -100)
+Theme:ShowTip(arrow, "BOTTOM", "Skip to next objective")
+placed(300 - 4 - tip:GetWidth(), 768 - 100 - 30, "a guide whose middle is right of the screen's, on its left")
+-- Too narrow a gap on the side facing the middle: not over the screen's edge.
+win:SetWidth(900)
+win:ClearAllPoints(); win:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 10, -100)
+Theme:ShowTip(arrow, "BOTTOM", "Skip to next objective")
+placed(10 + 10, 768 - 100 - 400 - 4, "with no room beside it, under it instead")
+-- Too wide for either side, in the top half: under it, lined up with the
+-- hovered control.
+win:SetWidth(1000)
+win:ClearAllPoints(); win:SetPoint("TOP", UIParent, "TOP", 0, -50)
+Theme:ShowTip(arrow, "BOTTOM", "Skip to next objective")
+placed(12 + 10, 768 - 50 - 400 - 4, "a wide guide in the top half has them under it")
+-- In the bottom half: over it.
+win:ClearAllPoints(); win:SetPoint("BOTTOM", UIParent, "BOTTOM", 0, 50)
+Theme:ShowTip(arrow, "BOTTOM", "Skip to next objective")
+placed(12 + 10, 50 + 400 + 4 + tip:GetHeight(), "and in the bottom half, over it")
+-- A row near the bottom of the screen: the hint is kept on it.
+win:SetWidth(300)
+win:ClearAllPoints(); win:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 40, 0)
+local low = CreateFrame("Button", nil, win)
+low:SetWidth(200); low:SetHeight(10)
+low:SetPoint("BOTTOMLEFT", win, "BOTTOMLEFT", 0, 0)
+Theme:ShowTip(low, "RIGHT", "Skip to next objective", "Right-click: on to your place in the guide")
+placed(344, tip:GetHeight(), "a hint level with a low row stays on the screen")
+-- A window filling the screen leaves nowhere outside: the side asked for.
+win:SetWidth(1024); win:SetHeight(768)
+win:ClearAllPoints(); win:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+Theme:ShowTip(arrow, "BOTTOM", "Skip to next objective")
+local fp, frel = tip:GetPoint(1)
+check(fp == "TOP" and frel == arrow, "with no room outside, it opens under its owner as asked")
+Theme:HideTip()
+
 -- An owner hidden under the cursor -- a tab closed by its own button -- gets
 -- no OnLeave; the card notices and goes.
 Theme:ShowTip(owner, "BOTTOM", "Close this guide")

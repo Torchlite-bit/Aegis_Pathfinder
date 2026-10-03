@@ -75,7 +75,7 @@ C Stranglethorn Fever |QID|348| |N|Survive the wave of attack until Mokk the Sav
 R Booty Bay |TID|348| |N|Travel to Booty Bay (27.64, 76.75)| |Z|Stranglethorn Vale|
 T Stranglethorn Fever |QID|348| |N|Fin Fizracket in Booty Bay (27.64, 76.75)| |Z|Stranglethorn Vale|
 
-N Level 47 |N|You should be around level 47 now. Continue to Searing Gorge|
+N Level 47 |N|You should be around level 47 now. Continue to Searing Gorge| |LV|47|
 
 ]]
 end)

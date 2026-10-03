@@ -73,6 +73,9 @@ function AegisPathfinder:UpdateMinimapButton() self.__minimapRefreshed = true en
 function AegisPathfinder:RefreshActiveFrames() self.__activeRefreshed = (self.__activeRefreshed or 0) + 1 end
 function AegisPathfinder:QueryServerCompletedQuests() self.__rescanned = true end
 function AegisPathfinder:ShowErrorLog() self.__errorlog = true end
+-- The guide's own setters (ObjectivesFrame.lua), as its menu calls them.
+function AegisPathfinder:SetGuideLocked(on) self.db.profile.objframelocked = on and true or nil end
+function AegisPathfinder:SetGuideTransparent(on) self.db.profile.objframetransparent = on and true or nil end
 
 AegisPathfinder.objectiveframe = CreateFrame("Frame", nil, UIParent)
 
@@ -101,8 +104,10 @@ UnitClass = function() return "Paladin", "PALADIN" end
 local talents = { 0, 0, 0 }
 GetTalentTabInfo = function(tab) return ({ "Holy", "Protection", "Retribution" })[tab], "icon", talents[tab] end
 local advisorSettings = { enabled = true, popups = true, questmark = true, bagmark = true }
-local finderSettings = { enabled = true, announce = true, raids = false, quests = true, reputation = true, crafted = true }
-AegisPathfinder.GearFinder = { Settings = function() return finderSettings end }
+local finderSettings = { enabled = true, announce = true, dungeons = true, raids = false, quests = true, reputation = true,
+	crafted = true }
+AegisPathfinder.GearFinder = { Settings = function() return finderSettings end,
+	SettingsChanged = function() AegisPathfinder.__finderChanged = (AegisPathfinder.__finderChanged or 0) + 1 end }
 function AegisPathfinder:ToggleGearFinder() self.__finder = (self.__finder or 0) + 1 end
 AegisPathfinder.GearAdvisor = {
 	Settings = function() return advisorSettings end,
@@ -114,6 +119,12 @@ dofile("Theme.lua")
 dofile("ItemScoreData.lua")
 dofile("ItemScore.lua")
 local scoreSettings = AegisPathfinder.ItemScore.Settings()
+-- The Talent Advisor is the real one, without a talent tree: its settings are on Extras.
+dofile("TalentBuilds.lua")
+dofile("TalentAdvisor.lua")
+local talentRefreshes, talentOpened = 0, 0
+function AegisPathfinder.TalentAdvisor:Refresh() talentRefreshes = talentRefreshes + 1 end
+function AegisPathfinder.TalentAdvisor:OpenWindow() talentOpened = talentOpened + 1 end
 dofile("GearFrame.lua")
 dofile("Credits.lua")
 dofile("OptionsFrame.lua")
@@ -150,7 +161,7 @@ check(frame.subhead.label:GetText() == "CONFIG \194\183 ROUTE",
 
 local order = {}
 for _, h in ipairs(frame.sections) do table.insert(order, h.label:GetText()) end
-local want = { "RACE", "ROUTE PACK", "DUNGEONS", "TURTLE WOW'S OWN", "ALONG THE WAY", "FILTERS", "SERVER THEME" }
+local want = { "RACE", "ROUTE PACK", "DUNGEONS", "TURTLE WOW'S OWN", "ALONG THE WAY", "BOSS NOTES", "FILTERS", "SERVER THEME" }
 for i, name in ipairs(want) do
 	check(order[i] == name, "section %d should be %s, got %s", i, name, tostring(order[i]))
 end
@@ -162,8 +173,8 @@ check(AegisPathfinder.ToggleDungeonPanel == nil and AegisPathfinder.ToggleFilter
 	"the functions that opened those windows are gone")
 
 -- The pages, and the list that picks them.
-local PAGES = { "Route", "Dungeons", "Filters", "Appearance", "Gear", "Item Score", "Behaviour",
-	"Navigation", "Maintenance", "About" }
+local PAGES = { "Route", "Dungeons", "Filters", "Appearance", "Step Display", "Automation", "Action Buttons",
+	"Navigation", "Maps", "Gear", "Item Score", "Extras", "Maintenance", "About" }
 local names = {}
 for _, p in ipairs(frame.pages) do table.insert(names, p.pageName) end
 check(table.concat(names, ", ") == table.concat(PAGES, ", "), "the pages, in order: %s", table.concat(names, ", "))
@@ -172,6 +183,12 @@ for i, b in ipairs(frame.navButtons) do
 	check(b.label:GetText() == PAGES[i], "list entry %d names %s, got %s", i, PAGES[i], tostring(b.label:GetText()))
 	local _, rel, _, x = b:GetPoint()
 	check(rel == frame.nav and x == 0, "and sits in the list down the left")
+end
+local function navNamed(name)
+	for _, b in ipairs(frame.navButtons) do if b.pageName == name then return b end end
+end
+local function pageNamed(name)
+	for _, p in ipairs(frame.pages) do if p.pageName == name then return p end end
 end
 local function shown()
 	local out = {}
@@ -382,16 +399,54 @@ check(frame.advisor.popups:IsEnabled(), "and let go when it is back on")
 click(frame.clearDeclined)
 check(AegisPathfinder.__declinedCleared, "Clear declined items clears them")
 check(frame.finder.enabled:IsOn() and frame.finder.announce:IsOn(), "the gear finder is on, and names upgrades")
-check(frame.finder.quests:IsOn() and frame.finder.reputation:IsOn() and frame.finder.crafted:IsOn(),
-	"and looks at quest, reputation and crafted gear")
-click(frame.finder.crafted)
-check(finderSettings.crafted == false, "each of which can be switched off")
-click(frame.finder.crafted)
+-- The upgrade sources: a box each, Zygor's Dungeons and Raids and the three
+-- that were "Look at ..." switches, which keep what they were set to.
+check(frame.finder.quests == nil and frame.finder.reputation == nil and frame.finder.crafted == nil,
+	"quest, reputation and crafted gear are no longer switches")
+check(frame.sources.quests:IsOn() and frame.sources.reputation:IsOn() and frame.sources.crafted:IsOn(),
+	"but boxes under the sources, ticked as the switches were")
+check(frame.sources.quests.label:GetText() == "Quest rewards" and frame.sources.reputation.label:GetText()
+	== "Reputation vendors" and frame.sources.crafted.label:GetText() == "Crafted gear", "named for what they are")
+do
+	local _, _, _, x1, y1 = frame.sources.dungeons:GetPoint()
+	local _, _, _, x2, y2 = frame.sources.raids:GetPoint()
+	local _, _, _, x3, y3 = frame.sources.quests:GetPoint()
+	local _, _, _, x5, y5 = frame.sources.crafted:GetPoint()
+	check(y1 == y2 and x2 > x1 and x3 == x1 and y3 < y1 and y5 < y3, "two to a row, three rows")
+	check(x2 + frame.sources.reputation:GetWidth() <= frame.bodyW, "and inside the page")
+end
+click(frame.sources.crafted)
+check(finderSettings.crafted == false and (AegisPathfinder.__finderChanged or 0) > 0, "each of which can be unticked")
+click(frame.sources.crafted)
+click(frame.sources.quests)
+click(frame.sources.reputation)
+click(frame.sources.crafted)
+check(not finderSettings.quests and not finderSettings.reputation and not finderSettings.crafted and finderSettings.dungeons,
+	"so it can look in dungeons alone")
+click(frame.sources.quests)
+click(frame.sources.reputation)
+click(frame.sources.crafted)
+check(frame.sources.dungeons:IsOn() and not frame.sources.raids:IsOn(), "upgrade sources: Dungeons ticked, Raids not")
+local said = {}
+local keepPrint = AegisPathfinder.Print
+function AegisPathfinder:Print(msg) table.insert(said, msg) end
+local changed = AegisPathfinder.__finderChanged or 0
+click(frame.sources.raids)
+check(finderSettings.raids == true and frame.sources.raids:IsOn(), "ticking Raids looks in raids")
+check(said[1] and string.find(said[1], "minute or two", 1, true), "and says the first look takes a while, got %s", tostring(said[1]))
+check((AegisPathfinder.__finderChanged or 0) > changed, "and the tab follows at once")
+click(frame.sources.dungeons)
+check(finderSettings.dungeons == false, "Dungeons can be unticked too")
+click(frame.sources.dungeons)
+click(frame.sources.raids)
+check(finderSettings.dungeons and not finderSettings.raids, "and both back as they were")
+AegisPathfinder.Print = keepPrint
 click(frame.finder.enabled)
-check(finderSettings.enabled == false and not frame.finder.announce:IsEnabled(), "off, its other switch is held")
+check(finderSettings.enabled == false and not frame.finder.announce:IsEnabled() and not frame.sources.raids:IsEnabled(),
+	"off, its other switches and the sources are held")
 click(frame.finder.enabled)
 click(frame.openFinder)
-check(AegisPathfinder.__finder == 1, "the Gear finder button opens it")
+check(AegisPathfinder.__finder == 1, "the Open the Gear Finder button opens it")
 
 -- Solo Self-Found holds group mode, the Auction House and the dungeons off,
 -- and lets them go again as they were.
@@ -511,10 +566,306 @@ check(Theme.color.accent[1] == green[1] and Theme.color.accent[2] == green[2], "
 
 -- The addon's own settings ---------------------------------------------------------------
 
+-- Behaviour's switches went to Zygor's pages, keeping their saved values.
+local HOME = {
+	autoquest = "Automation", trackquests = "Automation",
+	skipfollowups = "Step Display", offercustomzones = "Step Display", classquests = "Step Display",
+	showminimapbutton = "Appearance",
+	showactiveitems = "Action Buttons", showactivetargets = "Action Buttons", showmacros = "Action Buttons",
+	questicons = "Action Buttons",
+}
+for key, pageName in pairs(HOME) do
+	local sw = frame.switches[key]
+	check(sw and sw:GetParent().pageName == pageName, "%s is on the %s page, got %s", key, pageName,
+		tostring(sw and sw:GetParent().pageName))
+end
+check(pageNamed("Behaviour") == nil, "and the Behaviour page is gone")
 check(frame.switches.autoquest:IsOn(), "switches start from the saved settings")
 check(not frame.switches.trackquests:IsOn(), "off ones included")
 click(frame.switches.trackquests)
 check(db.trackquests == true, "and write back to them")
+
+-- Automation's own: all quests and picking from a list under accepting, the
+-- flight master, the vendor.
+local autoPage = pageNamed("Automation")
+for _, key in ipairs({ "allquests", "autogossip", "autofly", "autobuy", "sellbutton", "autosell" }) do
+	check(frame.switches[key] and frame.switches[key]:GetParent() == autoPage, "%s is on the Automation page", key)
+end
+check(not frame.switches.allquests:IsOn() and frame.switches.autogossip:IsOn(),
+	"all quests off and picking from a list on, to start with")
+check(frame.switches.autobuy:IsOn() and frame.switches.sellbutton:IsOn(), "buying and the Sell greys button on")
+check(not frame.switches.autosell:IsOn() and not frame.switches.autofly:IsOn(), "selling and flying by themselves off")
+do
+	local _, _, _, parentX = frame.switches.autoquest:GetPoint()
+	local _, _, _, subX = frame.switches.allquests:GetPoint()
+	check(subX > parentX, "all quests sits in under accepting the guide's (%s, %s)", tostring(subX), tostring(parentX))
+	check(frame.switches.allquests:GetWidth() < frame.switches.autoquest:GetWidth(), "and stops at the same edge")
+end
+click(frame.switches.autoquest)
+check(not db.autoquest and not frame.switches.allquests:IsEnabled() and not frame.switches.autogossip:IsEnabled(),
+	"accepting off holds the two under it off")
+click(frame.switches.autoquest)
+check(frame.switches.allquests:IsEnabled() and frame.switches.autogossip:IsEnabled(), "and lets them go")
+click(frame.switches.allquests)
+check(db.allquests == true, "all quests switches on")
+click(frame.switches.allquests)
+click(frame.switches.autogossip)
+check(db.autogossip == false and not frame.switches.autogossip:IsOn(), "picking from a list switches off")
+click(frame.switches.autogossip)
+click(frame.switches.autofly)
+check(db.autofly == true, "flying by itself switches on")
+click(frame.switches.autofly)
+do
+	local keepAuto = AegisPathfinder.Automation
+	AegisPathfinder.Automation = { PlaceButton = function() AegisPathfinder.__placed = true end }
+	click(frame.switches.sellbutton)
+	check(db.sellbutton == false and AegisPathfinder.__placed, "the Sell greys button goes at once")
+	click(frame.switches.sellbutton)
+	AegisPathfinder.Automation = keepAuto
+end
+check(frame.repair:GetParent() == autoPage and frame.repair.label:GetText() == "Don't repair",
+	"repairing: a dropdown, not repairing to start with, got %s", tostring(frame.repair.label:GetText()))
+click(frame.repair)
+click(frame.repair.rows[2])
+check(db.autorepair == "own" and frame.repair.label:GetText() == "With my own money", "and with your own money")
+click(frame.repair)
+check(frame.repair.list:IsShown(), "its list opens")
+click(navNamed("Gear"))
+check(not frame.repair.list:IsShown(), "and closes with the page, as the others do")
+click(navNamed("Automation"))
+
+-- Appearance's guide settings and the hiding switches; Step Display's steps,
+-- skips and party sync.
+do
+	local profile = AegisPathfinder.db.profile
+	local calls = {}
+	local function stubCall(name) AegisPathfinder[name] = function(_, v) table.insert(calls, name .. " " .. tostring(v)) end end
+	for _, name in ipairs({ "SetGuideOpacity", "SetBrowserOpacity", "SetStepTextSize", "SetGuideProgressShown",
+		"SetGuideUpward" }) do stubCall(name) end
+	local appearance, steps = pageNamed("Appearance"), pageNamed("Step Display")
+	check(frame.guideOpacity:GetParent() == appearance and frame.browserOpacity:GetParent() == appearance
+		and frame.textSize:GetParent() == appearance, "the opacity and text size sliders are on Appearance")
+	check(frame.guideOpacity.value:GetText() == "50%" and frame.browserOpacity.value:GetText() == "100%"
+		and frame.textSize.value:GetText() == "100%", "at 50%%, 100%% and 100%% to start with")
+	check(frame.guideOpacity:GetAlpha() < 1, "the guide's opacity is held while Transparency is off")
+	do
+		local _, _, _, ox = frame.guideOpacity:GetPoint()
+		local _, _, _, tx = frame.guideTransparent:GetPoint()
+		check(ox > tx, "and sits in under Transparency")
+	end
+	profile.objframetransparent = true
+	AegisPathfinder:RefreshConfigPanel()
+	check(frame.guideOpacity:GetAlpha() == 1, "and let go with it on")
+	profile.objframetransparent = nil
+	frame.guideOpacity.slider:SetValue(0.3)
+	frame.browserOpacity.slider:SetValue(0.6)
+	frame.textSize.slider:SetValue(1.2)
+	check(calls[1] == "SetGuideOpacity 0.3" and calls[2] == "SetBrowserOpacity 0.6" and string.find(calls[3], "SetStepTextSize 1.2", 1, true),
+		"each slider sets its own, got %s", table.concat(calls, ", "))
+	check(frame.guideProgress:IsOn() and not frame.guideUpward:IsOn(), "the progress bar on and growing upward off, to start with")
+	click(frame.guideProgress)
+	click(frame.guideUpward)
+	check(calls[4] == "SetGuideProgressShown false" and calls[5] == "SetGuideUpward true", "the switches say so, got %s %s",
+		tostring(calls[4]), tostring(calls[5]))
+	-- Hiding the guide.
+	for _, key in ipairs({ "hideininstance", "showafterinstance", "hideincombat", "hidebuttonscombat" }) do
+		check(frame.pswitches[key] and frame.pswitches[key]:GetParent() == appearance, "%s is on Appearance", key)
+	end
+	check(not frame.pswitches.hideininstance:IsOn() and frame.pswitches.showafterinstance:IsOn()
+		and not frame.pswitches.showafterinstance:IsEnabled(), "hiding in dungeons off; showing again on, held with it")
+	click(frame.pswitches.hideininstance)
+	check(profile.hideininstance == true and frame.pswitches.showafterinstance:IsEnabled(), "on, the one under it is let go")
+	click(frame.pswitches.showafterinstance)
+	check(profile.showafterinstance == false, "and can be switched off")
+	click(frame.pswitches.hideincombat)
+	click(frame.pswitches.hidebuttonscombat)
+	check(profile.hideincombat and profile.hidebuttonscombat, "hiding in combat, and the buttons with it")
+	profile.hideininstance, profile.showafterinstance, profile.hideincombat, profile.hidebuttonscombat = nil, nil, nil, nil
+	-- Step Display.
+	check(frame.focusSteps:GetParent() == steps and frame.focusSteps.label:GetText() == "1 (the step you are on)",
+		"steps shown in focus mode: one to start with")
+	click(frame.focusSteps)
+	click(frame.focusSteps.rows[3])
+	check(db.focussteps == 3, "and up to five, got %s", tostring(db.focussteps))
+	db.focussteps = nil
+	local reloads = AegisPathfinder.__reloaded or 0
+	check(frame.switches.skiphearth:GetParent() == steps and not frame.switches.skiphearth:IsOn(), "skipping hearthstones off to start with")
+	click(frame.switches.skiphearth)
+	check(db.skiphearth == true and (AegisPathfinder.__reloaded or 0) > reloads, "on, the guide is read again without them")
+	click(frame.switches.skipflightpaths)
+	check(db.skipflightpaths == true, "and flight paths")
+	click(frame.switches.skiphearth)
+	click(frame.switches.skipflightpaths)
+	local stopped
+	AegisPathfinder.shareState = { active = true }
+	function AegisPathfinder:StopSharing() stopped = true end
+	function AegisPathfinder:PaintShareButton() self.__sharePainted = true end
+	check(frame.switches.partysync:IsOn() and frame.askShare:IsEnabled(), "party sync on, asking before inviting let go")
+	click(frame.switches.partysync)
+	check(db.partysync == false and stopped and AegisPathfinder.__sharePainted, "off, sharing stops and the icon goes")
+	check(not frame.askShare:IsEnabled(), "and asking is held off with it")
+	click(frame.switches.partysync)
+	check(frame.askShare:IsEnabled(), "back on, let go")
+	AegisPathfinder.shareState = nil
+end
+
+-- Action Buttons: which way the windows grow, their size, which buttons, the mark.
+do
+	local abPage = pageNamed("Action Buttons")
+	local grown, scaled = {}, 0
+	function AegisPathfinder:SetActiveGrowth(which, dir) table.insert(grown, which .. " " .. dir) end
+	function AegisPathfinder:ApplyButtonScale() scaled = scaled + 1 end
+	check(frame.itemsGrow:GetParent() == abPage and frame.targetsGrow:GetParent() == abPage, "the growth dropdowns are on the page")
+	check(frame.itemsGrow.label:GetText() == "Right" and frame.targetsGrow.label:GetText() == "Right", "both grow right to start with")
+	click(frame.itemsGrow)
+	click(frame.itemsGrow.rows[3])
+	check(db.itemsgrow == "up" and grown[1] == "items up", "picking Up grows Active Items up, got %s", tostring(grown[1]))
+	click(frame.targetsGrow)
+	click(frame.targetsGrow.rows[2])
+	check(db.targetsgrow == "left" and grown[2] == "targets left", "and Active Targets its own way")
+	check(frame.buttonSize:GetParent() == abPage and frame.buttonSize.value:GetText() == "100%", "button size: 100%% to start with")
+	frame.buttonSize.slider:SetValue(1.25)
+	check(math.abs(db.buttonscale - 1.25) < 1e-6 and scaled == 1, "dragging it sizes the windows, got %s", tostring(db.buttonscale))
+	for _, key in ipairs({ "btnitems", "btntalk", "btnkill", "btndelete" }) do
+		check(frame.boxes[key] and frame.boxes[key]:IsOn(), "the %s box is ticked to start with", key)
+	end
+	check(frame.boxes.btndelete.label:GetText() == "Delete cheapest item", "the fourth is Delete cheapest item")
+	local before = AegisPathfinder.__activeRefreshed or 0
+	click(frame.boxes.btnkill)
+	check(db.btnkill == false and (AegisPathfinder.__activeRefreshed or 0) > before, "unticking one repaints the windows")
+	click(frame.boxes.btnkill)
+	check(frame.switches.raidmark and frame.switches.raidmark:IsOn(), "the target buttons mark, to start with")
+	click(frame.switches.raidmark)
+	check(db.raidmark == false, "and can be told not to")
+	click(frame.switches.raidmark)
+	db.itemsgrow, db.targetsgrow, db.buttonscale = nil, nil, nil
+	AegisPathfinder:RefreshConfigPanel()
+	check(frame.itemsGrow.label:GetText() == "Right" and frame.buttonSize.value:GetText() == "100%",
+		"a character without them reads right and 100%%")
+end
+
+-- Maps: the reveal, the step's places, the trail and its style, the rares.
+do
+	local profile = AegisPathfinder.db.profile
+	local mapsPage = pageNamed("Maps")
+	local redrawn = 0
+	local savedMaps = AegisPathfinder.Maps
+	AegisPathfinder.Maps = { Refresh = function() redrawn = redrawn + 1 end }
+	for _, key in ipairs({ "mapreveal", "mapmarkers", "anttrail", "maprares", "raresseethru" }) do
+		check(frame.pswitches[key] and frame.pswitches[key]:GetParent() == mapsPage, "%s is on Maps, kept per profile", key)
+	end
+	check(frame.pswitches.mapreveal:IsOn() and frame.pswitches.mapmarkers:IsOn() and frame.pswitches.anttrail:IsOn(),
+		"the reveal, the step's places and the trail are on to start with")
+	check(not frame.pswitches.maprares:IsOn() and not frame.pswitches.raresseethru:IsEnabled(),
+		"the rares off, and see-through held with them")
+	click(frame.pswitches.mapreveal)
+	check(profile.mapreveal == false and redrawn == 1, "switching the reveal off redraws the map")
+	click(frame.pswitches.mapreveal)
+	-- The trail's style: a short dropdown in under its switch.
+	check(frame.antStyle:GetParent() == mapsPage and frame.antStyle.dropdown.label:GetText() == "Dots",
+		"the trail is dots to start with")
+	do
+		local _, _, _, sx = frame.antStyle:GetPoint()
+		local _, _, _, tx = frame.pswitches.anttrail:GetPoint()
+		check(sx > tx, "its style sits in under the trail's switch")
+	end
+	check(frame.antStyle:GetAlpha() == 1, "and is let go while the trail is on")
+	click(frame.antStyle.dropdown)
+	click(frame.antStyle.dropdown.rows[2])
+	check(profile.antstyle == "dashes" and frame.antStyle.dropdown.label:GetText() == "Dashes", "dashes, picked")
+	click(frame.pswitches.anttrail)
+	check(profile.anttrail == false and frame.antStyle:GetAlpha() < 1, "the trail off holds its style")
+	check(not frame.antStyle.dropdown:IsMouseEnabled(), "which cannot be opened then")
+	click(frame.pswitches.anttrail)
+	-- The rares: the size held, and see-through, until they are on.
+	check(frame.rareSize:GetParent() == mapsPage and frame.rareSize.value:GetText() == "100%"
+		and frame.rareSize:GetAlpha() < 1, "the icon size is 100%%, held while the rares are off")
+	click(frame.pswitches.maprares)
+	check(profile.maprares == true and frame.rareSize:GetAlpha() == 1 and frame.pswitches.raresseethru:IsEnabled(),
+		"rares on: the size and see-through let go")
+	local before = redrawn
+	frame.rareSize.slider:SetValue(1.3)
+	check(math.abs(profile.raresize - 1.3) < 1e-6 and redrawn > before, "a bigger icon redraws them, got %s",
+		tostring(profile.raresize))
+	click(frame.pswitches.raresseethru)
+	check(profile.raresseethru == true, "and they can be see-through")
+	profile.mapreveal, profile.anttrail, profile.antstyle, profile.maprares = nil, nil, nil, nil
+	profile.raresize, profile.raresseethru = nil, nil
+	AegisPathfinder:RefreshConfigPanel()
+	check(frame.antStyle.dropdown.label:GetText() == "Dots" and frame.rareSize.value:GetText() == "100%",
+		"a profile without them reads dots and 100%%")
+	AegisPathfinder.Maps = savedMaps
+end
+
+-- Extras: chat messages, detailed reputation, level-up announcements.
+do
+	local extras = pageNamed("Extras")
+	check(frame.switches.chatmessages and frame.switches.chatmessages:GetParent() == extras
+		and frame.switches.chatmessages:IsOn(), "Pathfinder's chat messages: on Extras, on to start with")
+	check(frame.switches.repdetail and frame.switches.repdetail:GetParent() == extras
+		and not frame.switches.repdetail:IsOn(), "detailed reputation gains: off to start with")
+	click(frame.switches.chatmessages)
+	check(db.chatmessages == false, "the chat messages can be switched off")
+	click(frame.switches.repdetail)
+	check(db.repdetail == true, "and the reputation detail on")
+	local labels = {}
+	for _, key in ipairs({ "levelemote", "levelparty", "levelguild" }) do
+		local box = frame.boxes[key]
+		check(box and box:GetParent():GetParent() == extras, "the %s box is on Extras", key)
+		if box then table.insert(labels, box.label:GetText()) end
+	end
+	check(table.concat(labels, ", ") == "Emote, Party chat, Guild chat", "Emote, Party chat, Guild chat; got %s",
+		table.concat(labels, ", "))
+	check(frame.boxes.levelemote:IsOn() and not frame.boxes.levelparty:IsOn() and not frame.boxes.levelguild:IsOn(),
+		"the emote ticked to start with, party and guild not")
+	click(frame.boxes.levelemote)
+	check(db.levelemote == false, "the emote can be unticked")
+	click(frame.boxes.levelparty)
+	check(db.levelparty == true and frame.boxes.levelparty:IsOn(), "ticking one turns it on")
+	AegisPathfinder:RefreshConfigPanel()
+	check(frame.boxes.levelparty:IsOn() and not frame.boxes.levelemote:IsOn() and not frame.boxes.levelguild:IsOn(),
+		"and they stay as set")
+	-- The Talent Advisor: on to start with, the chat line too, following
+	-- levelling then your spec.
+	local TA = AegisPathfinder.TalentAdvisor
+	local advisor, talentChat = frame.switches.talentadvisor, frame.switches.talentchat
+	check(advisor and advisor:GetParent() == extras and advisor:IsOn() and advisor:IsEnabled(),
+		"the Talent Advisor's switch is on Extras, on to start with")
+	check(talentChat and talentChat:IsOn() and talentChat:IsEnabled(), "and naming the talent in chat, under it")
+	check(frame.talentBuild and frame.talentBuild:GetParent() == extras and frame.talentBuild:GetValue() == "auto",
+		"the build to follow: levelling, then your spec")
+	local labels, order = {}, {}
+	for _, item in ipairs(frame.talentBuild.items) do
+		labels[item.value] = item.label
+		table.insert(order, item.value)
+	end
+	local preferred = TA:PreferredBuild(AegisPathfinder.TalentBuilds.PALADIN)
+	check(preferred and labels.auto == "Leveling, then " .. preferred.spec .. " at 60",
+		"it names your spec, got %s", tostring(labels.auto))
+	check(labels.levelling == "Paladin leveling" and labels["levelling:Protection"] == "Paladin Protection leveling"
+		and table.concat(order, ",") == "auto,auto:Protection,levelling,levelling:Protection,Holy,Protection,Retribution",
+		"then Protection, the levelling builds and each spec's, got %s", table.concat(order, ","))
+	check(preferred and labels[preferred.spec] == preferred.spec .. " at 60 (my spec)", "yours marked")
+	check(labels.Holy == "Holy at 60" or preferred.spec == "Holy", "the others not")
+	click(advisor)
+	check(db.talentadvisor == false and talentRefreshes == 1, "switched off, the talent window is drawn again")
+	check(not talentChat:IsEnabled() and frame.talentBuild:GetAlpha() < 1, "and the chat line and the build are held")
+	click(advisor)
+	check(db.talentadvisor == true and talentChat:IsEnabled() and frame.talentBuild:GetAlpha() == 1, "on again")
+	fire(frame.talentBuild.rows[5], "OnClick")
+	check(db.talentbuild == "Holy" and talentRefreshes == 3, "picking Holy follows it, and redraws, got %s",
+		tostring(db.talentbuild))
+	AegisPathfinder:RefreshConfigPanel()
+	check(frame.talentBuild:GetValue() == "Holy", "a refresh keeps it")
+	click(frame.openTalents)
+	check(talentOpened == 1, "Open the talent window opens it")
+	db.talentbuild = "auto"
+	check(frame.boxes.btnkill:IsOn(), "the Action Buttons boxes still read on to start with")
+	db.chatmessages, db.repdetail, db.levelparty, db.levelemote = nil, nil, nil, nil
+	AegisPathfinder:RefreshConfigPanel()
+	check(frame.switches.chatmessages:IsOn() and frame.boxes.levelemote:IsOn() and not frame.boxes.levelparty:IsOn(),
+		"a character without them: messages on, the emote only")
+end
 check(frame.switches.shownavcallout == nil,
 	"our arrow's switch is in the Arrows section, with the others")
 check(frame.switches.showminimapbutton ~= nil and frame.switches.showminimapbutton:IsOn(),
@@ -544,6 +895,30 @@ for _, key in ipairs({ "showactiveitems", "showactivetargets", "showmacros", "qu
 		check((AegisPathfinder.__activeRefreshed or 0) == before + 1, "and repaints the windows at once")
 	end
 end
+
+-- Lock window and Transparency: the guide's ≡ menu settings, on Appearance too.
+check(frame.guideLock:GetParent().pageName == "Appearance" and frame.guideTransparent:GetParent().pageName == "Appearance",
+	"the guide's lock and transparency are on the Appearance page")
+check(not frame.guideLock:IsOn() and not frame.guideTransparent:IsOn(), "both off to start with")
+click(frame.guideLock)
+check(AegisPathfinder.db.profile.objframelocked == true, "the switch locks the guide, as its menu does")
+click(frame.guideTransparent)
+check(AegisPathfinder.db.profile.objframetransparent == true, "and makes it see-through")
+AegisPathfinder.db.profile.objframelocked = nil              -- unlocked from the menu
+AegisPathfinder:RefreshConfigPanel()
+check(not frame.guideLock:IsOn() and frame.guideTransparent:IsOn(), "and shows what the menu set")
+click(frame.guideTransparent)
+-- Asking before inviting the party: the share popup's "don't ask again".
+check(frame.askShare:GetParent().pageName == "Step Display" and frame.askShare:IsOn(), "Step Display asks before inviting, by default")
+click(frame.askShare)
+check(db.sharenowarn == true, "off, it shares without asking")
+click(frame.askShare)
+check(db.sharenowarn == nil and frame.askShare:IsOn(), "and on, it asks again")
+db.sharenowarn = true                                        -- "don't ask again" in the popup
+AegisPathfinder:RefreshConfigPanel()
+check(not frame.askShare:IsOn(), "the popup's box shows here")
+db.sharenowarn = nil
+AegisPathfinder:RefreshConfigPanel()
 
 click(frame.waypoints.rows[2])
 check(db.waypointprovider == "TomTom", "the waypoint dropdown picks a provider, got %s",
@@ -639,7 +1014,7 @@ check(frame.switches.questicons.label:GetWidth() == frame.switches.questicons:Ge
 check(frame.grip ~= nil and frame.grip:GetScript("OnMouseDown") ~= nil, "the window has a resize grip")
 local _, _, gripPoint = frame.grip:GetPoint()
 check(gripPoint == "BOTTOMRIGHT", "in its bottom right corner")
-click(frame.navButtons[5])                -- Gear, the long page
+click(navNamed("Gear"))                   -- the long page
 local _, gearRange = frame.scrollbar:GetMinMaxValues()
 stub.cursor, stub.mouseDown = { 500, 300 }, true
 fire(frame.grip, "OnMouseDown")
@@ -689,7 +1064,7 @@ local _, _, _, _, pickY2 = pick:GetPoint()
 local _, _, _, _, borderY2 = border:GetPoint()
 check(pick:GetHeight() == 22 and borderY2 == pickY2 - 22 - 6,
 	"wider, it is one line and the next row moves up to it (%s, %s)", pickY2, borderY2)
-local gearPage = frame.pages[5]
+local gearPage = pageNamed("Gear")
 local lowest = 0
 for _, e in ipairs(gearPage.flow) do
 	if e.region then

@@ -28,7 +28,7 @@ T Foreboding Plans |QID|510| |N|Magistrate Henry Maleb in Southshore (48.14, 59.
 T Soothing Turtle Bisque |QID|555| |N|Chef Jessen in Southshore (51.84, 58.68)| |Z|Hillsbrad Foothills|
 T Costly Menace |QID|564| |N|Darren Malvew in Southshore (52.43, 55.97)| |Z|Hillsbrad Foothills|
 
-N Level 31 |N|You should be around level 31 now. Continue to the next guide|
+N Level 31 |N|You should be around level 31 now. Continue to the next guide| |LV|31|
 
 ]]
 end)

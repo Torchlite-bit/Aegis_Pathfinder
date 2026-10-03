@@ -54,12 +54,20 @@ A Vilest of Men |QID|40953| |N|Moranna Rosenberg (32.7, 75.4)| |Z|Gilneas|
 
 R Gilneas City |N|The gates of Gilneas City, in the north-west of Gilneas (27.4, 30.1)| |Z|Gilneas|
 C Vilest of Men |QID|40953| |N|Collect 20 Vials of Blood from the Greymane loyalists around Dryrock Valley, outside too (19.3, 59.9) (21.6, 44.2)| |Z|Gilneas|
-C Ebonmere Affairs |QID|40979| |N|Slay Dustivan Blackcowl and recover the Ebonmere Deed|
 C Ravencroft's Ambition |QID|41112| |N|Recover the Book of Ur : Volume Two from the library in Gilneas City|
 C A Royal Heist |QID|41113| |N|Steal the painting from the library in Gilneas City: Portrait of Mia Greymane|
 C The Evil Made Me Do It |QID|40881| |N|Find 'On the Powers of Blood' in Gilneas City|
-C The Judge and the Phantom |QID|40975| |N|Slay Judge Sutherland within Gilneas City for the Angered Phantom at the Glaymore Stead in Gilneas|
 C The Greymane Stone |QID|40996| |N|Recover the Shard of Midnight| |O|
+K Matthias Holtz |N|Pathfinder has no notes on this fight yet.| |BOSS|Matthias Holtz|
+K Packmaster Ragetooth |N|Pathfinder has no notes on this fight yet.| |BOSS|Packmaster Ragetooth|
+K Judge Sutherland |N|Pathfinder has no notes on this fight yet.| |BOSS|Judge Sutherland|
+C The Judge and the Phantom |QID|40975| |N|Slay Judge Sutherland within Gilneas City for the Angered Phantom at the Glaymore Stead in Gilneas|
+K Dustivan Blackcowl |N|Pathfinder has no notes on this fight yet.| |BOSS|Dustivan Blackcowl|
+C Ebonmere Affairs |QID|40979| |N|Slay Dustivan Blackcowl and recover the Ebonmere Deed|
+K Marshal Magnus Greystone |N|Pathfinder has no notes on this fight yet.| |BOSS|Marshal Magnus Greystone|
+K Horsemaster Levvin |N|Pathfinder has no notes on this fight yet.| |BOSS|Horsemaster Levvin|
+K Harlow Family |N|Pathfinder has no notes on this fight yet.|
+K Genn Greymane |N|Pathfinder has no notes on this fight yet.| |BOSS|Genn Greymane|
 C Genn Greymane Must Die! |QID|40849| |N|Enter Gilneas City and slay Genn Greymane, then bring his head|
 
 N Back outside |N|Out of Gilneas City, in Gilneas|

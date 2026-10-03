@@ -23,7 +23,7 @@ A Kobold Candles |QID|60| |N|William Pestle - (43.3, 65.7)| |Z|Elwynn Forest|
 T Rest and Relaxation |QID|2158| |N|Innkeeper Farley - (43.8, 65.8)| |C|Rogue/Warrior| |Z|Elwynn Forest|
 T Rest and Relaxation |QID|2158| |N|Innkeeper Farley - (43.8, 65.8)| |C|!Rogue/!Warrior| |Z|Elwynn Forest|
 h Goldshire |N|Set hearth in Goldshire (43.8, 65.8)| |Z|Elwynn Forest|
-G Grind to 6 |Z|Elwynn Forest|
+G Grind to 6 |Z|Elwynn Forest| |LV|6|
 B Buy a [Balanced Throwing Dagger] and equip it |N|Brog Hamfist - (44.0, 65.9)| |C|Rogue| |Z|Elwynn Forest|
 R Travel downstairs |N|(44.1, 66.0)| |O| |C|Warlock| |Z|Elwynn Forest|
 t Train your class spells |N|Maximillian Crowe - (44.4, 66.2)| |C|Warlock| |Z|Elwynn Forest|
@@ -112,7 +112,7 @@ T Kobold Candles |QID|60| |N|William Pestle - (43.3, 65.7)| |Z|Elwynn Forest|
 A Shipment to Stormwind |QID|61| |N|William Pestle - (43.3, 65.7)| |Z|Elwynn Forest|
 T Note to William |QID|107| |N|William Pestle - (43.3, 65.7)| |Z|Elwynn Forest|
 A Collecting Kelp |QID|112| |N|William Pestle - (43.3, 65.7)| |Z|Elwynn Forest|
-G Grind to 8 |Z|Elwynn Forest|
+G Grind to 8 |Z|Elwynn Forest| |LV|8|
 t Train your class spells |N|Lyria Du Lac - (41.1, 65.8)| |C|Warrior| |Z|Elwynn Forest|
 t Train your class spells |N|Brother Wilhelm - (41.1, 66.0)| |C|Paladin| |Z|Elwynn Forest|
 R Travel downstairs in the Inn |N|(44.1, 66.0)| |O| |C|Warlock| |Z|Elwynn Forest|
@@ -194,7 +194,7 @@ A Westbrook Garrison Needs Help! |QID|239| |N|Marshal Dughan - (42.1, 65.9)| |Z|
 A Cloth and Leather Armor |QID|59| |N|Marshal Dughan - (42.1, 65.9)| |C|Warlock| |Z|Elwynn Forest|
 A Report to Gryan Stoutmantle |QID|109| |N|Marshal Dughan - (42.1, 65.9)| |Z|Elwynn Forest|
 A Elmore's Task |QID|1097| |N|Smith Argus - (41.7, 65.5)| |Z|Elwynn Forest|
-G Grind to 10 |Z|Elwynn Forest|
+G Grind to 10 |Z|Elwynn Forest| |LV|10|
 A A Warrior's Training |QID|1638| |N|Lyria Du Lac - (41.1, 65.8)| |C|Warrior| |Z|Elwynn Forest|
 t Train your class spells |N|Lyria Du Lac - (41.1, 65.8)| |C|Warrior| |Z|Elwynn Forest|
 t Train your class spells |N|Brother Wilhelm - (41.1, 66.0)| |C|Paladin| |Z|Elwynn Forest|
@@ -280,7 +280,7 @@ A Manhunt |QID|147| |N|Marshal Dughan - (42.1, 65.9)| |C|Warlock| |Z|Elwynn Fore
 T Wanted: "Hogger" |QID|176| |N|Marshal Dughan - (42.1, 65.9)| |C|Warlock| |Z|Elwynn Forest|
 N Choose the [Balanced Fighting Stick] as your reward. Equip it |N|(42.1, 65.9)| |C|Warlock| |Z|Elwynn Forest|
 A Manhunt |QID|147| |N|Marshal Dughan - (42.1, 65.9)| |C|Warlock| |Z|Elwynn Forest|
-G Grind to 11 |C|Warlock| |Z|Elwynn Forest|
+G Grind to 11 |C|Warlock| |Z|Elwynn Forest| |LV|11|
 R the Brackwell Pumpkin Patch |N|(71.0, 80.8)| |O| |C|Warlock| |Z|Elwynn Forest|
 N Grind en-route. Try to level your Staff skill for later |N|(71.0, 80.8)| |O| |C|Warlock| |Z|Elwynn Forest|
 N Kill Morgan the Collector. Loot him for The Collector's Ring |N|(71.1, 80.7)| |C|Warlock| |Z|Elwynn Forest|
@@ -374,12 +374,12 @@ N Cast [Find Minerals] |C|Warrior/Paladin/Rogue| |Z|Dun Morogh|
 C Those Blasted Troggs! |QID|432| |OIDX|1| |N|Rockjaw Skullthumpers and Rockjaw Bonesnappers Kill Rockjaw Skullthumper (x6)| |Z|Dun Morogh|
 C The Public Servant |QID|433| |OIDX|1| |N|Rockjaw Skullthumpers and Rockjaw Bonesnappers Kill Rockjaw Bonesnapper (x10)| |Z|Dun Morogh|
 G Grind until 6350+/7600 |C|!Warlock| |Z|Dun Morogh|
-G Grind to level 12 |C|Warlock| |Z|Dun Morogh|
+G Grind to level 12 |C|Warlock| |Z|Dun Morogh| |LV|12|
 T Those Blasted Troggs! |QID|432| |N|Foreman Stonebrow and Senator Mehr Stonehallow - (69.1, 56.3)| |Z|Dun Morogh|
 T The Public Servant |QID|433| |N|Foreman Stonebrow and Senator Mehr Stonehallow - (69.1, 56.3)| |Z|Dun Morogh|
 B Vendor trash |N|Kazan Mogosh - (68.6, 54.6)| |C|!Priest/!Warlock/!Mage| |Z|Dun Morogh|
 B Buy 20 [Ice Cold Milk] |N|Kazan Mogosh - (68.6, 54.6)| |C|Priest/Warlock/Mage| |Z|Dun Morogh|
-G Grind to level 11 |C|!Warlock| |Z|Dun Morogh|
+G Grind to level 11 |C|!Warlock| |Z|Dun Morogh| |LV|11|
 A The Lost Pilot |QID|419| |N|Pilot Hammerfoot - (83.9, 39.2)| |Z|Dun Morogh|
 T The Lost Pilot |QID|419| |N|Click the Dwarven Corpse - (79.7, 36.2)| |Z|Dun Morogh|
 A A Pilot's Revenge |QID|417| |N|Click the Dwarven Corpse - (79.7, 36.2)| |Z|Dun Morogh|

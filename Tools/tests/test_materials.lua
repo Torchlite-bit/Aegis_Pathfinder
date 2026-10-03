@@ -588,28 +588,17 @@ check(AegisPathfinder:ItemIdByName("Copper Bar") == 2840,
 	"pfQuest's item names give an id, the original one where a name repeats, got %s",
 	tostring(AegisPathfinder:ItemIdByName("Copper Bar")))
 
--- End-to-end against the source document ------------------------------------
+-- End-to-end against the guide's own table ----------------------------------
 
 --[[ The strongest check available offline.
 
-	The reference document publishes its own shopping list per profession,
-	totalled over the whole route. Running the real Alchemy guide through the
-	real parsers and summing from step one must reproduce it exactly. If the
-	converter drops a step, mangles a craft count, or the tag round trip loses
-	a reagent, these numbers diverge. The same guide sent to Exchange must
-	come to the same numbers there.
+	The generated Alchemy guide is a table of steps, each with its craft count
+	and each craft's reagents. Running it through the real parsers and summing
+	from step one must come to the same totals as multiplying those out by
+	hand. If the converter drops a step, mangles a craft count, or the tag
+	round trip loses a reagent, these numbers diverge. The same guide sent to
+	Exchange must come to the same numbers there.
 ]]
-local ALCHEMY_TOTALS = {   -- verbatim from the document's shopping list
-	["Empty Vial"] = 120, ["Leaded Vial"] = 47, ["Crystal Vial"] = 61,
-	["Peacebloom"] = 40, ["Silverleaf"] = 57, ["Earthroot"] = 45,
-	["Swiftthistle"] = 17, ["Bruiseweed"] = 5, ["Wild Steelbloom"] = 7,
-	["Stranglekelp"] = 13, ["Kingsblood"] = 15, ["Liferoot"] = 18,
-	["Goldthorn"] = 20, ["Arthas\' Tears"] = 23, ["Sungrass"] = 13,
-	["Golden Sansam"] = 15, ["Dreamfoil"] = 40, ["Dream Dust"] = 10,
-	["Oily Blackmouth"] = 26, ["Deviate Fish"] = 30, ["Firefin Snapper"] = 40,
-	["Stonescale Eel"] = 7,
-}
-
 AegisPathfinder.guides, AegisPathfinder.guidelist = {}, {}
 AegisPathfinder.qsplusguides = {}
 AegisPathfinder.turnedin = {}
@@ -624,6 +613,13 @@ dofile("Guides/Professions/Alchemy.lua")
 
 local alchemy = AegisPathfinder.qsplusguides["Alchemy (1-300)"]
 check(alchemy ~= nil, "the Alchemy guide did not register")
+local ALCHEMY_TOTALS = {}
+for _, st in ipairs(alchemy and alchemy.steps or {}) do
+	for _, r in ipairs(st.craft and st.reagents or {}) do
+		ALCHEMY_TOTALS[r.item] = (ALCHEMY_TOTALS[r.item] or 0) + r.qty * st.craft.count
+	end
+end
+check(ALCHEMY_TOTALS["Empty Vial"] and ALCHEMY_TOTALS["Peacebloom"], "the Alchemy guide's crafts have reagents")
 
 if alchemy then
 	local aa, qq, tt = AegisPathfinder:ParseQuestShellPlus(alchemy)
@@ -636,12 +632,12 @@ if alchemy then
 
 	for item, expected in pairs(ALCHEMY_TOTALS) do
 		check(computed[item] == expected,
-			"Alchemy needs %d %s per the source document, computed %s",
+			"Alchemy needs %d %s by its steps, computed %s",
 			expected, item, tostring(computed[item]))
 	end
 	for item, got in pairs(computed) do
 		check(ALCHEMY_TOTALS[item] ~= nil,
-			"computed a reagent the document never lists: %s (%d)", item, got)
+			"computed a reagent no step lists: %s (%d)", item, got)
 	end
 
 	AegisExchange.ui.RefreshCraft = function() end

@@ -166,7 +166,7 @@ A Making Sense of It |QID|4321| |N|J.D. Collie in Marshal's Refuge (41.91, 2.69)
 
 N Evergreen Herb Casing |QID|3761| |N|Collect more Evergreen Herb Casing from creatures or Dirt piles in Un'Goro - need 45 for later quest| |L|11024 45|
 
-N Level 52 |N|You should be around level 52 now. Continue to the next guide|
+N Level 52 |N|You should be around level 52 now. Continue to the next guide| |LV|52|
 
 ]]
 end)

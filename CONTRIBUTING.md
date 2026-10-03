@@ -33,7 +33,7 @@ pushed anyway is released too.
 | `libs/` | Ace2 |
 | `Tools/run_tests.sh`, `Tools/verify.py` | The checks (below) |
 | `Tools/tests/` | The Lua tests, and `wow_stub.lua`, the 1.12 API they run against |
-| `Tools/build/` | The generators and importers: dungeon, class quest, zone and profession guides, gear and item-score data, recipes, textures, the filter review, and the RestedXP converter |
+| `Tools/build/` | The generators and importers: dungeon, class quest, zone and profession guides, gear and item-score data, recipes, textures, the filter review, the talent builds, and the RestedXP converter |
 | `Tools/data/` | What the generators read and cache, and the filter review's candidates and answers |
 | `docs/` | Features, guide authoring, the QuestShell+ format, the UI spec and design concept, and the in-game test pass |
 
@@ -51,6 +51,7 @@ That runs everything that can run without a WoW client:
 |---|---|
 | `Tools/verify.py` | Lua syntax, Lua 5.0 compatibility for shipped files, `.toc` paths, `Guides.xml` completeness, TGA validity, no Blizzard chrome, the 32-upvalue ceiling, the class and race names in the guides' class and race tags, that every step with coordinates is on a zone the world map knows, that no `AegisPathfinder` method is defined twice (a later definition replaces the first) except as a wrapper |
 | `Tools/build/convert_professions.py --check` | The profession source document still parses and is internally consistent; the gathering guides cover 1–300 for each faction with somewhere named in every band; the committed guides are what the generator writes |
+| `Tools/build/talent_builds.py --check` | Every talent build for the Talent Advisor against the trees the game has (`Tools/data/turtle_talent_trees.json`, saved by `/apg talents`): talents the class has, their ranks, 5 points a row, prerequisites at full rank, 51 points, and each build learnable point by point in its order; the committed builds -- `Tools/data/talent_builds.json`, the addon's `TalentBuilds.lua` and the tests' `Tools/tests/talent_trees.lua` -- are what it writes |
 | `Tools/tests/test_theme.lua` | The theme layer against a stubbed 1.12 API |
 | `Tools/tests/test_smartskip.lua` | Where a guide opens: a new character at the top, a quest in progress or ready to hand in at its step, otherwise the first step not done |
 | `Tools/tests/test_yourplace.lua` | Right-clicking the step arrows: back or on to your place after clicking round, every mark and completion the arrows changed put back (a completion earned meanwhile kept), only in the arrow's direction, and with no clicking round, to where the guide would open |
@@ -60,6 +61,11 @@ That runs everything that can run without a WoW client:
 | `Tools/tests/test_guidelist.lua` | Guide categorisation, tabs and badges, and a class quest guide's one level |
 | `Tools/tests/test_guidebrowser.lua` | The guide browser: Leveling's folders (packs, zone guides by continent, custom zones), a long folder split by level, a guide's zone from its title or its steps, only your class's quests; search, favourites, the recent list; the suggestions; the level and gold trackers; each kind of guide's picture, the map's tiles and overlays cut as the client cuts them and the crop; and the window -- Home's panels and hiding them, the level page, folders and back, pointing at a guide, the clicks, the star, the RestedXP pack switch, the list's four switches, search, Current, Recent, Return to Main, scrolling, the size limits and reopening where it was left |
 | `Tools/tests/test_activeframes.lua` | Active Items, Active Targets and Macros: which items and targets each step offers, targeting and raid marks, the generated AegisTarget/AegisItem macros, placement, the key bindings |
+| `Tools/tests/test_automation.lua` | The Automation page: the guide's quests or all of them (never a grey one, room left in the log), picking from an NPC's list, the step's flight, buying what the step needs, selling greys, repairing, Shift holding it all back; and making room in full bags, the cheapest item first |
+| `Tools/tests/test_maps.lua` | The Maps page: the reveal drawing only what the client doesn't, cut as the client cuts it, and standing down for pfUI, Cartographer and MetaMap; the step's places from pfQuest and its note, on their own zone; the ant trail, dots or dashes, marching, on the waypoint's zone only; the rares near your level, sized and see-through; the minimap trail inside the minimap, with Astrolabe |
+| `Tools/tests/test_extras.lua` | The Extras page: routine lines silenced and warnings not, the reputation line (where it stands, to the next rank, Exalted, a faction under a closed header and the header closed again), level-ups to each channel ticked with the time worded right, and nothing to a party or guild you are not in |
+| `Tools/tests/test_talentwindow.lua` | The Talent Advisor on Blizzard's talent window, stood in for with Blizzard_TalentUI 1.12.1's names: the window hooked once it loads, opening on the next point's tree; each talent's badge (to take, done, "+N" off the build), the glow and NEXT, the tab's dot; the strip's build, menu, next point and points off the build, over the frame or pfUI's backdrop; the tooltip's lines; nothing with the advisor off; a build that doesn't fit; and in chat the talent on a level up, your spec's build ready at 60 once, and a build that doesn't fit once a session |
+| `Tools/tests/test_talentadvisor.lua` | The Talent Advisor's engine against Turtle WoW's trees (`Tools/tests/talent_trees.lua`): every build fits its class's tree and is learnt point by point with the advisor naming each point in turn, the next point at a level, points off the build and carrying on from the closest point, a build that doesn't fit the tree and why, and the build followed (levelling until 60, then your spec's) |
 | `Tools/tests/test_setup.lua` | First-time setup: when it opens, which guides and dungeons it offers, Solo Self-Found holding the other features off, and what Finish writes |
 | `Tools/tests/test_zoneguide.lua` | The Moonwhisper Coast guides through the real parser: each side's own quests and not the other's; every quest step with an id, a zone and a place to go; picked up, done, handed in in that order, and each quest after the one it follows (the Moro'gai story, the Horde's trips to Azshara and Mulgore and back); the quest log never past 20; the quests you may not have optional; group quests, what follows them and a trip made only for them in Group mode alone; a race's quest shown to that race only |
 | `Tools/tests/test_routes.lua` | The route packs against the guides: every leg a guide your faction has, every guide's next link one that exists, where the routes part by race, and DungeonQuests.lua what `Tools/build/build_dungeon_quests.py` makes of them today |
@@ -82,7 +88,7 @@ That runs everything that can run without a WoW client:
 | `Tools/tests/test_minimap.lua` | The minimap button: drawn from the theme, its clicks, dragging round the edge, and the setting that hides it |
 | `Tools/tests/test_navcallout.lua` | The navigation arrow's maths: bearing relative to your facing, distance and time |
 | `Tools/tests/test_navigation.lua` | The waypoint addons and arrow switches, continent-map points, trainers found by name, and the zone a step is in |
-| `Tools/tests/test_dungeonguides.lua` | The dungeon guides: current with their generator, listed, parsed, an entrance to point at, and no loose ends |
+| `Tools/tests/test_dungeonguides.lua` | The dungeon guides: current with their generator, listed, parsed, an entrance to point at, and no loose ends; a step for each boss after the way in, with a note and a death to tick it, the role lines your role setting picks, and the combat log's death line ticking the step |
 | `Tools/tests/test_classguides.lua` | The class quest guides: current with their generator, listed, a milestone for each; parsed as every race of the class sees it -- its own chain and no other race's, no loose ends, ending with the quest the offer takes for its last; and the chains that must come out right (the Voidwalker by home city, the Charger's horse feed before the spirit) |
 | `Tools/tests/test_professionsteps.lua` | Profession training: ranks waiting for their level, your side's trainers, tomes and Artisan quests, completing on skill and cap |
 
@@ -144,10 +150,11 @@ diffs and validates far better that way.
 
 **Profession guides in `Guides/Professions/` are generated.** Editing them by
 hand will be overwritten. Change `Tools/build/convert_professions.py` or the source
-document in `Tools/data/`, then regenerate. Engineering, which the document
-does not cover, comes from CraftRoute's fixed route
-(`Tools/data/craftroute_routes.json`, exported by `Tools/build/import_recipes.py`)
-with its trainers in `Tools/data/profession_training.json`. Herbalism, Skinning
+data in `Tools/data/`, then regenerate. The crafting professions follow
+CraftRoute's routes (`Tools/data/craftroute_routes.json`); Mining's route and
+the trainers come from the reference document, with the ranks, tomes, Artisan
+quests and First Aid's route and bandage colours in
+`Tools/data/profession_training.json`. Herbalism, Skinning
 and Fishing are built by `Tools/build/gathering_guides.py` from
 `Tools/data/gathering.json`, which also gives each step of the Mining route,
 per faction, where to mine its ore. They only send players to zones this addon
@@ -157,6 +164,19 @@ has a zone guide for:
 python3 Tools/build/convert_professions.py
 ```
 
+The routes are planned by CraftRoute's own planner, run outside the game on
+its sample auction scan; only the routes it prints are kept. To plan them
+again from a CraftRoute checkout (needs `lua5.1`), then regenerate the guides:
+
+```sh
+python3 Tools/build/import_routes.py <CraftRoute>
+```
+
+`Tools/build/craftroute_harness.lua` stands in for the game's API while it
+runs. CraftRoute's scan has no listing for most things players gather
+themselves, so a raw material with none is costed at three times its merchant
+price; the guides that use one say so.
+
 `Tools/data/gathering.json` is extracted from pfQuest (herb and ore nodes,
 spawn points, zone names) and the CMaNGOS classic-db dump (the ore each vein
 yields, skinnable creatures, fishing skill by zone, trainers, the Expert
@@ -165,6 +185,18 @@ To refresh it, check both out and run:
 
 ```sh
 python3 Tools/build/build_gathering.py --pfquest <pfQuest> <pfQuest-turtle> --cmangos <classic-db full dump .sql[.gz]>
+```
+
+**The dungeon guides' boss steps** come from `Tools/data/dungeon_bosses.json`,
+written by `Tools/build/build_dungeon_bosses.py` from an InstanceJournal
+checkout, the CMaNGOS classic-db dump and mangos-classic's ScriptDevAI
+scripts; the notes on each fight are written by hand in
+`Tools/build/dungeon_tactics.py`. See
+[docs/GUIDE_AUTHORING.md](docs/GUIDE_AUTHORING.md#dungeon-guides):
+
+```sh
+python3 Tools/build/build_dungeon_bosses.py --instancejournal <InstanceJournal> --cmangos <classic-db full dump .sql[.gz]> --scripts <mangos-classic>/src/game/AI/ScriptDevAI/scripts
+python3 Tools/build/build_dungeon_guides.py
 ```
 
 **`ItemScoreData.lua` is generated** from
@@ -204,9 +236,12 @@ CraftRoute, check it out and run:
 
 ```sh
 python3 Tools/build/import_recipes.py <path to CraftRoute>
+python3 Tools/build/import_routes.py <path to CraftRoute>
+python3 Tools/build/convert_professions.py
 ```
 
-Only the data is taken, rewritten into this addon's own one-line-per-recipe
+The second plans the profession guides' routes again (see **Writing
+guides**), and the third rewrites the guides from them. Only the data is taken, rewritten into this addon's own one-line-per-recipe
 format (documented at the top of each generated file); the planner in
 `CraftPlanner.lua` is written separately. Reagents CraftRoute gives only by
 item id are named from pfQuest's item database, cached in

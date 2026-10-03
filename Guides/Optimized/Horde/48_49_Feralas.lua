@@ -66,7 +66,7 @@ T Perfect Yeti Hide |QID|7738| |N|Jangdor Swiftstrider in Camp Mojache (74.43, 4
 T Dark Heart |QID|3062| |N|Talo Thornhoof in Camp Mojache (76.18, 43.81)| |Z|Feralas|
 T Vengeance on the Northspring |QID|3063| |N|Talo Thornhoof in Camp Mojache (76.18, 43.81)| |Z|Feralas|
 
-N Level 49 |N|You should be around level 49 now. Continue to Tanaris|
+N Level 49 |N|You should be around level 49 now. Continue to Tanaris| |LV|49|
 
 ]]
 end)

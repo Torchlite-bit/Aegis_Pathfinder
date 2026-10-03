@@ -8,7 +8,7 @@ R Travel to Teldrassil |N|(58.7, 44.3)| |Z|Teldrassil|
 A The Balance of Nature |QID|456| |N|Conservator Ilthalaine - (58.7, 44.3)| |Z|Teldrassil|
 C The Balance of Nature |QID|456| |OIDX|1| |N|Kill Young Nightsabers and Young Thistle Boars Kill Young Nightsaber (x7)| |O| |Z|Teldrassil|
 N Loot the mobs you kill, make sure you have at least 10 copper worth of vendor trash, you will need it to train [Battle Shout] |C|Warrior| |Z|Teldrassil|
-G Grind to level 2 |Z|Teldrassil|
+G Grind to level 2 |Z|Teldrassil| |LV|2|
 A A Good Friend |QID|4495| |N|Dirania Silvershine and Melithar Staghelm - (60.9, 42.0)| |Z|Teldrassil|
 A The Woodland Protector |QID|458| |N|Dirania Silvershine and Melithar Staghelm - (60.9, 42.0)| |Z|Teldrassil|
 C The Balance of Nature |QID|456| |OIDX|1| |N|Kill Young Nightsabers and Young Thistle Boars Kill Young Nightsaber (x7)| |Z|Teldrassil|
@@ -45,7 +45,7 @@ B Vendor trash |N|Dellylah - (59.6, 40.7)| |C|Druid| |Z|Teldrassil|
 N Buy 20 [Refreshing Spring Water] |N|(59.6, 40.7)| |C|Druid| |Z|Teldrassil|
 B Collect Refreshing Spring Water (x20) |L|159 20| |N|Dellylah - (59.6, 40.7)| |C|Druid| |Z|Teldrassil|
 A Webwood Venom |QID|916| |N|Gilshalan Windwalker - (57.8, 41.7)| |Z|Teldrassil|
-G Grind to level 4 |C|Hunter| |Z|Teldrassil|
+G Grind to level 4 |C|Hunter| |Z|Teldrassil| |LV|4|
 N Ayanna Everstride |N|(58.7, 40.4)| |C|Hunter| |Z|Teldrassil|
 T Etched Sigil |QID|3117| |N|Ascend the Aldrassil Tree - (58.7, 40.4)| |C|Hunter| |Z|Teldrassil|
 t Train Serpent Sting |N|Ascend the Aldrassil Tree - (58.7, 40.4)| |C|Hunter| |Z|Teldrassil|

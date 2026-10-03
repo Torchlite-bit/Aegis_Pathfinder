@@ -107,9 +107,9 @@ T Safety First (Part 1) |QID|1188| |N|Yorba Screwspigot in Gadgetzan (50.95, 27.
 A Safety First (Part 2) |QID|1189| |N|Yorba Screwspigot in Gadgetzan (50.95, 27.23)| |Z|Tanaris| |PRE|1188|
 T Safety First (Part 2) |QID|1189| |N|Yorba Screwspigot, in Mirage Raceway (80.33, 76.10)| |Z|Thousand Needles| |PRE|1188|
 
-N Level 50 Required |N|You should be close to next level, grind nearby mobs to reach level 50|
+N Level 50 Required |N|You should be close to next level, grind nearby mobs to reach level 50| |LV|50|
 
-N Level 50 |N|You should be around level 50 now. Congratulations on completing the 40-50 leveling guide!|
+N Level 50 |N|You should be around level 50 now. Congratulations on completing the 40-50 leveling guide!| |LV|50|
 
 ]]
 end)

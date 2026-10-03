@@ -71,7 +71,7 @@ T Iverron's Antidote (Part 2) |QID|3522| |N|Iverron in Shadowglen. 5 minute time
 T Crown of the Earth (Part 1) |QID|921| |N|Tenaron Stormgrip in Aldrassil (59.09, 39.39)|
 A Crown of the Earth (Part 2) |QID|928| |N|Tenaron Stormgrip in Aldrassil (59.09, 39.39)|
 
-N Level 6 |N|You should be level 6. Grind if needed before heading to Dolanaar|
+N Level 6 |N|You should be level 6. Grind if needed before heading to Dolanaar| |LV|6|
 
 A Dolanaar Delivery |QID|2159| |N|Porthannius in Shadowglen (61.20, 47.71)|
 A Zenn's Bidding |QID|488| |N|Zenn Foulhoof on the road to Dolanaar (60.41, 56.26)|
@@ -121,7 +121,7 @@ A The Relics of Wakening |QID|483| |N|Athridas Bearmantle in Dolanaar (55.95, 57
 T The Emerald Dreamcatcher |QID|2438| |N|Tallonkai Swiftroot in Dolanaar (55.5, 56.9)|
 A Ferocitas the Dream Eater |QID|2459| |N|Tallonkai Swiftroot in Dolanaar (55.5, 56.9)|
 
-N Level 8 |N|You should be level 8 now. Train skills if needed|
+N Level 8 |N|You should be level 8 now. Train skills if needed| |LV|8|
 
 N As you go... |QID|489| |L|3418 3| |N|Collect 3 Fel Cone from around the bottom of large trees as you travel|
 
@@ -163,7 +163,7 @@ T The Relics of Wakening |QID|483| |N|Athridas Bearmantle in Dolanaar (55.95, 57
 A Ursal the Mauler |QID|486| |N|Athridas Bearmantle in Dolanaar (55.95, 57.28)|
 T Seek Redemption! |QID|489| |N|Zenn Foulhoof (60.41, 56.26)|
 
-N Level 10 |N|You should be level 10 now. Grind if needed for class quests|
+N Level 10 |N|You should be level 10 now. Grind if needed for class quests| |LV|10|
 
 A The Apple Falls |QID|2241| |N|Jannok Breezesong in Dolanaar (56.36, 60.17)| |C|Rogue|
 A Heeding the Call |QID|5923| |N|Kal in Dolanaar (55.95, 61.56)| |C|Druid|
@@ -277,7 +277,7 @@ T The Moss-twined Heart |QID|927| |N|Denalan. Skip if you did not find Blackmoss
 C Oakenscowl |QID|2499| |N|Kill Oakenscowl and collect Gargantuan Tumor. Elite - may need group or skip (53.55, 74.99)| |O| |P|GROUP|
 T Oakenscowl |QID|2499| |N|Denalan in Lake Al'Ameth (60.91, 68.45)| |O| |P|GROUP|
 
-N Level 12 |N|You should be close to level 12. Grind if needed|
+N Level 12 |N|You should be close to level 12. Grind if needed| |LV|12|
 
 R Darnassus |QID|935| |N|Travel to Darnassus (27, 55)|
 T Crown of the Earth (Part 6) |QID|935| |N|Arch Druid Fandral Staghelm in Cenarion Enclave (34.86, 8.97)| |Z|Darnassus|

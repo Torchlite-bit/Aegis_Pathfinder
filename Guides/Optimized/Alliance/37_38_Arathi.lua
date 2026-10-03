@@ -98,7 +98,7 @@ A Hints of a New Plague? (Part 5) |QID|661| |N|Quae in Go'Shek Farm (60.20, 53.8
 R Southshore |TID|661| |N|Travel to Southshore (50.34, 59.03)| |Z|Hillsbrad Foothills|
 T Hints of a New Plague? (Part 5) |QID|661| |N|Phin Odelic in Southshore (50.34, 59.03)| |Z|Hillsbrad Foothills|
 
-N Level 38 |N|You should be around level 38 now. Continue to the next guide|
+N Level 38 |N|You should be around level 38 now. Continue to the next guide| |LV|38|
 
 ]]
 end)

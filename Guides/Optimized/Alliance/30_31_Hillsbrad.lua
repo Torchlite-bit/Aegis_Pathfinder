@@ -55,7 +55,7 @@ C Stormwind Ho! |QID|562| |N|Kill 10 Daggerspine Shorehunter and 10 Daggerspine 
 T Stormwind Ho! |QID|562| |N|Lieutenant Farren Orinelle in Southshore (51.43, 58.35)| |Z|Hillsbrad Foothills|
 A Reassignment |QID|563| |N|Lieutenant Farren Orinelle in Southshore (51.43, 58.35)| |Z|Hillsbrad Foothills|
 
-N Level 31 |N|You should be around level 31 now. Continue to the next guide|
+N Level 31 |N|You should be around level 31 now. Continue to the next guide| |LV|31|
 
 ]]
 end)

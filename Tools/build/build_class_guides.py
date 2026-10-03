@@ -760,12 +760,16 @@ class ClassGuide:
 
     # -- one race's chain --------------------------------------------------------
 
+    def home(self, races):
+        """Where a chain's races start from: their class trainers' cities."""
+        return [z for r in races for z in HOME[r]]
+
     def plan(self, seq, races):
         """The steps for one chain: [(line without |R|, ...)]."""
         q, after, before = self.q, self.after, self.before
         opt = {x for x in seq if optional(q, x, seq, after)}
         inseq = set(seq)
-        home = [z for r in races for z in HOME[r]]
+        home = self.home(races)
         events = []
         for x in seq:
             events.append(("A", x))
@@ -914,7 +918,8 @@ class ClassGuide:
             tags.append("|Z|%s|" % zone)
         if use:
             tags.append("|U|%d|" % use)
-        tags.append("|C|%s|" % self.m["class"])
+        if self.m.get("class"):
+            tags.append("|C|%s|" % self.m["class"])
         if opt and kind != "C":
             tags.append("|O|")
         return " ".join(["%s %s" % (kind, t["title"])] + tags)

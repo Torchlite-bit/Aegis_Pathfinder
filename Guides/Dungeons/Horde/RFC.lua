@@ -33,8 +33,12 @@ C Searching for the Lost Satchel |QID|5722| |N|Search Ragefire Chasm for Maur Gr
 T Searching for the Lost Satchel |QID|5722| |N|Maur Grimtotem|
 A Returning the Lost Satchel |QID|5724| |N|Maur Grimtotem|
 C The Power to Destroy... |QID|5725| |N|Get the books Spells of Shadow and Incantations from the Nether|
-C Hidden Enemies |QID|5728| |N|Kill Bazzalan and Jergosh the Invoker before returning|
+K Oggleflint |N|Oggleflint cleaves everyone in front of him.| |TANK|Face him away from the group.| |DPS|Stay behind him.| |BOSS|Oggleflint|
+K Taragaman the Hungerer |N|Fire Nova burns everyone near him, and Uppercut knocks his target back.| |TANK|Keep your back to a wall so Uppercut doesn't throw you into another pack.| |HEAL|Fire Nova hits everyone in melee: keep the melee topped up.| |DPS|Ranged stand back, out of Fire Nova.| |BOSS|Taragaman the Hungerer|
 C Slaying the Beast |QID|5761| |N|Enter Ragefire Chasm and slay Taragaman the Hungerer, then bring his heart back|
+K Jergosh the Invoker |N|Jergosh casts Immolate and puts Curse of Weakness on his targets.| |HEAL|Remove Curse of Weakness (Curse: Mage, Druid) and Immolate (Magic: Priest, Paladin).| |DPS|Interrupt Immolate.| |BOSS|Jergosh the Invoker|
+C Hidden Enemies |QID|5728| |N|Kill Bazzalan and Jergosh the Invoker before returning|
+K Bazzalan |N|A rogue: Sinister Strike, and poison on his blows.| |HEAL|Cure the poison (Poison: Druid, Shaman, Paladin).| |BOSS|Bazzalan|
 
 N Back outside |N|Out of Ragefire Chasm, in Orgrimmar|
 T Hidden Enemies |QID|5728| |N|Thrall (31.7, 37.8)| |Z|Orgrimmar|

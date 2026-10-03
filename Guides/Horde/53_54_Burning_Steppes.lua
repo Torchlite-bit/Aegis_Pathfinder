@@ -94,7 +94,7 @@ A Betrayed (Part 4) |QID|3507| |N|Ag'tor Bloodfist in Valormok (22.29, 51.45)| |
 R Legash Encampment |TID|5534| |N|Travel to Legash Encampment (46.22, 39.47) (44.89, 36.56) (53.28, 20.15)| |Z|Azshara|
 T Kim'jael's "Missing" Equipment |QID|5534| |N|Kim'jael, in Legash Encampment (53.44, 21.81)| |Z|Azshara|
 
-N Level 54 |N|Grind to level 54 before you leave Azshara, kill the Blood Elf Reclaimer and Blood Elf Surveyor for easy grinding (58.31, 28.45)| |Z|Azshara|
+N Level 54 |N|Grind to level 54 before you leave Azshara, kill the Blood Elf Reclaimer and Blood Elf Surveyor for easy grinding (58.31, 28.45)| |Z|Azshara| |LV|54|
 
 R Valley of Honor |TID|3507| |N|Travel to Valley of Honor in Orgrimmar (75.20, 34.21)| |Z|Orgrimmar|
 T Betrayed (Part 4) |QID|3507| |N|Belgrom Rockmaul in Valley of Honor (75.20, 34.21)| |Z|Orgrimmar|

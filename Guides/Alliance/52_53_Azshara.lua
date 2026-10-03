@@ -5,7 +5,7 @@ return [[
 R Gadgetzan |TID|4504| |N|Travel to Gadgetzan (51.59, 26.77)| |Z|Tanaris| |O|
 T Super Sticky |QID|4504| |N|Tran'rek in Gadgetzan (51.59, 26.77)| |Z|Tanaris| |O|
 
-N Level 52 Required |N|Grind any mobs in Tanaris until you reach level 52|
+N Level 52 Required |N|Grind any mobs in Tanaris until you reach level 52| |LV|52|
 
 R Rut'theran Village |QID|978| |N|Travel to Rut'theran Village in Teldrassil (55.49, 92.05)| |Z|Teldrassil|
 A Moontouched Wildkin |QID|978| |N|Erelas Ambersky in Rut'theran Village (55.49, 92.05)| |Z|Teldrassil|
@@ -47,7 +47,7 @@ C Kim'jael's "Missing" Equipment |QID|5534| |N|Kill Nagas in The Shattered Stran
 R Legash Encampment |QID|5534| |N|Travel to Legash Encampment (46.22, 39.47) (44.89, 36.56) (53.28, 20.15)| |Z|Azshara|
 T Kim'jael's "Missing" Equipment |QID|5534| |N|Kim'jael in Legash Encampment (53.28, 20.15) (53.16, 21.46) (53.46, 21.82)| |Z|Azshara|
 
-N Level 53 Required |N|Grind Blood Elf Surveyor in Thalassian Base Camp, until you reach level 53, they have low HP and easy to kill (58.29, 28.39)| |Z|Azshara|
+N Level 53 Required |N|Grind Blood Elf Surveyor in Thalassian Base Camp, until you reach level 53, they have low HP and easy to kill (58.29, 28.39)| |Z|Azshara| |LV|53|
 
 R Ruins of Eldarath |QID|3449| |N|Travel to Ruins of Eldarath (42.35, 64.12)| |Z|Azshara|
 N Rubbing: Rune of Sael'hai |QID|3449| |OIDX|4| |N|Collect Rubbing: Rune of Sael'hai from Rune of Sael'hai in Ruins of Eldarath (42.35, 64.12)| |Z|Azshara|

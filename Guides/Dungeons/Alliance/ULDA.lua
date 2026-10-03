@@ -52,7 +52,15 @@ A The Platinum Discs |QID|2278| |N|The Discs of Norgannon|
 T The Platinum Discs |QID|2278| |N|The Discs of Norgannon|
 A The Platinum Discs |QID|2279| |N|The Discs of Norgannon|
 A The Hidden Chamber |QID|2240| |N|Baelog|
+K The Lost Dwarves |N|Baelog, Eric and Olaf fight together.| |TANK|Gather all three on you.| |DPS|Kill them one at a time.|
 C The Hidden Chamber |QID|2240| |N|Explore: Read Baelog's Journal, explore the hidden chamber, then report to Prospector Stormpike.|
+K Revelosh |N|Lightning Bolt and Chain Lightning.| |DPS|Interrupt both.| |BOSS|Revelosh|
+K Ironaya |N|War Stomp stuns everyone near her, Knock Away throws her target, and Arcing Smash hits in front.| |TANK|Face her away, with your back to a wall.| |HEAL|Stand out of War Stomp's reach.| |DPS|Melee from behind; ranged back from the stomp.| |BOSS|Ironaya|
+K Obsidian Sentinel |N|At every fifth of its health it breaks off an Obsidian Shard.| |TANK|Pick up each shard.| |DPS|Kill the shards as they come.| |BOSS|Obsidian Sentinel|
+K Ancient Stone Keeper |N|Sand Storms send whirling storms round the room.| |HEAL|Keep away from the storms.| |DPS|Keep away from the storms.| |BOSS|Ancient Stone Keeper|
+K Galgann Firehammer |N|Fire Nova around him, Flame Shock, Flame Lash, and Amplify Flames, which raises the fire damage you take.| |HEAL|Dispel Amplify Flames and Flame Shock (Magic: Priest, Paladin).| |DPS|Interrupt Flame Lash; ranged stand back from Fire Nova.| |BOSS|Galgann Firehammer|
+K Grimlok |N|A trogg shaman: Lightning Bolt, Chain Bolt, Shrink (a curse) and a Tremor Totem; Bloodlust when his basilisk dies.| |HEAL|Remove Shrink (Curse: Mage, Druid).| |DPS|Interrupt Lightning Bolt and Chain Bolt; kill the Tremor Totem so fears work.| |BOSS|Grimlok|
+K Archaedas |N|While he stands above a third of his health he wakes earthen dwarves; at two-thirds he wakes the Earthen Guardians, at one-third the Vault Warders. Ground Tremor stuns everyone near him.| |TANK|Pick up what he wakes.| |HEAL|Stand out of Ground Tremor.| |DPS|Kill what he wakes; the Vault Warders are tough.| |BOSS|Archaedas|
 
 N Back outside |N|Out of Uldaman, in the Badlands|
 T Power Stones |QID|2418| |N|Rigglefuzz (42.4, 52.9)| |Z|Badlands|
@@ -95,6 +103,7 @@ R Uldaman |N|In the north of the Badlands: past the dig site (39.6, 18.5) to the
 C Back to Uldaman |QID|2200| |N|Search for clues as to the current disposition of Talvash's necklace within Uldaman.  The slain paladin he mentioned was the person who has it last| |O|
 T Back to Uldaman |QID|2200| |N|Remains of a Paladin| |O|
 A Find the Gems |QID|2201| |N|Remains of a Paladin| |O| |PRE|2200|
+K Grimlok |N|A trogg shaman: Lightning Bolt, Chain Bolt, Shrink (a curse) and a Tremor Totem; Bloodlust when his basilisk dies.| |HEAL|Remove Shrink (Curse: Mage, Druid).| |DPS|Interrupt Lightning Bolt and Chain Bolt; kill the Tremor Totem so fears work.| |BOSS|Grimlok|
 C Find the Gems |QID|2201| |N|Find the ruby, sapphire, and topaz that are scattered throughout Uldaman.  Once acquired, contact Talvash del Kissel remotely by using the Phial of Scrying he previously gave you.  From the journal, you know... * The ruby has been stashed in a barricaded Shadowforge area. * The topaz has been hidden in an urn in one of the Trogg areas, near some Alliance dwarves.  * The sapphire has been claimed by Grimlok, the trogg leader| |O|
 
 R Ironforge |N|Travel to Ironforge| |Z|Ironforge|

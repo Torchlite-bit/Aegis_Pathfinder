@@ -121,7 +121,7 @@ N To Loch Modan |N|Take the boat to Menethil Harbor, then travel east to Loch Mo
 R Menethil Harbor |QID|967| |N|Take the boat from Auberdine to Menethil Harbor| |Z|Wetlands|
 f Menethil Harbor |QID|967| |N|Get flight path from Shellei Brondir in Menethil Harbor (9.49, 59.70)| |Z|Wetlands|
 
-N Level 17 |N|You should be around level 17 now. Continue to Loch Modan|
+N Level 17 |N|You should be around level 17 now. Continue to Loch Modan| |LV|17|
 
 ]]
 end)

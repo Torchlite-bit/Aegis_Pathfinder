@@ -18,6 +18,533 @@ reports.
 
 ---
 
+## [0.22.24]
+
+### Changed
+- **Sword and Board is called Protection.** A Warrior's or Paladin's shield
+  build reads "Warrior Protection leveling" in the menu, and "Protection
+  leveling, then Fury at 60" before your spec at 60 (Bear likewise: "Bear
+  leveling, then …"). A character following Sword and Board follows
+  Protection without a click. Its Modern Spellbook plans are "Pathfinder:
+  Protection leveling to 30"; a spec's, "Pathfinder: Fury to 30" or
+  "Pathfinder: Fury at 60".
+
+### Fixed
+- **The talent strips, tidied** after the first look in game:
+  - the card's line is shorter, so it isn't cut off: "Rank 1 of 3 in
+    Protection · at level 21";
+  - on Modern Spellbook's window the menu is wider and the card fills the room
+    up to the buttons, so neither is cut short, and every piece hangs from the
+    strip's top at set places;
+  - NEXT sits clear of the badge on the talent's top right, on both windows.
+- **The guide browser's star no longer covers what a row says on the right**
+  ("Dungeon", "Raid", a percentage): while the star and arrow show, the words
+  move left of them.
+
+## [0.22.23] — restart
+
+### Added
+- **The Talent Advisor on Modern Spellbook's talent window.** With
+  [Modern Spellbook](https://github.com/lioryx/ModernSpellBook) (by lioryx)
+  and its talents on (`/msb talents`), its window is marked as Blizzard's is:
+  - every tree at once: the badges, the gold ring and NEXT on the next point,
+    and NEXT POINT HERE by its tree's name, in the expanded view too;
+  - a strip over the window: the build to follow, the card for the next
+    point, and *Plan to my level*, *Whole build as a plan* and *Share*;
+  - the marks step aside while it shows a plan.
+- **Plans in Modern Spellbook.** *Plan to my level* (21 points at 30) and
+  *Whole build as a plan* (51) save the build in its plan list, as
+  "Pathfinder: Sword and Board to 30" or "Pathfinder: Sword and Board", and
+  make it the plan its window shows. Its *Apply* learns the points; Pathfinder
+  never spends one. A plan is the ranks you have, then the build's next
+  points, so points already off the build don't stop it applying.
+- **Share and plan.** The build as Modern Spellbook's share string
+  (`MSB1-WARRIOR-…`), selected to copy, for its *Import* or a friend; and
+  *Follow a shared build*: paste such a string and the advisor follows it, the
+  tree with the most points first, a row at a time, as **Shared build** in the
+  menu. Turtle WoW has prerequisites in the same row (Holy's Divine Favor
+  needs Holy Shock), so those are taken first within the row. Every build of
+  every class goes into a string and back, and fits Turtle's trees that way.
+- **A card when you level up** with a point: "Level 30: a talent point. Take
+  Shield Slam (rank 1 of 1) in Protection.", with *Open talents* and *Later*;
+  and the talents button lit gold with the points to spend on it. Both on the
+  Extras page's new *Point out a talent point* (on).
+
+### Changed
+- **Louder marks on Blizzard's talent window**, as in the mock-up: the next
+  point's ring and NEXT in gold; a card under the menu with the talent's icon,
+  "Take Deep Wounds" and "Rank 3 of 3, in Arms · 1 point to spend"; badges
+  green while points are to take and a tick once taken; the next tree's tab
+  lit gold.
+
+## [0.22.22]
+
+### Fixed
+- **Teldrassil's "Gnarlpine Hold" (step 87) ticks once you take The Glowing
+  Fruit.** The step carries the fruit's quest, so it is done once that quest
+  is in your log. But a change to the quest log only made the guide look again
+  on accept and objective steps, so after taking the fruit the step stayed
+  until something else made the guide look.
+  - A change to the quest log now rechecks any travel step.
+  - The quest automation looks past any travel step, not only an optional
+    one, to the next step's NPC or object: clicking the Strange Fruited Plant
+    takes The Glowing Fruit with Gnarlpine Hold still showing.
+
+## [0.22.21]
+
+### Fixed
+- **The guide follows your quests after you change zone.** RestedXP's 13-15
+  Westfall opens on "Travel to Elwynn Forest", its way out of Elwynn. It only
+  ticked within yards of one spot near the Westfall border, so a player who
+  flew from Stormwind into Westfall had the guide stay on it while the
+  Westfall quests went by. In RestedXP such steps never hold the guide up,
+  and here they no longer do:
+  - A travel step is done on reaching the zone or subzone its title names,
+    with "Travel to", "Travel towards", "Run to" and the like dropped.
+    "Travel to Westfall" ticks anywhere in Westfall, not only at its point.
+  - An optional travel step (RestedXP's `#sticky` and `#completewith`) is
+    passed once you are in the next step's zone, or once the next step is
+    done. The 1,885 travel and hearth steps marked so in the two RestedXP
+    packs no longer wait at their spot.
+  - Talking to the next step's NPC on such a step picks and accepts the quest
+    as usual.
+- **Quests under a collapsed header.** The quest log's functions only see the
+  rows in sight, so a guide quest under a collapsed header looked never
+  accepted: its hand-in was skipped and its progress stood still. The game
+  keeps which headers are collapsed by their place in the list, so one
+  collapsed in Elwynn can land on Westfall's. When one of the guide's quests is
+  hidden like this, the headers open (as RestedXP does), and chat says why
+  once. A hand-in for a quest on your quest list is never skipped as missing.
+
+## [0.22.20] — restart
+
+### Added
+- **Attunement guides.** The quests that open each raid and dungeon, one
+  guide each, per side, in a new **Attunements and keys** folder under the
+  guide browser's Dungeons, with an orange AT badge:
+  - **Raids:** Molten Core, Onyxia's Lair (Drakefire Amulet for the
+    Alliance, Blood of the Black Dragon Champion for the Horde), Blackwing
+    Lair, Naxxramas, and Turtle WoW's Emerald Sanctum (Into the Dream I–VI),
+    Lower Karazhan Halls (The Key to Karazhan I–X) and Tower of Karazhan
+    (the Scepter of Medivh).
+  - **Dungeons:** Upper Blackrock Spire's Seal of Ascension, Scholomance's
+    Skeleton Key, Blackrock Depths' Shadowforge Key, and Turtle WoW's
+    Karazhan Crypts (The Mystery of Karazhan for the Alliance, The Depths of
+    Karazhan for the Horde).
+  - Each says Raid or Dungeon in the folder, and **Attuned** once you've
+    handed in its last quest. Home suggests one you've started, and the
+    first you can start.
+  - Built from pfQuest, pfQuest-turtle and CMaNGOS the way the class quest
+    guides are (`Tools/build/build_attunement_guides.py`): each side gets
+    its own parts where the chains differ, such as Karazhan's parts III–V.
+
+## [0.22.19]
+
+### Added
+- **Sword and Board and Bear leveling builds.** A Warrior or Paladin can
+  level with a shield, and a Druid as a bear. The Talent Advisor's *Build to
+  follow* (on the Extras page and the strip over the talent window) lists
+  each on its own ("Warrior Sword and Board leveling") or then your spec at 60
+  ("Sword and Board, then Protection at 60"). All three are checked point by
+  point against Turtle WoW's trees.
+  - **Warrior:** Shield Specialization, Toughness and Improved Revenge first,
+    Last Stand at 25, Shield Slam at 30, Concussion Blow at 40, then Arms'
+    Tactical Mastery and Deep Wounds (16/0/35).
+  - **Paladin:** Redoubt and Precision first, Shield Specialization, Holy
+    Shield at 30 with Reckoning, Righteous Strikes, Bulwark of the Righteous
+    at 41, then Holy's Divine Strength and Divine Intellect (10/41/0).
+  - **Druid:** Ferocity, Thick Hide and Feral Instinct first, Feral Charge at
+    28, Heart of the Wild by 39, Leader of the Pack at 40, then Balance's
+    Omen of Clarity at 60 (11/40/0).
+
+## [0.22.18]
+
+### Fixed
+- **"Leveling" has one L wherever you see it.** The Talent Advisor's menu
+  and strip ("Leveling, then Protection at 60"), its tooltip line ("Warrior
+  leveling puts 3 points here"), the Item Score page, the guide browser's
+  "Hide finished and outleveled guides" and the out-leveled chat line said
+  "levelling". Saved settings are unchanged.
+- **First Aid's route.** It asked for 29 Linen Bandages for 1–45 and 5 Heavy
+  Linen Bandages for 45–100, fewer than the skill points, and sent you to
+  train Journeyman at 45, five points before you can. It now follows the
+  usual route: Linen to 40, Heavy Linen to 80 with Journeyman at 50, Wool to
+  115 and on as before. Every count is worked out from the bandage's skill
+  colours, the same way as the other crafting guides.
+- **"Grind to level N" waits for the level.** 43 RestedXP grind steps
+  ("Grind to level 10", "Grind to 6", "Make sure you are level 38") were
+  passed over at once. They now hold the guide until you get there and tick
+  themselves, as level notes do. One marked optional still doesn't hold you
+  up. Grinding to an amount of XP is left as it was.
+- **Onyxia Attunement isn't under Levels 1–20 any more.** RestedXP's Onyxia
+  Attunement and Scholomance Key have no level range, so the guide browser
+  filed Onyxia Attunement at the bottom of RestedXP's Levels 1–20. They're
+  now under Dungeons, in a folder of their own, **Attunements and keys**.
+
+## [0.22.17]
+
+### Changed
+- **Hints open beside the guide, not over it.** Hovering the step arrows, a
+  tab, a step or any other part of the guide used to put the hint over the
+  steps. Now it opens beside the guide: on its right when the guide is on the
+  left of the screen, on its left when it is on the right, level with what
+  you hover. With no room beside it, the hint goes under the guide in the top
+  half of the screen and over it in the bottom half.
+
+## [0.22.16]
+
+### Changed
+- **The crafting guides follow CraftRoute's routes.** Alchemy,
+  Blacksmithing, Cooking, Enchanting, Engineering, Jewelcrafting,
+  Leatherworking, Survival and Tailoring now take the cheapest way to 300 as
+  [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute)'s own
+  planner works it out, from the auction prices in its sample scan (30 July
+  2026). The old routes asked for fewer crafts than skill points in 63
+  places (Jewelcrafting's 10 Malachite Rings for 50–70 among them). Now each
+  count is the average number of attempts it takes, rounded up, and when a
+  later recipe uses what a step makes, the step says "Keep them for" that
+  recipe. Where nobody was selling something in that scan (the fish in
+  Cooking, some ore, Survival's wood), it was costed at three times what a
+  merchant pays, and the guide's first step names it. Trainers, ranks,
+  tomes and the Artisan quests are as before; First Aid and Mining keep
+  their routes.
+
+### Fixed
+- Cooking's Artisan hand-in no longer says "Tanaris, Gadgetzan." twice.
+
+## [0.22.15]
+
+### Changed
+- **The action buttons snap together.** Let go of Active Items, Active
+  Targets or Macros near another of them, or near the guide, and it snaps
+  flush against it, side by side or one under the other, lined up.
+- **The action buttons close with the guide.** Close the guide (its ✕, the
+  minimap button, `/apg`) and they go too; open it and they come back. When
+  the guide hides itself in combat or a dungeon, the Appearance page's
+  switches still decide.
+
+## [0.22.14]
+
+### Fixed
+- **Dungeon guides send you to a town only if its quests are for you.**
+  Shadowfang Keep sent every Alliance player to Darnassus first and then to
+  Stormwind, for one quest only Priests, Mages, Warlocks and Druids can
+  take, and only once they have done the quest before it. That trip now
+  carries the quest's classes and waits on that quest. Thirteen other
+  dungeon guides had trips like it.
+- **Shadowfang Keep starts in Stormwind**, where the Alliance's 22-30s are.
+
+## [0.22.13]
+
+### Fixed
+- **"AceConsole-2.0.lua:151: invalid option in `format'".** A chat line with a
+  percent sign in it -- "Gloves: a +12% upgrade" -- went through
+  string.format and stopped with that error. Lines are printed as written
+  now.
+- **Level notes tick themselves.** Teldrassil (1-12)'s "Level 10 Required"
+  waited for a click after you reached 10. It, and the 145 other level notes
+  in the zone and Optimized guides ("Level 31: you should be around level 31
+  now"), tick when you reach the level, and show the auto-tick mark. Below
+  the level you can still tick them yourself.
+- **Reaching a level no longer ticks a quest step that needs it.** Optimized
+  Teldrassil's "Turn in Taming the Beast (Part 1)" needs level 10; on it as
+  you reached 10, it was ticked without the quest being handed in. A level
+  up now ticks only grind steps and level notes.
+
+## [0.22.12] — restart
+
+### Added
+- **The Talent Advisor**, on Blizzard's own talent window (and pfUI's skin of
+  it), as the mock-up showed:
+  - each talent shows a badge with the points the build puts there: green
+    while some are still to take, quiet once you have them all, amber "+N"
+    for points the build doesn't put there;
+  - the talent your next point goes to glows, with NEXT over it, and its
+    tree's tab has a dot; the window opens on that tree;
+  - a strip above the window: *Following* and the build, as a menu to pick
+    another; where the next point goes ("Next: Deep Wounds, rank 3 of 3");
+    and how many points are off the build. Off the build, it carries on from
+    the closest point; it never says to respec;
+  - a talent's tooltip says how many points the build puts there, and "Your
+    next point goes here." on the next one.
+- **What it follows:** your class's levelling build until 60, then your
+  spec's: the one picked on the Item Score page, or the one your talents lean
+  to. At 60, with all 51 points on the levelling build, it says once in chat
+  that your spec's build is ready for when you respec.
+- **On a level up** it names the talent to take: "Level 22: a talent point to
+  spend. Take Deep Wounds (rank 3 of 3) in Arms."
+- **Extras -> Talent Advisor:** its switch (on), *Build to follow*, *Name the
+  talent to take in chat when I level up* (on), and *Open the talent window*.
+- Each build is checked against the talent tree your game has before it is
+  followed. One that doesn't fit says why, in the strip and once in chat,
+  and isn't followed. It never spends a point.
+
+### Changed
+- The README's Extras and Dungeons page pictures are drawn again from the
+  current code: the Talent Advisor's settings, and the boss notes' role.
+
+## [0.22.11]
+
+### Added
+- **Boss steps in the dungeon guides.** Inside, each guide has a step for
+  every boss, in order, saying what the fight does -- "At two-thirds and at
+  one-third health he stuns everyone with Smite Stomp and goes to his chest
+  to change weapons" -- with a line each for the **Tank**, **Healer** and
+  **Damage**: where to face him, what to dispel and which classes can, what
+  to interrupt or kill first. Hover the step, or see them under it in focus
+  mode. A quest that needs a boss dead comes straight after his step.
+- **My role in dungeons** (Options -> Dungeons -> Boss notes): All roles to
+  start; pick Tank, Healer or Damage to see only your line.
+- **A boss's step ticks itself when he dies**, from the combat log. The Seven
+  in Blackrock Depths tick on Doom'rel, the last. A rare boss's step says he
+  is not always there, and is passed over.
+- What the bosses do comes from InstanceJournal and CMaNGOS. Some Turtle WoW
+  bosses have no data yet -- Dragonmaw Retreat, Crescent Grove, Stormwrought
+  Ruins, Gilneas City, Hateforge Quarry, most of Windhorn Canyon, and those
+  Turtle added to older dungeons: their steps say "Pathfinder has no notes on
+  this fight yet." and still tick themselves.
+
+## [0.22.10]
+
+### Fixed
+- **A class quest guide finishing no longer replaces the guide in your first
+  tab.** Handing back, it took your route pack's guide for your level
+  whenever that was a different one -- so a paladin on Optimized Redridge
+  (18-20) was put on RestedXP Hardcore's Redridge guide when Tome of Valor
+  finished. The first tab now keeps its guide unless you have out-levelled
+  it, and then goes on to that guide's next one at your level.
+- **Picking a guide in the guide browser opens it in a new tab and changes
+  nothing else.** Right-click and the pane's **Load** button loaded it over
+  the guide you were on; they are gone, and the pane's button is **Open in a
+  new tab**. Picking a RestedXP guide no longer switches your route pack
+  either: the switch loaded the pack's own guide in place of yours. Choose
+  the pack on Options -> Route.
+
+## [0.22.9]
+
+### Added
+- **`/apg talents`**, for the Talent Advisor to come: saves your class's
+  talent trees as the game has them -- every talent's place, ranks,
+  prerequisites and tooltip -- for your account. Turtle WoW has changed some
+  trees, and the advisor's builds are checked against these. Once on a
+  character of each class (a level-1 one will do); it says which classes
+  are in so far.
+
+## [0.22.8]
+
+### Changed
+- **Level-up announcements** are worded "Pathfinder: ...": the emote reads
+  "<you> Pathfinder: I just leveled up from 22 to 23! (2 hours 1 minute)",
+  and party and guild get "Pathfinder: I leveled up from 22 to 23! (2 hours
+  1 minute)". The emote is ticked to start with; party and guild are still
+  off until ticked.
+
+### Added
+- **Talent Advisor (coming soon)** on the Extras page: its switch, dimmed
+  and held off, until the advisor arrives.
+- The README's options pictures are all of the current pages now, drawn
+  from the addon's code, the Extras page among them.
+
+## [0.22.7] — restart
+
+### Added
+- **An Extras page**, after Gear and Item Score, as Zygor's has (a new file,
+  Extras.lua):
+  - **Show Pathfinder chat messages** (on). Off, the routine lines stay out
+    of your chat: the load message, the login's progress summary, flights
+    taken, what was bought, sold, repaired or deleted, upgrades found and put
+    on, a branch or starting zone handed over. Errors, warnings and replies
+    to what you click or type still show.
+  - **Show detailed reputation gains** (off): after the client's line, where
+    the faction stands and how far to the next rank -- "Stormwind +25:
+    Honored 4,350 / 12,000, 7,650 to Revered".
+  - **Announce level-ups to:** Emote, Party chat and Guild chat, each off
+    until ticked. The emote reads "<you> Aegis: Pathfinder: I just leveled up
+    from 22 to 23! (2 hours 1 minute)"; party and guild get "I leveled up
+    from 22 to 23! (2 hours 1 minute)". The time comes from the guide
+    browser's level tracker, and is left out for a level it did not count
+    from the start. Nothing goes to a party or guild you are not in.
+
+## [0.22.6] — restart
+
+### Added
+- **A Maps page**, after Navigation, as Zygor's has: what the addon draws on
+  the world map and the minimap, on the zone's own map.
+  - **Reveal the whole map** (on): the places you have not been, a little
+    dimmer than the ones you have. It stands down while pfUI's own map reveal
+    is on, and for Cartographer or MetaMap's fog of war module.
+  - **Show the step on the map** (on): the step's quest givers, hand-ins and
+    kill areas, and the creatures that drop what it collects, from pfQuest's
+    database; and the place the step's note gives. Each is named when you
+    mouse over it. Without pfQuest, only the note's place.
+  - **A trail from me to the waypoint** (on), dots or dashes, marching
+    toward it on the world map when you and it are on the zone it shows. On
+    the minimap too when Astrolabe is loaded (TomTom-TWOW brings it), as far
+    as the minimap reaches.
+  - **Rare creatures near my level** (off), with **Icon size** and
+    **See-through icons**: where the rares and rare elites within four levels
+    of yours can spawn -- 293 rares and 147 rare elites, from pfQuest-turtle's
+    database (a new file, Rares.lua). Whether one is up, 1.12 can't say.
+
+## [0.22.5]
+
+### Added
+- **The Appearance page: more for the guide window.**
+  - **Guide window opacity**, under Transparency: how see-through it makes
+    the guide, 20% to 100% (half, as before, to start with). The text stays
+    solid.
+  - **Guide browser opacity**, 40% to 100%.
+  - **Step text size**, 80% to 140%: the steps' titles and notes, and the
+    rows that hold them.
+  - **Show the progress bar**, on as before. Off, the steps move up into its
+    place.
+  - **Grow upward from where I put it**, for a guide at the bottom of the
+    screen: its bottom edge stays where you left it. The header stays on top.
+  - **Hide the guide in dungeons and raids**, with **Show it again when I
+    leave** under it; **Hide the guide in combat**, with **Hide the action
+    buttons in combat too** under it. Hidden so, the guide still counts as
+    open.
+- **The Step Display page:**
+  - **Steps shown in focus mode**, 1 to 5: the step you are on and the ones
+    after it.
+  - **Skip setting my hearthstone** and **Skip discovering new flight paths**.
+  - **Party sync**, on as before. Off, there is no party icon and invitations
+    are declined without a popup.
+
+## [0.22.4] — restart
+
+### Added
+- **The Action Buttons page does more**, as Zygor's does:
+  - **Which way each window grows**: Active Items and Active Targets each
+    right (as before), left, up or down. A window you have dragged grows
+    from the matching corner, where you left it; until then it hangs under
+    the guide.
+  - **Button size**, 60% to 150%, for the three small windows, on top of the
+    window scale.
+  - **Buttons to show**: quest items, talk to NPC, kill enemy, and delete
+    cheapest item. One left out goes from its window; the macros, the key
+    bindings and the quest icons still have them all.
+  - **Delete cheapest item.** With your bags full, a button after the items
+    offers the cheapest thing in them: a grey first, then whatever a vendor
+    pays least for, by the whole stack. It never offers the guide's items,
+    your hearthstone or quest items, and asks before deleting anything that
+    is not grey. A quiver's or soul bag's empty slots don't count as room.
+    1.12 doesn't tell addons what vendors pay, so the prices come from the
+    CMaNGOS database (a new file, SellPrices.lua); Turtle WoW's own items
+    aren't in it and are offered only when grey.
+  - **Mark whoever the target buttons target**, on as before. Off, the
+    buttons only target; quest icons still mark by themselves.
+
+## [0.22.3] — restart
+
+### Added
+- **The Automation page does more**, as Zygor's does:
+  - **All quests, not only the guide's**, under accepting and turning in
+    quests (off to start with). It takes every quest an NPC offers and
+    hands in every finished one, but never a grey quest, and it leaves two
+    places in your quest log for the guide's.
+  - **Pick the guide's quest from an NPC's list**, which it always did, is
+    now a setting (on). Off, the list is yours to click; the quest you open
+    is still accepted and handed in.
+  - **Take the step's flight when I open the flight master's map** (off).
+    "Fly to Orgrimmar" flies to the town; "Fly to Westfall" to the zone's
+    flight path, but only when you know just one there. With two, it says
+    to pick one rather than guess.
+  - **Buy what the step says to buy, at its vendor** (on). A buy step that
+    names its item buys as many as you still need, no more than the vendor
+    has or you can pay for.
+  - **A "Sell greys" button** on the vendor window (on), and **Sell greys
+    automatically** as the window opens (off). Either says how many went and
+    for how much.
+  - **Repair automatically**: not at all (to start with), or with your own
+    money. 1.12 has no guild bank, so there is no guild repair.
+- Hold Shift as you open a quest giver, a flight master or a vendor and none
+  of it happens, as Shift already did for quests.
+
+## [0.22.2]
+
+### Changed
+- **The options window's pages follow Zygor's**, in the addon's look. After
+  Route, Dungeons and Filters come Appearance, Step Display, Automation,
+  Action Buttons and Navigation, then Gear and Item Score, Maintenance and
+  About. The settings that were on **Behaviour** have moved, each keeping
+  what you had it set to, and the Behaviour page is gone:
+  - **Appearance**: the minimap button, and the guide window's *Lock window*
+    and *Transparency*, which were only in the guide's menu. They are in
+    both places now, as one setting.
+  - **Step Display**: skip suggested follow-ups, offer custom zones between
+    guides, offer class quests at their level; and *Ask before inviting my
+    party*, the share popup's "don't ask again" as a setting you can turn
+    back on.
+  - **Automation**: accept and turn in the guide's quests, track quests.
+  - **Action Buttons**: the Active Items, Active Targets and Macros windows,
+    and quest icons.
+- **The Gear Finder's Upgrade sources are five boxes**: Dungeons, Raids,
+  Quest rewards, Reputation vendors and Crafted gear. The last three were
+  switches of their own and keep what those were set to. Tick only Dungeons
+  and it looks nowhere else.
+
+### Fixed
+- The Gear page's note still said the Gear Finder only looked in dungeons
+  ticked on the Dungeons page, which stopped being true in 0.22.1.
+
+## [0.22.1]
+
+### Fixed
+- **Many Gear Finder slots said *No upgrade found* when there were
+  upgrades.** Two causes:
+  - It skipped every dungeon unticked on the **Dungeons** page. Those ticks
+    say which dungeons' quests the route takes in, and the first-time setup
+    unticks most of them for the route, so a character could be left with
+    one dungeon to look in. The Gear Finder now looks in every dungeon at
+    your level, ticked or not. Its own **Upgrade sources** decide where it
+    looks, as Zygor's do.
+  - Quest rewards that need no level to wear, which is most of them, were
+    taken as level 0. So they all counted as long outgrown and none was
+    weighed. They now count at their quest's level.
+- **The character panel's ✕ showed over the Gear Finder,** beside the page's
+  own. It is hidden while the Gear Finder is open, and back on the other
+  pages.
+- **The Gear Finder could not be dragged.** Dragging the page now moves the
+  character panel, as pfUI lets you drag its other pages.
+- **The cog in the Gear Finder's footer did nothing** unless the options
+  were already open. It now opens them at the Gear page.
+- **Switching to a spec with no dungeon to suggest took the spec dropdown
+  with it,** leaving no way back from there. The dropdown stays, with the
+  logo where the loading screen goes and the reason under it.
+
+## [0.22.0] — restart
+
+### Added
+- **The Gear Finder is a tab on the character panel**, laid out like
+  Zygor's, after Character, Reputation, Skills and Honor. It replaces the
+  Gear Finder window. `/apg finder` and **Open the Gear Finder** in the
+  options open the panel on it.
+  - **A cell per slot**, as the character sheet has them: the slot's biggest
+    upgrade, how much better it is, where it drops and who drops it, and *at
+    level N* if you can't wear it yet. A slot with none says *No upgrade
+    found*; one you wear nothing in says *Empty slot*. Rings and trinkets have
+    two cells each, never showing the same item.
+  - **Click a cell** for every upgrade for that slot, biggest first, with
+    drop chances. Pick the one you want and the cell shows it as *Your pick*.
+    Picks are kept for the character, and forgotten once you wear the item
+    or it stops being an upgrade.
+  - **The suggested dungeon**: its loading screen, the dungeon the cells'
+    items drop in most (by how many slots it upgrades, then by how much),
+    arrows through the others, the spec it scores for, and **Open the guide**
+    for its dungeon guide. Picking a different item can change it, at once.
+  - Works with pfUI: the tab is skinned like pfUI's tabs and sits in their row.
+- **Upgrade sources** on the options' Gear page: **Dungeons** and **Raids**,
+  two checkboxes side by side. **Raids** replaces the window's *Include raids*
+  switch, and still says the first look takes a minute or two. With both
+  unticked, the Gear Finder says it has nowhere to look.
+
+### Changed
+- The Gear Finder now keeps every upgrade for a slot, not just the best three,
+  so a slot's list has them all.
+- A one-hander a dual wielder would put in the off hand is an off-hand
+  upgrade, under the slot it would replace.
+
 ## [0.21.3]
 
 ### Fixed
@@ -1125,6 +1652,31 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.24]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.23]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.22]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.21]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.20]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.19]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.18]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.17]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.16]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.15]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.14]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.13]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.12]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.11]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.10]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.9]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.8]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.7]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.6]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.5]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.4]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.22.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.21.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.21.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.21.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

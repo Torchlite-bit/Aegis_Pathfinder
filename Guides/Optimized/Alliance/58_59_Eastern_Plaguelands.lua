@@ -161,7 +161,7 @@ N Shattered Sword of Marduk |QID|5181| |L|12957| |N|Collect Shattered Sword of M
 R Light's Hope Chapel |QID|5181| |N|Travel to Light's Hope Chapel (81.52, 59.75)| |Z|Eastern Plaguelands|
 T Villains of Darrowshire |QID|5181| |N|Carlin Redpath in Light's Hope Chapel (81.52, 59.75)| |Z|Eastern Plaguelands|
 
-N Level 59 |N|You should be around level 59 now. Continue to Winterspring|
+N Level 59 |N|You should be around level 59 now. Continue to Winterspring| |LV|59|
 
 ]]
 end)

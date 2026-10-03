@@ -73,7 +73,7 @@ A Portents of Uldum |QID|2963| |N|High Explorer Magellas (69.9, 18.6)| |D|ULDA| 
 T Portents of Uldum |QID|2963| |N|Historian Karnik (77.5, 11.8)| |D|ULDA| |Z|Ironforge|
 A Seeing What Happens |QID|2946| |N|Historian Karnik (77.5, 11.8). You take the discs to Uldum in Tanaris later| |D|ULDA| |Z|Ironforge|
 
-N Level 46 |N|Level until you're at least 75% into level 45, preferably level 46|
+N Level 46 |N|Level until you're at least 75% into level 45, preferably level 46| |LV|46|
 
 F Stormwind City |QID|1448| |N|Once done, fly to Stormwind City| |D|ST| |Z|Stormwind City|
 T In Search of The Temple |QID|1448| |N|Brohann Caskbelly in Dwarven District (64.27, 20.74)| |D|ST| |Z|Stormwind City|
@@ -85,7 +85,7 @@ F Southshore |QID|1449| |N|Fly to Southshore| |D|ST| |Z|Hillsbrad Foothills|
 
 R The Hinterlands |QID|1449| |N|Run east up the path at (84, 33) behind Durnholde Keep to The Hinterlands| |D|ST| |Z|Hillsbrad Foothills|
 
-N Level 46 |N|You should be level 46 now. Continue to The Hinterlands|
+N Level 46 |N|You should be level 46 now. Continue to The Hinterlands| |LV|46|
 
 ]]
 end)

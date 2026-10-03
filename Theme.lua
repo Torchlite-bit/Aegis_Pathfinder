@@ -50,6 +50,14 @@ Theme.color = {
 	switchOn   = hex("2e850e"),   -- an on switch's track, in the theme's colours
 }
 
+--- A colour as a chat colour code, "|cffrrggbb", for text that mixes colours
+--- in one font string.
+function Theme:Code(name)
+	local c = Theme.color[name] or Theme.color.text
+	return string.format("|cff%02x%02x%02x", math.floor(c[1] * 255 + 0.5), math.floor(c[2] * 255 + 0.5),
+		math.floor(c[3] * 255 + 0.5))
+end
+
 --[[ Themes.
 
 	The concept is green; the servers that continued Turtle WoW each have a
@@ -750,6 +758,7 @@ Theme.BADGES = {
 	pf  = { bg = { 0.36, 0.62, 0.84 }, text = DARK },   -- blue
 	dg  = { bg = { 0.60, 0.48, 0.86 }, text = DARK },   -- violet
 	cl  = { bg = { 0.30, 0.70, 0.64 }, text = DARK },   -- teal
+	at  = { bg = { 0.91, 0.51, 0.23 }, text = DARK },   -- orange
 	hc  = { bg = { 0.85, 0.30, 0.30 }, text = LIGHT },  -- red
 	tpl = { bg = "subtle", text = LIGHT },
 }
@@ -1007,17 +1016,20 @@ function Theme:Header(frame, height)
 	return h
 end
 
---[[ Fade a window in as it opens: from clear to solid over `seconds`. ]]
+--[[ Fade a window in as it opens: from clear to solid over `seconds` -- or
+	to `frame.fadeTo`, a window with an opacity of its own (the guide
+	browser's, on the Appearance page). ]]
 function Theme:FadeIn(frame, seconds)
 	local elapsed = 0
 	frame:SetAlpha(0)
 	frame:SetScript("OnUpdate", function()
 		elapsed = elapsed + (arg1 or 0)
+		local to = frame.fadeTo or 1
 		if elapsed >= seconds then
 			frame:SetScript("OnUpdate", nil)
-			frame:SetAlpha(1)
+			frame:SetAlpha(to)
 		else
-			frame:SetAlpha(elapsed / seconds)
+			frame:SetAlpha(to * elapsed / seconds)
 		end
 	end)
 end
@@ -1224,6 +1236,69 @@ function Theme:Switch(parent, label, onChange)
 	end)
 
 	switches[row] = true
+	row:SetOn(false)
+	return row
+end
+
+--[[ A checkbox and its label, the whole row clickable: for a few choices
+	side by side that are each on or off, where a column of switches would
+	read as one list -- the Gear Finder's upgrade sources. Off: an outlined
+	box. On: a box in the theme's switchOn colour with a tick. Same methods
+	as a switch: SetOn, IsOn, SetLocked, Fit. ]]
+function Theme:Checkbox(parent, label, onChange)
+	local row = CreateFrame("Button", nil, parent)
+	row:SetHeight(22)
+
+	local edge = row:CreateTexture(nil, "BORDER")
+	edge:SetTexture(self.texture.solid)
+	edge:SetWidth(16); edge:SetHeight(16)
+	edge:SetPoint("LEFT", row, "LEFT", 0, 0)
+	local fill = row:CreateTexture(nil, "ARTWORK")
+	fill:SetTexture(self.texture.solid)
+	fill:SetWidth(14); fill:SetHeight(14)
+	fill:SetPoint("CENTER", edge, "CENTER", 0, 0)
+	local tick = row:CreateTexture(nil, "OVERLAY")
+	tick:SetTexture(self.glyph.tick)
+	tick:SetWidth(12); tick:SetHeight(12)
+	tick:SetPoint("CENTER", edge, "CENTER", 0, 0)
+	self:Tint(tick, "text")
+
+	local fs = row:CreateFontString(nil, "OVERLAY")
+	self:SetFont(fs, "body", 13)
+	fs:SetPoint("LEFT", edge, "RIGHT", 8, 0)
+	fs:SetText(label or "")
+	self:TextColor(fs, "text")
+
+	row.edge, row.fill, row.tick, row.label = edge, fill, tick, fs
+
+	function row:SetOn(on)
+		self.__on = on and true or false
+		if self.__on then
+			Theme:Tint(self.edge, "accent")
+			Theme:Tint(self.fill, "switchOn")
+			self.tick:Show()
+		else
+			Theme:Tint(self.edge, "subtle")
+			Theme:Tint(self.fill, "panel2")
+			self.tick:Hide()
+		end
+	end
+	function row:IsOn() return self.__on end
+	function row:SetLocked(locked)
+		if locked then self:Disable() else self:Enable() end
+		self:SetAlpha(locked and 0.45 or 1)
+	end
+	--- As wide as its label needs; returns the row's height.
+	function row:Fit()
+		self:SetWidth(24 + (self.label:GetStringWidth() or 0) + 4)
+		return 22
+	end
+
+	row:SetScript("OnClick", function()
+		this:SetOn(not this.__on)
+		if onChange then onChange(this.__on) end
+	end)
+
 	row:SetOn(false)
 	return row
 end
@@ -1500,9 +1575,60 @@ local TIP_ANCHOR = {
 	LEFT   = { "BOTTOMRIGHT", "TOPLEFT", 0, 0 },
 }
 
+-- Windows whose hints open outside them rather than over them.
+local tipOutside = {}
+local TIP_CLEAR = 4        -- between such a window and a hint beside it
+
+--- Hints for anything in `window` open beside the window, not over it.
+function Theme:TipOutside(window)
+	tipOutside[window] = true
+end
+
+--[[ Where a hint goes when its owner is in a TipOutside window: beside
+	the window on the side facing the middle of the screen, level with the
+	owner -- a window on the left half has them on its right, one on the
+	right half on its left. That side has the more room; with too little
+	even there, below the window when it is in the top half of the screen
+	and above it in the bottom half, lined up with the owner. Worked in screen
+	pixels, so the window's own scale does not matter. False when it fits
+	nowhere outside, and the hint opens where it was asked. ]]
+local function PlaceOutside(owner)
+	local w = owner
+	while w and not tipOutside[w] do w = w:GetParent() end
+	if not w or not w:GetLeft() or not owner:GetLeft() then return false end
+	local ws, os_, ts = w:GetEffectiveScale(), owner:GetEffectiveScale(), tip:GetEffectiveScale()
+	local L, R, T, B = w:GetLeft() * ws, w:GetRight() * ws, w:GetTop() * ws, w:GetBottom() * ws
+	local us = UIParent:GetEffectiveScale()
+	local SW, SH = UIParent:GetWidth() * us, UIParent:GetHeight() * us
+	local tw, th, gap = tip:GetWidth() * ts, tip:GetHeight() * ts, TIP_CLEAR * ts
+	local x, y
+	if (L + R) / 2 < SW / 2 then
+		x = SW - R >= tw + gap and R + gap
+	else
+		x = L >= tw + gap and L - gap - tw
+	end
+	if x then
+		y = math.min(math.max(owner:GetTop() * os_, th), SH)
+	else
+		local below, above = B - gap - th >= 0, SH - T >= th + gap
+		if below and ((T + B) / 2 > SH / 2 or not above) then
+			y = B - gap
+		elseif above then
+			y = T + gap + th
+		else
+			return false
+		end
+		x = math.min(math.max(owner:GetLeft() * os_, 0), SW - tw)
+	end
+	tip:ClearAllPoints()
+	tip:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", x / ts, y / ts)
+	return true
+end
+
 --- Show the tooltip for `owner`, opening on its `side` ("TOP", "BOTTOM",
---- "LEFT" or "RIGHT"). `text` is the hint; `detail`, a list of further
---- lines; `color`, a theme colour for the hint (default "text").
+--- "LEFT" or "RIGHT") -- or outside its window, for a TipOutside one.
+--- `text` is the hint; `detail`, a list of further lines; `color`, a theme
+--- colour for the hint (default "text").
 function Theme:ShowTip(owner, side, text, detail, color)
 	if not tip then
 		tip = CreateFrame("Frame", "AegisPathfinderTip", UIParent)
@@ -1553,9 +1679,11 @@ function Theme:ShowTip(owner, side, text, detail, color)
 
 	tip:SetWidth(width + TIP_PAD * 2)
 	tip:SetHeight(height + TIP_PAD * 2)
-	local a = TIP_ANCHOR[side] or TIP_ANCHOR.BOTTOM
-	tip:ClearAllPoints()
-	tip:SetPoint(a[1], owner, a[2], a[3], a[4])
+	if not PlaceOutside(owner) then
+		local a = TIP_ANCHOR[side] or TIP_ANCHOR.BOTTOM
+		tip:ClearAllPoints()
+		tip:SetPoint(a[1], owner, a[2], a[3], a[4])
+	end
 	tip.owner = owner
 	tip:Show()
 end
@@ -1643,8 +1771,15 @@ function Theme:Scaled(frame)
 		if f == frame then return frame end
 	end
 	table.insert(self.scaled, frame)
-	if frame.SetScale then frame:SetScale(self.windowScale) end
+	if frame.SetScale then frame:SetScale(self.windowScale * (frame.scaleFactor or 1)) end
 	return frame
+end
+
+--- A window's own size on top of the window scale: the Action Buttons page's
+--- button size, on its three small windows.
+function Theme:SetScaleFactor(frame, factor)
+	frame.scaleFactor = factor or 1
+	if frame.SetScale then frame:SetScale(self.windowScale * frame.scaleFactor) end
 end
 
 --- Set every window's scale; out of range is brought into it, and snapped
@@ -1655,7 +1790,7 @@ function Theme:SetWindowScale(scale)
 	scale = math.max(self.SCALE_MIN, math.min(self.SCALE_MAX, scale))
 	self.windowScale = scale
 	for _, f in ipairs(self.scaled) do
-		if f.SetScale then f:SetScale(scale) end
+		if f.SetScale then f:SetScale(scale * (f.scaleFactor or 1)) end
 	end
 	return scale
 end

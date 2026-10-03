@@ -26,6 +26,15 @@ C Legends of Maraudon |QID|7044| |N|Recover the two parts of the Scepter of Cele
 T Legends of Maraudon |QID|7044| |N|Celebras the Redeemed|
 A The Scepter of Celebras |QID|7046| |N|Celebras the Redeemed|
 T The Scepter of Celebras |QID|7046| |N|Celebras the Redeemed|
+K Noxxion |N|Toxic Volley poisons everyone, Uppercut knocks his target back, and he splits into Noxxion's Spawns.| |TANK|Keep your back to a wall.| |HEAL|Cure the poison (Poison: Druid, Shaman, Paladin).| |DPS|Kill the spawns when he splits.| |BOSS|Noxxion|
+K Razorlash |N|Cleave hits in front, Thrash gives him extra attacks, and Puncture makes his target bleed.| |TANK|Face him away from the group.| |BOSS|Razorlash|
+K Meshlok the Harvester |N|Rare: not always here. War Stomp stuns everyone near him.| |HEAL|Stand out of the stomp.| |BOSS|Meshlok the Harvester| |O|
+K Lord Vyletongue |N|He fights from range with Shoot and Multi-Shot, Blinks away, and Smoke Bomb stuns everyone near him; his breath carries a disease.| |TANK|When he Blinks off, go after him.| |HEAL|Cure the disease (Disease: Priest, Shaman, Paladin).| |BOSS|Lord Vyletongue|
+K Celebras the Cursed |N|Entangling Roots, Wrath, and Twisted Tranquility, which hits and slows everyone; he summons corrupted treants.| |HEAL|Dispel Entangling Roots (Magic: Priest, Paladin).| |DPS|Interrupt Twisted Tranquility and Wrath; kill the treants.| |BOSS|Celebras the Cursed|
+K Tinkerer Gizlock |N|He throws bombs, Goblin Dragon Gun burns everyone in front of him, and Flash Bomb fears everyone near.| |TANK|Face him away from the group.| |HEAL|Stand back from Flash Bomb.| |DPS|Interrupt Bomb.| |BOSS|Tinkerer Gizlock|
+K Landslide |N|Trample and Knock Away; Landslide stuns everyone near him and brings out Theradrim Shardlings.| |TANK|Back to a wall; pick up the shardlings.| |DPS|Kill the shardlings.| |BOSS|Landslide|
+K Rotgrip |N|Fatal Bite drains health, and Puncture makes his target bleed.| |HEAL|Expect heavy damage on the tank.| |BOSS|Rotgrip|
+K Princess Theradras |N|Boulder knocks a player down and interrupts them, Dust Field hits and knocks back everyone near her, and Repulsive Gaze fears those near her.| |TANK|Berserker Rage or Fear Ward for her gaze.| |HEAL|Stay at range, out of Dust Field.| |DPS|Ranged stand back.| |BOSS|Princess Theradras|
 C Corruption of Earth and Seed |QID|7064| |N|Slay Princess Theradras|
 
 N Back outside |N|Out of Maraudon, in Desolace|

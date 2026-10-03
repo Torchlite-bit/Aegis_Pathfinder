@@ -110,7 +110,7 @@ R Auberdine |QID|6122| |N|Return to Auberdine (37, 44)| |C|Druid|
 
 A WANTED: Murkdeep! |QID|4740| |N|Wanted poster in Auberdine - group quest, skip if solo (37.7, 44.2)| |O| |P|GROUP|
 
-N Level 14 |N|You should be around level 14 now. Continue to the next guide|
+N Level 14 |N|You should be around level 14 now. Continue to the next guide| |LV|14|
 
 ]]
 end)

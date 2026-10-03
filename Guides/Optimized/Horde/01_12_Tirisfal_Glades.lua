@@ -75,7 +75,7 @@ N Train Skills |N|Train if level 6|
 
 A A Rogue's Deal (Part 1) |QID|8| |N|Calvin Montague north of Deathknell (38.18, 56.84)|
 
-N Level 6 |N|You should be close to level 6. Grind if needed while heading to Brill|
+N Level 6 |N|You should be close to level 6. Grind if needed while heading to Brill| |LV|6|
 
 R Solliden Farmstead |QID|365| |N|Travel to Solliden Farmstead (34.52, 49.23)|
 A Fields of Grief (Part 1) |QID|365| |N|Deathguard Simmer on the road (40.88, 54.24)|
@@ -160,7 +160,7 @@ C At War With The Scarlet Crusade (Part 2) |QID|370| |N|Kill 3 Scarlet Zealot an
 T At War With The Scarlet Crusade (Part 2) |QID|370| |N|Executor Zygand in Brill (60.60, 51.88)|
 A At War With The Scarlet Crusade (Part 3) |QID|371| |N|Executor Zygand in Brill (60.60, 51.88)|
 
-N Level 10 |N|You should reach level 10. Do your class quest if available|
+N Level 10 |N|You should reach level 10. Do your class quest if available| |LV|10|
 
 ; -- WARRIOR LEVEL 10 CLASS QUESTS --
 A Speak with Dillinger |QID|1818| |N|Austil de Mon in Gallows' End Tavern (61.85, 52.54)| |C|Warrior| |LV|10|

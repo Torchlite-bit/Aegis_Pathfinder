@@ -35,7 +35,7 @@ T Everything Counts In Large Amounts |QID|3501| |N|Kum'isha the Collector in Ris
 A To Serve Kum'isha |QID|2521| |N|Kum'isha the Collector in Rise of the Defiler (51.99, 35.65)| |Z|Blasted Lands| |L|8244| |O|
 T To Serve Kum'isha |QID|2521| |N|Kum'isha the Collector in Rise of the Defiler (51.99, 35.65)| |Z|Blasted Lands| |L|8244| |O|
 
-N Level 51 |N|You should be around level 51 now. Continue to Un'Goro Crater|
+N Level 51 |N|You should be around level 51 now. Continue to Un'Goro Crater| |LV|51|
 
 ]]
 end)

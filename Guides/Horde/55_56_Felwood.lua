@@ -86,7 +86,7 @@ T Corrupted Sabers |QID|4506| |N|Winna Hazzard in Bloodvenom Post (34.21, 52.37)
 R Felpaw Village |QID|5085| |N|Travel to Felpaw Village (39.53, 45.63) (41.23, 24.13) (51.53, 13.57) (61.81, 14.80) (60.20, 5.88)| |Z|Felwood|
 T Falling to Corruption |QID|5084| |N|Deadwood Cauldron in Felpaw Village (60.20, 5.88)| |Z|Felwood| |OBJ|216|
 A Mystery Goo |QID|5085| |N|Deadwood Cauldron in Felpaw Village (60.20, 5.88)| |Z|Felwood| |OBJ|216|
-N Level 56 Required |N|Grind Felpaw furbolg until you reach level 56 (62.89, 11.29) (62.69, 7.86) (61.37, 7.42)| |Z|Felwood|
+N Level 56 Required |N|Grind Felpaw furbolg until you reach level 56 (62.89, 11.29) (62.69, 7.86) (61.37, 7.42)| |Z|Felwood| |LV|56|
 
 R Frostfire Hot Springs |TID|8464| |N|Travel to Frostfire Hot Springs in Winterspring (27.75, 34.58)| |Z|Winterspring| |REACH|
 T Winterfall Activity |QID|8464| |N|Salfa in Frostfire Hot Springs (27.75, 34.58)| |Z|Winterspring|

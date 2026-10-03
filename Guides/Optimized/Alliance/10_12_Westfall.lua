@@ -71,7 +71,7 @@ T Stormpike's Delivery |QID|353| |N|Mountaineer Stormpike at Algaz Station (24.6
 A Stormpike's Order |QID|1338| |N|Mountaineer Stormpike at Algaz Station (24.67, 18.25)| |Z|Loch Modan|
 A Filthy Paws |QID|307| |N|Mountaineer Stormpike at Algaz Station (24.67, 18.25)| |Z|Loch Modan|
 
-N Level 12 |N|You should be around level 12 now. Continue to the next guide for Westfall (12-14)|
+N Level 12 |N|You should be around level 12 now. Continue to the next guide for Westfall (12-14)| |LV|12|
 
 ]]
 end)

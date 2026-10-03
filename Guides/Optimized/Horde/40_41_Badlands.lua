@@ -78,7 +78,7 @@ T Badlands Reagent Run |QID|2258| |N|Jarkal Mossmeld in Kargath (2.5, 46.1)|
 R Valley of Fangs |TID|703| |N|Travel to Valley of Fangs (42.38, 52.83)| |Z|Badlands|
 T Barbecued Buzzard Wings |QID|703| |N|Rigglefuzz in Valley of Fangs (42.38, 52.83)| |Z|Badlands|
 
-N Level 41 |N|You should be around level 41 now. Continue to Swamp of Sorrows|
+N Level 41 |N|You should be around level 41 now. Continue to Swamp of Sorrows| |LV|41|
 
 ]]
 end)

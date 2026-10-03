@@ -76,7 +76,7 @@ T Grimtotem Spying |QID|5064| |N|Cliffwatcher Longhorn in Freewind Post (45.69, 
 
 N Level Check |N|You should be level 29 or close to it. Grind if needed|
 
-N Level 29 |N|You should be around level 29 now. Continue to the next guide|
+N Level 29 |N|You should be around level 29 now. Continue to the next guide| |LV|29|
 
 ]]
 end)

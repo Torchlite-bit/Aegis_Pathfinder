@@ -17,7 +17,8 @@ version.
 | `/apg craft` | The crafting route window: the cheapest way to level a profession at today's prices |
 | `/apg share` | Share the guide you are on with your party, or stop sharing (beta) |
 | `/apg gear` | The options at **Item Score**: the stat weights behind the item score |
-| `/apg finder` | The Gear finder: upgrades that drop in the dungeons you run |
+| `/apg finder` | The Gear Finder tab on the character panel: upgrades in the dungeons you run |
+| `/apg talents` | Save your class's talent trees, as the game has them, for checking the Talent Advisor's builds |
 | `/apg ssf` | Solo Self-Found on or off |
 | `/apg setup` | Run the first-time setup again: your guide, its features and your dungeons |
 | `/apg target` | Target and mark the step's next active target (put it in a macro) |
@@ -30,15 +31,40 @@ The objectives panel is the addon's main window, so a bare `/apg` opens it, and
 it opens with the client. Escape doesn't close it, so clearing a target in a
 fight leaves it where it is; its ✕ does. The Aegis shield on the edge of the minimap does the
 same on a click; right-click it for the options window, and drag it to move it
-round the minimap. The options window's **Behaviour** page can hide it, as can
+round the minimap. The options window's **Appearance** page can hide it, as can
 `/apg minimapbutton`.
 
 The options window can be resized from its bottom-right corner, wider or
 taller, and keeps the size; `/apg resetpanels` puts it back. It lists its
-pages down the left: **Route** (race and route
-pack), **Dungeons**, **Filters**, **Appearance** (server theme, switch colours, window scale), **Gear** and
-under it **Item Score** (the stat weights), **Behaviour**, **Navigation** (waypoints and arrows), **Maintenance** (rescan,
-error log, setup) and **About** (version and credits).
+pages down the left, after Zygor's from Appearance on:
+
+- **Route**: race and route pack.
+- **Dungeons** and **Filters**.
+- **Appearance**: server theme, switch colours, window scale; the guide
+  window -- *Lock window* and *Transparency* (also in its ≡ menu), how
+  see-through Transparency makes it, the guide browser's opacity, the steps'
+  text size, the progress bar, growing upward; hiding the guide in dungeons
+  and raids or in combat; the minimap button. See **The guide window's
+  look**, below.
+- **Step Display**: how many steps focus mode shows, skipping hearthstone and
+  flight path steps, what comes between guides (follow-ups, custom zones,
+  class quests), and party sync. See **Step Display**, below.
+- **Automation**: quests (the guide's or all of them), flights, buying,
+  selling greys and repairing -- see **Automation**, below.
+- **Action Buttons**: the Active Items, Active Targets and Macros windows and
+  quest icons; which way the windows grow and their size; which buttons they
+  show; the target buttons' raid marker -- see **Action Buttons**, below.
+- **Navigation**: waypoints and arrows.
+- **Maps**: revealing the world map, the step's places on it, an ant trail to
+  the waypoint, and the rares near your level -- see **Maps**, below.
+- **Gear** and under it **Item Score** (the stat weights).
+- **Extras**: the addon's routine chat lines, detailed reputation gains,
+  level-up announcements, and the Talent Advisor -- see **Extras** and
+  **Talent Advisor**, below.
+- **Maintenance** (rescan, error log, setup) and **About** (version and
+  credits).
+
+The Behaviour page those settings were on is gone; each kept its value.
 
 ## What it does
 
@@ -54,9 +80,13 @@ after level 12.
 four at a time — fewer on a narrow panel — and arrows either side (or the
 mouse wheel over the bar) scroll through the rest; the tab you are on is
 always brought into view. The first is your main route — what the addon
-advances along on its own. Left-click a guide in the list to open it beside
-what you are reading, or right-click to load it into the tab you are on; each
-tab remembers its own place. A badge on each tab says what the guide is: XP
+advances along on its own. A guide picked in the guide browser opens in a tab
+of its own -- or its tab, if it has one -- so the guide you are reading keeps
+its tab and its place; picking a guide never changes your route pack. When a
+class quest or other branch guide finishes, it closes and hands back to the
+first tab, which keeps its guide unless you have out-levelled it; then it
+moves on to that guide's next one at your level. Each tab remembers its own
+place. A badge on each tab says what the guide is: XP
 for leveling, PF for a profession, DG for a dungeon, CL for a class quest, HC for hardcore. Every tab can be closed; close them all and the
 panel waits, empty, for you to pick one.
 
@@ -67,8 +97,7 @@ the zone guides by continent, and the custom zones), **Dungeons**, **Class
 Quests**, **Professions** and **Favorites** -- with Reputations, Dailies,
 Events, Gold, Pets & Mounts and Titles greyed as coming soon. A long folder
 is split by level. Point at a guide and the right of the window shows it: a
-picture, its levels, how far through it you are, and **Load** and **Open
-beside the route**. The picture is the game's art: a zone guide's zone
+picture, its levels, how far through it you are, and **Open in a new tab**. The picture is the game's art: a zone guide's zone
 on the world map with every area explored, the loading screen Turtle WoW shows
 on the way into a dungeon, a
 class quest's crest and spell, a profession's icon. Pointing at a guide also
@@ -98,8 +127,9 @@ their setup and prerequisite steps to mandatory; opting out hides them. A blue
 dot marks the dungeons the guide you are currently on actually has steps for.
 Under them, **Turtle WoW's own**: Frostmane Hollow, Windhorn Canyon, Dragonmaw
 Retreat, Stormwrought Ruins, Crescent Grove, Gilneas City and Hateforge Quarry.
-No route guide has steps for these; ticked, the Gear finder looks in them, and
-their dungeon guides can be offered along the way.
+No route guide has steps for these; ticked, their dungeon guides can be offered
+along the way. These ticks are for the route: the Gear Finder looks in every
+dungeon at your level, ticked or not.
 
 **Dungeons along the way.** Switch on *Offer dungeon guides along the way*, on
 the same page, and finishing a guide asks **Where next?** with the dungeon
@@ -137,6 +167,10 @@ Gilneas City and Hateforge Quarry. Pick one and it:
   that needs another visit -- Uldaman's necklace, Gnomeregan's formulas --
   gets another run.
 
+A trip to a town is only for those its quests are for: a Warrior's Shadowfang
+Keep guide never goes to Darnassus, whose one quest is a Priest's, Mage's,
+Warlock's and Druid's, and theirs goes only once the quest before it is done.
+
 A quest whose chain starts somewhere the guide does not go (another dungeon's,
 a class chain in a far zone) is in it but optional: it shows once you have
 the quest before it done. Class quests show only for that class. Quests given
@@ -147,6 +181,32 @@ taken inside.
 Which quests belong to a dungeon comes from InstanceJournal, a Turtle WoW
 addon that lists every instance's quests, and the quests themselves from
 pfQuest-turtle, patch 1.18.1's included (`Tools/build/build_dungeon_guides.py`).
+
+**Boss steps.** Inside, a dungeon guide has a step for each boss, in the order
+InstanceJournal lists them, and a quest that needs a boss dead comes straight
+after that boss's step. Each step says what the fight does, then what to watch
+for as each role:
+
+- **Tank** (blue): where to face him, what to pick up, when you lose threat;
+- **Healer**: who takes the damage, what to dispel or cure and which classes
+  can;
+- **Damage** (red): what to interrupt or kill first, when to stop or move.
+
+Hover the step for its lines, or see them under it in focus mode. Options ->
+Dungeons -> **My role in dungeons** shows only your role's line: All roles
+(to start), Tank, Healer or Damage. A boss's step ticks itself when the combat
+log says he dies; a fight with several bosses ticks on the last (the Seven in
+Blackrock Depths on Doom'rel). A rare boss's step says he is not always there
+and can be passed over. The arrow does not point inside a dungeon.
+
+What each boss does comes from InstanceJournal's abilities for Turtle WoW's
+own and from CMaNGOS -- its spells and its scripts -- for the rest
+(`Tools/build/build_dungeon_bosses.py`); the notes are written in
+`Tools/build/dungeon_tactics.py`. Some Turtle WoW bosses have no data
+anywhere yet -- Dragonmaw Retreat, Crescent Grove, Stormwrought Ruins, Gilneas
+City, Hateforge Quarry, most of Windhorn Canyon, and those Turtle added to
+older dungeons -- and their steps say "Pathfinder has no notes on this fight
+yet." They still tick themselves.
 
 **Class quest guides.** The guide browser's **Class Quests** category has a guide for each of
 your class's quest chains -- the warlock's Voidwalker, Succubus, Felhunter,
@@ -167,6 +227,30 @@ in, and does what one quest needs of another first: the Charger's horse feed
 before the spirit's quest. It ends with the chain's last hand-in, so it
 finishes by itself.
 
+**Attunement guides.** The quests that open each raid and dungeon, a guide
+each, per side, under the guide browser's Dungeons category in **Attunements
+and keys**, with an orange AT badge:
+
+- **Raids:** Molten Core (Attunement to the Core), Onyxia's Lair (the
+  Alliance's Drakefire Amulet, the Horde's Blood of the Black Dragon
+  Champion), Blackwing Lair (Blackhand's Command), Naxxramas (The Dread
+  Citadel) and Turtle WoW's own: Emerald Sanctum (Into the Dream I to VI),
+  Lower Karazhan Halls (The Key to Karazhan I to X) and Tower of Karazhan
+  (the Scepter of Medivh).
+- **Dungeons:** Upper Blackrock Spire (Seal of Ascension), Scholomance (the
+  Skeleton Key), Blackrock Depths' inner city (the Shadowforge Key) and
+  Turtle WoW's Karazhan Crypts (the Alliance's Mystery of Karazhan, the
+  Horde's Depths of Karazhan).
+
+Each is built the way the class quest guides are: every quest picked up, done
+and handed in, the arrow on whoever gives it and where its objectives are,
+and the way into the dungeon or raid a part is done in. Raids come first in
+the folder, by level; each says Raid or Dungeon, and **Attuned** once its last
+quest is handed in (Naxxramas by any of its three versions). RestedXP's
+Onyxia Attunement and Scholomance Key follow, saying RestedXP. Home suggests
+an attunement you have started, and the first you can start. Its picture is
+the loading screen of what it opens, where the addon has one.
+
 **A class quest at your level.** Reach the level a class quest starts at and a
 small window, like the dungeon's, offers its guide: open it in a tab beside
 the route, and when it is done you are back on the route; or not now. Each is
@@ -178,7 +262,7 @@ dungeon, a raid or an elite in it,
 unless you play in a group -- Solo Self-Found is solo. With a dungeon to offer
 at the same level, the dungeon's window comes first and the class quest's when
 it closes. It looks when you level up, when you log in and when you finish the
-setup; *Offer class quests at their level*, under Behaviour, turns it off.
+setup; *Offer class quests at their level*, under **Step Display**, turns it off.
 
 The chains come from pfQuest, pfQuest-turtle and CMaNGOS' quest table: which
 quest follows which, which races each is for, and what one gives that another
@@ -244,7 +328,7 @@ guide for the level you are by then, or on to the next custom zone that fits. A
 zone fits when you are inside its level range or one short of it, below its top,
 and have not finished it; with none that fit, nothing is asked. Closing the
 window carries on with the route. The options window can switch it off (*Offer
-custom zones between guides*, under **Behaviour**). The custom zones are also under the guide
+custom zones between guides*, under **Step Display**). The custom zones are also under the guide
 list's **Custom** tab at any time.
 
 **Moonwhisper Coast (52-60)**, which came with patch 1.18.1, has a guide for
@@ -327,7 +411,33 @@ themselves. What the quest wants killed or looted is looked for where the step
 is: Crocolisk Hunting in Loch Modan targets Loch Crocolisks, not the likelier
 crocolisks of the Wetlands. With none there, it is those where you are, then
 everyone. Either window can be dragged anywhere, or switched off under
-**Behaviour** in the options.
+**Action Buttons** in the options.
+
+**Action Buttons.** The options window's page for those windows:
+
+- **Layout.** Which way Active Items and Active Targets each grow -- right
+  (the first button at the left), left, up or down, a row or a column. A
+  window you have dragged grows from the matching corner, where you left it;
+  until then it hangs under the guide. Let go of one near another, or near
+  the guide, and it snaps flush against it, side by side or one under the
+  other. **Button size**, 60% to 150%, on top of the window scale, for the
+  three small windows. Close the guide and the three go with it; when the
+  guide hides itself in combat or a dungeon, the Appearance page's switches
+  say whether they go too.
+- **Buttons to show**: **Quest items**, **Talk to NPC** (talking and
+  interacting), **Kill enemy** (killing and looting), and **Delete cheapest
+  item**. Leaving one out takes its buttons out of the window; the macros,
+  the key bindings and the quest icons still have them.
+- **Delete cheapest item.** With your bags full, a button after the items
+  offers the cheapest thing in them to make room: a grey first, then
+  whatever a vendor pays least for, by the whole stack. It never offers the
+  guide's items, your hearthstone or what no vendor buys (quest items), and
+  asks before deleting anything that is not grey. A quiver's or soul bag's
+  empty slots are not room. 1.12 does not tell an addon what a vendor pays,
+  so the prices come from the CMaNGOS database (SellPrices.lua); Turtle WoW's
+  own items are not in it, and are offered only when grey.
+- **Mark whoever the target buttons target** (on). Off, the buttons only
+  target; quest icons still mark by themselves.
 
 **Quest icons.** Mouse over or target anyone a quest wants and the right raid
 marker goes on them by itself, as RestedXP's Quest Icons do:
@@ -346,7 +456,7 @@ stays out of raids, where markers belong to the leaders. Someone marked for
 killing who turns out not to be attackable gets a square instead. Quest-log
 marks need pfQuest and ClassicAPI (which gives the log's quest ids); without
 ClassicAPI only the current step is marked. The options window can switch it
-off, under **Behaviour**.
+off, under **Action Buttons**.
 
 **Macros.** A third small window, **Macros**, holds two real macros the addon
 writes into your character's macro book and keeps up to date: **AegisTarget**,
@@ -357,7 +467,7 @@ on the macro follows the guide by itself, step after step. Clicking a tile does
 what its macro does. They are made the first time there is something for them
 to do, use two of your 18 character macro slots (the window says so if none are
 free), and are never rewritten while the macro window is open. The options
-window can switch it off, under **Behaviour**, which also stops the macros
+window can switch it off, under **Action Buttons**, which also stops the macros
 being made or updated.
 
 **Sharing a guide with your party (beta).** Playing a guide with someone else
@@ -400,12 +510,197 @@ options window does not shrink out from under the cursor.
 
 **Automatic advancement.** Accepting, completing and turning in quests, binding
 a hearthstone, and collecting tagged items all resolve themselves. So do travel
-steps, once a waypoint provider is active. A note that has you pick something
+steps, once a waypoint provider is active, and on reaching the zone or subzone
+they name -- "Travel to Westfall" by any road or by flight. An optional travel
+step, RestedXP's way to a place rather than a stop, is passed once you are in
+the next step's zone or have done the next step, as RestedXP does. Quests
+under a collapsed header in the quest log are out of the client's sight; when
+one of the guide's is, the headers are opened so the guide can follow it. A note that has you pick something
 up for a quest -- Bingles' four tools in Loch Modan, one note each -- ticks
 when the item is in your bags, and one you pick up ahead of its note ticks
 when the guide gets there. A step the addon can finish for you
 has a small ⟳ inside its circle, so you know when not to reach for it; an
 empty circle is one only you can tick, and a filled one is done.
+
+**The guide window's look.** On the options window's **Appearance** page:
+
+- **Transparency**, and under it **Guide window opacity** (20% to 100%, half
+  to start with): how much of the game shows through the guide's panel; its
+  text stays solid. **Guide browser opacity** (40% to 100%) fades the whole
+  guide browser.
+- **Step text size**, 80% to 140%: the steps' titles and notes, and the rows
+  that hold them.
+- **Show the progress bar**: the 4px rule of how far through the guide you
+  are. Off, the steps move up into its place.
+- **Grow upward from where I put it**, for a guide at the bottom of the
+  screen: its bottom edge stays where you left it, and it grows up when a
+  step needs more room. (Zygor flips its viewer upside-down; here the header
+  stays on top.)
+- **Hide the guide in dungeons and raids**, with **Show it again when I
+  leave** under it (on); **Hide the guide in combat**, with **Hide the action
+  buttons in combat too** under it. Hidden so, the guide still counts as open;
+  only its ✕ closes it.
+
+**Step Display.** On the page of that name:
+
+- **Steps shown in focus mode**, 1 to 5: the step you are on and the ones
+  after it, under its objectives. Overview still shows the whole guide.
+- **Skip setting my hearthstone** and **Skip discovering new flight paths**:
+  those steps are left out of the guide. A later step may still say to hearth
+  or fly there; it is not rewritten.
+- **Party sync** (on): the party icon on the step row and invitations from
+  your party. Off, the icon goes and invitations are declined without a
+  popup. **Ask before inviting my party** sits under it.
+
+**Automation.** The options window's **Automation** page, as Zygor's:
+
+- **Quests.** *Accept and turn in the guide's quests*, and under it *All
+  quests, not only the guide's* (off to start with) and *Pick the guide's
+  quest from an NPC's list* (on). All quests takes every quest an NPC offers
+  and hands in every finished one, but never a grey quest, and it leaves two
+  places in your quest log for the guide's. With picking from a list off,
+  the quest you open is still accepted and handed in; the list is yours.
+  *Track quests automatically* is here too.
+- **Travel.** *Take the step's flight when I open the flight master's map*
+  (off to start with). "Fly to Orgrimmar" flies to the town; "Fly to
+  Westfall" to the zone's flight path, only when you know one there -- with
+  two, it asks you to pick rather than guess.
+- **Inventory.** *Buy what the step says to buy, at its vendor* (on): open
+  the vendor on a buy step that names its item and it buys as many as you
+  still need, no more than the vendor has or you can pay for. A **Sell
+  greys** button on the vendor window (on), and *Sell greys automatically*
+  as the window opens (off); either says how many went and for how much.
+  *Repair automatically*: not at all (to start with), or with your own
+  money. 1.12 has no guild bank, so there is no guild repair.
+
+Hold Shift as you open a quest giver, a flight master or a vendor and none
+of it happens.
+
+**Maps.** What the addon draws on the world map and the minimap, on the
+options window's **Maps** page. All of it on the zone's own map, never a
+continent's:
+
+- **Reveal the whole map** (on): the places you have not been, drawn a little
+  dimmer than the ones you have, from pfUI's reveal data (MapOverlays.lua).
+  It stands down while pfUI's own map reveal is on, and for Cartographer or
+  MetaMap's fog of war module.
+- **Show the step on the map** (on): the step's quest givers, hand-ins and
+  kill areas -- and the creatures that drop what it collects -- from
+  pfQuest's database, as icons and spots on the zone you are looking at, with
+  their names when you mouse over them; and the place the step's note gives.
+  Without pfQuest, only the note's place.
+- **A trail from me to the waypoint** (on), and its **Style**, dots or dashes:
+  in the theme's colour, marching toward the waypoint, when you and it are in
+  the zone the map shows. On the minimap too when Astrolabe is loaded
+  (TomTom-TWOW brings it): eight dots from you toward it, as far as the
+  minimap reaches. Without Astrolabe there is no minimap trail -- 1.12 alone
+  can't say how many yards the minimap shows.
+- **Rare creatures near my level** (off), with **Icon size** and **See-through
+  icons** under it: every place a rare or rare elite within four levels of
+  yours can spawn, from pfQuest-turtle's database (Rares.lua, about 440 of
+  them). Whether one is up right now, 1.12 can't say.
+
+**Extras.** On the options window's **Extras** page:
+
+- **Show Pathfinder chat messages** (on). Off, the routine lines stay out of
+  your chat: the load message, the login's progress summary, flights taken,
+  what was bought, sold, repaired or deleted, upgrades found and put on, a
+  branch or starting zone handed over, follow-ups skipped. Errors, warnings
+  and replies to what you click or type -- a button, a slash command, Rescan
+  -- still show.
+- **Show detailed reputation gains** (off). When a reputation goes up, a line
+  after the client's own says where it stands and how far to the next rank:
+  "Stormwind +25: Honored 4,350 / 12,000, 7,650 to Revered". A faction under
+  a header you have closed on the reputation panel is found too, and the
+  header is closed again.
+- **Announce level-ups to:** Emote (ticked to start with), Party chat and
+  Guild chat (each off until ticked). The emote reads "<you> Pathfinder: I
+  just leveled up from 22 to 23! (2 hours 1 minute)"; party and guild get
+  "Pathfinder: I leveled up from 22 to 23! (2 hours 1 minute)". The time is
+  how long you spent at the level just left, from the guide browser's level
+  tracker, and is left out for a level it did not count from the start (the
+  one you were on when you installed the addon). Nothing goes to a party or
+  guild you are not in.
+- **Talent Advisor** (on): marks where your points go on the talent window --
+  see **Talent Advisor**, below. *Build to follow*: levelling, then your spec
+  (to start with), your class's levelling build, or any spec's build at 60.
+  A Warrior or Paladin can level as **Protection** instead, and a Druid as
+  **Bear**: each on its own ("Warrior Protection leveling"), or then your spec
+  at 60 ("Protection leveling, then Fury at 60").
+  *Name the talent to take in chat when I level up* (on). *Point out a
+  talent point: a card when I level up, and the talents button lit* (on).
+  *Open the talent window*.
+
+**Talent Advisor** (`TalentAdvisor.lua`, `TalentWindow.lua`,
+`TalentModern.lua`). Which talent each point goes to, on Blizzard's own talent
+window (and pfUI's skin of it), and on Modern Spellbook's:
+
+- **The build.** Your class's levelling build until 60 -- a point a level from
+  10 -- then your spec's: the spec picked on the Item Score page, or the one
+  your talents lean to. At 60 it keeps the levelling build while every point
+  is on it, and once all 51 are spent says your spec's build is ready for
+  when you respec; after a respec it follows your spec's. Pick another on the
+  Extras page or from the strip above the talent window. Some classes have
+  another levelling build: Protection for a Warrior (with a shield, Shield
+  Slam at 30 and Concussion Blow at 40) or a Paladin (Holy Shield at 30,
+  Bulwark of the Righteous at 41), and Bear for a Druid (Feral Charge at 28,
+  Leader of the Pack at 40).
+- **On the window.** Each talent of the tree shown has a badge with the points
+  the build puts there: green while some are still to take, a tick once you
+  have them all, amber "+N" for points you have that the build does not put
+  there. The talent your next point goes to has a gold ring and "NEXT", and
+  its tree's tab a gold dot and a gold light; the window opens on that tree.
+- **The strip** above the window: *Following* and the build, as a menu, and a
+  card for the next point: the talent's icon, "Take Deep Wounds" and "Rank 3
+  of 3 in Arms · 1 point to spend" ("Next: Impale" and "... · at level 30"
+  with none to spend). Under it, how many points are off the build.
+  Off the build it carries on from the build's closest point you can take; it
+  never says to respec.
+- **Off the window**, so a point is not missed: a card on a level up, "Level
+  30: a talent point", "Take Shield Slam (rank 1 of 1) in Protection.", with
+  *Open talents* and *Later* (gone by itself after half a minute, and not
+  while a talent window is open); and the talents button lit gold with the
+  points to spend on it. Both go with *Point out a talent point* on Extras.
+- **On Modern Spellbook's window** ([Modern Spellbook](https://github.com/lioryx/ModernSpellBook)
+  by lioryx, with its talents on, `/msb talents`): the same badges, ring and
+  NEXT on every tree at once, and "NEXT POINT HERE" by the next point's tree's
+  name; the strip over its window with the build, the card and three buttons.
+  While it shows a plan, the marks step aside.
+  - *Plan to my level* (21 points at 30) and *Whole build as a plan* save the
+    build in Modern Spellbook's plan list, as "Pathfinder: Protection leveling
+    to 30" or "Pathfinder: Protection leveling", and make it the plan its window
+    shows: its *Apply* learns the points. A plan is the ranks you have, then
+    the build's next points, so points already off the build don't stop it
+    applying. Its list holds 20; full, the plan is still shown but not saved.
+  - *Share* opens **Share and plan**: the build as Modern Spellbook's share
+    string (`MSB1-WARRIOR-…`), selected to copy, for its *Import* or a friend;
+    *Follow a shared build* takes such a string, yours or anyone's, and the
+    advisor follows it -- the tree with the most points first, a row at a
+    time, a prerequisite before what needs it -- as **Shared build** in the
+    menu. Another class's string, or one that can't be taken so, is refused
+    with why. And the two plan buttons, with their points.
+- **The tooltip** of a talent adds "Pathfinder: Warrior leveling puts 3
+  points here." -- ": done." once you have them, "; you have N" past them --
+  and "Your next point goes here."
+- **In chat**: on a level up, "Level 22: a talent point to spend. Take Deep
+  Wounds (rank 3 of 3) in Arms."; at 60 with all 51 spent on the levelling
+  build, once, "All 51 points are spent. Your Fury build is ready for when you
+  respec: pick it under Following on the talent window to see it."
+- **Checked first.** Each build is checked against the tree your game has:
+  every talent there, no more ranks than it has, each point learnable in its
+  order, 51 in all. One that does not fit says why, in the strip and once in
+  chat ("The Warrior leveling build doesn't fit your talent tree (it has no
+  Master Strike), so the Talent Advisor won't follow it."), and is not
+  followed.
+- It only marks and names; it never spends a point.
+
+The builds (`TalentBuilds.lua`, written by `Tools/build/talent_builds.py`) are
+made on Turtle WoW's own trees: `/apg talents` saves your class's trees --
+every talent's place, ranks, prerequisites and tooltip -- for your account.
+Once on a character of each class (a level-1 one will do) and all nine are in
+the saved settings file,
+`WTF\Account\<account>\SavedVariables\Aegis_Pathfinder.lua`; again after a
+game update that changes the trees.
 
 **One step, or all of them.** The panel opens on the step you are on and
 nothing else, with its note in full and a meter underneath: a line for each
@@ -425,6 +720,12 @@ the arrows changed on the way -- a quest you finished in the meantime stays
 finished. Without clicking round, a right-click takes you to where the guide
 would open: the quest your log shows work at, else the first step not done.
 If your place is the other way, it says which arrow to right-click.
+
+**Hints beside the guide.** Hovering anything on the guide -- the arrows, a
+tab, a step -- opens its hint beside the guide, not over the steps: on its
+right when the guide is on the left of the screen, on its left when it is on
+the right, level with what you hover. With no room beside it, the hint goes
+under the guide in the top half of the screen and over it in the bottom half.
 
 **Where a guide opens.** At the quest your log shows work at. The notes, runs,
 flight paths and hearths before it can't be read from the log, so each counts
@@ -502,13 +803,44 @@ under **Gear** in the options:
 - **Your bags.** Upgrades get a border in the default bag frames.
 - It can be switched off, or off at level 60.
 
-**Gear finder.** Upgrades waiting in the dungeons you run (`/apg finder`, or
-**Gear finder** in the options): for each slot, the best few drops that beat
-what you wear, with who drops them, where, and how often.
+**Gear Finder.** A tab on the character panel, after Character, Reputation,
+Skills and Honor (`/apg finder`, or **Open the Gear Finder** in the options),
+laid out like Zygor's:
 
-- It looks in the dungeons that start no more than three levels above you, on
-  your side, and ticked under **Dungeons** — and in raids, at 60, if you switch
-  them on. Items up to three levels above you count, marked with their level.
+- **A cell per slot**, as the character sheet has them: two columns of eight,
+  and the ranged slot under the suggested dungeon. Each shows the slot's
+  biggest upgrade: the item, how much better it is (+54%, or *Empty slot* for
+  a slot you wear nothing in), where it drops and who drops it, and *at level
+  24* if you cannot wear it yet. A slot with none shows its empty picture and
+  *No upgrade found*. Rings and trinkets have two cells each, never the same
+  item in both. Shirt and tabard are left out: they have no stats.
+- **Click a cell** for the slot's list: every upgrade for it, biggest first,
+  each with its gain, dungeon, boss and drop chance. Click one to make it the
+  cell's -- it is marked *Your pick* -- or **Clear my pick** for the biggest
+  again. Picks are kept for the character, and forgotten once you wear the
+  item or it is no longer an upgrade.
+- **The suggested dungeon**, on the right: its loading screen, the spec it
+  scores for (change it there), the dungeon the cells' items drop in most --
+  by how many slots it upgrades, then by how much they add up to -- with its
+  levels, how many upgrades and which slots. Arrows step through the other
+  dungeons in that order, and **Open the guide** opens its dungeon guide.
+  Picking a different item can change the suggestion; it changes at once.
+  Quest, reputation and crafted gear have cells, but do not count towards it.
+- With nothing to suggest -- a spec whose upgrades are all quest rewards, say --
+  it says why, and the spec stays there to switch back.
+- The footer says where it looked; the cog opens the options at the Gear
+  page. Drag the page to move the character panel. Its own ✕ closes the
+  character panel, as closing any of its pages does.
+
+- **Upgrade sources**, five checkboxes in the options, two to a row:
+  **Dungeons**, **Raids**, **Quest rewards**, **Reputation vendors** and
+  **Crafted gear**. Tick only Dungeons and it looks nowhere else. Dungeons
+  and Raids are Zygor's two -- 1.12 has no difficulties to tick. It looks in the dungeons that
+  start no more than three levels above you, on your side -- ticked on the
+  **Dungeons** page or not, as those ticks are which dungeons' quests the route
+  takes in; with **Raids** ticked, in the raids at your level too. Items up to
+  three levels above you count, marked with their level. With nothing ticked
+  it says it has nowhere to look.
 - Each drop is weighed with the item score, for your spec, as tooltips are.
 - Walking into a dungeon names its upgrades in chat.
 - The loot tables are the CMaNGOS database's for every vanilla dungeon and
@@ -525,11 +857,14 @@ what you wear, with who drops them, where, and how often.
   Core's Incindis and Basalthar, among others), loot moved between bosses,
   new items, and drops taken out. Where Turtle only changed a shared loot
   table, the CMaNGOS chance stands.
-- Not only drops -- at 60 much of the best gear is not one. Each switched in
-  the options, on to start with:
+- Not only drops -- at 60 much of the best gear is not one. Each a box under
+  Upgrade sources, ticked to start with (they were switches before 0.22.2,
+  and keep what those were set to):
   - **Quest rewards** from quests you have still to do, on your side and for
     your class, that you can take within three levels: *Quest: Title*, with
-    the reputation it needs where it needs one (*Honored, Argent Dawn*).
+    the reputation it needs where it needs one (*Honored, Argent Dawn*). Most
+    rewards need no level to wear; those count at their quest's level, so one
+    from a quest ten levels below you is left out as outgrown.
   - **Reputation gear** a vendor sells at a rank: *Revered with Stormpike
     Guard · the quartermaster*.
   - **Crafted gear**: *Blacksmithing 300*, and *made by a crafter* when you
@@ -538,7 +873,7 @@ what you wear, with who drops them, where, and how often.
   These are looked at near your level only, up to ten levels under it: there
   are thousands, each loaded to be weighed. They are vanilla's, from the
   CMaNGOS database; Turtle's own quests and recipes are not in it.
-- Turning raids on says the first look takes a minute or two: hundreds more
+- Ticking **Raids** says the first look takes a minute or two: hundreds more
   items to load, once.
 
 ## Professions
@@ -548,13 +883,27 @@ what you wear, with who drops them, where, and how often.
 | Alchemy, Blacksmithing, Cooking, Enchanting, Engineering, First Aid, Jewelcrafting, Leatherworking, Mining, Survival, Tailoring | Full 1–300 crafting routes |
 | Herbalism, Skinning, Fishing | 1–300 by where to go — see **Gathering** below |
 
-Each authored guide is a fixed route, chosen once. For one planned from today's
-prices instead, see **Cheapest crafting route** above — it keeps the authored
-guide's trainer and rank steps and replaces only the crafts.
+The crafting guides follow [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute)'s
+routes: the cheapest way to 300 as CraftRoute's own planner works it out, from
+the auction prices in its sample scan (30 July 2026). Each craft count is the
+average number of attempts it takes, rounded up, so a step never asks for
+fewer crafts than the skill points it covers. Where CraftRoute makes more of
+something than the skill needs, because a later recipe uses it, the step says
+"Keep them for" that recipe. Its scan had no listing for most things you
+gather yourself — the fish in Cooking, some ore, Survival's wood — so those
+were costed at three times what a merchant pays, and the guide's first step
+names them. Mining's route is from the reference document. First Aid's is the
+usual one (Linen to 40, Heavy Linen to 80, Wool to 115 and so on), with each
+count worked out from the bandage's skill colours the same way, and
+Journeyman trained at 50, where it can be.
 
-Each authored guide says what to craft in each skill band and roughly how many,
-the reagents (the shopping list totals what the rest of the route still
-needs, and can send it to Aegis: Exchange), where the recipe comes from, and equally viable alternatives.
+These are fixed routes, chosen once. For one planned from today's prices
+instead, see **Cheapest crafting route** above — it keeps the authored guide's
+trainer and rank steps and replaces only the crafts.
+
+Each authored guide says what to craft in each skill band and how many, the
+reagents (the shopping list totals what the rest of the route still needs, and
+can send it to Aegis: Exchange) and where the recipe comes from.
 
 Every rank is a step of its own: your faction's trainers, what the rank needs
 and what it costs. Primary crafts wait for the character level a rank needs
@@ -565,10 +914,9 @@ train Expert or Artisan: the guide sends you to buy the Expert tome, and at
 skill 225 — the point the route cannot pass without it — walks you through
 the Artisan quest, level 40 and what to bring included.
 
-Engineering is not in the reference the other guides were converted from. Its
-route is CraftRoute's (a craft-by-craft 1–300 route checked against its recipe
-data), with reagents and recipe sources from the same recipe data the cheapest
-route uses. Its trainers come from the CMaNGOS 1.12 database: every NPC whose
+Reagents and recipe sources come from the same recipe data the cheapest route
+uses. Trainers come from the reference document, and Engineering's, which it
+does not cover, from the CMaNGOS 1.12 database: every NPC whose
 trainer list teaches that rank, in the zone pfQuest puts them in. Artisan is
 Buzzek Bracketswing in Gadgetzan (Tanaris) for both factions. Trainers the
 Turtle-lineage servers added in their own new zones are not in those databases,

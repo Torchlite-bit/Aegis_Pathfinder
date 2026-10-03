@@ -34,6 +34,14 @@ C Brutal Armor |QID|1838| |N|Bring to Thun'grim Firegaze 15 Smoky Iron Ingots, 1
 C Tainted Brambleheart |QID|41758| |N|Destroy the living embodiment of natural corruption within the depths of Razorfen Kraul, and bring the Tainted Brambleheart|
 C Going, Going, Guano! |QID|1109| |N|Get 1 pile of Kraul Guano|
 C A Vengeful Fate |QID|1102| |N|Get Razorflank's Heart|
+K Death Speaker Jargba |N|Dominate Mind takes control of a player, and he casts Shadow Bolt.| |HEAL|Dispel Dominate Mind (Magic: Priest, Paladin).| |DPS|Interrupt Dominate Mind; slow or crowd-control a controlled player rather than killing them.| |BOSS|Death Speaker Jargba|
+K Aggem Thorncurse |N|He heals with Chain Heal from 75%, summons a Boar Spirit, and uses Battle Shout.| |TANK|Pick up the Boar Spirit.| |DPS|Interrupt Chain Heal; kill the Boar Spirit.| |BOSS|Aggem Thorncurse|
+K Overlord Ramtusk |N|Thunderclap hits and slows everyone near him, and Battle Shout raises his attack power.| |HEAL|Dispel Thunderclap's slow (Magic: Priest, Paladin).| |DPS|Ranged stand back.| |BOSS|Overlord Ramtusk|
+K Earthcaller Halmgar |N|Rare: not always here. He drops an Earthbind Totem, summons an Earth Rumbler, and casts Lightning Bolt.| |DPS|Kill the Earthbind Totem; interrupt Lightning Bolt.| |BOSS|Earthcaller Halmgar| |O|
+K Rotthorn |N|Pathfinder has no notes on this fight yet.| |BOSS|Rotthorn|
+K Agathelos the Raging |N|Rampage hits and stuns everyone near him, he charges, and he frenzies at 60% and at 40%.| |TANK|He hits harder each time he frenzies.| |HEAL|Rampage hits the melee too.| |DPS|Ranged stand back out of Rampage.| |BOSS|Agathelos the Raging|
+K Blind Hunter |N|Rare: not always here. No special abilities known.| |BOSS|Blind Hunter| |O|
+K Charlga Razorflank |N|She casts Chain Bolt, heals her allies with Renew, and restores her mana with Mana Spike.| |DPS|Interrupt Chain Bolt; dispel or Purge her Renew (Priest, Shaman).| |BOSS|Charlga Razorflank|
 
 N Back outside |N|Out of Razorfen Kraul, in The Barrens|
 T Blueleaf Tubers |QID|1221| |N|Mebok Mizzyrix (62.4, 37.6)| |Z|The Barrens|

@@ -138,7 +138,8 @@ local function newObject(kind, name, parent)
 	function o:Hide() self.__shown = false end
 	function o:IsShown() return self.__shown end
 	function o:IsVisible() return self.__shown end
-	function o:SetAlpha(a) checkColor(kind .. ":SetAlpha", nil, nil, nil, a) end
+	function o:SetAlpha(a) checkColor(kind .. ":SetAlpha", nil, nil, nil, a); self.__alpha = a end
+	function o:GetAlpha() return self.__alpha or 1 end
 	function o:GetParent() return self.__parent end
 
 	return o

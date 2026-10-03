@@ -3,6 +3,15 @@ AEGISPATHFINDER_LOCALE = nil
 
 AegisPathfinder = AceLibrary("AceAddon-2.0"):new("AceConsole-2.0", "AceDB-2.0", "AceDebug-2.0", "AceEvent-2.0", "AceHook-2.1")
 
+--[[ AceConsole's Print runs its first argument through string.format whenever
+	it holds a "%" -- so a line such as "Gloves: a +12% upgrade" stopped with
+	"invalid option in `format'". Every line here is worded before it is
+	printed, so it goes out as it is. ]]
+local AcePrint = AegisPathfinder.Print
+function AegisPathfinder:Print(msg)
+	return AcePrint(self, "%s", msg)
+end
+
 AegisPathfinder.guides = {}
 AegisPathfinder.guidelist = {}
 AegisPathfinder.nextzones = {}
@@ -107,6 +116,30 @@ local defaults = {
     showmacros = true,        -- the Macros window, and the AegisTarget/AegisItem macros
     skipfollowups = true,
     autoquest = true,
+    -- The Automation page (QuestTracker.lua, Automation.lua)
+    allquests = false,            -- accept and turn in every quest, not only the guide's
+    autogossip = true,            -- pick the quest from an NPC's list
+    autofly = false,              -- take the step's flight on the flight master's map
+    autobuy = true,               -- buy what a buy step names, at its vendor
+    sellbutton = true,            -- the "Sell greys" button on the vendor window
+    autosell = false,             -- sell greys as a vendor's window opens
+    autorepair = "off",           -- "off", or "own": repair with your own money
+    -- The Action Buttons page (ActiveFrames.lua)
+    itemsgrow = "right",          -- which way Active Items grows: right, left, up or down
+    targetsgrow = "right",        -- and Active Targets
+    buttonscale = 1,              -- the three small windows' size, over the window scale
+    btnitems = true,              -- buttons: quest items
+    btntalk = true,               -- talk to (and interact with) NPCs
+    btnkill = true,               -- kill (and loot) enemies
+    btndelete = true,             -- delete the cheapest item, when the bags are full
+    raidmark = true,              -- the target buttons mark whom they target
+    -- The Step Display page (ObjectivesFrame.lua, Parser.lua, PartySync.lua)
+    focussteps = 1,               -- steps focus mode shows: the one you are on, and up to four after it
+    -- The Dungeons page (Parser.lua: GetStepNote)
+    dungeonrole = "all",          -- whose lines a dungeon guide's boss steps show: all, tank, heal or dps
+    skiphearth = false,           -- leave out steps that set your hearthstone
+    skipflightpaths = false,      -- and those that discover a flight path
+    partysync = true,             -- the party icon, and invitations to share a guide
     petskills = {},
     completedquests = {},
     completedquestsbyid = {}, -- {[questId] = true} from server
@@ -213,9 +246,15 @@ local options = {
         },
         Finder = {
             name = "Finder",
-            desc = "The Gear finder: upgrades that drop in the dungeons you run",
+            desc = "The Gear Finder tab on the character panel: upgrades in the dungeons you run",
             type = "execute",
             func = function() AegisPathfinder:ToggleGearFinder() end,
+        },
+        Talents = {
+            name = "Talents",
+            desc = "Save your class's talent trees, for checking the Talent Advisor's builds: once on a character of each class",
+            type = "execute",
+            func = function() AegisPathfinder.Extras:SaveTalentTrees() end,
         },
         Share = {
             name = "Share",
@@ -576,7 +615,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.21.3"
+AegisPathfinder.version = "0.22.24"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -655,7 +694,7 @@ function AegisPathfinder:OnInitialize()
         self:Print(L["Imported your saved progress from TurtleGuide."])
     end
     -- As every Aegis addon says it: the version to quote in a bug report.
-    if DEFAULT_CHAT_FRAME then
+    if DEFAULT_CHAT_FRAME and self.db.char.chatmessages ~= false then
         DEFAULT_CHAT_FRAME:AddMessage(self.title .. " v" .. self.version .. " loaded \226\128\148 /apg")
     end
 end
@@ -731,7 +770,7 @@ function AegisPathfinder:InitializeRoute()
                 if not message then
                     message = "You have been assigned the %s leveling route."
                 end
-                self:Print(string.format(message, tostring(race)))
+                self:Say(string.format(message, tostring(race)))
             else
                 -- Fallback to default start guides (including Turtle WoW races)
                 local startguides = {
@@ -1320,11 +1359,13 @@ function AegisPathfinder:GetObjectiveStatus(i)
     -- Skip TURNIN step if the quest is not accepted (not in log) and not
     -- completed. Flagged in the fourth return so UpdateStatusFrame can warn
     -- when it passes over such a step: this silent skip is how a missed
-    -- accept cascades into the guide jumping ahead.
+    -- accept cascades into the guide jumping ahead. A quest on your quest
+    -- list but under a collapsed header is not missing (RevealGuideQuests).
     local skippednotinlog
     if not turnedin and not (self.manuallyUnchecked and self.manuallyUnchecked[self.quests[i]]) then
         local action = self.actions[i]
-        if action == "TURNIN" and not logi then
+        local hidden = qidNum and C_QuestLog and C_QuestLog.IsOnQuest and C_QuestLog.IsOnQuest(qidNum)
+        if action == "TURNIN" and not logi and not hidden then
             local cleanQuest = string.gsub(self.quests[i], "@.*@", "")
             cleanQuest = string.gsub(cleanQuest, AegisPathfinder.Locale.PART_GSUB, "")
             local isCompleted = (qidNum and self:IsQuestCompletedOnServer(qidNum)) or (self.db.char.completedquests and self.db.char.completedquests[cleanQuest])
@@ -1471,15 +1512,17 @@ function AegisPathfinder:QueryServerCompletedQuests(force)
         end
     end
 
+    -- Said at every login as routine lines; when Rescan asks, as its answer.
+    local say = force and self.Print or self.Say
     -- Check pfQuest availability
     local hasPfQuest = pfDB and pfDB["quests"] and pfDB["quests"]["data"]
     if hasPfQuest then
-        self:Print("|cff00ff00pfQuest database detected - using prerequisite chain inference|r")
+        say(self, "|cff00ff00pfQuest database detected - using prerequisite chain inference|r")
     else
-        self:Print("|cffff9900pfQuest not found - prerequisite inference unavailable|r")
+        say(self, "|cffff9900pfQuest not found - prerequisite inference unavailable|r")
     end
 
-    self:Print(string.format("|cff88aaff%d quests tracked by name, %d by QID|r", localCountByName, localCountByQid))
+    say(self, string.format("|cff88aaff%d quests tracked by name, %d by QID|r", localCountByName, localCountByQid))
 
     -- Re-run SmartSkipToStep to re-evaluate guide progress
     if self.actions and self.quests then
@@ -1488,12 +1531,12 @@ function AegisPathfinder:QueryServerCompletedQuests(force)
         local newCurrent = self.current or 1
 
         if newCurrent > oldCurrent then
-            self:Print(string.format("|cff00ff00Skipped to step %d (was %d)|r", newCurrent, oldCurrent))
+            say(self, string.format("|cff00ff00Skipped to step %d (was %d)|r", newCurrent, oldCurrent))
         else
-            self:Print("|cff88ff88Guide progress is up to date|r")
+            say(self, "|cff88ff88Guide progress is up to date|r")
         end
     else
-        self:Print("|cffff9900No guide loaded|r")
+        say(self, "|cffff9900No guide loaded|r")
     end
 
     self:UpdateStatusFrame()
@@ -1959,9 +2002,13 @@ end
 
 --[[ Go back to the main route, closing the tab you were on.
 
-    If the player has out-levelled the guide sitting in tab 1 while they were
-    away, tab 1 is re-pointed at the level-appropriate one rather than sending
-    them back to content they have grown out of.
+    Tab 1 keeps the guide you had in it. Only if you have out-levelled it
+    while you were away -- your level is past the top of its range -- does it
+    move on, along that guide's own way forward, to the first guide you have
+    not out-levelled; the route pack's guide for your level is the last
+    resort. It used to take the route pack's guide whenever that differed,
+    which put a RestedXP Hardcore guide over an Optimized one still at your
+    level when a class quest guide finished.
 ]]
 function AegisPathfinder:ReturnFromBranch()
     local tabs = self:EnsureTabs()
@@ -1976,13 +2023,15 @@ function AegisPathfinder:ReturnFromBranch()
     self:SyncBranchState()
 
     local savedGuide = tabs[1] and tabs[1].guide
-    local optimalGuide = self:GetOptimizedGuideForLevel(UnitLevel("player"))
+    local level = UnitLevel("player")
+    local guide = savedGuide and self:GuideForLevelFrom(savedGuide, level)
+        or self:GetOptimizedGuideForLevel(level)
 
-    if optimalGuide and optimalGuide ~= savedGuide and self.guides[optimalGuide] then
-        self:Print("Returning to optimized path: " .. optimalGuide)
-        tabs[1].guide = optimalGuide
+    if guide and guide ~= savedGuide and self.guides[guide] then
+        self:Print("Returning to " .. guide .. ": you have out-leveled " .. tostring(savedGuide) .. ".")
+        tabs[1].guide = guide
         tabs[1].step = 1
-        self:LoadGuide(optimalGuide)
+        self:LoadGuide(guide)
     elseif savedGuide and self.guides[savedGuide] then
         self:Print("Returning to: " .. savedGuide)
         self:LoadGuide(savedGuide)
@@ -1993,6 +2042,20 @@ function AegisPathfinder:ReturnFromBranch()
 
     self:UpdateStatusFrame()
     self:UpdateGuideListPanel()
+end
+
+--- `name`, or if you have out-levelled it, the first guide after it that you
+--- have not: its route's next leg, or its own next link, so an Optimized
+--- guide goes on to Optimized ones. nil when the way forward runs out.
+function AegisPathfinder:GuideForLevelFrom(name, level)
+    local seen = {}
+    while name and self.guides[name] and not seen[name] do
+        local _, hi = self:ParseGuideLevelRange(name)
+        if not hi or not level or level <= hi then return name end
+        seen[name] = true
+        name = self:GetRouteSuccessor(name) or self.nextzones[name]
+    end
+    return nil
 end
 
 -- Get the optimized guide for a given level based on the player's race route
@@ -2054,13 +2117,14 @@ end
 
 --- A guide's tab badge: its kind and text. TPL for a placeholder, PF for a
 --- profession guide (a crafting route included), DG a dungeon guide, CL a
---- class quest guide, HC a hardcore one, XP any other.
+--- class quest guide, AT an attunement, HC a hardcore one, XP any other.
 function AegisPathfinder:GuideBadge(guideName)
     if self:IsTemplateGuide(guideName) then return "tpl", "TPL" end
     local category = self:GetGuideCategory(guideName)
     if category == "profession" then return "pf", "PF" end
     if category == "dungeon" then return "dg", "DG" end
     if category == "class" then return "cl", "CL" end
+    if category == "attunement" then return "at", "AT" end
     if category == "rxp_hc" then return "hc", "HC" end
     return "xp", "XP"
 end
@@ -2080,6 +2144,9 @@ function AegisPathfinder:GetGuideCategory(guideName)
     end
     if string.find(guideName, "^Class/") then
         return "class"
+    end
+    if string.find(guideName, "^Attunement/") then
+        return "attunement"
     end
     if string.find(guideName, "^Optimized/") then
         return "optimized"
@@ -2396,8 +2463,8 @@ function AegisPathfinder:TransitionFromStartingZone()
     self.db.char.startingzonecomplete = true
     self.db.char.completion[self.db.char.currentguide] = 1
 
-    self:Print("|cff00ff00" .. L["Starting zone complete!"] .. "|r")
-    self:Print(L["Transitioning to shared leveling path..."])
+    self:Say("|cff00ff00" .. L["Starting zone complete!"] .. "|r")
+    self:Say(L["Transitioning to shared leveling path..."])
 
     -- Get the rejoin guide
     local rejoinGuide = self:GetRejoinGuide()
@@ -2584,10 +2651,10 @@ function AegisPathfinder:SelectStartingZone(zoneInfo)
         local playerRoute = self:GetRouteForRace()
 
         if zoneInfo.race ~= playerRoute then
-            self:Print(string.format(L["Cross-race start: %s"], zoneInfo.zone))
+            self:Say(string.format(L["Cross-race start: %s"], zoneInfo.zone))
         end
 
-        self:Print(string.format(L["You have been assigned the %s leveling route."], zoneInfo.zone))
+        self:Say(string.format(L["You have been assigned the %s leveling route."], zoneInfo.zone))
     else
         self:Print("|cffff0000Error: Guide not found: " .. zoneInfo.guide .. "|r")
     end

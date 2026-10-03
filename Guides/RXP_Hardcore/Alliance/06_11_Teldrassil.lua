@@ -152,7 +152,7 @@ T The Moss-twined Heart |QID|927| |N|Denalan - (60.9, 68.5)| |Z|Teldrassil|
 T Planting the Heart |QID|941| |N|on Denalans Planter - (60.8, 68.6)| |Z|Teldrassil|
 N You must right click your Pet Frame and Dismiss your pet before you can tame another one |N|(62.6, 72.2)| |C|Hunter| |Z|Teldrassil|
 C Taming the Beast |QID|6101| |OIDX|1| |N|Use the [Taming Rod] on a Nightsaber Stalker Tame a Nightsaber Stalker| |C|Hunter| |Z|Teldrassil|
-G Grind to level 10 |Z|Teldrassil|
+G Grind to level 10 |Z|Teldrassil| |LV|10|
 t Train your class spells |N|Laurna Morninglight - (55.6, 56.7)| |C|Priest| |Z|Teldrassil|
 t Train your class spells |N|Kyra Windblade - (56.2, 59.2)| |C|Warrior| |Z|Teldrassil|
 t Train your class spells |N|Jannok Breezesong - (56.4, 60.1)| |C|Rogue| |Z|Teldrassil|

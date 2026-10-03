@@ -817,6 +817,178 @@ do
 	A.GoToPreviousObjective, A.SkipToNextObjective, A.RememberPlace, A.ReturnToPlace = keep[1], keep[2], keep[3], keep[4]
 end
 
+-- The Appearance and Step Display pages ------------------------------------------------
+
+do
+	local A = AegisPathfinder
+	local profile, char = A.db.profile, A.db.char
+	char.overviewmode = false
+	A.current = 3
+	A.tags[3].N = "Travel to Goldshire"
+	frame:ClearAllPoints()
+	frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", 100, 650)
+	frame:Show()
+	A:OnObjectiveFrameResized()
+	A:UpdateOHPanel()
+	local one = frame:GetHeight()
+
+	-- Steps shown in focus mode: the step you are on, and the ones after it.
+	A.current = 1
+	char.focussteps = 3
+	A:OnObjectiveFrameResized()
+	A:UpdateOHPanel()
+	check(built[1]:IsShown() and built[2]:IsShown() and built[3]:IsShown() and not built[4]:IsShown(),
+		"three steps shown in focus mode")
+	check(built[1].i == 1 and built[2].i == 2 and built[3].i == 3, "the one you are on and the two after it")
+	local _, _, _, _, y2 = built[2]:GetPoint()
+	check(math.abs(-y2 - (86 + built[1]:GetHeight() + 2)) < 0.01, "the next starts under the first, got %s", tostring(y2))
+	check(frame:GetHeight() == 86 + built[1]:GetHeight() + 2 + built[2]:GetHeight() + built[3]:GetHeight() + 8 + 24,
+		"and the panel holds all three, got %s", tostring(frame:GetHeight()))
+	A.current = 4
+	A:OnObjectiveFrameResized()
+	A:UpdateOHPanel()
+	check(built[2]:IsShown() and not built[3]:IsShown(), "near the end, only the steps the guide has left")
+	char.focussteps = nil
+	A.current = 3
+	A:OnObjectiveFrameResized()
+	A:UpdateOHPanel()
+	check(not built[2]:IsShown() and frame:GetHeight() == one, "back to one, the step alone")
+
+	-- Step text size: the text and the rows that hold it.
+	A:SetStepTextSize(1.25)
+	check(profile.steptextsize == 1.25 and built[1].text.__size == 15 and built[1].note.__size == 14,
+		"bigger step text, got %s and %s", tostring(built[1].text.__size), tostring(built[1].note.__size))
+	char.overviewmode = true
+	A:OnObjectiveFrameResized()
+	A:UpdateOHPanel(0)
+	check(built[2]:GetHeight() == 55, "the list's rows grow with it, got %s", tostring(built[2]:GetHeight()))
+	A:SetStepTextSize(1)
+	A:UpdateOHPanel(0)
+	check(profile.steptextsize == nil and built[2]:GetHeight() == 44 and built[1].text.__size == 12, "and back")
+	check(A:SetStepTextSize(3) == 1.4, "no bigger than 140%%")
+	A:SetStepTextSize(1)
+
+	-- The progress bar: off, the steps move up into its place.
+	A:SetGuideProgressShown(false)
+	local _, _, _, _, y1 = built[1]:GetPoint()
+	check(not frame.guideProgress:IsShown() and profile.showprogress == false and y1 == -82,
+		"progress bar off: gone, and the list starts 4px higher, got %s", tostring(y1))
+	A:SetGuideProgressShown(true)
+	_, _, _, _, y1 = built[1]:GetPoint()
+	check(frame.guideProgress:IsShown() and profile.showprogress == nil and y1 == -86, "and back")
+	char.overviewmode = false
+	A:OnObjectiveFrameResized()
+	A:UpdateOHPanel()
+
+	-- Growing upward: the bottom edge stays where it is.
+	frame:ClearAllPoints()
+	frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", 100, 650)
+	A:UpdateOHPanel()
+	local bottom = frame:GetBottom()
+	A:SetGuideUpward(true)
+	check(profile.objframeupward and frame:GetPoint() == "BOTTOMLEFT" and profile.objframepoint == "BOTTOMLEFT",
+		"growing upward, the panel is pinned and kept by its bottom")
+	A.tags[3].N = string.rep("Follow the road south past the farms and the river. ", 12)
+	A:UpdateOHPanel()
+	check(math.abs(frame:GetBottom() - bottom) < 0.01 and frame:GetHeight() > one, "a long step grows it upward, its bottom where it was")
+	frame:ClearAllPoints()
+	frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", 100, 650)
+	A:UpdateOHPanel()
+	check(frame:GetPoint() == "BOTTOMLEFT", "and it goes back to its bottom edge after anything moves it by the top")
+	A:SetGuideUpward(false)
+	check(not profile.objframeupward and frame:GetPoint() == "TOPLEFT", "off, it grows down from its top again")
+	A.tags[3].N = "Travel to Goldshire"
+	A:UpdateOHPanel()
+
+	-- Opacity: what Transparency makes the panel.
+	A:SetGuideTransparent(true)
+	check(fillPiece.__color[4] == 0.5, "Transparency, at half to start with")
+	A:SetGuideOpacity(0.3)
+	check(profile.objframeopacity == 0.3 and fillPiece.__color[4] == 0.3, "the opacity slider sets how see-through")
+	A:SetGuideTransparent(false)
+	A:SetGuideOpacity(0.7)
+	check(fillPiece.__color[4] == 1, "with Transparency off, solid whatever the slider says")
+	profile.objframeopacity = nil
+
+	-- Hiding the guide: in dungeons and raids, and in combat.
+	local inside, kind = false, "none"
+	IsInInstance = function() return inside, kind end
+	local paints = 0
+	local keepPaint = A.PaintActiveFrames
+	A.PaintActiveFrames = function() paints = paints + 1 end
+	frame:Show()
+	inside, kind = true, "party"
+	A:OnGuideHideEvent("ZONE_CHANGED_NEW_AREA")
+	check(frame:IsShown(), "switched off: a dungeon leaves the guide alone")
+	profile.hideininstance = true
+	A:OnGuideHideEvent("ZONE_CHANGED_NEW_AREA")
+	check(not frame:IsShown() and char.panelopen ~= false, "on: hidden in a dungeon, still counted as open")
+	inside, kind = false, "none"
+	A:OnGuideHideEvent("ZONE_CHANGED_NEW_AREA")
+	check(frame:IsShown(), "and shown again as you leave")
+	profile.showafterinstance = false
+	inside, kind = true, "raid"
+	A:OnGuideHideEvent("PLAYER_ENTERING_WORLD")
+	check(not frame:IsShown(), "a raid too")
+	inside, kind = false, "none"
+	A:OnGuideHideEvent("ZONE_CHANGED_NEW_AREA")
+	check(not frame:IsShown(), "not shown again when asked not to")
+	frame:Show()
+	inside, kind = true, "pvp"
+	A:OnGuideHideEvent("ZONE_CHANGED_NEW_AREA")
+	check(frame:IsShown(), "a battleground is not a dungeon")
+	inside, kind = false, "none"
+	A:OnGuideHideEvent("ZONE_CHANGED_NEW_AREA")
+	profile.hideininstance, profile.showafterinstance = nil, nil
+
+	A:OnGuideHideEvent("PLAYER_REGEN_DISABLED")
+	check(frame:IsShown(), "switched off: a fight leaves the guide alone")
+	profile.hideincombat = true
+	A:OnGuideHideEvent("PLAYER_REGEN_DISABLED")
+	check(not frame:IsShown() and not A.buttonsHidden, "on: hidden in combat; the buttons stay unless asked")
+	A:OnGuideHideEvent("PLAYER_REGEN_ENABLED")
+	check(frame:IsShown(), "and back when the fight ends")
+	profile.hidebuttonscombat = true
+	A:OnGuideHideEvent("PLAYER_REGEN_DISABLED")
+	check(A.buttonsHidden and paints == 1, "asked, the action buttons go too")
+	A:OnGuideHideEvent("PLAYER_REGEN_ENABLED")
+	check(A.buttonsHidden == nil and paints == 2, "and come back with it")
+	frame:Hide()                                   -- closed before the fight
+	A:OnGuideHideEvent("PLAYER_REGEN_DISABLED")
+	A:OnGuideHideEvent("PLAYER_REGEN_ENABLED")
+	check(not frame:IsShown(), "a guide you had closed stays closed after a fight")
+	frame:Show()
+	profile.hideininstance = true
+	inside, kind = true, "party"
+	A:OnGuideHideEvent("ZONE_CHANGED_NEW_AREA")
+	A:OnGuideHideEvent("PLAYER_REGEN_DISABLED")
+	A:OnGuideHideEvent("PLAYER_REGEN_ENABLED")
+	check(not frame:IsShown(), "a fight in a dungeon ends with the guide still hidden for the dungeon")
+	inside, kind = false, "none"
+	A:OnGuideHideEvent("ZONE_CHANGED_NEW_AREA")
+	check(frame:IsShown(), "until you leave it")
+	profile.hideininstance, profile.hideincombat, profile.hidebuttonscombat = nil, nil, nil
+	A.PaintActiveFrames = keepPaint
+	IsInInstance = nil
+end
+
+-- Hints over the guide open beside it ------------------------------------------
+
+-- The step arrows' hint covered the steps; now every hint inside the guide
+-- opens outside it (Theme:TipOutside), here on its right, since it sits on
+-- the left of the screen.
+frame:ClearAllPoints()
+frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 40, -100)
+local hovered = CreateFrame("Button", nil, frame)
+hovered:SetWidth(20); hovered:SetHeight(20)
+hovered:SetPoint("TOPLEFT", frame, "TOPLEFT", 10, -40)
+Theme:ShowTip(hovered, "BOTTOM", "Skip to next objective", "Right-click: on to your place in the guide")
+local tp, trel, trelP, tx = Theme.tip:GetPoint(1)
+check(tp == "TOPLEFT" and trel == UIParent and trelP == "BOTTOMLEFT"
+	and tx and tx >= frame:GetRight(),
+	"a hint inside the guide opens beside it, got %s at %s", tostring(tp), tostring(tx))
+Theme:HideTip()
+
 -- Report ---------------------------------------------------------------------
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end

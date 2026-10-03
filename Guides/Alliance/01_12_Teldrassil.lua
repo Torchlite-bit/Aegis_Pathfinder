@@ -148,7 +148,7 @@ A Ursal the Mauler |QID|486| |N|Athridas Bearmantle in Dolanaar (55.95, 57.28)|
 T Seek Redemption! |QID|489| |N|Zenn Foulhoof in Teldrassil (60.41, 56.26)|
 N Train Herbalism |QID|6121| |N|Highly recommended as a Druid that you train Herbalism from Malorne Bladeleaf; You will need it to gather 5 Earthroot for your level 14 class quest. Note: You need level 15 Herbalism to gather Earthroot, so level it up as you go. Tick this step (57.6, 60.6)| |C|Druid| |Z|Teldrassil|
 
-N Level 10 Required |N|Grind to level 10 so you can pick up class quests before heading to Darnassus|
+N Level 10 Required |N|Grind to level 10 so you can pick up class quests before heading to Darnassus| |LV|10|
 A The Apple Falls |QID|2241| |N|Jannok Breezesong in Dolanaar; Level 10 required (56.36, 60.17)| |C|Rogue|
 A Heeding the Call |QID|5923| |N|Kal in Dolanaar (55.95, 61.56)| |C|Druid|
 A Elanaria |QID|1684| |N|Kyra Windblade in Dolanaar (56.2, 59.2)| |C|Warrior|

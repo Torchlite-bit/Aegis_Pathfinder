@@ -6,8 +6,8 @@
 	accent ring round it.
 
 	Click shows or hides the guide, right-click opens the options panel, and
-	dragging walks it round the minimap's edge. The Guide behaviour section of
-	the options panel (or /apg minimapbutton) hides it.
+	dragging walks it round the minimap's edge. The options panel's Appearance
+	page (or /apg minimapbutton) hides it.
 ]]
 
 local AegisPathfinder = AegisPathfinder

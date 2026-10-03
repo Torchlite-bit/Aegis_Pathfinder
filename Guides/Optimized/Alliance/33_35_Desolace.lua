@@ -111,7 +111,7 @@ R Feathermoon Stronghold |QID|1457| |N|Travel south to Feralas via Desolace (40.
 R Feathermoon Stronghold |QID|1457| |N|Travel to Feathermoon Stronghold - take boat or swim (30.24, 43.25)| |Z|Feralas|
 f Feathermoon Stronghold |QID|1457| |N|Fyldren Moonfeather for flight path (30.24, 43.25)| |Z|Feralas|
 
-N Level 35 |N|You should be around level 35 now. Continue to the next guide|
+N Level 35 |N|You should be around level 35 now. Continue to the next guide| |LV|35|
 
 ]]
 end)

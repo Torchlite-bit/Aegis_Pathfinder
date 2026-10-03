@@ -15,7 +15,7 @@ AegisPathfinder.TrackEvents = {
 	"CRAFT_SHOW", "PLAYER_DEAD", "SKILL_LINES_CHANGED", "SPELLS_CHANGED",
 	"QUEST_ACCEPTED", "QUEST_TURNED_IN", "QUEST_REMOVED", "HEARTHSTONE_BOUND",
 	"BAG_UPDATE_DELAYED", "GOSSIP_SHOW", "QUEST_GREETING", "QUEST_DETAIL",
-	"QUEST_PROGRESS", "QUEST_COMPLETE"
+	"QUEST_PROGRESS", "QUEST_COMPLETE", "CHAT_MSG_COMBAT_HOSTILE_DEATH"
 }
 
 
@@ -40,9 +40,11 @@ function AegisPathfinder:SPELLS_CHANGED()
 	self:ScheduleStatusUpdate()
 end
 
---[[ A level up. A step waiting on a level (|LV|) is done; then a starting
-	zone outlevelled hands over to the shared route (Core.lua,
-	CheckStartingZoneCompletion), counting that step.
+--[[ A level up. A level gate waiting on it -- a grind step or a level note
+	with |LV| -- is done; then a starting zone outlevelled hands over to the
+	shared route (Core.lua, CheckStartingZoneCompletion), counting that step.
+	On a quest's own steps |LV| is only the level it needs: reaching it does
+	not turn the quest in.
 
 	Core.lua had a handler of this name for the starting zone, and this one,
 	loaded after it, replaced it: the starting zone only let go at the next
@@ -51,22 +53,25 @@ end
 function AegisPathfinder:PLAYER_LEVEL_UP(newlevel)
 	newlevel = tonumber(newlevel)
 	local level = tonumber((self:GetObjectiveTag("LV")))
+	local action = self:GetObjectiveInfo()
 	self:Debug("PLAYER_LEVEL_UP", newlevel, level)
-	if level and newlevel and newlevel >= level then self:SetTurnedIn() end
+	if level and newlevel and newlevel >= level and (action == "GRIND" or action == "NOTE") then self:SetTurnedIn() end
 	local db = self.db.char
 	if db.startingzoneselected and not db.startingzonecomplete then
 		self:CheckStartingZoneCompletion(newlevel)
 	end
 end
 
-function AegisPathfinder:ZONE_CHANGED(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19,
-								  a20)
-	local zonetext, subzonetext, subzonetag, action, quest = GetZoneText(), GetSubZoneText(), self:GetObjectiveTag("SZ"),
-		self:GetObjectiveInfo()
-	if (action == "RUN" or action == "FLY" or action == "HEARTH" or action == "BOAT") and (subzonetext == quest or subzonetext == subzonetag or zonetext == quest or zonetext == subzonetag) then
-		self:Debug(string.format("Detected zone change %q - %q", action, quest))
-		self:SetTurnedIn()
+--[[ A travel step is done on reaching its zone or subzone (GuideEngine.lua,
+	ArrivedAt). An optional one may be behind you now that you are in the next
+	step's zone (PassedTravel), which the scan decides. ]]
+function AegisPathfinder:ZONE_CHANGED()
+	if not self:IsTravelStep() then return end
+	if self:ArrivedAt() then
+		self:Debug(string.format("Detected zone change %q - %q", self:GetObjectiveInfo()))
+		return self:SetTurnedIn()
 	end
+	if self:IsWayThere() then self:ScheduleStatusUpdate() end
 end
 
 AegisPathfinder.ZONE_CHANGED_INDOORS = AegisPathfinder.ZONE_CHANGED
@@ -98,6 +103,44 @@ function AegisPathfinder:CHAT_MSG_SYSTEM(msg)
 	end
 end
 
+--- Who died, from the combat log: "<name> dies." (UNITDIESOTHER), "You have
+--- slain <name>!" when the killing blow is yours (SELFKILLOTHER), or "<name>
+--- is slain by <who>!" (PARTYKILLOTHER); nil for any other line.
+function AegisPathfinder:DeathName(msg)
+	if not msg then return end
+	local formats = { UNITDIESOTHER or "%s dies.", SELFKILLOTHER or "You have slain %s!",
+		PARTYKILLOTHER or "%s is slain by %s!" }
+	for _, format in ipairs(formats) do
+		-- The name is the first %s; any other is someone else.
+		local pattern, first = string.gsub(format, "([%^%$%(%)%.%[%]%*%+%-%?])", "%%%1"), true
+		pattern = string.gsub(pattern, "%%s", function()
+			if first then first = false return "(.+)" end
+			return ".+"
+		end)
+		local _, _, name = string.find(msg, "^" .. pattern .. "$")
+		if name then return name end
+	end
+end
+
+--[[ A dungeon guide's boss step (|BOSS|) ticks itself when the boss dies: the
+	first step not yet ticked that names it, which is the one for this visit
+	when a guide goes in more than once. ]]
+function AegisPathfinder:CHAT_MSG_COMBAT_HOSTILE_DEATH(msg)
+	local name = self:DeathName(msg)
+	if not name or not self.actions or not self.turnedin then return end
+	for i in ipairs(self.actions) do
+		local list = self:GetObjectiveTag("BOSS", i)
+		if list and not self.turnedin[self.quests[i]] then
+			for boss in string.gfind(list, "[^;]+") do
+				if boss == name then
+					self:Debug(string.format("Detected the death of %q", name))
+					return self:SetTurnedIn(i, true)
+				end
+			end
+		end
+	end
+end
+
 function AegisPathfinder:QUEST_WATCH_UPDATE(event)
 	if self:GetObjectiveInfo() == "COMPLETE" then self:ScheduleStatusUpdate() end
 end
@@ -108,10 +151,18 @@ function AegisPathfinder:QUEST_LOG_UPDATE(event)
 
 	self:Debug("QUEST_LOG_UPDATE", action, logi, complete)
 
+	-- A header collapsed over one of the guide's quests (GuideEngine.lua).
+	if self:RevealGuideQuests() then self:ScheduleStatusUpdate() end
+
 	-- UpdateStatusFrame gates on the delayed step itself, so run it whenever a
 	-- delayed update is pending; checking the current step's logi here would
-	-- miss turnins recorded for a step other than the current one
-	if self.updatedelay or action == "ACCEPT" or action == "COMPLETE" then self:ScheduleStatusUpdate() end
+	-- miss turnins recorded for a step other than the current one. A travel
+	-- step is done once its |QID| quest is in the log, and an optional one
+	-- once the step after it is done (PassedTravel): Teldrassil's "Gnarlpine
+	-- Hold" stayed on after The Glowing Fruit was taken, as nothing rescanned.
+	if self.updatedelay or action == "ACCEPT" or action == "COMPLETE" or self:IsTravelStep() then
+		self:ScheduleStatusUpdate()
+	end
 
 	if action == "KILL" or action == "NOTE" then
 		local quest, questtext = self:GetObjectiveTag("Q"), self:GetObjectiveTag("QO")
@@ -125,7 +176,7 @@ function AegisPathfinder:QUEST_LOG_UPDATE(event)
 		local skipNext = self:GetObjectiveTag("S")
 		if self.db.char.skipfollowups and skipNext and QuestFrame:IsVisible() then
 			CloseQuest()
-			AegisPathfinder:Print(L["Automatically skipping the follow-up"])
+			AegisPathfinder:Say(L["Automatically skipping the follow-up"])
 		end
 	end
 end
@@ -215,11 +266,12 @@ end
 -- just-finished step happens on the next quest log update, often after the
 -- follow-up QUEST_DETAIL or reopened gossip has already fired. Resolve the
 -- first step at or after current that is not already turned in, so automation
--- never keys off a stale step.
+-- never keys off a stale step. A travel step is passed too: talking to the
+-- next step's NPC, or clicking its object, means you got there.
 local function PendingStep()
 	local i = AegisPathfinder.current
 	if not i or not AegisPathfinder.actions then return end
-	while AegisPathfinder.actions[i] and AegisPathfinder:GetObjectiveStatus(i) do
+	while AegisPathfinder.actions[i] and (AegisPathfinder:GetObjectiveStatus(i) or AegisPathfinder:IsTravelStep(i)) do
 		i = i + 1
 	end
 	if AegisPathfinder.actions[i] then return i end
@@ -323,6 +375,29 @@ local function AutomationSuspended()
 	return not AegisPathfinder.db.char.autoquest or IsShiftKeyDown()
 end
 
+--[[ The Automation page's two under it: "All quests, not only the guide's",
+	and picking the guide's quest from an NPC's list (on unless switched off;
+	it governs every pick from a list, all quests' too). ]]
+local function AllQuests() return AegisPathfinder.db.char.allquests end
+local function PicksFromList() return AegisPathfinder.db.char.autogossip ~= false end
+
+-- MAX_QUESTLOG_QUESTS less two: all quests leaves room for the guide's.
+local QUEST_ROOM = 18
+
+--[[ A quest worth taking for all quests: not grey to you -- the grey line by
+	level, as the client draws it -- and with room in the log to spare. ]]
+local function WorthTaking(questLevel)
+	local _, quests = GetNumQuestLogEntries()
+	if (quests or 0) >= QUEST_ROOM then return false end
+	local level = UnitLevel("player") or 1
+	local grey
+	if level <= 5 then grey = 0
+	elseif level <= 39 then grey = level - math.floor(level / 10) - 5
+	elseif level <= 59 then grey = level - math.floor(level / 5) - 1
+	else grey = level - 9 end
+	return not questLevel or questLevel > grey
+end
+
 -- Quest frame titles may carry a [level] prefix depending on server settings
 local function QuestFrameTitle()
 	return (string.gsub(GetTitleText() or "", "%[[0-9%+%-]+]%s", ""))
@@ -331,7 +406,7 @@ end
 -- Auto-select the pending step's quest from the gossip list, matched by QID
 -- (by title for untagged steps)
 function AegisPathfinder:GOSSIP_SHOW()
-	if AutomationSuspended() then return end
+	if AutomationSuspended() or not PicksFromList() then return end
 
 	local name, i = CurrentStepName("ACCEPT")
 	if name then
@@ -342,7 +417,6 @@ function AegisPathfinder:GOSSIP_SHOW()
 				return C_GossipInfo.SelectAvailableQuest(q.questID)
 			end
 		end
-		return
 	end
 
 	name, i = CurrentStepName("TURNIN")
@@ -355,12 +429,21 @@ function AegisPathfinder:GOSSIP_SHOW()
 			end
 		end
 	end
+
+	-- All quests: a finished one to hand in first, then one on offer.
+	if not AllQuests() then return end
+	for _, q in ipairs(C_GossipInfo.GetActiveQuests()) do
+		if q.isComplete then return C_GossipInfo.SelectActiveQuest(q.questID) end
+	end
+	for _, q in ipairs(C_GossipInfo.GetAvailableQuests()) do
+		if WorthTaking(q.questLevel) then return C_GossipInfo.SelectAvailableQuest(q.questID) end
+	end
 end
 
 -- Greeting panel (quest NPCs without gossip text). The greeting API is
 -- index-based and carries no questIDs, so titles are the only match key.
 function AegisPathfinder:QUEST_GREETING()
-	if AutomationSuspended() then return end
+	if AutomationSuspended() or not PicksFromList() then return end
 
 	local name = CurrentStepName("ACCEPT")
 	if name then
@@ -370,7 +453,6 @@ function AegisPathfinder:QUEST_GREETING()
 				return SelectAvailableQuest(i)
 			end
 		end
-		return
 	end
 
 	name = CurrentStepName("TURNIN")
@@ -382,6 +464,20 @@ function AegisPathfinder:QUEST_GREETING()
 			end
 		end
 	end
+
+	--[[ All quests. The greeting's own API has titles alone; ClassicAPI's
+		lists say which are finished and at what level, and are matched back
+		to the greeting's rows by title. ]]
+	if not AllQuests() then return end
+	local done, levels = {}, {}
+	for _, q in ipairs(C_GossipInfo.GetActiveQuests()) do if q.isComplete then done[q.title] = true end end
+	for _, q in ipairs(C_GossipInfo.GetAvailableQuests()) do levels[q.title] = q.questLevel end
+	for i = 1, GetNumActiveQuests() do
+		if done[GetActiveTitle(i)] then return SelectActiveQuest(i) end
+	end
+	for i = 1, GetNumAvailableQuests() do
+		if WorthTaking(levels[GetAvailableTitle(i)]) then return SelectAvailableQuest(i) end
+	end
 end
 
 function AegisPathfinder:QUEST_DETAIL()
@@ -389,6 +485,9 @@ function AegisPathfinder:QUEST_DETAIL()
 		local name = CurrentStepName("ACCEPT")
 		if name and QuestFrameTitle() == name then
 			self:Debug(string.format("Auto-accepting %q", name))
+			AcceptQuest()
+		elseif AllQuests() and WorthTaking(nil) then
+			self:Debug(string.format("Auto-accepting %q (all quests)", QuestFrameTitle()))
 			AcceptQuest()
 		end
 	end
@@ -398,8 +497,8 @@ end
 function AegisPathfinder:QUEST_PROGRESS()
 	if AutomationSuspended() then return end
 	local name = CurrentStepName("TURNIN")
-	if name and QuestFrameTitle() == name and IsQuestCompletable() then
-		self:Debug(string.format("Auto-completing %q", name))
+	if ((name and QuestFrameTitle() == name) or AllQuests()) and IsQuestCompletable() then
+		self:Debug(string.format("Auto-completing %q", QuestFrameTitle()))
 		CompleteQuest()
 	end
 end
@@ -409,10 +508,11 @@ end
 function AegisPathfinder:QUEST_COMPLETE()
 	if not AutomationSuspended() then
 		local name = CurrentStepName("TURNIN")
-		if name and QuestFrameTitle() == name and GetNumQuestChoices() <= 1 then
-			self:Debug(string.format("Auto-claiming reward for %q", name))
+		local ours = (name and QuestFrameTitle() == name) or AllQuests()
+		if ours and GetNumQuestChoices() <= 1 then
+			self:Debug(string.format("Auto-claiming reward for %q", QuestFrameTitle()))
 			GetQuestReward(GetNumQuestChoices())
-		elseif name and QuestFrameTitle() == name and self.GearAdvisor then
+		elseif ours and self.GearAdvisor then
 			self.GearAdvisor:MarkReward(true)
 		end
 	end

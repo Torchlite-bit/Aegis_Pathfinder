@@ -127,6 +127,20 @@ check(count(ELWYNN, "Discover Rolf's Fate", "GROUP", false) == 2
 	"off again, group mode and the Deadmines are as they were")
 check(count("Trade Test (1-2)", "Ask a mage", "SOLO", false) == 1, "a |TRADE| step shows otherwise")
 
+-- The Step Display page's skips: setting a hearthstone, discovering a flight path.
+AegisPathfinder:RegisterGuide("Skip Test (1-2)", nil, "Alliance", function()
+	return "h Goldshire |N|Set your hearthstone at the inn|\nf Sentinel Hill |N|Get the flight path|\nR Westfall |N|Run there|\n"
+end)
+check(count("Skip Test (1-2)", "Goldshire", "SOLO", false) == 1 and count("Skip Test (1-2)", "Sentinel Hill", "SOLO", false) == 1,
+	"hearthstone and flight path steps show to start with")
+char.skiphearth = true
+check(count("Skip Test (1-2)", "Goldshire", "SOLO", false) == 0 and count("Skip Test (1-2)", "Sentinel Hill", "SOLO", false) == 1,
+	"skipping hearthstones leaves out setting one, and nothing else")
+char.skiphearth, char.skipflightpaths = nil, true
+check(count("Skip Test (1-2)", "Sentinel Hill", "SOLO", false) == 0 and count("Skip Test (1-2)", "Westfall", "SOLO", false) == 1,
+	"skipping flight paths leaves out discovering one, and the run stays")
+char.skipflightpaths = nil
+
 local WESTFALL = "Westfall (12-17)"
 check(count(WESTFALL, "The Defias Brotherhood (Part 2)", "SOLO", false, {}) == 0,
 	"a Deadmines quest should be hidden with the Deadmines unticked")

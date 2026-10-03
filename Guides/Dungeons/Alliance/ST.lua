@@ -81,9 +81,24 @@ C Haze of Evil |QID|4143| |N|Collect 5 samples of Atal'ai Haze|
 C Voodoo Feathers |QID|8425| |N|Bring the Voodoo Feathers from the trolls in the Sunken Temple to the Fallen Hero of the Horde| |C|Warrior| |O|
 C A Better Ingredient |QID|9053| |N|Retrieve a Putrid Vine from the guardian at the bottom of the Sunken Temple| |C|Druid|
 C Jammal'an the Prophet |QID|1446| |N|The Atal'ai Exile in The Hinterlands wants the Head of Jammal'an|
-C The God Hakkar |QID|3528| |N|Use the Egg of Hakkar at the Altar of Hakkar, and kill the Hakkari Bloodkeepers as the Avatar comes: fill the egg with their blood, then kill the Avatar of Hakkar| |O|
 A The Essence of Eranikus |QID|3373| |N|Essence of Eranikus: right-click it to start the quest| |U|10454| |O|
 T The Essence of Eranikus |QID|3373| |N|Essence Font| |O|
+K Atal'alarion |N|Summoned by touching the statues in the right order. Ground Tremor stuns everyone near him, and Sweeping Slam knocks back everyone in front.| |TANK|Face him away, with your back to a wall.| |HEAL|Stand out of Ground Tremor.| |BOSS|Atal'alarion|
+K Spawn of Hakkar |N|Acid of Hakkar burns a player over time.| |HEAL|Heal through the acid.| |BOSS|Spawn of Hakkar|
+K Gasher |N|One of the six trolls on the balcony: Strike, and nothing else to watch for.| |BOSS|Gasher|
+K Mijan |N|One of the six trolls on the balcony: Thorns Aura, Renew and Healing Wave, and a Healing Ward.| |DPS|Kill the Healing Ward; interrupt Healing Wave.| |BOSS|Mijan|
+K Zolo |N|One of the six trolls on the balcony: Chain Lightning, and an Atal'ai Skeleton Totem.| |DPS|Interrupt Chain Lightning; kill the totem.| |BOSS|Zolo|
+K Zul'Lor |N|One of the six trolls on the balcony: Cleave in front, and Frailty, which lowers your stats.| |TANK|Face him away from the group.| |BOSS|Zul'Lor|
+K Hukku |N|One of the six trolls on the balcony: Shadow Bolt Volley, Shadow Bolt, Curse of Blood, and Hukku's Guardians.| |HEAL|Remove Curse of Blood (Curse: Mage, Druid).| |DPS|Interrupt Shadow Bolt Volley; kill the guardians.| |BOSS|Hukku|
+K Loro |N|One of the six trolls on the balcony: Shield Slam stuns, and now and then he drops his threat.| |TANK|Taunt him back when he drops threat.| |BOSS|Loro|
+K Jammal'an the Prophet |N|His door opens once the six trolls are dead. Hex of Jammal'an turns a player against the group, Flamestrike burns a spot, he drops an Earthgrab Totem, and he heals at 50%. Ogom the Wretched fights with him.| |HEAL|Move out of Flamestrike.| |DPS|Interrupt Healing Wave; kill the totem.| |BOSS|Jammal'an the Prophet|
+K Dreamscythe |N|A dragon: Acid Breath burns everyone in front, and Wing Flap knocks back those in front.| |TANK|Face it away from the group, with your back to a wall.| |DPS|Stand at its side or behind.| |BOSS|Dreamscythe|
+K Weaver |N|A dragon: Acid Breath burns everyone in front, and Wing Flap knocks back those in front.| |TANK|Face it away from the group, with your back to a wall.| |DPS|Stand at its side or behind.| |BOSS|Weaver|
+K Morphaz |N|A dragon: Acid Breath burns everyone in front, and Wing Flap knocks back those in front.| |TANK|Face it away from the group, with your back to a wall.| |DPS|Stand at its side or behind.| |BOSS|Morphaz|
+K Hazzas |N|A dragon: Acid Breath burns everyone in front, and Wing Flap knocks back those in front.| |TANK|Face it away from the group, with your back to a wall.| |DPS|Stand at its side or behind.| |BOSS|Hazzas|
+K Shade of Eranikus |N|Acid Breath in front, War Stomp around him, Deep Slumber sleeps a player, and Thrash gives him extra attacks.| |TANK|Face him away from the group.| |HEAL|Dispel Deep Slumber (Magic: Priest, Paladin).| |DPS|Stand behind him.| |BOSS|Shade of Eranikus|
+K Avatar of Hakkar |N|He comes after the four Eternal Flames are put out with Hakkari Blood from the Bloodkeepers. Cause Insanity turns a player against the group, Curse of Tongues slows casters, and Lash stuns and disarms.| |TANK|Lash stuns and disarms you.| |HEAL|Remove Curse of Tongues (Curse: Mage, Druid); dispel Shadow Word: Pain (Magic: Priest, Paladin).| |DPS|Crowd-control a player under Cause Insanity rather than killing them.| |BOSS|Avatar of Hakkar|
+C The God Hakkar |QID|3528| |N|Use the Egg of Hakkar at the Altar of Hakkar, and kill the Hakkari Bloodkeepers as the Avatar comes: fill the egg with their blood, then kill the Avatar of Hakkar| |O|
 
 N Back outside |N|Out of Sunken Temple, in Swamp of Sorrows|
 T Voodoo Feathers |QID|8425| |N|Fallen Hero of the Horde (34.3, 66.1)| |Z|Swamp of Sorrows| |C|Warrior| |O|
@@ -98,7 +113,7 @@ F Marshal's Refuge |N|Fly to Marshal's Refuge in Un'Goro Crater| |Z|Un'Goro Crat
 T Haze of Evil |QID|4143| |N|Muigin (42.9, 9.6)| |Z|Un'Goro Crater|
 T A Better Ingredient |QID|9053| |N|Torwa Pathfinder (71.6, 76)| |Z|Un'Goro Crater| |C|Druid|
 
-F Gadgetzan |N|Fly to Gadgetzan in Tanaris| |Z|Tanaris|
+F Gadgetzan |N|Fly to Gadgetzan in Tanaris| |Z|Tanaris| |O| |PRE|4787|
 T The God Hakkar |QID|3528| |N|Yeh'kinya (67, 22.4)| |Z|Tanaris| |O|
 
 N Done |N|That is every quest for Sunken Temple|

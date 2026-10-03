@@ -3,7 +3,7 @@
 ## Title: Aegis: Pathfinder
 ## Notes: Classic+ leveling guide for the Turtle WoW-lineage 1.12 client family.|nPart of the Aegis addon suite.
 ## Author: Aegis: Pathfinder Contributors (see CONTRIBUTORS.md)
-## Version: 0.21.3
+## Version: 0.22.24
 ## X-Category: Quest
 
 ## SavedVariables: AegisPathfinderDB, TurtleGuideDB
@@ -54,7 +54,25 @@ CraftRouteFrame.lua
 GearFrame.lua
 GearAdvisor.lua
 GearFinder.lua
+# The Gear Finder as a tab on the character panel
+GearFinderTab.lua
 ActiveFrames.lua
+# Flights, buying, selling greys, repairing and making room in full bags,
+# for the Automation and Action Buttons pages; what vendors pay (CMaNGOS)
+SellPrices.lua
+Automation.lua
+# What the Maps page draws on the world map and minimap: where the rares can
+# spawn (pfQuest-turtle), then the reveal, the step's places and the ant trail
+Rares.lua
+Maps.lua
+# The Extras page: detailed reputation gains and level-up announcements
+Extras.lua
+# The Talent Advisor: the builds, which talent each point goes to, and its
+# marks on Blizzard's talent window
+TalentBuilds.lua
+TalentAdvisor.lua
+TalentWindow.lua
+TalentModern.lua
 NextGuideFrame.lua
 DungeonQuests.lua
 SetupFrame.lua
@@ -81,6 +99,11 @@ Guides\Dungeons\Horde\Guides.xml
 # (written by Tools/build/build_class_guides.py)
 Guides\Class\Alliance\Guides.xml
 Guides\Class\Horde\Guides.xml
+
+# Attunement guides: the quests that open each raid and dungeon
+# (written by Tools/build/build_attunement_guides.py)
+Guides\Attunements\Alliance\Guides.xml
+Guides\Attunements\Horde\Guides.xml
 
 # Alliance Zone Completion Guides
 Guides\Alliance\Guides.xml

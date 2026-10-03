@@ -238,12 +238,24 @@ now = now + 600
 local times = A:LevelTimes()
 check(times[1].level == 21 and times[1].seconds == 600 and times[1].current, "level 21 counting up: 10 minutes")
 now = now + 60
+do
+	-- The Extras page's level-up announcement asks for the level just left,
+	-- before or after the tracker banks it.
+	local secs, whole = A:TimeAtLevel(21)
+	check(secs == 660 and not whole, "21 so far, before the bank: 11 minutes, not counted from its start")
+end
 A:TrackerEvent("PLAYER_LEVEL_UP", 22)
 level = 22
+check(A:TimeAtLevel(21) == 660, "and the same after it")
 now = now + 30
 times = A:LevelTimes()
 check(times[1].level == 22 and times[1].seconds == 30 and times[2].level == 21 and times[2].seconds == 660,
 	"a level up banks the last level, got %s/%s", tostring(times[2] and times[2].seconds), tostring(times[1].seconds))
+do
+	local secs, whole = A:TimeAtLevel(22)
+	check(secs == 30 and whole, "22, begun while counting: 30 seconds, all of it")
+	check(A:TimeAtLevel(30) == nil, "a level not reached: no time")
+end
 A:TrackerEvent("PLAYER_LOGOUT")
 check(A.db.char.leveltime[22] == 30, "logging out banks the level you are at")
 check(Browser.Duration(4320) == "1h 12m" and Browser.Duration(3520) == "58m 40s" and Browser.Duration(40) == "40s",
@@ -338,6 +350,23 @@ check(dungeons.items[2].guide == "Dungeons/The Deadmines (17-24)", "before the d
 check(A:BrowserCategoryOf("Optimized/Uldaman (45-46)") == "dungeons", "and Recent files it there too")
 check(Browser.DungeonIn("RXP/Scholomance Key (A)") == "Scholomance" and Browser.DungeonIn("Westfall (12-17)") == nil,
 	"the later dungeons and raids are known by name too")
+-- A pack's attunement or key has no level range: it was filed under Levels
+-- 1-20. It has a folder of its own under Dungeons, after the route runs.
+guide("RXP/Onyxia Attunement (A)", "A Dragonkin Menace|Z|Burning Steppes|\n")
+guide("RXP/Scholomance Key (A)", "A Go|Z|Western Plaguelands|\n")
+local withAccess = A:BrowserCategory("dungeons")
+local access = withAccess.items[2] and withAccess.items[2].folder
+check(access and access.title == Browser.ACCESS
+	and titles(access) == "RXP/Onyxia Attunement (A), RXP/Scholomance Key (A)"
+	and access.items[1].why == "RestedXP", "attunements and keys get their own folder, got %s",
+	access and titles(access) or "none")
+check(withAccess.items[1].folder.title == Browser.ROUTE_LEGS and withAccess.items[3].guide
+	== "Dungeons/The Deadmines (17-24)", "between the route runs and the dungeon guides")
+local rxp = find(A:BrowserCategory("leveling"), "RestedXP")
+check(not rxp or not string.find(titles(rxp), "Attunement", 1, true), "and are not among RestedXP's levels")
+check(A:BrowserCategoryOf("RXP/Onyxia Attunement (A)") == "dungeons", "Recent files them there too")
+check(not Browser.AccessChain("Class/Rogue: The Azure Key (50)") or A:BrowserCategoryOf("Class/Rogue: The Azure Key (50)") ~= "dungeons",
+	"a class quest named for a key stays with the class quests")
 guide("Moonwhisper Coast (52-60)", "A Go|Z|Teldrassil|\n")
 local mwc = pic("Moonwhisper Coast (52-60)")
 check(mwc.kind == "image" and mwc.texture == A.Theme.zonemap["Moonwhisper Coast"] and mwc.coords == Pictures.ART_COORDS,
@@ -475,18 +504,31 @@ check(ui.picture.kind == "map" and ui.rows[3].star:IsShown() and ui.rows[3].load
 check(ui.rows[3].fill:IsShown() and not ui.rows[1].fill:IsShown(), "the row is marked")
 fire(ui.rows[3], "OnLeave")
 check(not ui.rows[3].load:IsShown() and ui.rows[3].fill:IsShown(), "it stays marked")
+-- What a row says on the right ("Dungeon") makes room for the star and arrow.
+ui.rows[3].right:SetText("Dungeon")
+fire(ui.rows[3], "OnEnter")
+local _, _, _, rightX = ui.rows[3].right:GetPoint(1)
+check(rightX == -56, "pointed at, the row's right-hand text moves left of the star and arrow, got %s", tostring(rightX))
+fire(ui.rows[3], "OnLeave")
+_, _, _, rightX = ui.rows[3].right:GetPoint(1)
+check(rightX == -10, "and back when they go, got %s", tostring(rightX))
+ui.rows[3].right:SetText("")
 
 -- Clicks.
 arg1 = "LeftButton"
 this = ui.rows[3]
+local openedAt = table.getn(opened)
 click(ui.rows[3])
-check(opened[table.getn(opened)] == "Optimized/Darkshore (20-21)", "left-click opens it beside the route")
+check(table.getn(opened) == openedAt + 1 and opened[table.getn(opened)] == "Optimized/Darkshore (20-21)",
+	"a click opens it in a new tab")
+arg1 = "RightButton"
 click(ui.rows[3], "RightButton")
-check(loaded[table.getn(loaded)] == "Optimized/Darkshore (20-21)", "right-click loads it in this tab")
-click(ui.load)
-check(table.getn(loaded) == 2, "and so does Load")
-click(ui.beside)
-check(table.getn(opened) == 3, "Open beside the route opens it beside")
+arg1 = "LeftButton"
+check(table.getn(opened) == openedAt + 2 and table.getn(loaded) == 0,
+	"a right-click too: nothing loads over the tab you are on")
+click(ui.open)
+check(table.getn(opened) == openedAt + 3, "and so does Open in a new tab")
+check(ui.load == nil and ui.beside == nil, "the Load button, which replaced the guide you were on, is gone")
 A.db.char.completion["Optimized/Darkshore (20-21)"] = 1
 shift = true
 click(ui.rows[3])
@@ -501,14 +543,18 @@ check(ui.rows[3].star:IsShown(), "and a favourite's star stays up")
 click(ui.categories[5])
 check(ui.rows[1].guide == "Optimized/Darkshore (20-21)" and ui.rows[1].badge:IsShown(), "Favorites has it, with its badge")
 
--- A RestedXP guide switches the route pack.
+-- A RestedXP guide opens in a tab of its own and leaves the route pack alone:
+-- switching packs loaded the pack's guide over the one you were on.
 click(ui.categories[1])
 arg1 = "LeftButton"
 click(ui.rows[2])
 check(ui.title:GetText() == "RestedXP", "into RestedXP")
 check(ui.crumb:GetText() == "Leveling", "under Leveling, got %s", ui.crumb:GetText())
+local packsBefore, openedBefore = table.getn(packs), table.getn(opened)
 click(ui.rows[1])
-check(packs[table.getn(packs)] == "RestedXP", "picking a RestedXP guide picks the RestedXP pack")
+check(table.getn(packs) == packsBefore, "picking a RestedXP guide does not switch the route pack")
+check(table.getn(opened) == openedBefore + 1 and string.find(opened[table.getn(opened)], "^RXP"),
+	"it opens in a new tab, got %s", tostring(opened[table.getn(opened)]))
 click(ui.back)
 check(ui.title:GetText() == "Leveling", "back up to Leveling")
 

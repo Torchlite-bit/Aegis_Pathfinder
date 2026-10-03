@@ -51,7 +51,7 @@ T Khan Jehn |QID|1374| |N|Uthek the Wise in Gelkis Village (36.23, 79.22)| |Z|De
 R Shadowprey Village |TID|5581| |N|Travel to Shadowprey Village (25.81, 68.21)| |Z|Desolace|
 T Portals of the Legion |QID|5581| |N|Taiga Wisemane in Shadowprey Village (25.81, 68.21)| |Z|Desolace|
 
-N Level 43 |N|Continue to Dustwallow Marsh|
+N Level 43 |N|Continue to Dustwallow Marsh| |LV|43|
 
 ]]
 end)

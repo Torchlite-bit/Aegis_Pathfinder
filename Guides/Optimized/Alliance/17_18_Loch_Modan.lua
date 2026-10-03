@@ -81,7 +81,7 @@ f Stormwind City |QID|244| |N|Get flight path if needed (66, 62)| |Z|Stormwind C
 
 R Redridge Mountains |QID|244| |N|Travel through Elwynn Forest to Redridge Mountains (91, 73)| |Z|Elwynn Forest|
 
-N Level 18 |N|You should be around level 18 now. Continue to Redridge Mountains|
+N Level 18 |N|You should be around level 18 now. Continue to Redridge Mountains| |LV|18|
 
 ]]
 end)

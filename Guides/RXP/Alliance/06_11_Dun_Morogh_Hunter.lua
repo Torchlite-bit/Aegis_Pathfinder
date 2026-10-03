@@ -24,13 +24,13 @@ C Collect Crag Boar Rib (x6) |QID|384| |L|2886 6| |N|Young Black Bears. Loot the
 C Collect Crag Boar Rib (x6) |QID|384| |L|2886 6| |N|Kill Crag Boars and Large Crag Boars. Loot them for their Crag Boar Ribs| |O| |Z|Dun Morogh|
 T Stocking Jetsteam |QID|317| |N|Pilot Bellowfiz - (49.4, 48.4)| |Z|Dun Morogh|
 A Evershine |QID|318| |N|Pilot Bellowfiz - (49.4, 48.4)| |Z|Dun Morogh|
-G Grind to level 6 |Z|Dun Morogh|
+G Grind to level 6 |Z|Dun Morogh| |LV|6|
 t Train Arcane Shot |N|Grif Wildheart - (45.8, 53.0)| |Z|Dun Morogh|
 C Ammo for Rumbleshot |QID|5541| |OIDX|1| |N|the Ammo Crate. Loot it for Rumbleshot's Ammo Collect Rumbleshot's Ammo (x1)| |Z|Dun Morogh|
 N Hegnar Rumbleshot |N|(40.6, 62.6)| |Z|Dun Morogh|
 T Ammo for Rumbleshot |QID|5541| |N|(40.7, 65.1)| |Z|Dun Morogh|
 C The Grizzled Den |QID|313| |OIDX|1| |N|Wendigos and Young Wendigos. Loot them for their Manes Collect Wendigo Mane (x8)| |Z|Dun Morogh|
-G Grind to level 7 |Z|Dun Morogh|
+G Grind to level 7 |Z|Dun Morogh| |LV|7|
 N Tundra MacGrann |N|(43.0, 47.4)| |Z|Dun Morogh|
 A Tundra MacGrann's Stolen Stash |QID|312| |N|(34.6, 51.7)| |Z|Dun Morogh|
 N Wait until Old Icebeard patrols out of the Cave. Once he patrols out of the Cave you can enter and loot MacGrann's Meat Locker |N|(38.5, 53.9)| |Z|Dun Morogh|

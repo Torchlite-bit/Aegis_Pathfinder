@@ -97,7 +97,7 @@ R Gadgetzan |TID|1691| |N|Travel to Gadgetzan (52.47, 28.43)| |Z|Tanaris|
 T More Wastewander Justice |QID|1691| |N|Chief Engineer Bilgewhizzle in Gadgetzan (52.45, 28.50)| |Z|Tanaris|
 T WANTED: Caliph Scorpidsting |QID|2781| |N|Chief Engineer Bilgewhizzle in Gadgetzan (52.44, 28.50)| |Z|Tanaris| |O|
 
-N Level 45 |N|You should be around level 45 now. Continue to Feralas|
+N Level 45 |N|You should be around level 45 now. Continue to Feralas| |LV|45|
 
 ]]
 end)

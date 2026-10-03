@@ -46,7 +46,7 @@ A Encrypted Letter |QID|3102| |N|Marshal McBride - (48.9, 41.6)| |C|Rogue| |Z|El
 A Hallowed Letter |QID|3103| |N|Marshal McBride - (48.9, 41.6)| |C|Priest| |Z|Elwynn Forest|
 A Glyphic Letter |QID|3104| |N|Marshal McBride - (48.9, 41.6)| |C|Mage| |Z|Elwynn Forest|
 A Tainted Letter |QID|3105| |N|Marshal McBride - (48.9, 41.6)| |C|Warlock| |Z|Elwynn Forest|
-G Grind to 3 |Z|Elwynn Forest|
+G Grind to 3 |Z|Elwynn Forest| |LV|3|
 C Investigate Echo Ridge |QID|15| |OIDX|1| |N|Kobold Workers Kill Kobold Worker (x10)| |Z|Elwynn Forest|
 G Grind to 1110+/1400xp on your way back |Z|Elwynn Forest|
 B Vendor trash |N|Godric Rothgar - (47.7, 41.4)| |O| |Z|Elwynn Forest|
@@ -69,7 +69,7 @@ A Brotherhood of Thieves |QID|18| |N|Deputy Willem - (48.2, 42.9)| |Z|Elwynn For
 T Tainted Letter |QID|3105| |N|Drusilla La Salle - (49.9, 42.6)| |C|Warlock| |Z|Elwynn Forest|
 t Train [Corruption] |N|Drusilla La Salle - (49.9, 42.6)| |C|Warlock| |Z|Elwynn Forest|
 C Brotherhood of Thieves |QID|18| |OIDX|1| |N|Defias Thugs. Loot them for their Bandanas Collect Red Burlap Bandana (x12)| |Z|Elwynn Forest|
-G Grind to 4 |C|Rogue| |Z|Elwynn Forest|
+G Grind to 4 |C|Rogue| |Z|Elwynn Forest| |LV|4|
 T Brotherhood of Thieves |QID|18| |N|Deputy Willem - (48.2, 42.9)| |C|Paladin| |Z|Elwynn Forest|
 T Brotherhood of Thieves |QID|18| |N|Deputy Willem - (48.2, 42.9)| |C|Rogue/Warlock| |Z|Elwynn Forest|
 T Brotherhood of Thieves |QID|18| |N|Deputy Willem - (48.2, 42.9)| |C|Mage| |Z|Elwynn Forest|
@@ -80,7 +80,7 @@ A Bounty on Garrick Padfoot |QID|6| |N|Deputy Willem - (48.2, 42.9)| |Z|Elwynn F
 A Milly Osworth |QID|3903| |N|Deputy Willem - (48.2, 42.9)| |Z|Elwynn Forest|
 R Enter the Echo Ridge Mine |N|(47.6, 32.1)| |O| |Z|Elwynn Forest|
 C Skirmish at Echo Ridge |QID|21| |OIDX|1| |N|Kobold Laborers Kill Kobold Laborer (x12)| |Z|Elwynn Forest|
-G Grind to 5 |Z|Elwynn Forest|
+G Grind to 5 |Z|Elwynn Forest| |LV|5|
 T Milly Osworth |QID|3903| |N|Milly Osworth - (50.7, 39.3)| |C|!Priest/!Mage| |Z|Elwynn Forest|
 N Skip the followup |N|(50.7, 39.3)| |C|!Priest/!Mage| |Z|Elwynn Forest|
 T Milly Osworth |QID|3903| |N|Milly Osworth - (50.7, 39.3)| |C|Priest/Mage| |Z|Elwynn Forest|
