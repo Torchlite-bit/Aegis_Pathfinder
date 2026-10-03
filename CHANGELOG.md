@@ -18,6 +18,42 @@ reports.
 
 ---
 
+## [0.22.23] — restart
+
+### Added
+- **The Talent Advisor on Modern Spellbook's talent window.** With
+  [Modern Spellbook](https://github.com/lioryx/ModernSpellBook) (by lioryx)
+  and its talents on (`/msb talents`), its window is marked as Blizzard's is:
+  - every tree at once: the badges, the gold ring and NEXT on the next point,
+    and NEXT POINT HERE by its tree's name, in the expanded view too;
+  - a strip over the window: the build to follow, the card for the next
+    point, and *Plan to my level*, *Whole build as a plan* and *Share*;
+  - the marks step aside while it shows a plan.
+- **Plans in Modern Spellbook.** *Plan to my level* (21 points at 30) and
+  *Whole build as a plan* (51) save the build in its plan list, as
+  "Pathfinder: Sword and Board to 30" or "Pathfinder: Sword and Board", and
+  make it the plan its window shows. Its *Apply* learns the points; Pathfinder
+  never spends one. A plan is the ranks you have, then the build's next
+  points, so points already off the build don't stop it applying.
+- **Share and plan.** The build as Modern Spellbook's share string
+  (`MSB1-WARRIOR-…`), selected to copy, for its *Import* or a friend; and
+  *Follow a shared build*: paste such a string and the advisor follows it, the
+  tree with the most points first, a row at a time, as **Shared build** in the
+  menu. Turtle WoW has prerequisites in the same row (Holy's Divine Favor
+  needs Holy Shock), so those are taken first within the row. Every build of
+  every class goes into a string and back, and fits Turtle's trees that way.
+- **A card when you level up** with a point: "Level 30: a talent point. Take
+  Shield Slam (rank 1 of 1) in Protection.", with *Open talents* and *Later*;
+  and the talents button lit gold with the points to spend on it. Both on the
+  Extras page's new *Point out a talent point* (on).
+
+### Changed
+- **Louder marks on Blizzard's talent window**, as in the mock-up: the next
+  point's ring and NEXT in gold; a card under the menu with the talent's icon,
+  "Take Deep Wounds" and "Rank 3 of 3, in Arms · 1 point to spend"; badges
+  green while points are to take and a tick once taken; the next tree's tab
+  lit gold.
+
 ## [0.22.22]
 
 ### Fixed
@@ -1593,6 +1629,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.23]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.22]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.21]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.20]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.22.22)
+# Aegis: Pathfinder (v0.22.23)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -165,8 +165,12 @@ tree's tab. A strip above the window names the build and where the next point
 goes, and says when you have points elsewhere — it carries on from the
 closest point, never asks you to respec. Your class's levelling build to 60,
 then your spec's; or pick any of them — Sword and Board for a Warrior or
-Paladin, Bear for a Druid. On a level up it names the talent to
-take in chat. The builds are made on Turtle WoW's own trees, and each is
+Paladin, Bear for a Druid. On a level up a card names the talent to take, and
+the talents button lights up until you spend the point. With
+[Modern Spellbook](https://github.com/lioryx/ModernSpellBook), its talent
+window is marked the same way, and the build saves as one of its plans for its
+Apply to learn, or shares as its build string — and a string someone shares
+with you can be followed. The builds are made on Turtle WoW's own trees, and each is
 checked against the tree your game has before it is followed. It never spends
 a point.
 
@@ -273,7 +277,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.22.22`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.22.23`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)** or open an

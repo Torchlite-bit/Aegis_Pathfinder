@@ -40,6 +40,7 @@ local CREDITS = {
 		"Cladhaire, laytya and the TWOW porters -- TomTom-TWOW",
 		"Kitymeowmeow -- CraftRoute, the recipe data behind crafting routes and the profession guides' routes",
 		"iGreed -- OctoPawn, the stat weights behind the item score (MIT)",
+		"lioryx -- Modern Spellbook, whose talent window, plans and build strings the Talent Advisor works with",
 		"The CMaNGOS team -- classic-db and mangos-classic: trainers, gathering data, quest rules and what dungeon bosses do",
 	} },
 	{ "Fonts", {

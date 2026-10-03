@@ -222,13 +222,36 @@ are only found at startup.
       opens it (from level 10; before, it says when talents come).
 - [ ] The talent window opens on the tree your next point goes to. Each of its
       talents in the build has a badge with the build's points: green while
-      some are to take, quiet once you have them; the next one glows with
-      NEXT over it, and its tab has a dot. Click another tab: its talents are
-      marked, no glow, the dot stays.
-- [ ] The strip above the window: PATHFINDER, *Following* and the build; "Next:
-      <talent>, rank r of n" with a point to spend, "Your point at level N goes
-      to ..." without. It sits on the window's top edge, as wide as it, and
-      moves with it; with pfUI, on pfUI's frame.
+      some are to take, a tick once you have them; the next one has a gold
+      ring with NEXT over it, and its tab a gold dot and light. Click another
+      tab: its talents are marked, no ring, the tab stays lit.
+- [ ] The strip above the window: PATHFINDER, *Following* and the build on one
+      row; under it a card with the talent's icon in gold, "Take <talent>" and
+      "Rank r of n, in <tree> · 1 point to spend" ("Next: <talent>" and "…
+      your point at level N" without a point). It sits on the window's top
+      edge, as wide as it, and moves with it; with pfUI, on pfUI's frame.
+- [ ] Level up (10+) with the talent window shut: a card at the bottom right,
+      "Level N: a talent point", the talent to take, *Open talents* and
+      *Later*; Open talents opens the window and the card goes. Later puts it
+      away; left alone it goes in half a minute. The talents button on the
+      action bar glows gold with the points to spend on it until they're
+      spent. Neither with *Point out a talent point* off.
+- [ ] **With Modern Spellbook** (and `/msb talents` on): open the talents. A
+      strip over its window: PATHFINDER, *Following*, the card, and *Plan to my
+      level*, *Whole build as a plan*, *Share*. Every tree's talents have their
+      badges, the next one the gold ring and NEXT, and its tree "NEXT POINT
+      HERE" by its name. Expand a tree: its talents are marked too. Switch it
+      to a plan: the marks go, the strip stays.
+- [ ] Modern Spellbook: *Plan to my level* -- chat says "Saved "Pathfinder: …
+      to <level>" in Modern Spellbook's plans: N points"; its window shows the
+      plan, its list has it, and its *Apply* learns the points. *Whole build as
+      a plan*: 51. Pressing either again replaces the same-named plan.
+- [ ] Modern Spellbook: *Share* opens Share and plan with the build's string
+      selected; Ctrl+C copies it, typing over it does nothing. Paste it into
+      Modern Spellbook's Import: the same build. Paste a friend's string (or
+      one Modern Spellbook's Share gives for a plan you made) into *Follow a
+      shared build*: "Following it", the menu says Shared build, and the marks
+      follow it. Another class's string says so.
 - [ ] Put a point where the build doesn't: that talent's badge says "+1" in
       amber, the strip "1 point off the build. It carries on from the closest
       point.", and the glow moves to the build's next point you can take.

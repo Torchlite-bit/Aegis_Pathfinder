@@ -564,6 +564,10 @@ function Build.TalentAdvisor(k)
 	k.space(10)
 	Build.CharSwitch(k, "talentchat", "Name the talent to take in chat when I level up", nil,
 		{ parent = "talentadvisor", defaultOn = true })
+	Build.CharSwitch(k, "talentnudge", "Point out a talent point: a card when I level up, and the talents button lit",
+		redraw, { parent = "talentadvisor", defaultOn = true })
+	k.note("With Modern Spellbook's talent window, the advisor marks it the same way, and saves its builds "
+		.. "as Modern Spellbook plans for its Apply. Share there gives a build as its string, and follows one.")
 	local open = Theme:Pill(k.body(), "Open the talent window", 170, 26)
 	open:SetScript("OnClick", function()
 		if A.TalentAdvisor then A.TalentAdvisor:OpenWindow() end

@@ -150,8 +150,11 @@ Open()
 check(TalentFrame.selectedTab == 1, "the window opens on Arms, where the next point goes")
 local strip = TW.strip
 check(strip:IsShown() and strip:GetParent() == TalentFrame, "the strip shows, on the window")
-check(strip.note:GetText() == "Next: Deep Wounds, rank 3 of 3", "it says where the next point goes, got %s",
-	tostring(strip.note:GetText()))
+check(strip.card:IsShown() and strip.card.title:GetText() == "Take Deep Wounds"
+	and strip.card.detail:GetText() == "Rank 3 of 3, in Arms · 1 point to spend",
+	"its card says where the next point goes, got %s / %s", tostring(strip.card.title:GetText()),
+	tostring(strip.card.detail:GetText()))
+check(strip.card.icon:GetTexture() == "icon" and strip.note:GetText() == "", "with the talent's icon, and no line besides")
 check(strip.warn:GetText() == "", "nothing off the build")
 check(strip.drop:GetValue() == "auto" and strip.drop.label:GetText() == "Leveling, then Fury at 60",
 	"following levelling, then Fury, got %s", tostring(strip.drop.label:GetText()))
@@ -163,16 +166,17 @@ check(deep and deep:IsShown() and deep.badge:IsShown() and deep.badge.text:GetTe
 	"Deep Wounds has its badge: the build puts 3 there")
 check(deep.glow:IsShown() and deep.tag:IsShown(), "and the glow and NEXT: the next point goes there")
 local r, g, b = deep.badge.text:GetTextColor()
-local c = Theme.color.text
-check(r == c[1] and g == c[2] and b == c[3], "points still to take: white on the accent")
+local c = TW.G.ON_ACCENT
+check(r == c[1] and g == c[2] and b == c[3], "points still to take: dark on the accent")
+r, g, b = deep.glow:GetVertexColor()
+check(r == 1 and g == TW.G.GOLD[2] and b == 0, "the ring is gold")
 local ihs = Marks("Improved Heroic Strike")
-check(ihs.badge:IsShown() and ihs.badge.text:GetText() == "3" and not ihs.glow:IsShown(), "Improved Heroic Strike: 3")
-r, g, b = ihs.badge.text:GetTextColor()
-c = Theme.color.accentGlow
-check(r == c[1] and g == c[2] and b == c[3], "all taken: the quiet badge")
+check(ihs.badge:IsShown() and not ihs.glow:IsShown(), "Improved Heroic Strike has its badge, not the ring")
+check(ihs.badge.tick:IsShown() and not ihs.badge.text:IsShown(), "all taken: a tick, not a number")
 check(not Marks("Improved Thunder Clap").badge:IsShown(), "a talent the build leaves alone has no badge")
 check(TalentFrameTab1.apDot:IsShown() and not TalentFrameTab2.apDot:IsShown() and not TalentFrameTab3.apDot:IsShown(),
 	"Arms' tab has the dot")
+check(TalentFrameTab1.apLit:IsShown() and not TalentFrameTab2.apLit:IsShown(), "and is lit gold")
 
 -- Another tree: its talents marked, no glow, the dot still on Arms.
 PanelTemplates_SetTab(TalentFrame, 2)
@@ -197,14 +201,14 @@ r, g, b = itc.badge.text:GetTextColor()
 check(r < 0.2 and g < 0.2 and b < 0.2, "dark text on amber")
 check(strip.warn:GetText() == "2 points off the build. It carries on from the closest point.",
 	"the strip counts them, got %s", tostring(strip.warn:GetText()))
-check(strip.note:GetText() == "Next: Impale, rank 1 of 2", "and carries on: Impale, got %s", tostring(strip.note:GetText()))
+check(strip.card.title:GetText() == "Take Impale", "and carries on: Impale, got %s", tostring(strip.card.title:GetText()))
 check(Marks("Impale").glow:IsShown(), "the glow on Impale")
 
 -- No point to spend: where the next level's goes.
 current.unspent = 0
 TalentFrame_Update()
-check(strip.note:GetText() == "Your point at level 30 goes to Impale.", "no point to spend, got %s",
-	tostring(strip.note:GetText()))
+check(strip.card.title:GetText() == "Next: Impale" and strip.card.detail:GetText() == "Rank 1 of 2, in Arms · your point at level 30",
+	"no point to spend, got %s / %s", tostring(strip.card.title:GetText()), tostring(strip.card.detail:GetText()))
 
 -- The tooltip.
 current.unspent = 1
@@ -270,14 +274,14 @@ TalentFrame.backdrop = nil
 -- At 60 with all 51 on the levelling build.
 current.level, current.unspent, current.ranks = 60, 0, After(51)
 TalentFrame_Update()
-check(strip.note:GetText() == "All 51 points spent. Your Fury build is ready for when you respec.",
+check(not strip.card:IsShown() and strip.note:GetText() == "All 51 points spent. Your Fury build is ready for when you respec.",
 	"at 60: your spec's build is ready, got %s", tostring(strip.note:GetText()))
 check(strip.drop.label:GetText() == "Leveling (done), then Fury", "the menu says so, got %s",
 	tostring(strip.drop.label:GetText()))
 -- After a respec: Fury's build.
 current.ranks, current.unspent = {}, 51
 TalentFrame_Update()
-check(strip.drop.label:GetText() == "Fury, my spec" and string.find(strip.note:GetText(), "^Next: "),
+check(strip.drop.label:GetText() == "Fury, my spec" and string.find(strip.card.title:GetText(), "^Take "),
 	"after a respec: Fury's, from its first point, got %s", tostring(strip.drop.label:GetText()))
 
 -- A tree the build doesn't fit: why, and no marks.
@@ -348,9 +352,59 @@ said = {}
 TA:PointsChanged()
 check(table.getn(said) == 0, "not before the last point")
 
--- Opening the window from the options.
+-- Off the window: the card on a level up, and the talents button lit.
 local toggled = 0
 ToggleTalentFrame = function() toggled = toggled + 1 end
+CreateFrame("Button", "TalentMicroButton", UIParent)
+TalentMicroButton:SetWidth(28); TalentMicroButton:SetHeight(58)
+GetTime = function() return 100 end
+TalentFrame:Hide()
+current.level, current.unspent, current.ranks = 22, 1, After(12)
+TA.fit = {}
+TA:LevelUp(22)
+local toast = TW.toast
+check(toast and toast:IsShown() and toast.title:GetText() == "Level 22: a talent point"
+	and toast.line:GetText() == "Take Deep Wounds (rank 3 of 3) in Arms.",
+	"a level up puts up the card, got %s / %s", toast and tostring(toast.title:GetText()) or "none",
+	toast and tostring(toast.line:GetText()) or "")
+check(toast.icon:GetTexture() == "icon", "with the talent's icon")
+fire(toast.later, "OnClick")
+check(not toast:IsShown(), "Later puts it away")
+TA:LevelUp(22)
+fire(toast.open, "OnClick")
+check(not toast:IsShown() and toggled == 1, "Open talents opens the window and puts the card away")
+A.db.char.talentnudge = false
+TA:LevelUp(22)
+check(not toast:IsShown(), "no card with pointing out switched off")
+A.db.char.talentnudge = nil
+TalentFrame:Show()
+TA:LevelUp(22)
+check(not toast:IsShown(), "nor with the talent window already open")
+TA:LevelUp(22)
+TalentFrame_Update()
+check(not toast:IsShown(), "and opening it puts the card away")
+TalentFrame:Hide()
+GetTime = function() return 100 + TW.G.TOAST_SHOWS + 1 end
+toast:Show()
+fire(toast, "OnUpdate")
+check(not toast:IsShown(), "it goes by itself after a while")
+
+fire(TA.events, "OnEvent", "CHARACTER_POINTS_CHANGED", "-1")
+check(TalentMicroButton.apGlow:IsShown() and TalentMicroButton.apCount:IsShown()
+	and TalentMicroButton.apCount.text:GetText() == "1", "a point to spend lights the talents button, with 1 on it")
+current.unspent = 0
+fire(TA.events, "OnEvent", "CHARACTER_POINTS_CHANGED", "-1")
+check(not TalentMicroButton.apGlow:IsShown() and not TalentMicroButton.apCount:IsShown(), "spent, it goes out")
+current.unspent = 2
+A.db.char.talentnudge = false
+fire(TA.events, "OnEvent", "PLAYER_ENTERING_WORLD")
+check(not TalentMicroButton.apGlow:IsShown(), "not lit with pointing out switched off")
+A.db.char.talentnudge = nil
+fire(TA.events, "OnEvent", "PLAYER_ENTERING_WORLD")
+check(TalentMicroButton.apCount.text:GetText() == "2", "two to spend: 2")
+
+-- Opening the window from the options.
+toggled = 0
 printed = {}
 current.level = 5
 TA:OpenWindow()

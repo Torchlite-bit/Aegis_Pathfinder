@@ -393,8 +393,9 @@ field). Under Talent Advisor: its switch (`Build.CharSwitch`, on until
 switched off); *Build to follow*, a full-width dropdown (`Build.CharDropdown`)
 dimmed to 45% and not clickable while the advisor is off, its items rebuilt on
 every refresh so the first names your spec; a note; *Name the talent to take
-in chat when I level up* set in under the switch and held off with it; and an
-*Open the talent window* pill (170 by 26). The reputation line is an ordinary
+in chat when I level up* and *Point out a talent point* set in under the switch
+and held off with it; a note on Modern Spellbook; and an *Open the talent
+window* pill (170 by 26). The reputation line is an ordinary
 chat line from the addon, after the client's own.
 
 **The talent window** (`TalentWindow.lua`) is Blizzard's own, loaded on demand
@@ -409,19 +410,59 @@ Pathfinder loads, for the tooltip line.
   34 from the right, its bottom 10 under the frame's top) or on pfUI's
   `TalentFrame.backdrop`, its width; `panel2` with rounded top corners
   (`CapStrip`). PATHFINDER in the display face (12, `accentGlow`) and
-  *Following* (12, `textDim`), then a full-width `Theme:Dropdown`, then the
-  line (12, white) and the warning (11, amber `#f0b43c`). 80 high, 96 with
-  both lines. The mock-up had the dropdown beside *Following*; the frame is
-  too narrow there for the builds' names, so it has a row of its own.
+  *Following* (12, `textDim`), then a full-width `Theme:Dropdown` (the mock-up
+  had it beside *Following*; the frame is too narrow there for the builds'
+  names, so it has a row of its own). Under it the card for the next point,
+  44 high: a dark gold ground (`#2e2a1c`), the talent's icon (36, trimmed) in
+  a 2px gold (`#ffd100`) edge, its title (body, 14, gold) and a line under it
+  (body, 12, `#e8e2c8`). With no next point, the line (12, white) in its
+  place; the warning (11, amber `#f0b43c`) under either. 116 high with the
+  card, 134 with the warning too; 86 and 104 with the line.
 - *A badge* on each talent button: 16 high, pill-shaped (`pillFill` and
   `pillBorder`, 8px corners), centred on the button's top right corner (its
-  rank is at the bottom right), the display face at 11. *todo*: `accentDeep`
-  fill, `accent` edge, white text; *done*: near-black fill, `accentDeep`
-  edge, `accentGlow` text; *off*: amber fill and edge, dark text.
-- *The next point*: `UI-ActionButton-Border`, 64 square, additive, tinted
-  `accent`, over the button; and a 38 by 13 `accent` tag reading NEXT (display
-  face, 10, near-black) 3 above it.
-- *The tab dot*: `circleFill`, 8 square, `accent`, left of the tab's name.
+  rank is at the bottom right), the display face at 11. *todo*: `accent`
+  fill and edge, near-black text; *done*: grey (`#5a5a5a`) with a white
+  `tick` glyph, 10 square, in place of the number; *off*: amber fill and
+  edge, dark text.
+- *The next point*: `UI-ActionButton-Border`, 72 square, additive, tinted
+  gold, over the button; and a 40 by 14 gold tag reading NEXT (display face,
+  10, near-black) 3 above it.
+- *The tab*: a gold `circleFill`, 8 square, left of the tab's name, and the
+  tab lit with `UI-Character-Tab-Highlight`, additive, tinted gold.
+- *The card on a level up*: 340 wide, `DIALOG` strata, 24 in from the right
+  and 150 up from the bottom of the screen, a `panel` with its shadow,
+  registered with the window stacking. The talent's icon (40) in a gold edge;
+  "Level N: a talent point" (display, 15, gold); the talent to take (body, 13);
+  *Open talents* (an active pill, 110 by 24) and *Later* (70 by 24). It hides
+  after 30 seconds, on either button, and when a talent window opens.
+- *The talents button*: on `TalentMicroButton`, `UI-ActionButton-Border`
+  additive and gold, 2.4 times its width; a 16 square gold pill at its top
+  right with the points to spend (display, 10, near-black).
+
+**Modern Spellbook's talent window** (`TalentModern.lua`) is its own
+`TalentTree` (frame `ModernTalentTreeFrame`), made when it loads; the advisor
+lays the same marks over it. Its `Refresh`, which it calls on opening, a point
+spent, a plan changed and a tree expanded, is wrapped on that window once, when
+it loads (`ADDON_LOADED` for ModernSpellBook, or `PLAYER_LOGIN`); its frame's
+OnShow and OnHide are chained.
+
+- *The strip*: 60 high, 10 above its frame, as wide as it, a `panel` without a
+  shadow. PATHFINDER (display, 14, `accentGlow`), a 1px rule, *Following* (11,
+  `textDim`) over a 260 by 24 `Theme:Dropdown`, the card (330 by 46, the icon
+  30), and at the right *Plan to my level* (active pill, 140), *Whole build as
+  a plan* (180) and *Share* (80), 30 high. The plan buttons dim to 45% without
+  its plans; all three while the build doesn't fit.
+- *The marks*: the badge, ring (62 square) and NEXT of Blizzard's window, on
+  each icon's frame, centred on its `border_frame`, five levels up. A gold
+  pill, 16 high, reading NEXT POINT HERE (display, 10), right of the next
+  point's tree's header. None while it shows a plan.
+- *Share and plan*: 560 by 340, `DIALOG` strata, a `panel` with its shadow
+  and a 40 high header (title SHARE AND PLAN, display 16; a close chip),
+  dragged by its header, closed by Escape and by its window closing. The
+  share string in a field (28 high, a hairline edge on black) that can't be
+  typed over; *Follow a shared build* with a field and *Follow it* (100), its
+  answer under it (`accentGlow`, or amber); *Plan to my level · N points*
+  (active) and *Whole build · N points*, 34 high, side by side.
 
 **On the world map** (`Maps.lua`) everything is drawn on the zone's own map,
 1002 by 668 like the client's. The unexplored overlays are tiles of our own on

@@ -272,6 +272,109 @@ do
 	TA.fit = {}
 end
 
+-- Modern Spellbook's strings and plans ----------------------------------------------
+
+--[[ Its share string is "MSB1-<CLASS>-<tree>-<tree>-<tree>", a digit a talent
+	in the game's order. Every build of every class goes into one and comes
+	back the same; read back, it is taken a row at a time, biggest tree first,
+	and that order has to fit Turtle's trees too. ]]
+do
+	for class, builds in pairs(A.TalentBuilds) do
+		UseClass(class)
+		local tree = TA.ReadTree()
+		local all = { builds.levelling }
+		for _, b in ipairs(builds.specs) do table.insert(all, b) end
+		for _, b in ipairs(builds.alts or {}) do table.insert(all, b) end
+		for _, b in ipairs(all) do
+			local label = class .. " " .. (b.name or b.spec or "levelling")
+			local targets = TA.Targets(TA.Points(b))
+			local text = TA.ShareString(tree, class, targets)
+			local _, _, c, t1, t2, t3 = string.find(text, "^MSB1%-(%u+)%-(%d+)%-(%d+)%-(%d+)$")
+			check(c == class and t1 and string.len(t1) == table.getn(current.trees[1].talents)
+				and string.len(t3 or "") == table.getn(current.trees[3].talents),
+				"%s: a share string with a digit a talent, got %s", label, text)
+			local ranks, total = TA.ReadShare(tree, class, "  " .. text .. "\n")
+			local same = total == TA.POINTS
+			for name, r in pairs(targets) do if ranks[name] ~= r then same = false end end
+			check(same, "%s: read back the same, %s points", label, tostring(total))
+			local ok, why = TA.Fits(tree, TA.ShareBuild(tree, ranks))
+			check(ok, "%s: taken a row at a time, it fits the tree (%s)", label, tostring(why))
+		end
+	end
+
+	UseClass("WARRIOR")
+	local tree = TA.ReadTree()
+	local prot = TA.SpecBuild(A.TalentBuilds.WARRIOR, "Protection")
+	local text = TA.ShareString(tree, "WARRIOR", TA.Targets(TA.Points(prot)))
+	check(select(2, TA.ReadShare(tree, "MAGE", text)) == "class", "another class's string: class")
+	check(select(2, TA.ReadShare(tree, "WARRIOR", "hello")) == "format", "not one: format")
+	check(select(2, TA.ReadShare(tree, "WARRIOR", "MSB1-WARRIOR-0-0-0")) == "format", "no points: format")
+	check(select(2, TA.ReadShare(tree, "WARRIOR", "MSB1-WARRIOR-55555555555555555555-5555555555555555-5555555555555555")) == "format",
+		"more than 51: format")
+	local ranks = TA.ReadShare(tree, "WARRIOR", "MSB1-WARRIOR-9")
+	check(ranks and ranks[current.trees[1].talents[1][1]] == current.trees[1].talents[1][4],
+		"a rank past a talent's ranks is its last")
+	local first = TA.ShareBuild(tree, TA.ReadShare(tree, "WARRIOR", text))
+	check(tree.talent[first.order[1]].tab == 3, "biggest tree first: Protection's talents lead")
+
+	-- Following one: the build is the shared one, named so, and in the menu.
+	A.db.char = {}
+	UnitLevel = function() return 30 end
+	UnitCharacterPoints = function() return 1, 0 end
+	A.ItemScore = { Spec = function() return "Fury", "picked" end }
+	local ok, why = TA:Follow("MSB1-MAGE-555")
+	check(not ok and why == "That build is for another class.", "a mage's string is refused, got %s", tostring(why))
+	ok, why = TA:Follow("not a string")
+	check(not ok and why == "That isn't a Modern Spellbook build string.", "so is anything else")
+	ok = TA:Follow(" " .. text .. " ")
+	check(ok and A.db.char.talentbuild == "shared" and A.db.char.talentshared == text, "Protection's string followed")
+	TA.fit = {}
+	local s = TA:State()
+	check(s and s.build.shared and s.fits and TA:Label(s) == "Shared build", "the shared build is followed, by that name")
+	check(s and tree.talent[s.next] and tree.talent[s.next].tab == 3, "from Protection's first row, got %s", tostring(s and s.next))
+	local items = TA:BuildItems(s)
+	check(items[table.getn(items)].value == "shared" and items[table.getn(items)].label == "Shared build",
+		"and it is in the menu, last")
+	check(TA:ShareText(s) == text, "shared again, it is the same string")
+
+	-- Plans: your ranks, then the build's next points, up to your level.
+	A.db.char = {}
+	local lev = A.TalentBuilds.WARRIOR.levelling
+	current.ranks = After(TA.Points(lev), 10)
+	current.ranks["Improved Thunder Clap"] = 2
+	TA.fit = {}
+	s = TA:State(nil, 30, 9)
+	local mine, all = TA.PlanSizes(s)
+	check(mine == 21 and all == 51, "at 30 a plan to your level is 21 points, the whole build 51; got %d, %d", mine, all)
+	local plan = TA.PlanRanks(s, mine)
+	check(TA.Total(plan) == 21 and plan["Improved Thunder Clap"] == 2,
+		"the plan keeps what you have, off the build too, so its Apply has no conflict")
+	local fine = true
+	for name, r in pairs(s.ranks) do if (plan[name] or 0) < r then fine = false end end
+	check(fine, "every rank you have is in it")
+	check(TA:PlanName(s, 30) == "Pathfinder: Leveling to 30" and TA:PlanName(s) == "Pathfinder: Leveling",
+		"named for the build, to your level or whole")
+	A.db.char.talentbuild = "levelling:Sword and Board"
+	TA.fit = {}
+	s = TA:State(nil, 30, 9)
+	check(TA:PlanName(s, 30) == "Pathfinder: Sword and Board to 30", "Sword and Board by its name")
+
+	-- The card for the next point.
+	A.db.char = {}
+	current.ranks = After(TA.Points(lev), 12)
+	TA.fit = {}
+	s = TA:State(nil, 22, 1)
+	local title, detail, icon = TA:NextCard(s)
+	check(title == "Take Deep Wounds" and detail == "Rank 3 of 3, in Arms · 1 point to spend" and icon == "icon",
+		"the card: take Deep Wounds, got %s / %s", tostring(title), tostring(detail))
+	s = TA:State(nil, 22, 0)
+	title, detail = TA:NextCard(s)
+	check(title == "Next: Deep Wounds" and detail == "Rank 3 of 3, in Arms · your point at level 23",
+		"with no point: the next level's, got %s / %s", tostring(title), tostring(detail))
+	A.db.char = {}
+	TA.fit = {}
+end
+
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end
 print(string.format("TalentAdvisor: %d checks", checks))
 if table.getn(failures) == 0 then

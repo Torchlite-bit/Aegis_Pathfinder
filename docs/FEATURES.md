@@ -626,11 +626,13 @@ continent's:
   (to start with), your class's levelling build, or any spec's build at 60.
   A Warrior or Paladin can level as **Sword and Board** instead, and a Druid
   as **Bear**: each on its own, or then your spec at 60.
-  *Name the talent to take in chat when I level up* (on). *Open the talent
-  window*.
+  *Name the talent to take in chat when I level up* (on). *Point out a
+  talent point: a card when I level up, and the talents button lit* (on).
+  *Open the talent window*.
 
-**Talent Advisor** (`TalentAdvisor.lua`, `TalentWindow.lua`). Which talent
-each point goes to, on Blizzard's own talent window (and pfUI's skin of it):
+**Talent Advisor** (`TalentAdvisor.lua`, `TalentWindow.lua`,
+`TalentModern.lua`). Which talent each point goes to, on Blizzard's own talent
+window (and pfUI's skin of it), and on Modern Spellbook's:
 
 - **The build.** Your class's levelling build until 60 -- a point a level from
   10 -- then your spec's: the spec picked on the Item Score page, or the one
@@ -643,15 +645,39 @@ each point goes to, on Blizzard's own talent window (and pfUI's skin of it):
   Bulwark of the Righteous at 41), and Bear for a Druid (Feral Charge at 28,
   Leader of the Pack at 40).
 - **On the window.** Each talent of the tree shown has a badge with the points
-  the build puts there: filled in the theme's colour while some are still to
-  take, quiet once you have them all, amber "+N" for points you have that the
-  build does not put there. The talent your next point goes to has a glow
-  and "NEXT", and its tree's tab a dot; the window opens on that tree.
-- **The strip** above the window: *Following* and the build, as a menu; where
-  the next point goes ("Next: Deep Wounds, rank 3 of 3", "Your point at level
-  30 goes to Impale", "Next, after a respec: ..."), and how many points are
-  off the build. Off the build it carries on from the build's closest point
-  you can take; it never says to respec.
+  the build puts there: green while some are still to take, a tick once you
+  have them all, amber "+N" for points you have that the build does not put
+  there. The talent your next point goes to has a gold ring and "NEXT", and
+  its tree's tab a gold dot and a gold light; the window opens on that tree.
+- **The strip** above the window: *Following* and the build, as a menu, and a
+  card for the next point: the talent's icon, "Take Deep Wounds" and "Rank 3
+  of 3, in Arms · 1 point to spend" ("Next: Impale" and "... · your point at
+  level 30" with none to spend). Under it, how many points are off the build.
+  Off the build it carries on from the build's closest point you can take; it
+  never says to respec.
+- **Off the window**, so a point is not missed: a card on a level up, "Level
+  30: a talent point", "Take Shield Slam (rank 1 of 1) in Protection.", with
+  *Open talents* and *Later* (gone by itself after half a minute, and not
+  while a talent window is open); and the talents button lit gold with the
+  points to spend on it. Both go with *Point out a talent point* on Extras.
+- **On Modern Spellbook's window** ([Modern Spellbook](https://github.com/lioryx/ModernSpellBook)
+  by lioryx, with its talents on, `/msb talents`): the same badges, ring and
+  NEXT on every tree at once, and "NEXT POINT HERE" by the next point's tree's
+  name; the strip over its window with the build, the card and three buttons.
+  While it shows a plan, the marks step aside.
+  - *Plan to my level* (21 points at 30) and *Whole build as a plan* save the
+    build in Modern Spellbook's plan list, as "Pathfinder: Sword and Board to
+    30" or "Pathfinder: Sword and Board", and make it the plan its window
+    shows: its *Apply* learns the points. A plan is the ranks you have, then
+    the build's next points, so points already off the build don't stop it
+    applying. Its list holds 20; full, the plan is still shown but not saved.
+  - *Share* opens **Share and plan**: the build as Modern Spellbook's share
+    string (`MSB1-WARRIOR-…`), selected to copy, for its *Import* or a friend;
+    *Follow a shared build* takes such a string, yours or anyone's, and the
+    advisor follows it -- the tree with the most points first, a row at a
+    time, a prerequisite before what needs it -- as **Shared build** in the
+    menu. Another class's string, or one that can't be taken so, is refused
+    with why. And the two plan buttons, with their points.
 - **The tooltip** of a talent adds "Pathfinder: Warrior leveling puts 3
   points here." -- ": done." once you have them, "; you have N" past them --
   and "Your next point goes here."

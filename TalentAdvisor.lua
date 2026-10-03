@@ -15,8 +15,10 @@
 	for when you do.
 
 	This is the engine: reading the tree, choosing the build, the next point,
-	what is off the build, the lines it says, and the chat on a level up.
-	TalentWindow.lua draws it on Blizzard's talent window.
+	what is off the build, the lines it says, and the chat on a level up; and
+	Modern Spellbook's share strings, a shared build to follow, and the ranks
+	of a plan. TalentWindow.lua draws it on Blizzard's talent window,
+	TalentModern.lua on Modern Spellbook's.
 ]]
 
 local AegisPathfinder = AegisPathfinder
@@ -131,10 +133,10 @@ function TA.ReadTree()
 		local tabName = GetTalentTabInfo(tab)
 		local at, list = {}, {}
 		for i = 1, GetNumTalents(tab) do
-			local name, _, tier, column, rank, maxRank = GetTalentInfo(tab, i)
+			local name, icon, tier, column, rank, maxRank = GetTalentInfo(tab, i)
 			if name then
 				local t = { name = name, tab = tab, index = i, tier = tier, column = column,
-					rank = rank or 0, max = maxRank or 1 }
+					rank = rank or 0, max = maxRank or 1, icon = icon }
 				t.preTier, t.preColumn = GetTalentPrereqs(tab, i)
 				at[tier .. ":" .. column] = t
 				tree.talent[name] = t
@@ -186,8 +188,9 @@ function TA.CanLearn(tree, ranks, name)
 end
 
 --- Whether a build fits the tree: every talent in it, no more ranks than it
---- has, each point learnable in its order, and 51 of them. Returns true, or
---- false and why ("it has no Master Strike").
+--- has, each point learnable in its order, and 51 of them (a shared build
+--- may have fewer). Returns true, or false and why ("it has no Master
+--- Strike").
 function TA.Fits(tree, build)
 	local ranks = {}
 	local points = TA.Points(build)
@@ -202,7 +205,7 @@ function TA.Fits(tree, build)
 		end
 		ranks[name] = (ranks[name] or 0) + 1
 	end
-	if table.getn(points) ~= TA.POINTS then
+	if not build.shared and table.getn(points) ~= TA.POINTS then
 		return false, "it has " .. table.getn(points) .. " points, not " .. TA.POINTS
 	end
 	return true
@@ -279,7 +282,12 @@ function TA:State(tree, level, unspent)
 	level = level or UnitLevel("player")
 	if not unspent then unspent = (UnitCharacterPoints("player")) or 0 end
 	local ranks = TA.Ranks(tree)
-	local build, ready = TA.Choose(builds, s.talentbuild, self:PreferredBuild(builds), level, ranks)
+	-- A shared build (Follow) when that is the choice and it reads; else as
+	-- auto, which is what Choose makes of a choice it doesn't know.
+	local build, ready = s.talentbuild == "shared" and self:SharedBuild(tree)
+	if not build then
+		build, ready = TA.Choose(builds, s.talentbuild, self:PreferredBuild(builds), level, ranks)
+	end
 	if not build then return nil end
 	local fit = TA.fit[build]
 	if not fit then
@@ -302,6 +310,7 @@ end
 
 --- A build's name, as the window's menu and chat give it.
 function TA.BuildLabel(builds, build, className)
+	if build.shared then return "Shared build" end
 	if build == builds.levelling then return (className or "Class") .. " leveling" end
 	if build.name then return (className or "Class") .. " " .. build.name .. " leveling" end
 	return build.spec .. " at 60"
@@ -365,6 +374,8 @@ function TA:BuildItems(state)
 	for _, b in ipairs(builds.specs) do
 		table.insert(items, { value = b.spec, label = b.spec .. " at 60" .. (b == preferred and " (my spec)" or "") })
 	end
+	local s = self:Settings()
+	if s and s.talentshared then table.insert(items, { value = "shared", label = "Shared build" }) end
 	return items
 end
 
@@ -395,6 +406,21 @@ function TA:StripLines(state)
 		warn = Points(state.offTotal) .. " off the build. It carries on from the closest point."
 	end
 	return line, warn
+end
+
+--- The card over the window for the next point: its title, the line under
+--- it, and the talent's icon -- "Take Shield Slam", "Rank 1 of 1, in
+--- Protection · 1 point to spend". Nil with no next point to name.
+function TA:NextCard(state)
+	if not (state.fits and state.next) or state.ready then return nil end
+	local t = state.tree.talent[state.next]
+	local where = "Rank " .. state.rank .. " of " .. t.max .. ", in " .. state.tree.tabs[t.tab].name
+	if state.unspent > 0 then
+		return "Take " .. state.next, where .. " · " .. Points(state.unspent) .. " to spend", t.icon
+	elseif state.level < 60 then
+		return "Next: " .. state.next, where .. " · your point at level " .. (state.level + 1), t.icon
+	end
+	return "Next, after a respec: " .. state.next, where, t.icon
 end
 
 --- How a talent is marked on the window: "todo" with the points the build
@@ -429,6 +455,188 @@ function TA:TipLines(state, name)
 	return lines
 end
 
+--[[ Modern Spellbook's strings and plans ------------------------------------------
+
+	Modern Spellbook (github.com/lioryx/ModernSpellBook) shares a build as
+	"MSB1-<CLASS>-<tree 1>-<tree 2>-<tree 3>": each tree a digit a talent, its
+	rank, in the order the game numbers the tree's talents. Its plans are
+	ranks by tree and talent number, which its Apply learns. ]]
+
+local function Trim(s) return (string.gsub(s or "", "^%s*(.-)%s*$", "%1")) end
+
+--- `ranks` ({ talent = rank }) as a share string for `class` ("WARRIOR").
+function TA.ShareString(tree, class, ranks)
+	local parts = { "MSB1", class }
+	for tab = 1, table.getn(tree.tabs) do
+		local digits, n = {}, 0
+		for _, t in ipairs(tree.tabs[tab].talents) do
+			digits[t.index] = math.min(9, ranks[t.name] or 0)
+			if t.index > n then n = t.index end
+		end
+		for i = 1, n do digits[i] = digits[i] or 0 end
+		table.insert(parts, table.concat(digits))
+	end
+	return table.concat(parts, "-")
+end
+
+--- A share string read against the tree: { talent = rank } and how many
+--- points; or nil and why: "class" for another class's, "format" for
+--- anything else (not one, no points, more than 51).
+function TA.ReadShare(tree, class, text)
+	local parts = {}
+	for part in string.gfind(Trim(text) .. "-", "([^%-]*)%-") do table.insert(parts, part) end
+	if parts[1] ~= "MSB1" then return nil, "format" end
+	if parts[2] ~= class then return nil, "class" end
+	local ranks, total = {}, 0
+	for tab = 1, table.getn(tree.tabs) do
+		local digits = parts[tab + 2] or ""
+		for _, t in ipairs(tree.tabs[tab].talents) do
+			local r = math.min(tonumber(string.sub(digits, t.index, t.index)) or 0, t.max)
+			if r > 0 then
+				ranks[t.name] = r
+				total = total + r
+			end
+		end
+	end
+	if total == 0 or total > TA.POINTS then return nil, "format" end
+	return ranks, total
+end
+
+--- One row's talents in the order to take them: by column, a prerequisite
+--- before the talent that needs it -- Turtle WoW has some in the same row
+--- (Holy's Divine Favor needs Holy Shock, beside it).
+local function RowOrder(row)
+	local inRow, placed, out = {}, {}, {}
+	for _, t in ipairs(row) do inRow[t.name] = true end
+	local left = table.getn(row)
+	while left > 0 do
+		local moved = false
+		for _, t in ipairs(row) do
+			if not placed[t.name] and not (t.pre and inRow[t.pre] and not placed[t.pre]) then
+				placed[t.name], left, moved = true, left - 1, true
+				table.insert(out, t)
+			end
+		end
+		-- Whatever is left can't be ordered so; Fits says why.
+		if not moved then
+			for _, t in ipairs(row) do
+				if not placed[t.name] then
+					placed[t.name] = true
+					table.insert(out, t)
+				end
+			end
+			left = 0
+		end
+	end
+	return out
+end
+
+--- A shared build: its ranks in the order to take them -- the tree with the
+--- most points first, a row at a time.
+function TA.ShareBuild(tree, ranks)
+	local tabs = {}
+	for tab = 1, table.getn(tree.tabs) do
+		table.insert(tabs, { tab = tab, spent = TA.Spent(tree, ranks, tab) })
+	end
+	table.sort(tabs, function(a, b)
+		if a.spent ~= b.spent then return a.spent > b.spent end
+		return a.tab < b.tab
+	end)
+	local order = {}
+	for _, e in ipairs(tabs) do
+		local list = {}
+		for _, t in ipairs(tree.tabs[e.tab].talents) do
+			if ranks[t.name] then table.insert(list, t) end
+		end
+		table.sort(list, function(a, b)
+			if a.tier ~= b.tier then return a.tier < b.tier end
+			return a.column < b.column
+		end)
+		local k = 1
+		while list[k] do
+			local row = {}
+			local tier = list[k].tier
+			while list[k] and list[k].tier == tier do
+				table.insert(row, list[k])
+				k = k + 1
+			end
+			for _, t in ipairs(RowOrder(row)) do
+				table.insert(order, t.name)
+				table.insert(order, ranks[t.name])
+			end
+		end
+	end
+	return { shared = true, order = order }
+end
+
+--- The shared build you follow, read against the tree once a session.
+function TA:SharedBuild(tree)
+	local s = self:Settings()
+	local text = s and s.talentshared
+	if not text then return nil end
+	if TA.shared and TA.shared.text == text then return TA.shared.build end
+	local _, class = UnitClass("player")
+	local ranks = TA.ReadShare(tree, class, text)
+	local build = ranks and TA.ShareBuild(tree, ranks) or nil
+	TA.shared = { text = text, build = build }
+	return build
+end
+
+--- Follow a pasted share string. Returns true, or false and what to say.
+function TA:Follow(text)
+	local s = self:Settings()
+	local tree = TA.ReadTree()
+	if not (s and next(tree.talent)) then return false, "Your talents aren't there to read yet." end
+	local _, class = UnitClass("player")
+	local ranks, why = TA.ReadShare(tree, class, text)
+	if not ranks then
+		if why == "class" then return false, "That build is for another class." end
+		return false, "That isn't a Modern Spellbook build string."
+	end
+	local ok, unfit = TA.Fits(tree, TA.ShareBuild(tree, ranks))
+	if not ok then return false, "That build can't be taken a row at a time: " .. unfit .. "." end
+	s.talentshared, s.talentbuild, TA.shared = Trim(text), "shared", nil
+	return true
+end
+
+--- The build you follow as a share string, for a friend or Modern
+--- Spellbook's Import.
+function TA:ShareText(state)
+	if not (state and state.fits) then return nil end
+	local _, class = UnitClass("player")
+	return TA.ShareString(state.tree, class, state.targets)
+end
+
+--- How many points a plan to your level has, and the whole build.
+function TA.PlanSizes(state)
+	local mine = math.max(0, math.min(TA.POINTS, (state.level or 0) - TA.FIRST_LEVEL + 1))
+	return mine, table.getn(TA.Points(state.build))
+end
+
+--- A plan of `n` points: the ranks you have, then the build's next points
+--- as the advisor gives them, until there are `n` or the build runs out --
+--- so points already off the build don't make the plan one you can't apply.
+function TA.PlanRanks(state, n)
+	local ranks = {}
+	for name, r in pairs(state.ranks) do ranks[name] = r end
+	local points = TA.Points(state.build)
+	while TA.Total(ranks) < n do
+		local name = TA.Next(state.tree, ranks, points)
+		if not name then break end
+		ranks[name] = (ranks[name] or 0) + 1
+	end
+	return ranks
+end
+
+--- A plan's name in Modern Spellbook's list: "Pathfinder: Sword and Board
+--- to 30", or the whole build without "to".
+function TA:PlanName(state, upto)
+	local b = state.build
+	local short = (b.shared and "Shared build") or (b == state.builds.levelling and "Leveling")
+		or b.name or b.spec or "Leveling"
+	return "Pathfinder: " .. short .. (upto and (" to " .. upto) or "")
+end
+
 --[[ Chat ------------------------------------------------------------------------ ]]
 
 -- Builds already said not to fit, this session: once is enough.
@@ -451,7 +659,10 @@ function TA:LevelUp(level)
 	local state = self:State(nil, level, math.max(1, (UnitCharacterPoints("player")) or 0))
 	if not state then return end
 	if not state.fits then return self:WarnUnfit(state) end
-	if s.talentchat == false or not state.next then return end
+	if not state.next then return end
+	-- The card over the screen, with the talents button lit (TalentWindow.lua).
+	if s.talentnudge ~= false and TA.Window and TA.Window.Toast then TA.Window:Toast(level, state) end
+	if s.talentchat == false then return end
 	local t = state.tree.talent[state.next]
 	AegisPathfinder:Say(TA.LevelLine(level, state.next, state.rank, t.max, state.tree.tabs[t.tab].name))
 end
@@ -473,9 +684,11 @@ function TA:PointsChanged()
 	if preferred then AegisPathfinder:Say(TA.ReadyLine(preferred.spec)) end
 end
 
---- Draw the talent window again, if it is open: the settings changed.
+--- Draw the talent windows again, if they are open, and the talents
+--- button: the settings changed.
 function TA:Refresh()
 	if TA.Window then TA.Window:Repaint() end
+	if TA.Modern then TA.Modern:Paint() end
 end
 
 -- Registered as the file loads; until the settings are there they are let go.
@@ -483,11 +696,14 @@ local events = CreateFrame("Frame")
 TA.events = events
 events:RegisterEvent("PLAYER_LEVEL_UP")
 events:RegisterEvent("CHARACTER_POINTS_CHANGED")
+events:RegisterEvent("PLAYER_ENTERING_WORLD")
 events:SetScript("OnEvent", function()
 	if not AegisPathfinder.db then return end
 	if event == "PLAYER_LEVEL_UP" then
 		TA:LevelUp(tonumber(arg1))
-	else
+	elseif event == "CHARACTER_POINTS_CHANGED" then
 		TA:PointsChanged()
 	end
+	-- A point to spend lights the talents button (TalentWindow.lua).
+	if TA.Window and TA.Window.PaintMicro then TA.Window:PaintMicro() end
 end)
