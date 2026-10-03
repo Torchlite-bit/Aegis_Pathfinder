@@ -227,6 +227,30 @@ in, and does what one quest needs of another first: the Charger's horse feed
 before the spirit's quest. It ends with the chain's last hand-in, so it
 finishes by itself.
 
+**Attunement guides.** The quests that open each raid and dungeon, a guide
+each, per side, under the guide browser's Dungeons category in **Attunements
+and keys**, with an orange AT badge:
+
+- **Raids:** Molten Core (Attunement to the Core), Onyxia's Lair (the
+  Alliance's Drakefire Amulet, the Horde's Blood of the Black Dragon
+  Champion), Blackwing Lair (Blackhand's Command), Naxxramas (The Dread
+  Citadel) and Turtle WoW's own: Emerald Sanctum (Into the Dream I to VI),
+  Lower Karazhan Halls (The Key to Karazhan I to X) and Tower of Karazhan
+  (the Scepter of Medivh).
+- **Dungeons:** Upper Blackrock Spire (Seal of Ascension), Scholomance (the
+  Skeleton Key), Blackrock Depths' inner city (the Shadowforge Key) and
+  Turtle WoW's Karazhan Crypts (the Alliance's Mystery of Karazhan, the
+  Horde's Depths of Karazhan).
+
+Each is built the way the class quest guides are: every quest picked up, done
+and handed in, the arrow on whoever gives it and where its objectives are,
+and the way into the dungeon or raid a part is done in. Raids come first in
+the folder, by level; each says Raid or Dungeon, and **Attuned** once its last
+quest is handed in (Naxxramas by any of its three versions). RestedXP's
+Onyxia Attunement and Scholomance Key follow, saying RestedXP. Home suggests
+an attunement you have started, and the first you can start. Its picture is
+the loading screen of what it opens, where the addon has one.
+
 **A class quest at your level.** Reach the level a class quest starts at and a
 small window, like the dungeon's, offers its guide: open it in a tab beside
 the route, and when it is done you are back on the route; or not now. Each is

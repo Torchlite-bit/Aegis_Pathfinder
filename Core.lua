@@ -615,7 +615,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.22.19"
+AegisPathfinder.version = "0.22.20"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -2115,13 +2115,14 @@ end
 
 --- A guide's tab badge: its kind and text. TPL for a placeholder, PF for a
 --- profession guide (a crafting route included), DG a dungeon guide, CL a
---- class quest guide, HC a hardcore one, XP any other.
+--- class quest guide, AT an attunement, HC a hardcore one, XP any other.
 function AegisPathfinder:GuideBadge(guideName)
     if self:IsTemplateGuide(guideName) then return "tpl", "TPL" end
     local category = self:GetGuideCategory(guideName)
     if category == "profession" then return "pf", "PF" end
     if category == "dungeon" then return "dg", "DG" end
     if category == "class" then return "cl", "CL" end
+    if category == "attunement" then return "at", "AT" end
     if category == "rxp_hc" then return "hc", "HC" end
     return "xp", "XP"
 end
@@ -2141,6 +2142,9 @@ function AegisPathfinder:GetGuideCategory(guideName)
     end
     if string.find(guideName, "^Class/") then
         return "class"
+    end
+    if string.find(guideName, "^Attunement/") then
+        return "attunement"
     end
     if string.find(guideName, "^Optimized/") then
         return "optimized"

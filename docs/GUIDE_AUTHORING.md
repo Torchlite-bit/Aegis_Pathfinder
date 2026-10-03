@@ -389,6 +389,34 @@ are stale, a race's chain is missing a quest or has another race's, a quest is
 handed in before it is picked up or never handed in, or a guide does not end
 with the quest the offer takes for its last.
 
+## Attunement Guides
+
+`Guides/Attunements/` is written by `Tools/build/build_attunement_guides.py`:
+do not edit the guides there, change the script. Its `ATTUNEMENTS` table names
+each attunement by the quest that finishes it, per side; the chain is found
+from the data, going back through the quests before each, keeping only those
+the side can get (someone gives it, its races allow the side). Of quests only
+one of which can be done -- "A Call to Arms" from each city -- it keeps the one
+given in the side's first city. The steps are written by the class quest
+guides' `ClassGuide`, with no class and the side's cities as home. `SPOTS`
+corrects where the data puts someone (Stormwind Keep is on Northwind's map in
+pfQuest-turtle), and `DOORS` gives the ways into Turtle WoW's own instances.
+At the end of each side's file, `RegisterAttunements` gives the browser each
+guide's instance, raid or dungeon, level, and the quests that mean you are
+attuned.
+
+```sh
+python3 Tools/build/build_attunement_guides.py --list       # each side's chains
+python3 Tools/build/build_attunement_guides.py              # write the guides
+python3 Tools/build/build_attunement_guides.py --pfquest ../pfQuest --pfquest-turtle ../kludge-pfQuest-turtle \
+    --cmangos ../classic-db/full.sql                        # read the data again first
+```
+
+What it reads is kept in `Tools/data/attunements.json`.
+`Tools/tests/test_attunements.lua` fails if the guides are stale, a side lacks
+one, a quest is handed in before it is picked up, or a guide does not hand in
+the quest that attunes.
+
 ## Routes and Dungeon Quests
 
 A route pack's route (`Routes/Routes.lua`) decides what comes after a guide on

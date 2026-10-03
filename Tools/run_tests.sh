@@ -29,6 +29,7 @@ lua5.1 Tools/tests/test_navcallout.lua
 lua5.1 Tools/tests/test_dungeons.lua
 lua5.1 Tools/tests/test_dungeonguides.lua
 lua5.1 Tools/tests/test_classguides.lua
+lua5.1 Tools/tests/test_attunements.lua
 lua5.1 Tools/tests/test_filtertags.lua
 lua5.1 Tools/tests/test_smartskip.lua
 lua5.1 Tools/tests/test_yourplace.lua

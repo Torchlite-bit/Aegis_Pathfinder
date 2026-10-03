@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.22.19)
+# Aegis: Pathfinder (v0.22.20)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -96,6 +96,12 @@ Turtle WoW's High Elves and Goblins included, each race by the chain that
 starts at home. Reach a chain's level and, if your route doesn't do it
 already, it's offered: open it beside the route, and when it's done you're
 back on the route.
+
+**Attunement guides.** Every raid and dungeon attunement and key, a guide
+each, per side: Molten Core, Onyxia's Lair, Blackwing Lair, Naxxramas, Upper
+Blackrock Spire, Scholomance, Blackrock Depths, and Turtle WoW's Emerald
+Sanctum, Lower and Upper Karazhan and the Karazhan Crypts. The browser says
+which you're attuned to.
 
 **First-time setup.** The first time you log in, three quick steps pick your
 guide, what it includes, and the dungeons you mean to run -- each with how
@@ -267,7 +273,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.22.19`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.22.20`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)** or open an

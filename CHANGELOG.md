@@ -18,6 +18,28 @@ reports.
 
 ---
 
+## [0.22.20] — restart
+
+### Added
+- **Attunement guides.** The quests that open each raid and dungeon, one
+  guide each, per side, in a new **Attunements and keys** folder under the
+  guide browser's Dungeons, with an orange AT badge:
+  - **Raids:** Molten Core, Onyxia's Lair (Drakefire Amulet for the
+    Alliance, Blood of the Black Dragon Champion for the Horde), Blackwing
+    Lair, Naxxramas, and Turtle WoW's Emerald Sanctum (Into the Dream I–VI),
+    Lower Karazhan Halls (The Key to Karazhan I–X) and Tower of Karazhan
+    (the Scepter of Medivh).
+  - **Dungeons:** Upper Blackrock Spire's Seal of Ascension, Scholomance's
+    Skeleton Key, Blackrock Depths' Shadowforge Key, and Turtle WoW's
+    Karazhan Crypts (The Mystery of Karazhan for the Alliance, The Depths of
+    Karazhan for the Horde).
+  - Each says Raid or Dungeon in the folder, and **Attuned** once you've
+    handed in its last quest. Home suggests one you've started, and the
+    first you can start.
+  - Built from pfQuest, pfQuest-turtle and CMaNGOS the way the class quest
+    guides are (`Tools/build/build_attunement_guides.py`): each side gets
+    its own parts where the chains differ, such as Karazhan's parts III–V.
+
 ## [0.22.19]
 
 ### Added
@@ -1532,6 +1554,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.20]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.19]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.18]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.17]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

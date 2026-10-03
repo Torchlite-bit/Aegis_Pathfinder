@@ -758,6 +758,7 @@ Theme.BADGES = {
 	pf  = { bg = { 0.36, 0.62, 0.84 }, text = DARK },   -- blue
 	dg  = { bg = { 0.60, 0.48, 0.86 }, text = DARK },   -- violet
 	cl  = { bg = { 0.30, 0.70, 0.64 }, text = DARK },   -- teal
+	at  = { bg = { 0.91, 0.51, 0.23 }, text = DARK },   -- orange
 	hc  = { bg = { 0.85, 0.30, 0.30 }, text = LIGHT },  -- red
 	tpl = { bg = "subtle", text = LIGHT },
 }

@@ -310,9 +310,17 @@ are only found at startup.
 - [ ] Dungeons starts with **On the routes**: Optimized's Uldaman and Sunken
       Temple, each saying whose route; they are no longer in Optimized's
       Levels 40-60.
-- [ ] Next under Dungeons, **Attunements and keys**: RestedXP's Onyxia
-      Attunement and Scholomance Key, saying RestedXP. Onyxia Attunement is
-      no longer at the bottom of RestedXP's Levels 1-20.
+- [ ] Next under Dungeons, **Attunements and keys**: the raids first (Onyxia's
+      Lair, Molten Core, Blackwing Lair, Tower of Karazhan, Emerald Sanctum,
+      Lower Karazhan Halls, Naxxramas), then the dungeons' keys, each saying
+      Raid or Dungeon, then RestedXP's Onyxia Attunement and Scholomance Key,
+      saying RestedXP. Each of ours has an orange AT badge on its tab.
+- [ ] Follow an attunement you have done (Attunement to the Core, say): the
+      folder says **Attuned**. One you have started is on Home's suggestions.
+- [ ] An Alliance Onyxia attunement sends you to Bolvar in Stormwind Keep and
+      to Reginald Windsor at the gates of Stormwind. Note any step that sends
+      you somewhere wrong in Turtle WoW's own chains (Emerald Sanctum, both
+      Karazhans, the Crypts).
 - [ ] Click a guide (left or right) or **Open in a new tab**: it opens in a
       new tab, and the guide you were on keeps its tab and place. A RestedXP
       guide does the same and leaves the route pack as it was (Options ->

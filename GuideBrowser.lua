@@ -130,10 +130,14 @@ Browser.INSTANCES = {
 }
 -- What the Dungeons category calls the route legs that are dungeon runs.
 Browser.ROUTE_LEGS = "On the routes"
--- ... and the packs' chains that open a dungeon or raid, which have no level
--- range to file them by: RestedXP's Onyxia Attunement and Scholomance Key.
+-- ... and the attunement guides (Guides/Attunements/), with the packs' chains
+-- that open a dungeon or raid, which have no level range to file them by:
+-- RestedXP's Onyxia Attunement and Scholomance Key.
 Browser.ACCESS = "Attunements and keys"
 Browser.ACCESS_WORDS = { "Attunement", "Key" }
+-- The attunement guides' own words for each, by side: { guide, instance,
+-- kind ("raid" or "dungeon"), level, attuned = { quests } }.
+Browser.ATTUNEMENTS = {}
 
 --[[ Guides ---------------------------------------------------------------- ]]
 
@@ -174,6 +178,38 @@ end
 -- A leveling guide that is a dungeon run: it is listed under Dungeons.
 local function RouteLeg(name)
 	return Browser.DungeonIn(Browser.Title(name)) ~= nil
+end
+
+--- The attunement guides of a side, as their files tell them.
+function AegisPathfinder:RegisterAttunements(side, list)
+	Browser.ATTUNEMENTS[side] = list
+end
+
+--- What attunement guide `name` opens, for your side; nil for another guide.
+function AegisPathfinder:AttunementInfo(name)
+	for _, a in ipairs(Browser.ATTUNEMENTS[self.myfaction or ""] or {}) do
+		if a.guide == name then return a end
+	end
+	return nil
+end
+
+--- Whether you are attuned: a quest that finishes guide `name` is handed in.
+function AegisPathfinder:IsAttuned(name)
+	local a = self:AttunementInfo(name)
+	for _, q in ipairs(a and a.attuned or {}) do
+		if self:IsQuestCompletedOnServer(q) then return true end
+	end
+	return false
+end
+
+--- Attunement guides: raids before dungeons, then by level, then name.
+function Browser.ByAttunement(a, b)
+	local ia, ib = AegisPathfinder:AttunementInfo(a), AegisPathfinder:AttunementInfo(b)
+	local ra, rb = ia and ia.kind == "raid" and 0 or 1, ib and ib.kind == "raid" and 0 or 1
+	if ra ~= rb then return ra < rb end
+	local la, lb = ia and ia.level or 0, ib and ib.level or 0
+	if la ~= lb then return la < lb end
+	return a < b
 end
 
 --- Whether a pack's guide is a chain that opens a dungeon or raid: a word
@@ -268,11 +304,13 @@ end
 --- Category `key`'s folder, as the browser shows it now.
 function AegisPathfinder:BrowserCategory(key)
 	local guides = self:BrowserGuides()
-	local by, legs, access = {}, {}, {}
+	local by, legs, access, attune = {}, {}, {}, {}
 	for _, g in ipairs(guides) do
 		local cat = self:GetGuideCategory(g)
 		local packs = cat ~= "dungeon" and cat ~= "class" and cat ~= "profession"
-		if packs and Browser.AccessChain(g) then
+		if cat == "attunement" then
+			table.insert(attune, g)
+		elseif packs and Browser.AccessChain(g) then
 			table.insert(access, g)
 		elseif packs and RouteLeg(g) then
 			table.insert(legs, g)
@@ -309,19 +347,31 @@ function AegisPathfinder:BrowserCategory(key)
 		return { title = label, items = items }
 	elseif key == "dungeons" then
 		-- The dungeon guides; and first, the routes' own runs through a
-		-- dungeon and the packs' attunements and keys, each saying whose
-		-- pack it is from.
+		-- dungeon, each saying whose route it is on, then the attunements and
+		-- keys: raid or dungeon, or Attuned once done, and the packs' own.
 		local folder = Folder(label, by.dungeon or {})
 		local packs = {}
 		for _, pack in ipairs(PACKS) do packs[pack[1]] = pack[2] end
 		local at = 1
-		for i, list in ipairs({ { Browser.ROUTE_LEGS, legs }, { Browser.ACCESS, access } }) do
-			if list[2][1] then
-				local sub = Folder(list[1], list[2], i == 2 and ByName or nil)
-				for _, item in ipairs(sub.items) do item.why = packs[self:GetGuideCategory(item.guide)] end
-				table.insert(folder.items, at, { folder = sub })
-				at = at + 1
+		if legs[1] then
+			local runs = Folder(Browser.ROUTE_LEGS, legs)
+			for _, item in ipairs(runs.items) do item.why = packs[self:GetGuideCategory(item.guide)] end
+			table.insert(folder.items, at, { folder = runs })
+			at = at + 1
+		end
+		if attune[1] or access[1] then
+			table.sort(attune, Browser.ByAttunement)
+			table.sort(access, ByName)
+			local items = {}
+			for _, g in ipairs(attune) do
+				local a = self:AttunementInfo(g)
+				table.insert(items, { guide = g, why = self:IsAttuned(g) and "Attuned"
+					or (a and a.kind == "raid" and "Raid" or "Dungeon") })
 			end
+			for _, g in ipairs(access) do
+				table.insert(items, { guide = g, why = packs[self:GetGuideCategory(g)] })
+			end
+			table.insert(folder.items, at, { folder = { title = Browser.ACCESS, items = items } })
 		end
 		return folder
 	elseif key == "class" then
@@ -357,7 +407,7 @@ function AegisPathfinder:BrowserCategoryOf(name)
 	if cat == "dungeon" then return "dungeons" end
 	if cat == "class" then return "class" end
 	if cat == "profession" then return "professions" end
-	if RouteLeg(name) or Browser.AccessChain(name) then return "dungeons" end
+	if cat == "attunement" or RouteLeg(name) or Browser.AccessChain(name) then return "dungeons" end
 	return "leveling"
 end
 
@@ -473,10 +523,35 @@ function AegisPathfinder:BrowserSuggestions()
 		for _, m in ipairs(self:GetClassMilestones(level, true)) do add(m.guide, "A class quest at your level") end
 	end
 	for _, g in ipairs(self:DungeonGuidesAtLevel(level)) do add(g, "A ticked dungeon at your level") end
+	for _, s in ipairs(self:AttunementsToDo(level)) do add(s.guide, s.why) end
 	if self.GetCustomZoneChoices then
 		for _, z in ipairs(self:GetCustomZoneChoices(level, main)) do add(z.guide, "A custom zone at your level") end
 	end
 	return out
+end
+
+--- The attunements to suggest at `level`: those you have started and not
+--- finished, then the first you can start -- the lowest level, a raid's
+--- before a dungeon's -- so a level 60 is not offered all of them at once.
+function AegisPathfinder:AttunementsToDo(level)
+	local started, fresh = {}, nil
+	local list = {}
+	for _, a in ipairs(Browser.ATTUNEMENTS[self.myfaction or ""] or {}) do
+		if self.guides[a.guide] then table.insert(list, a.guide) end
+	end
+	table.sort(list, Browser.ByAttunement)
+	for _, g in ipairs(list) do
+		local a = self:AttunementInfo(g)
+		if not self:IsAttuned(g) and (level or 0) >= a.level then
+			if (self:GuideProgress(g) or 0) > 0 then
+				table.insert(started, { guide = g, why = "An attunement you started: " .. a.instance })
+			elseif not fresh or a.level < fresh.level then
+				fresh = { guide = g, level = a.level, why = "Opens " .. a.instance .. ", at your level" }
+			end
+		end
+	end
+	if fresh then table.insert(started, fresh) end
+	return started
 end
 
 --- Whether guide `name` is among the suggestions now (the list's star).

@@ -166,6 +166,10 @@ function AegisPathfinder:GuidePicture(name)
 			return { kind = "class", class = key,
 				icon = ICONS .. (Pictures.MILESTONE_ICON[milestone or ""] or Pictures.CLASS_ICON[key]) }
 		end
+	elseif cat == "attunement" then
+		-- What it opens: "Attunement/Molten Core: Attunement to the Core (55)".
+		local _, _, instance = string.find(title, "^(.-):")
+		return Screen(instance or title)
 	elseif cat == "profession" then
 		local _, _, prof = string.find(title, "^(.-)%s*%(")
 		local icon = Pictures.PROFESSION_ICON[prof or title]
