@@ -301,6 +301,8 @@ local function OnShow(f)
 	AegisPathfinder.db.char.panelopen = true
 	ResetScrollbar()
 	Theme:FadeIn(f, 0.5)
+	-- The action buttons come and go with the guide (ActiveFrames.lua).
+	if AegisPathfinder.RefreshActiveFrames then AegisPathfinder:RefreshActiveFrames() end
 end
 
 
@@ -1054,6 +1056,9 @@ function AegisPathfinder:UpdateObjectivePanel()
 	self:OnObjectiveFrameResized()
 
 	frame:SetScript("OnShow", OnShow)
+	frame:SetScript("OnHide", function()
+		if AegisPathfinder.RefreshActiveFrames then AegisPathfinder:RefreshActiveFrames() end
+	end)
 	OnShow(frame)
 	return frame
 end

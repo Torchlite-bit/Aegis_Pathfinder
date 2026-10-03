@@ -1174,6 +1174,73 @@ do
 	target, marks, world.near, world.hostile = nil, {}, {}, {}
 end
 
+-- The buttons go with the guide ------------------------------------------------------
+
+--[[ Closing the guide takes the action buttons with it; a guide hidden by
+	itself for combat or an instance has not been closed, and the
+	Appearance page's switches say what the buttons do then. ]]
+do
+	local macrosWin = AegisPathfinder.macrosframe
+	AegisPathfinder:PaintActiveFrames()
+	check(items:IsShown() and targets:IsShown() and macrosWin:IsShown(), "with the guide open, the buttons show")
+	guide:Hide()
+	AegisPathfinder:PaintActiveFrames()
+	check(not items:IsShown() and not targets:IsShown() and not macrosWin:IsShown(), "closing the guide hides them")
+	AegisPathfinder.hiddenForCombat = true
+	AegisPathfinder:PaintActiveFrames()
+	check(items:IsShown() and targets:IsShown(), "a guide hidden for combat keeps them")
+	AegisPathfinder.hiddenForCombat = nil
+	AegisPathfinder.hiddenForInstance = true
+	AegisPathfinder:PaintActiveFrames()
+	check(items:IsShown() and targets:IsShown(), "and so does one hidden in a dungeon")
+	AegisPathfinder.hiddenForInstance = nil
+	guide:Show()
+	AegisPathfinder:PaintActiveFrames()
+	check(items:IsShown() and targets:IsShown(), "opening the guide brings them back")
+end
+
+-- Snapping ---------------------------------------------------------------------------
+
+--[[ Let go of a window near another, or near the guide, and it sits flush
+	against it, lining up with the edge they share when that is near too. ]]
+do
+	local snap = AegisPathfinder.SnapActiveFrame
+	local macrosWin = AegisPathfinder.macrosframe
+	macrosWin:Hide()
+	local function At(f, x, top, w, h)
+		f:ClearAllPoints()
+		f:SetWidth(w); f:SetHeight(h)
+		f:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", x, top)
+	end
+	At(items, 200, 500, 120, 56)
+	-- Dropped 9 under Items and 6 to the right: flush under it, left edges lined up.
+	At(targets, 206, 500 - 56 - 9, 80, 56)
+	check(snap(targets) and targets:GetLeft() == 200 and targets:GetTop() == 500 - 56 - 2,
+		"dropped just under Items, it snaps flush under it, lined up; got %s, %s",
+		tostring(targets:GetLeft()), tostring(targets:GetTop()))
+	-- Dropped 10 to the right of Items, 5 lower: flush beside it, tops lined up.
+	At(targets, 200 + 120 + 10, 495, 80, 56)
+	check(snap(targets) and targets:GetLeft() == 322 and targets:GetTop() == 500,
+		"dropped beside Items, it snaps flush beside it; got %s, %s", tostring(targets:GetLeft()),
+		tostring(targets:GetTop()))
+	-- Far from everything: left where it is.
+	At(targets, 700, 200, 80, 56)
+	check(not snap(targets) and targets:GetLeft() == 700, "dropped far from the others, it stays put")
+	-- Under the guide too.
+	At(guide, 400, 800, 396, 300)
+	At(targets, 410, 800 - 300 - 8, 80, 56)
+	check(snap(targets) and targets:GetTop() == 800 - 300 - 2 and targets:GetLeft() == 400,
+		"and it snaps to the guide; got %s, %s", tostring(targets:GetLeft()), tostring(targets:GetTop()))
+	-- A real drop: snapped, pinned by its corner, and saved there.
+	At(targets, 206, 500 - 56 - 9, 80, 56)
+	this = targets.header
+	targets.header:GetScript("OnDragStart")()
+	targets.header:GetScript("OnDragStop")()
+	check(targets:GetLeft() == 200 and targets:GetTop() == 500 - 56 - 2
+		and AegisPathfinder.db.profile.activetargetspoint == "TOPLEFT",
+		"a drop snaps, and is saved where it snapped; got %s, %s", tostring(targets:GetLeft()), tostring(targets:GetTop()))
+end
+
 -- Report ---------------------------------------------------------------------------------
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end

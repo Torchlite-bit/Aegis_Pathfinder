@@ -394,8 +394,12 @@ everyone. Either window can be dragged anywhere, or switched off under
 - **Layout.** Which way Active Items and Active Targets each grow -- right
   (the first button at the left), left, up or down, a row or a column. A
   window you have dragged grows from the matching corner, where you left it;
-  until then it hangs under the guide. **Button size**, 60% to 150%, on top
-  of the window scale, for the three small windows.
+  until then it hangs under the guide. Let go of one near another, or near
+  the guide, and it snaps flush against it, side by side or one under the
+  other. **Button size**, 60% to 150%, on top of the window scale, for the
+  three small windows. Close the guide and the three go with it; when the
+  guide hides itself in combat or a dungeon, the Appearance page's switches
+  say whether they go too.
 - **Buttons to show**: **Quest items**, **Talk to NPC** (talking and
   interacting), **Kill enemy** (killing and looting), and **Delete cheapest
   item**. Leaving one out takes its buttons out of the window; the macros,

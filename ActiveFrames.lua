@@ -23,9 +23,12 @@
 	that drop its objective items -- those that live where the step is, when
 	any do (Nearby). Without pfQuest, only |NPC| steps have targets.
 
-	Both windows hide when they have nothing to show. Each drags by its title
-	and remembers where it was left; until then Items hangs under the guide
-	and Targets under Items. /apg target and /apg useitem, and two key
+	Both windows hide when they have nothing to show, and when you close the
+	guide (not when it hides itself in combat or an instance: the Appearance
+	page's switches say what happens to them then). Each drags by its title
+	and remembers where it was left; let go of one near another, or near the
+	guide, and it snaps flush against it. Until dragged, Items hangs under the
+	guide and Targets under Items. /apg target and /apg useitem, and two key
 	bindings, do what the macros do -- /apg target takes the nearest of the
 	step's targets, then the next one out on each press, which is the macro
 	RestedXP asks you to make.
@@ -682,6 +685,50 @@ local function Tile(parent)
 	return b
 end
 
+--[[ Snapping. Let go of a window near another -- or near the guide -- and it
+	moves flush against it, side by side or one under the other, and lines up
+	with the edge they share when that is near too. Measured on the screen,
+	as the guide's scale can differ from the buttons'. ]]
+local SNAP, SNAP_GAP = 14, 2
+local function Snap(f)
+	local s = f:GetEffectiveScale()
+	local l, r, t, b = f:GetLeft(), f:GetRight(), f:GetTop(), f:GetBottom()
+	if not (l and r and t and b) then return false end
+	l, r, t, b = l * s, r * s, t * s, b * s
+	local best, dx, dy
+	for _, o in ipairs({ items, targets, macros, AegisPathfinder.objectiveframe }) do
+		if o ~= f and o:IsShown() and o:GetLeft() and o:GetTop() then
+			local os = o:GetEffectiveScale()
+			local ol, orr, ot, ob = o:GetLeft() * os, o:GetRight() * os, o:GetTop() * os, o:GetBottom() * os
+			local moves = {}
+			if l < orr and r > ol then         -- one over the other
+				table.insert(moves, { 0, ob - SNAP_GAP - t, true })
+				table.insert(moves, { 0, ot + SNAP_GAP - b, true })
+			end
+			if b < ot and t > ob then          -- side by side
+				table.insert(moves, { orr + SNAP_GAP - l, 0 })
+				table.insert(moves, { ol - SNAP_GAP - r, 0 })
+			end
+			for _, m in ipairs(moves) do
+				local d = math.abs(m[1]) + math.abs(m[2])
+				if d <= SNAP and (not best or d < best) then
+					best, dx, dy = d, m[1], m[2]
+					if m[3] then
+						if math.abs(ol - l) <= SNAP then dx = ol - l elseif math.abs(orr - r) <= SNAP then dx = orr - r end
+					else
+						if math.abs(ot - t) <= SNAP then dy = ot - t elseif math.abs(ob - b) <= SNAP then dy = ob - b end
+					end
+				end
+			end
+		end
+	end
+	if not best then return false end
+	f:ClearAllPoints()
+	f:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", (l + dx) / s, (t + dy) / s)
+	return true
+end
+AegisPathfinder.SnapActiveFrame = Snap
+
 local function Window(name, title, key)
 	local f = CreateFrame("Frame", name, UIParent)
 	f:SetFrameStrata("MEDIUM")
@@ -701,6 +748,7 @@ local function Window(name, title, key)
 
 	local save = Theme:PositionSaver(key)
 	header:MakeDragHandle(f, function(frame)
+		Snap(frame)
 		AnchorGrow(frame)
 		save(frame)
 	end)
@@ -1078,9 +1126,12 @@ function AegisPathfinder:PaintActiveFrames()
 
 	PaintMacros(self, char, targets:IsShown() and targets or items:IsShown() and items or guide)
 	-- In combat, with the Appearance page's "hide the action buttons in
-	-- combat too": worked out as ever, for the macros and the quest icons,
-	-- but not shown.
-	if self.buttonsHidden then
+	-- combat too", or with the guide closed: worked out as ever, for the
+	-- macros and the quest icons, but not shown. A guide hidden for combat
+	-- or an instance has not been closed.
+	local g = self.objectiveframe
+	local closed = g and not g:IsShown() and not self.hiddenForCombat and not self.hiddenForInstance
+	if self.buttonsHidden or closed then
 		items:Hide()
 		targets:Hide()
 		macros:Hide()

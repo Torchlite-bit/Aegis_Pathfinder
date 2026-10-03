@@ -439,6 +439,12 @@ are only found at startup.
       on it (star to talk, skull to kill, cross to loot, square to interact).
 - [x] **Macros**: AegisTarget and AegisItem appear in your character macros and
       follow the guide from an action bar.
+- [ ] Drag Active Targets close under or beside Active Items (or the guide):
+      let go and it snaps flush against it, lined up; dropped further away, it
+      stays where you put it. After `/reload`, still there.
+- [ ] Close the guide (its ✕, or the minimap button): the action buttons go
+      too, and come back when you open it. In combat with *Hide the guide in
+      combat* on and *the action buttons too* off, they stay.
 - [ ] With several of a step's mobs around (Crocolisk Hunting), AegisTarget
       takes the nearest, each press after it the next one out, then back to
       the nearest; a dead one is skipped; targeting something else first, the

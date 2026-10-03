@@ -18,6 +18,17 @@ reports.
 
 ---
 
+## [0.22.15]
+
+### Changed
+- **The action buttons snap together.** Let go of Active Items, Active
+  Targets or Macros near another of them, or near the guide, and it snaps
+  flush against it, side by side or one under the other, lined up.
+- **The action buttons close with the guide.** Close the guide (its ✕, the
+  minimap button, `/apg`) and they go too; open it and they come back. When
+  the guide hides itself in combat or a dungeon, the Appearance page's
+  switches still decide.
+
 ## [0.22.14]
 
 ### Fixed
@@ -1447,6 +1458,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.15]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.14]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.13]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.12]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
