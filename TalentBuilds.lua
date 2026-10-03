@@ -119,7 +119,7 @@ AegisPathfinder.TalentBuilds = {
 			"Improved Devotion Aura", 5, "Precision", 3, "Toughness", 3,
 		} },
 		alts = {
-			{ name = "Sword and Board", spec = "Protection", split = "10/41/0", order = {
+			{ name = "Protection", spec = "Protection", split = "10/41/0", order = {
 				"Redoubt", 5, "Precision", 3, "Toughness", 2, "Blessing of Sanctuary", 1,
 				"Shield Specialization", 3, "Toughness", 5, "Improved Hammer of Justice", 3, "Holy Shield", 1,
 				"Reckoning", 5, "Righteous Strikes", 5, "Bulwark of the Righteous", 1,
@@ -276,7 +276,7 @@ AegisPathfinder.TalentBuilds = {
 			"Enrage", 5,
 		} },
 		alts = {
-			{ name = "Sword and Board", spec = "Protection", split = "16/0/35", order = {
+			{ name = "Protection", spec = "Protection", split = "16/0/35", order = {
 				"Shield Specialization", 5, "Toughness", 5, "Improved Revenge", 3, "Improved Bloodrage", 2,
 				"Last Stand", 1, "Defiance", 4, "Shield Slam", 1, "One-Handed Weapon Specialization", 5,
 				"Improved Shield Slam", 2, "Reprisal", 2, "Concussion Blow", 1, "Defiance", 5,

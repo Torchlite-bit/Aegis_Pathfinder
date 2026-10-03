@@ -504,6 +504,15 @@ check(ui.picture.kind == "map" and ui.rows[3].star:IsShown() and ui.rows[3].load
 check(ui.rows[3].fill:IsShown() and not ui.rows[1].fill:IsShown(), "the row is marked")
 fire(ui.rows[3], "OnLeave")
 check(not ui.rows[3].load:IsShown() and ui.rows[3].fill:IsShown(), "it stays marked")
+-- What a row says on the right ("Dungeon") makes room for the star and arrow.
+ui.rows[3].right:SetText("Dungeon")
+fire(ui.rows[3], "OnEnter")
+local _, _, _, rightX = ui.rows[3].right:GetPoint(1)
+check(rightX == -56, "pointed at, the row's right-hand text moves left of the star and arrow, got %s", tostring(rightX))
+fire(ui.rows[3], "OnLeave")
+_, _, _, rightX = ui.rows[3].right:GetPoint(1)
+check(rightX == -10, "and back when they go, got %s", tostring(rightX))
+ui.rows[3].right:SetText("")
 
 -- Clicks.
 arg1 = "LeftButton"

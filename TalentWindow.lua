@@ -40,7 +40,8 @@ local G = {
 	-- Where the strip sits on the client's window art: over its frame's top
 	-- edge, as wide as the frame. pfUI's backdrop is the frame there.
 	ART_LEFT = 12, ART_RIGHT = -34, ART_TOP = -10,
-	BADGE_H = 16, GLOW = 72, NEXT_W = 40, NEXT_H = 14, DOT = 8, TICK = 10,
+	-- NEXT sits clear of the badge at the talent's top right.
+	BADGE_H = 16, GLOW = 72, NEXT_W = 40, NEXT_H = 14, NEXT_LIFT = 10, DOT = 8, TICK = 10,
 	-- The mock-up's colours: the gold of "next", the amber of "+N", the grey
 	-- of a talent done, and the dark text on them.
 	GOLD = { 1, 0.82, 0 }, CARD = { 0.18, 0.16, 0.11 }, CARD_TEXT = { 0.91, 0.89, 0.78 },
@@ -211,7 +212,7 @@ function TW:Marks(button, anchor, glowSize)
 
 	local tag = CreateFrame("Frame", nil, m)
 	tag:SetWidth(G.NEXT_W); tag:SetHeight(G.NEXT_H)
-	tag:SetPoint("BOTTOM", anchor, "TOP", 0, 3)
+	tag:SetPoint("BOTTOM", anchor, "TOP", 0, G.NEXT_LIFT)
 	Theme:Strip(tag, G.GOLD)
 	local tagText = tag:CreateFontString(nil, "OVERLAY")
 	Theme:SetFont(tagText, "display", 10)

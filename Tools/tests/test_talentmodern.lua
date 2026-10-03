@@ -157,7 +157,7 @@ check(calls.refresh == 1, "its own Refresh still runs")
 local strip = MW.strip
 check(strip and strip:IsShown() and strip:GetParent() == frame, "the strip shows, on its window")
 check(strip.card:IsShown() and strip.card.title:GetText() == "Take Deep Wounds"
-	and strip.card.detail:GetText() == "Rank 3 of 3, in Arms · 1 point to spend",
+	and strip.card.detail:GetText() == "Rank 3 of 3 in Arms · 1 point to spend",
 	"the card says where the next point goes, got %s", tostring(strip.card.title:GetText()))
 check(strip.drop.label:GetText() == "Leveling, then Fury at 60", "following levelling, then Fury")
 

@@ -216,21 +216,29 @@ do
 	check(TA.Choose(builds, "auto", nil, 60, {}) == lev, "no spec known: levelling")
 	check(TA.Choose(builds, "levelling", fury, 60, {}) == lev, "levelling chosen: levelling")
 
-	-- Sword and Board: another levelling build, alone or then your spec.
-	local snb = TA.LevellingBuild(builds, "Sword and Board")
-	check(snb and snb ~= lev and snb.spec == "Protection", "a Warrior has a Sword and Board levelling build")
-	check(TA.Choose(builds, "levelling:Sword and Board", fury, 60, {}) == snb, "chosen alone, it is followed at 60 too")
-	check(TA.Choose(builds, "auto:Sword and Board", fury, 30, {}) == snb, "then your spec: Sword and Board before 60")
-	b, ready = TA.Choose(builds, "auto:Sword and Board", fury, 60, TA.Targets(TA.Points(snb)))
-	check(b == snb and ready, "and at 60 with all 51 on it, your spec's is ready")
-	check(TA.Choose(builds, "auto:Sword and Board", fury, 60, {}) == fury, "after a respec, your spec's")
+	-- Protection: another levelling build, alone or then your spec.
+	local prot = TA.LevellingBuild(builds, "Protection")
+	check(prot and prot ~= lev and prot.spec == "Protection", "a Warrior has a Protection levelling build")
+	check(TA.Choose(builds, "levelling:Protection", fury, 60, {}) == prot, "chosen alone, it is followed at 60 too")
+	check(TA.Choose(builds, "auto:Protection", fury, 30, {}) == prot, "then your spec: Protection before 60")
+	b, ready = TA.Choose(builds, "auto:Protection", fury, 60, TA.Targets(TA.Points(prot)))
+	check(b == prot and ready, "and at 60 with all 51 on it, your spec's is ready")
+	check(TA.Choose(builds, "auto:Protection", fury, 60, {}) == fury, "after a respec, your spec's")
 	check(TA.Choose(builds, "auto:Nope", fury, 30, {}) == lev, "a levelling build the class lacks: its usual one")
-	check(TA.BuildLabel(builds, snb, "Warrior") == "Warrior Sword and Board leveling", "named for what it is")
-	check(TA.AutoLabel({ choice = "auto:Sword and Board", level = 60, build = snb, builds = builds }, fury, "Sword and Board")
-		== "Sword and Board (done), then Fury", "and at 60 says it is done")
-	check(TA.LevellingBuild(A.TalentBuilds.PALADIN, "Sword and Board").spec == "Protection"
+	check(TA.BuildLabel(builds, prot, "Warrior") == "Warrior Protection leveling", "named for what it is")
+	check(TA.AutoLabel({ choice = "auto:Protection", level = 30, build = prot, builds = builds }, fury, "Protection")
+		== "Protection leveling, then Fury at 60", "then your spec, by its name")
+	check(TA.AutoLabel({ choice = "auto:Protection", level = 60, build = prot, builds = builds }, fury, "Protection")
+		== "Protection leveling (done), then Fury", "and at 60 says it is done")
+	check(TA.LevellingBuild(A.TalentBuilds.PALADIN, "Protection").spec == "Protection"
 		and TA.LevellingBuild(A.TalentBuilds.DRUID, "Bear").spec == "Feral Combat",
-		"a Paladin has Sword and Board too, and a Druid Bear")
+		"a Paladin has Protection too, and a Druid Bear")
+	-- It was called Sword and Board: a character following it follows Protection.
+	A.db.char = { talentbuild = "auto:Sword and Board" }
+	check(TA:Settings().talentbuild == "auto:Protection", "a saved Sword and Board choice is Protection now")
+	A.db.char = { talentbuild = "levelling:Sword and Board" }
+	check(TA:Settings().talentbuild == "levelling:Protection", "alone too")
+	A.db.char = {}
 	check(TA.Choose(builds, "Protection", fury, 20, {}) == TA.SpecBuild(builds, "Protection"), "a spec chosen: that one")
 	check(TA.SpecBuild(A.TalentBuilds.HUNTER, "BeastMastery").spec == "Beast Mastery", "Item Score's BeastMastery")
 	check(TA.SpecBuild(A.TalentBuilds.DRUID, "FeralBear").spec == "Feral Combat", "and FeralBear")
@@ -354,10 +362,16 @@ do
 	check(fine, "every rank you have is in it")
 	check(TA:PlanName(s, 30) == "Pathfinder: Leveling to 30" and TA:PlanName(s) == "Pathfinder: Leveling",
 		"named for the build, to your level or whole")
-	A.db.char.talentbuild = "levelling:Sword and Board"
+	A.db.char.talentbuild = "levelling:Protection"
 	TA.fit = {}
 	s = TA:State(nil, 30, 9)
-	check(TA:PlanName(s, 30) == "Pathfinder: Sword and Board to 30", "Sword and Board by its name")
+	check(TA:PlanName(s, 30) == "Pathfinder: Protection leveling to 30" and TA:PlanName(s) == "Pathfinder: Protection leveling",
+		"Protection leveling by its name")
+	A.db.char.talentbuild = "Fury"
+	TA.fit = {}
+	s = TA:State(nil, 30, 9)
+	check(TA:PlanName(s, 30) == "Pathfinder: Fury to 30" and TA:PlanName(s) == "Pathfinder: Fury at 60",
+		"a spec's build: to your level, or at 60")
 
 	-- The card for the next point.
 	A.db.char = {}
@@ -365,11 +379,11 @@ do
 	TA.fit = {}
 	s = TA:State(nil, 22, 1)
 	local title, detail, icon = TA:NextCard(s)
-	check(title == "Take Deep Wounds" and detail == "Rank 3 of 3, in Arms · 1 point to spend" and icon == "icon",
+	check(title == "Take Deep Wounds" and detail == "Rank 3 of 3 in Arms · 1 point to spend" and icon == "icon",
 		"the card: take Deep Wounds, got %s / %s", tostring(title), tostring(detail))
 	s = TA:State(nil, 22, 0)
 	title, detail = TA:NextCard(s)
-	check(title == "Next: Deep Wounds" and detail == "Rank 3 of 3, in Arms · your point at level 23",
+	check(title == "Next: Deep Wounds" and detail == "Rank 3 of 3 in Arms · at level 23",
 		"with no point: the next level's, got %s / %s", tostring(title), tostring(detail))
 	A.db.char = {}
 	TA.fit = {}

@@ -624,8 +624,9 @@ continent's:
 - **Talent Advisor** (on): marks where your points go on the talent window --
   see **Talent Advisor**, below. *Build to follow*: levelling, then your spec
   (to start with), your class's levelling build, or any spec's build at 60.
-  A Warrior or Paladin can level as **Sword and Board** instead, and a Druid
-  as **Bear**: each on its own, or then your spec at 60.
+  A Warrior or Paladin can level as **Protection** instead, and a Druid as
+  **Bear**: each on its own ("Warrior Protection leveling"), or then your spec
+  at 60 ("Protection leveling, then Fury at 60").
   *Name the talent to take in chat when I level up* (on). *Point out a
   talent point: a card when I level up, and the talents button lit* (on).
   *Open the talent window*.
@@ -640,7 +641,7 @@ window (and pfUI's skin of it), and on Modern Spellbook's:
   is on it, and once all 51 are spent says your spec's build is ready for
   when you respec; after a respec it follows your spec's. Pick another on the
   Extras page or from the strip above the talent window. Some classes have
-  another levelling build: Sword and Board for a Warrior (Protection, Shield
+  another levelling build: Protection for a Warrior (with a shield, Shield
   Slam at 30 and Concussion Blow at 40) or a Paladin (Holy Shield at 30,
   Bulwark of the Righteous at 41), and Bear for a Druid (Feral Charge at 28,
   Leader of the Pack at 40).
@@ -651,8 +652,8 @@ window (and pfUI's skin of it), and on Modern Spellbook's:
   its tree's tab a gold dot and a gold light; the window opens on that tree.
 - **The strip** above the window: *Following* and the build, as a menu, and a
   card for the next point: the talent's icon, "Take Deep Wounds" and "Rank 3
-  of 3, in Arms · 1 point to spend" ("Next: Impale" and "... · your point at
-  level 30" with none to spend). Under it, how many points are off the build.
+  of 3 in Arms · 1 point to spend" ("Next: Impale" and "... · at level 30"
+  with none to spend). Under it, how many points are off the build.
   Off the build it carries on from the build's closest point you can take; it
   never says to respec.
 - **Off the window**, so a point is not missed: a card on a level up, "Level
@@ -666,8 +667,8 @@ window (and pfUI's skin of it), and on Modern Spellbook's:
   name; the strip over its window with the build, the card and three buttons.
   While it shows a plan, the marks step aside.
   - *Plan to my level* (21 points at 30) and *Whole build as a plan* save the
-    build in Modern Spellbook's plan list, as "Pathfinder: Sword and Board to
-    30" or "Pathfinder: Sword and Board", and make it the plan its window
+    build in Modern Spellbook's plan list, as "Pathfinder: Protection leveling
+    to 30" or "Pathfinder: Protection leveling", and make it the plan its window
     shows: its *Apply* learns the points. A plan is the ranks you have, then
     the build's next points, so points already off the build don't stop it
     applying. Its list holds 20; full, the plan is still shown but not saved.

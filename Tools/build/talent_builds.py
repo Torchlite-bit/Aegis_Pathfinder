@@ -11,7 +11,7 @@ so nothing here comes from the original game's trees.
 
   * A levelling build for every class: the order its points go in, one a
     level from 10, so that by 60 all 51 are spent. Some classes have another
-    to choose instead -- Sword and Board for a Warrior or Paladin who levels
+    to choose instead -- Protection for a Warrior or Paladin who levels
     with a shield, Bear for a Druid who tanks.
   * A build at 60 for each of the class's three specs: the talents and their
     ranks, which is all a build at 60 needs, as the points are spent at once.
@@ -253,7 +253,7 @@ LEVELLING = {
 # order, as LEVELLING's.
 LEVELLING_ALTS = {
     "WARRIOR": [
-        ("Sword and Board", "Protection", "Protection with a shield from 10. Shield Specialization gives rage on "
+        ("Protection", "Protection", "Protection with a shield from 10. Shield Specialization gives rage on "
          "every block, Improved Revenge stuns, Last Stand at 25, Shield Slam at 30 and Concussion Blow at 40; "
          "then Arms' Tactical Mastery and Deep Wounds.", """
             Shield Specialization 5
@@ -278,7 +278,7 @@ LEVELLING_ALTS = {
         """),
     ],
     "PALADIN": [
-        ("Sword and Board", "Protection", "Protection with a shield from 10. Redoubt and Shield Specialization "
+        ("Protection", "Protection", "Protection with a shield from 10. Redoubt and Shield Specialization "
          "block and give mana back, Holy Shield at 30 with Reckoning's extra attacks, Righteous Strikes and "
          "Bulwark of the Righteous at 41; then Holy's Divine Strength and Divine Intellect.", """
             Redoubt 5

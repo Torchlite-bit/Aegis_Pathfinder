@@ -18,6 +18,29 @@ reports.
 
 ---
 
+## [0.22.24]
+
+### Changed
+- **Sword and Board is called Protection.** A Warrior's or Paladin's shield
+  build reads "Warrior Protection leveling" in the menu, and "Protection
+  leveling, then Fury at 60" before your spec at 60 (Bear likewise: "Bear
+  leveling, then …"). A character following Sword and Board follows
+  Protection without a click. Its Modern Spellbook plans are "Pathfinder:
+  Protection leveling to 30"; a spec's, "Pathfinder: Fury to 30" or
+  "Pathfinder: Fury at 60".
+
+### Fixed
+- **The talent strips, tidied** after the first look in game:
+  - the card's line is shorter, so it isn't cut off: "Rank 1 of 3 in
+    Protection · at level 21";
+  - on Modern Spellbook's window the menu is wider and the card fills the room
+    up to the buttons, so neither is cut short, and every piece hangs from the
+    strip's top at set places;
+  - NEXT sits clear of the badge on the talent's top right, on both windows.
+- **The guide browser's star no longer covers what a row says on the right**
+  ("Dungeon", "Raid", a percentage): while the star and arrow show, the words
+  move left of them.
+
 ## [0.22.23] — restart
 
 ### Added
@@ -1629,6 +1652,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.24]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.23]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.22]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.21]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

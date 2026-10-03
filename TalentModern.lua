@@ -35,7 +35,7 @@ TA.Modern = MW
 
 -- Layout, in one table: see the 32-upvalue note in CONTRIBUTING.md.
 local G = {
-	STRIP_H = 60, WARN_H = 18, LIFT = 10, PAD = 14, DROP_W = 260, DROP_H = 24, CARD_W = 330, CARD_H = 46, ICON = 30,
+	STRIP_H = 60, WARN_H = 18, LIFT = 10, PAD = 14, BRAND_W = 128, DROP_W = 340, DROP_H = 24, CARD_H = 46, ICON = 30,
 	PLAN_W = 140, WHOLE_W = 180, SHARE_W = 80, BUTTON_H = 30, GLOW = 62, PILL_H = 16,
 	SHARE_WIDTH = 560, SHARE_HEIGHT = 340, FIELD_H = 28,
 }
@@ -81,41 +81,47 @@ function MW:BuildStrip(frame)
 	strip:EnableMouse(true)
 	Theme:Panel(strip, "panel", false)
 
-	-- Hung from the top: a warning adds a row underneath.
+	-- Every piece hung from the strip's top, at set places: a warning adds a
+	-- row underneath, and the card takes the room between the menu and the
+	-- buttons, however wide its window is.
+	local menuX = G.PAD + G.BRAND_W
+	local cardX = menuX + G.DROP_W + 16
+	local buttonsW = G.PLAN_W + G.WHOLE_W + G.SHARE_W + 12
 	local brand = Text(strip, "display", 14, "accentGlow")
 	brand:SetPoint("TOPLEFT", strip, "TOPLEFT", G.PAD, -23)
 	brand:SetText("PATHFINDER")
 	local rule = strip:CreateTexture(nil, "ARTWORK")
 	rule:SetTexture(Theme.texture.solid)
 	rule:SetWidth(1); rule:SetHeight(28)
-	rule:SetPoint("LEFT", brand, "RIGHT", 14, 0)
+	rule:SetPoint("TOPLEFT", strip, "TOPLEFT", menuX - 14, -16)
 	Theme:Tint(rule, "border")
 
 	local following = Text(strip, "body", 11, "textDim")
-	following:SetPoint("TOPLEFT", rule, "TOPRIGHT", 14, 2)
+	following:SetPoint("TOPLEFT", strip, "TOPLEFT", menuX, -9)
 	following:SetText("Following")
 	local drop = Theme:Dropdown(strip, G.DROP_W, function(value) MW:Choose(value) end)
 	drop:SetHeight(G.DROP_H)
-	drop:SetPoint("TOPLEFT", following, "BOTTOMLEFT", 0, -2)
+	drop:SetPoint("TOPLEFT", strip, "TOPLEFT", menuX, -24)
 
 	local card = TW:Card(strip, G.ICON)
-	card:SetWidth(G.CARD_W); card:SetHeight(G.CARD_H)
-	card:SetPoint("LEFT", drop, "RIGHT", 16, 0)
+	card:SetPoint("TOPLEFT", strip, "TOPLEFT", cardX, -(G.STRIP_H - G.CARD_H) / 2)
+	card:SetPoint("BOTTOMRIGHT", strip, "TOPRIGHT", -(G.PAD + buttonsW + 16), -(G.STRIP_H + G.CARD_H) / 2)
 	local note = Text(strip, "body", 12, "text")
-	note:SetPoint("LEFT", drop, "RIGHT", 16, 0)
-	note:SetWidth(G.CARD_W)
+	note:SetPoint("TOPLEFT", strip, "TOPLEFT", cardX, -23)
+	note:SetPoint("RIGHT", strip, "RIGHT", -(G.PAD + buttonsW + 16), 0)
 	local warn = Text(strip, "body", 11, TW.G.AMBER)
 	warn:SetPoint("TOPLEFT", strip, "TOPLEFT", G.PAD, -G.STRIP_H + 2)
 	warn:SetPoint("RIGHT", strip, "RIGHT", -G.PAD, 0)
 
+	local top = -(G.STRIP_H - G.BUTTON_H) / 2
 	local share = Theme:Pill(strip, "Share", G.SHARE_W, G.BUTTON_H)
-	share:SetPoint("TOPRIGHT", strip, "TOPRIGHT", -G.PAD, -(G.STRIP_H - G.BUTTON_H) / 2)
+	share:SetPoint("TOPRIGHT", strip, "TOPRIGHT", -G.PAD, top)
 	share:SetScript("OnClick", function() MW:ShowShare() end)
 	local whole = Theme:Pill(strip, "Whole build as a plan", G.WHOLE_W, G.BUTTON_H)
-	whole:SetPoint("RIGHT", share, "LEFT", -6, 0)
+	whole:SetPoint("TOPRIGHT", strip, "TOPRIGHT", -(G.PAD + G.SHARE_W + 6), top)
 	whole:SetScript("OnClick", function() MW:SavePlan(true) end)
 	local mine = Theme:Pill(strip, "Plan to my level", G.PLAN_W, G.BUTTON_H)
-	mine:SetPoint("RIGHT", whole, "LEFT", -6, 0)
+	mine:SetPoint("TOPRIGHT", strip, "TOPRIGHT", -(G.PAD + G.SHARE_W + G.WHOLE_W + 12), top)
 	mine:SetActive(true)
 	mine:SetScript("OnClick", function() MW:SavePlan(false) end)
 
@@ -136,7 +142,7 @@ function MW:PaintStrip(state)
 	strip.drop:SetItems(TA:BuildItems(state))
 	strip.drop:SetValue(state.choice or "auto")
 	local w = strip:GetWidth()
-	if w and w > 0 then strip.drop.list:SetWidth(G.DROP_W + 120) end
+	if w and w > 0 then strip.drop.list:SetWidth(G.DROP_W + 60) end
 	local line, warn = TA:StripLines(state)
 	if TW:FillCard(strip.card, TA:NextCard(state)) then
 		strip.note:SetText("")

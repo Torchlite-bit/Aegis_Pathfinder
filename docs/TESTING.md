@@ -227,8 +227,8 @@ are only found at startup.
       tab: its talents are marked, no ring, the tab stays lit.
 - [ ] The strip above the window: PATHFINDER, *Following* and the build on one
       row; under it a card with the talent's icon in gold, "Take <talent>" and
-      "Rank r of n, in <tree> · 1 point to spend" ("Next: <talent>" and "…
-      your point at level N" without a point). It sits on the window's top
+      "Rank r of n in <tree> · 1 point to spend" ("Next: <talent>" and "… at
+      level N" without a point). Neither line is cut short. It sits on the window's top
       edge, as wide as it, and moves with it; with pfUI, on pfUI's frame.
 - [ ] Level up (10+) with the talent window shut: a card at the bottom right,
       "Level N: a talent point", the talent to take, *Open talents* and
@@ -260,8 +260,8 @@ are only found at startup.
       here." on the glowing one.
 - [ ] Pick another build from the strip's menu: the marks follow it, and the
       Extras page's *Build to follow* shows it; and the other way round.
-- [ ] Warrior or Paladin: the menu has "Sword and Board, then <spec> at 60"
-      and "<Class> Sword and Board leveling"; a Druid "Bear, then …" and
+- [ ] Warrior or Paladin: the menu has "Protection leveling, then <spec> at
+      60" and "<Class> Protection leveling"; a Druid "Bear leveling, then …" and
       "Druid Bear leveling". Picking one marks Protection's (or Feral's)
       talents from 10.
 - [ ] Switch the Talent Advisor off: the window has no strip, badges or glow,
@@ -348,6 +348,10 @@ are only found at startup.
 - [ ] Dungeons starts with **On the routes**: Optimized's Uldaman and Sunken
       Temple, each saying whose route; they are no longer in Optimized's
       Levels 40-60.
+- [ ] Point at a guide in a list that says something on the right (Raid,
+      Dungeon, a percentage): its star and arrow come up and the words move
+      left of them, nothing overlapping. A favourite's star stays, the words
+      beside it.
 - [ ] Next under Dungeons, **Attunements and keys**: the raids first (Onyxia's
       Lair, Molten Core, Blackwing Lair, Tower of Karazhan, Emerald Sanctum,
       Lower Karazhan Halls, Naxxramas), then the dungeons' keys, each saying

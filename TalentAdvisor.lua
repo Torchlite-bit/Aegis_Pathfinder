@@ -3,7 +3,7 @@
 	Two builds a character: the levelling build for your class, followed
 	until 60, then the build for your preferred spec -- the one picked on the
 	Item Score page -- or whichever you choose. Some classes have another
-	levelling build to choose instead (Sword and Board, Bear). The builds are data, by
+	levelling build to choose instead (Protection, Bear). The builds are data, by
 	talent name (TalentBuilds.lua, written by Tools/build/talent_builds.py),
 	and each is checked against the tree the game has before it is followed:
 	one that does not fit says so and is not followed.
@@ -47,6 +47,8 @@ function TA:Settings()
 	if char.talentadvisor == nil then char.talentadvisor = true end
 	if char.talentchat == nil then char.talentchat = true end
 	char.talentbuild = char.talentbuild or "auto"
+	-- A Warrior's or Paladin's shield build was called Sword and Board.
+	char.talentbuild = string.gsub(char.talentbuild, ":Sword and Board$", ":Protection")
 	return char
 end
 
@@ -341,11 +343,11 @@ function TA:Label(state)
 	return TA.BuildLabel(state.builds, state.build, (UnitClass("player")))
 end
 
---- What "Leveling, then my spec at 60" says now -- or "Bear, then my spec
---- at 60" for another levelling build `alt`: your spec by name, and at 60
---- which of the two it is following.
+--- What "Leveling, then my spec at 60" says now -- or "Bear leveling, then
+--- my spec at 60" for another levelling build `alt`: your spec by name, and
+--- at 60 which of the two it is following.
 function TA.AutoLabel(state, preferred, alt)
-	local lead = alt or "Leveling"
+	local lead = alt and (alt .. " leveling") or "Leveling"
 	if not preferred then return lead .. ", then my spec at 60" end
 	local current = state and state.choice == (alt and "auto:" .. alt or "auto")
 	if not current or (state.level or 0) < 60 then
@@ -409,18 +411,19 @@ function TA:StripLines(state)
 end
 
 --- The card over the window for the next point: its title, the line under
---- it, and the talent's icon -- "Take Shield Slam", "Rank 1 of 1, in
---- Protection · 1 point to spend". Nil with no next point to name.
+--- it, and the talent's icon -- "Take Shield Slam", "Rank 1 of 1 in
+--- Protection · 1 point to spend". Short, to fit the window. Nil with no
+--- next point to name.
 function TA:NextCard(state)
 	if not (state.fits and state.next) or state.ready then return nil end
 	local t = state.tree.talent[state.next]
-	local where = "Rank " .. state.rank .. " of " .. t.max .. ", in " .. state.tree.tabs[t.tab].name
+	local where = "Rank " .. state.rank .. " of " .. t.max .. " in " .. state.tree.tabs[t.tab].name
 	if state.unspent > 0 then
 		return "Take " .. state.next, where .. " · " .. Points(state.unspent) .. " to spend", t.icon
 	elseif state.level < 60 then
-		return "Next: " .. state.next, where .. " · your point at level " .. (state.level + 1), t.icon
+		return "Next: " .. state.next, where .. " · at level " .. (state.level + 1), t.icon
 	end
-	return "Next, after a respec: " .. state.next, where, t.icon
+	return "After a respec: " .. state.next, where, t.icon
 end
 
 --- How a talent is marked on the window: "todo" with the points the build
@@ -628,12 +631,13 @@ function TA.PlanRanks(state, n)
 	return ranks
 end
 
---- A plan's name in Modern Spellbook's list: "Pathfinder: Sword and Board
---- to 30", or the whole build without "to".
+--- A plan's name in Modern Spellbook's list: "Pathfinder: Protection leveling
+--- to 30", "Pathfinder: Fury to 30"; without "to" for the whole build ("Pathfinder:
+--- Fury at 60").
 function TA:PlanName(state, upto)
 	local b = state.build
 	local short = (b.shared and "Shared build") or (b == state.builds.levelling and "Leveling")
-		or b.name or b.spec or "Leveling"
+		or (b.name and (b.name .. " leveling")) or (b.spec and (b.spec .. (upto and "" or " at 60"))) or "Leveling"
 	return "Pathfinder: " .. short .. (upto and (" to " .. upto) or "")
 end
 

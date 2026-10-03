@@ -354,8 +354,19 @@ ui.list = list
 
 local function ShowHover(row, on)
 	if not row.guide then on = false end
-	if on or row.favorite then row.star:Show() else row.star:Hide() end
+	local icons = on or row.favorite
+	if icons then row.star:Show() else row.star:Hide() end
 	if on then row.load:Show() else row.load:Hide() end
+	-- What the row says on the right ("Raid", "45%") moves left of the star
+	-- and arrow while they show, and the title stops short of it.
+	local edge = icons and 56 or 10
+	row.right:ClearAllPoints()
+	row.right:SetPoint("RIGHT", row, "RIGHT", -edge, 0)
+	local said = row.right:GetText() or ""
+	local width = said ~= "" and row.right:GetStringWidth() or 0
+	row.text:ClearAllPoints()
+	row.text:SetPoint("LEFT", row, "LEFT", 34, 0)
+	row.text:SetPoint("RIGHT", row, "RIGHT", -math.max(60, edge + width + 10), 0)
 end
 
 local function MarkSelection()

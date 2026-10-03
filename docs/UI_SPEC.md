@@ -426,7 +426,7 @@ Pathfinder loads, for the tooltip line.
   edge, dark text.
 - *The next point*: `UI-ActionButton-Border`, 72 square, additive, tinted
   gold, over the button; and a 40 by 14 gold tag reading NEXT (display face,
-  10, near-black) 3 above it.
+  10, near-black) 10 above it, clear of the badge.
 - *The tab*: a gold `circleFill`, 8 square, left of the tab's name, and the
   tab lit with `UI-Character-Tab-Highlight`, additive, tinted gold.
 - *The card on a level up*: 340 wide, `DIALOG` strata, 24 in from the right
@@ -447,10 +447,12 @@ it loads (`ADDON_LOADED` for ModernSpellBook, or `PLAYER_LOGIN`); its frame's
 OnShow and OnHide are chained.
 
 - *The strip*: 60 high, 10 above its frame, as wide as it, a `panel` without a
-  shadow. PATHFINDER (display, 14, `accentGlow`), a 1px rule, *Following* (11,
-  `textDim`) over a 260 by 24 `Theme:Dropdown`, the card (330 by 46, the icon
-  30), and at the right *Plan to my level* (active pill, 140), *Whole build as
-  a plan* (180) and *Share* (80), 30 high. The plan buttons dim to 45% without
+  shadow, every piece hung from its top at set places. PATHFINDER (display,
+  14, `accentGlow`), a 1px rule 128 in, *Following* (11, `textDim`) over a 340
+  by 24 `Theme:Dropdown`, the card (46 high, the icon 30) filling the room up
+  to the buttons, and at the right *Plan to my level* (active pill, 140),
+  *Whole build as a plan* (180) and *Share* (80), 30 high. A warning adds an
+  18 high row underneath. The plan buttons dim to 45% without
   its plans; all three while the build doesn't fit.
 - *The marks*: the badge, ring (62 square) and NEXT of Blizzard's window, on
   each icon's frame, centred on its `border_frame`, five levels up. A gold

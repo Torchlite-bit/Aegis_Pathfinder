@@ -2576,7 +2576,7 @@
    ],
    "alts": [
     {
-     "name": "Sword and Board",
+     "name": "Protection",
      "spec": "Protection",
      "why": "Protection with a shield from 10. Redoubt and Shield Specialization block and give mana back, Holy Shield at 30 with Reckoning's extra attacks, Righteous Strikes and Bulwark of the Righteous at 41; then Holy's Divine Strength and Divine Intellect.",
      "split": "10/41/0",
@@ -5643,7 +5643,7 @@
    ],
    "alts": [
     {
-     "name": "Sword and Board",
+     "name": "Protection",
      "spec": "Protection",
      "why": "Protection with a shield from 10. Shield Specialization gives rage on every block, Improved Revenge stuns, Last Stand at 25, Shield Slam at 30 and Concussion Blow at 40; then Arms' Tactical Mastery and Deep Wounds.",
      "split": "16/0/35",

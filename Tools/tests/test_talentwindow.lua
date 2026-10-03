@@ -151,7 +151,7 @@ check(TalentFrame.selectedTab == 1, "the window opens on Arms, where the next po
 local strip = TW.strip
 check(strip:IsShown() and strip:GetParent() == TalentFrame, "the strip shows, on the window")
 check(strip.card:IsShown() and strip.card.title:GetText() == "Take Deep Wounds"
-	and strip.card.detail:GetText() == "Rank 3 of 3, in Arms · 1 point to spend",
+	and strip.card.detail:GetText() == "Rank 3 of 3 in Arms · 1 point to spend",
 	"its card says where the next point goes, got %s / %s", tostring(strip.card.title:GetText()),
 	tostring(strip.card.detail:GetText()))
 check(strip.card.icon:GetTexture() == "icon" and strip.note:GetText() == "", "with the talent's icon, and no line besides")
@@ -165,6 +165,8 @@ local deep = Marks("Deep Wounds")
 check(deep and deep:IsShown() and deep.badge:IsShown() and deep.badge.text:GetText() == "3",
 	"Deep Wounds has its badge: the build puts 3 there")
 check(deep.glow:IsShown() and deep.tag:IsShown(), "and the glow and NEXT: the next point goes there")
+local _, _, _, _, tagY = deep.tag:GetPoint(1)
+check(tagY == TW.G.NEXT_LIFT and tagY >= TW.G.BADGE_H / 2, "NEXT sits clear of the badge at the talent's top right")
 local r, g, b = deep.badge.text:GetTextColor()
 local c = TW.G.ON_ACCENT
 check(r == c[1] and g == c[2] and b == c[3], "points still to take: dark on the accent")
@@ -207,7 +209,7 @@ check(Marks("Impale").glow:IsShown(), "the glow on Impale")
 -- No point to spend: where the next level's goes.
 current.unspent = 0
 TalentFrame_Update()
-check(strip.card.title:GetText() == "Next: Impale" and strip.card.detail:GetText() == "Rank 1 of 2, in Arms · your point at level 30",
+check(strip.card.title:GetText() == "Next: Impale" and strip.card.detail:GetText() == "Rank 1 of 2 in Arms · at level 30",
 	"no point to spend, got %s / %s", tostring(strip.card.title:GetText()), tostring(strip.card.detail:GetText()))
 
 -- The tooltip.
@@ -249,10 +251,10 @@ check(strip:IsShown() and Marks("Impale").glow:IsShown(), "on again")
 -- Picking another build from the strip: the options' setting.
 local order = {}
 for _, item in ipairs(strip.drop.items) do table.insert(order, item.value) end
-check(table.concat(order, ",") == "auto,auto:Sword and Board,levelling,levelling:Sword and Board,Arms,Fury,Protection",
-	"the menu: auto, then Sword and Board, the levelling builds and each spec, got %s", table.concat(order, ","))
-check(strip.drop.items[2].label == "Sword and Board, then Fury at 60"
-	and strip.drop.items[4].label == "Warrior Sword and Board leveling", "Sword and Board named both ways, got %s / %s",
+check(table.concat(order, ",") == "auto,auto:Protection,levelling,levelling:Protection,Arms,Fury,Protection",
+	"the menu: auto, then Protection, the levelling builds and each spec, got %s", table.concat(order, ","))
+check(strip.drop.items[2].label == "Protection leveling, then Fury at 60"
+	and strip.drop.items[4].label == "Warrior Protection leveling", "Protection leveling named both ways, got %s / %s",
 	strip.drop.items[2].label, strip.drop.items[4].label)
 check(strip.drop.items[6].label == "Fury at 60 (my spec)", "your spec marked")
 refreshedOptions = 0
