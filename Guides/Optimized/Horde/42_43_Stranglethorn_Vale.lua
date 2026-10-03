@@ -122,7 +122,7 @@ R Grom'gol Base Camp|TID|598| |N|Travel to Grom'gol Base Camp (32.21, 27.75)| |P
 T Split Bone Necklace |QID|598| |N|Kin'weelay in Grom'gol Base Camp (32.21, 27.75)| |Z|Stranglethorn Vale| |PRE|596|
 A Grim Message |QID|2932| |N|Nimboya in Grom'gol Base Camp (32.16, 27.77)| |Z|Stranglethorn Vale| |PRE|596|
 
-N Level 43 |N|You should be around level 43 now. Continue to Desolace|
+N Level 43 |N|You should be around level 43 now. Continue to Desolace| |LV|43|
 
 ]]
 end)

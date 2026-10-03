@@ -39,7 +39,7 @@ N Box of Empty Vials |QID|3568| |N|Store Box of Empty Vials at the bank. Tick th
 N Bundle of Atal'ai Artifacts |QID|1429| |N|Withdraw Bundle of Atal'ai Artifacts at the bank. Tick this step (66.0, 45.2)| |Z|Undercity| |L|6193| |OO|
 N Nimboya's Pike |QID|2932| |N|Withdraw Nimboya's Pike at the bank. Tick this step (66.0, 45.2)| |Z|Undercity| |L|15002| |OO|
 
-N Level 46 |N|Continue to The Hinterlands|
+N Level 46 |N|Continue to The Hinterlands| |LV|46|
 
 ]]
 end)

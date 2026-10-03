@@ -169,7 +169,7 @@ R Gadgetzan |QID|4502| |N|Travel to Gadgetzan (52.47, 28.43)| |Z|Tanaris|
 N Un'Goro Ash |QID|4502| |N|Store Un'Goro Ash to the bank (52.30, 28.89)| |Z|Tanaris| |L|11829| |O|
 N Linken's Training Sword |QID|3908| |N|Store Linken's Training Sword to the bank (52.30, 28.89)| |Z|Tanaris| |L|11133| |O|
 
-N Level 52 |N|You should be around level 52 now. Continue to Azshara|
+N Level 52 |N|You should be around level 52 now. Continue to Azshara| |LV|52|
 
 ]]
 end)

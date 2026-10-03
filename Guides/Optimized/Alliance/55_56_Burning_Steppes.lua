@@ -127,7 +127,7 @@ T A Donation of Mageweave |QID|7804| |N|Mistina Steelshield in The Great Forge (
 N Everlook Report |QID|6028| |N|Withdraw Everlook Report from the bank (35.48, 60.70)| |Z|Ironforge| |L|15788| |O|
 N Tinkee's Letter |QID|4808| |N|Store Tinkee's Letter to the bank (35.48, 60.70)| |Z|Ironforge| |L|12438| |O|
 
-N Level 56 |N|You should be around level 56 now. Continue to Silithus|
+N Level 56 |N|You should be around level 56 now. Continue to Silithus| |LV|56|
 
 ]]
 end)

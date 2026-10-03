@@ -75,7 +75,7 @@ A Senir's Observations (Part 1) |QID|282| |N|Grelin Whitebeard in Coldridge Vall
 
 T A Refugee's Quandary |QID|3361| |N|Felix Whindlebolt in Coldridge Valley (28.56, 67.74)|
 
-N Level 6 |N|You should be level 5-6. Grind if needed before leaving Coldridge Valley|
+N Level 6 |N|You should be level 5-6. Grind if needed before leaving Coldridge Valley| |LV|6|
 
 T Senir's Observations (Part 1) |QID|282| |N|Mountaineer Thalos in Coldridge Pass (33.47, 71.83)|
 A Senir's Observations (Part 2) |QID|420| |N|Mountaineer Thalos in Coldridge Pass (33.47, 71.83)|
@@ -159,7 +159,7 @@ T Return to Marleth |QID|311| |N|Marleth Barleybrew in Brewnall Village (30.22, 
 R Steelgrill's Depot |QID|320| |N|Travel to Steelgrill's Depot (49.49, 48.37)|
 T Return to Bellowfiz |QID|320| |N|Pilot Bellowfiz in Steelgrill's Depot (49.49, 48.37)|
 
-N Level 9 |N|You should be around level 9 now|
+N Level 9 |N|You should be around level 9 now| |LV|9|
 
 R Gol'Bolar Quarry |QID|433| |N|Travel east to Gol'Bolar Quarry (68.70, 56.02)|
 A The Public Servant |QID|433| |N|Senator Mehr Stonehallow at Gol'Bolar Quarry (68.70, 56.02)|
@@ -281,7 +281,7 @@ T The Binding |QID|1689| |N|Gakin the Darkbinder in The Slaughtered Lamb (39.2, 
 F Thelsamar |QID|6392| |N|Fly to Thelsamar to complete Honor Students chain| |Z|Loch Modan| |O|
 T Return to Brock |QID|6392| |N|Brock Stoneseeker in Thelsamar (37.07, 47.79)| |Z|Loch Modan|
 
-N Level 12 |N|You should be around level 12 now. Continue to Darkshore or Loch Modan for the next guide|
+N Level 12 |N|You should be around level 12 now. Continue to Darkshore or Loch Modan for the next guide| |LV|12|
 
 N Guide Complete |N|Head to Darkshore for optimized 12+ leveling. Take flight from Ironforge to Menethil Harbor, then boat to Auberdine|
 

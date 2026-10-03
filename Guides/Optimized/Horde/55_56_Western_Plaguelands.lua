@@ -89,7 +89,7 @@ A Return to the Bulwark |QID|5236| |N|Scourge Cauldron in Gahrron's Withering (6
 
 R Eastern Plaguelands |N|Travel east to Eastern Plaguelands (67.12, 37.67)| |Z|Western Plaguelands|
 
-N Level 56 |N|You should be around level 56 now. Continue to the next guide|
+N Level 56 |N|You should be around level 56 now. Continue to the next guide| |LV|56|
 
 ]]
 end)

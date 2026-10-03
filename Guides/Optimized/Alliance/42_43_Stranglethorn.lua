@@ -77,7 +77,7 @@ T Akiris by the Bundle (Part 2) |QID|623| |N|Privateer Groy in Theramore Isle (6
 
 F Gadgetzan |QID|2864| |N|Fly to Gadgetzan in Tanaris| |Z|Tanaris|
 
-N Level 43 |N|You should be level 43 now. Continue to Tanaris|
+N Level 43 |N|You should be level 43 now. Continue to Tanaris| |LV|43|
 
 ]]
 end)

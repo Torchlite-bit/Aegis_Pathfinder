@@ -77,7 +77,7 @@ T Favored of Elune? |QID|3661| |N|Erelas Ambersky in Rut'theran Village (55.50, 
 T The Super Snapper FX |QID|2944| |N|Daryn Lightwind upstairs (55.42, 92.26)| |P|GROUP| |Z|Teldrassil|
 A Return to Troyas |QID|2943| |N|Daryn Lightwind (55.42, 92.26)| |P|GROUP| |Z|Teldrassil| |PRE|2944|
 
-N Level 47 |N|You should be level 47 and about 8k into it. Continue to Feralas|
+N Level 47 |N|You should be level 47 and about 8k into it. Continue to Feralas| |LV|47|
 
 F Feathermoon Stronghold |QID|2943| |N|Fly to Feathermoon Stronghold| |P|GROUP| |Z|Feralas|
 

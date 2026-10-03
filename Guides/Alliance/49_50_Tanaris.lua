@@ -98,7 +98,7 @@ A A Short Incubation |QID|3842| |N|Quentin in Mirage Raceway (78.33, 74.72)| |Z|
 C A Short Incubation |QID|3842| |N|Skip if you don't have 2 Elixir of Fortitude| |Z|Thousand Needles| |PRE|3842|
 T A Short Incubation |QID|3842| |N|Quentin in Mirage Raceway (78.33, 74.72)| |Z|Thousand Needles| |PRE|3842|
 
-N Level 50 Required |N|You should be close to level 50, grind nearby mobs to reach until you reach it. If you completed A Short Incubation quest line (handed in 2 Elixir of Fortitude), don't go far. You will pick up another quest from Quentin before leaving Thousand Needles|
+N Level 50 Required |N|You should be close to level 50, grind nearby mobs to reach until you reach it. If you completed A Short Incubation quest line (handed in 2 Elixir of Fortitude), don't go far. You will pick up another quest from Quentin before leaving Thousand Needles| |LV|50|
 N ACCEPT TIMED QUEST - The Newest Member of the Family|QID|3843| |N|This quest is a TIMED quest to deliver Fragile Sprite Darter Egg if you completed the previous quest line in the last guide. You have 1 hour to turn it in, do NOT accept if you're going to log out or go AFK. Skip this step| |Z|Thousand Needles| |PRE|3842| |O|
 A The Newest Member of the Family |QID|3843| |N|Quentin in Mirage Raceway (78.33, 74.72)| |Z|Thousand Needles| |PRE|3842| |O|
 

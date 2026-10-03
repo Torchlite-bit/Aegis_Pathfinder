@@ -13,7 +13,7 @@ T An Old Colleague |QID|1072| |N|Keeper Albagorm in Stonetalon Peak (37.10, 8.10
 
 N To Desolace |N|Continue south through Stonetalon to Desolace|
 
-N Level 33 |N|You should be around level 33 now. Continue to the next guide|
+N Level 33 |N|You should be around level 33 now. Continue to the next guide| |LV|33|
 
 ]]
 end)

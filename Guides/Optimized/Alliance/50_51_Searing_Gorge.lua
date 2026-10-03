@@ -125,7 +125,7 @@ T Trinkets... |QID|3481| |N|Hoard of the Black Dragonflight chest (39.16, 39.00)
 N Abandon Quest |N|Abandon 'WANTED: Overseer Maltorius' if not completed| |O|
 N Abandon Quest |N|Abandon 'What the Flux?' if not completed| |O|
 
-N Level 51 |N|You should be around level 51 now. Continue to Un'Goro Crater|
+N Level 51 |N|You should be around level 51 now. Continue to Un'Goro Crater| |LV|51|
 
 ]]
 end)

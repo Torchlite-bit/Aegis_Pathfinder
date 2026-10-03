@@ -53,7 +53,7 @@ function AegisPathfinder:IsAutoDetectable(action, i)
 	if i and action == "KILL" and self:GetObjectiveTag("BOSS", i) then return true end
 	-- Rank steps complete on the skill cap, level gates on the level.
 	if i and self:GetObjectiveTag("RANK", i) then return true end
-	if i and action == "GRIND" and self:GetObjectiveTag("LV", i) then return true end
+	if i and (action == "GRIND" or action == "NOTE") and self:GetObjectiveTag("LV", i) then return true end
 	if i and self:GetObjectiveTag("L", i) then return true end
 
 	return false
@@ -230,6 +230,9 @@ function AegisPathfinder:UpdateStatusFrame()
 			local zonetext, subzonetext, subzonetag = GetZoneText(), GetSubZoneText(), self:GetObjectiveTag("SZ")
 			if (action == "RUN" or action == "FLY" or action == "HEARTH" or action == "BOAT") and (subzonetext == name or subzonetext == subzonetag or zonetext == name or zonetext == subzonetag) then return
 				self:SetTurnedIn(i, true) end
+
+			-- A level note ("Level 10 Required") is done at that level.
+			if action == "NOTE" and level and not needlevel then return self:SetTurnedIn(i, true) end
 
 			if action == "KILL" or action == "NOTE" or action == "COMPLETE" or action == "BUY" then
 				if haslootitem then return self:SetTurnedIn(i, true) end

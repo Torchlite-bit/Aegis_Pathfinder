@@ -398,7 +398,7 @@ T Free From the Hold |QID|898| |N|Captain Thalo'thas Brightsun in Ratchet (62.29
 T The Guns of Northwatch |QID|891| |N|Captain Thalo'thas Brightsun in Ratchet (62.28, 39.07)|
 T Hezrul Bloodmark |QID|852| |N|Regthar Deathgate in the bunkers west of The Crossroads (45.33, 28.44)|
 
-N Level 20 Required |N|You should be close to level 20, grind nearby mobs to reach level 20|
+N Level 20 Required |N|You should be close to level 20, grind nearby mobs to reach level 20| |LV|20|
 
 R Sun Rock Retreat |N|Travel west from The Crossroads through Honor's Stand into Stonetalon Mountains, then south to Sun Rock Retreat| |Z|Stonetalon Mountains|
 

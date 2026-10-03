@@ -32,7 +32,7 @@ R Stonetalon Peak |TID|1056| |N|Travel to Stonetalon Peak (37.10, 8.10)| |Z|Ston
 T Journey to Stonetalon Peak |QID|1056| |N|Keeper Albagorm in Stonetalon Peak (37.10, 8.10)| |Z|Stonetalon Mountains|
 f Stonetalon Peak |TID|1134| |N|Speak to Teloren and grab flight path for Stonetalon Peak (36.46, 7.20)| |Z|Stonetalon Mountains|
 
-N Level 23 |N|You should be around level 23 now. Continue to the next guide|
+N Level 23 |N|You should be around level 23 now. Continue to the next guide| |LV|23|
 
 ]]
 end)

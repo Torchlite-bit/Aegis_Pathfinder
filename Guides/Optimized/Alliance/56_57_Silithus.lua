@@ -100,7 +100,7 @@ N Tinkee's Letter |QID|4808| |N|Withdraw Tinkee's Letter from the bank (35.48, 6
 N Extended Annals of Darrowshire |QID|5210| |N|Withdraw Extended Annals of Darrowshire from the bank (35.48, 60.70)| |Z|Ironforge| |L|13202| |O|
 T A Little Slime Goes a Long Way (Part 2) |QID|4513| |N|Laris Geardawdle in The Library (75.81, 23.43)| |Z|Ironforge| |O|
 
-N Level 57 |N|You should be around level 57 now. Continue to Western Plaguelands|
+N Level 57 |N|You should be around level 57 now. Continue to Western Plaguelands| |LV|57|
 
 ]]
 end)

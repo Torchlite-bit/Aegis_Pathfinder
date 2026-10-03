@@ -394,6 +394,42 @@ do
 	AegisPathfinder.SetTurnedIn, AegisPathfinder.GetLootRequirement = nil, nil
 end
 
+-- A level note ticks itself ----------------------------------------------------------
+
+--[[ Teldrassil (1-12)'s step "Level 10 Required" was a plain note: reaching
+	10 left it waiting for a click. With |LV|10| it is done at level 10,
+	shows the ⟳, and still waits below it. ]]
+do
+	local line
+	for l in io.lines("Guides/Alliance/01_12_Teldrassil.lua") do
+		if string.find(l, "^N Level 10 Required ") then line = l end
+	end
+	local _, _, tags = string.find(line or "", "^N Level 10 Required (|.*)$")
+	check(tags and string.find(tags, "|LV|10|", 1, true), "the guide's level note carries |LV|10|")
+	function AegisPathfinder:SetTurnedIn(i, value)
+		self.turnedin[self.quests[i]] = value and true or nil
+		self:UpdateStatusFrame()
+	end
+	function AegisPathfinder:GetLootRequirement() return nil end
+	AegisPathfinder.actions = { "NOTE", "ACCEPT" }
+	AegisPathfinder.quests = { "Level 10 Required@1@", "Tumors@2@" }
+	AegisPathfinder.tags = { tags or "", "|QID|923|" }
+	check(AegisPathfinder:IsAutoDetectable("NOTE", 1), "and shows the auto-tick mark")
+	local level = 9
+	local keepLevel = UnitLevel
+	UnitLevel = function() return level end
+	AegisPathfinder.turnedin, AegisPathfinder.current = {}, 1
+	AegisPathfinder:UpdateStatusFrame()
+	check(not AegisPathfinder.turnedin["Level 10 Required@1@"] and AegisPathfinder.current == 1,
+		"at level 9 it waits")
+	level = 10
+	AegisPathfinder:UpdateStatusFrame()
+	check(AegisPathfinder.turnedin["Level 10 Required@1@"] and AegisPathfinder.current == 2,
+		"at level 10 it is done, and the guide moves on")
+	UnitLevel = keepLevel
+	AegisPathfinder.SetTurnedIn, AegisPathfinder.GetLootRequirement = nil, nil
+end
+
 -- Report ---------------------------------------------------------------------
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end

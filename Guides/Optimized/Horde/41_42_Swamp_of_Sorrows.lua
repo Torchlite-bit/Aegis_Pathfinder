@@ -65,7 +65,7 @@ R Stonard |OID|1429| |N|Travel or Hearthstone to Stonard (47.9, 54.9)| |U|6948|
 T Pool of Tears |QID|1424| |N|Fel'zerul in Stonard (47.9, 54.9)|
 A The Atal'ai Exile |QID|1429| |N|Fel'zerul in Stonard (47.9, 54.9)|
 
-N Level 42 |N|You should be around level 42 now. Continue to Stranglethorn Vale|
+N Level 42 |N|You should be around level 42 now. Continue to Stranglethorn Vale| |LV|42|
 
 ]]
 end)

@@ -62,7 +62,7 @@ f Booty Bay |QID|616| |N|Gyll for flight path (27.55, 77.77)| |Z|Stranglethorn V
 A The Haunted Isle |QID|616| |N|Krazek in The Salty Sailor Tavern (26.97, 77.23)| |Z|Stranglethorn Vale|
 T The Haunted Isle |QID|616| |N|Baron Revilgaz in Booty Bay (27.22, 76.87)| |Z|Stranglethorn Vale|
 
-N Level 32 |N|You should be around level 32 now. Continue to the next guide|
+N Level 32 |N|You should be around level 32 now. Continue to the next guide| |LV|32|
 
 ]]
 end)

@@ -50,7 +50,7 @@ T Rocket Car Parts |QID|1110| |N|Kravel Koalbeard in Mirage Raceway (77.80, 77.2
 R Gadgetzan |QID|1178| |N|Travel south to Gadgetzan (51.00, 29.35)| |Z|Tanaris|
 f Gadgetzan |QID|1178| |N|Bera Stonehammer for flight path (51.00, 29.35)| |Z|Tanaris|
 
-N Level 33 |N|You should be around level 33 now. Continue to the next guide|
+N Level 33 |N|You should be around level 33 now. Continue to the next guide| |LV|33|
 
 ]]
 end)

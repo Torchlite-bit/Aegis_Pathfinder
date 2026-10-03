@@ -39,7 +39,7 @@ T Raptor Mastery (Part 1) |QID|194| |N|Hemet Nesingwary in Nesingwary's Expediti
 A Raptor Mastery (Part 2) |QID|195| |N|Hemet Nesingwary in Nesingwary's Expedition (35.65, 10.75)| |Z|Stranglethorn Vale|
 T Panther Mastery (Part 2) |QID|191| |N|Sir S. J. Erlgadin in Nesingwary's Expedition (35.56, 10.57)| |Z|Stranglethorn Vale|
 
-N Level 31 |N|You should be around level 31 now. Continue to the next guide|
+N Level 31 |N|You should be around level 31 now. Continue to the next guide| |LV|31|
 
 ]]
 end)

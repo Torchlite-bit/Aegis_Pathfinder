@@ -116,7 +116,7 @@ A Sunken Treasure (Part 3) |QID|668| |N|Doctor Draxlegauge in Faldir's Cove (33.
 T Sunken Treasure (Part 3) |QID|668| |N|Shakes O'Breen in Faldir's Cove (32.31, 81.52)|
 A Sunken Treasure (Part 4) |QID|669| |N|Shakes O'Breen in Faldir's Cove (32.31, 81.52)|
 
-N Level 37 |N|You should be around level 37 now. Continue to the next guide|
+N Level 37 |N|You should be around level 37 now. Continue to the next guide| |LV|37|
 
 ]]
 end)

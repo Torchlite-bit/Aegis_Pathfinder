@@ -31,7 +31,7 @@ T Jammal'an the Prophet |QID|1446| |N|Atal'ai Exile in Shadra'Alor (33.74, 75.16
 F Stormwind City |QID|1475| |N|Ride back to Aerie Peak and fly to Stormwind City| |D|ST| |Z|Stormwind City|
 T Into The Temple of Atal'Hakkar |QID|1475| |N|Brohann Caskbelly in Dwarven District (64.27, 20.74)| |D|ST| |Z|Stormwind City|
 
-N Level 56 |N|Continue to Silithus, from Stormwind|
+N Level 56 |N|Continue to Silithus, from Stormwind| |LV|56|
 
 ]]
 end)

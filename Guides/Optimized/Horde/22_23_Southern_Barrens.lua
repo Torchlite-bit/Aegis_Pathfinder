@@ -56,7 +56,7 @@ T Chen's Empty Keg (Part 3) |QID|822| |N|Brewmaster Drohn in Ratchet (62.29, 38.
 
 F Stonetalon Mountains |QID|6301| |N|Fly to Sun Rock Retreat in Stonetalon Mountains|
 
-N Level 23 |N|You should be around level 23 now. Continue to the next guide|
+N Level 23 |N|You should be around level 23 now. Continue to the next guide| |LV|23|
 
 ]]
 end)

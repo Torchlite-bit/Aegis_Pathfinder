@@ -49,7 +49,7 @@ N Wildkin Muisek |QID|3123| |N|Withdraw Wildkin Muisek from the bank. Tick this 
 N Wildkin Muisek Vessel |QID|3123| |N|Withdraw Wildkin Muisek Vessel from the bank. Tick this step (26.6, 76.4)| |Z|Stranglethorn Vale| |L|9618| |OO|
 N Long Elegant Feather |QID|7842| |N|Withdraw Long Elegant Feather from the bank. Tick this step (26.6, 76.4)| |Z|Stranglethorn Vale| |L|4589| |OO|
 
-N Level 48 |N|Continue to Feralas|
+N Level 48 |N|Continue to Feralas| |LV|48|
 
 ]]
 end)

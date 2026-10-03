@@ -106,11 +106,13 @@ check(A and A.turtleRaces.FelOrc == nil, "and a race with no side is left out, n
 if A and A.PLAYER_LEVEL_UP then
 	local ticked, moved = 0, 0
 	local saved = {}
-	for _, k in ipairs({ "db", "GetObjectiveTag", "SetTurnedIn", "IsInStartingZone", "TransitionFromStartingZone",
-		"actions", "quests", "turnedin", "Debug" }) do saved[k] = A[k] end
+	for _, k in ipairs({ "db", "GetObjectiveTag", "GetObjectiveInfo", "SetTurnedIn", "IsInStartingZone",
+		"TransitionFromStartingZone", "actions", "quests", "turnedin", "Debug" }) do saved[k] = A[k] end
 	A.db = { char = { startingzoneselected = true, startingzonecomplete = false } }
 	A.Debug = function() end
 	A.GetObjectiveTag = function(_, tag) if tag == "LV" then return "12" end end
+	local stepAction = "GRIND"
+	A.GetObjectiveInfo = function() return stepAction end
 	A.SetTurnedIn = function(self) ticked = ticked + 1; self.turnedin[self.quests[1]] = true end
 	A.IsInStartingZone = function() return true, { rejoinLevel = 12 } end
 	A.TransitionFromStartingZone = function() moved = moved + 1 end
@@ -129,6 +131,17 @@ if A and A.PLAYER_LEVEL_UP then
 	A.db.char.startingzonecomplete = true
 	A:PLAYER_LEVEL_UP(12)
 	check(moved == 0, "not once the starting zone is done")
+
+	-- A level note ("Level 10 Required") is a level gate too; a quest's own
+	-- step with |LV| only says the level it needs, and stays until done.
+	ticked = 0
+	stepAction = "NOTE"
+	A:PLAYER_LEVEL_UP(12)
+	check(ticked == 1, "a level note ticks at its level")
+	ticked = 0
+	stepAction = "TURNIN"
+	A:PLAYER_LEVEL_UP(12)
+	check(ticked == 0, "a turn-in needing level 12 isn't ticked by reaching it")
 
 	UnitLevel = keepLevel
 	for k in pairs(saved) do A[k] = saved[k] end
@@ -318,6 +331,19 @@ if A and A.ShowGuideList then
 	check(ok, "the browser runs over every guide: %s", tostring(err))
 	UnitLevel = keepLevel
 	A.db = saved
+end
+
+-- A line with a "%" in it, through the real AceConsole: it once went to
+-- string.format and stopped ("invalid option in `format'").
+do
+	local said
+	local add = DEFAULT_CHAT_FRAME.AddMessage
+	DEFAULT_CHAT_FRAME.AddMessage = function(_, text) said = text end
+	local ok, err = pcall(function() AegisPathfinder:Print("Gloves: a +12% upgrade (50% done)") end)
+	DEFAULT_CHAT_FRAME.AddMessage = add
+	check(ok, "a line with %% in it prints, got %s", tostring(err))
+	check(said and string.find(said, "Gloves: a +12% upgrade (50% done)", 1, true), "and reads as written, got %s",
+		tostring(said))
 end
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end

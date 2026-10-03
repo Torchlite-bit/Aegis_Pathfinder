@@ -128,7 +128,7 @@ R Chillwind Camp |QID|5533| |N|Travel to Chillwind Camp (42.96, 84.47)| |Z|Weste
 T Return to Chillwind Camp (Part 4) |QID|5226| |N|High Priestess MacDonnell (42.96, 84.47)| |Z|Western Plaguelands|
 T Mission Accomplished! |QID|5238| |N|Commander Ashlam Valorfist (42.70, 84.06)| |Z|Western Plaguelands| |O|
 
-N Level 58 |N|You should be around level 58 now. Continue to Eastern Plaguelands|
+N Level 58 |N|You should be around level 58 now. Continue to Eastern Plaguelands| |LV|58|
 
 ]]
 end)

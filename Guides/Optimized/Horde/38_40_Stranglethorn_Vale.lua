@@ -94,7 +94,7 @@ T Mok'thardin's Enchantment (Part 4) |QID|573| |N|Far Seer Mok'thardin in Grom'g
 C Split Bone Necklace |QID|598| |N|Kill Skullsplitter Trolls for 25 Split Bone Necklace (47, 42)| |Z|Stranglethorn Vale|
 T Split Bone Necklace |QID|598| |N|Kin'weelay in Grom'gol Base Camp (32.21, 27.74)| |Z|Stranglethorn Vale|
 
-N Level 40 |N|You should be around level 40 now. Congratulations!|
+N Level 40 |N|You should be around level 40 now. Congratulations!| |LV|40|
 N Mount Training |N|If you have 90g, go to your capital city to learn Riding and buy a mount|
 
 ]]

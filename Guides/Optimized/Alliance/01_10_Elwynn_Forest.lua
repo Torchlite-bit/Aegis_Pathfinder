@@ -74,7 +74,7 @@ T Grape Manifest |QID|3905| |N|Brother Neals at top of Abbey tower (49.46, 41.56
 
 A Rest and Relaxation |QID|2158| |N|Falkhaan Isenstrider on the road south (45.51, 47.72)|
 
-N Level 6 |N|You should be close to level 6. Grind if needed while heading to Goldshire|
+N Level 6 |N|You should be close to level 6. Grind if needed while heading to Goldshire| |LV|6|
 
 R Goldshire |QID|54| |N|Follow the road to Goldshire (42, 65)|
 T Report to Goldshire |QID|54| |N|Marshal Dughan in Goldshire (42.14, 65.90)|
@@ -115,7 +115,7 @@ A Goldtooth |QID|87| |N|Billy Maclure (43.12, 85.77)|
 
 C Goldtooth |QID|87| |N|Enter LOWER Fargodeep Mine entrance, kill Goldtooth inside at 41,78 (39, 82)|
 
-N Level 7 |N|You should ding 7 in the cave or before|
+N Level 7 |N|You should ding 7 in the cave or before| |LV|7|
 
 H Goldshire |QID|112| |N|Hearth to Goldshire|
 
@@ -147,7 +147,7 @@ A A Bundle of Trouble |QID|5545| |N|Supervisor Raelen (81.45, 66.19)|
 T Find the Lost Guards |QID|37| |N|Mangled body west of waterfall (72.7, 60.5)|
 A Discover Rolf's Fate |QID|45| |N|The mangled body (72.7, 60.5)| |P|GROUP|
 
-N Level 8 |N|You should ding 8 around now|
+N Level 8 |N|You should ding 8 around now| |LV|8|
 
 T Discover Rolf's Fate |QID|45| |N|Rolf's corpse at murloc camp - may need group (79.8, 55.6)| |P|GROUP|
 A Report to Thomas |QID|71| |N|Rolf's corpse (79.8, 55.6)| |P|GROUP|
@@ -187,7 +187,7 @@ C Riverpaw Gnoll Bounty |QID|11| |N|Kill gnolls south of garrison for 8 Painted 
 
 T Riverpaw Gnoll Bounty |QID|11| |N|Deputy Rainer (24.26, 74.54)|
 
-N Level 10 |N|You should be very close to 10 now. Grind on gnolls if needed|
+N Level 10 |N|You should be very close to 10 now. Grind on gnolls if needed| |LV|10|
 
 N The Collector |N|Gnolls may drop Gold Pickup Schedule - use it to start The Collector quest| |O|
 A The Collector |QID|123| |N|Use Gold Pickup Schedule item if you found it| |O|

@@ -18,6 +18,23 @@ reports.
 
 ---
 
+## [0.22.13]
+
+### Fixed
+- **"AceConsole-2.0.lua:151: invalid option in `format'".** A chat line with a
+  percent sign in it -- "Gloves: a +12% upgrade" -- went through
+  string.format and stopped with that error. Lines are printed as written
+  now.
+- **Level notes tick themselves.** Teldrassil (1-12)'s "Level 10 Required"
+  waited for a click after you reached 10. It, and the 145 other level notes
+  in the zone and Optimized guides ("Level 31: you should be around level 31
+  now"), tick when you reach the level, and show the auto-tick mark. Below
+  the level you can still tick them yourself.
+- **Reaching a level no longer ticks a quest step that needs it.** Optimized
+  Teldrassil's "Turn in Taming the Beast (Part 1)" needs level 10; on it as
+  you reached 10, it was ticked without the quest being handed in. A level
+  up now ticks only grind steps and level notes.
+
 ## [0.22.12] — restart
 
 ### Added
@@ -1419,6 +1436,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.13]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.12]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.11]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.10]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

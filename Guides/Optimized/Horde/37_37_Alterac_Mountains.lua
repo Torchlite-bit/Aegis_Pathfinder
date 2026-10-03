@@ -38,7 +38,7 @@ R Tarren Mill |QID|557| |N|Travel to Tarren Mill - you can die on purpose and re
 T Dalaran Patrols |QID|545| |N|Magus Wordeen Voidglare in Tarren Mill (61.58, 20.80)| |Z|Hillsbrad Foothills|
 T Bracers of Binding |QID|557| |N|Keeper Bel'varil in Tarren Mill (61.51, 20.86)| |Z|Hillsbrad Foothills|
 
-N Level 37 |N|You should still be around level 37. Continue to the next guide|
+N Level 37 |N|You should still be around level 37. Continue to the next guide| |LV|37|
 
 ]]
 end)

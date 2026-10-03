@@ -46,7 +46,7 @@ T Wanted: Lieutenant Fangore |QID|180| |N|Magistrate Solomon in Lakeshire (30, 4
 R Tower of Azora |TID|178| |N|Travel to Tower of Azora (65.20, 69.72)| |Z|Elwynn Forest| |O|
 T Theocritus' Retrieval |QID|178| |N|Theocritus in Tower of Azora (65.20, 69.72)| |Z|Elwynn Forest| |O|
 
-N Level 28 |N|You should be around level 28 now. Continue to the next guide|
+N Level 28 |N|You should be around level 28 now. Continue to the next guide| |LV|28|
 
 ]]
 end)

@@ -75,7 +75,7 @@ N Umi's Mechanical Yeti |QID|5163| |N|Store Umi's Mechanical Yeti in the bank. T
 N Winterfall Ritual Totem |QID|8471| |N|Store Winterfall Ritual Totem in the bank. Tick this step (61.4, 37.0)| |Z|Winterspring| |L|20742| |O|
 N Blood Amber |QID|4102| |N|Withdraw Blood Amber from the bank. Tick this step (61.4, 37.0)| |Z|Winterspring| |L|11503| |OO|
 
-N Level 55 |N|You should be around level 55 now. Continue to Felwood|
+N Level 55 |N|You should be around level 55 now. Continue to Felwood| |LV|55|
 
 ]]
 end)

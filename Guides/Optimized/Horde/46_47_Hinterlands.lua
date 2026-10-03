@@ -111,7 +111,7 @@ T Rin'ji's Secret |QID|2782| |N|Oran Snakewrithe in Magic Quarter (73.09, 32.77)
 T Lines of Communication |QID|2995| |N|Oran Snakewrithe in Magic Quarter (73.09, 32.77)| |Z|Undercity|
 T Oran's Gratitude |QID|8273| |N|Oran Snakewrithe in Magic Quarter (73.09, 32.77)| |Z|Undercity|
 
-N Level 47 |N|You should be around level 47 now. Continue to Stranglethorn Vale|
+N Level 47 |N|You should be around level 47 now. Continue to Stranglethorn Vale| |LV|47|
 
 ]]
 end)

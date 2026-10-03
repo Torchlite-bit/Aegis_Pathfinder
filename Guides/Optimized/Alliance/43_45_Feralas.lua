@@ -118,7 +118,7 @@ F Gadgetzan |QID|2941| |N|Fly to Gadgetzan| |Z|Tanaris|
 T The Borrower |QID|2941| |N|Curgle Cranklehop in Gadgetzan| |Z|Tanaris|
 A The Super Snapper FX |QID|2944| |N|Curgle Cranklehop in Gadgetzan| |P|GROUP| |Z|Tanaris|
 
-N Level 45 |N|You should be level 45 now. Continue to Uldaman| |D|ULDA|
+N Level 45 |N|You should be level 45 now. Continue to Uldaman| |D|ULDA| |LV|45|
 
 ]]
 end)

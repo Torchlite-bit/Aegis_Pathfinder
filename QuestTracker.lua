@@ -40,9 +40,11 @@ function AegisPathfinder:SPELLS_CHANGED()
 	self:ScheduleStatusUpdate()
 end
 
---[[ A level up. A step waiting on a level (|LV|) is done; then a starting
-	zone outlevelled hands over to the shared route (Core.lua,
-	CheckStartingZoneCompletion), counting that step.
+--[[ A level up. A level gate waiting on it -- a grind step or a level note
+	with |LV| -- is done; then a starting zone outlevelled hands over to the
+	shared route (Core.lua, CheckStartingZoneCompletion), counting that step.
+	On a quest's own steps |LV| is only the level it needs: reaching it does
+	not turn the quest in.
 
 	Core.lua had a handler of this name for the starting zone, and this one,
 	loaded after it, replaced it: the starting zone only let go at the next
@@ -51,8 +53,9 @@ end
 function AegisPathfinder:PLAYER_LEVEL_UP(newlevel)
 	newlevel = tonumber(newlevel)
 	local level = tonumber((self:GetObjectiveTag("LV")))
+	local action = self:GetObjectiveInfo()
 	self:Debug("PLAYER_LEVEL_UP", newlevel, level)
-	if level and newlevel and newlevel >= level then self:SetTurnedIn() end
+	if level and newlevel and newlevel >= level and (action == "GRIND" or action == "NOTE") then self:SetTurnedIn() end
 	local db = self.db.char
 	if db.startingzoneselected and not db.startingzonecomplete then
 		self:CheckStartingZoneCompletion(newlevel)

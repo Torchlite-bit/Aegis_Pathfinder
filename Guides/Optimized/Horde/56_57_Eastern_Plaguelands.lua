@@ -128,7 +128,7 @@ A The Jeremiah Blues |QID|5049| |N|Royal Overseer Bauhaus in Trade Quarter (69.8
 T The Jeremiah Blues |QID|5049| |N|Jeremiah Payson in Trade Quarter (67.58, 44.04)| |Z|Undercity| |PRE|5023|
 A Good Luck Charm |QID|5050| |N|Jeremiah Payson in Trade Quarter (67.58, 44.04)| |Z|Undercity| |PRE|5023|
 
-N Level 57 |N|You should be around level 57 now. Continue to the next guide|
+N Level 57 |N|You should be around level 57 now. Continue to the next guide| |LV|57|
 
 ]]
 end)

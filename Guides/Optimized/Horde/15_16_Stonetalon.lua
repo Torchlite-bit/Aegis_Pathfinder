@@ -26,7 +26,7 @@ T Protect Kaya |QID|6523| |N|Makaba Flathoof in The Barrens (35.23, 27.79)| |Z|T
 A Kaya's Alive |QID|6401| |N|Makaba Flathoof in The Barrens (35.23, 27.79)| |Z|The Barrens|
 T Kill Grundig Darkcloud |QID|6629| |N|Makaba Flathoof in The Barrens (35.23, 27.79)| |Z|The Barrens|
 
-N Level 16 |N|You should be around level 16 now. Return to The Barrens|
+N Level 16 |N|You should be around level 16 now. Return to The Barrens| |LV|16|
 
 ]]
 end)

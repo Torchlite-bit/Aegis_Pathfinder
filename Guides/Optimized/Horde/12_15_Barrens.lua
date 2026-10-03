@@ -90,7 +90,7 @@ R The Crossroads |QID|870| |N|Travel to The Crossroads (51.53, 30.85)|
 T The Disruption Ends |QID|872| |N|Thork in The Crossroads (51.53, 30.85)|
 T Supplies for the Crossroads |QID|5041| |N|Thork in The Crossroads (51.53, 30.85)|
 
-N Level 15 |N|You should be around level 15 now. Continue to Stonetalon|
+N Level 15 |N|You should be around level 15 now. Continue to Stonetalon| |LV|15|
 
 ]]
 end)

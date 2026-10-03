@@ -184,7 +184,7 @@ T The Escape |QID|114| |N|Maybell Maclure in the Maclure Vineyards (43.12, 89.55
 T Goldtooth |QID|87| |N|\Auntie\ Bernice Stonefield in The Stonefield Farm (34.5, 84.3)|
 T Princess Must Die! |QID|88| |N|Ma Stonefield in The Stonefield Farm (34.61, 84.43)| |P|GROUP|
 
-N Level 10 Required |N|You need to be at least level 10 to continue; Keep grinding nearby mobs until you reach level 10| 
+N Level 10 Required |N|You need to be at least level 10 to continue; Keep grinding nearby mobs until you reach level 10| |LV|10|
 R Goldshire |QID|1860| |N|Travel or Hearthstone to Goldshire (43.28, 66.22)|
 A Speak with Jennea |QID|1860| |N|Zaldimar Wefhellt in Goldshire (43.28, 66.22)| |C|Mage| |LV|10|
 A A Warrior's Training |QID|1638| |N|Lyria Du Lac in Goldshire (41.1, 65.8)| |C|Warrior| |LV|10|

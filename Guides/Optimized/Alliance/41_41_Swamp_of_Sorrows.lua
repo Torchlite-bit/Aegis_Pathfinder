@@ -75,7 +75,7 @@ T ... and Bugs |QID|1258| |N|Morgan Stern in Theramore Isle (66.35, 45.48)| |Z|D
 
 F Nijel's Point |QID|261| |N|Fly to Nijel's Point in Desolace| |Z|Desolace|
 
-N Level 41 |N|You should still be level 41. Continue to Desolace|
+N Level 41 |N|You should still be level 41. Continue to Desolace| |LV|41|
 
 ]]
 end)

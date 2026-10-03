@@ -69,7 +69,7 @@ T Parts of the Swarm (Part 1) |QID|1148| |N|Korran in The Crossroads (51.1, 29.6
 N Cracked Silithid Carapace |N|Destroy Cracked Silithid Carapace, you no longer need this| |L|5877| |O|
 A Parts of the Swarm (Part 2) |QID|1184| |N|Korran in The Crossroads (51.1, 29.6)| |Z|The Barrens| |PRE|1148|
 
-N Level 38 |N|You should be around level 38 now. Continue to the next guide|
+N Level 38 |N|You should be around level 38 now. Continue to the next guide| |LV|38|
 
 ]]
 end)

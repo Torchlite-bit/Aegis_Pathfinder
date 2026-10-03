@@ -84,7 +84,7 @@ T Lost Thunderbrew Recipe |QID|4134| |N|Shadowmage Vivian Lagrave in Kargath (2.
 A The Rise of the Machines |QID|4062| |N|Hierophant Theodora Mulvadania in Kargath (3.09, 47.89)| |D|BRD| |Z|Badlands|
 T The Rise of the Machines |QID|4062| |N|Lotwil Veriatus in The Dustbowl (25.95, 44.91)| |D|BRD| |Z|Badlands|
 
-N Level 53 |N|You should be around level 53 now. Continue to the next guide|
+N Level 53 |N|You should be around level 53 now. Continue to the next guide| |LV|53|
 
 ]]
 end)

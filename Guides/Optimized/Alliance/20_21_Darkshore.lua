@@ -25,7 +25,7 @@ C Therylune's Escape |QID|945| |N|Escort Therylune until she escapes (22.7, 51.9
 A One Shot. One Kill. |QID|5713| |N|Sentinel Aynasha in Darkshore (45.8, 90.2)|
 C One Shot. One Kill. |QID|5713| |N|Protect Sentinel Aynasha until the quest is complete (45.8, 90.2)|
 
-N Level 21 |N|You should be around level 21 now. Continue to the next guide|
+N Level 21 |N|You should be around level 21 now. Continue to the next guide| |LV|21|
 
 ]]
 end)

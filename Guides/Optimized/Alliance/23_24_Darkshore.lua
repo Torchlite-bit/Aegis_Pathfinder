@@ -59,7 +59,7 @@ R Darnassus |TID|741| |N|Travel to Darnassus (31.37, 84.14)| |Z|Darnassus|
 T The Absent Minded Prospector (Part 3) |QID|741| |N|Chief Archaeologist Greywhisker in Darnassus (31.37, 84.14)| |Z|Darnassus|
 A The Absent Minded Prospector (Part 4) |QID|942| |N|Chief Archaeologist Greywhisker in Darnassus (31.28, 83.65)| |Z|Darnassus|
 
-N Level 24 |N|You should be around level 24 now. Continue to the next guide|
+N Level 24 |N|You should be around level 24 now. Continue to the next guide| |LV|24|
 
 ]]
 end)

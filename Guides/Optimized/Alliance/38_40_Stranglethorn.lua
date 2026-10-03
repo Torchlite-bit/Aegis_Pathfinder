@@ -85,7 +85,7 @@ A Big Game Hunter |QID|208| |N|Hemet Nesingwary in Nesingwary's Expedition (35.6
 R Booty Bay |TID|628| |N|Travel or Hearthstone to Booty Bay (28.29, 77.60)| |Z|Stranglethorn Vale|
 T Excelsior |QID|628| |N|Drizzlik in Booty Bay (28.29, 77.60)| |Z|Stranglethorn Vale|
 
-N Level 40 |N|Congratulations! You should be around level 40 now|
+N Level 40 |N|Congratulations! You should be around level 40 now| |LV|40|
 
 N Class Quest |N|Paladins should get Summon Warhorse at level 40. Warriors should check for Berserker Stance quest|
 

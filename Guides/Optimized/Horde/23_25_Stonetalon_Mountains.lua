@@ -63,7 +63,7 @@ A Calling in the Reserves |QID|5881| |N|Maggran Earthbinder in Sun Rock Retreat 
 
 F Camp Taurajo |QID|882| |N|Fly to Camp Taurajo|
 
-N Level 25 |N|You should be around level 25 now. Continue to the next guide|
+N Level 25 |N|You should be around level 25 now. Continue to the next guide| |LV|25|
 
 ]]
 end)

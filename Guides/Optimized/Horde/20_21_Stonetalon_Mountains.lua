@@ -54,7 +54,7 @@ A Shredding Machines |QID|1068| |N|Seereth Stonebreak in The Barrens (35.29, 27.
 
 H The Crossroads |QID|6562| |N|Hearth to The Crossroads|
 
-N Level 21 |N|You should be around level 21 now. Continue to the next guide|
+N Level 21 |N|You should be around level 21 now. Continue to the next guide| |LV|21|
 
 ]]
 end)

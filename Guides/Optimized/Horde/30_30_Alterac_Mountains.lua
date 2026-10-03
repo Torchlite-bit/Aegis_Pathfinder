@@ -21,7 +21,7 @@ K Frostmaw |QID|1136| |N|Kill Frostmaw and collect Frostmaw's Mane in Growless C
 R Tarren Mill |TID|553| |N|Travel to Tarren Mill (61.59, 20.71)| |Z|Hillsbrad Foothills|
 T Helcular's Revenge (Part 2) |QID|553| |N|Use Rod of Helcular at Southshore (52.74, 53.26)| |Z|Hillsbrad Foothills| |O|
 
-N Level 30 |N|You should be level 30 now. Continue to the next guide|
+N Level 30 |N|You should be level 30 now. Continue to the next guide| |LV|30|
 
 ]]
 end)

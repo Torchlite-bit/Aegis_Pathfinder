@@ -95,7 +95,7 @@ f Flame Crest |N|Speak to Vahgruk and grab flight path for Flame Crest (65.61, 2
 N Abandon Quest |QID|7701| |N|Abandon 'WANTED: Overseer Maltorius' quest| |O| |P|GROUP|
 N Abandon Quest |QID|7722| |N|Abandon 'What the Flux?' quest| |O|
 
-N Level 48 |N|You should be around level 48 now. Continue to Swamp of Sorrows|
+N Level 48 |N|You should be around level 48 now. Continue to Swamp of Sorrows| |LV|48|
 
 ]]
 end)

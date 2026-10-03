@@ -106,7 +106,7 @@ T Liadrin's Plea |QID|41221| |N|Astalor Sunsworn in northern Alah'Thalas (58.4, 
 A Sunsworn Response |QID|41222| |N|Astalor Sunsworn in the mansion (58.4, 41.5)| |Z|Thalassian Highlands|
 T Sunsworn Response |QID|41222| |N|Return to Liadrin in Ballador's Chapel (44, 50.2)| |Z|Thalassian Highlands|
 
-N Level 10 Required |N|Grind to level 10 before leaving the zone if you haven't reached it yet|
+N Level 10 Required |N|Grind to level 10 before leaving the zone if you haven't reached it yet| |LV|10|
 
 N Train Skills |N|Return to Brinthilien or Alah'Thalas to train your class skills before leaving|
 

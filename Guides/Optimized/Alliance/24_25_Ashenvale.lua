@@ -36,7 +36,7 @@ R Auberdine |QID|942| |N|Travel to Auberdine and take the boat to Menethil Harbo
 R Menethil Harbor |QID|942| |N|Take the boat from Auberdine to Menethil Harbor| |Z|Wetlands|
 f Menethil Harbor |QID|942| |N|Get flight path from Shellei Brondir in Menethil Harbor (9.49, 59.70)| |Z|Wetlands|
 
-N Level 25 |N|You should be around level 25 now. Continue to the next guide|
+N Level 25 |N|You should be around level 25 now. Continue to the next guide| |LV|25|
 
 ]]
 end)

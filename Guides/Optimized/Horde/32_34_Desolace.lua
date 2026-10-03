@@ -156,7 +156,7 @@ N Bank Items |N|Withdraw Kravel's Parts Order and Kravel's Crate from the bank i
 T Wharfmaster Dizzywig |QID|1111| |N|Wharfmaster Dizzywig in Ratchet (63.33, 38.41)| |Z|The Barrens| |O|
 A Parts for Kravel |QID|1112| |N|Wharfmaster Dizzywig in Ratchet (63.33, 38.41)| |Z|The Barrens| |PRE|1112|
 
-N Level 34 |N|You should be around level 34 now. Continue to the next guide|
+N Level 34 |N|You should be around level 34 now. Continue to the next guide| |LV|34|
 
 ]]
 end)

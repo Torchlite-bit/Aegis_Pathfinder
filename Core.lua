@@ -3,6 +3,15 @@ AEGISPATHFINDER_LOCALE = nil
 
 AegisPathfinder = AceLibrary("AceAddon-2.0"):new("AceConsole-2.0", "AceDB-2.0", "AceDebug-2.0", "AceEvent-2.0", "AceHook-2.1")
 
+--[[ AceConsole's Print runs its first argument through string.format whenever
+	it holds a "%" -- so a line such as "Gloves: a +12% upgrade" stopped with
+	"invalid option in `format'". Every line here is worded before it is
+	printed, so it goes out as it is. ]]
+local AcePrint = AegisPathfinder.Print
+function AegisPathfinder:Print(msg)
+	return AcePrint(self, "%s", msg)
+end
+
 AegisPathfinder.guides = {}
 AegisPathfinder.guidelist = {}
 AegisPathfinder.nextzones = {}
@@ -606,7 +615,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.22.12"
+AegisPathfinder.version = "0.22.13"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be

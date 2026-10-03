@@ -92,7 +92,7 @@ T Miner's Fortune |QID|896| |N|Wharfmaster Dizzywig in Ratchet (63.34, 38.44)|
 A Deepmoss Spider Eggs |QID|1069| |N|Mebok Mizzyrix in Ratchet (62.36, 37.67)|
 A The Guns of Northwatch |QID|891| |N|Captain Thalo'thas Brightsun in Ratchet (62.25, 39.02)|
 
-N Level 18 |N|You should be around level 18 now. Continue to the next guide|
+N Level 18 |N|You should be around level 18 now. Continue to the next guide| |LV|18|
 
 ]]
 end)

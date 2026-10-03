@@ -72,7 +72,7 @@ A Speak to Salfa |QID|8465| |N|Nafien in Timbermaw Hold (64.77, 8.17)| |Z|Felwoo
 R Moonglade |QID|5249| |N|Travel through Timbermaw Hold to Moonglade (35.76, 72.41)| |Z|Moonglade|
 f Moonglade |QID|5249| |N|Get flight path from Sindrayl (48.09, 67.40)| |Z|Moonglade|
 
-N Level 54 |N|You should be around level 54 now. Continue to Winterspring|
+N Level 54 |N|You should be around level 54 now. Continue to Winterspring| |LV|54|
 
 ]]
 end)

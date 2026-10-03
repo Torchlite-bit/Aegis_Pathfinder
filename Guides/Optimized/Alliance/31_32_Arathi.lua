@@ -28,7 +28,7 @@ T Cleansing the Eye |QID|293| |N|Archbishop Benedictus in Cathedral of Light (39
 T Blessed Arm |QID|322| |N|Grimand Elmore in Dwarven District - skip follow up (59.7, 33.8)| |Z|Stormwind City| |O|
 T Reassignment |QID|563| |N|Major Samuelson in Stormwind Keep (75.8, 36.7)| |Z|Stormwind City| |O|
 
-N Level 32 |N|You should be around level 32 now. Continue to the next guide|
+N Level 32 |N|You should be around level 32 now. Continue to the next guide| |LV|32|
 
 ]]
 end)

@@ -105,7 +105,7 @@ T Glyphed Oaken Branch |QID|4987| |N|Nara Wildmane in Elder Rise (75.70, 31.54)|
 T The New Frontier |QID|1004| |N|Arch Druid Hamuul Runetotem in Elder Rise (78.55, 28.59)| |Z|Thunder Bluff|
 A Rabine Saturna |QID|1123| |N|Arch Druid Hamuul Runetotem in Elder Rise (78.55, 28.59)| |Z|Thunder Bluff|
 
-N Level 58 |N|You should be around level 58 now. Continue to the next guide|
+N Level 58 |N|You should be around level 58 now. Continue to the next guide| |LV|58|
 
 ]]
 end)

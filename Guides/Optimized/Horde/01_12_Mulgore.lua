@@ -37,7 +37,7 @@ C The Hunt Continues |QID|750| |N|Kill Mountain Cougars for 10 Mountain Cougar P
 T Rites of the Earthmother (Part 1) |QID|755| |N|Seer Graytongue in Red Cloud Mesa (42.53, 92.08)|
 A Rite of Strength |QID|757| |N|Seer Graytongue in Red Cloud Mesa (42.53, 92.08)|
 
-N Level 4 |N|Make sure you're about 250 XP to level 4 so you can train new skills after quest turn in|
+N Level 4 |N|Make sure you're about 250 XP to level 4 so you can train new skills after quest turn in| |LV|4|
 
 T The Hunt Continues |QID|750| |N|Grull Hawkwind in Camp Narache (44.91, 77.15)|
 A The Battleboars |QID|780| |N|Grull Hawkwind in Camp Narache (44.91, 77.15)|
@@ -225,7 +225,7 @@ C Wildmane Cleansing |QID|760| |N|Use the Wildmane Cleansing Totem at the well (
 R Bloodhoof Village |QID|760| |N|Return to Bloodhoof Village (48.48, 60.48)|
 T Wildmane Cleansing |QID|760| |N|Mull Thunderhorn in Bloodhoof Village (48.46, 60.46)|
 
-N Level 12 |N|You should be around level 12 now. Continue to The Barrens for the next guide|
+N Level 12 |N|You should be around level 12 now. Continue to The Barrens for the next guide| |LV|12|
 
 N Guide Complete |N|Head to The Barrens via the road east of Bloodhoof Village|
 

@@ -105,7 +105,7 @@ C The Cursed Crew |QID|289| |N|Kill 13 Cursed Sailor and 5 Cursed Marine (13, 27
 T The Cursed Crew |QID|289| |N|First Mate Fitzsimmons in Menethil Harbor (10.91, 59.53)| |Z|Wetlands|
 A Lifting the Curse |QID|290| |N|First Mate Fitzsimmons in Menethil Harbor (10.91, 59.53)| |Z|Wetlands|
 
-N Level 27 |N|You should be around level 27 now. Continue to the next guide|
+N Level 27 |N|You should be around level 27 now. Continue to the next guide| |LV|27|
 
 ]]
 end)

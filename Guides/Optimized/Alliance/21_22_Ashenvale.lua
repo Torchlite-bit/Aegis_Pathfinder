@@ -76,7 +76,7 @@ A The Ruins of Stardust |QID|1034| |N|Pelturas Whitemoon in Astranaar (37.37, 51
 R Ruins of Stardust |QID|1034| |N|Travel to Ruins of Stardust (33.61, 67.49)|
 C The Ruins of Stardust |QID|1034| |N|Collect 5 Handful of Stardust from Stardust covered bushes (33.61, 67.49)|
 
-N Level 22 |N|You should be around level 22 now. Continue to the next guide|
+N Level 22 |N|You should be around level 22 now. Continue to the next guide| |LV|22|
 
 ]]
 end)

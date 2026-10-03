@@ -28,7 +28,7 @@ T Raising Spirits (Part 2) |QID|674| |N|Gor'mul in Hammerfall (72.68, 34.04)|
 A Raising Spirits (Part 3) |QID|675| |N|Gor'mul in Hammerfall (72.68, 34.04)|
 T Raising Spirits (Part 3) |QID|675| |N|Tor'gan in Hammerfall (74.65, 36.34)|
 
-N Level 30 |N|You should be around level 30 now. Continue to the next guide|
+N Level 30 |N|You should be around level 30 now. Continue to the next guide| |LV|30|
 
 ]]
 end)

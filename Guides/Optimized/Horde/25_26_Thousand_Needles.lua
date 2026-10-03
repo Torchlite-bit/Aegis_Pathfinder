@@ -51,7 +51,7 @@ A The Sacred Flame (Part 1) |QID|1195| |N|Zangen Stonehoof in Thunder Bluff (54.
 
 F Splintertree Post |QID|25| |N|Fly to Splintertree Post, Ashenvale|
 
-N Level 26 |N|You should be around level 26 now. Continue to the next guide|
+N Level 26 |N|You should be around level 26 now. Continue to the next guide| |LV|26|
 
 ]]
 end)

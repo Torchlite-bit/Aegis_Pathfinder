@@ -24,7 +24,7 @@ R Valley of Bones |QID|261| |N|Travel to Valley of Bones (63.91, 90.74)| |Z|Deso
 C Ghost-o-plasm Round Up |QID|6134| |N|Clear the area and use Crate of Ghost Magnets, kill the Magrami Spectre that appear and collect 8 Ghost-o-plasm (63.87, 91.71)| |Z|Desolace| |U|15848|
 C Down the Scarlet Path |QID|261| |N|Kill 30 Undead Ravager in Valley of Bones (63.91, 90.74)| |Z|Desolace|
 
-N Level 42 |N|You should hit level 42 by the time you're done killing undead here|
+N Level 42 |N|You should hit level 42 by the time you're done killing undead here| |LV|42|
 
 R Kodo Graveyard |TID|6134| |N|Travel to Kodo Graveyard (47.83, 61.83)| |Z|Desolace|
 T Ghost-o-plasm Round Up |QID|6134| |N|Hornizz Brimbuzzle in Kodo Graveyard (47.83, 61.83)| |Z|Desolace|
@@ -43,7 +43,7 @@ N Train Skills |N|Get new skills from your class trainer|
 
 F Booty Bay |QID|2864| |N|Fly to Booty Bay| |Z|Stranglethorn Vale|
 
-N Level 42 |N|You should be level 42 now. Continue to Stranglethorn Vale|
+N Level 42 |N|You should be level 42 now. Continue to Stranglethorn Vale| |LV|42|
 
 ]]
 end)

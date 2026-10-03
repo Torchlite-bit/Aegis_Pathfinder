@@ -92,7 +92,7 @@ A Call of Earth |QID|1518| |N|Minor Manifestation of Earth in Spirit Rock (44.01
 R Valley of Trials |QID|1518| |N|Return to Valley of Trials (42.6, 75.26)| |C|Shaman|
 T Call of Earth |QID|1518| |N|Canaga Earthcaller in Valley of Trials (42.42, 69.17)| |C|Shaman|
 
-N Level 5 |N|You should be close to level 5. Grind if needed before leaving the Valley|
+N Level 5 |N|You should be close to level 5. Grind if needed before leaving the Valley| |LV|5|
 
 A A Peon's Burden |QID|2161| |N|Ukor east out of the Valley of Trials (52.0, 68.3)|
 
@@ -105,7 +105,7 @@ A Zalazane |QID|826| |N|Master Gadrin in Sen'jin Village (55.93, 74.76)|
 A A Solvent Spirit |QID|818| |N|Master Vornal in Sen'jin Village (55.95, 74.46)|
 A Practical Prey |QID|817| |N|Vel'rin Fang in Sen'jin Village (55.93, 73.95)|
 
-N Level 6 Required |N|Grind to level 6 so you can pick up all the quests at Razor Hill|
+N Level 6 Required |N|Grind to level 6 so you can pick up all the quests at Razor Hill| |LV|6|
 
 R Razor Hill |QID|823| |N|Follow the road north to Razor Hill (52.3, 43.2)|
 T Report to Orgnil |QID|823| |N|Orgnil Soulscar in Razor Hill (52.28, 43.22)|
@@ -179,7 +179,7 @@ A Securing the Lines |QID|835| |N|Rezlak in Durotar (46.39, 23.03)|
 
 A Need for a Cure |QID|812| |N|Rhinag in Durotar (41.57, 18.64)|
 
-N Level 10 Required |N|Grind to level 10 for class quests|
+N Level 10 Required |N|Grind to level 10 for class quests| |LV|10|
 
 R Razor Hill |QID|837| |N|Travel to Razor Hill (51.92, 43.45)|
 T Encroachment |QID|837| |N|Gar'Thok in Razor Hill (51.90, 43.48)|

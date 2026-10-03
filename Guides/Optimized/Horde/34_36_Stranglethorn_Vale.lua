@@ -105,7 +105,7 @@ A To Steal From Thieves |QID|1164| |N|Genavie Callow in Trade Quarter (63.63, 48
 T A Donation of Silk |QID|7814| |N|Ralston Farnsley in Magic Quarter (71.83, 29.15)| |Z|Undercity| |L|4306 60| |O|
 N Bank Items |N|Withdraw Rod of Helcular from the bank if you have it. Store Fuel Regulator Blueprints and Kravel's Parts| |Z|Undercity|
 
-N Level 36 |N|You should be around level 36 now. Continue to the next guide|
+N Level 36 |N|You should be around level 36 now. Continue to the next guide| |LV|36|
 
 ]]
 end)

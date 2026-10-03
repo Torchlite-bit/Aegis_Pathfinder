@@ -2,7 +2,7 @@ AegisPathfinder:RegisterGuide("Darkshore (12-17)", "Loch Modan (17-18)", "Allian
 
 return [[
 
-N Level 12 Required |N|You need to be at least level 12 to continue this guide; Grind until you reach level 12|
+N Level 12 Required |N|You need to be at least level 12 to continue this guide; Grind until you reach level 12| |LV|12|
 N Linen Cloth |QID|1644| |N|You need at least 10 Linen Cloth to complete the Paladin quest line; grind any Humanoid mobs or purchase later from the auction house| |OID|1778| |L|2589 10| |C|Paladin|
 
 A Tome of Divinity (Part 1) |QID|3681| |N|Brandur Ironhammer in Hall of Mysteries. You need to be level 12 to get this quest (23.25, 6.34)| |C|Paladin| |R|Human| |O| |Z|Ironforge|

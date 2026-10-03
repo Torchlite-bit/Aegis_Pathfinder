@@ -125,7 +125,7 @@ A Perfect Yeti Hide |QID|7738| |N|Use Perfect Yeti Hide to accept quest (49.09, 
 T Perfect Yeti Hide |QID|7738| |N|Jangdor Swiftstrider in Camp Mojache (74.43, 42.92)| |Z|Feralas| |O|
 T Natural Materials |QID|3128| |N|Witch Doctor Uzer'i in Camp Mojache (74.42, 43.36)| |Z|Feralas|
 
-N Level 46 |N|You should be around level 46 now. Continue to Azshara|
+N Level 46 |N|You should be around level 46 now. Continue to Azshara| |LV|46|
 
 ]]
 end)

@@ -52,7 +52,7 @@ A Portents of Uldum |QID|2965| |N|Sage Truthseeker (34.4, 46.9)| |D|ULDA| |Z|Thu
 T Portents of Uldum |QID|2965| |N|Nara Wildmane on the Elder Rise (75.6, 31.6)| |D|ULDA| |Z|Thunder Bluff|
 A Seeing What Happens |QID|2966| |N|Nara Wildmane (75.6, 31.6). You take the discs to Uldum in Tanaris later| |D|ULDA| |Z|Thunder Bluff|
 
-N Level 46 |N|Continue to Azshara: fly to Orgrimmar and ride north| |D|ULDA|
+N Level 46 |N|Continue to Azshara: fly to Orgrimmar and ride north| |D|ULDA| |LV|46|
 
 ]]
 end)

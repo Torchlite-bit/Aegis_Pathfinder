@@ -68,7 +68,7 @@ N To Auberdine |N|Take the boat from Menethil Harbor back to Auberdine|
 R Menethil Harbor |QID|967| |N|Fly to Menethil Harbor or travel through Wetlands| |Z|Wetlands|
 R Auberdine |QID|967| |N|Take the boat from Menethil Harbor to Auberdine| |Z|Darkshore|
 
-N Level 20 |N|You should be level 20 and halfway to 21. Continue to the next guide|
+N Level 20 |N|You should be level 20 and halfway to 21. Continue to the next guide| |LV|20|
 
 ]]
 end)

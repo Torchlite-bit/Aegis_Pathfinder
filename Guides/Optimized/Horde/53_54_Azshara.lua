@@ -36,7 +36,7 @@ A Betrayed (Part 4) |QID|3507| |N|Ag'tor Bloodfist in Valormok (22.29, 51.45)| |
 R Legash Encampment |TID|5534| |N|Return to Legash Encampment (53.44, 21.81)| |Z|Azshara|
 T Kim'jael's "Missing" Equipment |QID|5534| |N|Kim'jael in Legash Encampment (53.44, 21.81)| |Z|Azshara|
 
-N Level 54 |N|Grind to level 54 before leaving Azshara - kill Blood Elf Reclaimers and Surveyors for easy grinding (58.31, 28.45)| |Z|Azshara|
+N Level 54 |N|Grind to level 54 before leaving Azshara - kill Blood Elf Reclaimers and Surveyors for easy grinding (58.31, 28.45)| |Z|Azshara| |LV|54|
 
 R Valley of Honor |TID|3507| |N|Travel to Valley of Honor in Orgrimmar (75.20, 34.21)| |Z|Orgrimmar|
 T Betrayed (Part 4) |QID|3507| |N|Belgrom Rockmaul in Valley of Honor (75.20, 34.21)| |Z|Orgrimmar|
@@ -44,7 +44,7 @@ T Betrayed (Part 4) |QID|3507| |N|Belgrom Rockmaul in Valley of Honor (75.20, 34
 N White Ravasaur Claw |QID|4300| |N|Withdraw White Ravasaur Claw from the bank. Tick this step (49.6, 69.4)| |Z|Orgrimmar| |L|11477| |OO|
 N Linken's Training Sword |QID|3908| |N|Withdraw Linken's Training Sword from the bank. Tick this step (49.6, 69.4)| |Z|Orgrimmar| |L|11133| |OO|
 
-N Level 54 |N|You should be level 54 now. Continue to Felwood|
+N Level 54 |N|You should be level 54 now. Continue to Felwood| |LV|54|
 
 ]]
 end)

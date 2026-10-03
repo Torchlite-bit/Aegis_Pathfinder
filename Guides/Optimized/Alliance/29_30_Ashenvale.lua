@@ -92,7 +92,7 @@ T The Howling Vale |QID|1022| |N|Sentinel Melyria Frostshadow (22.26, 52.98)| |Z
 A Velinde Starsong |QID|1037| |N|Sentinel Melyria Frostshadow (22.2, 52.8)| |Z|Ashenvale|
 T The Branch of Cenarius |QID|1031| |N|Illiyana (21.6, 53.2)| |Z|Ashenvale|
 
-N Level 30 |N|You should be around level 30 now. Continue to the next guide|
+N Level 30 |N|You should be around level 30 now. Continue to the next guide| |LV|30|
 
 ]]
 end)

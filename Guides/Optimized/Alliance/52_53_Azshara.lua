@@ -11,7 +11,7 @@ N Optimized Leveling |N|This guide follows an optimized quest order for Azshara 
 R Gadgetzan |QID|4504| |N|Travel to Gadgetzan (51.59, 26.77)| |Z|Tanaris| |O|
 T Super Sticky |QID|4504| |N|Tran'rek in Gadgetzan (51.59, 26.77)| |Z|Tanaris| |O|
 
-N Level 52 Required |N|Grind any mobs in Tanaris until you reach level 52 if needed|
+N Level 52 Required |N|Grind any mobs in Tanaris until you reach level 52 if needed| |LV|52|
 
 R Rut'theran Village |QID|978| |N|Travel to Rut'theran Village (55.49, 92.05)| |Z|Teldrassil|
 A Moontouched Wildkin |QID|978| |N|Erelas Ambersky in Rut'theran Village (55.49, 92.05)| |Z|Teldrassil|
@@ -57,7 +57,7 @@ C Kim'jael's "Missing" Equipment |QID|5534| |N|Kill Nagas until you collect Some
 R Legash Encampment |QID|5534| |N|Return to Legash Encampment (53.46, 21.82)| |Z|Azshara|
 T Kim'jael's "Missing" Equipment |QID|5534| |N|Kim'jael in Legash Encampment (53.46, 21.82)| |Z|Azshara|
 
-N Level 53 Required |N|Grind Blood Elf Surveyor in Thalassian Base Camp until level 53 - they have low HP (58.29, 28.39)| |Z|Azshara|
+N Level 53 Required |N|Grind Blood Elf Surveyor in Thalassian Base Camp until level 53 - they have low HP (58.29, 28.39)| |Z|Azshara| |LV|53|
 
 R Ruins of Eldarath |QID|3449| |N|Travel to Ruins of Eldarath (42.35, 64.12)| |Z|Azshara|
 N Rubbing: Rune of Sael'hai |QID|3449| |L|10566| |N|Collect Rubbing: Rune of Sael'hai (42.35, 64.12)| |Z|Azshara|
@@ -76,7 +76,7 @@ N Package of Empty Ooze Containers |QID|4512| |N|Withdraw Package of Empty Ooze 
 N Linken's Training Sword |QID|3908| |N|Withdraw Linken's Training Sword from the bank (39.88, 42.21)| |Z|Darnassus| |L|11133| |O|
 N Drawing Kit |QID|3461| |N|Store Drawing Kit to the bank (39.88, 42.21)| |Z|Darnassus| |L|10445| |O|
 
-N Level 53 |N|You should be level 53 now. Continue to Felwood|
+N Level 53 |N|You should be level 53 now. Continue to Felwood| |LV|53|
 
 ]]
 end)
