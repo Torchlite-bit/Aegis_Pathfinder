@@ -181,6 +181,10 @@ With pfUI it sits on pfUI's frame.
 | :---: | :---: |
 | <img src="docs/images/talent-window.jpg" width="340" alt="Blizzard's talent window in game for a Paladin, on Protection: the Pathfinder strip on its top edge with the build to follow and a card, Next: Shield Specialization, rank 1 of 3; the talents taken ticked, the rest with the build's points, Shield Specialization ringed in gold with NEXT over it, and a gold dot on the Protection tab"> | <img src="docs/images/talent-window-pfui.jpg" width="340" alt="The same talent window with pfUI's skin: the strip sits on pfUI's frame, with the same marks on the talents and the gold dot on the Protection tab"> |
 
+<p align="center"><sub>In game, on 0.22.23. Since 0.22.24 the shield build is
+called Protection ("Protection leveling, then Protection at 60"), the card's
+second line fits, and NEXT sits clear of the talent's badge.</sub></p>
+
 On a level up a card names the talent to take, and the talents button lights
 up until you spend the point.
 
@@ -192,13 +196,9 @@ learn. **Share** gives the build as its build string, and follows a string
 someone shares with you.
 
 <p align="center">
-  <img src="docs/images/talent-modern-spellbook.jpg" width="820" alt="Modern Spellbook's talent window in game for a Paladin, all three trees side by side: the Pathfinder strip across its top with the build to follow, the card naming Shield Specialization, and Plan to my level, Whole build as a plan and Share; NEXT POINT HERE beside Protection, the talents taken ticked, the rest with the build's points, and Shield Specialization ringed in gold with NEXT over it">
+  <img src="docs/images/talent-modern-spellbook.jpg" width="820" alt="Modern Spellbook's talent window in game for a Paladin, all three trees side by side: the Pathfinder strip across its top, following Paladin Protection leveling, the card saying Next: Shield Specialization, rank 1 of 3 in Protection at level 21, and Plan to my level, Whole build as a plan and Share; NEXT POINT HERE beside Protection, the talents taken ticked, the rest with the build's points, and Shield Specialization ringed in gold with NEXT over it"><br>
+  <sub>In game, on 0.22.24.</sub>
 </p>
-
-<p align="center"><sub>In game, on 0.22.23. Since 0.22.24 the shield build is
-called Protection ("Protection leveling, then Protection at 60"), the card's
-second line fits ("Rank 1 of 3 in Protection · at level 21"), and NEXT sits
-clear of the talent's badge.</sub></p>
 
 The builds are made on Turtle WoW's own trees, and each is checked against the
 tree your game has before it is followed. It never spends a point.

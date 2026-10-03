@@ -14,8 +14,9 @@ what the **Error log** says (Options → Maintenance).
 Passed so far: the 2026-09-28 pass (sections 1–11 as they were then; party
 sharing only lightly) and the Gear Finder tab at 0.22.1 (2026-10-01).
 Screenshots at 0.22.23 (2026-10-03) showed the talent strips and marks on
-Blizzard's window, with pfUI and on Modern Spellbook (the README's pictures);
-0.22.24 tidied what they showed, so those items wait for a look on 0.22.24.
+Blizzard's window and with pfUI (the README's pictures); 0.22.24 tidied what
+they showed, so those items wait for a look on 0.22.24. A screenshot at
+0.22.24 shows Modern Spellbook's strip and marks (the README's picture).
 
 Start with a **full client restart** (not `/reload`): new textures and files
 are only found at startup.
