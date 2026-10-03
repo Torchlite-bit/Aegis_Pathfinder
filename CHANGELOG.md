@@ -18,6 +18,19 @@ reports.
 
 ---
 
+## [0.22.22]
+
+### Fixed
+- **Teldrassil's "Gnarlpine Hold" (step 87) ticks once you take The Glowing
+  Fruit.** The step carries the fruit's quest, so it is done once that quest
+  is in your log. But a change to the quest log only made the guide look again
+  on accept and objective steps, so after taking the fruit the step stayed
+  until something else made the guide look.
+  - A change to the quest log now rechecks any travel step.
+  - The quest automation looks past any travel step, not only an optional
+    one, to the next step's NPC or object: clicking the Strange Fruited Plant
+    takes The Glowing Fruit with Gnarlpine Hold still showing.
+
 ## [0.22.21]
 
 ### Fixed
@@ -1580,6 +1593,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.22]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.21]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.20]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.19]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

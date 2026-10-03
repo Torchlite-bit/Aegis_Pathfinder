@@ -90,8 +90,12 @@ are only found at startup.
       Walking in through Elwynn ticks it too.
 - [ ] RestedXP Hardcore 13-15 Westfall's "Travel to Westfall" ticks as you
       cross into Westfall, wherever you cross.
-- [ ] On an optional travel step, talk to the next step's NPC: the quest is
-      picked and accepted, and the guide moves past the travel step.
+- [ ] On a travel step, talk to the next step's NPC: the quest is picked and
+      accepted, and the guide moves past the travel step.
+- [ ] Teldrassil (1-12), step 87 "Gnarlpine Hold" on a Night Elf Warrior,
+      Hunter, Rogue or Priest: it ticks on entering Gnarlpine Hold. Click the
+      Strange Fruited Plant: The Glowing Fruit is accepted and the guide moves
+      on to Pools of Arlithrien.
 - [ ] Collapse the quest log's header over a quest the guide is on: the
       header opens again within a moment, chat says why once, and the guide
       still ticks that quest's progress and hand-in.

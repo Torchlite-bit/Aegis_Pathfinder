@@ -156,9 +156,11 @@ function AegisPathfinder:QUEST_LOG_UPDATE(event)
 
 	-- UpdateStatusFrame gates on the delayed step itself, so run it whenever a
 	-- delayed update is pending; checking the current step's logi here would
-	-- miss turnins recorded for a step other than the current one. An optional
-	-- way there is behind you once the step after it is done (PassedTravel).
-	if self.updatedelay or action == "ACCEPT" or action == "COMPLETE" or self:IsWayThere() then
+	-- miss turnins recorded for a step other than the current one. A travel
+	-- step is done once its |QID| quest is in the log, and an optional one
+	-- once the step after it is done (PassedTravel): Teldrassil's "Gnarlpine
+	-- Hold" stayed on after The Glowing Fruit was taken, as nothing rescanned.
+	if self.updatedelay or action == "ACCEPT" or action == "COMPLETE" or self:IsTravelStep() then
 		self:ScheduleStatusUpdate()
 	end
 
@@ -264,12 +266,12 @@ end
 -- just-finished step happens on the next quest log update, often after the
 -- follow-up QUEST_DETAIL or reopened gossip has already fired. Resolve the
 -- first step at or after current that is not already turned in, so automation
--- never keys off a stale step. An optional way there (GuideEngine.lua,
--- IsWayThere) is passed too: talking to the next step's NPC means you got there.
+-- never keys off a stale step. A travel step is passed too: talking to the
+-- next step's NPC, or clicking its object, means you got there.
 local function PendingStep()
 	local i = AegisPathfinder.current
 	if not i or not AegisPathfinder.actions then return end
-	while AegisPathfinder.actions[i] and (AegisPathfinder:GetObjectiveStatus(i) or AegisPathfinder:IsWayThere(i)) do
+	while AegisPathfinder.actions[i] and (AegisPathfinder:GetObjectiveStatus(i) or AegisPathfinder:IsTravelStep(i)) do
 		i = i + 1
 	end
 	if AegisPathfinder.actions[i] then return i end

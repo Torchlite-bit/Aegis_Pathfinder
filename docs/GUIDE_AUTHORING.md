@@ -156,9 +156,9 @@ A travel step marked `|O|` with no `|PRE|` is a *way there*, not a stop. RestedX
 - you are in the next step's zone, and that is not its own `Z`; or
 - the next step is done, such as its quest already in your log.
 
-The automation looks past it to the next step's NPC. RestedXP's 13-15 Westfall opens on `R Travel to Elwynn Forest |N|(19.0, 81.0)| |O| |Z|Elwynn Forest|`: walk through Elwynn and it ticks there; fly to Sentinel Hill and it ticks on landing in Westfall.
+RestedXP's 13-15 Westfall opens on `R Travel to Elwynn Forest |N|(19.0, 81.0)| |O| |Z|Elwynn Forest|`: walk through Elwynn and it ticks there; fly to Sentinel Hill and it ticks on landing in Westfall.
 
-A travel step without `|O|` is a stop and waits for one of the first four.
+A travel step without `|O|` is a stop and waits for one of the first four. One with a `|QID|` is also done once that quest is in your log. Teldrassil (1-12)'s `R Gnarlpine Hold |QID|930|` is done once The Glowing Fruit is taken. A change to the quest log rechecks any travel step. The quest automation looks past any travel step to the next step's NPC or object: talking to them means you got there.
 
 ### Profession Tags
 

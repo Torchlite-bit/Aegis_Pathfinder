@@ -29,7 +29,6 @@ function A:Print(msg) table.insert(printed, msg) end
 function A:Say(msg) self:Print(msg) end   -- Extras.lua's, always on here
 function A:Debug() end
 function A:UpdateStatusFrame() end
-function A:ScheduleStatusUpdate() end
 function A:GetObjectiveStatus() return false end
 function A:GetObjectiveInfo(i)
 	local s = steps[i or self.current]
@@ -49,11 +48,17 @@ local function step(action, name, tags)
 	steps = { { action, name, tags or {} } }
 	A.actions = { action }
 end
--- GuideEngine.lua's, for these steps: an optional travel step with no |PRE|.
-function A:IsWayThere(i)
+-- GuideEngine.lua's, for these steps.
+function A:IsTravelStep(i)
 	local s = steps[i or self.current]
-	return s ~= nil and s[1] == "RUN" and s[3].O ~= nil and s[3].PRE == nil
+	return s ~= nil and s[1] == "RUN"
 end
+function A:IsWayThere(i)
+	return self:IsTravelStep(i) and steps[i or self.current][3].O ~= nil
+end
+function A:RevealGuideQuests() end
+local scans = 0
+function A:ScheduleStatusUpdate() scans = scans + 1 end
 
 -- The quest windows and the gossip lists, as the client and ClassicAPI give them.
 local shift = false
@@ -121,9 +126,9 @@ title = "A Fishy Peril"
 reset(); A:QUEST_DETAIL()
 check(did[1] == nil, "not another quest, with all quests off")
 
--- On an optional way there (RestedXP's "Travel to Elwynn Forest |O|" before
--- Farmer Furlbrow), talking to Furlbrow means you got there: his quest is the
--- one the windows take. A stop that is not optional is still the step.
+-- On a travel step (RestedXP's "Travel to Elwynn Forest |O|" before Farmer
+-- Furlbrow), talking to Furlbrow means you got there: his quest is the one
+-- the windows take.
 steps = { { "RUN", "Travel to Elwynn Forest", { O = "" } }, { "ACCEPT", "The Forgotten Heirloom", { QID = "64" } } }
 A.actions, A.current = { "RUN", "ACCEPT" }, 1
 gossip.available = { { questID = 64, title = "The Forgotten Heirloom", questLevel = 10 } }
@@ -132,9 +137,23 @@ check(picked[1] == "available 64", "past a way there, the next step's quest is p
 title = "The Forgotten Heirloom"
 reset(); A:QUEST_DETAIL()
 check(did[1] == "accept", "and accepted")
-steps[1][3] = {}
+-- Teldrassil (1-12)'s step 87, "Gnarlpine Hold", is a stop, not optional:
+-- clicking the Strange Fruited Plant still takes The Glowing Fruit.
+steps = { { "RUN", "Gnarlpine Hold", { QID = "930" } }, { "ACCEPT", "The Glowing Fruit", { QID = "930" } } }
+title = "The Glowing Fruit"
 reset(); A:QUEST_DETAIL()
-check(did[1] == nil, "but not past a stop that is not optional")
+check(did[1] == "accept", "past a stop as well, the plant's quest is accepted")
+-- And the log changing on a travel step rescans: the stop is done once its
+-- quest is in the log. Before, nothing looked until something else did.
+GetNumQuestLeaderBoards = function() return 0 end
+scans = 0
+A:QUEST_LOG_UPDATE()
+check(scans == 1, "a quest log update on a travel step rescans the guide, got %d", scans)
+steps = { { "NOTE", "Read this", {} } }
+A.actions = { "NOTE" }
+scans = 0
+A:QUEST_LOG_UPDATE()
+check(scans == 0, "on a note it waits, as before, got %d", scans)
 title = "The Fargodeep Mine"
 step("ACCEPT", "The Fargodeep Mine", { QID = "62" })
 gossip.available = { { questID = 40, title = "A Fishy Peril", questLevel = 20 },

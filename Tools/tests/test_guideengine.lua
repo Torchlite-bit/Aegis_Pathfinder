@@ -566,6 +566,34 @@ do
 		AegisPathfinder.current)
 	inLog[64] = nil
 
+	-- Teldrassil (1-12)'s step 87: "Gnarlpine Hold", a stop carrying The
+	-- Glowing Fruit's id. Done in Gnarlpine Hold, or once the fruit's quest
+	-- is in the log wherever you are -- the scan the quest log now asks for.
+	local gnarl = {}
+	for l in io.lines("Guides/Alliance/01_12_Teldrassil.lua") do
+		if string.find(l, "^R Gnarlpine Hold ") or string.find(l, "^A The Glowing Fruit ") then
+			local _, _, title, tags = string.find(l, "^%a (.-) (|.*)$")
+			table.insert(gnarl, { title = title, tags = tags })
+		end
+	end
+	local function teldrassil(sub)
+		zone, subzone = "Teldrassil", sub
+		AegisPathfinder.actions = { "RUN", "ACCEPT", "NOTE" }
+		AegisPathfinder.quests = { gnarl[1].title .. "@1@", gnarl[2].title .. "@2@", "After@3@" }
+		AegisPathfinder.tags = { gnarl[1].tags, gnarl[2].tags, "|N|after|" }
+		AegisPathfinder.turnedin, AegisPathfinder.current = {}, 1
+		AegisPathfinder:UpdateStatusFrame()
+		return AegisPathfinder.current
+	end
+	check(table.getn(gnarl) == 2 and string.find(gnarl[1].tags, "|QID|930|", 1, true),
+		"the zone guide's Gnarlpine Hold carries The Glowing Fruit's id")
+	check(teldrassil("Dolanaar") == 1, "in Dolanaar without the fruit, the guide points to Gnarlpine Hold")
+	check(teldrassil("Gnarlpine Hold") == 2, "in Gnarlpine Hold it is done")
+	inLog[930] = true
+	check(teldrassil("Dolanaar") == 3, "with The Glowing Fruit taken it is done wherever you are, got step %d",
+		AegisPathfinder.current)
+	inLog[930] = nil
+
 	-- "Travel to Westfall (60.0, 19.4)", not optional, in RestedXP Hardcore.
 	local tagsTo = "|N|(60.0, 19.4)| |Z|Westfall|"
 	local function travel(name, tags, at, sub)
