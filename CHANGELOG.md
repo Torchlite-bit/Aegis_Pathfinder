@@ -18,6 +18,27 @@ reports.
 
 ---
 
+## [0.22.16]
+
+### Changed
+- **The crafting guides follow CraftRoute's routes.** Alchemy,
+  Blacksmithing, Cooking, Enchanting, Engineering, Jewelcrafting,
+  Leatherworking, Survival and Tailoring now take the cheapest way to 300 as
+  [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute)'s own
+  planner works it out, from the auction prices in its sample scan (30 July
+  2026). The old routes asked for fewer crafts than skill points in 63
+  places (Jewelcrafting's 10 Malachite Rings for 50–70 among them). Now each
+  count is the average number of attempts it takes, rounded up, and when a
+  later recipe uses what a step makes, the step says "Keep them for" that
+  recipe. Where nobody was selling something in that scan (the fish in
+  Cooking, some ore, Survival's wood), it was costed at three times what a
+  merchant pays, and the guide's first step names it. Trainers, ranks,
+  tomes and the Artisan quests are as before; First Aid and Mining keep
+  their routes.
+
+### Fixed
+- Cooking's Artisan hand-in no longer says "Tanaris, Gadgetzan." twice.
+
 ## [0.22.15]
 
 ### Changed
@@ -1458,6 +1479,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.16]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.15]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.14]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.13]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

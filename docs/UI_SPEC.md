@@ -918,8 +918,8 @@ made, want, reagents = { { name, count, itemId } } }`, priced at the auction
 house. The button writes one project per craft still ahead, in route order
 with the next craft on top: `want` is the craft count and `made` is 1, so
 Exchange's `reagent count x crafts` lands on the same totals as the list here
-(`Tools/tests/test_materials.lua` checks this against the reference document's
-Alchemy list). The same craft on two steps is one project with both counts.
+(`Tools/tests/test_materials.lua` checks this against the Alchemy guide's own
+steps, multiplied out). The same craft on two steps is one project with both counts.
 Item ids come from the bags, then Exchange's own name map, then pfQuest's item
 database; anything unmatched is reported in chat, since Exchange's list only
 shows reagents it can resolve.

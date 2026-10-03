@@ -1,179 +1,218 @@
 {
- "_about": "CraftRoute's fixed leveling routes (data_guide_wowprofessions.lua, GPLv3, by Kitymeowmeow; sourced from wow-professions.com and cross-checked against its recipe data). Written by Tools/build/import_recipes.py; read by Tools/build/convert_professions.py for professions the reference document lacks.",
+ "_about": "CraftRoute's 1-300 routes (GPLv3, by Kitymeowmeow), planned by CraftRoute's own planner on its sample auction scan. Written by Tools/build/import_routes.py; read by Tools/build/convert_professions.py. crafts are its expected counts, rounded up; copper is its estimate of the route's cost. standins are reagents the scan had no listing for, costed at markup times their merchant sell price; only those the routes use are kept.",
+ "scan": "2026-07-30",
+ "markup": 3,
+ "standins": {
+  "Amber Topaz": 300,
+  "Bright Wood": 318,
+  "Clam Meat": 48,
+  "Copper Ore": 15,
+  "Crystal Quartz": 1800,
+  "Delicate Feather": 225,
+  "Long Tail Feather": 909,
+  "Pure Moonstone": 3000,
+  "Raw Brilliant Smallfish": 3,
+  "Raw Bristle Whisker Catfish": 6,
+  "Raw Longjaw Mud Snapper": 3,
+  "Raw Mithril Head Trout": 12,
+  "Raw Sunscale Salmon": 30,
+  "Shade Wood": 711,
+  "Simple Leaves": 15,
+  "Star Wood": 3375,
+  "Tangy Clam Meat": 66,
+  "Zesty Clam Meat": 150
+ },
+ "copper": {
+  "Alchemy": 158226,
+  "Blacksmithing": 1540834,
+  "Cooking": 28503,
+  "Enchanting": 1824186,
+  "Engineering": 419397,
+  "Jewelcrafting": 1999492,
+  "Leatherworking": 2251281,
+  "Survival": 1241419,
+  "Tailoring": 2163812
+ },
  "routes": {
   "Alchemy": [
    {
     "recipe": "Minor Healing Potion",
     "from": 1,
-    "to": 60,
-    "crafts": 65
-   },
-   {
-    "recipe": "Lesser Healing Potion",
-    "from": 60,
-    "to": 110,
-    "crafts": 65
-   },
-   {
-    "recipe": "Healing Potion",
-    "from": 110,
-    "to": 140,
-    "crafts": 35
-   },
-   {
-    "recipe": "Lesser Mana Potion",
-    "from": 140,
-    "to": 155,
-    "crafts": 20
-   },
-   {
-    "recipe": "Greater Healing Potion",
-    "from": 155,
-    "to": 185,
-    "crafts": 35
-   },
-   {
-    "recipe": "Elixir of Agility",
-    "from": 185,
-    "to": 210,
-    "crafts": 30
-   },
-   {
-    "recipe": "Elixir of Greater Defense",
-    "from": 210,
-    "to": 215,
+    "to": 6,
     "crafts": 5
    },
    {
-    "recipe": "Superior Healing Potion",
-    "from": 215,
-    "to": 230,
-    "crafts": 15
+    "recipe": "Elixir of Minor Defense",
+    "from": 6,
+    "to": 7,
+    "crafts": 1
+   },
+   {
+    "recipe": "Minor Healing Potion",
+    "from": 7,
+    "to": 40,
+    "crafts": 33
+   },
+   {
+    "recipe": "Minor Rejuvenation Potion",
+    "from": 40,
+    "to": 100,
+    "crafts": 84
+   },
+   {
+    "recipe": "Holy Protection Potion",
+    "from": 100,
+    "to": 133,
+    "crafts": 34
+   },
+   {
+    "recipe": "Fire Oil",
+    "from": 133,
+    "to": 154,
+    "crafts": 22
+   },
+   {
+    "recipe": "Elixir of Ogre's Strength",
+    "from": 154,
+    "to": 156,
+    "crafts": 2
+   },
+   {
+    "recipe": "Greater Healing Potion",
+    "from": 156,
+    "to": 180,
+    "crafts": 25
+   },
+   {
+    "recipe": "Mighty Troll's Blood Potion",
+    "from": 180,
+    "to": 213,
+    "crafts": 36
+   },
+   {
+    "recipe": "Elixir of Detect Lesser Invisibility",
+    "from": 213,
+    "to": 237,
+    "crafts": 34
    },
    {
     "recipe": "Elixir of Detect Undead",
-    "from": 230,
-    "to": 265,
-    "crafts": 45
+    "from": 237,
+    "to": 277,
+    "crafts": 71
    },
    {
-    "recipe": "Superior Mana Potion",
-    "from": 265,
-    "to": 285,
-    "crafts": 30
+    "recipe": "Mageblood Potion",
+    "from": 277,
+    "to": 291,
+    "crafts": 14
    },
    {
-    "recipe": "Major Healing Potion",
-    "from": 285,
+    "recipe": "Purification Potion",
+    "from": 291,
     "to": 300,
-    "crafts": 20
+    "crafts": 9
    }
   ],
   "Blacksmithing": [
    {
     "recipe": "Rough Sharpening Stone",
     "from": 1,
-    "to": 30,
-    "crafts": 40
+    "to": 39,
+    "crafts": 50
    },
    {
     "recipe": "Rough Grinding Stone",
-    "from": 30,
-    "to": 65,
-    "crafts": 55
+    "from": 39,
+    "to": 84,
+    "crafts": 138
    },
    {
-    "recipe": "Coarse Sharpening Stone",
-    "from": 65,
-    "to": 75,
-    "crafts": 25
+    "recipe": "Copper Chain Belt",
+    "from": 84,
+    "to": 93,
+    "crafts": 14
    },
    {
-    "recipe": "Coarse Grinding Stone",
-    "from": 75,
-    "to": 90,
-    "crafts": 35
-   },
-   {
-    "recipe": "Runed Copper Belt",
-    "from": 90,
+    "recipe": "Gemmed Copper Gauntlets",
+    "from": 93,
     "to": 100,
-    "crafts": 10
+    "crafts": 7
    },
    {
-    "recipe": "Silver Rod",
+    "recipe": "Silver Skeleton Key",
     "from": 100,
-    "to": 105,
-    "crafts": 5
+    "to": 119,
+    "crafts": 52
    },
    {
-    "recipe": "Runed Copper Belt",
-    "from": 105,
-    "to": 110,
-    "crafts": 5
-   },
-   {
-    "recipe": "Rough Bronze Leggings",
-    "from": 110,
+    "recipe": "Rough Bronze Bracers",
+    "from": 119,
     "to": 125,
-    "crafts": 15
+    "crafts": 6
    },
    {
-    "recipe": "Heavy Grinding Stone",
+    "recipe": "Heavy Sharpening Stone",
     "from": 125,
-    "to": 140,
-    "crafts": 35
+    "to": 134,
+    "crafts": 14
    },
    {
-    "recipe": "Patterned Bronze Bracers",
-    "from": 140,
+    "recipe": "Rough Bronze Bracers",
+    "from": 134,
     "to": 150,
-    "crafts": 10
+    "crafts": 17
    },
    {
-    "recipe": "Golden Rod",
+    "recipe": "Iron Buckle",
     "from": 150,
-    "to": 155,
-    "crafts": 5
+    "to": 154,
+    "crafts": 8
    },
    {
-    "recipe": "Green Iron Leggings",
-    "from": 155,
+    "recipe": "Golden Skeleton Key",
+    "from": 154,
+    "to": 158,
+    "crafts": 6
+   },
+   {
+    "recipe": "Rough Bronze Bracers",
+    "from": 158,
     "to": 165,
-    "crafts": 10
+    "crafts": 16
    },
    {
     "recipe": "Green Iron Bracers",
     "from": 165,
-    "to": 190,
-    "crafts": 25
-   },
-   {
-    "recipe": "Golden Scale Bracers",
-    "from": 190,
     "to": 200,
-    "crafts": 10
+    "crafts": 38
    },
    {
     "recipe": "Solid Grinding Stone",
     "from": 200,
     "to": 210,
-    "crafts": 30
+    "crafts": 97
    },
    {
-    "recipe": "Heavy Mithril Gauntlet",
+    "recipe": "Truesilver Skeleton Key",
     "from": 210,
-    "to": 225,
-    "crafts": 15
-   },
-   {
-    "recipe": "Steel Plate Helm",
-    "from": 225,
-    "to": 235,
+    "to": 214,
     "crafts": 10
    },
    {
-    "recipe": "Mithril Coif",
+    "recipe": "Heavy Mithril Gauntlet",
+    "from": 214,
+    "to": 234,
+    "crafts": 23
+   },
+   {
+    "recipe": "Mithril Scale Gloves",
+    "from": 234,
+    "to": 235,
+    "crafts": 1
+   },
+   {
+    "recipe": "Mithril Spurs",
     "from": 235,
     "to": 250,
     "crafts": 15
@@ -181,26 +220,76 @@
    {
     "recipe": "Dense Sharpening Stone",
     "from": 250,
-    "to": 260,
-    "crafts": 20
+    "to": 259,
+    "crafts": 13
    },
    {
     "recipe": "Mithril Spurs",
-    "from": 260,
-    "to": 270,
-    "crafts": 20
+    "from": 259,
+    "to": 267,
+    "crafts": 14
+   },
+   {
+    "recipe": "Ornate Mithril Helm",
+    "from": 267,
+    "to": 276,
+    "crafts": 14
+   },
+   {
+    "recipe": "Thorium Bracers",
+    "from": 276,
+    "to": 277,
+    "crafts": 2
    },
    {
     "recipe": "Imperial Plate Bracers",
-    "from": 270,
+    "from": 277,
     "to": 295,
-    "crafts": 25
+    "crafts": 19
    },
    {
-    "recipe": "Imperial Plate Boots",
+    "recipe": "Thorium Boots",
     "from": 295,
+    "to": 296,
+    "crafts": 1
+   },
+   {
+    "recipe": "Thorium Helm",
+    "from": 296,
     "to": 300,
-    "crafts": 5
+    "crafts": 4
+   }
+  ],
+  "Cooking": [
+   {
+    "recipe": "Brilliant Smallfish",
+    "from": 1,
+    "to": 75,
+    "crafts": 98
+   },
+   {
+    "recipe": "Longjaw Mud Snapper",
+    "from": 75,
+    "to": 127,
+    "crafts": 113
+   },
+   {
+    "recipe": "Bristle Whisker Catfish",
+    "from": 127,
+    "to": 175,
+    "crafts": 93
+   },
+   {
+    "recipe": "Mithril Head Trout",
+    "from": 175,
+    "to": 254,
+    "crafts": 172
+   },
+   {
+    "recipe": "Poached Sunscale Salmon",
+    "from": 254,
+    "to": 300,
+    "crafts": 48
    }
   ],
   "Enchanting": [
@@ -213,20 +302,14 @@
    {
     "recipe": "Enchant Bracer - Minor Health",
     "from": 2,
-    "to": 50,
-    "crafts": 48
-   },
-   {
-    "recipe": "Enchant Bracer - Minor Health",
-    "from": 50,
     "to": 90,
-    "crafts": 40
+    "crafts": 96
    },
    {
-    "recipe": "Enchant Bracer - Minor Stamina",
+    "recipe": "Enchant Chest - Minor Mana",
     "from": 90,
     "to": 100,
-    "crafts": 10
+    "crafts": 18
    },
    {
     "recipe": "Runed Silver Rod",
@@ -235,46 +318,70 @@
     "crafts": 1
    },
    {
-    "recipe": "Greater Magic Wand",
+    "recipe": "Enchant Chest - Minor Mana",
     "from": 101,
-    "to": 110,
-    "crafts": 9
+    "to": 103,
+    "crafts": 4
+   },
+   {
+    "recipe": "Enchant Bracer - Minor Spirit",
+    "from": 103,
+    "to": 114,
+    "crafts": 13
+   },
+   {
+    "recipe": "Greater Magic Wand",
+    "from": 114,
+    "to": 122,
+    "crafts": 10
+   },
+   {
+    "recipe": "Enchant 2H Weapon - Minor Impact",
+    "from": 122,
+    "to": 129,
+    "crafts": 7
    },
    {
     "recipe": "Enchant Cloak - Minor Agility",
-    "from": 110,
-    "to": 135,
-    "crafts": 25
-   },
-   {
-    "recipe": "Enchant Bracer - Lesser Stamina",
-    "from": 135,
-    "to": 155,
-    "crafts": 20
-   },
-   {
-    "recipe": "Runed Golden Rod",
-    "from": 155,
-    "to": 156,
+    "from": 129,
+    "to": 130,
     "crafts": 1
    },
    {
+    "recipe": "Enchant Bracer - Lesser Stamina",
+    "from": 130,
+    "to": 150,
+    "crafts": 21
+   },
+   {
+    "recipe": "Runed Golden Rod",
+    "from": 150,
+    "to": 151,
+    "crafts": 1
+   },
+   {
+    "recipe": "Enchant Bracer - Lesser Stamina",
+    "from": 151,
+    "to": 163,
+    "crafts": 13
+   },
+   {
     "recipe": "Enchant Bracer - Lesser Strength",
-    "from": 156,
-    "to": 165,
-    "crafts": 9
+    "from": 163,
+    "to": 178,
+    "crafts": 18
    },
    {
     "recipe": "Enchant Bracer - Spirit",
-    "from": 165,
-    "to": 185,
-    "crafts": 20
+    "from": 178,
+    "to": 180,
+    "crafts": 2
    },
    {
     "recipe": "Enchant Bracer - Strength",
-    "from": 185,
+    "from": 180,
     "to": 200,
-    "crafts": 15
+    "crafts": 30
    },
    {
     "recipe": "Runed Truesilver Rod",
@@ -285,70 +392,52 @@
    {
     "recipe": "Enchant Bracer - Strength",
     "from": 201,
-    "to": 220,
-    "crafts": 35
+    "to": 230,
+    "crafts": 44
    },
    {
     "recipe": "Enchant Cloak - Greater Defense",
-    "from": 220,
-    "to": 225,
-    "crafts": 5
-   },
-   {
-    "recipe": "Enchant Gloves - Agility",
-    "from": 225,
-    "to": 230,
-    "crafts": 5
-   },
-   {
-    "recipe": "Enchant Boots - Stamina",
     "from": 230,
-    "to": 235,
-    "crafts": 5
+    "to": 250,
+    "crafts": 34
    },
    {
-    "recipe": "Enchant Chest - Superior Health",
-    "from": 235,
-    "to": 250,
-    "crafts": 25
+    "recipe": "Enchanted Thorium Bar",
+    "from": 250,
+    "to": 254,
+    "crafts": 5
    },
    {
     "recipe": "Lesser Mana Oil",
-    "from": 250,
+    "from": 254,
     "to": 265,
-    "crafts": 20
+    "crafts": 12
    },
    {
-    "recipe": "Enchant Shield - Greater Stamina",
+    "recipe": "Enchant Bracer - Greater Stamina",
     "from": 265,
-    "to": 294,
-    "crafts": 30
+    "to": 288,
+    "crafts": 34
    },
    {
-    "recipe": "Runed Arcanite Rod",
-    "from": 294,
-    "to": 295,
-    "crafts": 1
-   },
-   {
-    "recipe": "Enchant Cloak - Superior Defense",
-    "from": 295,
+    "recipe": "Enchant Chest - Major Health",
+    "from": 288,
     "to": 300,
-    "crafts": 5
+    "crafts": 13
    }
   ],
   "Engineering": [
    {
     "recipe": "Rough Blasting Powder",
     "from": 1,
-    "to": 30,
-    "crafts": 60
+    "to": 38,
+    "crafts": 62
    },
    {
     "recipe": "Handful of Copper Bolts",
-    "from": 30,
+    "from": 38,
     "to": 50,
-    "crafts": 30
+    "crafts": 19
    },
    {
     "recipe": "Arclight Spanner",
@@ -357,356 +446,750 @@
     "crafts": 1
    },
    {
-    "recipe": "Rough Copper Bomb",
+    "recipe": "Handful of Copper Bolts",
     "from": 51,
-    "to": 75,
-    "crafts": 30
+    "to": 56,
+    "crafts": 8
    },
    {
-    "recipe": "Coarse Blasting Powder",
-    "from": 75,
-    "to": 90,
-    "crafts": 60
-   },
-   {
-    "recipe": "Coarse Dynamite",
-    "from": 90,
-    "to": 100,
-    "crafts": 20
-   },
-   {
-    "recipe": "Silver Contact",
-    "from": 100,
-    "to": 105,
-    "crafts": 5
-   },
-   {
-    "recipe": "Bronze Tube",
-    "from": 105,
-    "to": 125,
-    "crafts": 25
-   },
-   {
-    "recipe": "Standard Scope",
-    "from": 125,
-    "to": 135,
+    "recipe": "Rough Copper Bomb",
+    "from": 56,
+    "to": 65,
     "crafts": 10
    },
    {
-    "recipe": "Heavy Blasting Powder",
-    "from": 135,
-    "to": 145,
-    "crafts": 59
-   },
-   {
-    "recipe": "Whirring Bronze Gizmo",
-    "from": 145,
-    "to": 150,
-    "crafts": 9
-   },
-   {
-    "recipe": "Bronze Framework",
-    "from": 150,
-    "to": 160,
-    "crafts": 15
-   },
-   {
-    "recipe": "Explosive Sheep",
-    "from": 160,
-    "to": 175,
-    "crafts": 15
-   },
-   {
-    "recipe": "Solid Blasting Powder",
-    "from": 175,
-    "to": 194,
-    "crafts": 60
-   },
-   {
-    "recipe": "Gyromatic Micro-Adjustor",
-    "from": 194,
-    "to": 195,
-    "crafts": 1
-   },
-   {
-    "recipe": "Mithril Tube",
-    "from": 195,
-    "to": 200,
+    "recipe": "Copper Modulator",
+    "from": 65,
+    "to": 72,
     "crafts": 7
    },
    {
-    "recipe": "Unstable Trigger",
+    "recipe": "Crude Scope",
+    "from": 72,
+    "to": 75,
+    "crafts": 3
+   },
+   {
+    "recipe": "Coarse Dynamite",
+    "from": 75,
+    "to": 86,
+    "crafts": 11
+   },
+   {
+    "recipe": "Crafted Heavy Shot",
+    "from": 86,
+    "to": 89,
+    "crafts": 4
+   },
+   {
+    "recipe": "Coarse Dynamite",
+    "from": 89,
+    "to": 90,
+    "crafts": 1
+   },
+   {
+    "recipe": "Silver Contact",
+    "from": 90,
+    "to": 125,
+    "crafts": 41
+   },
+   {
+    "recipe": "Whirring Bronze Gizmo",
+    "from": 125,
+    "to": 129,
+    "crafts": 5
+   },
+   {
+    "recipe": "Heavy Blasting Powder",
+    "from": 129,
+    "to": 134,
+    "crafts": 8
+   },
+   {
+    "recipe": "Small Seaforium Charge",
+    "from": 134,
+    "to": 136,
+    "crafts": 3
+   },
+   {
+    "recipe": "Flying Tiger Goggles",
+    "from": 136,
+    "to": 145,
+    "crafts": 14
+   },
+   {
+    "recipe": "Bronze Framework",
+    "from": 145,
+    "to": 150,
+    "crafts": 6
+   },
+   {
+    "recipe": "Explosive Sheep",
+    "from": 150,
+    "to": 155,
+    "crafts": 5
+   },
+   {
+    "recipe": "Bronze Framework",
+    "from": 155,
+    "to": 160,
+    "crafts": 7
+   },
+   {
+    "recipe": "Iron Strut",
+    "from": 160,
+    "to": 170,
+    "crafts": 14
+   },
+   {
+    "recipe": "Gyrochronatom",
+    "from": 170,
+    "to": 175,
+    "crafts": 6
+   },
+   {
+    "recipe": "Gyromatic Micro-Adjustor",
+    "from": 175,
+    "to": 176,
+    "crafts": 1
+   },
+   {
+    "recipe": "Solid Blasting Powder",
+    "from": 176,
+    "to": 183,
+    "crafts": 9
+   },
+   {
+    "recipe": "Solid Dynamite",
+    "from": 183,
+    "to": 187,
+    "crafts": 10
+   },
+   {
+    "recipe": "Solid Blasting Powder",
+    "from": 187,
+    "to": 195,
+    "crafts": 55
+   },
+   {
+    "recipe": "Big Iron Bomb",
+    "from": 195,
+    "to": 198,
+    "crafts": 4
+   },
+   {
+    "recipe": "Mithril Tube",
+    "from": 198,
+    "to": 200,
+    "crafts": 3
+   },
+   {
+    "recipe": "Large Seaforium Charge",
     "from": 200,
-    "to": 215,
-    "crafts": 20
+    "to": 210,
+    "crafts": 12
    },
    {
-    "recipe": "Mithril Casing",
-    "from": 215,
-    "to": 238,
-    "crafts": 40
+    "recipe": "Hi-Impact Mithril Slugs",
+    "from": 210,
+    "to": 245,
+    "crafts": 80
    },
    {
-    "recipe": "Hi-Explosive Bomb",
-    "from": 238,
+    "recipe": "Mithril Gyro-Shot",
+    "from": 245,
     "to": 250,
-    "crafts": 20
+    "crafts": 6
    },
    {
     "recipe": "Dense Blasting Powder",
     "from": 250,
-    "to": 260,
-    "crafts": 30
+    "to": 257,
+    "crafts": 11
+   },
+   {
+    "recipe": "Mithril Gyro-Shot",
+    "from": 257,
+    "to": 265,
+    "crafts": 14
    },
    {
     "recipe": "Thorium Widget",
-    "from": 260,
-    "to": 285,
-    "crafts": 35
+    "from": 265,
+    "to": 289,
+    "crafts": 27
    },
    {
-    "recipe": "Thorium Tube",
-    "from": 285,
+    "recipe": "Thorium Shells",
+    "from": 289,
     "to": 300,
+    "crafts": 11
+   }
+  ],
+  "Jewelcrafting": [
+   {
+    "recipe": "Rough Gritted Paper",
+    "from": 1,
+    "to": 30,
+    "crafts": 49
+   },
+   {
+    "recipe": "Rough Copper Ring",
+    "from": 30,
+    "to": 34,
+    "crafts": 7
+   },
+   {
+    "recipe": "Bright Copper Ring",
+    "from": 34,
+    "to": 35,
+    "crafts": 1
+   },
+   {
+    "recipe": "Rough Gemstone Cluster",
+    "from": 35,
+    "to": 54,
+    "crafts": 30
+   },
+   {
+    "recipe": "Tigercrest Ring",
+    "from": 54,
+    "to": 73,
     "crafts": 20
+   },
+   {
+    "recipe": "Softglow Ring",
+    "from": 73,
+    "to": 90,
+    "crafts": 18
+   },
+   {
+    "recipe": "Rough Bronze Ring",
+    "from": 90,
+    "to": 110,
+    "crafts": 26
+   },
+   {
+    "recipe": "Amber Orb",
+    "from": 110,
+    "to": 114,
+    "crafts": 5
+   },
+   {
+    "recipe": "Shadowgem Band",
+    "from": 114,
+    "to": 115,
+    "crafts": 1
+   },
+   {
+    "recipe": "Ocean's Wrath",
+    "from": 115,
+    "to": 125,
+    "crafts": 11
+   },
+   {
+    "recipe": "Rough Silver Ring",
+    "from": 125,
+    "to": 150,
+    "crafts": 37
+   },
+   {
+    "recipe": "Heavy Gritted Paper",
+    "from": 150,
+    "to": 151,
+    "crafts": 2
+   },
+   {
+    "recipe": "Rough Iron Ring",
+    "from": 151,
+    "to": 175,
+    "crafts": 44
+   },
+   {
+    "recipe": "Rough Mithril Ring",
+    "from": 175,
+    "to": 180,
+    "crafts": 14
+   },
+   {
+    "recipe": "Goldenshade Quartz Crown",
+    "from": 180,
+    "to": 199,
+    "crafts": 20
+   },
+   {
+    "recipe": "Ironbloom Ring",
+    "from": 199,
+    "to": 200,
+    "crafts": 1
+   },
+   {
+    "recipe": "Solid Gritted Paper",
+    "from": 200,
+    "to": 209,
+    "crafts": 20
+   },
+   {
+    "recipe": "Heart of the Sea",
+    "from": 209,
+    "to": 224,
+    "crafts": 16
+   },
+   {
+    "recipe": "Greater Binding Signet",
+    "from": 224,
+    "to": 235,
+    "crafts": 12
+   },
+   {
+    "recipe": "Rough Thorium Ring",
+    "from": 235,
+    "to": 255,
+    "crafts": 40
+   },
+   {
+    "recipe": "Dense Gritted Paper",
+    "from": 255,
+    "to": 264,
+    "crafts": 10
+   },
+   {
+    "recipe": "Skyfire Jewel",
+    "from": 264,
+    "to": 265,
+    "crafts": 1
+   },
+   {
+    "recipe": "Blue Starfire",
+    "from": 265,
+    "to": 300,
+    "crafts": 80
    }
   ],
   "Leatherworking": [
    {
     "recipe": "Light Armor Kit",
     "from": 1,
-    "to": 45,
-    "crafts": 54
+    "to": 54,
+    "crafts": 76
    },
    {
-    "recipe": "Handstitched Leather Cloak",
-    "from": 45,
+    "recipe": "Small Leather Ammo Pouch",
+    "from": 54,
     "to": 55,
-    "crafts": 20
+    "crafts": 1
    },
    {
     "recipe": "Embossed Leather Gloves",
     "from": 55,
     "to": 100,
-    "crafts": 50
+    "crafts": 51
    },
    {
-    "recipe": "Cured Medium Hide",
+    "recipe": "Medium Leather",
     "from": 100,
-    "to": 122,
-    "crafts": 15
+    "to": 105,
+    "crafts": 7
    },
    {
     "recipe": "Fine Leather Belt",
-    "from": 122,
-    "to": 125,
-    "crafts": 6
+    "from": 105,
+    "to": 117,
+    "crafts": 13
    },
    {
-    "recipe": "Dark Leather Boots",
-    "from": 125,
-    "to": 137,
-    "crafts": 15
+    "recipe": "Fine Leather Boots",
+    "from": 117,
+    "to": 145,
+    "crafts": 55
    },
    {
     "recipe": "Dark Leather Pants",
-    "from": 137,
+    "from": 145,
     "to": 150,
-    "crafts": 20
+    "crafts": 7
    },
    {
     "recipe": "Heavy Leather",
     "from": 150,
-    "to": 155,
-    "crafts": 7
+    "to": 154,
+    "crafts": 5
    },
    {
     "recipe": "Cured Heavy Hide",
-    "from": 155,
-    "to": 170,
-    "crafts": 35
+    "from": 154,
+    "to": 169,
+    "crafts": 32
    },
    {
-    "recipe": "Barbaric Leggings",
-    "from": 170,
-    "to": 180,
-    "crafts": 10
-   },
-   {
-    "recipe": "Barbaric Shoulders",
-    "from": 180,
+    "recipe": "Raptor Hide Belt",
+    "from": 169,
     "to": 190,
-    "crafts": 10
+    "crafts": 22
    },
    {
     "recipe": "Guardian Gloves",
     "from": 190,
-    "to": 200,
-    "crafts": 10
+    "to": 219,
+    "crafts": 32
    },
    {
     "recipe": "Thick Armor Kit",
-    "from": 200,
-    "to": 205,
-    "crafts": 5
+    "from": 219,
+    "to": 225,
+    "crafts": 7
    },
    {
     "recipe": "Nightscape Headband",
-    "from": 205,
-    "to": 235,
-    "crafts": 40
+    "from": 225,
+    "to": 237,
+    "crafts": 18
+   },
+   {
+    "recipe": "Wild Leather Shoulders",
+    "from": 237,
+    "to": 245,
+    "crafts": 9
+   },
+   {
+    "recipe": "Wild Leather Helmet",
+    "from": 245,
+    "to": 250,
+    "crafts": 6
    },
    {
     "recipe": "Nightscape Pants",
-    "from": 235,
-    "to": 250,
-    "crafts": 15
+    "from": 250,
+    "to": 257,
+    "crafts": 9
    },
    {
-    "recipe": "Nightscape Boots",
-    "from": 250,
+    "recipe": "Wild Leather Boots",
+    "from": 257,
     "to": 260,
-    "crafts": 13
+    "crafts": 3
    },
    {
     "recipe": "Wicked Leather Gauntlets",
     "from": 260,
-    "to": 290,
-    "crafts": 33
+    "to": 283,
+    "crafts": 24
    },
    {
-    "recipe": "Runic Leather Headband",
+    "recipe": "Wicked Leather Bracers",
+    "from": 283,
+    "to": 289,
+    "crafts": 7
+   },
+   {
+    "recipe": "Heavy Scorpid Belt",
+    "from": 289,
+    "to": 293,
+    "crafts": 4
+   },
+   {
+    "recipe": "Runic Leather Bracers",
+    "from": 293,
+    "to": 300,
+    "crafts": 8
+   }
+  ],
+  "Survival": [
+   {
+    "recipe": "Dim Torch",
+    "from": 1,
+    "to": 15,
+    "crafts": 23
+   },
+   {
+    "recipe": "Survivalist's Skinning Knife",
+    "from": 15,
+    "to": 50,
+    "crafts": 47
+   },
+   {
+    "recipe": "Weak Healing Salve",
+    "from": 50,
+    "to": 87,
+    "crafts": 56
+   },
+   {
+    "recipe": "Gardening Gloves",
+    "from": 87,
+    "to": 100,
+    "crafts": 25
+   },
+   {
+    "recipe": "Simple Fishing Lure",
+    "from": 100,
+    "to": 130,
+    "crafts": 34
+   },
+   {
+    "recipe": "Sturdy Net",
+    "from": 130,
+    "to": 139,
+    "crafts": 26
+   },
+   {
+    "recipe": "Simple Fishing Lure",
+    "from": 139,
+    "to": 140,
+    "crafts": 20
+   },
+   {
+    "recipe": "Bundle of Bright Wood Sticks",
+    "from": 140,
+    "to": 142,
+    "crafts": 5
+   },
+   {
+    "recipe": "Blackmouth Fishing Trap",
+    "from": 142,
+    "to": 146,
+    "crafts": 4
+   },
+   {
+    "recipe": "Bright Wood Arrows",
+    "from": 146,
+    "to": 150,
+    "crafts": 4
+   },
+   {
+    "recipe": "Spicy Fishing Lure",
+    "from": 150,
+    "to": 175,
+    "crafts": 26
+   },
+   {
+    "recipe": "Bundle of Shade Wood Sticks",
+    "from": 175,
+    "to": 184,
+    "crafts": 9
+   },
+   {
+    "recipe": "Spicy Fishing Lure",
+    "from": 184,
+    "to": 190,
+    "crafts": 49
+   },
+   {
+    "recipe": "Iron Lantern",
+    "from": 190,
+    "to": 194,
+    "crafts": 10
+   },
+   {
+    "recipe": "Sharpened Herb Sickle",
+    "from": 194,
+    "to": 200,
+    "crafts": 6
+   },
+   {
+    "recipe": "Savory Fishing Lure",
+    "from": 200,
+    "to": 215,
+    "crafts": 15
+   },
+   {
+    "recipe": "Vine Cutter",
+    "from": 215,
+    "to": 217,
+    "crafts": 2
+   },
+   {
+    "recipe": "Savory Fishing Lure",
+    "from": 217,
+    "to": 240,
+    "crafts": 75
+   },
+   {
+    "recipe": "Shade Wood Arrows",
+    "from": 240,
+    "to": 242,
+    "crafts": 9
+   },
+   {
+    "recipe": "Thick Rations Bag",
+    "from": 242,
+    "to": 250,
+    "crafts": 8
+   },
+   {
+    "recipe": "Premium Fishing Lure",
+    "from": 250,
+    "to": 270,
+    "crafts": 20
+   },
+   {
+    "recipe": "Bundle of Star Wood Sticks",
+    "from": 270,
+    "to": 283,
+    "crafts": 22
+   },
+   {
+    "recipe": "Premium Fishing Lure",
+    "from": 283,
+    "to": 290,
+    "crafts": 52
+   },
+   {
+    "recipe": "Stonescale Fishing Trap",
     "from": 290,
     "to": 300,
-    "crafts": 10
+    "crafts": 11
    }
   ],
   "Tailoring": [
    {
     "recipe": "Bolt of Linen Cloth",
     "from": 1,
-    "to": 40,
-    "crafts": 102
+    "to": 50,
+    "crafts": 212
    },
    {
     "recipe": "Linen Belt",
-    "from": 40,
-    "to": 70,
-    "crafts": 40
+    "from": 50,
+    "to": 71,
+    "crafts": 28
+   },
+   {
+    "recipe": "Reinforced Linen Cape",
+    "from": 71,
+    "to": 75,
+    "crafts": 4
    },
    {
     "recipe": "Bolt of Woolen Cloth",
-    "from": 70,
-    "to": 95,
-    "crafts": 138
+    "from": 75,
+    "to": 101,
+    "crafts": 36
    },
    {
-    "recipe": "Pearl-clasped Cloak",
-    "from": 95,
-    "to": 100,
-    "crafts": 5
+    "recipe": "Reinforced Linen Cape",
+    "from": 101,
+    "to": 111,
+    "crafts": 26
    },
    {
-    "recipe": "Gray Woolen Shirt",
-    "from": 100,
-    "to": 110,
-    "crafts": 10
-   },
-   {
-    "recipe": "Double-stitched Woolen Shoulders",
-    "from": 110,
+    "recipe": "Simple Kilt",
+    "from": 111,
     "to": 125,
-    "crafts": 15
+    "crafts": 31
    },
    {
     "recipe": "Bolt of Silk Cloth",
     "from": 125,
     "to": 145,
-    "crafts": 201
+    "crafts": 142
    },
    {
-    "recipe": "Azure Silk Hood",
+    "recipe": "Bright Yellow Shirt",
     "from": 145,
-    "to": 160,
-    "crafts": 18
+    "to": 149,
+    "crafts": 5
+   },
+   {
+    "recipe": "Gloves of Meditation",
+    "from": 149,
+    "to": 157,
+    "crafts": 9
+   },
+   {
+    "recipe": "Dark Silk Shirt",
+    "from": 157,
+    "to": 168,
+    "crafts": 12
    },
    {
     "recipe": "Silk Headband",
-    "from": 160,
-    "to": 170,
-    "crafts": 10
+    "from": 168,
+    "to": 171,
+    "crafts": 3
    },
    {
     "recipe": "Formal White Shirt",
-    "from": 170,
+    "from": 171,
     "to": 175,
-    "crafts": 5
+    "crafts": 4
    },
    {
     "recipe": "Bolt of Mageweave",
     "from": 175,
     "to": 185,
-    "crafts": 94
+    "crafts": 122
    },
    {
     "recipe": "Crimson Silk Vest",
     "from": 185,
-    "to": 205,
-    "crafts": 20
+    "to": 207,
+    "crafts": 23
    },
    {
-    "recipe": "Crimson Silk Pantaloons",
-    "from": 205,
+    "recipe": "Black Mageweave Vest",
+    "from": 207,
     "to": 215,
-    "crafts": 10
+    "crafts": 8
    },
    {
-    "recipe": "Orange Mageweave Shirt",
+    "recipe": "White Bandit Mask",
     "from": 215,
-    "to": 220,
-    "crafts": 5
-   },
-   {
-    "recipe": "Black Mageweave Gloves",
-    "from": 220,
     "to": 225,
-    "crafts": 5
+    "crafts": 12
    },
    {
-    "recipe": "Diviner's Boots",
+    "recipe": "Black Mageweave Vest",
     "from": 225,
-    "to": 230,
-    "crafts": 5
+    "to": 235,
+    "crafts": 15
+   },
+   {
+    "recipe": "Simple Black Dress",
+    "from": 235,
+    "to": 242,
+    "crafts": 8
    },
    {
     "recipe": "Black Mageweave Headband",
-    "from": 230,
+    "from": 242,
+    "to": 249,
+    "crafts": 8
+   },
+   {
+    "recipe": "Red Mageweave Shoulders",
+    "from": 249,
     "to": 250,
-    "crafts": 23
+    "crafts": 1
    },
    {
     "recipe": "Bolt of Runecloth",
     "from": 250,
     "to": 260,
-    "crafts": 239
+    "crafts": 19
+   },
+   {
+    "recipe": "Red Mageweave Headband",
+    "from": 260,
+    "to": 262,
+    "crafts": 3
    },
    {
     "recipe": "Runecloth Belt",
-    "from": 260,
-    "to": 280,
-    "crafts": 25
+    "from": 262,
+    "to": 274,
+    "crafts": 13
    },
    {
-    "recipe": "Runecloth Bag",
-    "from": 280,
-    "to": 290,
-    "crafts": 18
+    "recipe": "Pillager's Shoes",
+    "from": 274,
+    "to": 279,
+    "crafts": 6
    },
    {
-    "recipe": "Runecloth Gloves",
-    "from": 290,
+    "recipe": "Brightcloth Cloak",
+    "from": 279,
     "to": 300,
-    "crafts": 12
+    "crafts": 23
    }
   ]
  }

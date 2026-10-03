@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.22.15)
+# Aegis: Pathfinder (v0.22.16)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -165,8 +165,10 @@ a point.
 
 ### ⚒️ Professions
 
-All fourteen, 1–300, with trainers, reagents and a shopping list — and the
-**cheapest route to 300** at today's auction house prices. With
+All fourteen, 1–300, with trainers, reagents and a shopping list. The crafting
+routes are [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute)'s
+cheapest — and the **cheapest route to 300** plans one at today's auction house
+prices. With
 [Aegis: Exchange](https://github.com/Torchlite-bit/Aegis_Exchange), the shopping
 list goes straight onto its Crafting tab.
 
@@ -264,7 +266,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.22.15`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.22.16`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)** or open an

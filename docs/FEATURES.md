@@ -815,13 +815,24 @@ laid out like Zygor's:
 | Alchemy, Blacksmithing, Cooking, Enchanting, Engineering, First Aid, Jewelcrafting, Leatherworking, Mining, Survival, Tailoring | Full 1–300 crafting routes |
 | Herbalism, Skinning, Fishing | 1–300 by where to go — see **Gathering** below |
 
-Each authored guide is a fixed route, chosen once. For one planned from today's
-prices instead, see **Cheapest crafting route** above — it keeps the authored
-guide's trainer and rank steps and replaces only the crafts.
+The crafting guides follow [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute)'s
+routes: the cheapest way to 300 as CraftRoute's own planner works it out, from
+the auction prices in its sample scan (30 July 2026). Each craft count is the
+average number of attempts it takes, rounded up, so a step never asks for
+fewer crafts than the skill points it covers. Where CraftRoute makes more of
+something than the skill needs, because a later recipe uses it, the step says
+"Keep them for" that recipe. Its scan had no listing for most things you
+gather yourself — the fish in Cooking, some ore, Survival's wood — so those
+were costed at three times what a merchant pays, and the guide's first step
+names them. First Aid's and Mining's routes are from the reference document.
 
-Each authored guide says what to craft in each skill band and roughly how many,
-the reagents (the shopping list totals what the rest of the route still
-needs, and can send it to Aegis: Exchange), where the recipe comes from, and equally viable alternatives.
+These are fixed routes, chosen once. For one planned from today's prices
+instead, see **Cheapest crafting route** above — it keeps the authored guide's
+trainer and rank steps and replaces only the crafts.
+
+Each authored guide says what to craft in each skill band and how many, the
+reagents (the shopping list totals what the rest of the route still needs, and
+can send it to Aegis: Exchange) and where the recipe comes from.
 
 Every rank is a step of its own: your faction's trainers, what the rank needs
 and what it costs. Primary crafts wait for the character level a rank needs
@@ -832,10 +843,9 @@ train Expert or Artisan: the guide sends you to buy the Expert tome, and at
 skill 225 — the point the route cannot pass without it — walks you through
 the Artisan quest, level 40 and what to bring included.
 
-Engineering is not in the reference the other guides were converted from. Its
-route is CraftRoute's (a craft-by-craft 1–300 route checked against its recipe
-data), with reagents and recipe sources from the same recipe data the cheapest
-route uses. Its trainers come from the CMaNGOS 1.12 database: every NPC whose
+Reagents and recipe sources come from the same recipe data the cheapest route
+uses. Trainers come from the reference document, and Engineering's, which it
+does not cover, from the CMaNGOS 1.12 database: every NPC whose
 trainer list teaches that rank, in the zone pfQuest puts them in. Artisan is
 Buzzek Bracketswing in Gadgetzan (Tanaris) for both factions. Trainers the
 Turtle-lineage servers added in their own new zones are not in those databases,

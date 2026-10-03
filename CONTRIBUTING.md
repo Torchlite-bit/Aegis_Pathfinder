@@ -150,10 +150,10 @@ diffs and validates far better that way.
 
 **Profession guides in `Guides/Professions/` are generated.** Editing them by
 hand will be overwritten. Change `Tools/build/convert_professions.py` or the source
-document in `Tools/data/`, then regenerate. Engineering, which the document
-does not cover, comes from CraftRoute's fixed route
-(`Tools/data/craftroute_routes.json`, exported by `Tools/build/import_recipes.py`)
-with its trainers in `Tools/data/profession_training.json`. Herbalism, Skinning
+data in `Tools/data/`, then regenerate. The crafting professions follow
+CraftRoute's routes (`Tools/data/craftroute_routes.json`); First Aid and Mining,
+and the trainers, come from the reference document, with the ranks, tomes and
+Artisan quests in `Tools/data/profession_training.json`. Herbalism, Skinning
 and Fishing are built by `Tools/build/gathering_guides.py` from
 `Tools/data/gathering.json`, which also gives each step of the Mining route,
 per faction, where to mine its ore. They only send players to zones this addon
@@ -162,6 +162,19 @@ has a zone guide for:
 ```sh
 python3 Tools/build/convert_professions.py
 ```
+
+The routes are planned by CraftRoute's own planner, run outside the game on
+its sample auction scan; only the routes it prints are kept. To plan them
+again from a CraftRoute checkout (needs `lua5.1`), then regenerate the guides:
+
+```sh
+python3 Tools/build/import_routes.py <CraftRoute>
+```
+
+`Tools/build/craftroute_harness.lua` stands in for the game's API while it
+runs. CraftRoute's scan has no listing for most things players gather
+themselves, so a raw material with none is costed at three times its merchant
+price; the guides that use one say so.
 
 `Tools/data/gathering.json` is extracted from pfQuest (herb and ore nodes,
 spawn points, zone names) and the CMaNGOS classic-db dump (the ore each vein
@@ -222,9 +235,12 @@ CraftRoute, check it out and run:
 
 ```sh
 python3 Tools/build/import_recipes.py <path to CraftRoute>
+python3 Tools/build/import_routes.py <path to CraftRoute>
+python3 Tools/build/convert_professions.py
 ```
 
-Only the data is taken, rewritten into this addon's own one-line-per-recipe
+The second plans the profession guides' routes again (see **Writing
+guides**), and the third rewrites the guides from them. Only the data is taken, rewritten into this addon's own one-line-per-recipe
 format (documented at the top of each generated file); the planner in
 `CraftPlanner.lua` is written separately. Reagents CraftRoute gives only by
 item id are named from pfQuest's item database, cached in

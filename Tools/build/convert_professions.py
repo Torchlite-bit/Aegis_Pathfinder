@@ -6,11 +6,13 @@
 Reads Tools/data/Professions_Reference.docx and writes Guides/Professions/.
 With --check it parses and validates but writes nothing.
 
-Engineering is not in the document. Its guide is authored from CraftRoute's
-fixed Engineering route (Tools/data/craftroute_routes.json, exported by
-Tools/build/import_recipes.py), with each recipe's reagents and source from the
-recipe data in Crafting/ and its trainers from profession_training.json --
-the same step shapes as every other guide here.
+The crafting professions follow CraftRoute's routes instead: the cheapest way
+to 300 as CraftRoute's own planner works it out from auction prices
+(Tools/data/craftroute_routes.json, planned by Tools/build/import_routes.py).
+Each recipe's reagents and source come from the recipe data in Crafting/, and
+the trainers from the document, or profession_training.json where it names
+none -- the same step shapes as every other guide here. The document still
+supplies First Aid, which CraftRoute does not plan, and Mining.
 
 Herbalism, Skinning and Fishing are not in it either, and do not level by
 crafting. Their guides are built by Tools/build/gathering_guides.py from
@@ -43,11 +45,11 @@ DOCX = os.path.join(ROOT, "Tools", "data", "Professions_Reference.docx")
 # FAQ in Tools/data/Profession_FAQ.md.
 TRAINING = os.path.join(ROOT, "Tools", "data", "profession_training.json")
 OUTDIR = os.path.join(ROOT, "Guides", "Professions")
-# CraftRoute's fixed routes and the recipe data, for professions the document
-# has no route for.
+# CraftRoute's planned routes and the recipe data, for the crafting professions.
 ROUTES = os.path.join(ROOT, "Tools", "data", "craftroute_routes.json")
 RECIPES = os.path.join(ROOT, "Crafting")
-FROM_CRAFTROUTE = ["Engineering"]
+FROM_CRAFTROUTE = ["Alchemy", "Blacksmithing", "Cooking", "Enchanting", "Engineering",
+                   "Jewelcrafting", "Leatherworking", "Survival", "Tailoring"]
 # Professions whose route steps also say, per faction, where to mine the ore
 # (Tools/build/gathering_guides.py, from Tools/data/gathering.json).
 MINED = ["Mining"]
@@ -310,6 +312,14 @@ def validate(professions):
         for s in ranges:
             if s["kind"] == "craft" and not s["reagents"]:
                 problems.append("%s: craft '%s' lists no reagents" % (name, s["item"]))
+
+        # A craft raises a skill one point at most. Mining is raised by
+        # mining as well, so its smelting counts can be lower.
+        if name not in MINED:
+            for s in ranges:
+                if s["kind"] == "craft" and s["count"] < s["to"] - s["from"]:
+                    problems.append("%s: %dx %s for %d%s%d is fewer crafts than skill points"
+                                    % (name, s["count"], s["item"], s["from"], DASH, s["to"]))
 
         if not p["trainers"]["Alliance"] and not p["trainers"]["Horde"]:
             problems.append("%s: no trainers parsed" % name)
@@ -593,9 +603,11 @@ HEADER = """-- %(name)s (1-300)
 ROUTED_HEADER = """-- %(name)s (1-300)
 --
 -- GENERATED FILE -- do not edit by hand.
--- Source:    CraftRoute's fixed %(name)s route (GPLv3, Kitymeowmeow), via
---            Tools/data/craftroute_routes.json; reagents and recipe sources
---            from Crafting/%(name)s.lua; trainers from
+-- Source:    CraftRoute's %(name)s route (GPLv3, Kitymeowmeow), planned by its
+--            own planner and saved in Tools/data/craftroute_routes.json by
+--            Tools/build/import_routes.py; reagents and recipe sources from
+--            Crafting/%(name)s.lua; trainers from
+--            Tools/data/Professions_Reference.docx and
 --            Tools/data/profession_training.json
 -- Generator: Tools/build/convert_professions.py
 --
@@ -704,13 +716,22 @@ def read_recipes(name):
     return out
 
 
-def routed_profession(name, training):
+def say_list(items):
+    """"a", "a and b", "a, b and c"."""
+    items = list(items)
+    return items[0] if len(items) == 1 else ", ".join(items[:-1]) + " and " + items[-1]
+
+
+def routed_profession(name, training, doc=None):
     """A profession parsed the way the document's are, from CraftRoute's
     route. Each rank goes where it can first be trained -- the skill it
-    needs -- splitting a step that runs across that point."""
+    needs -- splitting a step that runs across that point. `doc` is the
+    document's own section for it, if it has one: its trainers still hold."""
+    import datetime
     import json
     with open(ROUTES, encoding="utf-8") as fh:
-        route = json.load(fh)["routes"][name]
+        data = json.load(fh)
+    route = data["routes"][name]
     recipes = read_recipes(name)
 
     crafts = []
@@ -720,10 +741,24 @@ def routed_profession(name, training):
                        "count": st["crafts"], "item": st["recipe"],
                        "reagents": r["reagents"], "alternatives": [], "note": None,
                        "source": r["source"], "method": None})
+    # CraftRoute makes more of something than the skill needs when a later
+    # recipe uses it; say so, or the extra crafts look like a mistake.
+    for i, c in enumerate(crafts):
+        users = []
+        for later in crafts[i + 1:]:
+            if later["item"] not in users and later["item"] != c["item"] \
+                    and any(g["item"] == c["item"] for g in later["reagents"]):
+                users.append(later["item"])
+        if users:
+            c["note"] = "Keep them for %s." % say_list(users[:3] + (["what comes after"] if users[3:] else []))
 
     steps = [{"kind": "train", "at": "1", "label": "Learn %s (Apprentice)" % name}]
     gates = []
     for rank in RANKS[1:]:
+        # A secondary profession's Artisan is a quest at 225, which
+        # emit_steps places itself.
+        if rank == "Artisan" and name in training["secondary"]:
+            continue
         info = training["ranks"][rank]
         gates.append((info["skill"], "Train %s %s (Cap %d)" % (rank, name, info["cap"])))
     queue = list(crafts)
@@ -740,12 +775,24 @@ def routed_profession(name, training):
         steps.append(s)
 
     total = sum(c["count"] for c in crafts)
+    scan = datetime.date.fromisoformat(data["scan"])
+    intro = ("CraftRoute's cheapest 1-300 route, planned from auction prices of %d %s. "
+             "Craft counts are the average it takes, rounded up (about %d crafts in total)."
+             % (scan.day, scan.strftime("%B %Y"), total))
+    gathered = []
+    for c in crafts:
+        for g in c["reagents"]:
+            if g["item"] in data["standins"] and g["item"] not in gathered:
+                gathered.append(g["item"])
+    if gathered:
+        intro += (" Nobody was selling %s then, so %s costed at %d times what a merchant pays."
+                  % (say_list(gathered), "it was" if len(gathered) == 1 else "they were",
+                     data["markup"]))
+    intro += " For a route planned from today's prices, open Cheapest route on the shopping list."
     return {
         "name": name, "crafts": total, "shopping": [], "shoppingNote": None,
-        "trainers": {"Alliance": [], "Horde": []}, "steps": steps, "routed": True,
-        "intro": ("A 1-300 route from CraftRoute's %s data. Craft counts are estimates "
-                  "(about %d crafts in total). For one planned from today's prices, open "
-                  "Cheapest route on the shopping list." % (name, total)),
+        "trainers": doc["trainers"] if doc else {"Alliance": [], "Horde": []},
+        "steps": steps, "routed": True, "intro": intro,
     }
 
 
@@ -809,8 +856,11 @@ def main():
         print("missing source document: %s" % DOCX)
         return 1
 
-    professions = parse(DOCX)
-    print("Parsed %d professions from %s\n" % (len(professions), os.path.basename(DOCX)))
+    parsed = parse(DOCX)
+    print("Parsed %d professions from %s\n" % (len(parsed), os.path.basename(DOCX)))
+    # The document's routes for what CraftRoute plans give way to its routes.
+    professions = [p for p in parsed if p["name"] not in FROM_CRAFTROUTE]
+    doc = {p["name"]: p for p in parsed}
 
     for p in professions:
         ranges = [s for s in p["steps"] if s["kind"] in ("craft", "method")]
@@ -821,10 +871,10 @@ def main():
 
     problems = validate(professions)
     training = load_training()
-    routed = [routed_profession(name, training) for name in FROM_CRAFTROUTE]
+    routed = [routed_profession(name, training, doc.get(name)) for name in FROM_CRAFTROUTE]
     for p in routed:
         ranges = [s for s in p["steps"] if s["kind"] == "craft"]
-        print("  %-16s %2d ranges  from CraftRoute's route                   ~%d crafts"
+        print("  %-16s %2d ranges  from CraftRoute's planned route           ~%d crafts"
               % (p["name"], len(ranges), p["crafts"]))
         problems += validate_routed(p, training)
     data, zones = gathering_guides.load(), gathering_guides.zone_table(ROOT)

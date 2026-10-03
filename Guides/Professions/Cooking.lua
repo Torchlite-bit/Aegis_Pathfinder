@@ -1,7 +1,12 @@
 -- Cooking (1-300)
 --
 -- GENERATED FILE -- do not edit by hand.
--- Source:    Tools/data/Professions_Reference.docx
+-- Source:    CraftRoute's Cooking route (GPLv3, Kitymeowmeow), planned by its
+--            own planner and saved in Tools/data/craftroute_routes.json by
+--            Tools/build/import_routes.py; reagents and recipe sources from
+--            Crafting/Cooking.lua; trainers from
+--            Tools/data/Professions_Reference.docx and
+--            Tools/data/profession_training.json
 -- Generator: Tools/build/convert_professions.py
 --
 -- Regenerate with:  python3 Tools/build/convert_professions.py
@@ -14,12 +19,7 @@ AegisPathfinder:RegisterQuestShellPlusGuide("Cooking (1-300)", {
 		{
 			type = "NOTE",
 			title = "Cooking (1-300)",
-			note = "A low-cost 1-300 route. Craft counts are estimates (about 185 crafts in total).",
-		},
-		{
-			type = "NOTE",
-			title = "Before you start",
-			note = "Totals assume you follow the main route below without alternatives.",
+			note = "CraftRoute's cheapest 1-300 route, planned from auction prices of 30 July 2026. Craft counts are the average it takes, rounded up (about 524 crafts in total). Nobody was selling Raw Brilliant Smallfish, Raw Longjaw Mud Snapper, Raw Bristle Whisker Catfish, Raw Mithril Head Trout and Raw Sunscale Salmon then, so they were costed at 3 times what a merchant pays. For a route planned from today's prices, open Cheapest route on the shopping list.",
 		},
 		{
 			type = "TRAIN",
@@ -39,13 +39,12 @@ AegisPathfinder:RegisterQuestShellPlusGuide("Cooking (1-300)", {
 		},
 		{
 			type = "USE",
-			title = "Craft 40x Brilliant Smallfish",
-			note = "Takes you from 1 to 58.",
-			skill = { profession = "Cooking", from = 1, to = 58 },
-			craft = { item = "Brilliant Smallfish", count = 40 },
+			title = "Craft 65x Brilliant Smallfish",
+			note = "Takes you from 1 to 50.",
+			skill = { profession = "Cooking", from = 1, to = 50 },
+			craft = { item = "Brilliant Smallfish", count = 65 },
 			reagents = { { item = "Raw Brilliant Smallfish", qty = 1 } },
 			source = "Recipe: Brilliant Smallfish",
-			alternatives = { "Slitherskin Mackerel", "Roasted Boar Meat", "Charred Wolf Meat", "Herb Baked Egg", "Crispy Bat Wing", "Gingerbread Cookie" },
 		},
 		{
 			type = "TRAIN",
@@ -65,23 +64,21 @@ AegisPathfinder:RegisterQuestShellPlusGuide("Cooking (1-300)", {
 		},
 		{
 			type = "USE",
-			title = "Craft 32x Longjaw Mud Snapper",
-			note = "Takes you from 58 to 105.",
-			skill = { profession = "Cooking", from = 58, to = 105 },
-			craft = { item = "Longjaw Mud Snapper", count = 32 },
-			reagents = { { item = "Raw Longjaw Mud Snapper", qty = 1 } },
-			source = "Recipe: Longjaw Mud Snapper",
-			alternatives = { "Brilliant Smallfish", "Slitherskin Mackerel", "Rainbow Fin Albacore", "Loch Frenzy Delight", "Kaldorei Spider Kabob", "Roasted Boar Meat" },
+			title = "Craft 33x Brilliant Smallfish",
+			note = "Takes you from 50 to 75.",
+			skill = { profession = "Cooking", from = 50, to = 75 },
+			craft = { item = "Brilliant Smallfish", count = 33 },
+			reagents = { { item = "Raw Brilliant Smallfish", qty = 1 } },
+			source = "Recipe: Brilliant Smallfish",
 		},
 		{
 			type = "USE",
-			title = "Craft 25x Dig Rat Stew",
-			note = "Takes you from 105 to 145.",
-			skill = { profession = "Cooking", from = 105, to = 145 },
-			craft = { item = "Dig Rat Stew", count = 25 },
-			reagents = { { item = "Dig Rat", qty = 1 } },
-			source = "Recipe: Dig Rat Stew",
-			alternatives = { "Longjaw Mud Snapper", "Bristle Whisker Catfish", "Rainbow Fin Albacore", "Loch Frenzy Delight", "Savory Deviate Delight", "Coyote Steak" },
+			title = "Craft 109x Longjaw Mud Snapper",
+			note = "Takes you from 75 to 125.",
+			skill = { profession = "Cooking", from = 75, to = 125 },
+			craft = { item = "Longjaw Mud Snapper", count = 109 },
+			reagents = { { item = "Raw Longjaw Mud Snapper", qty = 1 } },
+			source = "Recipe: Longjaw Mud Snapper",
 		},
 		{
 			type = "BUY",
@@ -101,43 +98,30 @@ AegisPathfinder:RegisterQuestShellPlusGuide("Cooking (1-300)", {
 		},
 		{
 			type = "USE",
-			title = "Craft 13x Bristle Whisker Catfish",
-			note = "Takes you from 145 to 155.",
-			skill = { profession = "Cooking", from = 145, to = 155 },
-			craft = { item = "Bristle Whisker Catfish", count = 13 },
+			title = "Craft 4x Longjaw Mud Snapper",
+			note = "Takes you from 125 to 127.",
+			skill = { profession = "Cooking", from = 125, to = 127 },
+			craft = { item = "Longjaw Mud Snapper", count = 4 },
+			reagents = { { item = "Raw Longjaw Mud Snapper", qty = 1 } },
+			source = "Recipe: Longjaw Mud Snapper",
+		},
+		{
+			type = "USE",
+			title = "Craft 93x Bristle Whisker Catfish",
+			note = "Takes you from 127 to 175.",
+			skill = { profession = "Cooking", from = 127, to = 175 },
+			craft = { item = "Bristle Whisker Catfish", count = 93 },
 			reagents = { { item = "Raw Bristle Whisker Catfish", qty = 1 } },
 			source = "Recipe: Bristle Whisker Catfish",
-			alternatives = { "Dig Rat Stew", "Savory Deviate Delight", "Cooked Crab Claw", "Dry Pork Ribs", "Crocolisk Steak", "Clam Chowder" },
 		},
 		{
 			type = "USE",
-			title = "Craft 10x Lean Wolf Steak",
-			note = "Takes you from 155 to 175.",
-			skill = { profession = "Cooking", from = 155, to = 175 },
-			craft = { item = "Lean Wolf Steak", count = 10 },
-			reagents = { { item = "Lean Wolf Flank", qty = 1 }, { item = "Mild Spices", qty = 1 } },
-			source = "Recipe: Lean Wolf Steak",
-			alternatives = { "Dig Rat Stew", "Bristle Whisker Catfish", "Clam Chowder", "Goblin Deviled Clams", "Gooey Spider Cake", "Lean Venison" },
-		},
-		{
-			type = "USE",
-			title = "Craft 15x Rockscale Cod",
-			note = "Takes you from 175 to 210.",
-			skill = { profession = "Cooking", from = 175, to = 210 },
-			craft = { item = "Rockscale Cod", count = 15 },
-			reagents = { { item = "Raw Rockscale Cod", qty = 1 } },
-			source = "Recipe: Rockscale Cod",
-			alternatives = { "Mithril Head Trout", "Lean Wolf Steak", "Goblin Deviled Clams", "Gooey Spider Cake", "Lean Venison", "Crocolisk Gumbo" },
-		},
-		{
-			type = "USE",
-			title = "Craft 4x Mithril Head Trout",
-			note = "Takes you from 210 to 225.",
-			skill = { profession = "Cooking", from = 210, to = 225 },
-			craft = { item = "Mithril Head Trout", count = 4 },
+			title = "Craft 109x Mithril Head Trout",
+			note = "Takes you from 175 to 225.",
+			skill = { profession = "Cooking", from = 175, to = 225 },
+			craft = { item = "Mithril Head Trout", count = 109 },
 			reagents = { { item = "Raw Mithril Head Trout", qty = 1 } },
 			source = "Recipe: Mithril Head Trout",
-			alternatives = { "Rockscale Cod", "Giant Clam Scorcho", "Jungle Stew", "Roast Raptor", "Hot Wolf Ribs", "Carrion Surprise" },
 		},
 		{
 			type = "GRIND",
@@ -170,36 +154,25 @@ AegisPathfinder:RegisterQuestShellPlusGuide("Cooking (1-300)", {
 		{
 			type = "NOTE",
 			title = "Hand in to Dirge Quikcleave",
-			note = "Tanaris, Gadgetzan. Tanaris, Gadgetzan. The big bonfire around the corner behind the inn does for cooking.",
+			note = "Tanaris, Gadgetzan. The big bonfire around the corner behind the inn does for cooking.",
 			rank = { profession = "Cooking", cap = 300 },
 			npcs = { "Dirge Quikcleave" },
 		},
 		{
 			type = "USE",
-			title = "Craft 1x Mithril Head Trout",
-			note = "Takes you from 225 to 230.",
-			skill = { profession = "Cooking", from = 225, to = 230 },
-			craft = { item = "Mithril Head Trout", count = 1 },
+			title = "Craft 63x Mithril Head Trout",
+			note = "Takes you from 225 to 254.",
+			skill = { profession = "Cooking", from = 225, to = 254 },
+			craft = { item = "Mithril Head Trout", count = 63 },
 			reagents = { { item = "Raw Mithril Head Trout", qty = 1 } },
 			source = "Recipe: Mithril Head Trout",
-			alternatives = { "Rockscale Cod", "Giant Clam Scorcho", "Jungle Stew", "Roast Raptor", "Hot Wolf Ribs", "Carrion Surprise" },
 		},
 		{
 			type = "USE",
-			title = "Craft 35x Spotted Yellowtail",
-			note = "Takes you from 230 to 280.",
-			skill = { profession = "Cooking", from = 230, to = 280 },
-			craft = { item = "Spotted Yellowtail", count = 35 },
-			reagents = { { item = "Raw Spotted Yellowtail", qty = 1 } },
-			source = "Recipe: Spotted Yellowtail",
-			alternatives = { "Filet of Redgill", "Mithril Head Trout", "Cooked Glossy Mightfish", "Giant Clam Scorcho", "Jungle Stew", "Roast Raptor" },
-		},
-		{
-			type = "USE",
-			title = "Craft 10x Poached Sunscale Salmon",
-			note = "Takes you from 280 to 300.",
-			skill = { profession = "Cooking", from = 280, to = 300 },
-			craft = { item = "Poached Sunscale Salmon", count = 10 },
+			title = "Craft 48x Poached Sunscale Salmon",
+			note = "Takes you from 254 to 300.",
+			skill = { profession = "Cooking", from = 254, to = 300 },
+			craft = { item = "Poached Sunscale Salmon", count = 48 },
 			reagents = { { item = "Raw Sunscale Salmon", qty = 1 } },
 			source = "Recipe: Poached Sunscale Salmon",
 		},

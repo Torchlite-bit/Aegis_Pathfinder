@@ -171,7 +171,10 @@ skill or cap is there, so someone opening a guide part-way through moves
 straight to where they are.
 
 **Profession guides in `Guides/Professions/` are generated** from
-`Tools/data/Professions_Reference.docx` (routes, trainers) and
+CraftRoute's routes for the crafting professions
+(`Tools/data/craftroute_routes.json`, planned by `Tools/build/import_routes.py`),
+`Tools/data/Professions_Reference.docx` (First Aid's and Mining's routes,
+trainers) and
 `Tools/data/profession_training.json` (rank levels and costs, the secondary
 professions' tomes and Artisan quests, trainers the reference lacks -- taken
 from the owner-supplied FAQ in `Tools/data/Profession_FAQ.md`) by

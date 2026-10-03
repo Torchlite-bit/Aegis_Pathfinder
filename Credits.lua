@@ -38,7 +38,7 @@ local CREDITS = {
 		"shagu -- pfUI's map reveal data, behind the guide browser's explored maps and the revealed world map (MIT)",
 		"The Turtle WoW team and Lionel Schramm -- the dungeon loading screens and maps in the guide browser",
 		"Cladhaire, laytya and the TWOW porters -- TomTom-TWOW",
-		"Kitymeowmeow -- CraftRoute, the recipe data behind crafting routes",
+		"Kitymeowmeow -- CraftRoute, the recipe data behind crafting routes and the profession guides' routes",
 		"iGreed -- OctoPawn, the stat weights behind the item score (MIT)",
 		"The CMaNGOS team -- classic-db and mangos-classic: trainers, gathering data, quest rules and what dungeon bosses do",
 	} },

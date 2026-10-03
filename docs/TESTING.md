@@ -423,6 +423,10 @@ are only found at startup.
 ## 8. Professions
 
 - [ ] A profession guide from the guide browser advances on your skill.
+- [ ] A crafting guide's first step says the route is CraftRoute's; each
+      craft step's count is enough for its skill points (Jewelcrafting no
+      longer asks for 10 Malachite Rings for 50–70), and extra crafts a later
+      recipe uses say "Keep them for".
 - [x] **Shopping list** (`/apg materials`): counts what your bags hold, and
       **This step** / **Whole route** switch.
 - [x] **Cheapest route** (`/apg craft`): plans, **Scan prices** at the auction
