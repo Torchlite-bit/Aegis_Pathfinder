@@ -304,7 +304,7 @@ R Travel through the cave |N|[Group] (53.4, 27.8)| |O| |P|GROUP| |Z|Durotar|
 N These mobs flee. Be careful not to double pull |N|[Group] (54.0, 23.7)| |P|GROUP| |Z|Durotar|
 C Securing the Lines |QID|835| |OIDX|1| |N|[Group] Dustwind Savages and Dustwind Storm Witches Dustwind Savage (12)| |P|GROUP| |Z|Durotar|
 T Securing the Lines |QID|835| |N|[Group] Rezlak - (46.4, 22.9)| |P|GROUP| |Z|Durotar|
-G Grind to level 10 |Z|Durotar|
+G Grind to level 10 |Z|Durotar| |LV|10|
 R Enter Orgrimmar |N|(49.0, 92.8)| |O| |Z|Orgrimmar|
 B Sharp Throwing Axe (200) |L|3135 200| |N|Trak'gen. Buy  [Sharp Throwing Axe] from him - (48.1, 80.5)| |C|Rogue| |Z|Orgrimmar|
 T Hex of Weakness |QID|5654| |N|Ur'kyo - (35.6, 87.8)| |C|Priest| |R|Troll| |Z|Orgrimmar|

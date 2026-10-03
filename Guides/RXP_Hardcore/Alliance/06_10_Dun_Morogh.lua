@@ -22,7 +22,7 @@ A Garments of the Light |QID|5625| |N|Maxan Anvol inside - (47.3, 52.2)| |C|Prie
 C Garments of the Light |QID|5625| |OIDX|1| |N|Use Lesser Heal Rank 2 and then Power Word: Fortitude on Mountaineer Dolf Heal and fortify Mountaineer Dolf| |C|Priest| |Z|Dun Morogh|
 T Garments of the Light |QID|5625| |N|Maxan Anvol inside - (47.3, 52.2)| |C|Priest| |Z|Dun Morogh|
 t Train your class spells |N|Maxan Anvol inside - (47.3, 52.2)| |C|Priest| |Z|Dun Morogh|
-G Grind to 6 |C|Priest| |Z|Dun Morogh|
+G Grind to 6 |C|Priest| |Z|Dun Morogh| |LV|6|
 h Thunderbrew Distillery |N|Set hearth in Thunderbrew Distillery (47.4, 52.5)| |C|Priest/Mage/Warlock| |Z|Dun Morogh|
 B Buy as much [Ice Cold Milk] as you can afford |N|Innkeeper Belm inside - (47.4, 52.5)| |C|Priest/Mage/Warlock| |Z|Dun Morogh|
 N Innkeeper Belm inside |N|(47.4, 52.5)| |C|!Mage/!Priest/!Warlock| |Z|Dun Morogh|
@@ -65,7 +65,7 @@ C The Grizzled Den |QID|313| |OIDX|1| |N|Wendigos and Young Wendigos. Loot them 
 C Ammo for Rumbleshot |QID|5541| |OIDX|1| |N|the Ammo Crate. Loot it for Rumbleshot's Ammo Collect Rumbleshot's Ammo (x1)| |Z|Dun Morogh|
 N Hegnar Rumbleshot |N|(40.6, 62.6)| |Z|Dun Morogh|
 T Ammo for Rumbleshot |QID|5541| |N|(40.7, 65.1)| |Z|Dun Morogh|
-G Grind to 7 |C|!Paladin/!Warrior/!Rogue| |Z|Dun Morogh|
+G Grind to 7 |C|!Paladin/!Warrior/!Rogue| |Z|Dun Morogh| |LV|7|
 N Kill Crag Boars and Large Crag Boars. Loot them for their [Chunks of Boar Meat] and Crag Boar Ribs |N|(51.4, 50.4)| |C|Paladin/Warrior/Rogue| |Z|Dun Morogh|
 C Stocking Jetsteam |QID|317| |OIDX|2| |N|Young Black Bears. Loot them for their Fur Collect Thick Bear Fur (x2)| |C|Paladin/Warrior/Rogue| |Z|Dun Morogh|
 C Collect Crag Boar Rib (x6) |QID|384| |L|2886 6| |N|Young Black Bears. Loot them for their Fur (51.4, 50.4)| |C|Paladin/Warrior/Rogue| |Z|Dun Morogh|
@@ -74,7 +74,7 @@ T Stocking Jetsteam |QID|317| |N|Pilot Bellowfiz - (49.4, 48.4)| |C|Warrior/Pala
 A Evershine |QID|318| |N|Pilot Bellowfiz - (49.4, 48.4)| |C|Warrior/Paladin/Rogue| |Z|Dun Morogh|
 T The Grizzled Den |QID|313| |N|Pilot Stonegear - (49.6, 48.6)| |C|Warrior/Paladin/Rogue| |Z|Dun Morogh|
 B Buy a Mining Pick |L|2901 1| |N|(50.1, 49.4)| |C|Warrior/Paladin/Rogue| |Z|Dun Morogh|
-G Grind to 7 |C|Warrior/Paladin/Rogue| |Z|Dun Morogh|
+G Grind to 7 |C|Warrior/Paladin/Rogue| |Z|Dun Morogh| |LV|7|
 t Train your class spells |N|(47.6, 52.6)| |C|Rogue| |Z|Dun Morogh|
 t Train your class spells |N|(47.6, 52.1)| |C|Paladin| |Z|Dun Morogh|
 t Train your class spells |N|(47.4, 52.6)| |C|Warrior| |Z|Dun Morogh|
@@ -117,7 +117,7 @@ T Distracting Jarven |QID|308| |N|Jarven Thunderbrew downstairs - (47.6, 52.7)| 
 T Bitter Rivals |QID|310| |N|the Unguarded Thunder Ale Barrel - (47.7, 52.7)| |Z|Dun Morogh|
 A Return to Marleth |QID|311| |N|the Unguarded Thunder Ale Barrel - (47.7, 52.7)| |Z|Dun Morogh|
 T Beer Basted Boar Ribs |QID|384| |N|Ragnar Thunderbrew outside - (46.8, 52.4)| |Z|Dun Morogh|
-G Grind to 8 |C|!Paladin/!Rogue/!Warrior| |Z|Dun Morogh|
+G Grind to 8 |C|!Paladin/!Rogue/!Warrior| |Z|Dun Morogh| |LV|8|
 t Train Concussive Shot |N|Grif Wildheart - (45.8, 53.0)| |C|Hunter| |Z|Dun Morogh|
 t Train [Fear] |N|Gimrizz Shadowcog - (47.3, 53.7)| |C|Warlock| |Z|Dun Morogh|
 B Buy the [Grimoire of Firebolt (Rank 2)] if you can afford it. If not you will buy it later |N|Gimrizz Shadowcog - (47.3, 53.7)| |C|Warlock| |Z|Dun Morogh|
@@ -160,13 +160,13 @@ T The Perfect Stout |QID|315| |N|Rejold Barleybrew - (30.2, 45.7)| |Z|Dun Morogh
 A Shimmer Stout |QID|413| |N|Rejold Barleybrew - (30.2, 45.7)| |Z|Dun Morogh|
 T Return to Marleth |QID|311| |N|Marleth Barleybrew - (30.2, 45.5)| |Z|Dun Morogh|
 C Operation Recombobulation |QID|412| |OIDX|2| |N|Leper Gnomes. Loot them for their Gears and Cogs Collect Gyromechanic Gear (x8)| |Z|Dun Morogh|
-G Grind to 9 |Z|Dun Morogh|
+G Grind to 9 |Z|Dun Morogh| |LV|9|
 R Enter Frostmane Hold |N|(24.5, 50.8)| |O| |Z|Dun Morogh|
 C Frostmane Hold |QID|287| |OIDX|1| |N|Kill Frostmane Headhunters Kill Frostmane Headhunter (x5)| |O| |Z|Dun Morogh|
 C Frostmane Hold |QID|287| |OIDX|2| |N|Drop down to this location to explore Frostmane Hold. If there are mobs below, clear around normally and do NOT drop down Fully explore Frostmane Hold| |Z|Dun Morogh|
-G Grind to level 10 |O| |C|Hunter| |Z|Dun Morogh|
+G Grind to level 10 |O| |C|Hunter| |Z|Dun Morogh| |LV|10|
 C Frostmane Hold |QID|287| |OIDX|1| |N|Frostmane Headhunters Kill Frostmane Headhunter (x5)| |Z|Dun Morogh|
-G Grind to level 10 |C|Hunter| |Z|Dun Morogh|
+G Grind to level 10 |C|Hunter| |Z|Dun Morogh| |LV|10|
 H Kharanos |N|Hearth to Kharanos| |O| |Z|Dun Morogh|
 R Kharanos |N|(46.7, 53.8)| |O| |Z|Dun Morogh|
 T Operation Recombobulation |QID|412| |N|Razzle Sprysprocket - (45.8, 49.4)| |C|Hunter| |Z|Dun Morogh|

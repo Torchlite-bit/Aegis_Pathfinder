@@ -18,7 +18,7 @@ T Galen's Escape |QID|1393| |N|Galen's Strongbox on the ground - (47.8, 39.8)| |
 C Driftwood |QID|1398| |OIDX|1| |N|Sundried Driftwood on the ground along the coast (82.2, 91.7)| |O| |Z|Swamp of Sorrows|
 C ... and Bugs |QID|1258| |OIDX|1| |N|Silt Crawlers and Monstrous Crawlers. Loot them for their Pristine Crawler Legs (91.6, 70.1)| |Z|Swamp of Sorrows|
 C Driftwood |QID|1398| |OIDX|1| |N|Sundried Driftwood on the ground along the coast (91.6, 70.1)| |Z|Swamp of Sorrows|
-G Grind to level 44 |Z|Swamp of Sorrows|
+G Grind to level 44 |Z|Swamp of Sorrows| |LV|44|
 T Driftwood |QID|1398| |N|Watcher Biggs - (26.7, 59.8)| |Z|Swamp of Sorrows|
 A Deliver the Shipment |QID|1425| |N|Watcher Biggs - (26.7, 59.8)| |Z|Swamp of Sorrows|
 R Travel to Blasted Lands |N|(52.0, 7.4)| |O| |Z|Blasted Lands|

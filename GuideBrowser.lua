@@ -130,6 +130,10 @@ Browser.INSTANCES = {
 }
 -- What the Dungeons category calls the route legs that are dungeon runs.
 Browser.ROUTE_LEGS = "On the routes"
+-- ... and the packs' chains that open a dungeon or raid, which have no level
+-- range to file them by: RestedXP's Onyxia Attunement and Scholomance Key.
+Browser.ACCESS = "Attunements and keys"
+Browser.ACCESS_WORDS = { "Attunement", "Key" }
 
 --[[ Guides ---------------------------------------------------------------- ]]
 
@@ -170,6 +174,16 @@ end
 -- A leveling guide that is a dungeon run: it is listed under Dungeons.
 local function RouteLeg(name)
 	return Browser.DungeonIn(Browser.Title(name)) ~= nil
+end
+
+--- Whether a pack's guide is a chain that opens a dungeon or raid: a word
+--- of its title is one of ACCESS_WORDS.
+function Browser.AccessChain(name)
+	local title = " " .. Browser.Title(name) .. " "
+	for _, word in ipairs(Browser.ACCESS_WORDS) do
+		if string.find(title, "[%s:/]" .. word .. "[%s%(]") then return true end
+	end
+	return false
 end
 
 --- The guides the browser lists: every one registered for you -- a class
@@ -254,10 +268,13 @@ end
 --- Category `key`'s folder, as the browser shows it now.
 function AegisPathfinder:BrowserCategory(key)
 	local guides = self:BrowserGuides()
-	local by, legs = {}, {}
+	local by, legs, access = {}, {}, {}
 	for _, g in ipairs(guides) do
 		local cat = self:GetGuideCategory(g)
-		if cat ~= "dungeon" and cat ~= "class" and cat ~= "profession" and RouteLeg(g) then
+		local packs = cat ~= "dungeon" and cat ~= "class" and cat ~= "profession"
+		if packs and Browser.AccessChain(g) then
+			table.insert(access, g)
+		elseif packs and RouteLeg(g) then
 			table.insert(legs, g)
 		else
 			by[cat] = by[cat] or {}
@@ -292,14 +309,19 @@ function AegisPathfinder:BrowserCategory(key)
 		return { title = label, items = items }
 	elseif key == "dungeons" then
 		-- The dungeon guides; and first, the routes' own runs through a
-		-- dungeon, each saying whose route it is on.
+		-- dungeon and the packs' attunements and keys, each saying whose
+		-- pack it is from.
 		local folder = Folder(label, by.dungeon or {})
-		if legs[1] then
-			local packs = {}
-			for _, pack in ipairs(PACKS) do packs[pack[1]] = pack[2] end
-			local runs = Folder(Browser.ROUTE_LEGS, legs)
-			for _, item in ipairs(runs.items) do item.why = packs[self:GetGuideCategory(item.guide)] end
-			table.insert(folder.items, 1, { folder = runs })
+		local packs = {}
+		for _, pack in ipairs(PACKS) do packs[pack[1]] = pack[2] end
+		local at = 1
+		for i, list in ipairs({ { Browser.ROUTE_LEGS, legs }, { Browser.ACCESS, access } }) do
+			if list[2][1] then
+				local sub = Folder(list[1], list[2], i == 2 and ByName or nil)
+				for _, item in ipairs(sub.items) do item.why = packs[self:GetGuideCategory(item.guide)] end
+				table.insert(folder.items, at, { folder = sub })
+				at = at + 1
+			end
 		end
 		return folder
 	elseif key == "class" then
@@ -335,7 +357,7 @@ function AegisPathfinder:BrowserCategoryOf(name)
 	if cat == "dungeon" then return "dungeons" end
 	if cat == "class" then return "class" end
 	if cat == "profession" then return "professions" end
-	if RouteLeg(name) then return "dungeons" end
+	if RouteLeg(name) or Browser.AccessChain(name) then return "dungeons" end
 	return "leveling"
 end
 

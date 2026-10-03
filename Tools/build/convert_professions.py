@@ -12,7 +12,9 @@ to 300 as CraftRoute's own planner works it out from auction prices
 Each recipe's reagents and source come from the recipe data in Crafting/, and
 the trainers from the document, or profession_training.json where it names
 none -- the same step shapes as every other guide here. The document still
-supplies First Aid, which CraftRoute does not plan, and Mining.
+supplies Mining. First Aid, which CraftRoute does not plan, follows the route
+in profession_training.json, each count worked out from the bandages' skill
+colours; the document's own asked for fewer bandages than skill points.
 
 Herbalism, Skinning and Fishing are not in it either, and do not level by
 crafting. Their guides are built by Tools/build/gathering_guides.py from
@@ -31,6 +33,7 @@ carried through into the guide as a note, rather than filled in with a guess.
 """
 
 import argparse
+import math
 import os
 import re
 import sys
@@ -528,6 +531,8 @@ def emit_steps(p, training=None):
             continue
         if sec and s["kind"] in ("craft", "method") and s["from"] < 225 < s["to"]:
             first, second = split_at(s, 225)
+            if p.get("recount"):
+                first["count"], second["count"] = p["recount"](first), p["recount"](second)
             route += [first, {"kind": "artisan"}, second]
             continue
         if sec and s["kind"] in ("craft", "method") and s["from"] == 225 \
@@ -635,7 +640,7 @@ MINED_SOURCE = """-- Where to mine: Tools/data/gathering.json -- pfQuest's ore n
 
 
 def emit_guide(p):
-    header = ROUTED_HEADER if p.get("routed") else HEADER
+    header = p.get("header") or (ROUTED_HEADER if p.get("routed") else HEADER)
     if p["name"] in MINED:
         header = header.replace("-- Generator:", MINED_SOURCE + "-- Generator:", 1)
     return emit_lua(p["name"], header, emit_steps(p))
@@ -752,28 +757,7 @@ def routed_profession(name, training, doc=None):
         if users:
             c["note"] = "Keep them for %s." % say_list(users[:3] + (["what comes after"] if users[3:] else []))
 
-    steps = [{"kind": "train", "at": "1", "label": "Learn %s (Apprentice)" % name}]
-    gates = []
-    for rank in RANKS[1:]:
-        # A secondary profession's Artisan is a quest at 225, which
-        # emit_steps places itself.
-        if rank == "Artisan" and name in training["secondary"]:
-            continue
-        info = training["ranks"][rank]
-        gates.append((info["skill"], "Train %s %s (Cap %d)" % (rank, name, info["cap"])))
-    queue = list(crafts)
-    while queue:
-        s = queue.pop(0)
-        if gates and s["from"] < gates[0][0] < s["to"]:
-            first, second = split_at(s, gates[0][0])
-            steps.append(first)
-            queue.insert(0, second)
-            continue
-        while gates and s["from"] >= gates[0][0]:
-            steps.append({"kind": "train", "at": str(gates[0][0]), "label": gates[0][1]})
-            gates.pop(0)
-        steps.append(s)
-
+    steps = ranked_steps(name, training, crafts)
     total = sum(c["count"] for c in crafts)
     scan = datetime.date.fromisoformat(data["scan"])
     intro = ("CraftRoute's cheapest 1-300 route, planned from auction prices of %d %s. "
@@ -792,7 +776,97 @@ def routed_profession(name, training, doc=None):
     return {
         "name": name, "crafts": total, "shopping": [], "shoppingNote": None,
         "trainers": doc["trainers"] if doc else {"Alliance": [], "Horde": []},
-        "steps": steps, "routed": True, "intro": intro,
+        "steps": steps, "routed": True, "intro": intro, "recipes": recipes,
+    }
+
+
+def ranked_steps(name, training, crafts, recount=None):
+    """The crafts with each rank where it can first be trained -- the skill
+    it needs -- splitting a craft that runs across that point. `recount`
+    gives a split half its own count; without it the count is shared out by
+    skill points."""
+    steps = [{"kind": "train", "at": "1", "label": "Learn %s (Apprentice)" % name}]
+    gates = []
+    for rank in RANKS[1:]:
+        # A secondary profession's Artisan is a quest at 225, which
+        # emit_steps places itself.
+        if rank == "Artisan" and name in training["secondary"]:
+            continue
+        info = training["ranks"][rank]
+        gates.append((info["skill"], "Train %s %s (Cap %d)" % (rank, name, info["cap"])))
+    queue = list(crafts)
+    while queue:
+        s = queue.pop(0)
+        if gates and s["from"] < gates[0][0] < s["to"]:
+            first, second = split_at(s, gates[0][0])
+            if recount:
+                first["count"], second["count"] = recount(first), recount(second)
+            steps.append(first)
+            queue.insert(0, second)
+            continue
+        while gates and s["from"] >= gates[0][0]:
+            steps.append({"kind": "train", "at": str(gates[0][0]), "label": gates[0][1]})
+            gates.pop(0)
+        steps.append(s)
+    return steps
+
+
+def skillup_chance(skill, colours):
+    """The chance a craft raises the skill, by the recipe's colours: certain
+    while it is orange, then falling in a straight line from yellow to
+    nothing at grey -- the rule CraftPlanner.lua plans by too."""
+    orange, yellow, _, grey = colours
+    if skill < orange or skill >= grey:
+        return 0
+    if skill < yellow:
+        return 1
+    return (grey - skill) / float(grey - yellow)
+
+
+def expected_crafts(colours, frm, to):
+    """The crafts it takes on average to go from `frm` to `to`, rounded up."""
+    total = sum(1 / skillup_chance(sk, colours) for sk in range(frm, to))
+    return int(math.ceil(total - 1e-6))
+
+
+FIRST_AID_HEADER = """-- %(name)s (1-300)
+--
+-- GENERATED FILE -- do not edit by hand.
+-- Source:    the route and each bandage's skill colours from
+--            Tools/data/profession_training.json; reagents, recipe sources
+--            and trainers from Tools/data/Professions_Reference.docx
+-- Generator: Tools/build/convert_professions.py
+--
+-- Regenerate with:  python3 Tools/build/convert_professions.py
+"""
+
+
+def first_aid_profession(training, doc):
+    """First Aid from its route in profession_training.json, each count
+    worked out from the bandage's colours. The document's own route asked
+    for fewer bandages than skill points; its reagents, sources and trainers
+    still hold."""
+    data = training["firstAid"]
+    known = {s["item"]: s for s in doc["steps"] if s["kind"] == "craft"}
+    recipes, crafts = {}, []
+    for item, frm, to in data["route"]:
+        colours, d = data["colours"][item], known[item]
+        recipes[item] = {"reagents": d["reagents"], "source": d["source"],
+                         "orange": colours[0], "grey": colours[3]}
+        crafts.append({"kind": "craft", "from": frm, "to": to,
+                       "count": expected_crafts(colours, frm, to), "item": item,
+                       "reagents": d["reagents"], "alternatives": d["alternatives"],
+                       "note": None, "source": d["source"], "method": None})
+    def recount(s):
+        return expected_crafts(data["colours"][s["item"]], s["from"], s["to"])
+    steps = ranked_steps("First Aid", training, crafts, recount)
+    total = sum(s["count"] for s in steps if s["kind"] == "craft")
+    return {
+        "name": "First Aid", "crafts": total, "shopping": [], "shoppingNote": None,
+        "trainers": doc["trainers"], "steps": steps, "routed": True, "recipes": recipes,
+        "header": FIRST_AID_HEADER, "recount": recount,
+        "intro": ("A 1-300 route. Craft counts are the average it takes, rounded up, from "
+                  "each bandage's skill colours (about %d crafts in total)." % total),
     }
 
 
@@ -801,7 +875,7 @@ def validate_routed(p, training):
     ranges tile 1-300, each recipe is craftable across its range, and each
     rank comes after the skill it needs and before the old cap stops you."""
     name, problems, cursor, skill = p["name"], [], 1, 1
-    recipes = read_recipes(name)
+    recipes = p["recipes"]
     caps = {rank: training["ranks"][rank] for rank in RANKS}
     for s in p["steps"]:
         if s["kind"] == "train":
@@ -859,7 +933,7 @@ def main():
     parsed = parse(DOCX)
     print("Parsed %d professions from %s\n" % (len(parsed), os.path.basename(DOCX)))
     # The document's routes for what CraftRoute plans give way to its routes.
-    professions = [p for p in parsed if p["name"] not in FROM_CRAFTROUTE]
+    professions = [p for p in parsed if p["name"] not in FROM_CRAFTROUTE + ["First Aid"]]
     doc = {p["name"]: p for p in parsed}
 
     for p in professions:
@@ -872,10 +946,12 @@ def main():
     problems = validate(professions)
     training = load_training()
     routed = [routed_profession(name, training, doc.get(name)) for name in FROM_CRAFTROUTE]
+    routed.append(first_aid_profession(training, doc["First Aid"]))
     for p in routed:
         ranges = [s for s in p["steps"] if s["kind"] == "craft"]
-        print("  %-16s %2d ranges  from CraftRoute's planned route           ~%d crafts"
-              % (p["name"], len(ranges), p["crafts"]))
+        print("  %-16s %2d ranges  from %-37s ~%d crafts"
+              % (p["name"], len(ranges), "its bandages' colours" if p.get("header") else
+                 "CraftRoute's planned route", p["crafts"]))
         problems += validate_routed(p, training)
     data, zones = gathering_guides.load(), gathering_guides.zone_table(ROOT)
     gathered, unbuilt = {}, []

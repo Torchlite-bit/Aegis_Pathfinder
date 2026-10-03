@@ -840,9 +840,9 @@ do
 		table.insert(order, item.value)
 	end
 	local preferred = TA:PreferredBuild(AegisPathfinder.TalentBuilds.PALADIN)
-	check(preferred and labels.auto == "Levelling, then " .. preferred.spec .. " at 60",
+	check(preferred and labels.auto == "Leveling, then " .. preferred.spec .. " at 60",
 		"it names your spec, got %s", tostring(labels.auto))
-	check(labels.levelling == "Paladin levelling" and table.concat(order, ",") == "auto,levelling,Holy,Protection,Retribution",
+	check(labels.levelling == "Paladin leveling" and table.concat(order, ",") == "auto,levelling,Holy,Protection,Retribution",
 		"then the class's levelling build and each spec's, got %s", table.concat(order, ","))
 	check(preferred and labels[preferred.spec] == preferred.spec .. " at 60 (my spec)", "yours marked")
 	check(labels.Holy == "Holy at 60" or preferred.spec == "Holy", "the others not")

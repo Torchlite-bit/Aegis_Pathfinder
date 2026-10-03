@@ -242,7 +242,7 @@ T Wanted! Otto and Falconcrest |QID|685| |N|Captain Nials - (45.8, 47.5)| |Z|Ara
 T Trelane's Defenses |QID|694| |N|Apprentice Kryten - (46.2, 47.8)| |Z|Arathi Highlands|
 A An Apprentice's Enchantment |QID|695| |N|Apprentice Kryten - (46.2, 47.8)| |Z|Arathi Highlands|
 T An Apprentice's Enchantment |QID|695| |N|Skuerto - (46.7, 47.0)| |Z|Arathi Highlands|
-G Grind to level 40 |C|Warlock/Paladin| |Z|Arathi Highlands|
+G Grind to level 40 |C|Warlock/Paladin| |Z|Arathi Highlands| |LV|40|
 N Cast Teleport: Moonglade |O| |C|Druid| |Z|Arathi Highlands|
 N Loganaar |N|(52.5, 40.6)| |C|Druid| |Z|Arathi Highlands|
 R Travel to Moonglade |N|(52.5, 40.6)| |C|Druid| |Z|Moonglade|

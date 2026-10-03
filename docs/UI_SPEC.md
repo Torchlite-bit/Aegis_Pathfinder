@@ -678,9 +678,12 @@ names, or a place in it does ("Coldridge Valley" is Dun Morogh), or else the
 one most of its steps' `|Z|` tags name. Dungeons and Class Quests are by
 level, Professions and Favorites by name. A route leg that is a dungeon run
 -- a title naming a dungeon or raid (`Browser.DungeonIn`), such as
-Optimized's Uldaman and Sunken Temple, or RestedXP's Scholomance Key -- is
-not in its pack's folder but in **On the routes**, the first folder under
-Dungeons, each saying whose route it is on. Class Quests holds only yours
+Optimized's Uldaman and Sunken Temple -- is not in its pack's folder but in
+**On the routes**, the first folder under Dungeons, each saying whose route it
+is on. A pack's attunement or key -- RestedXP's Onyxia Attunement and
+Scholomance Key, which have no level range to file them by
+(`Browser.AccessChain`) -- is in **Attunements and keys**, the folder after
+it. Class Quests holds only yours
 (`IsMyClassGuide`: your class's, and one your race has a chain for). Search
 looks through every title, any case.
 

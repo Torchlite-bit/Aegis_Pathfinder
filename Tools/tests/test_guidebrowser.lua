@@ -350,6 +350,23 @@ check(dungeons.items[2].guide == "Dungeons/The Deadmines (17-24)", "before the d
 check(A:BrowserCategoryOf("Optimized/Uldaman (45-46)") == "dungeons", "and Recent files it there too")
 check(Browser.DungeonIn("RXP/Scholomance Key (A)") == "Scholomance" and Browser.DungeonIn("Westfall (12-17)") == nil,
 	"the later dungeons and raids are known by name too")
+-- A pack's attunement or key has no level range: it was filed under Levels
+-- 1-20. It has a folder of its own under Dungeons, after the route runs.
+guide("RXP/Onyxia Attunement (A)", "A Dragonkin Menace|Z|Burning Steppes|\n")
+guide("RXP/Scholomance Key (A)", "A Go|Z|Western Plaguelands|\n")
+local withAccess = A:BrowserCategory("dungeons")
+local access = withAccess.items[2] and withAccess.items[2].folder
+check(access and access.title == Browser.ACCESS
+	and titles(access) == "RXP/Onyxia Attunement (A), RXP/Scholomance Key (A)"
+	and access.items[1].why == "RestedXP", "attunements and keys get their own folder, got %s",
+	access and titles(access) or "none")
+check(withAccess.items[1].folder.title == Browser.ROUTE_LEGS and withAccess.items[3].guide
+	== "Dungeons/The Deadmines (17-24)", "between the route runs and the dungeon guides")
+local rxp = find(A:BrowserCategory("leveling"), "RestedXP")
+check(not rxp or not string.find(titles(rxp), "Attunement", 1, true), "and are not among RestedXP's levels")
+check(A:BrowserCategoryOf("RXP/Onyxia Attunement (A)") == "dungeons", "Recent files them there too")
+check(not Browser.AccessChain("Class/Rogue: The Azure Key (50)") or A:BrowserCategoryOf("Class/Rogue: The Azure Key (50)") ~= "dungeons",
+	"a class quest named for a key stays with the class quests")
 guide("Moonwhisper Coast (52-60)", "A Go|Z|Teldrassil|\n")
 local mwc = pic("Moonwhisper Coast (52-60)")
 check(mwc.kind == "image" and mwc.texture == A.Theme.zonemap["Moonwhisper Coast"] and mwc.coords == Pictures.ART_COORDS,

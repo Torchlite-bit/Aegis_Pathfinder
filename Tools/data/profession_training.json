@@ -125,5 +125,33 @@
         "finishNote": "Triage: 15 patients in the right order before 6 die. Stand where you can see all six cots, put the special triage bandages on your action bar, and treat Critically injured first, then Badly injured, then Injured."
       }
     }
+  },
+
+  "_firstAid": "First Aid's route, and each bandage's skill colours -- learned (orange), yellow, green, grey -- as vanilla 1.12 has them and every First Aid guide gives them. The reference document's route asked for fewer bandages than skill points for Linen and Heavy Linen, so the owner had it rebuilt on these. Tools/build/convert_professions.py works the craft counts out from the colours; reagents and recipe sources still come from the document.",
+  "firstAid": {
+    "colours": {
+      "Linen Bandage":           [1, 30, 45, 60],
+      "Heavy Linen Bandage":     [40, 50, 75, 100],
+      "Wool Bandage":            [80, 80, 115, 150],
+      "Heavy Wool Bandage":      [115, 115, 150, 185],
+      "Silk Bandage":            [150, 150, 180, 210],
+      "Heavy Silk Bandage":      [180, 180, 210, 240],
+      "Mageweave Bandage":       [210, 210, 240, 270],
+      "Heavy Mageweave Bandage": [240, 240, 270, 300],
+      "Runecloth Bandage":       [260, 260, 290, 320],
+      "Heavy Runecloth Bandage": [290, 290, 320, 350]
+    },
+    "route": [
+      ["Linen Bandage", 1, 40],
+      ["Heavy Linen Bandage", 40, 80],
+      ["Wool Bandage", 80, 115],
+      ["Heavy Wool Bandage", 115, 150],
+      ["Silk Bandage", 150, 180],
+      ["Heavy Silk Bandage", 180, 210],
+      ["Mageweave Bandage", 210, 240],
+      ["Heavy Mageweave Bandage", 240, 260],
+      ["Runecloth Bandage", 260, 290],
+      ["Heavy Runecloth Bandage", 290, 300]
+    ]
   }
 }

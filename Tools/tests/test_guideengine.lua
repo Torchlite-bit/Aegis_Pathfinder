@@ -430,6 +430,55 @@ do
 	AegisPathfinder.SetTurnedIn, AegisPathfinder.GetLootRequirement = nil, nil
 end
 
+-- A grind to a level waits for it ---------------------------------------------------
+
+--[[ RestedXP's "Grind to level 10" steps had no |LV|, so the guide passed over
+	them at once. Now they wait for the level and tick there -- unless marked
+	optional, as "Grind to 6 |O|" is: that one never holds the guide up. ]]
+do
+	local line
+	for l in io.lines("Guides/RXP/Alliance/06_11_Teldrassil.lua") do
+		if string.find(l, "^G Grind to level 10 |Z|Teldrassil|") then line = l end
+	end
+	local _, _, tags = string.find(line or "", "^G Grind to level 10 (|.*)$")
+	check(tags and string.find(tags, "|LV|10|", 1, true), "RestedXP's Teldrassil grind carries |LV|10|")
+	function AegisPathfinder:SetTurnedIn(i, value)
+		self.turnedin[self.quests[i]] = value and true or nil
+		self:UpdateStatusFrame()
+	end
+	function AegisPathfinder:GetLootRequirement() return nil end
+	AegisPathfinder.actions = { "GRIND", "ACCEPT" }
+	AegisPathfinder.quests = { "Grind to level 10@1@", "Tumors@2@" }
+	AegisPathfinder.tags = { tags or "", "|QID|923|" }
+	check(AegisPathfinder:IsAutoDetectable("GRIND", 1), "and shows the auto-tick mark")
+	local level = 9
+	local keepLevel = UnitLevel
+	UnitLevel = function() return level end
+	AegisPathfinder.turnedin, AegisPathfinder.current = {}, 1
+	AegisPathfinder:UpdateStatusFrame()
+	check(not AegisPathfinder.turnedin["Grind to level 10@1@"] and AegisPathfinder.current == 1,
+		"at level 9 the grind waits")
+	level = 10
+	AegisPathfinder:UpdateStatusFrame()
+	check(AegisPathfinder.turnedin["Grind to level 10@1@"] and AegisPathfinder.current == 2,
+		"at level 10 it is done, and the guide moves on")
+
+	-- Optional: passed over below the level, ticked once there.
+	AegisPathfinder.quests = { "Grind to 6@1@", "Tumors@2@" }
+	AegisPathfinder.tags = { "|O| |Z|Elwynn Forest| |LV|6|", "|QID|923|" }
+	level = 5
+	AegisPathfinder.turnedin, AegisPathfinder.current = {}, 1
+	AegisPathfinder:UpdateStatusFrame()
+	check(AegisPathfinder.current == 2 and not AegisPathfinder.turnedin["Grind to 6@1@"],
+		"an optional grind does not hold the guide below its level, got step %d", AegisPathfinder.current)
+	level = 6
+	AegisPathfinder.current = 1
+	AegisPathfinder:UpdateStatusFrame()
+	check(AegisPathfinder.turnedin["Grind to 6@1@"], "and is ticked once you are there")
+	UnitLevel = keepLevel
+	AegisPathfinder.SetTurnedIn, AegisPathfinder.GetLootRequirement = nil, nil
+end
+
 -- An optional trip waits on its quest's prerequisite ---------------------------------
 
 -- A dungeon guide's trip to Darnassus for Blood of Vorgendor, which needs

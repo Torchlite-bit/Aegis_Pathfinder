@@ -75,7 +75,7 @@ C The Trogg Threat |QID|267| |OIDX|1| |N|Stonesplinter Troggs and Stonesplinter 
 C Collect Linen Cloth (x10) |QID|1644| |L|2589 10| |N|Stonesplinter Troggs and Stonesplinter Scouts. Loot them for their Teeth (33.9, 76.6)| |C|Paladin| |Z|Loch Modan|
 T In Defense of the King's Lands |QID|224| |N|Mountaineer Cobbleflint - (22.1, 73.1)| |Z|Loch Modan|
 T The Trogg Threat |QID|267| |N|Captain Rugelfuss - (23.2, 73.7)| |Z|Loch Modan|
-G Grind to 14 |C|Warlock| |Z|Loch Modan|
+G Grind to 14 |C|Warlock| |Z|Loch Modan| |LV|14|
 H Stormwind City |N|Hearth to Stormwind City| |O| |Z|Loch Modan|
 N Ardwyn Cailen |N|(42.6, 67.2)| |C|Warlock/Priest| |Z|Loch Modan|
 N Buy a [Smoldering Wand]. Equip it when you are 15 |N|(42.6, 67.2)| |C|Warlock/Priest| |Z|Loch Modan|

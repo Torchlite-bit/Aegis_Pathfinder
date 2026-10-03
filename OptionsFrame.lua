@@ -559,7 +559,7 @@ function Build.TalentAdvisor(k)
 	Build.CharDropdown(k, "talentBuild", "Build to follow", "talentbuild",
 		A.TalentAdvisor and A.TalentAdvisor:BuildItems() or {}, redraw)
 	k.note("Your spec is the one picked on the Item Score page, or the one your talents lean to. "
-		.. "Until 60 it follows your class's levelling build, and at 60 it says when your spec's is "
+		.. "Until 60 it follows your class's leveling build, and at 60 it says when your spec's is "
 		.. "ready for a respec. Pick another here or above the talent window. It never spends a point.")
 	k.space(10)
 	Build.CharSwitch(k, "talentchat", "Name the talent to take in chat when I level up", nil,

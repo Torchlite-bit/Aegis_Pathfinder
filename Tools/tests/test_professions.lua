@@ -211,6 +211,24 @@ for name, trained in pairs(ROUTED) do
 	end
 end
 
+-- First Aid: rebuilt on the bandages' skill colours. The document's route
+-- asked for 29 Linen Bandages for 1-45 and 5 Heavy Linen for 45-100, and
+-- trained Journeyman at 45, five points before it can be.
+local fa = AegisPathfinder.qsplusguides["First Aid (1-300)"]
+local faCursor, faSkill, faJourneyman = 1, 1, nil
+for _, s in ipairs(fa and fa.steps or {}) do
+	if s.skill then
+		check(s.skill.from == faCursor, "First Aid: a craft starts at %d after one ending at %d", s.skill.from, faCursor)
+		check(s.craft.count >= s.skill.to - s.skill.from,
+			"First Aid: %s for %d-%d is fewer crafts than points", s.title, s.skill.from, s.skill.to)
+		faCursor, faSkill = s.skill.to, s.skill.to
+	elseif s.type == "TRAIN" and s.rank and s.rank.cap == 150 then
+		faJourneyman = faJourneyman or faSkill
+	end
+end
+check(faCursor == 300, "First Aid reaches 300, not %d", faCursor)
+check(faJourneyman == 50, "First Aid trains Journeyman at skill 50, got %s", tostring(faJourneyman))
+
 -- What CraftRoute makes for a later recipe says so.
 local keeps = 0
 for _, s in ipairs(AegisPathfinder.qsplusguides["Tailoring (1-300)"].steps) do

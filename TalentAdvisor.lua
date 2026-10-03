@@ -282,7 +282,7 @@ end
 
 --- A build's name, as the window's menu and chat give it.
 function TA.BuildLabel(builds, build, className)
-	if build == builds.levelling then return (className or "Class") .. " levelling" end
+	if build == builds.levelling then return (className or "Class") .. " leveling" end
 	return build.spec .. " at 60"
 end
 
@@ -306,19 +306,19 @@ end
 
 local function Points(n) return n .. (n == 1 and " point" or " points") end
 
---- The name of the build followed now: "Warrior levelling", "Fury at 60".
+--- The name of the build followed now: "Warrior leveling", "Fury at 60".
 function TA:Label(state)
 	return TA.BuildLabel(state.builds, state.build, (UnitClass("player")))
 end
 
---- What "Levelling, then my spec at 60" says now: your spec by name, and
+--- What "Leveling, then my spec at 60" says now: your spec by name, and
 --- at 60 which of the two it is following.
 function TA.AutoLabel(state, preferred)
-	if not preferred then return "Levelling, then my spec at 60" end
+	if not preferred then return "Leveling, then my spec at 60" end
 	if not state or state.choice ~= "auto" or (state.level or 0) < 60 then
-		return "Levelling, then " .. preferred.spec .. " at 60"
+		return "Leveling, then " .. preferred.spec .. " at 60"
 	end
-	if state.build == state.builds.levelling then return "Levelling (done), then " .. preferred.spec end
+	if state.build == state.builds.levelling then return "Leveling (done), then " .. preferred.spec end
 	return preferred.spec .. ", my spec"
 end
 
@@ -330,7 +330,7 @@ function TA:BuildItems(state)
 	local preferred = self:PreferredBuild(builds)
 	local items = {
 		{ value = "auto", label = TA.AutoLabel(state, preferred) },
-		{ value = "levelling", label = ((UnitClass("player")) or "Class") .. " levelling" },
+		{ value = "levelling", label = ((UnitClass("player")) or "Class") .. " leveling" },
 	}
 	for _, b in ipairs(builds.specs) do
 		table.insert(items, { value = b.spec, label = b.spec .. " at 60" .. (b == preferred and " (my spec)" or "") })

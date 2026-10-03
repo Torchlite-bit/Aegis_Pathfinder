@@ -81,6 +81,9 @@ are only found at startup.
 - [ ] Optimized Loch Modan, Bingles' tools (Bingles' Supplies): each of the
       four notes has a ⟳ and ticks when that tool is in your bags. Pick up
       one ahead of its note and it ticks as soon as the guide reaches it.
+- [ ] A RestedXP "Grind to level 10" step (Teldrassil 6-11) has a ⟳ and holds
+      the guide until 10, then ticks; an optional one ("Grind to 6", Elwynn)
+      does not hold it.
 - [x] ◀ and ▶ step back and on; the tick marks the step done.
 - [x] Click ◀ a few times, then **right-click ▶**: back at your place, with the
       steps ticked as they were. Same the other way (▶ a few times, right-click ◀).
@@ -226,7 +229,7 @@ are only found at startup.
       off.
 - [ ] At 60, spend the 51st point on the levelling build: chat says once that
       your spec's build is ready; the strip says so, and the menu reads
-      "Levelling (done), then <spec>". After a respec it follows your spec's.
+      "Leveling (done), then <spec>". After a respec it follows your spec's.
 - [ ] `/apg talents` says it saved your class's trees, with each tree's number
       of talents and the classes saved so far; after logging out, the saved
       settings file has them under `talenttrees`, with each talent's tooltip.
@@ -301,8 +304,11 @@ are only found at startup.
 - [ ] Every dungeon shows the loading screen Turtle WoW shows on the way in,
       whole, not squashed, with no logo or bars.
 - [ ] Dungeons starts with **On the routes**: Optimized's Uldaman and Sunken
-      Temple (and RestedXP's Scholomance Key), each saying whose route; they
-      are no longer in Optimized's Levels 40-60.
+      Temple, each saying whose route; they are no longer in Optimized's
+      Levels 40-60.
+- [ ] Next under Dungeons, **Attunements and keys**: RestedXP's Onyxia
+      Attunement and Scholomance Key, saying RestedXP. Onyxia Attunement is
+      no longer at the bottom of RestedXP's Levels 1-20.
 - [ ] Click a guide (left or right) or **Open in a new tab**: it opens in a
       new tab, and the guide you were on keeps its tab and place. A RestedXP
       guide does the same and leaves the route pack as it was (Options ->
@@ -427,6 +433,8 @@ are only found at startup.
 ## 8. Professions
 
 - [ ] A profession guide from the guide browser advances on your skill.
+- [ ] First Aid: 41 Linen Bandages to 40, then Heavy Linen to 50, Journeyman
+      at 50 (not before), Heavy Linen on to 80, Wool to 115.
 - [ ] A crafting guide's first step says the route is CraftRoute's; each
       craft step's count is enough for its skill points (Jewelcrafting no
       longer asks for 10 Malachite Rings for 50–70), and extra crafts a later

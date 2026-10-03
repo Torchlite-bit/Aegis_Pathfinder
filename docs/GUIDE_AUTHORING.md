@@ -166,18 +166,20 @@ A range with no craftable recipe (open-world gathering, for instance) uses a
 `G` step with a `SKILL` tag and no `CRAFT`; it waits for the skill. A `G` step
 with an `LV` tag and no `SKILL` is a level gate: it holds the guide until the
 character reaches that level, and clears itself at once for anyone already
-there. Every step with a `SKILL` or `RANK` completes as soon as the player's
+there. A grind to a level ("Grind to level 10") is the same: give it `LV`.
+One marked `|O|` does not hold the guide, and still ticks at the level. Every step with a `SKILL` or `RANK` completes as soon as the player's
 skill or cap is there, so someone opening a guide part-way through moves
 straight to where they are.
 
 **Profession guides in `Guides/Professions/` are generated** from
 CraftRoute's routes for the crafting professions
 (`Tools/data/craftroute_routes.json`, planned by `Tools/build/import_routes.py`),
-`Tools/data/Professions_Reference.docx` (First Aid's and Mining's routes,
+`Tools/data/Professions_Reference.docx` (Mining's route,
 trainers) and
 `Tools/data/profession_training.json` (rank levels and costs, the secondary
 professions' tomes and Artisan quests, trainers the reference lacks -- taken
-from the owner-supplied FAQ in `Tools/data/Profession_FAQ.md`) by
+from the owner-supplied FAQ in `Tools/data/Profession_FAQ.md` -- and First
+Aid's route and its bandages' skill colours) by
 `Tools/build/convert_professions.py`. Editing them by hand will be overwritten, and
 `python3 Tools/build/convert_professions.py --check` -- part of `Tools/run_tests.sh`
 -- fails when the committed guides differ from what it would write. They are written in QuestShell+
@@ -432,7 +434,10 @@ the zone its name says (`Browser.ZONES` in `GuideBrowser.lua`, which also knows
 places such as "Coldridge Valley"); a name with no zone in it is filed by the
 zone most of its `|Z|` tags name. A route leg named for a dungeon
 (`Optimized/Uldaman (45-46)`) is listed under Dungeons, in **On the routes**,
-rather than in its pack, and shows the dungeon's loading screen. A new custom
+rather than in its pack, and shows the dungeon's loading screen. A pack's
+chain that opens a dungeon or raid -- a title with the word "Attunement" or
+"Key" (`Browser.ACCESS_WORDS`), such as `RXP/Onyxia Attunement (A)` -- is
+listed under Dungeons in **Attunements and keys**. A new custom
 zone wants a line in `Browser.ZONES`, its explored world map in
 `Tools/data/maps/` and a line in `Theme.zonemap` (see `media/README.md`):
 custom zones' maps built from the client's tiles and pfUI's overlays came

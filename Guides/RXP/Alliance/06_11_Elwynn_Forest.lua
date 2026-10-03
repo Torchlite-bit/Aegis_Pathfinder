@@ -18,7 +18,7 @@ A Kobold Candles |QID|60| |N|William Pestle - (43.3, 65.7)| |Z|Elwynn Forest|
 T Rest and Relaxation |QID|2158| |N|Innkeeper Farley - (43.8, 65.8)| |C|Rogue/Warrior| |Z|Elwynn Forest|
 T Rest and Relaxation |QID|2158| |N|Innkeeper Farley - (43.8, 65.8)| |C|!Rogue/!Warrior| |Z|Elwynn Forest|
 h Goldshire |N|Set hearth in Goldshire (43.8, 65.8)| |Z|Elwynn Forest|
-G Grind to 6 |O| |Z|Elwynn Forest|
+G Grind to 6 |O| |Z|Elwynn Forest| |LV|6|
 B Buy the [Balanced Throwing Daggers] from him if you can afford it |N|Brog Hamfist - (44.0, 65.9)| |C|Rogue| |Z|Elwynn Forest|
 B Collect Balanced Throwing Dagger (200) |L|2946 200| |N|Brog Hamfist - (44.0, 65.9)| |C|Rogue| |Z|Elwynn Forest|
 R Travel downstairs |N|(44.1, 66.0)| |O| |C|Warlock| |Z|Elwynn Forest|
@@ -133,7 +133,7 @@ T Kobold Candles |QID|60| |N|William Pestle - (43.3, 65.7)| |Z|Elwynn Forest|
 A Shipment to Stormwind |QID|61| |N|William Pestle - (43.3, 65.7)| |Z|Elwynn Forest|
 T Note to William |QID|107| |N|William Pestle - (43.3, 65.7)| |Z|Elwynn Forest|
 A Collecting Kelp |QID|112| |N|William Pestle - (43.3, 65.7)| |Z|Elwynn Forest|
-G Grind to 8 |O| |Z|Elwynn Forest|
+G Grind to 8 |O| |Z|Elwynn Forest| |LV|8|
 t Train your class spells |N|Lyria Du Lac - (41.1, 65.8)| |C|Warrior| |Z|Elwynn Forest|
 t Train your class spells |N|Brother Wilhelm - (41.1, 66.0)| |C|Paladin| |Z|Elwynn Forest|
 R Travel downstairs in the Inn |N|(44.1, 66.0)| |O| |C|Warlock| |Z|Elwynn Forest|
@@ -273,7 +273,7 @@ A Cloth and Leather Armor |QID|59| |N|Marshal Dughan - (42.1, 65.9)| |C|Warlock|
 A Report to Gryan Stoutmantle |QID|109| |N|Marshal Dughan - (42.1, 65.9)| |Z|Elwynn Forest|
 B Vendor Trash |N|Corina Steele - (41.5, 65.9)| |Z|Elwynn Forest|
 A Elmore's Task |QID|1097| |N|Smith Argus - (41.7, 65.5)| |Z|Elwynn Forest|
-G Grind to 10 |O| |C|Warlock/Warrior| |Z|Elwynn Forest|
+G Grind to 10 |O| |C|Warlock/Warrior| |Z|Elwynn Forest| |LV|10|
 A A Warrior's Training |QID|1638| |N|Lyria Du Lac - (41.1, 65.8)| |C|Warrior| |Z|Elwynn Forest|
 t Train your class spells |N|Lyria Du Lac - (41.1, 65.8)| |C|Warrior| |Z|Elwynn Forest|
 N Do not train as you need to save your money for later |N|(41.1, 65.8)| |O| |C|Warrior| |Z|Elwynn Forest|

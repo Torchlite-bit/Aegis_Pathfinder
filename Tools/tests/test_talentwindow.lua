@@ -153,7 +153,7 @@ check(strip:IsShown() and strip:GetParent() == TalentFrame, "the strip shows, on
 check(strip.note:GetText() == "Next: Deep Wounds, rank 3 of 3", "it says where the next point goes, got %s",
 	tostring(strip.note:GetText()))
 check(strip.warn:GetText() == "", "nothing off the build")
-check(strip.drop:GetValue() == "auto" and strip.drop.label:GetText() == "Levelling, then Fury at 60",
+check(strip.drop:GetValue() == "auto" and strip.drop.label:GetText() == "Leveling, then Fury at 60",
 	"following levelling, then Fury, got %s", tostring(strip.drop.label:GetText()))
 local _, rel = strip:GetPoint(1)
 check(rel == TalentFrame, "over the window's own frame")
@@ -213,17 +213,17 @@ GameTooltip:SetTalent(t, i)
 check(tipAsked[1] and tipAsked[1][1] == t and tipAsked[1][2] == i, "the client's tooltip is still shown")
 local texts = {}
 for _, l in ipairs(tipLines) do table.insert(texts, l.text) end
-check(table.concat(texts, "|") == " |Pathfinder: Warrior levelling puts 2 points here.|Your next point goes here.",
+check(table.concat(texts, "|") == " |Pathfinder: Warrior leveling puts 2 points here.|Your next point goes here.",
 	"then the advisor's lines, got %s", table.concat(texts, "|"))
 c = Theme.color.accentGlow
 check(tipLines[2] and tipLines[2].r == c[1] and tipLines[2].g == c[2], "in the theme's colour")
 t, i = Find("Improved Thunder Clap")
 GameTooltip:SetTalent(t, i)
-check(tipLines[2] and tipLines[2].text == "Pathfinder: Warrior levelling puts no points here.",
+check(tipLines[2] and tipLines[2].text == "Pathfinder: Warrior leveling puts no points here.",
 	"a talent off the build says so")
 t, i = Find("Improved Heroic Strike")
 GameTooltip:SetTalent(t, i)
-check(tipLines[2] and tipLines[2].text == "Pathfinder: Warrior levelling puts 3 points here: done.", "and one done")
+check(tipLines[2] and tipLines[2].text == "Pathfinder: Warrior leveling puts 3 points here: done.", "and one done")
 t, i = Find("Piercing Howl")
 GameTooltip:SetTalent(t, i)
 check(table.getn(tipLines) == 0, "a talent the build leaves alone adds nothing")
@@ -269,7 +269,7 @@ current.level, current.unspent, current.ranks = 60, 0, After(51)
 TalentFrame_Update()
 check(strip.note:GetText() == "All 51 points spent. Your Fury build is ready for when you respec.",
 	"at 60: your spec's build is ready, got %s", tostring(strip.note:GetText()))
-check(strip.drop.label:GetText() == "Levelling (done), then Fury", "the menu says so, got %s",
+check(strip.drop.label:GetText() == "Leveling (done), then Fury", "the menu says so, got %s",
 	tostring(strip.drop.label:GetText()))
 -- After a respec: Fury's build.
 current.ranks, current.unspent = {}, 51
@@ -291,7 +291,7 @@ current.trees, current.level, current.unspent, current.ranks = changed, 22, 1, {
 TA.fit = {}
 PanelTemplates_SetTab(TalentFrame, 1)
 TalentFrame_Update()
-check(strip:IsShown() and strip.note:GetText() == "" and strip.warn:GetText() == "The Warrior levelling build doesn't "
+check(strip:IsShown() and strip.note:GetText() == "" and strip.warn:GetText() == "The Warrior leveling build doesn't "
 	.. "fit your talent tree (it has no Master Strike), so the Talent Advisor won't follow it.",
 	"the strip says why, got %s", tostring(strip.warn:GetText()))
 check(not Marks("Improved Heroic Strike"):IsShown() and not TalentFrameTab1.apDot:IsShown(), "and marks nothing")

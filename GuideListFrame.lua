@@ -872,7 +872,7 @@ ui.options = options
 local LIST_SWITCHES = {
 	{ "browsercolour", "Colour guides by difficulty" },
 	{ "browserticks", "Tick finished guides" },
-	{ "browserhidedone", "Hide finished and outlevelled guides" },
+	{ "browserhidedone", "Hide finished and outleveled guides" },
 	{ "browserstars", "Star suggested guides" },
 }
 

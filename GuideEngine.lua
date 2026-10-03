@@ -231,8 +231,9 @@ function AegisPathfinder:UpdateStatusFrame()
 			if (action == "RUN" or action == "FLY" or action == "HEARTH" or action == "BOAT") and (subzonetext == name or subzonetext == subzonetag or zonetext == name or zonetext == subzonetag) then return
 				self:SetTurnedIn(i, true) end
 
-			-- A level note ("Level 10 Required") is done at that level.
-			if action == "NOTE" and level and not needlevel then return self:SetTurnedIn(i, true) end
+			-- A level note ("Level 10 Required") or grind ("Grind to level 10")
+			-- is done at that level.
+			if (action == "NOTE" or action == "GRIND") and level and not needlevel then return self:SetTurnedIn(i, true) end
 
 			if action == "KILL" or action == "NOTE" or action == "COMPLETE" or action == "BUY" then
 				if haslootitem then return self:SetTurnedIn(i, true) end
@@ -296,9 +297,10 @@ function AegisPathfinder:UpdateStatusFrame()
 				-- waits on that quest, as its accept does.
 				incomplete = prereqturnedin and not logi
 			elseif action == "GRIND" then
-				-- A level gate waits on the level; a gathering step on the
-				-- skill, which is not there yet or it would have completed.
-				incomplete = needlevel or (skillProf and skillTo and true) or false
+				-- A level gate waits on the level, unless it is optional; a
+				-- gathering step on the skill, which is not there yet or it
+				-- would have completed.
+				incomplete = (needlevel and not optional) or (skillProf and skillTo and true) or false
 			elseif action == "TRAIN" then
 				incomplete = rankProf and true or not self:IsTrainingCompleted(name)
 			else

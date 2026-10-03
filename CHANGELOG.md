@@ -18,6 +18,30 @@ reports.
 
 ---
 
+## [0.22.18]
+
+### Fixed
+- **"Leveling" has one L wherever you see it.** The Talent Advisor's menu
+  and strip ("Leveling, then Protection at 60"), its tooltip line ("Warrior
+  leveling puts 3 points here"), the Item Score page, the guide browser's
+  "Hide finished and outleveled guides" and the out-leveled chat line said
+  "levelling". Saved settings are unchanged.
+- **First Aid's route.** It asked for 29 Linen Bandages for 1–45 and 5 Heavy
+  Linen Bandages for 45–100, fewer than the skill points, and sent you to
+  train Journeyman at 45, five points before you can. It now follows the
+  usual route: Linen to 40, Heavy Linen to 80 with Journeyman at 50, Wool to
+  115 and on as before. Every count is worked out from the bandage's skill
+  colours, the same way as the other crafting guides.
+- **"Grind to level N" waits for the level.** 43 RestedXP grind steps
+  ("Grind to level 10", "Grind to 6", "Make sure you are level 38") were
+  passed over at once. They now hold the guide until you get there and tick
+  themselves, as level notes do. One marked optional still doesn't hold you
+  up. Grinding to an amount of XP is left as it was.
+- **Onyxia Attunement isn't under Levels 1–20 any more.** RestedXP's Onyxia
+  Attunement and Scholomance Key have no level range, so the guide browser
+  filed Onyxia Attunement at the bottom of RestedXP's Levels 1–20. They're
+  now under Dungeons, in a folder of their own, **Attunements and keys**.
+
 ## [0.22.17]
 
 ### Changed
@@ -1489,6 +1513,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.22.18]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.17]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.16]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.15]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

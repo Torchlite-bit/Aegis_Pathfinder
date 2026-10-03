@@ -151,9 +151,10 @@ diffs and validates far better that way.
 **Profession guides in `Guides/Professions/` are generated.** Editing them by
 hand will be overwritten. Change `Tools/build/convert_professions.py` or the source
 data in `Tools/data/`, then regenerate. The crafting professions follow
-CraftRoute's routes (`Tools/data/craftroute_routes.json`); First Aid and Mining,
-and the trainers, come from the reference document, with the ranks, tomes and
-Artisan quests in `Tools/data/profession_training.json`. Herbalism, Skinning
+CraftRoute's routes (`Tools/data/craftroute_routes.json`); Mining's route and
+the trainers come from the reference document, with the ranks, tomes, Artisan
+quests and First Aid's route and bandage colours in
+`Tools/data/profession_training.json`. Herbalism, Skinning
 and Fishing are built by `Tools/build/gathering_guides.py` from
 `Tools/data/gathering.json`, which also gives each step of the Mining route,
 per faction, where to mine its ore. They only send players to zones this addon

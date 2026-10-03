@@ -617,7 +617,7 @@ each point goes to, on Blizzard's own talent window (and pfUI's skin of it):
   30 goes to Impale", "Next, after a respec: ..."), and how many points are
   off the build. Off the build it carries on from the build's closest point
   you can take; it never says to respec.
-- **The tooltip** of a talent adds "Pathfinder: Warrior levelling puts 3
+- **The tooltip** of a talent adds "Pathfinder: Warrior leveling puts 3
   points here." -- ": done." once you have them, "; you have N" past them --
   and "Your next point goes here."
 - **In chat**: on a level up, "Level 22: a talent point to spend. Take Deep
@@ -627,7 +627,7 @@ each point goes to, on Blizzard's own talent window (and pfUI's skin of it):
 - **Checked first.** Each build is checked against the tree your game has:
   every talent there, no more ranks than it has, each point learnable in its
   order, 51 in all. One that does not fit says why, in the strip and once in
-  chat ("The Warrior levelling build doesn't fit your talent tree (it has no
+  chat ("The Warrior leveling build doesn't fit your talent tree (it has no
   Master Strike), so the Talent Advisor won't follow it."), and is not
   followed.
 - It only marks and names; it never spends a point.
@@ -830,7 +830,10 @@ something than the skill needs, because a later recipe uses it, the step says
 "Keep them for" that recipe. Its scan had no listing for most things you
 gather yourself — the fish in Cooking, some ore, Survival's wood — so those
 were costed at three times what a merchant pays, and the guide's first step
-names them. First Aid's and Mining's routes are from the reference document.
+names them. Mining's route is from the reference document. First Aid's is the
+usual one (Linen to 40, Heavy Linen to 80, Wool to 115 and so on), with each
+count worked out from the bandage's skill colours the same way, and
+Journeyman trained at 50, where it can be.
 
 These are fixed routes, chosen once. For one planned from today's prices
 instead, see **Cheapest crafting route** above — it keeps the authored guide's
