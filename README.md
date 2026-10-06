@@ -1,4 +1,4 @@
-# Aegis: Pathfinder (v0.23.3)
+# Aegis: Pathfinder (v0.23.4)
 
 **Your levelling guide, on screen, all the way to 60.**
 
@@ -144,7 +144,8 @@ the guides of the dungeons you ticked are offered beside the next zone.
 ### 🛡️ Gear
 
 - **Item score** on every tooltip: what an item is worth to your spec, and how
-  it compares with what you wear. Weights from OctoPawn, yours to change.
+  it compares with what you wear. Weights worked out for every spec, one set
+  for leveling and one for 60, checked against Pawn's; yours to change.
   Switch on your other specs and each gets its own line, weighed against the
   best you have worn for it, with a chat notice when a drop beats it — as Pawn
   does.
@@ -306,7 +307,7 @@ arrows step back or on; **right-click** them to jump back or on to your place.
 
 ## Something broken?
 
-1. Check the **version** in the load message or the options window's About page (`v0.23.3`) — quote it.
+1. Check the **version** in the load message or the options window's About page (`v0.23.4`) — quote it.
 2. Open the **Error log** (options → Maintenance) and copy what it shows.
 3. Say which guide and step you were on, and which server you play on.
 4. Tell us on **[Discord](https://discord.gg/Hr66t25vE7)** or open an
@@ -350,7 +351,7 @@ by Zygor and RestedXP; no art or code from either was used.
 ## License
 
 GNU General Public License v3.0 — see [LICENSE](LICENSE). The item score's
-weights come from OctoPawn under its MIT licence, carried in
+tooltip patterns come from OctoPawn under its MIT licence, carried in
 `ItemScoreData.lua`; the Ace2 libraries and the fonts keep their own licences
 (see [media/README.md](media/README.md)).
 

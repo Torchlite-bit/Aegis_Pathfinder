@@ -523,13 +523,15 @@ switchOn colour with a tick. They hold off with the Gear Finder, as its
 switches do.
 
 **Item Score** (`GearFrame.lua`) is Zygor's page of the same name: the spec
-picker and your class, a note on where the spec came from and whether the
-weights are the defaults or yours, *Show all stats*, then the weights one to a
+picker and your class, a note on where the spec came from, which set of
+weights it is (*Leveling weights, until level 60*, *Level 60 weights*, or *Tank
+weights, the same at every level*) and whether they are the defaults or yours,
+*Show all stats*, then the weights one to a
 row down the left — label (134px, so the longest stat names stay on one line),
 then a 58px field (black, with a hairline edge) —
 and beside them a *Share weights* column: the OctoPawn string's field with
-**Import** and **Export** under it, and what they did. **Reset** sits under the
-longer column. The list's length follows the spec and *Show all stats*, so the
+**Import** and **Export** under it, and what they did. **Reset weights**
+(136px) sits under the longer column. The list's length follows the spec and *Show all stats*, so the
 page sets its own height as it is drawn and the window keeps your place while
 it changes. It used to be a window of its own. Zygor's has a many-line box for
 the string; here the field is one line that scrolls sideways, so the page

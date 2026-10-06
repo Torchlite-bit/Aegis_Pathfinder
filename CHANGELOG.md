@@ -18,6 +18,35 @@ reports.
 
 ---
 
+## [0.23.4]
+
+### Changed
+- **New stat weights for the item score.** Players reported odd weights, a
+  leveling Affliction warlock's Stamina far too low among them. OctoPawn's
+  defaults are replaced by weights worked out from the game's own formulas
+  for every class and spec, then moved most of the way toward Pawn's Classic
+  Era scales (HawsJon's):
+  - **Two sets, leveling and 60.** Below 60, Stamina, Spirit and regen count
+    for more, because they keep you going between pulls. At 60, crit and hit
+    count for more. The scores change over the moment you reach 60.
+  - **Tanks use the tank set from the start.** Protection warriors and
+    paladins, bears and the shaman tank weigh Stamina, Defense and avoidance
+    at every level.
+  - **A ranged weapon's DPS is its own stat.** A bow's, gun's, crossbow's,
+    wand's or thrown weapon's DPS is now *Ranged Weapon DPS*. A hunter's bow
+    counts for far more than its melee weapon, and a leveling caster's wand
+    counts for something.
+  - Turtle WoW's own stats (Fortune, Avoidance, Lifesteal and the like) keep
+    OctoPawn's weight, rescaled.
+- **Your own changes start again.** Changes made to the old weights are
+  cleared once, and a line in chat says so. You can still change weights on
+  the Item Score page. Changes are now kept apart for the leveling and 60
+  sets, and **Reset weights** puts the set you are on back to the defaults.
+  The page says which set it shows.
+- **Exported weights carry every stat.** The defaults now differ from
+  OctoPawn's, so a scale pasted into OctoPawn or another character still
+  arrives whole.
+
 ## [0.23.3]
 
 ### Fixed
@@ -1713,6 +1742,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.23.4]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.23.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.23.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.23.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

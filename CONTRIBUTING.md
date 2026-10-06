@@ -72,10 +72,10 @@ That runs everything that can run without a WoW client:
 | `Tools/tests/test_nextguide.lua` | Where next?: which custom zones fit a level, and the walk from a route guide to a custom zone and back to the route; a ticked dungeon at the middle of its levels; a class quest at its level (your class and race, not done, not on the route still to come, a group chain only in a group), each window's buttons in their own window, the dungeon's before the class quest's |
 | `Tools/tests/test_materials.lua` | Shopping list arithmetic, checked against the source document's own shopping list; bag counts, the scope tabs, and sending to Aegis: Exchange |
 | `Tools/tests/test_craftplanner.lua` | The crafting route planner: reading the recipe data, the skill-up chance, the route against brute force, learning fees, make-or-buy, pricing at depth, stock carried between steps, selling back, unpriced reagents; the auction scan against the suite's auction house rules; every profession planned from the real data |
-| `Tools/tests/test_itemscore.lua` | The item score: reading 1.12 tooltips (stats, weapon DPS, school spell damage, set bonuses and procs ignored, red lines meaning unusable or later), soft caps, the spec from your talents, your own weights and sharing them in OctoPawn's string, comparing by slot (rings, two-handers, dual wield), and the tooltip line |
+| `Tools/tests/test_itemscore.lua` | The item score: reading 1.12 tooltips (stats, weapon DPS, a ranged weapon's DPS apart, school spell damage, set bonuses and procs ignored, red lines meaning unusable or later), soft caps, the spec from your talents, the leveling and 60 sets (and the tanks' one, the level-up switching at once), your own weights kept per set and sharing them in OctoPawn's string, the old defaults' changes cleared once, comparing by slot (rings, two-handers, dual wield), and the tooltip line |
 | `Tools/tests/test_gearadvisor.lua` | The Gear Advisor: upgrades found in the bags, offered biggest first and once a session, Equip into the right slot (waiting out a fight, finding an item that moved), Decline remembered across reloads, equip-for-me never binding an item, off at 60; the best quest reward (upgrade, else sell price, waiting for items to load) marked and picked; upgrades bordered in the bags |
 | `Tools/tests/test_gearfinder.lua` | The Gear finder: the dungeons it looks in (level, side, your ticks, raids), the drops it weighs (level, class), Turtle WoW's own items described by the client (and badges, greys and items above you never weighed), quest rewards (not done, your side and class, within reach), reputation gear and crafted gear (bind-on-pickup and Solo Self-Found only with the profession), loading the ones not cached, the best three a slot in the character sheet's order, the window, and naming upgrades on walking into a dungeon; and that the real loot data is there |
-| `Tools/tests/test_gearframe.lua` | The Item Score page: the spec picker, the weights listed down the left and edited, show all growing the page, export, import and reset beside and under them |
+| `Tools/tests/test_gearframe.lua` | The Item Score page: the spec picker, which set of weights it says, the weights listed down the left and edited, show all growing the page, export, import and Reset weights beside and under them |
 | `Tools/tests/test_craftroute.lua` | The crafting route window and planned guides: rank steps placed where the skill cap runs out, crafts contiguous and parsed as skill steps, saving and restoring, the window's totals, rows, status line, re-planning only on change, and the scan button |
 | `Tools/tests/test_partysync.lua` | Sharing a guide with the party: step names that survive different step numbering, holding a finished step for the slowest partner without pulling anyone back, skipping out of a hold, the messages both ways, the throttle and heartbeat, the popups, the members under the step, and the group changing |
 | `Tools/tests/test_objectivetabs.lua` | The objectives tab bar and branch state |
@@ -199,13 +199,21 @@ python3 Tools/build/build_dungeon_bosses.py --instancejournal <InstanceJournal> 
 python3 Tools/build/build_dungeon_guides.py
 ```
 
-**`ItemScoreData.lua` is generated** from
-[OctoPawn](https://github.com/iGreed1993/OctoPawn)'s defaults (MIT; its notice
-is carried in the file) by `Tools/build/import_octopawn.py`: the stat weights for every
-class and spec, the tooltip patterns, the soft caps. To pick up a newer OctoPawn,
-check it out and run:
+**`ItemScoreData.lua` is generated** by `Tools/build/build_weights.py`. The
+stat weights are this addon's own -- a leveling set and a 60 set for every
+class and spec (one for the tanks), worked out from the game's formulas and
+calibrated toward Pawn's Classic Era scales -- kept in
+`Tools/data/stat_weights.json`. The tooltip patterns, soft caps and labels are
+[OctoPawn](https://github.com/iGreed1993/OctoPawn)'s (MIT; its notice is
+carried in the file), kept in `Tools/data/octopawn.json` by
+`Tools/build/import_octopawn.py`, with its weights, which the stats the model
+does not work out start from. With no arguments `build_weights.py` writes the
+file from the two JSON files. To work the weights out again it needs a Pawn
+checkout to calibrate against -- read where it lies, none of it copied in
+(Pawn is CC BY-NC-ND) -- and a newer OctoPawn is picked up by checking it out:
 
 ```sh
+python3 Tools/build/build_weights.py --pawn <path to Pawn>
 python3 Tools/build/import_octopawn.py <path to OctoPawn>
 ```
 

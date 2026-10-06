@@ -778,11 +778,28 @@ low for says the level it becomes an upgrade at.
 - **Comparing:** a ring or trinket is weighed against the weaker of the two you
   wear, a one-hander against either hand once you can dual wield, a two-hander
   against both hands together. Enchants are left out on both sides.
-- **The weights** are OctoPawn's defaults for every class and spec. The
-  options window's **Item Score** page, under **Gear** (`/apg gear`, or **Stat
-  weights** on the Gear page), lists them down the left with a box each, as
-  Zygor's does. Change any of them, pick another spec, reset, or import and
-  export them as a string OctoPawn reads too.
+- **The weights** are worked out from the game's own formulas for every class
+  and spec, each in one unit -- a point of attack power (ranged attack power
+  for hunters), of spell damage, of healing, or of Stamina for tanks -- and
+  then moved most of the way toward Pawn's Classic Era scales (HawsJon's).
+  There are two sets: **leveling**, used until 60, where Stamina, Spirit and
+  regen count for more because they keep you going between pulls, and **60**,
+  for pre-raid gear, where crit and hit count for more. The scores change over
+  to the 60 set the moment you reach 60. Tanks (Protection warriors and
+  paladins, bears, the shaman tank) use their one set at every level. A bow's,
+  gun's, crossbow's, wand's or thrown weapon's DPS is its own stat, **ranged
+  weapon DPS**: a hunter's bow counts for far more than its melee weapon, and
+  a leveling caster's wand for something. Turtle WoW's own stats (Fortune,
+  Avoidance, Lifesteal and the like) keep OctoPawn's weight, rescaled.
+- **The Item Score page**, in the options window under **Gear** (`/apg gear`,
+  or **Stat weights** on the Gear page), lists the weights in use down the
+  left with a box each, as Zygor's does, and says which set they are. Change
+  any of them -- a change is kept for the set it was made in, so one made
+  while leveling is not carried to 60 -- pick another spec, **Reset weights**
+  to put the set back to the defaults, or import and export them as a string
+  OctoPawn reads too. An export holds every stat, so the scale arrives whole
+  wherever the defaults differ. Changes made to the old (OctoPawn's) weights
+  were cleared once in 0.23.4, with a line in chat saying so.
 - **More than one spec, as Pawn does.** The Item Score page has a switch for
   each spec of your class. Yours is always on; switch on another -- the tank
   set you carry, the healing set -- and every tooltip gets a line for it too,

@@ -451,6 +451,19 @@ are only found at startup.
 - [x] **Item Score** page (under Gear): the spec picker, every weight on one
       line each (no wrapped names), editing a box changes the tooltips,
       Show all stats lengthens the page, Export → Import round-trips.
+- [ ] Below 60 the Item Score page says *Leveling weights, until level 60*;
+      at 60 it says *Level 60 weights* and the boxes change -- on reaching 60
+      too, without a reload. As Protection or a bear: *Tank weights, the same
+      at every level*, at any level.
+- [ ] A hunter: a bow's tooltip line weighs its DPS far above a melee
+      weapon's of the same DPS (*Ranged Weapon DPS* on the Item Score page).
+      A caster below 60: a wand's DPS counts.
+- [ ] With weights changed before 0.23.4: one chat line at login says they
+      were cleared, and the page shows the defaults; not again at the next
+      login. A change made below 60 is gone at 60, and back below it.
+- [ ] **Reset weights** puts a changed set back to the defaults, and the page
+      says so.
+- [ ] Export holds every stat; pasted into OctoPawn, its weights match.
 - [x] `/apg gear` opens the options at Item Score, and again closes them.
 - [x] Gear Advisor: loot an upgrade → a pop-up with Equip / Decline; Equip puts
       it on; Decline is remembered; in a fight Equip waits.

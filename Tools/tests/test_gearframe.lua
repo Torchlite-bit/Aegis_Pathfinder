@@ -62,7 +62,8 @@ check(page.class:GetText() == "Paladin", "the class beside it")
 local _, _, _, _, specY = page.spec:GetPoint()
 check(specY == -TOP, "under the section header, got %s", tostring(specY))
 check(string.find(page.note:GetText(), "leveling spec", 1, true), "the note says where the spec came from")
-check(string.find(page.note:GetText(), "default weights", 1, true), "and that the weights are the defaults")
+check(string.find(page.note:GetText(), "Leveling weights, until level 60: the defaults.", 1, true),
+	"and that they are the default leveling weights, got %s", page.note:GetText())
 
 -- The weights listed, one to a row down the left: the spec's, then all of them.
 local function listed()
@@ -72,7 +73,7 @@ local function listed()
 end
 local function count(t) local n = 0 for _ in pairs(t) do n = n + 1 end return n end
 local weighted = 0
-for _, w in pairs(Data.weights.PALADIN.Retribution) do if w ~= 0 then weighted = weighted + 1 end end
+for _, w in pairs(Data.leveling.PALADIN.Retribution) do if w ~= 0 then weighted = weighted + 1 end end
 check(count(listed()) == weighted, "the stats Retribution weighs are listed (%d of %d)", count(listed()), weighted)
 local xs, ys = {}, {}
 for _, cell in pairs(listed()) do
@@ -115,11 +116,12 @@ local str = A:ItemScoreCell("STRENGTH")
 check(str.label:GetText() == "Strength", "stats named for people, got %s", tostring(str.label:GetText()))
 check(str.label:GetWidth() >= 130, "the name column holds the long names on a line, got %s", tostring(str.label:GetWidth()))
 check(A:ItemScoreCell("DPS").label:GetText() == "Weapon DPS", "DPS stays DPS")
-check(str.box:GetText() == "1.2", "the box shows the weight, got %s", tostring(str.box:GetText()))
+local default = Data.leveling.PALADIN.Retribution.STRENGTH
+check(tonumber(str.box:GetText()) == default, "the box shows the weight, got %s", tostring(str.box:GetText()))
 str.box:SetText("3.5")
 run(str.box, "OnEnterPressed")
 check(IS:Weights().STRENGTH == 3.5, "Enter puts the new weight into effect")
-check(string.find(page.note:GetText(), "your own weights", 1, true), "and the note says they are yours now")
+check(string.find(page.note:GetText(), "with your own changes", 1, true), "and the note says they are yours now")
 str.box:SetText("lots")
 run(str.box, "OnEditFocusLost")
 check(IS:Weights().STRENGTH == 3.5 and str.box:GetText() == "3.5", "text that is not a number is put back")
@@ -132,12 +134,14 @@ check(not str.box:HasFocus(), "a box hidden with the page lets go of the keyboar
 
 -- Export, import, reset.
 run(page.export, "OnClick")
-check(page.share:GetText() == "OPW1:PALADIN:Retribution:*STRENGTH:3.5", "export fills the box, got %s",
-	tostring(page.share:GetText()))
+check(string.find(page.share:GetText(), "^OPW1:PALADIN:Retribution:%*") and string.find(page.share:GetText(), "|STRENGTH:3.5", 1, true),
+	"export fills the box, got %s", tostring(page.share:GetText()))
 check(string.find(page.status:GetText(), "Ctrl+C", 1, true), "and says how to copy it, under the buttons")
+check(page.reset:GetText() == "RESET WEIGHTS", "the button says Reset weights, got %s", tostring(page.reset:GetText()))
 run(page.reset, "OnClick")
-check(IS:Weights().STRENGTH == 1.2 and str.box:GetText() == "1.2", "reset goes back to the defaults")
-check(page.status:GetText() == "Back to the defaults.", "and says so")
+check(IS:Weights().STRENGTH == default and tonumber(str.box:GetText()) == default, "reset goes back to the defaults")
+check(page.status:GetText() == "Back to the default weights.", "and says so")
+check(string.find(page.note:GetText(), ": the defaults.", 1, true), "and the note says so too")
 run(page.import, "OnClick")
 check(IS:Weights().STRENGTH == 3.5, "import brings the exported weights back")
 check(page.status:GetText() == "Imported.", "and says so")
@@ -154,7 +158,18 @@ run(protRow, "OnClick")
 check(IS:Spec() == "Protection", "picking a spec scores as it")
 check(page.spec:GetValue() == "Protection", "and the picker shows it")
 check(string.find(page.note:GetText(), "the spec you picked", 1, true), "and the note says you picked it")
-check(str.box:GetText() == "0.9", "the boxes show that spec's weights, got %s", tostring(str.box:GetText()))
+check(tonumber(str.box:GetText()) == Data.weights.PALADIN.Protection.STRENGTH, "the boxes show that spec's weights, got %s",
+	tostring(str.box:GetText()))
+check(string.find(page.note:GetText(), "Tank weights, the same at every level", 1, true), "a tank's are the same at every level")
+
+-- At 60, the 60 set.
+UnitLevel = function() return 60 end
+IS:SetSpec("Retribution")
+check(string.find(page.note:GetText(), "Level 60 weights: the defaults.", 1, true), "at 60 the note says the 60 set, got %s",
+	page.note:GetText())
+check(tonumber(str.box:GetText()) == Data.weights.PALADIN.Retribution.STRENGTH, "and the boxes show it")
+UnitLevel = function() return 1 end
+IS:SetSpec("Protection")
 
 -- Talents change what Auto means; the page follows while it is on screen.
 IS:SetSpec(nil)
