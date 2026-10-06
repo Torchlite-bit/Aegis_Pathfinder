@@ -160,7 +160,7 @@ local defaults = {
     offerdungeons = false,        -- and the ticked dungeons' guides, at your level (NextGuideFrame.lua)
     middungeons = true,           -- offer a ticked dungeon's guide at the middle of its levels, once each (NextGuideFrame.lua)
     classquests = true,           -- offer a class quest's guide at its level, once each (NextGuideFrame.lua)
-    craftsellback = true,         -- crafting routes sell what is left over to a merchant (CraftPlanner.lua)
+    craftsellback = true,         -- crafting routes say what a merchant pays for leftovers (CraftPlanner.lua)
     -- The guide browser (GuideListFrame.lua, GuideBrowser.lua)
     browsertab = "home",          -- where it was left: "home", "current", "recent" or a category's key
     browsercolour = true,         -- colour guides by how they suit your level
@@ -615,7 +615,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.23.0"
+AegisPathfinder.version = "0.23.1"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be

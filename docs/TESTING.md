@@ -506,6 +506,11 @@ are only found at startup.
       **This step** / **Whole route** switch.
 - [x] **Cheapest route** (`/apg craft`): plans, **Scan prices** at the auction
       house fills prices in, **Load as guide** adds the planned guide.
+- [ ] Cheapest route for Survival from 90: no step asks for 92 Hunting Spears
+      (or 92 Iron Lanterns at 160). The total is what the route costs; the
+      breakdown says "leftovers sell for about …" beside it, and turning *Say
+      what a merchant pays for what is left over* off takes that line away
+      without changing a single step.
 - [x] With Aegis: Exchange loaded: **Send to Exchange** puts the crafts on its
       Crafting tab, and Remove takes them back out.
 

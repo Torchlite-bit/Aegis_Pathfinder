@@ -368,8 +368,9 @@ Exchange's demo mode has to be off.
 `/apg craft`) opens a window that works out the cheapest way from your skill to
 300 in a profession at today's prices, as
 [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) does — without
-needing CraftRoute. It shows the total, what it is made of (reagents, recipes,
-what you get back selling leftovers to a merchant), and a row per recipe: the
+needing CraftRoute. It shows the total, what it is made of (reagents and
+recipes, and beside them what a merchant would pay for the leftovers -- never
+taken off the cost, and never used to choose the route), and a row per recipe: the
 skill band, how many crafts, the reagents and what the step costs. Hover a row
 for how the recipe is learned, what to buy and what gets made first.
 

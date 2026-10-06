@@ -289,7 +289,7 @@ function AegisPathfinder:BuildCraftGuide(route)
 			title = GuideName(profession),
 			note = string.format("Planned at %s prices: %s for %d crafts, skill %d to %d. Plan it again from the crafting route window (/apg craft) whenever prices move.",
 				date and date("%d %b") or "today's",
-				route.total < 0 and ("it earns about " .. Money(-route.total)) or ("about " .. Money(route.total)),
+				"about " .. Money(route.total),
 				route.crafts, route.from, route.reached),
 		},
 	}
@@ -509,7 +509,7 @@ function AegisPathfinder:CreateCraftRoutePanel()
 	frame:EnableMouseWheel(true)
 	frame:SetScript("OnMouseWheel", function() Scroll(frame, -(arg1 or 0)) end)
 
-	local sell = Theme:Switch(frame, "Sell what is left over to a merchant", function(on)
+	local sell = Theme:Switch(frame, "Say what a merchant pays for what is left over", function(on)
 		AegisPathfinder.db.char.craftsellback = on
 		AegisPathfinder:UpdateCraftRoutePanel()
 	end)
@@ -689,19 +689,13 @@ function AegisPathfinder:UpdateCraftRoutePanel()
 	end
 
 	frame.range:SetText(string.format("SKILL %d TO %d", route.from, route.reached))
-	-- Selling back can make a route pay for itself; say so, not "-3g".
-	if route.total < 0 then
-		frame.total:SetText("+" .. Money(-route.total))
-		Theme:TextColor(frame.total, "accent")
-		frame.crafts:SetText(string.format("%d crafts, and it pays for itself", route.crafts))
-	else
-		frame.total:SetText(Money(route.total))
-		Theme:TextColor(frame.total, "gold")
-		frame.crafts:SetText(string.format("%d crafts", route.crafts))
-	end
+	frame.total:SetText(Money(route.total))
+	Theme:TextColor(frame.total, "gold")
+	frame.crafts:SetText(string.format("%d crafts", route.crafts))
 
 	local parts = { "Reagents " .. Money(route.buyTotal), "recipes " .. Money(route.learnTotal) }
-	if route.credit > 0 then table.insert(parts, "sold back " .. Money(route.credit)) end
+	-- What is left over is yours to sell or not; it is not off the cost.
+	if route.credit > 0 then table.insert(parts, "leftovers sell for about " .. Money(route.credit)) end
 	local unpriced = table.getn(route.unpriced or {})
 	if unpriced > 0 then table.insert(parts, "+ " .. unpriced .. " unpriced") end
 	if route.reached < route.to then table.insert(parts, "stops at " .. route.reached) end

@@ -18,6 +18,23 @@ reports.
 
 ---
 
+## [0.23.1]
+
+### Fixed
+- **The cheapest crafting route no longer asks for 92 Hunting Spears.** With
+  selling leftovers to a merchant on (the default), what a merchant pays for a
+  craft came off its cost. A Hunting Spear is listed as selling for 4g 5s, more
+  than its Bronze Bars cost, so every spear cost nothing to the planner, which
+  kept crafting them long after they went green: 92 for 40 points, and 92 Iron
+  Lanterns for 160–200. The leftovers were then counted as about 300 gold back.
+  - A craft now costs what its reagents cost. What a merchant pays never
+    chooses the route, so a recipe going green gives way to one still orange
+    or yellow when that is cheaper per point.
+  - The total is what the route costs. What a merchant would pay for the
+    leftovers is said beside it, "leftovers sell for about …", and is no longer
+    taken off. The switch now reads *Say what a merchant pays for what is left
+    over*; off, that line goes, and the route stays the same.
+
 ## [0.23.0]
 
 ### Fixed
@@ -1662,6 +1679,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.23.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.23.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.24]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.23]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

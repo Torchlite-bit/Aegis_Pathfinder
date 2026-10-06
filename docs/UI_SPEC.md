@@ -1007,10 +1007,11 @@ beside the guide like the shopping list, until dragged (`craftframe`).
   you are reading, else the last one planned, else the first you have. At the
   right, `SKILL 41 TO 300` (`display` 12, dim): from your current skill to
   where the route gets.
-- **Total** (`display` 18, gold) and the crafts beside it. A route that pays for
-  itself by selling back shows `+` and the amount in the accent, and says so.
-- **Breakdown** (`body` 10, dim): reagents, recipes, what is sold back, how many
-  items have no price, and where the route stops if it stops short.
+- **Total** (`display` 18, gold) and the crafts beside it: what the route
+  costs, reagents and recipes.
+- **Breakdown** (`body` 10, dim): reagents, recipes, what a merchant would pay
+  for the leftovers ("leftovers sell for about 3g"), how many items have no
+  price, and where the route stops if it stops short.
 - **Status line**: where auction prices come from ("your scan 2 h ago and Aegis:
   Exchange"), or gold when there are none or some reagents have no price, or the
   scan's progress while it runs.
@@ -1020,8 +1021,9 @@ beside the guide like the shopping list, until dragged (`craftframe`).
   with an unpriced reagent is gold. Hovering a row shows the expected crafts,
   the cost of one, how the recipe is learned, what to buy, what is made first,
   and what has no price.
-- **Sell what is left over to a merchant** (`Theme:Switch`): whether leftovers
-  count against the cost. `char.craftsellback`, on by default.
+- **Say what a merchant pays for what is left over** (`Theme:Switch`): whether
+  the breakdown says it. `char.craftsellback`, on by default. It never changes
+  the route or its cost.
 - **Scan prices** / **Stop scan** and **Load as guide** (`Theme:PanelButton`,
   half width each).
 
@@ -1046,7 +1048,11 @@ frame.
    auction listings, and planned again at those prices until it settles.
 5. Accounting: the route is played through in order -- an earlier step's
    products are used by a later one before anything is bought -- and what is
-   left is sold back if the switch says so.
+   left is valued at what a merchant pays, if the switch says so. That value is
+   said, never taken off the cost: in planning, a craft costs its reagents.
+   Taking a merchant's price off made a recipe whose result sold for more than
+   its reagents cost nothing, and the planner crafted it to grey (92 Hunting
+   Spears for 40 points).
 
 A known recipe is free to learn; a drop or reputation recipe is only planned
 once known; `skip` recipes (cooldowns, rare drops) never. A reagent with no
