@@ -443,6 +443,11 @@ are only found at startup.
 
 - [x] Item tooltips show the item score line: `+12%` green for an upgrade,
       red for worse, *empty slot*, *not for you*.
+- [ ] As a healer (Holy priest, Restoration druid or shaman, Holy paladin):
+      an item with "Restores 8 mana per 5 sec." scores more than one with 4
+      (both used to read as 5), and a "+damage and healing" item scores close
+      to a "+healing" one of about twice the number, not a third of it. As a
+      warrior, a caster's spell crit item scores nothing for crit.
 - [x] **Item Score** page (under Gear): the spec picker, every weight on one
       line each (no wrapped names), editing a box changes the tooltips,
       Show all stats lengthens the page, Export → Import round-trips.

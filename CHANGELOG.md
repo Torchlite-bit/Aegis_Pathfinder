@@ -18,6 +18,23 @@ reports.
 
 ---
 
+## [0.23.3]
+
+### Fixed
+- **The item score reads tooltips right.** Four reading mistakes made some
+  items score far off, whatever the weights:
+  - **Mana and health per 5 always read as 5.** "Restores 12 mana per 5 sec."
+    scored as 5, and so did "Restores 2 …": the number was taken from the
+    "5" in the stat's own name. It is the line's number now.
+  - **Spell crit counted as melee crit as well.** A Retribution Paladin rated
+    a caster's spell crit ring above a melee crit one, and a warrior got crit
+    points from it. Ranged crit no longer counts as melee crit either.
+  - **Mana per 5 also counted as a mana pool**, "+5 mana" on top of the regen.
+  - **"Damage and healing" counted only as spell power.** A Holy Priest scored
+    "+22 damage and healing" at 12 and "+44 healing" at 64, though the first
+    heals for all 22. It now counts as healing as well; a healer's spell
+    power weight is for its damage side.
+
 ## [0.23.2]
 
 ### Fixed
@@ -1696,6 +1713,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.23.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.23.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.23.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.23.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

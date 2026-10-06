@@ -255,9 +255,11 @@ function IS:ReadLines(item)
 end
 
 local function numberNear(line, upper, pattern)
-	local s = string.find(upper, pattern)
+	local s, e = string.find(upper, pattern)
 	if not s then return nil end
-	local _, _, after = string.find(string.sub(line, s), "([%+%-]?%d+%.?%d*)")
+	-- After the stat's name, not inside it: "MANA PER 5" has a 5 of its own,
+	-- and "Restores 12 mana per 5 sec." was read as 5.
+	local _, _, after = string.find(string.sub(line, e + 1), "([%+%-]?%d+%.?%d*)")
 	if after then return tonumber(after) end
 	local last
 	for n in string.gfind(string.sub(line, 1, s - 1), "([%+%-]?%d+%.?%d*)") do last = n end
@@ -270,12 +272,24 @@ end
 
 local SPELL_SCHOOL = { "NATURE DAMAGE", "FIRE DAMAGE", "FROST DAMAGE", "SHADOW DAMAGE", "ARCANE DAMAGE", "HOLY DAMAGE" }
 
+-- A general stat is not counted again on a line one of its own kind already
+-- counted: "critical strike with spells" is spell crit, not melee crit too;
+-- "mana per 5 sec." is regen, not a mana pool as well.
+local NARROWER = {
+	CRIT = { "SPELL CRIT", "HOLY CRIT", "RANGED CRIT", "RESILIENCE" },
+	MANA = { "MANA PER 5", "CASTING REGEN" },
+	HEALTH = { "HEALTH PER 5" },
+}
+
 --- The stats on one line of a tooltip, added into `totals`. The rules are
 --- OctoPawn's: the first pattern for a stat wins, a set bonus counts for
 --- nothing, and a school's spell damage is not also general spell damage.
---- One is stricter: a "chance on hit" line's numbers are the proc's -- 90
+--- Some are stricter: a "chance on hit" line's numbers are the proc's -- 90
 --- Fire damage on a sword is not 90 spell damage for you -- so only an
---- extra-attack chance counts from one.
+--- extra-attack chance counts from one; a general stat is not counted again
+--- where a narrower one was (NARROWER); and "damage and healing" heals as
+--- much as it says, so it is healing as well as spell power -- a healer's
+--- SPELL POWER weight is for its damage side.
 local function readStats(line, totals, state)
 	local upper = string.upper(line)
 	if isSetBonus(upper) then return end
@@ -294,7 +308,12 @@ local function readStats(line, totals, state)
 		local pattern, stat = p[1], p[2]
 		if not matched[stat] and string.find(upper, pattern) then
 			local skip = false
-			if procLine and stat ~= "EXTRA ATTACK" then
+			for _, narrow in ipairs(NARROWER[stat] or {}) do
+				if matched[narrow] then skip = true end
+			end
+			if skip then
+				-- counted already, as its narrower kind
+			elseif procLine and stat ~= "EXTRA ATTACK" then
 				skip = true
 			elseif stat == "HIT" and string.find(upper, "SPELL") then
 				skip = true
@@ -316,6 +335,10 @@ local function readStats(line, totals, state)
 				if n then
 					matched[stat] = true
 					totals[stat] = (totals[stat] or 0) + n
+					if stat == "SPELL POWER" and string.find(upper, "HEALING") and not matched["HEALING"] then
+						matched["HEALING"] = true
+						totals["HEALING"] = (totals["HEALING"] or 0) + n
+					end
 				end
 			end
 		end

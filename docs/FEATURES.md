@@ -769,7 +769,10 @@ low for says the level it becomes an upgrade at.
 
 - **The score** is the item's stats — read off its tooltip, as a 1.12 client
   gives nothing else — weighted for your class and spec, with soft caps on hit,
-  crit, defence and the like so that stacking one stat does not run away.
+  crit, defence and the like so that stacking one stat does not run away. Each
+  line counts as what it says: spell crit as spell crit (not melee crit too),
+  "Restores 12 mana per 5 sec." as 12 regen (not a mana pool as well), and
+  "damage and healing" as both spell power and healing.
 - **Your spec** is the talent tree you have put most points into, or the one
   you pick; with no talents yet, your class's usual levelling spec.
 - **Comparing:** a ring or trinket is weighed against the weaker of the two you

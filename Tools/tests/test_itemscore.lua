@@ -91,6 +91,27 @@ ITEMS[3] = { loc = "INVTYPE_HEAD", lines = {
 info = IS:Read("item:3:0:0:0")
 check(info.stats["SPELL POWER"] == 12, "spell power read, got %s", tostring(info.stats["SPELL POWER"]))
 check(info.stats.HIT == nil and info.stats.STAMINA == nil, "a set bonus counts for nothing")
+-- It heals as much as it says: healing too, where a healer's weight is.
+check(info.stats.HEALING == 12, "damage and healing is healing as well, got %s", tostring(info.stats.HEALING))
+
+-- A narrower stat is not counted again as its general one, and the number is
+-- the line's, not the stat's name's ("mana per 5" has a 5 of its own).
+ITEMS[901] = { loc = "INVTYPE_FINGER", lines = { "Ring", "Finger",
+	"Equip: Improves your chance to get a critical strike with spells by 1%.",
+	"Equip: Restores 12 mana per 5 sec.",
+	"Equip: Restores 4 health per 5 sec.",
+} }
+info = IS:Read("item:901:0:0:0")
+check(info.stats["SPELL CRIT"] == 1 and info.stats.CRIT == nil, "spell crit is not melee crit too, got %s",
+	tostring(info.stats.CRIT))
+check(info.stats["MANA PER 5"] == 12, "twelve mana per 5 is twelve, got %s", tostring(info.stats["MANA PER 5"]))
+check(info.stats.MANA == nil, "and not a mana pool as well, got %s", tostring(info.stats.MANA))
+check(info.stats["HEALTH PER 5"] == 4 and info.stats.HEALTH == nil, "four health per 5 is four, got %s",
+	tostring(info.stats["HEALTH PER 5"]))
+ITEMS[902] = { loc = "INVTYPE_RANGED", lines = { "Bow", { "Ranged", "Bow" },
+	"Equip: Improves your chance to get a critical strike with ranged weapons by 1%." } }
+info = IS:Read("item:902:0:0:0")
+check(info.stats["RANGED CRIT"] == 1 and info.stats.CRIT == nil, "ranged crit is not melee crit too")
 
 -- Weapon skills are not part of the score.
 ITEMS[8] = { loc = "INVTYPE_HAND", lines = { "Edgemaster's Handguards", "Hands", "Equip: Increased Axes +7.",
