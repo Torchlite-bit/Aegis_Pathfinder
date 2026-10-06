@@ -18,6 +18,16 @@ reports.
 
 ---
 
+## [0.23.0]
+
+### Fixed
+- **Quest icons no longer mark mobs with no guide open.** Mousing over or
+  targeting anyone a quest in your log wanted put a raid marker on them even
+  with the guide closed, or no guide loaded at all. They now mark only while a
+  guide is open. Hidden in combat or a dungeon by the Appearance page, the
+  guide still counts as open. The target buttons and macros mark as before,
+  since you press them.
+
 ## [0.22.24]
 
 ### Changed
@@ -1652,6 +1662,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.23.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.24]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.23]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.22]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

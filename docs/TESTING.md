@@ -516,6 +516,10 @@ are only found at startup.
       and marks it.
 - [x] Quest icons: mousing over a quest NPC or mob puts the right raid marker
       on it (star to talk, skull to kill, cross to loot, square to interact).
+- [ ] Close the guide with its ✕ (or close every tab, so no guide is loaded):
+      mousing over or targeting a quest mob leaves it unmarked. Open the guide
+      again: it is marked. With *Hide the guide in combat* on, a quest mob you
+      target in a fight is still marked.
 - [x] **Macros**: AegisTarget and AegisItem appear in your character macros and
       follow the guide from an action bar.
 - [ ] Drag Active Targets close under or beside Active Items (or the guide):

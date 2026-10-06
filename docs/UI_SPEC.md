@@ -1145,8 +1145,10 @@ square. On `UPDATE_MOUSEOVER_UNIT` and `PLAYER_TARGET_CHANGED` the unit
 targets first, then, for each quest in the log (ids from ClassicAPI's
 `C_QuestLog.GetQuestIDForLogIndex`, headers skipped), an unfinished quest's
 COMPLETE targets or a finished one's TURNIN targets, up to 40 names, rebuilt
-on every repaint. Never over an existing mark, on a player or a corpse, or in
-a raid. `questicons` switches it off. The step's targets are worked out
+on every repaint. Only while a guide is open: the guide window shown (or
+hidden for combat or an instance, as for the buttons) and a guide loaded
+(`HasNoGuide` false). Never over an existing mark, on a player or a corpse, or
+in a raid. `questicons` switches it off. The step's targets are worked out
 whether or not the Targets window is showing: the icons and the macro use
 them too.
 

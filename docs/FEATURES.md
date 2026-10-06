@@ -450,7 +450,10 @@ marker goes on them by itself, as RestedXP's Quest Icons do:
 | Cross | Loot | An enemy that drops what the quest wants collected |
 
 It covers the current step and every quest in your log: what an unfinished
-quest wants killed or looted, and who takes a finished one. It never replaces a
+quest wants killed or looted, and who takes a finished one. It marks only
+while a guide is open: with no guide, or the guide closed, nobody is marked
+(hidden in combat or a dungeon by the Appearance page, it still counts as
+open). It never replaces a
 marker already there (a party member's, say), skips players and corpses, and
 stays out of raids, where markers belong to the leaders. Someone marked for
 killing who turns out not to be attackable gets a square instead. Quest-log

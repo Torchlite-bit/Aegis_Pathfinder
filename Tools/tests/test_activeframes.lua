@@ -605,6 +605,28 @@ AegisPathfinder.db.char.questicons = nil
 AegisPathfinder.activeEvents:GetScript("OnEvent")()
 check(marks["Kobold Vermin"] == MARK.SKULL, "on by default")
 
+-- Only while a guide is open: not with its window closed, nor with no guide
+-- at all. Hidden for combat or an instance, it is still open.
+marks = {}
+guide:Hide()
+AegisPathfinder.activeEvents:GetScript("OnEvent")()
+check(marks["Kobold Vermin"] == nil, "nobody is marked with the guide closed")
+AegisPathfinder.hiddenForCombat = true
+AegisPathfinder.activeEvents:GetScript("OnEvent")()
+check(marks["Kobold Vermin"] == MARK.SKULL, "a guide hidden for combat still counts as open")
+AegisPathfinder.hiddenForCombat, marks = nil, {}
+AegisPathfinder.hiddenForInstance = true
+AegisPathfinder.activeEvents:GetScript("OnEvent")()
+check(marks["Kobold Vermin"] == MARK.SKULL, "and one hidden in a dungeon")
+AegisPathfinder.hiddenForInstance, marks = nil, {}
+guide:Show()
+AegisPathfinder.HasNoGuide = function() return true end
+AegisPathfinder.activeEvents:GetScript("OnEvent")()
+check(marks["Kobold Vermin"] == nil, "nobody is marked with no guide loaded")
+AegisPathfinder.HasNoGuide = nil
+AegisPathfinder.activeEvents:GetScript("OnEvent")()
+check(marks["Kobold Vermin"] == MARK.SKULL, "and with a guide open again, they are")
+
 -- Every quest in the log, not just the step's: its objectives while it is
 -- under way, whoever takes it once it is complete.
 questLog = {
