@@ -18,6 +18,23 @@ reports.
 
 ---
 
+## [0.23.2]
+
+### Fixed
+- **Class quests start where you are at level 10.** A Human warrior's Defensive
+  Stance guide sent you to Stormwind to take A Warrior's Training from Ilsa
+  Corbin. The same quest is given in Goldshire by Lyria Du Lac, where a
+  level-10 Human is, and that is where it starts now; you go on to Stormwind
+  for Harry Burlguard as before. Below level 20, a class quest given both in
+  your starting zone and in the city is picked up in the starting zone.
+  Checked across every class and race; three more change:
+  - a Horde warrior's Veteran Uzzek, from Tarshaw Jaggedscar in Razor Hill
+    rather than Sorek in Orgrimmar;
+  - an Undead hunter's The Hunter's Path, from Dark Ranger Lanissa in Tirisfal
+    Glades rather than Noel Bearfinger in the Undercity;
+  - a Gnome hunter's The Hunter's Path, from Thorgas Grimson in Dun Morogh
+    rather than Olmin Burningbeard in Ironforge.
+
 ## [0.23.1]
 
 ### Fixed
@@ -1679,6 +1696,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.23.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.23.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.23.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.24]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

@@ -235,6 +235,22 @@ local aquatic = races("Class/Druid: Aquatic Form (16)", "Alliance")
 check(has(aquatic, "Night Elf", 26) and not has(aquatic, "Night Elf", 27),
 	"A Lesson to Learn from Darnassus is the Night Elf's, though CMaNGOS names the Tauren")
 
+-- Below 20, a quest given in the starting zone and in the city is picked up
+-- in the starting zone: a level-10 Human warrior is in Elwynn Forest.
+local ds = guides["Class/Warrior: Defensive Stance (10)@Alliance"]
+check(ds and string.find(ds.text, "A A Warrior's Training |QID|1638| |N|Lyria Du Lac [^\n]*|Z|Elwynn Forest|")
+	and not string.find(ds.text, "Ilsa Corbin", 1, true),
+	"A Warrior's Training is picked up from Lyria Du Lac in Goldshire, not Ilsa Corbin in Stormwind")
+check(ds and string.find(ds.text, "T A Warrior's Training |QID|1638| |N|Harry Burlguard [^\n]*|Z|Stormwind City|"),
+	"and handed in to Harry Burlguard in Stormwind")
+local uzzek = guides["Class/Warrior: Defensive Stance (10)@Horde"]
+check(uzzek and string.find(uzzek.text, "A Veteran Uzzek |QID|1505| |N|Tarshaw Jaggedscar [^\n]*|Z|Durotar|"),
+	"Veteran Uzzek from Razor Hill's trainer, on the way to the Barrens")
+-- One NPC on two maps stays on the city's: Elanaria is in Darnassus.
+local elura = guides["Class/Warrior: Warrior's Weapon (10)@Alliance"]
+check(elura and string.find(elura.text, "A The Shade of Elura |QID|1686| |N|Elanaria [^\n]*|Z|Darnassus|"),
+	"Elanaria is named in Darnassus, not on Teldrassil's map")
+
 local _, rhok = races("Class/Hunter: Rhok'delar (60)", "Horde")
 check(rhok.group, "Rhok'delar needs a group")
 

@@ -416,6 +416,12 @@ are only found at startup.
       Blackstone Island, then Gan'rul Bloodeye in Orgrimmar; an Undead's goes to
       Carendin Halgar in the Undercity. Each quest's steps tick as you go, and
       the guide finishes by itself on the last hand-in.
+- [ ] A Human warrior's **Warrior: Defensive Stance (10)** starts in Goldshire:
+      A Warrior's Training from Lyria Du Lac, then Stormwind for Harry
+      Burlguard. A Horde warrior's takes Veteran Uzzek from Tarshaw Jaggedscar
+      in Razor Hill; an Undead hunter's The Hunter's Path from Dark Ranger
+      Lanissa in Tirisfal Glades; a Gnome hunter's from Thorgas Grimson in Dun
+      Morogh. A Night Elf's Elanaria is still pointed to in Darnassus.
 - [ ] On a character whose route does not take it (RestedXP or a zone guide),
       reaching a class quest's level brings **A class quest at your level**:
       Open puts the guide in a tab beside the route, and finishing it brings

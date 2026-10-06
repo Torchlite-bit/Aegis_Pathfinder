@@ -21,8 +21,9 @@ return [[
 
 N Defensive Stance |N|The warrior class quests, for Path of Defense, from level 10| |C|Warrior| |O|
 
+R Elwynn Forest |N|Travel to Elwynn Forest| |Z|Elwynn Forest| |R|Human|
+A A Warrior's Training |QID|1638| |N|Lyria Du Lac (41.1, 65.8)| |Z|Elwynn Forest| |C|Warrior| |R|Human|
 R Stormwind City |N|Travel to Stormwind City| |Z|Stormwind City| |R|Human|
-A A Warrior's Training |QID|1638| |N|Ilsa Corbin (80.4, 59.8)| |Z|Stormwind City| |C|Warrior| |R|Human|
 T A Warrior's Training |QID|1638| |N|Harry Burlguard (77.1, 53.3)| |Z|Stormwind City| |C|Warrior| |R|Human|
 A Bartleby the Drunk |QID|1639| |N|Harry Burlguard (77.1, 53.3)| |Z|Stormwind City| |C|Warrior| |R|Human|
 T Bartleby the Drunk |QID|1639| |N|Bartleby (77, 53.1)| |Z|Stormwind City| |C|Warrior| |R|Human|

@@ -7,8 +7,8 @@ return [[
 
 N Defensive Stance |N|The warrior class quests, for Path of Defense, from level 10| |C|Warrior| |O|
 
-R Orgrimmar |N|Travel to Orgrimmar| |Z|Orgrimmar| |R|Orc/Tauren/Troll/Goblin|
-A Veteran Uzzek |QID|1505| |N|Sorek (80.3, 32.6)| |Z|Orgrimmar| |C|Warrior| |R|Orc/Tauren/Troll/Goblin|
+R Durotar |N|Travel to Durotar| |Z|Durotar| |R|Orc/Tauren/Troll/Goblin|
+A Veteran Uzzek |QID|1505| |N|Tarshaw Jaggedscar (54.2, 42.5)| |Z|Durotar| |C|Warrior| |R|Orc/Tauren/Troll/Goblin|
 R The Barrens |N|Travel to the Barrens| |Z|The Barrens| |R|Orc/Tauren/Troll/Goblin|
 T Veteran Uzzek |QID|1505| |N|Uzzek (61.4, 21.1)| |Z|The Barrens| |C|Warrior| |R|Orc/Tauren/Troll/Goblin|
 A Path of Defense |QID|1498| |N|Uzzek (61.4, 21.1)| |Z|The Barrens| |C|Warrior| |R|Orc/Tauren/Troll/Goblin|

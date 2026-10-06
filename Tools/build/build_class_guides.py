@@ -78,6 +78,17 @@ HOME = {
     "Undead": ["Undercity", "Tirisfal Glades"],
     "Tauren": ["Thunder Bluff", "Mulgore"],
 }
+# Where each race is before level 20: its starting zone. A quest given both
+# there and in the city is picked up there -- a level-10 Human warrior takes
+# A Warrior's Training from Lyria Du Lac in Goldshire, not Ilsa Corbin in
+# Stormwind.
+START = {
+    "Human": "Elwynn Forest", "Dwarf": "Dun Morogh", "Gnome": "Dun Morogh",
+    "Night Elf": "Teldrassil", "High Elf": "Thalassian Highlands",
+    "Orc": "Durotar", "Troll": "Durotar", "Goblin": "Blackstone Island",
+    "Undead": "Tirisfal Glades", "Tauren": "Mulgore",
+}
+YOUNG = 20
 
 # The world map's zones (Tools/verify.py's MAP_ZONES): a step's waypoint has
 # to be on one of them.
@@ -703,9 +714,15 @@ class ClassGuide:
 
     # -- where things are ------------------------------------------------------
 
-    def spot(self, people, prefer):
+    def spot(self, people, prefer, first=()):
+        """Where to meet one of `people`. Each one's place goes by `prefer`:
+        pfQuest puts one NPC on two maps -- Darnassus' and Teldrassil's --
+        and the city is the one to name. Of different people, one in a
+        `first` zone comes before the rest: Goldshire's trainer before
+        Stormwind's, for a level-10 Human."""
         best = None
         for p in people:
+            mine = None
             for zone, pt in p["at"].items():
                 if zone in MAP_ZONES:
                     rank = (0, prefer.index(zone)) if zone in prefer else (2 if zone in TURTLE_ZONES else 1, 0)
@@ -714,8 +731,12 @@ class ClassGuide:
                     rank, cand = (3, 0), Spot(p["name"], inside=zone)
                 else:
                     continue
-                if best is None or rank < best[0]:
-                    best = (rank, cand)
+                if mine is None or rank < mine[0]:
+                    mine = (rank, cand)
+            if mine:
+                key = (0 if mine[1].zone in first else 1,) + mine[0]
+                if best is None or key < best[0]:
+                    best = (key, mine[1])
         if best:
             return best[1]
         for p in people:
@@ -726,19 +747,19 @@ class ClassGuide:
                 return Spot(p["name"], inside=where, text=text)
         return Spot(people[0]["name"]) if people else None
 
-    def giver(self, q, prefer):
+    def giver(self, q, prefer, first=()):
         t = self.q[q]
         if t["givers"]:
-            return self.spot(t["givers"], prefer)
+            return self.spot(t["givers"], prefer, first)
         for it in t["items"]:
             src = self.spot(it["from"], prefer) if it["from"] else None
             return Spot(it["name"], zone=src and src.zone, inside=src and src.inside, item=it["id"],
                         point=None)
         return None
 
-    def taker(self, q, prefer):
+    def taker(self, q, prefer, first=()):
         t = self.q[q]
-        return self.spot(t["takers"] or t["givers"], prefer)
+        return self.spot(t["takers"] or t["givers"], prefer, first)
 
     def work(self, q, prefer):
         """Where a quest's objectives are: (zone, points, other zones),
@@ -763,6 +784,11 @@ class ClassGuide:
     def home(self, races):
         """Where a chain's races start from: their class trainers' cities."""
         return [z for r in races for z in HOME[r]]
+
+    def first(self, races, x):
+        """Below level YOUNG, the races' starting zones: of two people who
+        give or take quest `x`, the one there comes first."""
+        return [START[r] for r in races] if self.q[x]["min"] < YOUNG else []
 
     def plan(self, seq, races):
         """The steps for one chain: [(line without |R|, ...)]."""
@@ -822,9 +848,9 @@ class ClassGuide:
             kind, x = e
             prefer = ([here] if here else []) + home
             if kind == "A":
-                s = self.giver(x, prefer)
+                s = self.giver(x, prefer, self.first(races, x))
             elif kind == "T":
-                s = self.taker(x, prefer)
+                s = self.taker(x, prefer, self.first(races, x))
             else:
                 w = self.work(x, prefer)
                 s = None if w is None else Spot(None, zone=w[0], inside=None if w[0] else w[1])

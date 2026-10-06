@@ -221,7 +221,10 @@ Bloodeye's in Orgrimmar, and a Goblin's starts with Dabbling In Darkness on
 Blackstone Island. Turtle WoW's High Elves and Goblins go the way of the race
 they share it with -- a High Elf paladin's Redemption is the Human's, after
 Paragon of Light -- unless they have their own (a High Elf hunter's taming is
-Damilara Sunsorrow's in Alah'Thalas). A guide picks up each quest, sends the
+Damilara Sunsorrow's in Alah'Thalas). Below level 20, a quest given both in
+the starting zone and in the city is picked up in the starting zone, where you
+are: a Human warrior's A Warrior's Training from Lyria Du Lac in Goldshire, a
+Horde warrior's Veteran Uzzek from Razor Hill's trainer. A guide picks up each quest, sends the
 arrow where its objectives are (a dungeon's door, for one inside), hands it
 in, and does what one quest needs of another first: the Charger's horse feed
 before the spirit's quest. It ends with the chain's last hand-in, so it
