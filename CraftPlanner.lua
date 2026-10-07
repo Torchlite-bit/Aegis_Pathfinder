@@ -35,8 +35,12 @@
 	     prices, until it stops changing.
 	  5. The finished route is played through in order, as you would craft
 	     it: what an earlier step made is used by a later one before
-	     anything is bought, and what is left over at the end is sold back
-	     to a merchant (if you let it).
+	     anything is bought. What is left over at the end is valued at what
+	     a merchant pays for it (if you ask), and said beside the route --
+	     never taken off its cost, and never used to choose it. A merchant
+	     who paid more for a Hunting Spear than its bars cost made it free
+	     to the planner, which then kept crafting it long after it went
+	     green: 92 spears for 40 points.
 
 	A reagent no one has a price for yet keeps its recipe out of the route,
 	unless the route cannot go on without it; then it is used, and said to be
@@ -424,11 +428,13 @@ end
 
 --[[ The dynamic program (step 3). ]]
 
--- One craft's cost for planning: its reagents, less what a merchant pays for
--- the result when selling back is on. Unpriced reagents stand in at P.PENALTY
--- when `lenient`, and are listed. Never below a copper, so of two recipes
--- that pay for themselves the one needing fewer crafts still wins.
-local function CraftCost(pricer, recipe, lenient, sellBack, self)
+-- One craft's cost for planning: what its reagents cost. What a merchant
+-- would pay for the result is left out: you may not sell it, and counting it
+-- made a recipe that sells well look free however many crafts it took.
+-- Unpriced reagents stand in at P.PENALTY when `lenient`, and are listed.
+-- Never below a copper, so of two free recipes the one needing fewer crafts
+-- still wins.
+local function CraftCost(pricer, recipe, lenient)
 	local cost, unpriced = 0, nil
 	for _, r in ipairs(recipe.reagents) do
 		local name = ReagentName(r)
@@ -442,10 +448,6 @@ local function CraftCost(pricer, recipe, lenient, sellBack, self)
 		cost = cost + c * r.qty
 	end
 	local gross = cost
-	if sellBack then
-		local sell = self:MerchantSellPrice(recipe.name)
-		if sell and sell > 0 then cost = cost - sell end
-	end
 	if cost < 1 then cost = 1 end
 	return cost, gross, unpriced
 end
@@ -573,7 +575,8 @@ local function Account(self, route, pricer, sellBack)
 		step.spend, step.unpriced = spend, missing
 	end
 
-	-- What is left over goes back to a merchant.
+	-- What is left over, and what a merchant would pay for it: said beside
+	-- the route's cost, not taken off it.
 	local credit, leftovers = 0, {}
 	for item, n in pairs(stock) do
 		if n > 0 then
@@ -587,7 +590,7 @@ local function Account(self, route, pricer, sellBack)
 
 	route.shopping, route.leftovers = shopping, leftovers
 	route.buyTotal, route.learnTotal, route.credit = buyTotal, learnTotal, credit
-	route.total = buyTotal + learnTotal - credit
+	route.total = buyTotal + learnTotal
 	route.unpriced, route.learnUnknown = unpriced, learnUnknown
 	route.buys = buys
 	return route
@@ -596,11 +599,13 @@ end
 --[[ Planning. ]]
 
 local function BuildRoute(self, profession, from, to, pricer, lenient, sellBack)
+	-- `sellBack` only says whether to value what is left over (Account); it
+	-- never changes the route.
 	local recipes = pricer.recipes
 	local costs, learns, gross, missing = {}, {}, {}, {}
 	for i, recipe in ipairs(recipes) do
 		if pricer.Usable(recipe, lenient) then
-			local c, g, unpriced = CraftCost(pricer, recipe, lenient, sellBack, self)
+			local c, g, unpriced = CraftCost(pricer, recipe, lenient)
 			if c then
 				local fee = pricer.Learn(recipe)
 				if not fee then fee = P.PENALTY end
@@ -651,8 +656,9 @@ end
 
 --- The cheapest route from skill `from` to `to` in a profession.
 ---
---- opts (all optional): sellBack -- sell leftovers to a merchant (defaults to
---- the character's setting); known -- a set of known recipe names (defaults
+--- opts (all optional): sellBack -- value what is left over at what a
+--- merchant pays (defaults to the character's setting; never changes the
+--- route); known -- a set of known recipe names (defaults
 --- to what the profession window showed); merchant(item), market(item) --
 --- price sources, for the tests.
 ---
@@ -662,7 +668,9 @@ end
 ---   lenient } where each step is { name, recipe, from, to, crafts,
 --- expected, perCraft, spend, learnPaid, buys, unpriced }. `reached` short
 --- of `to` means no recipe the planner may use goes further; `lenient`
---- means the route had to lean on recipes with unpriced reagents.
+--- means the route had to lean on recipes with unpriced reagents. `total`
+--- is what the route costs; `credit`, what a merchant would pay for what is
+--- left over, is not taken off it.
 function AegisPathfinder:PlanCraftRoute(profession, from, to, opts)
 	opts = opts or {}
 	local recipes = self:GetRecipeBook(profession)

@@ -2,11 +2,12 @@
 	score, in the options window under Gear.
 
 	Zygor's Item Score page, in this addon's language: the spec you are
-	scored as (Auto follows your talents), a line saying where that came from
-	and whether the weights are the defaults or yours, "Show all stats", and
-	every weight down the left, a box each. Only the stats your spec weighs
-	are listed until "Show all stats" is on. Beside them, the weights as a
-	string in OctoPawn's format, to import or export; under them, Reset.
+	scored as (Auto follows your talents), a line saying where that came from,
+	which set of weights it is (leveling until 60, or 60) and whether they are
+	the defaults or yours, "Show all stats", and every weight down the left, a
+	box each. Only the stats your spec weighs are listed until "Show all
+	stats" is on. Beside them, the weights as a string in OctoPawn's format,
+	to import or export; under them, Reset weights.
 
 	Above the weights, Pawn's specs: a switch for each spec of your class to
 	score as well as yours -- a line each on tooltips, weighed against the
@@ -28,7 +29,7 @@ local L = {
 	-- The name column fits "Armor Penetration" and "Casting Regen %" on a line:
 	-- at 100px they wrapped, two cramped lines in a 26px row (seen in game).
 	ROW_H = 26, BOX_W = 58, BOX_H = 20, LIST_W = 206, GAP = 16, BUTTON_H = 22,
-	SPEC_W = 200, NOTE_H = 44, LABEL_X = 8, RESET_W = 120, STATUS_H = 44,
+	SPEC_W = 200, NOTE_H = 44, LABEL_X = 8, RESET_W = 136, STATUS_H = 44,
 }
 
 --- "SPELL POWER" -> "Spell Power", "WEAPON DPS" -> "Weapon DPS".
@@ -188,10 +189,10 @@ function AegisPathfinder:CreateItemScorePage(body, width, top, bottom)
 	page.shareH = 16 + (L.BUTTON_H + 2) + 6 + L.BUTTON_H + 6 + L.BUTTON_H + 8 + L.STATUS_H
 
 	-- Under the weights: back to the defaults. Placed as the list is drawn.
-	local reset = Theme:PanelButton(body, "Reset", L.RESET_W, L.BUTTON_H)
+	local reset = Theme:PanelButton(body, "Reset weights", L.RESET_W, L.BUTTON_H)
 	reset:SetScript("OnClick", function()
 		AegisPathfinder.ItemScore:ResetWeights()
-		page.said = "Back to the defaults."
+		page.said = "Back to the default weights."
 		AegisPathfinder:UpdateItemScorePage()
 	end)
 
@@ -281,8 +282,13 @@ function AegisPathfinder:UpdateItemScorePage()
 	local whence = (why == "picked" and "the spec you picked")
 		or (why == "talents" and "your talents")
 		or "your class's usual leveling spec, until you have talents"
-	page.note:SetText("Scoring as " .. IS:SpecLabel(spec) .. ", from " .. whence .. ".\n"
-		.. (IS:IsCustom(class, spec) and "You are using your own weights." or "These are the default weights."))
+	-- Which set: leveling's below 60, then 60's; a tank's is the same throughout.
+	local _, set = IS:Defaults(class, spec)
+	local which = (set == "leveling" and "Leveling weights, until level " .. IS.MAX_LEVEL)
+		or (IS:Level() < IS.MAX_LEVEL and "Tank weights, the same at every level")
+		or "Level " .. IS.MAX_LEVEL .. " weights"
+	page.note:SetText("Scoring as " .. IS:SpecLabel(spec) .. ", from " .. whence .. ".\n" .. which
+		.. (IS:IsCustom(class, spec) and ", with your own changes." or ": the defaults."))
 	page.status:SetText(page.said or "")
 	page.showAll:SetOn(IS.Settings().showall)
 	-- Your spec is always scored; the others are yours to switch on.

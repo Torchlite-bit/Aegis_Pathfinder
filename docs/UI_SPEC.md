@@ -523,13 +523,15 @@ switchOn colour with a tick. They hold off with the Gear Finder, as its
 switches do.
 
 **Item Score** (`GearFrame.lua`) is Zygor's page of the same name: the spec
-picker and your class, a note on where the spec came from and whether the
-weights are the defaults or yours, *Show all stats*, then the weights one to a
+picker and your class, a note on where the spec came from, which set of
+weights it is (*Leveling weights, until level 60*, *Level 60 weights*, or *Tank
+weights, the same at every level*) and whether they are the defaults or yours,
+*Show all stats*, then the weights one to a
 row down the left — label (134px, so the longest stat names stay on one line),
 then a 58px field (black, with a hairline edge) —
 and beside them a *Share weights* column: the OctoPawn string's field with
-**Import** and **Export** under it, and what they did. **Reset** sits under the
-longer column. The list's length follows the spec and *Show all stats*, so the
+**Import** and **Export** under it, and what they did. **Reset weights**
+(136px) sits under the longer column. The list's length follows the spec and *Show all stats*, so the
 page sets its own height as it is drawn and the window keeps your place while
 it changes. It used to be a window of its own. Zygor's has a many-line box for
 the string; here the field is one line that scrolls sideways, so the page
@@ -1007,10 +1009,11 @@ beside the guide like the shopping list, until dragged (`craftframe`).
   you are reading, else the last one planned, else the first you have. At the
   right, `SKILL 41 TO 300` (`display` 12, dim): from your current skill to
   where the route gets.
-- **Total** (`display` 18, gold) and the crafts beside it. A route that pays for
-  itself by selling back shows `+` and the amount in the accent, and says so.
-- **Breakdown** (`body` 10, dim): reagents, recipes, what is sold back, how many
-  items have no price, and where the route stops if it stops short.
+- **Total** (`display` 18, gold) and the crafts beside it: what the route
+  costs, reagents and recipes.
+- **Breakdown** (`body` 10, dim): reagents, recipes, what a merchant would pay
+  for the leftovers ("leftovers sell for about 3g"), how many items have no
+  price, and where the route stops if it stops short.
 - **Status line**: where auction prices come from ("your scan 2 h ago and Aegis:
   Exchange"), or gold when there are none or some reagents have no price, or the
   scan's progress while it runs.
@@ -1020,8 +1023,9 @@ beside the guide like the shopping list, until dragged (`craftframe`).
   with an unpriced reagent is gold. Hovering a row shows the expected crafts,
   the cost of one, how the recipe is learned, what to buy, what is made first,
   and what has no price.
-- **Sell what is left over to a merchant** (`Theme:Switch`): whether leftovers
-  count against the cost. `char.craftsellback`, on by default.
+- **Say what a merchant pays for what is left over** (`Theme:Switch`): whether
+  the breakdown says it. `char.craftsellback`, on by default. It never changes
+  the route or its cost.
 - **Scan prices** / **Stop scan** and **Load as guide** (`Theme:PanelButton`,
   half width each).
 
@@ -1046,7 +1050,11 @@ frame.
    auction listings, and planned again at those prices until it settles.
 5. Accounting: the route is played through in order -- an earlier step's
    products are used by a later one before anything is bought -- and what is
-   left is sold back if the switch says so.
+   left is valued at what a merchant pays, if the switch says so. That value is
+   said, never taken off the cost: in planning, a craft costs its reagents.
+   Taking a merchant's price off made a recipe whose result sold for more than
+   its reagents cost nothing, and the planner crafted it to grey (92 Hunting
+   Spears for 40 points).
 
 A known recipe is free to learn; a drop or reputation recipe is only planned
 once known; `skip` recipes (cooldowns, rare drops) never. A reagent with no
@@ -1145,8 +1153,10 @@ square. On `UPDATE_MOUSEOVER_UNIT` and `PLAYER_TARGET_CHANGED` the unit
 targets first, then, for each quest in the log (ids from ClassicAPI's
 `C_QuestLog.GetQuestIDForLogIndex`, headers skipped), an unfinished quest's
 COMPLETE targets or a finished one's TURNIN targets, up to 40 names, rebuilt
-on every repaint. Never over an existing mark, on a player or a corpse, or in
-a raid. `questicons` switches it off. The step's targets are worked out
+on every repaint. Only while a guide is open: the guide window shown (or
+hidden for combat or an instance, as for the buttons) and a guide loaded
+(`HasNoGuide` false). Never over an existing mark, on a player or a corpse, or
+in a raid. `questicons` switches it off. The step's targets are worked out
 whether or not the Targets window is showing: the icons and the macro use
 them too.
 

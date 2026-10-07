@@ -18,6 +18,96 @@ reports.
 
 ---
 
+## [0.23.4]
+
+### Changed
+- **New stat weights for the item score.** Players reported odd weights, a
+  leveling Affliction warlock's Stamina far too low among them. OctoPawn's
+  defaults are replaced by weights worked out from the game's own formulas
+  for every class and spec, then moved most of the way toward Pawn's Classic
+  Era scales (HawsJon's):
+  - **Two sets, leveling and 60.** Below 60, Stamina, Spirit and regen count
+    for more, because they keep you going between pulls. At 60, crit and hit
+    count for more. The scores change over the moment you reach 60.
+  - **Tanks use the tank set from the start.** Protection warriors and
+    paladins, bears and the shaman tank weigh Stamina, Defense and avoidance
+    at every level.
+  - **A ranged weapon's DPS is its own stat.** A bow's, gun's, crossbow's,
+    wand's or thrown weapon's DPS is now *Ranged Weapon DPS*. A hunter's bow
+    counts for far more than its melee weapon, and a leveling caster's wand
+    counts for something.
+  - Turtle WoW's own stats (Fortune, Avoidance, Lifesteal and the like) keep
+    OctoPawn's weight, rescaled.
+- **Your own changes start again.** Changes made to the old weights are
+  cleared once, and a line in chat says so. You can still change weights on
+  the Item Score page. Changes are now kept apart for the leveling and 60
+  sets, and **Reset weights** puts the set you are on back to the defaults.
+  The page says which set it shows.
+- **Exported weights carry every stat.** The defaults now differ from
+  OctoPawn's, so a scale pasted into OctoPawn or another character still
+  arrives whole.
+
+## [0.23.3]
+
+### Fixed
+- **The item score reads tooltips right.** Four reading mistakes made some
+  items score far off, whatever the weights:
+  - **Mana and health per 5 always read as 5.** "Restores 12 mana per 5 sec."
+    scored as 5, and so did "Restores 2 …": the number was taken from the
+    "5" in the stat's own name. It is the line's number now.
+  - **Spell crit counted as melee crit as well.** A Retribution Paladin rated
+    a caster's spell crit ring above a melee crit one, and a warrior got crit
+    points from it. Ranged crit no longer counts as melee crit either.
+  - **Mana per 5 also counted as a mana pool**, "+5 mana" on top of the regen.
+  - **"Damage and healing" counted only as spell power.** A Holy Priest scored
+    "+22 damage and healing" at 12 and "+44 healing" at 64, though the first
+    heals for all 22. It now counts as healing as well; a healer's spell
+    power weight is for its damage side.
+
+## [0.23.2]
+
+### Fixed
+- **Class quests start where you are at level 10.** A Human warrior's Defensive
+  Stance guide sent you to Stormwind to take A Warrior's Training from Ilsa
+  Corbin. The same quest is given in Goldshire by Lyria Du Lac, where a
+  level-10 Human is, and that is where it starts now; you go on to Stormwind
+  for Harry Burlguard as before. Below level 20, a class quest given both in
+  your starting zone and in the city is picked up in the starting zone.
+  Checked across every class and race; three more change:
+  - a Horde warrior's Veteran Uzzek, from Tarshaw Jaggedscar in Razor Hill
+    rather than Sorek in Orgrimmar;
+  - an Undead hunter's The Hunter's Path, from Dark Ranger Lanissa in Tirisfal
+    Glades rather than Noel Bearfinger in the Undercity;
+  - a Gnome hunter's The Hunter's Path, from Thorgas Grimson in Dun Morogh
+    rather than Olmin Burningbeard in Ironforge.
+
+## [0.23.1]
+
+### Fixed
+- **The cheapest crafting route no longer asks for 92 Hunting Spears.** With
+  selling leftovers to a merchant on (the default), what a merchant pays for a
+  craft came off its cost. A Hunting Spear is listed as selling for 4g 5s, more
+  than its Bronze Bars cost, so every spear cost nothing to the planner, which
+  kept crafting them long after they went green: 92 for 40 points, and 92 Iron
+  Lanterns for 160–200. The leftovers were then counted as about 300 gold back.
+  - A craft now costs what its reagents cost. What a merchant pays never
+    chooses the route, so a recipe going green gives way to one still orange
+    or yellow when that is cheaper per point.
+  - The total is what the route costs. What a merchant would pay for the
+    leftovers is said beside it, "leftovers sell for about …", and is no longer
+    taken off. The switch now reads *Say what a merchant pays for what is left
+    over*; off, that line goes, and the route stays the same.
+
+## [0.23.0]
+
+### Fixed
+- **Quest icons no longer mark mobs with no guide open.** Mousing over or
+  targeting anyone a quest in your log wanted put a raid marker on them even
+  with the guide closed, or no guide loaded at all. They now mark only while a
+  guide is open. Hidden in combat or a dungeon by the Appearance page, the
+  guide still counts as open. The target buttons and macros mark as before,
+  since you press them.
+
 ## [0.22.24]
 
 ### Changed
@@ -1652,6 +1742,11 @@ on, each change gets its own entry.
 
 ---
 
+[0.23.4]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.23.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.23.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.23.1]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.23.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.24]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.23]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.22.22]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

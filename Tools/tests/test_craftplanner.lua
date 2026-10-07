@@ -333,8 +333,8 @@ A:RegisterRecipeBook("Sellcraft", {
 A:RegisterMerchantPrices({ sell = { Trinket = 3 } })
 market = { Ore = 10 }
 route = A:PlanCraftRoute("Sellcraft", 1, 10, opts({ sellBack = true }))
-check(route.credit == 3 * route.steps[1].crafts, "leftovers are sold back (%s)", tostring(route.credit))
-check(route.total == route.buyTotal + route.learnTotal - route.credit, "the total nets the credit")
+check(route.credit == 3 * route.steps[1].crafts, "what the leftovers sell for is said (%s)", tostring(route.credit))
+check(route.total == route.buyTotal + route.learnTotal, "but not taken off the route's cost")
 route = A:PlanCraftRoute("Sellcraft", 1, 10, opts({ sellBack = false }))
 check(route.credit == 0 and route.total == route.buyTotal, "and not when selling back is off")
 A:RegisterMerchantPrices({ sell = { Trinket = 0 } })
@@ -344,6 +344,27 @@ A.db.char.craftsellback = false
 route = A:PlanCraftRoute("Sellcraft", 1, 10, { known = {}, market = function(i) return market[i] end, merchant = function() end })
 check(route.sellBack == false, "the character's setting is the default")
 A.db.char.craftsellback = nil
+
+-- What a merchant pays never chooses the route. A Spear that sells for far
+-- more than its Bar would cost nothing if its price came off: the planner
+-- kept crafting it while it went green -- 92 Hunting Spears for 40 points.
+-- Past 10 the Lantern is still orange, and once the Spear's chance falls
+-- below four in five, the cheaper way on.
+A:RegisterRecipeBook("Resalecraft", {
+	"Spear = Bar @ 1-10-15-20 | trainer 0",
+	"Lantern = Oil @ 10-20-25-30 | trainer 0",
+})
+A:RegisterMerchantPrices({ sell = { Spear = 1000 } })
+market = { Bar = 20, Oil = 25 }
+for _, sell in ipairs({ true, false }) do
+	route = A:PlanCraftRoute("Resalecraft", 1, 20, opts({ sellBack = sell }))
+	local names = {}
+	for _, s in ipairs(route.steps) do table.insert(names, s.name .. " " .. s.from .. "-" .. s.to) end
+	check(table.getn(route.steps) == 2 and route.steps[1].name == "Spear" and route.steps[2].name == "Lantern"
+		and route.steps[2].from == 12, "sell-back %s: Spears to 12, then Lanterns (%s)", tostring(sell),
+		table.concat(names, ", "))
+	check(route.crafts == 20, "twenty crafts, not the thirty-nine of Spears to grey (%d)", route.crafts)
+end
 
 -- Forty is priced as forty -------------------------------------------------------------
 
@@ -582,11 +603,19 @@ for _, p in ipairs({ "Alchemy", "Blacksmithing", "Cooking", "Enchanting", "Engin
 	local rt = A:PlanCraftRoute(p, 1, 300, { known = {}, market = synthetic })
 	local took = os.clock() - started
 	check(rt and rt.reached == 300, "%s gets to 300 (%s)", p, rt and rt.reached or "nil")
-	-- Selling back can make a route pay for itself, so the total may be
-	-- negative; what it buys cannot be.
-	check(rt and rt.buyTotal > 0 and math.abs(rt.total) < 100000000, "%s costs something believable", p)
+	check(rt and rt.buyTotal > 0 and rt.total >= rt.buyTotal and rt.total < 100000000,
+		"%s costs something believable", p)
 	check(rt and not rt.lenient, "%s needs no unpriced recipe once everything has a price", p)
 	check(took < 1, "%s plans in under a second here (%.2fs)", p, took)
+	-- Selling back or not, the same route: what a merchant pays is said, never
+	-- planned on.
+	local other = A:PlanCraftRoute(p, 1, 300, { known = {}, market = synthetic, sellBack = not rt.sellBack })
+	local same = rt and other and table.getn(rt.steps) == table.getn(other.steps) and rt.total == other.total
+	for i, s in ipairs(rt and rt.steps or {}) do
+		local o = other and other.steps[i]
+		if not o or o.name ~= s.name or o.from ~= s.from or o.crafts ~= s.crafts then same = false end
+	end
+	check(same, "%s takes the same route with sell-back on or off", p)
 end
 
 -- From part-way, the route starts where you are.

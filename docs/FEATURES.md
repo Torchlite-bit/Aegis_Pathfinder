@@ -221,7 +221,10 @@ Bloodeye's in Orgrimmar, and a Goblin's starts with Dabbling In Darkness on
 Blackstone Island. Turtle WoW's High Elves and Goblins go the way of the race
 they share it with -- a High Elf paladin's Redemption is the Human's, after
 Paragon of Light -- unless they have their own (a High Elf hunter's taming is
-Damilara Sunsorrow's in Alah'Thalas). A guide picks up each quest, sends the
+Damilara Sunsorrow's in Alah'Thalas). Below level 20, a quest given both in
+the starting zone and in the city is picked up in the starting zone, where you
+are: a Human warrior's A Warrior's Training from Lyria Du Lac in Goldshire, a
+Horde warrior's Veteran Uzzek from Razor Hill's trainer. A guide picks up each quest, sends the
 arrow where its objectives are (a dungeon's door, for one inside), hands it
 in, and does what one quest needs of another first: the Charger's horse feed
 before the spirit's quest. It ends with the chain's last hand-in, so it
@@ -368,8 +371,9 @@ Exchange's demo mode has to be off.
 `/apg craft`) opens a window that works out the cheapest way from your skill to
 300 in a profession at today's prices, as
 [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) does — without
-needing CraftRoute. It shows the total, what it is made of (reagents, recipes,
-what you get back selling leftovers to a merchant), and a row per recipe: the
+needing CraftRoute. It shows the total, what it is made of (reagents and
+recipes, and beside them what a merchant would pay for the leftovers -- never
+taken off the cost, and never used to choose the route), and a row per recipe: the
 skill band, how many crafts, the reagents and what the step costs. Hover a row
 for how the recipe is learned, what to buy and what gets made first.
 
@@ -450,7 +454,10 @@ marker goes on them by itself, as RestedXP's Quest Icons do:
 | Cross | Loot | An enemy that drops what the quest wants collected |
 
 It covers the current step and every quest in your log: what an unfinished
-quest wants killed or looted, and who takes a finished one. It never replaces a
+quest wants killed or looted, and who takes a finished one. It marks only
+while a guide is open: with no guide, or the guide closed, nobody is marked
+(hidden in combat or a dungeon by the Appearance page, it still counts as
+open). It never replaces a
 marker already there (a party member's, say), skips players and corpses, and
 stays out of raids, where markers belong to the leaders. Someone marked for
 killing who turns out not to be attackable gets a square instead. Quest-log
@@ -762,17 +769,37 @@ low for says the level it becomes an upgrade at.
 
 - **The score** is the item's stats — read off its tooltip, as a 1.12 client
   gives nothing else — weighted for your class and spec, with soft caps on hit,
-  crit, defence and the like so that stacking one stat does not run away.
+  crit, defence and the like so that stacking one stat does not run away. Each
+  line counts as what it says: spell crit as spell crit (not melee crit too),
+  "Restores 12 mana per 5 sec." as 12 regen (not a mana pool as well), and
+  "damage and healing" as both spell power and healing.
 - **Your spec** is the talent tree you have put most points into, or the one
   you pick; with no talents yet, your class's usual levelling spec.
 - **Comparing:** a ring or trinket is weighed against the weaker of the two you
   wear, a one-hander against either hand once you can dual wield, a two-hander
   against both hands together. Enchants are left out on both sides.
-- **The weights** are OctoPawn's defaults for every class and spec. The
-  options window's **Item Score** page, under **Gear** (`/apg gear`, or **Stat
-  weights** on the Gear page), lists them down the left with a box each, as
-  Zygor's does. Change any of them, pick another spec, reset, or import and
-  export them as a string OctoPawn reads too.
+- **The weights** are worked out from the game's own formulas for every class
+  and spec, each in one unit -- a point of attack power (ranged attack power
+  for hunters), of spell damage, of healing, or of Stamina for tanks -- and
+  then moved most of the way toward Pawn's Classic Era scales (HawsJon's).
+  There are two sets: **leveling**, used until 60, where Stamina, Spirit and
+  regen count for more because they keep you going between pulls, and **60**,
+  for pre-raid gear, where crit and hit count for more. The scores change over
+  to the 60 set the moment you reach 60. Tanks (Protection warriors and
+  paladins, bears, the shaman tank) use their one set at every level. A bow's,
+  gun's, crossbow's, wand's or thrown weapon's DPS is its own stat, **ranged
+  weapon DPS**: a hunter's bow counts for far more than its melee weapon, and
+  a leveling caster's wand for something. Turtle WoW's own stats (Fortune,
+  Avoidance, Lifesteal and the like) keep OctoPawn's weight, rescaled.
+- **The Item Score page**, in the options window under **Gear** (`/apg gear`,
+  or **Stat weights** on the Gear page), lists the weights in use down the
+  left with a box each, as Zygor's does, and says which set they are. Change
+  any of them -- a change is kept for the set it was made in, so one made
+  while leveling is not carried to 60 -- pick another spec, **Reset weights**
+  to put the set back to the defaults, or import and export them as a string
+  OctoPawn reads too. An export holds every stat, so the scale arrives whole
+  wherever the defaults differ. Changes made to the old (OctoPawn's) weights
+  were cleared once in 0.23.4, with a line in chat saying so.
 - **More than one spec, as Pawn does.** The Item Score page has a switch for
   each spec of your class. Yours is always on; switch on another -- the tank
   set you carry, the healing set -- and every tooltip gets a line for it too,

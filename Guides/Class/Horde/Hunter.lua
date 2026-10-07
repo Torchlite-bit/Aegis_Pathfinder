@@ -32,7 +32,7 @@ T Taming the Beast |QID|6083| |N|Thotar (51.8, 43.5)| |Z|Durotar| |C|Hunter| |R|
 A Taming the Beast |QID|6082| |N|Thotar (51.8, 43.5)| |Z|Durotar| |C|Hunter| |R|Orc/Troll|
 C Taming the Beast |QID|6082| |N|Use the Taming Rod to tame an Armored Scorpid. Practice your skills| |U|15920| |C|Hunter| |R|Orc/Troll|
 T Taming the Beast |QID|6082| |N|Thotar (51.8, 43.5)| |Z|Durotar| |C|Hunter| |R|Orc/Troll|
-A The Hunter's Path |QID|40261| |N|Noel Bearfinger (61.4, 24.8)| |Z|Undercity| |C|Hunter| |O| |R|Undead|
+A The Hunter's Path |QID|40261| |N|Dark Ranger Lanissa (60.7, 53.5)| |Z|Tirisfal Glades| |C|Hunter| |O| |R|Undead|
 R Tirisfal Glades |N|Travel to Tirisfal Glades| |Z|Tirisfal Glades| |R|Undead|
 T The Hunter's Path |QID|40261| |N|Liott Maneskin (60.1, 51.5)| |Z|Tirisfal Glades| |C|Hunter| |O| |R|Undead|
 A Taming the Beast |QID|40248| |N|Liott Maneskin (60.1, 51.5)| |Z|Tirisfal Glades| |C|Hunter| |R|Undead|

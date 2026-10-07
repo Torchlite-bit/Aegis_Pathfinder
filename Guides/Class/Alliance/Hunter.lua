@@ -21,7 +21,7 @@ A Training the Beast |QID|41134| |N|Daisy Windhelm (40.9, 65.9)| |Z|Elwynn Fores
 R Stormwind City |N|Travel to Stormwind City| |Z|Stormwind City| |R|Human|
 T Training the Beast |QID|41134| |N|Marven (33.5, 71.8)| |Z|Stormwind City| |C|Hunter| |R|Human|
 A The Hunter's Path |QID|6074| |N|Thorgas Grimson (29.2, 67.5)| |Z|Dun Morogh| |C|Hunter| |O| |R|Dwarf|
-A The Hunter's Path |QID|80339| |N|Olmin Burningbeard (70.9, 83.6)| |Z|Ironforge| |C|Hunter| |O| |R|Gnome|
+A The Hunter's Path |QID|80339| |N|Thorgas Grimson (29.2, 67.5)| |Z|Dun Morogh| |C|Hunter| |O| |R|Gnome|
 R Dun Morogh |N|Travel to Dun Morogh| |Z|Dun Morogh| |R|Dwarf/Gnome|
 T The Hunter's Path |QID|6074| |N|Grif Wildheart (45.8, 53)| |Z|Dun Morogh| |C|Hunter| |O| |R|Dwarf|
 A Taming the Beast |QID|6064| |N|Grif Wildheart (45.8, 53)| |Z|Dun Morogh| |C|Hunter| |R|Dwarf|

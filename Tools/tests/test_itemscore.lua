@@ -91,6 +91,44 @@ ITEMS[3] = { loc = "INVTYPE_HEAD", lines = {
 info = IS:Read("item:3:0:0:0")
 check(info.stats["SPELL POWER"] == 12, "spell power read, got %s", tostring(info.stats["SPELL POWER"]))
 check(info.stats.HIT == nil and info.stats.STAMINA == nil, "a set bonus counts for nothing")
+-- It heals as much as it says: healing too, where a healer's weight is.
+check(info.stats.HEALING == 12, "damage and healing is healing as well, got %s", tostring(info.stats.HEALING))
+
+-- A narrower stat is not counted again as its general one, and the number is
+-- the line's, not the stat's name's ("mana per 5" has a 5 of its own).
+ITEMS[901] = { loc = "INVTYPE_FINGER", lines = { "Ring", "Finger",
+	"Equip: Improves your chance to get a critical strike with spells by 1%.",
+	"Equip: Restores 12 mana per 5 sec.",
+	"Equip: Restores 4 health per 5 sec.",
+} }
+info = IS:Read("item:901:0:0:0")
+check(info.stats["SPELL CRIT"] == 1 and info.stats.CRIT == nil, "spell crit is not melee crit too, got %s",
+	tostring(info.stats.CRIT))
+check(info.stats["MANA PER 5"] == 12, "twelve mana per 5 is twelve, got %s", tostring(info.stats["MANA PER 5"]))
+check(info.stats.MANA == nil, "and not a mana pool as well, got %s", tostring(info.stats.MANA))
+check(info.stats["HEALTH PER 5"] == 4 and info.stats.HEALTH == nil, "four health per 5 is four, got %s",
+	tostring(info.stats["HEALTH PER 5"]))
+ITEMS[902] = { loc = "INVTYPE_RANGED", lines = { "Bow", { "Ranged", "Bow" },
+	"Equip: Improves your chance to get a critical strike with ranged weapons by 1%." } }
+info = IS:Read("item:902:0:0:0")
+check(info.stats["RANGED CRIT"] == 1 and info.stats.CRIT == nil, "ranged crit is not melee crit too")
+
+-- A bow's, a wand's or a thrown weapon's DPS is ranged weapon DPS, not a
+-- melee weapon's: a hunter's bow is worth far more than its sword.
+ITEMS[903] = { loc = "INVTYPE_RANGED", lines = { "Hunting Bow", { "Ranged", "Bow" },
+	{ "12 - 23 Damage", "Speed 2.70" }, "(6.5 damage per second)", "+3 Agility" } }
+ITEMS[904] = { loc = "INVTYPE_RANGEDRIGHT", lines = { "Wand", { "Ranged", "Wand" },
+	{ "13 - 25 Shadow Damage", "Speed 1.50" }, "(12.7 damage per second)" } }
+ITEMS[905] = { loc = "INVTYPE_THROWN", lines = { "Knives", { "Thrown", "Thrown" },
+	{ "5 - 10 Damage", "Speed 2.00" }, "(3.8 damage per second)" } }
+for id, dps in pairs({ [903] = 6.5, [904] = 12.7, [905] = 3.8 }) do
+	info = IS:Read("item:" .. id .. ":0:0:0")
+	check(near(info.stats["RANGED DPS"], dps) and info.stats.DPS == nil, "item %d: %s ranged DPS, no melee DPS (got %s, %s)",
+		id, dps, tostring(info.stats["RANGED DPS"]), tostring(info.stats.DPS))
+end
+check(IS:Read("item:903:0:0:0").stats.AGILITY == 3, "a bow's other stats still read")
+check(near(IS:Read("item:2:0:0:0").stats.DPS, 5.3) and IS:Read("item:2:0:0:0").stats["RANGED DPS"] == nil,
+	"a sword's DPS stays melee DPS")
 
 -- Weapon skills are not part of the score.
 ITEMS[8] = { loc = "INVTYPE_HAND", lines = { "Edgemaster's Handguards", "Hands", "Equip: Increased Axes +7.",
@@ -146,14 +184,26 @@ IS:SetWeight("STRENGTH", 9)
 IS:ResetWeights()
 check(IS:Weights().STRENGTH == default and not IS:IsCustom(), "reset goes back to the defaults")
 
--- Sharing, in OctoPawn's string.
+-- Sharing, in OctoPawn's string: every stat, so the scale arrives whole
+-- wherever its defaults differ (OctoPawn's, or this addon's other set).
 IS:SetWeight("STRENGTH", 2.5)
 IS:SetWeight("SPELL POWER", 0)
 local text = IS:Export()
-check(text == "OPW1:PALADIN:Holy:*SPELL POWER:0|STRENGTH:2.5", "export, got %s", text)
+local Data = AegisPathfinder.ItemScoreData
+local parts = 0
+for _ in string.gfind(text, "[^|*]+:[%d%.%-]+") do parts = parts + 1 end
+check(string.find(text, "^OPW1:PALADIN:Holy:%*") and parts == table.getn(Data.stats),
+	"export writes every stat (%d of %d): %s", parts, table.getn(Data.stats), string.sub(text, 1, 60))
+check(string.find(text, "|STRENGTH:2.5", 1, true) and string.find(text, "|SPELL POWER:0|", 1, true)
+	and string.find(text, "|HEALING:1|", 1, true), "with your changes and the defaults")
 IS:ResetWeights()
 local ok = IS:Import("  " .. text .. "  ")
 check(ok and IS:Weights().STRENGTH == 2.5 and IS:Weights()["SPELL POWER"] == 0, "import puts them back")
+local kept = 0
+for _ in pairs(IS.Settings().custom[IS:CustomKey()] or {}) do kept = kept + 1 end
+check(kept == 2, "and keeps as changes only what differs from the defaults, got %d", kept)
+ok = IS:Import("OPW1:PALADIN:Holy:*STRENGTH:3")
+check(ok and IS:Weights().STRENGTH == 3 and IS:Weights().HEALING == 1, "OctoPawn's short string: those stats, over the defaults")
 ok = IS:Import("OPW1:PALADIN:Retribution:*")
 check(ok and IS:Spec() == "Retribution" and not IS:IsCustom(), "an empty import picks the spec, with its defaults")
 local bad, why2 = IS:Import("OPW1:MAGE:Frost:*")
@@ -163,6 +213,103 @@ check(not bad and string.find(why2, "lots"), "a value that is not a number is re
 check(not IS:Import("hello"), "and so is anything else")
 IS:SetSpec(nil)
 talents[1][2], talents[3][2] = 0, 11
+
+-- Leveling and 60 ------------------------------------------------------------------
+
+--[[ Two sets of defaults: leveling's below 60, 60's at it. The tanks have
+	one, used throughout. A change is kept for the set it was made in. ]]
+do
+	local level = 1
+	UnitLevel = function() return level end
+	local lev, set = IS:Defaults("PALADIN", "Retribution")
+	check(set == "leveling" and lev == Data.leveling.PALADIN.Retribution, "below 60, the leveling set")
+	level = 59
+	check(select(2, IS:Defaults("PALADIN", "Retribution")) == "leveling", "still at 59")
+	level = 60
+	local max
+	max, set = IS:Defaults("PALADIN", "Retribution")
+	check(set == "max" and max == Data.weights.PALADIN.Retribution, "at 60, the 60 set")
+	level = 12
+	max, set = IS:Defaults("PALADIN", "Protection")
+	check(set == "max" and max == Data.weights.PALADIN.Protection, "a tank uses the tank set at 12 too")
+	check(Data.leveling.PALADIN.Protection == nil and Data.leveling.WARRIOR.Protection == nil
+		and Data.leveling.DRUID.FeralBear == nil and Data.leveling.SHAMAN.EnhancementTank == nil,
+		"no tank has a leveling set")
+	local known = {}
+	for _, stat in ipairs(Data.stats) do known[stat] = true end
+	for class, specs in pairs(Data.weights) do
+		for spec, w in pairs(specs) do
+			local tank = spec == "Protection" or spec == "FeralBear" or spec == "EnhancementTank"
+			check(tank or Data.leveling[class][spec], "%s %s has a leveling set", class, spec)
+			local unknown = {}
+			for _, set in ipairs({ w, (Data.leveling[class] or {})[spec] or {} }) do
+				for stat in pairs(set) do if not known[stat] then table.insert(unknown, stat) end end
+			end
+			check(table.getn(unknown) == 0, "%s %s weighs only stats it knows: %s", class, spec, table.concat(unknown, ", "))
+		end
+	end
+	-- The weights players reported: a leveling Affliction warlock's Stamina.
+	local aff = Data.leveling.WARLOCK.Affliction
+	check(aff.STAMINA >= 0.8 and aff.STAMINA > aff.INTELLECT, "leveling Affliction weighs Stamina (%s) over Intellect (%s)",
+		tostring(aff.STAMINA), tostring(aff.INTELLECT))
+	check(Data.weights.WARLOCK.Affliction.STAMINA < aff.STAMINA, "and less at 60")
+	for _, spec in ipairs({ "BeastMastery", "Marksmanship", "Survival" }) do
+		local w = Data.weights.HUNTER[spec]
+		check(w["RANGED DPS"] > 5 * w.DPS, "a hunter's bow DPS is worth far more than a melee weapon's (%s)", spec)
+	end
+	check(Data.leveling.MAGE.Frost["RANGED DPS"] > Data.leveling.MAGE.Frost.DPS, "a leveling mage's wand counts")
+
+	-- A change made while leveling stays with the leveling set.
+	level = 30
+	IS:SetSpec("Retribution")
+	IS:ResetWeights()
+	IS:SetWeight("STAMINA", 4)
+	check(IS:Weights().STAMINA == 4 and IS:IsCustom(), "a change while leveling")
+	level = 60
+	check(IS:Weights().STAMINA == Data.weights.PALADIN.Retribution.STAMINA and not IS:IsCustom(),
+		"is not carried into the 60 set")
+	IS:SetWeight("STAMINA", 0.5)
+	level = 30
+	check(IS:Weights().STAMINA == 4, "and the 60 set's change does not touch leveling's")
+	IS:ResetWeights()
+	check(not IS:IsCustom(), "Reset weights clears the set scored with")
+	level = 60
+	check(IS:IsCustom(), "and only that one")
+	IS:ResetWeights()
+
+	-- The level-up event comes before UnitLevel says the new level.
+	level = 59
+	local onEvent = IS.events:GetScript("OnEvent")
+	event, arg1 = "PLAYER_LEVEL_UP", 60
+	onEvent()
+	check(IS:Level() == 60 and select(2, IS:Defaults()) == "max", "PLAYER_LEVEL_UP's 60 switches to the 60 set at once")
+	event, arg1 = nil, nil
+	level = 60
+	IS:SetSpec(nil)
+	UnitLevel = function() return 1 end
+end
+
+-- The old defaults' changes are cleared once, with a word in chat.
+do
+	local s = IS.Settings()
+	s.custom = { ["PALADIN:Holy"] = { STRENGTH = 3 } }
+	s.weightsVersion = nil
+	local said
+	local print = AegisPathfinder.Print
+	function AegisPathfinder:Print(msg) said = msg end
+	IS:Initialize()
+	check(next(s.custom) == nil and s.weightsVersion == IS.WEIGHTS_VERSION, "old changes cleared")
+	check(said and string.find(said, "new stat weights") and string.find(said, "cleared"), "and said so: %s", tostring(said))
+	said = nil
+	s.custom = { ["PALADIN:Holy"] = { STRENGTH = 3 } }
+	IS:Initialize()
+	check(s.custom["PALADIN:Holy"].STRENGTH == 3 and said == nil, "once only")
+	s.custom, s.weightsVersion = {}, nil
+	IS:Initialize()
+	check(said == nil and s.weightsVersion == IS.WEIGHTS_VERSION, "nothing to clear, nothing said")
+	AegisPathfinder.Print = print
+	s.custom = {}
+end
 
 -- Comparing with what you wear --------------------------------------------------------
 

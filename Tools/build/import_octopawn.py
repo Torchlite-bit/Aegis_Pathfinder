@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Convert OctoPawn's stat weights and stat patterns into ItemScoreData.lua.
+"""Take OctoPawn's stat patterns, soft caps, labels and weights into
+Tools/data/octopawn.json, and write ItemScoreData.lua from it.
 
     python3 Tools/build/import_octopawn.py <path to an OctoPawn checkout>
 
@@ -11,7 +12,10 @@ as plain tables: the weights (zeros dropped), the tooltip patterns in
 OctoPawn's order -- the order matters, the first match on a line wins over
 the general ones after it -- its soft caps, and its stat labels.
 
-Only the data is taken. The scoring in ItemScore.lua is this addon's own.
+Only the data is taken. The scoring in ItemScore.lua is this addon's own, and
+so are the weights it scores with (build_weights.py): OctoPawn's are kept as
+the starting point for the stats that model does not work out -- Turtle
+WoW's own, resistances, speed.
 
 Weapon skills (+Swords, +Daggers, ...) are left out, on the owner's call: the
 item score is Zygor's shape, which has none, and they were rows of near-zero
@@ -25,7 +29,10 @@ import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-OUT = os.path.join(ROOT, "ItemScoreData.lua")
+CACHE = os.path.join(ROOT, "Tools", "data", "octopawn.json")
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import build_weights  # noqa: E402
 
 DUMP = r"""
 local dir = arg[1]
@@ -69,17 +76,6 @@ io.write(table.concat(out, "\n"))
 EXCLUDED = {"SWORDS", "AXES", "MACES", "DAGGERS", "FIST WEAPONS", "POLEARMS", "STAVES",
             "BOWS", "GUNS", "CROSSBOWS", "THROWN", "WANDS"}
 
-CLASS_ORDER = ["WARRIOR", "PALADIN", "HUNTER", "ROGUE", "PRIEST", "SHAMAN", "MAGE", "WARLOCK", "DRUID"]
-
-
-def lua_str(s):
-    return '"%s"' % s.replace("\\", "\\\\").replace('"', '\\"')
-
-
-def num(v):
-    s = ("%.4f" % float(v)).rstrip("0").rstrip(".")
-    return s or "0"
-
 
 def main():
     if len(sys.argv) != 2:
@@ -116,72 +112,25 @@ def main():
     block = re.search(r"local DEFAULT_DR = \{(.*?)\n\}", core, re.S).group(1)
     for m in re.finditer(r'(?:\["([^"]+)"\]|(\w+))\s*=\s*\{\s*softCap\s*=\s*([\d.]+),\s*postScale\s*=\s*([\d.]+)\s*\}', block):
         caps[m.group(1) or m.group(2)] = (m.group(3), m.group(4))
-    stats = sorted(labels)
-
     with open(os.path.join(src, "LICENSE"), encoding="utf-8") as fh:
         licence = fh.read().strip()
 
-    lua = [
-        "-- ItemScoreData.lua",
-        "--",
-        "-- GENERATED FILE -- do not edit by hand.",
-        "-- Source:    OctoPawn's default weights, stat patterns, soft caps and labels",
-        "--            (https://github.com/iGreed1993/OctoPawn)",
-        "-- Generator: Tools/build/import_octopawn.py",
-        "--",
-        "-- OctoPawn's licence, which covers this data:",
-        "--",
-    ]
-    lua += ["-- " + l if l else "--" for l in licence.split("\n")]
-    lua += ["", "AegisPathfinder.ItemScoreData = {"]
-
-    lua.append("\t-- Every stat the scorer knows, in a fixed order (the options panel's).")
-    lua.append("\tstats = {")
-    for s in stats:
-        lua.append("\t\t%s," % lua_str(s))
-    lua.append("\t},")
-
-    lua.append("\t-- How the options panel names a stat.")
-    lua.append("\tlabels = {")
-    for s in stats:
-        if labels[s] != s:
-            lua.append("\t\t[%s] = %s," % (lua_str(s), lua_str(labels[s])))
-    lua.append("\t},")
-
-    lua.append("\t-- class -> spec -> stat -> weight (a stat with no weight counts 0).")
-    lua.append("\tweights = {")
-    for cls in CLASS_ORDER + sorted(set(weights) - set(CLASS_ORDER)):
-        if cls not in weights:
-            continue
-        lua.append("\t\t%s = {" % cls)
-        for spec in sorted(weights[cls]):
-            lua.append("\t\t\t%s = {" % spec)
-            for stat in sorted(weights[cls][spec]):
-                lua.append("\t\t\t\t[%s] = %s," % (lua_str(stat), num(weights[cls][spec][stat])))
-            lua.append("\t\t\t},")
-        lua.append("\t\t},")
-    lua.append("\t},")
-
-    lua.append("\t-- { upper-case text on a tooltip line, the stat it adds to }. In order:")
-    lua.append("\t-- a line's first match for a stat wins, so the specific come first.")
-    lua.append("\tpatterns = {")
-    for _, pat, stat in patterns:
-        lua.append("\t\t{ %s, %s }," % (lua_str(pat), lua_str(stat)))
-    lua.append("\t},")
-
-    lua.append("\t-- Soft caps: past `cap`, each further point counts `after` of one.")
-    lua.append("\tsoftcaps = {")
-    for stat in sorted(caps):
-        lua.append("\t\t[%s] = { cap = %s, after = %s }," % (lua_str(stat), num(caps[stat][0]), num(caps[stat][1])))
-    lua.append("\t},")
-    lua.append("}")
-    lua.append("")
-
-    with open(OUT, "w", encoding="utf-8") as fh:
-        fh.write("\n".join(lua))
+    data = {
+        "licence": licence,
+        "weights": {c: {s: {k: float(v) for k, v in w.items()} for s, w in specs.items()}
+                    for c, specs in weights.items()},
+        "patterns": [[pat, stat] for _, pat, stat in patterns],
+        "softcaps": {k: [float(a), float(b)] for k, (a, b) in caps.items()},
+        "labels": labels,
+    }
+    with open(CACHE, "w", encoding="utf-8") as fh:
+        json.dump(data, fh, indent=1, sort_keys=True)
+        fh.write("\n")
     n = sum(len(v) for v in weights.values())
     print("wrote %s: %d classes, %d specs, %d stats, %d patterns, %d soft caps"
-          % (os.path.relpath(OUT, ROOT), len(weights), n, len(stats), len(patterns), len(caps)))
+          % (os.path.relpath(CACHE, ROOT), len(weights), n, len(labels), len(patterns), len(caps)))
+    # ItemScoreData.lua is written from it, with this addon's weights.
+    build_weights.write_data()
     return 0
 
 

@@ -10,7 +10,10 @@
 
 	Your spec is the talent tree you have put most points into, until you pick
 	one; below level 10, with no talents, it is your class's usual levelling
-	spec. Weights you change are kept per spec, on top of the defaults.
+	spec. Each spec has two sets of weights (Tools/build/build_weights.py):
+	one for leveling, used below 60, and one for 60. The tanks have one set,
+	used at every level. Weights you change are kept per spec and set, on top
+	of the defaults.
 
 	Comparing is by slot. A ring or trinket is weighed against the weaker of
 	the two you wear -- the one it would replace -- and a one-hander against
@@ -65,6 +68,18 @@ local SLOTS = {
 IS.SLOTS = SLOTS
 
 local MAINHAND, OFFHAND = 16, 17
+
+-- A ranged weapon's DPS is its own stat: a bow's is worth far more to a
+-- hunter, and a wand's to a caster, than a melee weapon's.
+local RANGED_WEAPON = { INVTYPE_RANGED = true, INVTYPE_RANGEDRIGHT = true, INVTYPE_THROWN = true }
+
+-- The level the leveling weights give way to the 60 set at.
+IS.MAX_LEVEL = 60
+
+-- Raised when the default weights change so that edits made against the old
+-- ones are cleared once (Initialize): 2 is the weights worked out for 0.23.4,
+-- in place of OctoPawn's.
+IS.WEIGHTS_VERSION = 2
 
 --[[ Settings ]]
 
@@ -127,30 +142,59 @@ function IS:SetSpec(spec)
 	self:Changed()
 end
 
-local function customKey(class, spec) return class .. ":" .. spec end
+-- PLAYER_LEVEL_UP's new level: UnitLevel can still say the old one then.
+local levelSeen
+
+function IS:Level()
+	local level = UnitLevel("player") or 1
+	if levelSeen and levelSeen > level then return levelSeen end
+	return level
+end
+
+--- The default weights for a class and spec at your level, and which set
+--- they are: "leveling" below 60, "max" at 60 -- and for a spec with no
+--- leveling set (the tanks) at every level.
+function IS:Defaults(class, spec)
+	class = class or self:Class()
+	spec = spec or self:Spec()
+	if self:Level() < IS.MAX_LEVEL then
+		local leveling = ((Data.leveling or {})[class] or {})[spec]
+		if leveling then return leveling, "leveling" end
+	end
+	return (Data.weights[class] or {})[spec] or {}, "max"
+end
+
+--- Where your changes to a spec's weights are kept: one place for each set,
+--- so a change made while leveling is not carried into the 60 set.
+function IS:CustomKey(class, spec)
+	class = class or self:Class()
+	spec = spec or self:Spec()
+	local _, set = self:Defaults(class, spec)
+	if set == "leveling" then return class .. ":" .. spec .. ":leveling" end
+	return class .. ":" .. spec
+end
 
 --- The weights for a class and spec: the defaults, with your changes on top.
 function IS:Weights(class, spec)
 	class = class or self:Class()
 	if not spec then spec = self:Spec() end
 	local out = {}
-	for stat, w in pairs((Data.weights[class] or {})[spec] or {}) do out[stat] = w end
-	for stat, w in pairs(settings().custom[customKey(class, spec)] or {}) do out[stat] = w end
+	for stat, w in pairs(self:Defaults(class, spec)) do out[stat] = w end
+	for stat, w in pairs(settings().custom[self:CustomKey(class, spec)] or {}) do out[stat] = w end
 	return out
 end
 
 function IS:IsCustom(class, spec)
-	return next(settings().custom[customKey(class or self:Class(), spec or self:Spec())] or {}) ~= nil
+	return next(settings().custom[self:CustomKey(class, spec)] or {}) ~= nil
 end
 
 --- Change one weight of the spec scored for. Setting it back to the
 --- default removes the change.
 function IS:SetWeight(stat, value)
-	local class, spec = self:Class(), self:Spec()
-	local key = customKey(class, spec)
+	local key = self:CustomKey()
 	local custom = settings().custom
 	custom[key] = custom[key] or {}
-	local default = ((Data.weights[class] or {})[spec] or {})[stat] or 0
+	local default = self:Defaults()[stat] or 0
 	if math.abs((value or 0) - default) < 0.00005 then
 		custom[key][stat] = nil
 	else
@@ -160,9 +204,21 @@ function IS:SetWeight(stat, value)
 	self:Changed()
 end
 
+--- Back to the default weights, for the spec and set scored with now.
 function IS:ResetWeights()
-	settings().custom[customKey(self:Class(), self:Spec())] = nil
+	settings().custom[self:CustomKey()] = nil
 	self:Changed()
+end
+
+--- Clear edits made against older default weights, once. True if there were
+--- any to clear.
+function IS:MigrateWeights()
+	local s = settings()
+	if s.weightsVersion == IS.WEIGHTS_VERSION then return false end
+	local had = next(s.custom) ~= nil
+	s.custom = {}
+	s.weightsVersion = IS.WEIGHTS_VERSION
+	return had
 end
 
 local function trimNum(v)
@@ -172,21 +228,25 @@ local function trimNum(v)
 	return s
 end
 
---[[ Sharing weights, in OctoPawn's own string -- OPW1:CLASS:SPEC:*STAT:v|STAT:v,
-	only the stats that differ from the defaults -- so a scale moves between
-	the two addons unchanged. ]]
+--[[ Sharing weights, in OctoPawn's own string -- OPW1:CLASS:SPEC:*STAT:v|STAT:v.
+	Each stat read from one is put over the defaults. The weights here are not
+	OctoPawn's, so every stat is written out, those weighed 0 too: the scale
+	arrives whole, in OctoPawn or in another copy of this addon at another
+	level. ]]
 function IS:Export()
 	local class, spec = self:Class(), self:Spec()
+	local weights = self:Weights(class, spec)
 	local parts = {}
-	for stat, v in pairs(settings().custom[customKey(class, spec)] or {}) do
-		table.insert(parts, stat .. ":" .. trimNum(v))
+	for _, stat in ipairs(Data.stats) do
+		table.insert(parts, stat .. ":" .. trimNum(weights[stat] or 0))
 	end
-	table.sort(parts)
 	return "OPW1:" .. class .. ":" .. spec .. ":*" .. table.concat(parts, "|")
 end
 
 --- Returns true, or false and why not. Weights for another spec of your
---- class switch you to it; another class's are refused.
+--- class switch you to it; another class's are refused. They become your
+--- changes to the set scored with now, those the same as its defaults left
+--- out.
 function IS:Import(text)
 	text = string.gsub(text or "", "^%s+", "")
 	text = string.gsub(text, "%s+$", "")
@@ -197,14 +257,15 @@ function IS:Import(text)
 		return false, "There is no " .. spec .. " spec for your class."
 	end
 	local custom = {}
+	local defaults = self:Defaults(class, spec)
 	for chunk in string.gfind(rest, "[^|]+") do
 		local _, _, stat, v = string.find(chunk, "^([^:]+):(%-?[%d%.]+)$")
 		if not stat or not tonumber(v) then return false, "Could not read \"" .. chunk .. "\"." end
-		custom[stat] = tonumber(v)
+		if math.abs(tonumber(v) - (defaults[stat] or 0)) >= 0.00005 then custom[stat] = tonumber(v) end
 	end
 	local s = settings()
 	s.spec = spec
-	s.custom[customKey(class, spec)] = next(custom) and custom or nil
+	s.custom[self:CustomKey(class, spec)] = next(custom) and custom or nil
 	self:Changed()
 	return true
 end
@@ -255,9 +316,11 @@ function IS:ReadLines(item)
 end
 
 local function numberNear(line, upper, pattern)
-	local s = string.find(upper, pattern)
+	local s, e = string.find(upper, pattern)
 	if not s then return nil end
-	local _, _, after = string.find(string.sub(line, s), "([%+%-]?%d+%.?%d*)")
+	-- After the stat's name, not inside it: "MANA PER 5" has a 5 of its own,
+	-- and "Restores 12 mana per 5 sec." was read as 5.
+	local _, _, after = string.find(string.sub(line, e + 1), "([%+%-]?%d+%.?%d*)")
 	if after then return tonumber(after) end
 	local last
 	for n in string.gfind(string.sub(line, 1, s - 1), "([%+%-]?%d+%.?%d*)") do last = n end
@@ -270,12 +333,24 @@ end
 
 local SPELL_SCHOOL = { "NATURE DAMAGE", "FIRE DAMAGE", "FROST DAMAGE", "SHADOW DAMAGE", "ARCANE DAMAGE", "HOLY DAMAGE" }
 
+-- A general stat is not counted again on a line one of its own kind already
+-- counted: "critical strike with spells" is spell crit, not melee crit too;
+-- "mana per 5 sec." is regen, not a mana pool as well.
+local NARROWER = {
+	CRIT = { "SPELL CRIT", "HOLY CRIT", "RANGED CRIT", "RESILIENCE" },
+	MANA = { "MANA PER 5", "CASTING REGEN" },
+	HEALTH = { "HEALTH PER 5" },
+}
+
 --- The stats on one line of a tooltip, added into `totals`. The rules are
 --- OctoPawn's: the first pattern for a stat wins, a set bonus counts for
 --- nothing, and a school's spell damage is not also general spell damage.
---- One is stricter: a "chance on hit" line's numbers are the proc's -- 90
+--- Some are stricter: a "chance on hit" line's numbers are the proc's -- 90
 --- Fire damage on a sword is not 90 spell damage for you -- so only an
---- extra-attack chance counts from one.
+--- extra-attack chance counts from one; a general stat is not counted again
+--- where a narrower one was (NARROWER); and "damage and healing" heals as
+--- much as it says, so it is healing as well as spell power -- a healer's
+--- SPELL POWER weight is for its damage side.
 local function readStats(line, totals, state)
 	local upper = string.upper(line)
 	if isSetBonus(upper) then return end
@@ -294,7 +369,12 @@ local function readStats(line, totals, state)
 		local pattern, stat = p[1], p[2]
 		if not matched[stat] and string.find(upper, pattern) then
 			local skip = false
-			if procLine and stat ~= "EXTRA ATTACK" then
+			for _, narrow in ipairs(NARROWER[stat] or {}) do
+				if matched[narrow] then skip = true end
+			end
+			if skip then
+				-- counted already, as its narrower kind
+			elseif procLine and stat ~= "EXTRA ATTACK" then
 				skip = true
 			elseif stat == "HIT" and string.find(upper, "SPELL") then
 				skip = true
@@ -316,6 +396,10 @@ local function readStats(line, totals, state)
 				if n then
 					matched[stat] = true
 					totals[stat] = (totals[stat] or 0) + n
+					if stat == "SPELL POWER" and string.find(upper, "HEALING") and not matched["HEALING"] then
+						matched["HEALING"] = true
+						totals["HEALING"] = (totals["HEALING"] or 0) + n
+					end
 				end
 			end
 		end
@@ -347,6 +431,9 @@ function IS:Read(link)
 			if i > 1 then readStats(l.left, info.stats, state) end
 		end
 		if l.rightRed and l.right then info.usable = false end
+	end
+	if RANGED_WEAPON[equipLoc] and info.stats.DPS then
+		info.stats["RANGED DPS"], info.stats.DPS = info.stats.DPS, nil
 	end
 	cache[item] = info
 	return info
@@ -728,11 +815,17 @@ events:SetScript("OnEvent", function()
 	elseif event == "CHARACTER_POINTS_CHANGED" then
 		IS:Changed()
 	else
+		-- At 60 the weights change set; the level says when.
+		if event == "PLAYER_LEVEL_UP" then levelSeen = tonumber(arg1) end
 		IS:Forget()
 	end
 end)
 
 function IS:Initialize()
+	if self:MigrateWeights() then
+		AegisPathfinder:Print("Item score: new stat weights for every spec, for leveling and for 60. "
+			.. "Your own changes to the old ones were cleared; change them again on the Item Score page (/apg gear).")
+	end
 	self:HookTooltip(GameTooltip)
 	self:HookTooltip(ItemRefTooltip)
 	self:RecordWorn()

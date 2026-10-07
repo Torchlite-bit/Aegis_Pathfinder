@@ -416,6 +416,12 @@ are only found at startup.
       Blackstone Island, then Gan'rul Bloodeye in Orgrimmar; an Undead's goes to
       Carendin Halgar in the Undercity. Each quest's steps tick as you go, and
       the guide finishes by itself on the last hand-in.
+- [ ] A Human warrior's **Warrior: Defensive Stance (10)** starts in Goldshire:
+      A Warrior's Training from Lyria Du Lac, then Stormwind for Harry
+      Burlguard. A Horde warrior's takes Veteran Uzzek from Tarshaw Jaggedscar
+      in Razor Hill; an Undead hunter's The Hunter's Path from Dark Ranger
+      Lanissa in Tirisfal Glades; a Gnome hunter's from Thorgas Grimson in Dun
+      Morogh. A Night Elf's Elanaria is still pointed to in Darnassus.
 - [ ] On a character whose route does not take it (RestedXP or a zone guide),
       reaching a class quest's level brings **A class quest at your level**:
       Open puts the guide in a tab beside the route, and finishing it brings
@@ -437,9 +443,27 @@ are only found at startup.
 
 - [x] Item tooltips show the item score line: `+12%` green for an upgrade,
       red for worse, *empty slot*, *not for you*.
+- [ ] As a healer (Holy priest, Restoration druid or shaman, Holy paladin):
+      an item with "Restores 8 mana per 5 sec." scores more than one with 4
+      (both used to read as 5), and a "+damage and healing" item scores close
+      to a "+healing" one of about twice the number, not a third of it. As a
+      warrior, a caster's spell crit item scores nothing for crit.
 - [x] **Item Score** page (under Gear): the spec picker, every weight on one
       line each (no wrapped names), editing a box changes the tooltips,
       Show all stats lengthens the page, Export → Import round-trips.
+- [ ] Below 60 the Item Score page says *Leveling weights, until level 60*;
+      at 60 it says *Level 60 weights* and the boxes change -- on reaching 60
+      too, without a reload. As Protection or a bear: *Tank weights, the same
+      at every level*, at any level.
+- [ ] A hunter: a bow's tooltip line weighs its DPS far above a melee
+      weapon's of the same DPS (*Ranged Weapon DPS* on the Item Score page).
+      A caster below 60: a wand's DPS counts.
+- [ ] With weights changed before 0.23.4: one chat line at login says they
+      were cleared, and the page shows the defaults; not again at the next
+      login. A change made below 60 is gone at 60, and back below it.
+- [ ] **Reset weights** puts a changed set back to the defaults, and the page
+      says so.
+- [ ] Export holds every stat; pasted into OctoPawn, its weights match.
 - [x] `/apg gear` opens the options at Item Score, and again closes them.
 - [x] Gear Advisor: loot an upgrade → a pop-up with Equip / Decline; Equip puts
       it on; Decline is remembered; in a fight Equip waits.
@@ -506,6 +530,11 @@ are only found at startup.
       **This step** / **Whole route** switch.
 - [x] **Cheapest route** (`/apg craft`): plans, **Scan prices** at the auction
       house fills prices in, **Load as guide** adds the planned guide.
+- [ ] Cheapest route for Survival from 90: no step asks for 92 Hunting Spears
+      (or 92 Iron Lanterns at 160). The total is what the route costs; the
+      breakdown says "leftovers sell for about …" beside it, and turning *Say
+      what a merchant pays for what is left over* off takes that line away
+      without changing a single step.
 - [x] With Aegis: Exchange loaded: **Send to Exchange** puts the crafts on its
       Crafting tab, and Remove takes them back out.
 
@@ -516,6 +545,10 @@ are only found at startup.
       and marks it.
 - [x] Quest icons: mousing over a quest NPC or mob puts the right raid marker
       on it (star to talk, skull to kill, cross to loot, square to interact).
+- [ ] Close the guide with its ✕ (or close every tab, so no guide is loaded):
+      mousing over or targeting a quest mob leaves it unmarked. Open the guide
+      again: it is marked. With *Hide the guide in combat* on, a quest mob you
+      target in a fight is still marked.
 - [x] **Macros**: AegisTarget and AegisItem appear in your character macros and
       follow the guide from an action bar.
 - [ ] Drag Active Targets close under or beside Active Items (or the guide):

@@ -262,9 +262,9 @@ end
 
 	The mark goes on by itself when you mouse over or target someone a quest
 	wants: the current step's targets, and for every other quest in your log
-	its objectives -- or, once it is complete, whoever takes it. Only on the
-	unmarked, the living and the non-players, and not in a raid, where marks
-	belong to its leaders.
+	its objectives -- or, once it is complete, whoever takes it. Only while a
+	guide is open, only on the unmarked, the living and the non-players, and
+	not in a raid, where marks belong to its leaders.
 ]]
 local MAX_ICON_TARGETS = 40
 
@@ -348,10 +348,20 @@ local iconTargets = {}
 -- lit up on the tiles (the PLAYER_TARGET_CHANGED handler, below).
 local scanning = false
 
---- Quest icons: mark `unit` ("mouseover" or "target") if a quest wants it.
+-- A guide to follow, with its window open. Hidden for combat or an instance
+-- it still counts as open, as it does for the buttons.
+local function GuideOpen(self)
+	local g = self.objectiveframe
+	if not g or not (g:IsShown() or self.hiddenForCombat or self.hiddenForInstance) then return false end
+	return not (self.HasNoGuide and self:HasNoGuide())
+end
+
+--- Quest icons: mark `unit` ("mouseover" or "target") if a quest wants it --
+--- only while a guide is open.
 function AegisPathfinder:AutoMark(unit)
 	local char = self.db and self.db.char
 	if not char or char.questicons == false then return false end
+	if not GuideOpen(self) then return false end
 	if not UnitExists(unit) or UnitIsPlayer(unit) or UnitIsDead(unit) then return false end
 	if GetNumRaidMembers and GetNumRaidMembers() > 0 then return false end
 	-- Someone's mark already, ours or a party member's.

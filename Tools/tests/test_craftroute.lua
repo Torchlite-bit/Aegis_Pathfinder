@@ -409,13 +409,16 @@ end
 marketOn = true
 A:OnCraftDataChanged(true)
 
--- A route that pays for itself.
+-- What merchants pay for the leftovers is said beside the cost, never off it:
+-- a Gem that sells for fifty times its Rock still costs its Rocks.
 A:RegisterRecipeBook("Profitcraft", { "Gem = Rock @ 1-20-25-30 | trainer 0" })
 A:RegisterMerchantPrices({ buy = { Rock = 1 }, sell = { Gem = 50 } })
 skills = { { "Profitcraft", 1 } }
 frame.pick.onSelect("Profitcraft")
-check(string.find(frame.total:GetText(), "^%+") and string.find(frame.crafts:GetText(), "pays for itself", 1, true),
-	"a profitable route says so: %s, %s", frame.total:GetText(), frame.crafts:GetText())
+check(not string.find(frame.total:GetText(), "^%+") and not string.find(frame.crafts:GetText(), "pays for itself", 1, true),
+	"the total is what the route costs: %s, %s", frame.total:GetText(), frame.crafts:GetText())
+check(string.find(frame.breakdown:GetText(), "leftovers sell for about", 1, true),
+	"and the leftovers' price is beside it: %s", frame.breakdown:GetText())
 
 -- Nothing to plan.
 skills = { { "Profitcraft", 300 } }
