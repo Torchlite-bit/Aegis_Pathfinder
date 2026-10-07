@@ -4,10 +4,9 @@ return [[
 
 N 35-36 Desolace |N|Converted from RestedXP guide|
 
-F Fly to Wetlands |N|Gryth - (55.5, 47.7)| |O| |Z|Ironforge|
-R Travel to Wetlands |N|(7.1, 58.0)| |Z|Wetlands|
-R the Menethil Harbor docks |N|(4.6, 57.3)| |Z|Wetlands|
-N Level your [First Aid] while waiting for the boat to Darkshore |N|(4.6, 57.3)| |Z|Wetlands|
+R Take the Deeprun Tram to Stormwind |N|(78.0, 52.0)| |O| |Z|Ironforge|
+R Stormwind Harbor |N|Take the boat from Stormwind Harbor to Auberdine| |Z|Stormwind City|
+N Level your [First Aid] while waiting for the boat to Darkshore |Z|Stormwind City|
 R Travel to Darkshore |N|(36.7, 45.0)| |Z|Darkshore|
 F Fly to Stonetalon |N|Caylais Moonfeather - (36.3, 45.6)| |Z|Darkshore|
 R Travel to Desolace |N|(54.0, 3.4)| |O| |Z|Desolace|

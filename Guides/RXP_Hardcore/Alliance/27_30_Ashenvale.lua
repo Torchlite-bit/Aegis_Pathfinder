@@ -4,8 +4,9 @@ return [[
 
 N 27-30 Ashenvale |N|Converted from RestedXP guide|
 
-R the Menethil Harbor Dock |N|(5.4, 57.5)| |O| |Z|Wetlands|
-N Level your [First Aid] while waiting |N|(4.6, 57.2)| |Z|Wetlands|
+F Fly to Stormwind |N|Shellei Brondir - (9.5, 59.7)| |O| |Z|Wetlands|
+R Stormwind Harbor |N|Take the boat from Stormwind Harbor to Auberdine| |O| |Z|Stormwind City|
+N Level your [First Aid] while waiting for the boat |Z|Stormwind City|
 A Researching the Corruption |QID|1275| |N|Gershala Nightwhisper - (38.3, 43.0) (BFD Dungeon Quest)| |D|BFD| |Z|Darkshore|
 F Fly to Teldrassil |N|Caylais Moonfeather - (36.3, 45.6) (BFD Dungeon Quest)| |D|BFD| |Z|Darkshore|
 R Travel to Teldrassil |N|(55.9, 89.5) (BFD Dungeon Quest)| |D|BFD| |Z|Teldrassil|

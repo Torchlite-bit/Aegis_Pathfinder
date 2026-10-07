@@ -4,10 +4,10 @@ return [[
 
 N 18-19 Loch Modan |N|Converted from RestedXP guide|
 
-B Buy a [Medium Quiver] and [Sharp Arrows] |N|Edwina Monzor - (11.1, 58.3)| |C|Hunter| |Z|Wetlands|
-B Medium Quiver (1) |L|11362 1| |N|Edwina Monzor - (11.1, 58.3)| |C|Hunter| |Z|Wetlands|
-B Sharp Arrow (1800) |L|2515 1800| |N|Edwina Monzor - (11.1, 58.3)| |C|Hunter| |Z|Wetlands|
-F Fly to Ironforge |N|Shellei - (9.5, 59.7)| |C|!Druid/!Hunter| |Z|Wetlands|
+B Buy a [Medium Quiver] and [Sharp Arrows] |N|Frederick Stover - (50.0, 57.6)| |C|Hunter| |Z|Stormwind City|
+B Medium Quiver (1) |L|11362 1| |N|Frederick Stover - (50.0, 57.6)| |C|Hunter| |Z|Stormwind City|
+B Sharp Arrow (1800) |L|2515 1800| |N|Frederick Stover - (50.0, 57.6)| |C|Hunter| |Z|Stormwind City|
+R Ironforge |N|Take the Deeprun Tram to Ironforge| |O| |C|!Druid/!Hunter| |Z|Ironforge|
 N Bilban Tosslespanner |N|(65.9, 88.4)| |C|Warrior| |Z|Wetlands|
 N Briarthorn |N|(65.9, 88.4)| |C|Warlock| |Z|Wetlands|
 N Fenthwick |N|(65.9, 88.4)| |C|Rogue| |Z|Wetlands|
@@ -17,7 +17,7 @@ N Brandur Ironhammer |N|(65.9, 88.4)| |C|Paladin| |Z|Wetlands|
 R Travel to Ironforge |N|(23.1, 6.1)| |C|Paladin| |Z|Ironforge|
 t Train your class spells |N|(23.1, 6.1)| |C|!Druid/!Hunter| |Z|Ironforge|
 F Fly to Loch Modan |N|Gryth Thurden - (55.5, 47.7)| |C|!Druid/!Hunter| |Z|Ironforge|
-F Fly to Loch Modan |N|Shellei - (9.5, 59.7)| |Z|Wetlands|
+F Fly to Loch Modan |N|Dungar Longdrink - (66.3, 62.1)| |C|Druid/Hunter| |Z|Stormwind City|
 R Travel to Loch Modan |N|[Group] (34.5, 43.7)| |P|GROUP| |Z|Loch Modan|
 A Mercenaries |QID|255| |N|[Group] Magistrate Bluntnose - (34.7, 43.2)| |P|GROUP| |Z|Loch Modan|
 A Ironband's Excavation |QID|436| |N|Jern Hornhelm - (37.2, 47.4)| |Z|Loch Modan|

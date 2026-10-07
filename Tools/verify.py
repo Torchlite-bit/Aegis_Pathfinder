@@ -633,6 +633,38 @@ def check_zones(rep):
     rep.ok("zones", steps)
 
 
+BOAT = re.compile(r"\bboat\b", re.I)
+
+
+def check_boats(rep):
+    """Turtle WoW has no boat between Menethil Harbor and Auberdine: Auberdine's
+    boats go to Stormwind Harbor, Rut'theran Village and Alah'Thalas, and
+    Menethil's to Theramore. A guide step that boards one between Menethil and
+    Darkshore sent players to a dock nothing sails from ("Travel to Auberdine
+    by boat from Menethil Harbor"). A step may name both only on the way
+    through Stormwind Harbor; waiting at Menethil for a boat to Darkshore, or at
+    Auberdine for one to Menethil, is the old route."""
+    steps = 0
+    for path in sorted(walk({".lua"})):
+        if not rel(path).startswith("Guides" + os.sep):
+            continue
+        with open(path, encoding="utf-8", errors="replace") as f:
+            for n, line in enumerate(f, 1):
+                if not (line.startswith("b ") or BOAT.search(line)):
+                    continue
+                steps += 1
+                low = line.lower()
+                zone = re.search(r"\|Z\|([^|]*)\|", line)
+                zone = zone and zone.group(1)
+                both = "menethil" in low and ("auberdine" in low or "darkshore" in low)
+                if (both and "stormwind harbor" not in low) \
+                        or (zone == "Wetlands" and re.search(r"boat to (darkshore|auberdine)|auberdine boat", low)) \
+                        or (zone == "Darkshore" and re.search(r"boat to menethil|menethil harbor boat", low)):
+                    rep.fail("boats", path, "line %d: a boat between Menethil Harbor and Auberdine -- there is "
+                                            "none; Auberdine's boat sails to Stormwind Harbor" % n)
+    rep.ok("boats", steps)
+
+
 def check_methods(rep):
     """An AegisPathfinder method defined in two files: the one loaded later
     replaces the other outright. QuestTracker.lua's PLAYER_LEVEL_UP replaced
@@ -682,6 +714,7 @@ def main():
     check_version(rep)
     check_filters(rep)
     check_zones(rep)
+    check_boats(rep)
     check_methods(rep)
     return rep.summary()
 

@@ -17,9 +17,8 @@ t Train Teleport: Darnassus |N|(29.5, 41.4)| |O| |C|Mage| |Z|Alterac Mountains|
 R Travel to Darnassus |N|(29.5, 41.4)| |O| |C|Mage| |Z|Darnassus|
 t Train Teleport: Darnassus |N|(58.4, 94.0)| |C|Mage| |Z|Darnassus|
 F Fly to Desolace |N|Vesprystus - (58.4, 94.0)| |C|Mage| |Z|Teldrassil|
-F Fly to Wetlands |N|Gryth - (55.5, 47.7)| |Z|Ironforge|
-R Travel to Wetlands |N|(7.1, 58.0)| |Z|Wetlands|
-R the Menethil Harbor docks |N|(4.6, 57.3)| |Z|Wetlands|
+R Take the Deeprun Tram to Stormwind |N|(78.0, 52.0)| |O| |Z|Ironforge|
+R Stormwind Harbor |N|Take the boat from Stormwind Harbor to Auberdine| |Z|Stormwind City|
 R Travel to Darkshore |N|(36.7, 45.0)| |Z|Darkshore|
 F Fly to Desolace |N|Caylais Moonfeather - (36.3, 45.6)| |Z|Darkshore|
 N Innkeeper Lyshaerya |N|(66.3, 6.6)| |Z|Darkshore|

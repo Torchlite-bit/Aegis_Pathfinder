@@ -40,7 +40,7 @@ C The Lost Ingots |QID|324| |N|Kill Bluegill Raider and collect 5 Lightforge Ing
 T The Lost Ingots |QID|324| |N|Glorin Steelbrow in Deepwater Tavern (10.59, 60.59)| |Z|Wetlands|
 A Blessed Arm |QID|322| |N|Glorin Steelbrow in Deepwater Tavern (10.59, 60.59)| |Z|Wetlands|
 
-R Astranaar |QID|4581| |N|Travel to Astranaar - take boat to Auberdine then fly (34.66, 48.85)| |Z|Ashenvale|
+R Astranaar |QID|4581| |N|Travel to Astranaar - fly to Stormwind, take the boat from Stormwind Harbor to Auberdine, then fly (34.66, 48.85)| |Z|Ashenvale|
 A Kayneth Stillwind |QID|4581| |N|Shindrell Swiftfire in Astranaar (34.66, 48.85)| |Z|Ashenvale|
 h Astranaar |QID|1021| |N|Speak to Innkeeper Kimlya and set hearth (36.96, 49.24)| |Z|Ashenvale|
 A Raene's Cleansing (Part 1) |QID|991| |N|Raene Wolfrunner in Astranaar (36.59, 49.59)| |Z|Ashenvale| |O|

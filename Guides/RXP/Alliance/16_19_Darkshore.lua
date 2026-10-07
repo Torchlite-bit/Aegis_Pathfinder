@@ -195,7 +195,7 @@ T Tharnariun's Hope |QID|2139| |N|Tharnariun Treetender - (38.8, 43.4)| |R|Night
 T A Lost Master |QID|986| |N|Terenthis - (39.4, 43.5)| |R|Night Elf| |Z|Darkshore|
 A A Lost Master |QID|993| |N|Terenthis - (39.4, 43.5)| |R|Night Elf| |Z|Darkshore|
 N If you equip the [Enchanted Moonstalker Cloak], make sure you save your current cloak for later as the [Enchanted Moonstalker Cloak] is lost upon a later turn in |O| |R|Night Elf| |Z|Darkshore|
-R the dock of the Menethil Harbor boat |N|(32.4, 43.7) (DM Dungeon Quest)| |D|DM| |Z|Darkshore|
+R the Auberdine docks. Wait for the boat to Stormwind |N|(32.4, 43.7) (DM Dungeon Quest)| |D|DM| |Z|Darkshore|
 N On the Boat if it just arrived or on the dock if the boat just left: |N|(DM Dungeon Quest)| |D|DM| |Z|Darkshore|
 N Create a [Basic Campfire] (under the General Tab of your Spellbook) |N|(DM Dungeon Quest)| |D|DM| |Z|Darkshore|
 N You need 50 [Cooking] for a quest in Duskwood later |N|(DM Dungeon Quest)| |D|DM| |Z|Darkshore|
@@ -208,30 +208,14 @@ B Flint and Tinder (1) |L|4471 1| |N|Dalmond - (37.5, 40.5)| |C|!Hunter| |Z|Dark
 B Buy [Mild Spices] from him until you have [Mild Spices] equal or more than the amount of [Small Eggs] that you currently have |N|Gorbold Steelhand - (38.1, 41.2)| |O| |C|!Hunter| |Z|Darkshore|
 B x20,cooking --Mild Spices (1-50) |L|2678 50| |N|Gorbold Steelhand - (38.1, 41.2)| |O| |C|!Hunter| |Z|Darkshore|
 B x20,cooking --Small Egg (1-50) |L|6889 50| |N|Gorbold Steelhand - (38.1, 41.2)| |O| |C|!Hunter| |Z|Darkshore|
-R the dock of the Menethil Harbor boat |N|(32.4, 43.7)| |O| |C|!Hunter| |Z|Darkshore|
+R the Auberdine docks. Wait for the boat to Stormwind |N|(32.4, 43.7)| |O| |C|!Hunter| |Z|Darkshore|
 N On the Boat if it just arrived or on the dock if the boat just left: |O| |C|!Hunter| |Z|Darkshore|
 N Create a [Basic Campfire] (under the General Tab of your Spellbook) |O| |C|!Hunter| |Z|Darkshore|
 N You need 50 [Cooking] for a quest in Duskwood later |O| |C|!Hunter| |Z|Darkshore|
 N [Cook] the [Small Eggs] and [Mild Spices] into [Herb Baked Eggs] |O| |C|!Hunter| |Z|Darkshore|
-R Level your [First Aid] while waiting for the boat to Menethil Harbor if needed |N|(32.3, 44.0)| |C|!Hunter| |Z|Darkshore|
-F Fly to Ironforge |N|Shellei - (9.5, 59.7)| |C|!Hunter| |R|!Night Elf| |Z|Wetlands|
-A Young Crocolisk Skins |QID|484| |N|James Halloran - (8.5, 55.7)| |C|!Hunter| |R|Night Elf| |Z|Wetlands|
-f Get the Wetlands flight path |N|Shellei - (9.5, 59.7)| |C|!Hunter| |R|Night Elf| |Z|Wetlands|
-C Young Crocolisk Skins |QID|484| |OIDX|1| |N|Kill Young Wetlands Crocolisks. Loot them for their Young Crocolisk Skin| |O| |C|!Hunter/!Warrior| |R|Night Elf| |Z|Wetlands|
-R Travel east toward Einar Stonegrip |N|(49.9, 39.4)| |O| |C|!Hunter| |R|Night Elf| |Z|Wetlands|
-A Daily Delivery |QID|469| |N|Einar Stonegrip - (49.9, 39.4)| |C|!Hunter| |R|Night Elf| |Z|Wetlands|
-C Young Crocolisk Skins |QID|484| |OIDX|1| |N|Young Wetlands Crocolisks. Loot them for their Young Crocolisk Skin (64.0, 72.2)| |C|!Hunter/!Warrior| |R|Night Elf| |Z|Wetlands|
-R Loch Modan |N|(25.4, 10.6)| |O| |C|!Hunter| |R|Night Elf| |Z|Loch Modan|
-A A Dark Threat Looms |QID|250| |N|Chief Engineer Hinderweir VII - (46.0, 13.6)| |C|!Hunter| |R|Night Elf| |Z|Loch Modan|
-T A Dark Threat Looms |QID|250| |N|the Suspicious Barrel - (56.0, 13.2)| |C|!Hunter| |R|Night Elf| |Z|Loch Modan|
-A A Dark Threat Looms |QID|199| |N|the Suspicious Barrel - (56.0, 13.2)| |C|!Hunter| |R|Night Elf| |Z|Loch Modan|
-T A Dark Threat Looms |QID|199| |N|Chief Engineer Hinderweir VII - (46.0, 13.6)| |C|!Hunter| |R|Night Elf| |Z|Loch Modan|
-N Die and respawn at the Spirit Healer |O| |C|!Hunter| |R|Night Elf| |Z|Loch Modan|
-f Get the Thelsamar flight path |N|Thorgrum - (33.9, 51.0)| |C|!Hunter| |R|Night Elf| |Z|Loch Modan|
-R Dun Morogh |N|(86.0, 51.0)| |C|!Hunter| |R|Night Elf| |Z|Dun Morogh|
-f Get the Ironforge flight path |N|Gryth - (55.5, 47.8)| |C|!Hunter| |R|Night Elf| |Z|Ironforge|
-N Level your [First Aid] and [Cooking] if needed while waiting for the tram |N|(78.0, 52.0)| |C|!Hunter| |Z|Ironforge|
-N You will need your [First Aid] to be 80 for a quest at level 24 |N|(78.0, 52.0)| |C|Rogue| |R|!Dwarf| |Z|Ironforge|
+R Level your [First Aid] while waiting for the boat to Stormwind if needed |N|(32.3, 44.0)| |C|!Hunter| |Z|Darkshore|
+R Stormwind Harbor |N|Take the boat from Auberdine to Stormwind Harbor| |O| |C|!Hunter| |Z|Stormwind City|
+N You will need your [First Aid] to be 80 for a quest at level 24 |O| |C|Rogue| |R|!Dwarf| |Z|Stormwind City|
 
 ]]
 end)

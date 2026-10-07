@@ -88,10 +88,8 @@ F Fly to Stormwind |N|Thor - (56.5, 52.6)| |O| |C|Rogue| |R|Gnome/Dwarf| |Z|West
 B Buy a [Scimitar] from her or something better from the Auction House and equip it your off-hand |N|Marda Weller - (57.4, 56.8)| |C|Rogue| |R|Gnome/Dwarf| |AH| |Z|Stormwind City|
 B Buy a [Scimitar] from her |N|Marda Weller - (57.4, 56.8)| |C|Rogue| |R|Gnome/Dwarf| |Z|Stormwind City|
 T Humble Beginnings |QID|399| |N|Baros Alexston - (49.2, 30.3)| |C|Rogue| |R|Gnome/Dwarf| |Z|Stormwind City|
-H Thelsamar |N|Hearth to Thelsamar| |O| |C|!Paladin| |R|Dwarf| |Z|Stormwind City|
-H Thelsamar |N|Hearth to Thelsamar| |O| |R|Gnome| |Z|Stormwind City|
-F Fly to Wetlands |N|Thorgrum Borrelson - (33.9, 51.0)| |O| |C|!Paladin| |R|Dwarf| |Z|Loch Modan|
-F Fly to Wetlands |N|Thorgrum Borrelson - (33.9, 51.0)| |O| |R|Gnome| |Z|Loch Modan|
+F Fly to Stormwind |N|Thor - (56.5, 52.6)| |O| |C|!Paladin/!Rogue| |R|Dwarf| |Z|Westfall|
+F Fly to Stormwind |N|Thor - (56.5, 52.6)| |O| |C|!Rogue| |R|Gnome| |Z|Westfall|
 F Fly to Ironforge |N|Thor - (56.5, 52.6)| |R|Human| |Z|Westfall|
 F Fly to Ironforge |N|Thor - (56.5, 52.6)| |C|Paladin| |R|Dwarf| |Z|Westfall|
 N Bilban Tosslespanner |N|(51.1, 8.7)| |C|Warrior| |R|Human| |Z|Westfall|
@@ -112,30 +110,24 @@ R Travel toward Muiredon upstairs |N|(24.4, 11.9)| |O| |C|Paladin| |R|Dwarf| |Z|
 T The Tome of Divinity |QID|1784| |N|Muiredon Battleforge - (23.5, 8.3)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
 A The Tome of Divinity |QID|1785| |N|Muiredon Battleforge - (23.5, 8.3)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
 T The Tome of Divinity |QID|1785| |N|Tiza Battleforge - (27.6, 12.2)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
-F Fly to Wetlands |N|Gryth Thurden - (55.5, 47.7)| |O| |C|Paladin| |R|Dwarf| |Z|Ironforge|
-R the Dun Morogh -> Wetlands deathskip spot |N|(30.9, 33.1)| |O| |R|Human| |Z|Dun Morogh|
-R Continue following through the mountain to the deathskip location |N|(32.4, 29.1)| |R|Human| |Z|Dun Morogh|
-R Travel to Wetlands |N|(11.7, 43.3)| |R|Human| |Z|Wetlands|
-N Run straight off the edge to the north and drop down. Die and respawn at the Spirit Healer |N|(11.7, 43.3)| |R|Human| |Z|Wetlands|
-R Swim to Menethil Harbor |N|(12.7, 46.7)| |R|Human| |Z|Wetlands|
-f Get the Wetlands flight path |N|Shellei - (9.5, 59.7)| |R|Human| |Z|Wetlands|
-f Get the Wetlands flight path |N|Shellei - (9.5, 59.7)| |C|Paladin| |R|Dwarf| |Z|Wetlands|
-R the dock of the Auberdine boat |N|(4.6, 57.3)| |O| |Z|Wetlands|
-N On the Boat if it just arrived or on the dock if the boat just left: |O| |Z|Wetlands|
-N Create a [Basic Campfire] (under the General Tab of your Spellbook) |O| |Z|Wetlands|
-N On the Boat if it just arrived or on the dock if the boat just left: |O| |Z|Wetlands|
-N Create a [Basic Campfire] (under the General Tab of your Spellbook) |O| |Z|Wetlands|
-N On the Boat if it just arrived or on the dock if the boat just left: |O| |Z|Wetlands|
-N Create a [Basic Campfire] (under the General Tab of your Spellbook) |O| |Z|Wetlands|
-N You need 50 [Cooking] for a quest in Duskwood later |O| |Z|Wetlands|
-N [Cook] the following items: |O| |Z|Wetlands|
-N [Cook] the [Chunks of Boar Meat] into [Roasted Boar Meat] |O| |Z|Wetlands|
-N [Cook] the [Stringy Wolf Meat] into [Charred Wolf Meat] |O| |Z|Wetlands|
-N You need 50 [Cooking] for a quest in Duskwood later |O| |Z|Wetlands|
-N [Cook] the [Stringy Wolf Meat] into [Charred Wolf Meat] |O| |Z|Wetlands|
-N You need 50 [Cooking] for a quest in Duskwood later |O| |Z|Wetlands|
-N [Cook] the [Chunks of Boar Meat] into [Roasted Boar Meat] |O| |Z|Wetlands|
-R Level your [First Aid] while waiting for the boat to Darkshore if needed |N|(4.4, 56.8)| |Z|Wetlands|
+R Take the Deeprun Tram to Stormwind |N|(78.0, 52.0)| |O| |C|Paladin| |R|Dwarf| |Z|Ironforge|
+R Take the Deeprun Tram to Stormwind |N|(78.0, 52.0)| |O| |R|Human| |Z|Ironforge|
+R Stormwind Harbor |N|Go to Stormwind Harbor for the boat to Auberdine| |O| |Z|Stormwind City|
+N On the Boat if it just arrived or on the dock if the boat just left: |O| |Z|Stormwind City|
+N Create a [Basic Campfire] (under the General Tab of your Spellbook) |O| |Z|Stormwind City|
+N On the Boat if it just arrived or on the dock if the boat just left: |O| |Z|Stormwind City|
+N Create a [Basic Campfire] (under the General Tab of your Spellbook) |O| |Z|Stormwind City|
+N On the Boat if it just arrived or on the dock if the boat just left: |O| |Z|Stormwind City|
+N Create a [Basic Campfire] (under the General Tab of your Spellbook) |O| |Z|Stormwind City|
+N You need 50 [Cooking] for a quest in Duskwood later |O| |Z|Stormwind City|
+N [Cook] the following items: |O| |Z|Stormwind City|
+N [Cook] the [Chunks of Boar Meat] into [Roasted Boar Meat] |O| |Z|Stormwind City|
+N [Cook] the [Stringy Wolf Meat] into [Charred Wolf Meat] |O| |Z|Stormwind City|
+N You need 50 [Cooking] for a quest in Duskwood later |O| |Z|Stormwind City|
+N [Cook] the [Stringy Wolf Meat] into [Charred Wolf Meat] |O| |Z|Stormwind City|
+N You need 50 [Cooking] for a quest in Duskwood later |O| |Z|Stormwind City|
+N [Cook] the [Chunks of Boar Meat] into [Roasted Boar Meat] |O| |Z|Stormwind City|
+N Level your [First Aid] while waiting for the boat to Darkshore if needed |O| |Z|Stormwind City|
 
 ]]
 end)

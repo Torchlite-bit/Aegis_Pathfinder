@@ -99,28 +99,28 @@ A Stormpike's Delivery |QID|353| |N|Grimand Elmore - (51.8, 12.1)| |Z|Stormwind 
 T Stormpike's Order |QID|1338| |N|Furen Longbeard - (58.1, 16.6)| |Z|Stormwind City|
 t Train your class spells |N|Einris Brightspear - (61.6, 15.3)| |C|Hunter| |Z|Stormwind City|
 t Train Staves |N|Woo Ping - (57.1, 57.7)| |Z|Stormwind City|
+f Get the Stormwind City flight path |N|Dungar Longdrink - (66.3, 62.1)| |Z|Stormwind City|
 H Loch Modan |N|Hearth to Loch Modan| |Z|Stormwind City|
 R Travel north to the Algaz Station |N|(23.9, 17.9)| |O| |Z|Loch Modan|
 T Stormpike's Delivery |QID|353| |N|Mountaineer Stormpike - (24.8, 18.4)| |Z|Loch Modan|
 N Die and respawn at the Spirit Healer |O| |Z|Loch Modan|
-F Fly to Wetlands |N|Thorgrum - (33.9, 51.0)| |Z|Loch Modan|
-R Travel to Wetlands |N|(7.1, 58.0)| |O| |Z|Wetlands|
-R the dock of the Auberdine boat |N|(4.6, 57.3)| |O| |Z|Wetlands|
-N On the Boat if it just arrived or on the dock if the boat just left: |O| |Z|Wetlands|
-N Create a [Basic Campfire] (under the General Tab of your Spellbook) |O| |Z|Wetlands|
-N On the Boat if it just arrived or on the dock if the boat just left: |O| |Z|Wetlands|
-N Create a [Basic Campfire] (under the General Tab of your Spellbook) |O| |Z|Wetlands|
-N On the Boat if it just arrived or on the dock if the boat just left: |O| |Z|Wetlands|
-N Create a [Basic Campfire] (under the General Tab of your Spellbook) |O| |Z|Wetlands|
-N You need 50 [Cooking] for a quest in Duskwood later |O| |Z|Wetlands|
-N [Cook] the following items: |O| |Z|Wetlands|
-N [Cook] the [Chunks of Boar Meat] into [Roasted Boar Meat] |O| |Z|Wetlands|
-N [Cook] the [Stringy Wolf Meat] into [Charred Wolf Meat] |O| |Z|Wetlands|
-N You need 50 [Cooking] for a quest in Duskwood later |O| |Z|Wetlands|
-N [Cook] the [Stringy Wolf Meat] into [Charred Wolf Meat] |O| |Z|Wetlands|
-N You need 50 [Cooking] for a quest in Duskwood later |O| |Z|Wetlands|
-N [Cook] the [Chunks of Boar Meat] into [Roasted Boar Meat] |O| |Z|Wetlands|
-R Level your [First Aid] while waiting for the boat to Darkshore if needed |N|(4.4, 56.8)| |Z|Wetlands|
+F Fly to Stormwind |N|Thorgrum - (33.9, 51.0)| |Z|Loch Modan|
+R Stormwind Harbor |N|Go to Stormwind Harbor for the boat to Auberdine| |O| |Z|Stormwind City|
+N On the Boat if it just arrived or on the dock if the boat just left: |O| |Z|Stormwind City|
+N Create a [Basic Campfire] (under the General Tab of your Spellbook) |O| |Z|Stormwind City|
+N On the Boat if it just arrived or on the dock if the boat just left: |O| |Z|Stormwind City|
+N Create a [Basic Campfire] (under the General Tab of your Spellbook) |O| |Z|Stormwind City|
+N On the Boat if it just arrived or on the dock if the boat just left: |O| |Z|Stormwind City|
+N Create a [Basic Campfire] (under the General Tab of your Spellbook) |O| |Z|Stormwind City|
+N You need 50 [Cooking] for a quest in Duskwood later |O| |Z|Stormwind City|
+N [Cook] the following items: |O| |Z|Stormwind City|
+N [Cook] the [Chunks of Boar Meat] into [Roasted Boar Meat] |O| |Z|Stormwind City|
+N [Cook] the [Stringy Wolf Meat] into [Charred Wolf Meat] |O| |Z|Stormwind City|
+N You need 50 [Cooking] for a quest in Duskwood later |O| |Z|Stormwind City|
+N [Cook] the [Stringy Wolf Meat] into [Charred Wolf Meat] |O| |Z|Stormwind City|
+N You need 50 [Cooking] for a quest in Duskwood later |O| |Z|Stormwind City|
+N [Cook] the [Chunks of Boar Meat] into [Roasted Boar Meat] |O| |Z|Stormwind City|
+N Level your [First Aid] while waiting for the boat to Darkshore if needed |O| |Z|Stormwind City|
 
 ]]
 end)

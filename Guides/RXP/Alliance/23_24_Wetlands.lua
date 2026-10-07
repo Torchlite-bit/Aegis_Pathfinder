@@ -4,11 +4,11 @@ return [[
 
 N 23-24 Wetlands |N|Converted from RestedXP guide|
 
-N Jump off the boat when it's closest to Menethil Harbor's shore |N|(8.5, 55.7)| |O|
-R Swim toward Menethil Harbor |N|(8.5, 55.7)| |O| |Z|Wetlands|
+R Stormwind Harbor |N|Take the boat from Auberdine to Stormwind Harbor| |O| |Z|Stormwind City|
+R Menethil Harbor |N|Fly to Menethil Harbor if you have the flight path. Otherwise fly to Thelsamar, or take the Deeprun Tram to Ironforge and run east into Loch Modan, then go north through Dun Algaz into the Wetlands and west to Menethil Harbor (8.5, 55.7)| |Z|Wetlands|
 A Young Crocolisk Skins |QID|484| |N|James Halloran - (8.5, 55.7)| |Z|Wetlands|
 A Claws from the Deep |QID|279| |N|Karl Boran - (8.4, 58.5)| |Z|Wetlands|
-f Get the Wetlands flight path |N|Shellei - (9.5, 59.7)| |R|Night Elf| |Z|Wetlands|
+f Get the Wetlands flight path |N|Shellei - (9.5, 59.7)| |Z|Wetlands|
 A The Third Fleet |QID|288| |N|First Mate Fitzsimmons - (10.9, 59.7)| |Z|Wetlands|
 A The Greenwarden |QID|463| |N|First Mate Fitzsimmons - (10.9, 59.7)| |Z|Wetlands|
 R Innkeeper Helbrek |N|(10.7, 61.0)| |O| |Z|Wetlands|

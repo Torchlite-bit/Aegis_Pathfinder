@@ -4,8 +4,9 @@ return [[
 
 N 29-30 Ashenvale |N|Converted from RestedXP guide|
 
-R the Menethil Harbor Dock |N|(5.4, 57.5)| |O| |Z|Wetlands|
-N Level your [First Aid] while waiting |N|(4.6, 57.2)| |Z|Wetlands|
+F Fly to Stormwind |N|Shellei Brondir - (9.5, 59.7)| |O| |Z|Wetlands|
+R Stormwind Harbor |N|Take the boat from Stormwind Harbor to Auberdine| |O| |Z|Stormwind City|
+N Level your [First Aid] while waiting for the boat |Z|Stormwind City|
 F Fly to Stonetalon |N|Caylais Moonfeather - (36.3, 45.6)| |Z|Darkshore|
 R Travel to Stonetalon Mountains |N|(37.1, 8.1)| |Z|Stonetalon Mountains|
 A Reclaiming the Charred Vale |QID|1057| |N|Keeper Albagorm - (37.1, 8.1)| |Z|Stonetalon Mountains|

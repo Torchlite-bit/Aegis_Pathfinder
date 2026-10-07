@@ -11,7 +11,7 @@ C The Lost Ingots |QID|324| |N|Kill Bluegill Raider and collect 5 Lightforge Ing
 T The Lost Ingots |QID|324| |N|Glorin Steelbrow in Deepwater Tavern (10.59, 60.59)| |Z|Wetlands| |PRE|270|
 A Blessed Arm |QID|322| |N|Glorin Steelbrow in Deepwater Tavern (10.59, 60.59)| |Z|Wetlands| |PRE|270|
 
-R Astranaar |QID|4581| |N|Travel to Astranaar, take the boat to Auberdine then fly to Astranaar (34.66, 48.85)| |Z|Ashenvale|
+R Astranaar |QID|4581| |N|Travel to Astranaar: fly to Stormwind, take the boat from Stormwind Harbor to Auberdine, then fly to Astranaar (34.66, 48.85)| |Z|Ashenvale|
 A Kayneth Stillwind |QID|4581| |N|Shindrell Swiftfire in Astranaar (34.66, 48.85)| |Z|Ashenvale|
 h Astranaar |QID|1021| |N|Speak to Innkeeper Kimlya and set hearth in Astranaar (36.96, 49.24)| |Z|Ashenvale|
 A Raene's Cleansing (Part 1) |QID|991| |N|Raene Wolfrunner in Astranaar (36.59, 49.59)| |Z|Ashenvale|
@@ -123,7 +123,7 @@ C Velinde's Journal |QID|1038| |OIDX|1| |N|Collect Velinde's Journal from Velind
 T Velinde's Effects |QID|1038| |N|Thyn'tel Bladeweaver in Darnassus (61.83, 39.11)| |Z|Darnassus|
 A The Barrens Port |QID|1039| |N|Thyn'tel Bladeweaver in Darnassus (61.83, 39.11)| |Z|Darnassus|
 
-R Wetlands |N|Take the boat from Auberdine to Menethil Harbor (10.60, 60.55)| |Z|Wetlands|
+R Wetlands |N|Take the boat from Rut'theran Village to Auberdine and on to Stormwind Harbor, then fly to Menethil Harbor (10.60, 60.55)| |Z|Wetlands|
 
 N Guide Complete |N|Tick to continue to the next guide|
 

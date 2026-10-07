@@ -125,9 +125,8 @@ T Easy Strider Living |QID|2178| |N|Alanndarian Nightsong - (37.7, 40.7)| |Z|Dar
 R Travel to Felwood |N|(20.0, 14.4)| |Z|Felwood|
 T Tools of the Highborne |QID|958| |N|Thundris Windweaver - (20.0, 14.4)| |Z|Felwood|
 R Travel to Darkshore |N|(32.4, 43.8)| |Z|Darkshore|
-N Level your [First Aid]while waiting for the boat to Menethil Harbor |N|(32.4, 43.8)| |Z|Darkshore|
-f Get the Menethil Harbor flight path |N|Shellei Brondir - (9.5, 59.7)| |Z|Wetlands|
-R Jump off the end of the dock and swim to the waypoint |N|(5.5, 64.2)| |O| |Z|Wetlands|
+N Level your [First Aid] while waiting for the boat to Stormwind |N|(32.4, 43.8)| |Z|Darkshore|
+R Stormwind Harbor |N|Take the boat from Auberdine to Stormwind Harbor| |O| |Z|Stormwind City|
 
 ]]
 end)

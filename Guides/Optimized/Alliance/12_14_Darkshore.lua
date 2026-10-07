@@ -9,7 +9,7 @@ return [[
 
 N Optimized Leveling |N|This guide follows an optimized quest order for Darkshore 12-14|
 
-R Auberdine |QID|3524| |N|Travel to Auberdine by boat from Menethil Harbor or flight from Darnassus (36.61, 45.59)|
+R Auberdine |QID|3524| |N|Travel to Auberdine by boat from Stormwind Harbor or flight from Darnassus (36.61, 45.59)|
 f Auberdine |QID|3524| |N|Get flight path from Caylais Moonfeather (36.4, 45.5)|
 A Washed Ashore (Part 1) |QID|3524| |N|Gwennyth Bly'Leggonde in Auberdine (36.61, 45.59)|
 T Flight to Auberdine |QID|6342| |N|Laird in Auberdine (36.77, 44.32)| |O|

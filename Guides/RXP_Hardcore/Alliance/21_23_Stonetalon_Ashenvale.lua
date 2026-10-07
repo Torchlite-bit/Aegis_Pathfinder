@@ -100,8 +100,9 @@ R The Ruins of Ordil'Aran |N|(31.5, 31.5)| |O| |C|Warlock| |Z|Ashenvale|
 C Heartswood |QID|1738| |OIDX|1| |N|the Heartswood giant tree (31.5, 31.5)| |C|Warlock| |Z|Ashenvale|
 R Astranaar |N|(34.4, 48.0)| |O| |C|Warlock| |Z|Ashenvale|
 F Fly to Auberdine |N|Daelyshia - (34.4, 48.0)| |Z|Ashenvale|
-R the Auberdine Docks. Wait for the Menethil Harbor boat |N|(32.4, 43.7)| |O| |Z|Darkshore|
-R Level your [First Aid] and [Cooking] while waiting for the Menethil Harbor boat |N|(32.4, 43.7)| |Z|Darkshore|
+R the Auberdine Docks. Wait for the boat to Stormwind |N|(32.4, 43.7)| |O| |Z|Darkshore|
+R Level your [First Aid] and [Cooking] while waiting for the boat to Stormwind |N|(32.4, 43.7)| |Z|Darkshore|
+R Stormwind Harbor |N|Take the boat from Auberdine to Stormwind Harbor| |O| |Z|Stormwind City|
 
 ]]
 end)
