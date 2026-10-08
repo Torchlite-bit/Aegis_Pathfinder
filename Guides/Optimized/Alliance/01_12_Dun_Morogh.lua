@@ -283,7 +283,7 @@ T Return to Brock |QID|6392| |N|Brock Stoneseeker in Thelsamar (37.07, 47.79)| |
 
 N Level 12 |N|You should be around level 12 now. Continue to Darkshore or Loch Modan for the next guide| |LV|12|
 
-N Guide Complete |N|Head to Darkshore for optimized 12+ leveling. Take flight from Ironforge to Menethil Harbor, then boat to Auberdine|
+N Guide Complete |N|Head to Darkshore for optimized 12+ leveling. Take the Deeprun Tram from Ironforge to Stormwind, then the boat from Stormwind Harbor to Auberdine|
 
 ]]
 end)

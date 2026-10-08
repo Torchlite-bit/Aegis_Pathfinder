@@ -8,7 +8,7 @@ return [[
 
 N Optimized Leveling |N|This guide follows an optimized quest order for Wetlands 30-30|
 
-R Wetlands |QID|290| |N|Travel to Wetlands|
+R Wetlands |QID|290| |N|Travel to Wetlands - fly to Auberdine, take the boat to Stormwind Harbor, then fly to Menethil Harbor|
 R Deepwater Tavern |QID|290| |N|Travel to Deepwater Tavern (10.68, 60.92)| |Z|Wetlands|
 h Deepwater Tavern |QID|290| |N|Speak to Innkeeper Helbrek and set hearth at Deepwater Tavern (10.7, 60.9)|
 

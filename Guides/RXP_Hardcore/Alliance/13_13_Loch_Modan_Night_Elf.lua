@@ -4,8 +4,8 @@ return [[
 
 N 13-13 Loch Modan (Night Elf) |N|Converted from RestedXP guide|
 
-R Travel to Westfall |N|(42.0, 71.0)| |Z|Westfall|
-R Travel to Elwynn Forest |N|(23.2, 77.8)| |Z|Elwynn Forest|
+R Travel to Westfall |N|(42.0, 71.0)| |O| |Z|Westfall|
+R Travel to Elwynn Forest |N|(23.2, 77.8)| |O| |Z|Elwynn Forest|
 R Travel to Stormwind City |N|(70.0, 86.6)| |Z|Stormwind City|
 B Buy [Lesser Healing Potion] if in stock |N|Keldric Boucher - (55.7, 65.4)| |Z|Stormwind City|
 f Get the Stormwind City flight path |N|Dungar Longdrink - (66.3, 62.1)| |Z|Stormwind City|

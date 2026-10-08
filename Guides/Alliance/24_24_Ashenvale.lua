@@ -26,7 +26,7 @@ K Befouled Water Elemental |QID|1016| |N|Kill Befouled Water Elemental until you
 C Elemental Bracers |QID|1016| |N|Use the Divining Scroll after collect 5 Intact Elemental Bracer from Befouled Water Elemental in Mystral Lake (49, 70)| |U|5456|
 T Elemental Bracers |QID|1016| |N|Sentinel Velene Starstrike in Silverwind Refuge (49.81, 67.20)| |Z|Ashenvale|
 
-R Wetlands |N|Take the boat from Auberdine to Menethil Harbor (8.31, 58.54)| |Z|Wetlands|
+R Wetlands |N|Take the boat from Auberdine to Stormwind Harbor. Fly to Menethil Harbor if you have the flight path; otherwise fly to Thelsamar and run north through Dun Algaz into the Wetlands (8.31, 58.54)| |Z|Wetlands|
 
 N Guide Complete |N|Tick to continue to the next guide|
 

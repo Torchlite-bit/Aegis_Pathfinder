@@ -220,7 +220,7 @@ N Run to the base of the mountain southwest of the big tower and die then respaw
 T An Aggressive Defense |QID|1025| |N|Raene Wolfrunner - (36.6, 49.6)| |Z|Ashenvale|
 T Culling the Threat |QID|1054| |N|Raene Wolfrunner - (36.6, 49.6)| |Z|Ashenvale|
 F Fly to Darkshore |N|Daelyshia - (34.4, 48.0)| |Z|Ashenvale|
-R Level your [First Aid] and [Cooking] while waiting for the Menethil Harbor boat |N|(32.4, 43.7)| |Z|Darkshore|
+R Level your [First Aid] and [Cooking] while waiting for the boat to Stormwind |N|(32.4, 43.7)| |Z|Darkshore|
 
 ]]
 end)

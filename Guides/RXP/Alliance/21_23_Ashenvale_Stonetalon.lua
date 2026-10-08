@@ -126,11 +126,11 @@ N Die and respawn at the Spirit Healer |O| |Z|Ashenvale|
 T Culling the Threat |QID|1054| |N|Raene Wolfrunner - (36.6, 49.6)| |Z|Ashenvale|
 T Fallen Sky Lake |QID|1035| |N|Pelturas Whitemoon - (37.4, 51.8)| |Z|Ashenvale|
 N Buy [Flint and Tinder] and [Simple Wood] |N|(34.8, 50.9)| |O| |Z|Ashenvale|
-N Only do this if you have meat to cook while on the boat to Wetlands soon. There is a quest in Duskwood which requires your [Cooking] to be 50 |N|(34.8, 50.9)| |O| |Z|Ashenvale|
+N Only do this if you have meat to cook while on the boat to Stormwind soon. There is a quest in Duskwood which requires your [Cooking] to be 50 |N|(34.8, 50.9)| |O| |Z|Ashenvale|
 B Buy Flint and Tinder (x1) |L|4471 1| |N|Haljan Oakheart - (34.8, 50.9)| |O| |Z|Ashenvale|
 B Buy Simple Wood (x1) |L|4470 1| |N|Haljan Oakheart - (34.8, 50.9)| |O| |Z|Ashenvale|
 F Fly to Darkshore |N|Daelyshia - (34.4, 48.0)| |Z|Ashenvale|
-R Level your [First Aid] and [Cooking] while waiting for the Menethil Harbor boat |N|(32.4, 43.7)| |Z|Darkshore|
+R Level your [First Aid] and [Cooking] while waiting for the boat to Stormwind |N|(32.4, 43.7)| |Z|Darkshore|
 
 ]]
 end)

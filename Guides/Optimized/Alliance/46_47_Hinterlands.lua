@@ -69,8 +69,8 @@ T Troll Necklace Bounty |QID|2880| |N|Turn in any extra necklaces for bonus XP| 
 T The Altar of Zul |QID|2989| |N|Gryphon Master Talonaxe in cave (9.69, 44.47)| |Z|The Hinterlands|
 A Thadius Grimshade |QID|2990| |N|Gryphon Master Talonaxe (9.69, 44.47)| |Z|The Hinterlands|
 
-F Menethil Harbor |QID|3661| |N|Fly to Menethil Harbor| |Z|Wetlands|
-R Auberdine |QID|3661| |N|Take boat to Auberdine| |Z|Darkshore|
+F Stormwind City |QID|3661| |N|Fly to Stormwind| |Z|Stormwind City|
+b Auberdine |QID|3661| |N|Take the boat from Stormwind Harbor to Auberdine| |Z|Darkshore|
 F Rut'theran Village |QID|3661| |N|Fly to Rut'theran Village| |Z|Teldrassil|
 
 T Favored of Elune? |QID|3661| |N|Erelas Ambersky in Rut'theran Village (55.50, 92.06)| |Z|Teldrassil|

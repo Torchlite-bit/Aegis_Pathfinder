@@ -268,8 +268,7 @@ T Delivering Daffodils |QID|131| |N|Darcy in Lakeshire (26.77, 44.31)| |Z|Redrid
 
 R Stormwind City |N|Travel to Stormwind City and take the Deeprun Tram from Dwarven District to Ironforge (70.3, 29.5)| |Z|Stormwind City|
 R Ironforge |N|Exit the Deeprun Tram and enter Ironforge| |Z|Ironforge|
-R Menethil Harbor |N|Fly from Ironforge to Menethil Harbor. Speak to Gryth Thurden (55.5, 47.8)| |Z|Ironforge|
-R Auberdine |N|Take the boat from Menethil Harbor to Auberdine in Darkshore (4.5, 57.3)| |Z|Wetlands|
+R Loch Modan |N|Fly from Ironforge to Thelsamar if you have the flight path (Gryth Thurden, 55.5, 47.8); otherwise run east through Dun Morogh into Loch Modan| |Z|Loch Modan|
 
 N Guide Complete |N|Tick to continue to the next guide|
 

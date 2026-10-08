@@ -265,8 +265,9 @@ R Travel to Darnassus |N|(35.4, 8.4)| |C|Druid| |Z|Darnassus|
 T Power over Poison |QID|6125| |N|Mathrengyl Bearwalker up stairs - (35.4, 8.4)| |C|Druid| |Z|Darnassus|
 R Take the purple portal back to Rut'theran |N|(30.7, 41.3)| |C|Druid| |Z|Darnassus|
 F Fly to Darkshore |N|Vesprystus - (58.4, 94.0)| |C|Druid| |Z|Teldrassil|
-R the Auberdine Docks. Wait for the Menethil Harbor boat |N|(32.4, 43.7)| |O| |Z|Darkshore|
-R Level your [First Aid] and [Cooking] while waiting for the Menethil Harbor boat |N|(32.4, 43.7)| |Z|Darkshore|
+R the Auberdine Docks. Wait for the boat to Stormwind |N|(32.4, 43.7)| |O| |Z|Darkshore|
+R Level your [First Aid] and [Cooking] while waiting for the boat to Stormwind |N|(32.4, 43.7)| |Z|Darkshore|
+R Stormwind Harbor |N|Take the boat from Auberdine to Stormwind Harbor| |O| |Z|Stormwind City|
 
 ]]
 end)

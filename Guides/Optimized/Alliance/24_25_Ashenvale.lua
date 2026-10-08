@@ -31,9 +31,11 @@ K Befouled Water Elemental |QID|1016| |N|Kill Befouled Water Elemental and colle
 C Elemental Bracers |QID|1016| |N|Use the Divining Scroll after collecting bracers (49, 70)| |U|5456|
 T Elemental Bracers |QID|1016| |N|Sentinel Velene Starstrike in Silverwind Refuge (49.81, 67.20)| |Z|Ashenvale|
 
-N To Wetlands |N|Take the boat from Auberdine to Menethil Harbor|
-R Auberdine |QID|942| |N|Travel to Auberdine and take the boat to Menethil Harbor (36.61, 45.59)|
-R Menethil Harbor |QID|942| |N|Take the boat from Auberdine to Menethil Harbor| |Z|Wetlands|
+N To Wetlands |N|Take the boat from Auberdine to Stormwind Harbor, fly to Thelsamar, then run north into the Wetlands|
+R Auberdine |QID|942| |N|Travel to Auberdine and take the boat to Stormwind Harbor (36.61, 45.59)|
+b Stormwind Harbor |QID|942| |N|Take the boat from Auberdine to Stormwind Harbor| |Z|Stormwind City|
+F Thelsamar |QID|942| |N|Fly to Thelsamar in Loch Modan| |Z|Loch Modan|
+R Menethil Harbor |QID|942| |N|Run north through Dun Algaz into the Wetlands, then west along the road to Menethil Harbor| |Z|Wetlands|
 f Menethil Harbor |QID|942| |N|Get flight path from Shellei Brondir in Menethil Harbor (9.49, 59.70)| |Z|Wetlands|
 
 N Level 25 |N|You should be around level 25 now. Continue to the next guide| |LV|25|

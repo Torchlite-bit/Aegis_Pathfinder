@@ -72,18 +72,10 @@ T The Tome of Divinity |QID|1784| |N|Muiredon Battleforge - (23.5, 8.3)| |C|Pala
 A The Tome of Divinity |QID|1785| |N|Muiredon Battleforge - (23.5, 8.3)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
 T The Tome of Divinity |QID|1785| |N|Tiza Battleforge - (27.6, 12.2)| |C|Paladin| |R|Dwarf| |Z|Ironforge|
 T The Reports |QID|291| |N|Senator Barin Redstone - (39.6, 57.5)| |Z|Ironforge|
-R Travel to Dun Morogh |N|(53.5, 34.9)| |R|!Night Elf| |Z|Dun Morogh|
-R the Dun Morogh -> Wetlands skip spot |N|(59.4, 42.9)| |O| |R|!Night Elf| |Z|Dun Morogh|
-R Travel to Wetlands |N|(15.1, 64.0)| |R|!Night Elf| |Z|Wetlands|
-R Watch the video guide for a reference on how to do the skip first! |N|(12.1, 60.3)| |R|!Night Elf| |Z|Wetlands|
-N Do the Deathless Dun Morogh -> Wetlands skip |N|(12.1, 60.3)| |R|!Night Elf| |Z|Wetlands|
-N Avoid the Wetlands Crocolisks and Murlocs when crossing the water |N|(12.1, 60.3)| |R|!Night Elf| |Z|Wetlands|
-N Click here for a video guide |N|(12.1, 60.3)| |R|!Night Elf| |Z|Wetlands|
-R Menethil Harbor |N|(12.1, 60.3)| |R|!Night Elf| |Z|Wetlands|
-f Get the Wetlands flight path |N|Shellei - (9.5, 59.7)| |R|!Night Elf| |Z|Wetlands|
-R the Menethil Harbor docks. Wait for the boat to Darkshore |N|(4.6, 57.3)| |O| |R|!Night Elf| |Z|Wetlands|
-N Level your [First Aid] and [Cooking] while waiting for the boat to Darkshore |R|!Night Elf| |Z|Wetlands|
-N Level up your [Cooking] using the [Chunks of Boar Meat] you farmed earlier. Level it to 10 ideally |R|!Night Elf| |Z|Wetlands|
+R Take the Deeprun Tram to Stormwind |N|(78.0, 52.0)| |O| |R|!Night Elf| |Z|Ironforge|
+R Stormwind Harbor |N|Take the boat from Stormwind Harbor to Auberdine| |O| |R|!Night Elf| |Z|Stormwind City|
+N Level your [First Aid] and [Cooking] while waiting for the boat to Darkshore |R|!Night Elf| |Z|Stormwind City|
+N Level up your [Cooking] using the [Chunks of Boar Meat] you farmed earlier. Level it to 10 ideally |R|!Night Elf| |Z|Stormwind City|
 f Get the Westfall flight path |N|Thor - (56.6, 52.6)| |C|!Druid| |R|Night Elf| |Z|Westfall|
 F Fly to Stormwind |N|Thor - (56.6, 52.6)| |C|!Druid| |R|Night Elf| |Z|Westfall|
 N Cast Teleport: Moonglade |O| |C|Druid| |Z|Westfall|

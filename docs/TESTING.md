@@ -67,6 +67,12 @@ are only found at startup.
       item's own icon.
 - [ ] Tick a few steps, then switch group mode or a dungeon chip: the ticks
       stay on the same steps, and after `/reload` too.
+- [ ] Boats: Optimized Darkshore (12-14) says to take the boat from
+      Stormwind Harbor to Auberdine, not from Menethil. Its "Stormwind Harbor"
+      steps tick on stepping into the harbor, and the boat lands at
+      Auberdine. In RestedXP 13-15 Westfall and 16-19 Darkshore, the
+      "wait for the boat" steps point at the docks the Stormwind boat really
+      uses (Auberdine's at 32.4, 43.7 was the Menethil boat's).
 - [ ] Tabs: a leveling guide says XP, a profession guide or crafting route PF,
       a dungeon guide DG, a class quest guide CL, a hardcore guide HC.
 - [x] A guide opened partway -- Loch Modan (17-18) with Crocolisk Hunting in

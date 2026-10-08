@@ -18,6 +18,33 @@ reports.
 
 ---
 
+## [0.24.0]
+
+### Fixed
+- **No more boat from Menethil Harbor to Auberdine.** Turtle WoW has none:
+  Auberdine's boat sails to Stormwind Harbor (and to Rut'theran Village and
+  Alah'Thalas), and Menethil's to Theramore. The Alliance guides still sent
+  you to the Menethil dock: "Travel to Auberdine by boat from Menethil Harbor"
+  in Optimized Darkshore (12-14), and about 30 legs like it across the
+  Optimized, RestedXP and RestedXP Hardcore packs and the zone guides. Each
+  now uses the boats that sail:
+  - **To Darkshore:** the boat from Stormwind Harbor. From Ironforge, the
+    Deeprun Tram to Stormwind first.
+  - **From Darkshore:** the boat to Stormwind Harbor. On to Loch Modan by the
+    tram and Ironforge, or on to the Wetlands by flying to Menethil Harbor,
+    or to Thelsamar and north through Dun Algaz if you don't have that flight
+    path yet.
+  - RestedXP no longer has Humans skip over the mountains from Dun Morogh
+    into the Wetlands, or send Night Elves round through the Wetlands and
+    Loch Modan, only to catch that boat. The cooking and First Aid notes for
+    the wait now come at Stormwind Harbor.
+  - The Westfall (12-17) zone guide now ends in Loch Modan, where its next
+    guide starts, instead of sailing to Auberdine.
+  - The Theramore–Menethil boat still sails, and the steps that use it are
+    unchanged.
+- `Tools/verify.py` fails any guide step that sails between Menethil Harbor
+  and Auberdine.
+
 ## [0.23.4]
 
 ### Changed
@@ -1742,6 +1769,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.24.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.23.4]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.23.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.23.2]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

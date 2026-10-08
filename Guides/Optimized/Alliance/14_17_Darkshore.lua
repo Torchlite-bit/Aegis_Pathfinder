@@ -117,9 +117,9 @@ A Aquatic Form |QID|5061| |N|Dendrite Starblaze in Nighthaven (56.20, 30.63)| |C
 R Cenarion Enclave |QID|5061| |N|Travel to Cenarion Enclave in Darnassus (35.34, 8.36)| |C|Druid| |Z|Darnassus|
 T Aquatic Form |QID|5061| |N|Mathrengyl Bearwalker in Cenarion Enclave (35.34, 8.36)| |C|Druid| |Z|Darnassus|
 
-N To Loch Modan |N|Take the boat to Menethil Harbor, then travel east to Loch Modan|
-R Menethil Harbor |QID|967| |N|Take the boat from Auberdine to Menethil Harbor| |Z|Wetlands|
-f Menethil Harbor |QID|967| |N|Get flight path from Shellei Brondir in Menethil Harbor (9.49, 59.70)| |Z|Wetlands|
+N To Loch Modan |N|Take the boat to Stormwind Harbor, then the Deeprun Tram to Ironforge and on to Loch Modan|
+b Stormwind Harbor |QID|967| |N|Take the boat from Auberdine to Stormwind Harbor| |Z|Stormwind City|
+R Loch Modan |QID|967| |N|Take the Deeprun Tram to Ironforge. Fly to Thelsamar if you have the flight path; otherwise run east through Dun Morogh into Loch Modan| |Z|Loch Modan|
 
 N Level 17 |N|You should be around level 17 now. Continue to Loch Modan| |LV|17|
 

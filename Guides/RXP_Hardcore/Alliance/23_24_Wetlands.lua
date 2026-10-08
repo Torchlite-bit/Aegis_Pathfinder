@@ -4,7 +4,8 @@ return [[
 
 N 23-24 Wetlands |N|Converted from RestedXP guide|
 
-R Travel to Wetlands |N|(8.5, 55.7)| |Z|Wetlands|
+R Travel to Wetlands |N|Fly to Menethil Harbor if you have the flight path. Otherwise fly to Thelsamar and run north through Dun Algaz into the Wetlands and west to Menethil Harbor (8.5, 55.7)| |Z|Wetlands|
+f Get the Wetlands flight path |N|Shellei - (9.5, 59.7)| |Z|Wetlands|
 A Young Crocolisk Skins |QID|484| |N|James Halloran - (8.5, 55.7)| |Z|Wetlands|
 A Claws from the Deep |QID|279| |N|Karl Boran - (8.4, 58.5)| |Z|Wetlands|
 A The Third Fleet |QID|288| |N|First Mate Fitzsimmons - (10.9, 59.7)| |Z|Wetlands|

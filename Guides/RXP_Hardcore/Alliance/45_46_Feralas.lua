@@ -141,9 +141,9 @@ N Syurna |N|(31.8, 16.7)| |C|Rogue| |Z|Darnassus|
 t Train your class spells |N|(37.0, 21.9)| |C|Rogue| |Z|Darnassus|
 t Train your class spells |N|Jocaste - (40.4, 8.5)| |C|Hunter| |Z|Darnassus|
 F Fly to Darkshore |N|Vesprystus - (58.4, 94.0)| |C|!Mage| |Z|Teldrassil|
-R Level your [First Aid] while waiting for the Menethil Harbor boat |N|(32.4, 43.7)| |C|!Mage| |Z|Darkshore|
-R Travel to Wetlands |N|(9.5, 59.7)| |C|!Mage| |Z|Wetlands|
-F Fly to Arathi Highlands |N|Shellei Brondir - (9.5, 59.7)| |C|!Mage| |Z|Wetlands|
+R Level your [First Aid] while waiting for the boat to Stormwind |N|(32.4, 43.7)| |C|!Mage| |Z|Darkshore|
+R Stormwind Harbor |N|Take the boat from Auberdine to Stormwind Harbor| |O| |C|!Mage| |Z|Stormwind City|
+F Fly to Arathi Highlands |N|Dungar Longdrink - (66.3, 62.1)| |C|!Mage| |Z|Stormwind City|
 
 ]]
 end)
