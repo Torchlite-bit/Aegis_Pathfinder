@@ -602,19 +602,27 @@ function AegisPathfinder:IsQuestPossible(qid, visited)
 		end
 	end
 
-	-- Check race restriction
+	-- Check race restriction. The bits are pfQuest's (pfDB.bitraces, with
+	-- pfQuest-turtle's two), keyed by UnitRace's second return: Undead is
+	-- "Scourge" and High Elf "BloodElf" there. Goblin and High Elf were the
+	-- wrong way round, so a Goblin read every Horde quest (mask 434) as not
+	-- for its race and the guide ticked it done -- straight to step 100; and
+	-- Undead and High Elves, under names the client does not use, were never
+	-- checked at all.
 	if requiredRace and requiredRace ~= 0 then
 		local raceMap = {
 			["Human"] = 1,
 			["Orc"] = 2,
 			["Dwarf"] = 4,
 			["NightElf"] = 8,
+			["Scourge"] = 16,
 			["Undead"] = 16,
 			["Tauren"] = 32,
 			["Gnome"] = 64,
 			["Troll"] = 128,
-			["HighElf"] = 256,
-			["Goblin"] = 512,
+			["Goblin"] = 256,
+			["BloodElf"] = 512,
+			["HighElf"] = 512,
 		}
 		local _, myRaceFile = UnitRace("player")
 		local myRaceMask = raceMap[myRaceFile]

@@ -1,8 +1,10 @@
 --[[
 	Tests for window stacking.
 
-	Every window sits in the DIALOG strata, which the client draws in
-	frame-level order across all of them at once. Two windows built at the
+	Every window but the guide sits in the DIALOG strata, which the client
+	draws in frame-level order across all of them at once. (The guide is in
+	MEDIUM, with the quest log and bags, so that clicking one of those brings
+	it over the guide; in DIALOG the guide covered them whatever you clicked.) Two windows built at the
 	same level interleave where they overlap -- one's close chip, scrollbar
 	and header drawn through the other's body -- which is what the player saw
 	with the config panel open over the guide.
@@ -249,9 +251,20 @@ show(options)
 local ok, lo, hi = fullyAbove(options, objectives)
 check(ok, "config opened over the guide draws entirely over it (lowest %d vs highest %d)", lo, hi)
 
+-- The guide is in MEDIUM with Blizzard's windows; the config panel in DIALOG
+-- is drawn over it whatever their levels, so the two cannot interleave.
+check(objectives:GetFrameStrata() == "MEDIUM" and options:GetFrameStrata() == "DIALOG",
+	"the guide is in MEDIUM with the quest log, the config panel above it in DIALOG")
+local before = objectives:GetFrameLevel()
+local raised = false
+objectives.Raise = function() raised = true end
 grab(objectives)
-ok, lo, hi = fullyAbove(objectives, options)
-check(ok, "grabbing the guide brings all of it back in front (lowest %d vs highest %d)", lo, hi)
+check(objectives:GetFrameLevel() == before and raised,
+	"grabbing the guide leaves its level to the client and raises it over the quest log (%d -> %d)",
+	before, objectives:GetFrameLevel())
+objectives.Raise = nil
+ok, lo, hi = fullyAbove(options, objectives)
+check(ok, "and does not band the DIALOG windows under it (lowest %d vs highest %d)", lo, hi)
 check(wellFormed(objectives) and wellFormed(options), "neither window is flattened by the move")
 
 local _, top = span(objectives)

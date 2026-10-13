@@ -67,6 +67,16 @@ are only found at startup.
       item's own icon.
 - [ ] Tick a few steps, then switch group mode or a dungeon chip: the ticks
       stay on the same steps, and after `/reload` too.
+- [ ] The guide and Blizzard's windows: open the quest log over the guide,
+      then click the guide -- it comes in front; click the quest log -- it
+      goes back in front. The options window and guide browser still open
+      over the guide.
+- [ ] A new Goblin on Optimized: after Blackstone Island, The Barrens
+      (12-15) starts at Razor Hill with Conscript of the Horde, and steps do
+      not jump ahead with pfQuest on. A High Elf on Optimized Elwynn does not
+      skip Alliance quests either.
+- [ ] Full bags with a stack of greys and a single cheaper grey: Delete
+      cheapest item offers the single one.
 - [ ] Boats: Optimized Darkshore (12-14) says to take the boat from
       Stormwind Harbor to Auberdine, not from Menethil. Its "Stormwind Harbor"
       steps tick on stepping into the harbor, and the boat lands at

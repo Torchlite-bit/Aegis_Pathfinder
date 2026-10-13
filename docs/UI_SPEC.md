@@ -211,6 +211,16 @@ itself; the order it leaves is read back from the roots' levels on the next
 restack. `Tools/verify.py` fails a file that puts more windows in `DIALOG`
 than it registers.
 
+The guide itself is in `MEDIUM`, the strata of the quest log, bags and
+character panel, and not in `DIALOG` with the rest: clicking one of those
+brings it over the guide, and clicking the guide brings the guide back, as
+Blizzard's own windows do. In `DIALOG` it covered them whatever you clicked.
+Windows are banded only among those in one strata; the guide, alone in
+`MEDIUM`, is left to the client's toplevel raise (and `Raise()` where the
+client has it), since banding it from the fixed base would put it back under
+a quest log the client had raised. The windows opened from it, in `DIALOG`,
+draw over it.
+
 ### Objectives panel -- `ObjectivesFrame.lua`
 
 The concept's `#objectives`, and now the addon's only window: header, tab bar,

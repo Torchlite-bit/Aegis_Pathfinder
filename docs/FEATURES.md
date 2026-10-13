@@ -438,8 +438,10 @@ everyone. Either window can be dragged anywhere, or switched off under
   guide's items, your hearthstone or what no vendor buys (quest items), and
   asks before deleting anything that is not grey. A quiver's or soul bag's
   empty slots are not room. 1.12 does not tell an addon what a vendor pays,
-  so the prices come from the CMaNGOS database (SellPrices.lua); Turtle WoW's
-  own items are not in it, and are offered only when grey.
+  so the price is ClassicAPI's -- the server's own, Turtle WoW's items too --
+  or, failing that, the CMaNGOS database's (SellPrices.lua). A grey neither
+  knows the price of is offered only when no grey with a price is in your
+  bags; it no longer counts as worthless.
 - **Mark whoever the target buttons target** (on). Off, the buttons only
   target; quest icons still mark by themselves.
 

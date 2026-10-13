@@ -135,7 +135,10 @@ local frame = CreateFrame("Frame", "AegisPathfinderObjectives", UIParent)
 AegisPathfinder.objectiveframe = frame
 -- Its hints open beside it, not over the steps they are about.
 Theme:TipOutside(frame)
-frame:SetFrameStrata("DIALOG")
+-- MEDIUM, the strata of the quest log, bags and character panel: clicking
+-- one of them brings it over the guide, and clicking the guide brings the
+-- guide back. In DIALOG it stayed in front of them whatever you clicked.
+frame:SetFrameStrata("MEDIUM")
 frame:SetWidth(G.DEFAULT_WIDTH)
 frame:SetHeight(G.CHROME_TOP + G.ROWHEIGHT + G.FOOTER_H)
 -- The concept parks it at top:180px; right:40px. There is no status card to

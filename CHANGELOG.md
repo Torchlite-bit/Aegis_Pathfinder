@@ -18,6 +18,34 @@ reports.
 
 ---
 
+## [0.25.0]
+
+### Fixed
+- **Goblins no longer jump ahead through their guides.** With pfQuest on,
+  the guide reads which races a quest is for, and ticks a quest done when
+  it is not for yours. Goblin and High Elf had swapped bits, so a Goblin
+  read every Horde quest as not for its race: step 1 jumped to step 100,
+  and The Barrens (12-15) skipped straight to the Crossroads. The race bits
+  are now pfQuest's own. Undead and High Elves had never been checked at
+  all, because the client calls them Scourge and BloodElf.
+- **Goblins are sent for Conscript of the Horde.** The Barrens (12-15)
+  showed the Razor Hill and Far Watch steps only to Orcs, Trolls and Undead,
+  though Goblins land in Durotar and can take the quest.
+- **The guide no longer covers the quest log.** It sat above Blizzard's
+  windows whatever you clicked. It now shares their layer: clicking the
+  quest log, your bags or the character panel brings them in front, and
+  clicking the guide brings it back. The options window and guide browser
+  still open over the guide.
+- **Delete cheapest item weighs greys by what they fetch.** A grey whose
+  price was unknown counted as worth nothing, so a stack of five fangs went
+  before a single grey chestpiece that sold for less. The price now comes
+  from the server through ClassicAPI, Turtle WoW's own items included, and
+  a grey of unknown price is offered only when no grey with a price is
+  there.
+- **Messenger to Darkshire is no longer in Westfall (12-17).** It needs
+  level 18, so the guide sent you to Lakeshire for a quest you could not
+  take yet.
+
 ## [0.24.0]
 
 ### Fixed
@@ -1769,6 +1797,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.25.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.24.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.23.4]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.23.3]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
