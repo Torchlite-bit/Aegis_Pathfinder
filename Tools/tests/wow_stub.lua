@@ -313,6 +313,7 @@ local function newFrame(frameType, name, parent)
 	function f:GetPushedTexture() return newTexture(nil, self, "ARTWORK") end
 	function f:SetClampedToScreen(v) self.__clamped = v and true or false end
 	function f:SetFrameStrata(s) self.__strata = s end
+	function f:GetFrameStrata() return self.__strata or "MEDIUM" end
 	--[[ Frame levels, as the client assigns them: a frame starts one above
 		its parent. Whether SetFrameLevel drags a frame's children along with
 		it is not something the 1.12 client documents, so stub.cascadeLevels

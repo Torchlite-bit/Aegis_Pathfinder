@@ -454,7 +454,34 @@ c = Auto:CheapestToDelete()
 check(c and c.id == 2589, "not what no vendor buys (a quest item, a Turtle item), got %s", tostring(c and c.id))
 bags[1][2] = "|cff9d9d9d|Hitem:60001:0:0:0|h[Turtle Junk]|h|r"
 c = Auto:CheapestToDelete()
-check(c and c.id == 60001 and c.value == 0, "a grey with no price (Turtle's own) is offered")
+check(c and c.id == 60001 and c.value == nil, "a grey with no price (Turtle's own) is offered, its value unknown")
+-- A stack of greys against one cheaper grey (reported: five fangs went
+-- before a grey chestpiece worth less than the five). An unknown price no
+-- longer counts as nothing, and the server's price is asked first.
+do
+	local fangs = "|cff9d9d9d|Hitem:60002:0:0:0|h[Worn Fang]|h|r"
+	local chest = "|cff9d9d9d|Hitem:60003:0:0:0|h[Tattered Chestpiece]|h|r"
+	local before0, before1 = bags[0][1], bags[1][2]
+	bags[0][1], bags[1][2] = fangs, chest
+	counts["0:1"] = 5
+	c = Auto:CheapestToDelete()
+	check(c and c.id == 60002 and c.value == nil, "neither priced: one of them, not by a value of 0")
+	A.SELL_PRICES[60003] = 40
+	c = Auto:CheapestToDelete()
+	check(c and c.id == 60003 and c.value == 40, "a priced grey before an unpriced stack, got %s", tostring(c and c.id))
+	A.SELL_PRICES[60003] = nil
+	local server = { [60002] = 12, [60003] = 40 }
+	C_Item = { GetItemSellPriceByID = function(id) return server[id] end }
+	c = Auto:CheapestToDelete()
+	check(c and c.id == 60003 and c.value == 40, "the server's prices: five fangs at 12c (60c) outweigh the chest at 40c, got %s",
+		tostring(c and c.id) .. " " .. tostring(c and c.value))
+	server[60002] = 5
+	c = Auto:CheapestToDelete()
+	check(c and c.id == 60002 and c.value == 25, "and five at 5c (25c) go first, got %s", tostring(c and c.value))
+	C_Item = nil
+	counts["0:1"] = nil
+	bags[0][1], bags[1][2] = before0, before1
+end
 slotsOf[1] = 3
 check(Auto:CheapestToDelete() == nil, "a bag with room: nothing offered")
 slotsOf[1] = 2

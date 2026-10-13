@@ -11,17 +11,17 @@ N Optimized Leveling |N|This guide follows an optimized quest order for Barrens 
 R Orgrimmar |QID|840| |N|Travel to Orgrimmar (45.23, 63.84)| |Z|Orgrimmar| |R|Undead|
 f Orgrimmar |QID|840| |N|Speak to Doras and grab flight path for Orgrimmar (45.23, 63.84)| |Z|Orgrimmar| |R|Undead|
 
-R Razor Hill |QID|840| |N|Run South to Razor Hill (50.9, 43.6)| |Z|Durotar| |R|Orc/Troll/Undead|
-A Conscript of the Horde |QID|840| |N|Takrin Pathseeker in Razor Hill (50.9, 43.6)| |Z|Durotar| |R|Orc/Troll/Undead|
+R Razor Hill |QID|840| |N|Run South to Razor Hill (50.9, 43.6)| |Z|Durotar| |R|Orc/Troll/Undead/Goblin|
+A Conscript of the Horde |QID|840| |N|Takrin Pathseeker in Razor Hill (50.9, 43.6)| |Z|Durotar| |R|Orc/Troll/Undead/Goblin|
 
 R Camp Taurajo |QID|854| |N|Run east to Camp Taurajo (44.9, 58.7)| |R|Tauren|
 A Journey to the Crossroads |QID|854| |N|Kirge Sternhorn (44.9, 58.7)| |R|Tauren|
 
-T Conscript of the Horde |QID|840| |N|Kargal Battlescar in Far Watch Post (62.27, 19.37)| |R|Orc/Troll/Undead|
-A Crossroads Conscription |QID|842| |N|Kargal Battlescar in Far Watch Post (62.27, 19.37)| |PRE|840| |R|Orc/Troll/Undead|
+T Conscript of the Horde |QID|840| |N|Kargal Battlescar in Far Watch Post (62.27, 19.37)| |R|Orc/Troll/Undead/Goblin|
+A Crossroads Conscription |QID|842| |N|Kargal Battlescar in Far Watch Post (62.27, 19.37)| |PRE|840| |R|Orc/Troll/Undead/Goblin|
 
-R The Crossroads |QID|844| |N|Follow the road west to The Crossroads (52, 30)| |R|Orc/Troll/Undead|
-T Crossroads Conscription |QID|842| |N|Sergra Darkthorn in The Crossroads (52.21, 30.99)| |PRE|840| |R|Orc/Troll/Undead|
+R The Crossroads |QID|844| |N|Follow the road west to The Crossroads (52, 30)| |R|Orc/Troll/Undead/Goblin|
+T Crossroads Conscription |QID|842| |N|Sergra Darkthorn in The Crossroads (52.21, 30.99)| |PRE|840| |R|Orc/Troll/Undead/Goblin|
 
 R The Crossroads |QID|6361| |N|Travel to The Crossroads (52.23, 31.93)| |R|Tauren|
 T The Barrens Oases |QID|886| |N|Tonga Runetotem in The Crossroads (52.23, 31.93)| |O|

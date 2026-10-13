@@ -191,8 +191,11 @@ end
 	grey first, then whatever a vendor pays least for, by the whole stack.
 	It never offers the guide's items, a hearthstone, or anything a vendor
 	will not buy (quest items), and asks before deleting anything that is
-	not grey. 1.12 does not say what a vendor pays, so SellPrices.lua does;
-	Turtle WoW's own items are not in it, and are offered only when grey. ]]
+	not grey. What a vendor pays comes from ClassicAPI (the server's own
+	price, Turtle WoW's items too), else SellPrices.lua. A grey whose price
+	neither knows is offered only when no grey with a price is there: it used
+	to count as worth nothing, and five fangs went before a cheaper grey
+	chestpiece. ]]
 
 -- Bags that hold only their own kind: their room is not room for anything.
 local SPECIAL = { Quiver = true, ["Ammo Pouch"] = true, ["Soul Bag"] = true }
@@ -239,12 +242,29 @@ function Auto.Keep()
 	return keep
 end
 
+--- What a vendor pays for one, or nil if neither the server nor
+--- SellPrices.lua says.
+function Auto.SellPrice(id)
+	local price = C_Item and C_Item.GetItemSellPriceByID and C_Item.GetItemSellPriceByID(id)
+	if price then return price end
+	return (AegisPathfinder.SELL_PRICES or {})[id]
+end
+
+-- Which of two to offer first: a grey before anything else, a known price
+-- before an unknown one, then the lower value of the whole stack.
+local function Cheaper(e, best)
+	if not best then return true end
+	if e.grey ~= best.grey then return e.grey end
+	if (e.value ~= nil) ~= (best.value ~= nil) then return e.value ~= nil end
+	return e.value ~= nil and e.value < best.value
+end
+
 --- With your bags full, what to delete to make room: { bag, slot, id, link,
---- texture, count, value, grey }. Nil while there is room, or nothing to
---- offer.
+--- texture, count, value, grey }, value nil for a grey of unknown price. Nil
+--- while there is room, or nothing to offer.
 function Auto:CheapestToDelete()
 	if Auto.FreeSlots() > 0 then return end
-	local prices, keep, best = AegisPathfinder.SELL_PRICES or {}, Auto.Keep(), nil
+	local keep, best = Auto.Keep(), nil
 	for bag = 0, 4 do
 		for slot = 1, GetContainerNumSlots(bag) or 0 do
 			local link = GetContainerItemLink(bag, slot)
@@ -252,14 +272,12 @@ function Auto:CheapestToDelete()
 			id = tonumber(id)
 			if id and not keep[id] then
 				local grey = string.find(link, "|cff9d9d9d", 1, true) ~= nil
-				local price = prices[id]
+				local price = Auto.SellPrice(id)
 				if grey or price then
 					local texture, count = GetContainerItemInfo(bag, slot)
 					local e = { bag = bag, slot = slot, id = id, link = link, texture = texture,
-						count = count or 1, value = (price or 0) * (count or 1), grey = grey }
-					if not best or (e.grey and not best.grey) or (e.grey == best.grey and e.value < best.value) then
-						best = e
-					end
+						count = count or 1, value = price and price * (count or 1), grey = grey }
+					if Cheaper(e, best) then best = e end
 				end
 			end
 		end

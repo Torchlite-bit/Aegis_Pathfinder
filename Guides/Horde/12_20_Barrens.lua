@@ -10,8 +10,8 @@ A Call of Fire (Part 1) |QID|2984| |N|Swart in Bloodhoof Village (48.4, 59.2)| |
 R Orgimmar |QID|840| |N|Travel to Orgimmar (45.23, 63.84)|  |Z|Orgrimmar| |R|Undead|
 f Orgimmar |QID|840| |N|Speak to Doras and grab flight path for Orgimmar (45.23, 63.84)| |Z|Orgrimmar| |R|Undead|
 
-R Razor Hill |QID|840| |N|Run South to Razor Hill (50.9, 43.6)| |Z|Durotar| |R|Orc/Troll/Undead|
-A Conscript of the Horde |QID|840| |N|Takrin Pathseeker in Razor Hill (50.9, 43.6)| |Z|Durotar| |R|Orc/Troll/Undead|
+R Razor Hill |QID|840| |N|Run South to Razor Hill (50.9, 43.6)| |Z|Durotar| |R|Orc/Troll/Undead/Goblin|
+A Conscript of the Horde |QID|840| |N|Takrin Pathseeker in Razor Hill (50.9, 43.6)| |Z|Durotar| |R|Orc/Troll/Undead/Goblin|
 
 R Camp Taurajo |QID|854| |N|Run east to Camp Taurajo (44.9, 58.7)| |R|Tauren|
 A Journey to the Crossroads |QID|854| |N|Kirge Sternhorn (44.9, 58.7)| |R|Tauren|
@@ -26,8 +26,8 @@ T A Bundle of Hides |QID|6361| |N|Devrak in The Crossroads (51.52, 30.36)|
 A Ride to Thunder Bluff |QID|6362| |N|Devrak in The Crossroads (51.52, 30.36)|
 h The Crossroads |QID|6363| |N|Speak to Innkeeper Boorand Plainswind and set hearth in The Crossroads (52.0, 29.9)| |R|Tauren|
 
-T Conscript of the Horde |QID|840| |N|Kargal Battlescar in Far Watch Post (62.27, 19.37)| |R|Orc/Troll/Undead|
-A Crossroads Conscription |QID|842| |N|Kargal Battlescar in Far Watch Post (62.27, 19.37)| |PRE|840| |R|Orc/Troll/Undead|
+T Conscript of the Horde |QID|840| |N|Kargal Battlescar in Far Watch Post (62.27, 19.37)| |R|Orc/Troll/Undead/Goblin|
+A Crossroads Conscription |QID|842| |N|Kargal Battlescar in Far Watch Post (62.27, 19.37)| |PRE|840| |R|Orc/Troll/Undead/Goblin|
 T Ak'Zeloth |QID|809| |N|Ak'Zeloth in Far Watch Post (62.35, 20.08)| |O| |R|Orc/Troll|
 A The Demon Seed |QID|924| |N|Ak'Zeloth in Far Watch Post (62.35, 20.08)| |PRE|809| |R|Orc/Troll|
 N Flawed Power Stone |QID|924| |N|Grab the Flawed Power Stone from the table next to the quest giver Ak'Zeloth (62.35, 20.08)| |PRE|809| |L|4986| |R|Orc/Troll|
@@ -40,8 +40,8 @@ A Return to Jahan |QID|6364| |N|Tal in Thunder Bluff (46.8, 50.2)| |R|Tauren| |Z
 F The Crossroads |QID|844| |N|Speak to Tal and fly to The Crossroads (46.8, 50.2)| |R|Tauren| |Z|Thunder Bluff|
 T Return to Jahan |QID|6364| |N|Jahan Hawkwing in The Crossroads (51.19, 29.09)| |R|Tauren|
 
-R The Crossroads |QID|844| |N|Follow the road, taking a left turn to the Crossroads (52, 30)| |R|Orc/Troll/Undead|
-T Crossroads Conscription |QID|842| |N|Sergra Darkthorn in The Crossroads (52.21, 30.99)| |PRE|840| |R|Orc/Troll/Undead|
+R The Crossroads |QID|844| |N|Follow the road, taking a left turn to the Crossroads (52, 30)| |R|Orc/Troll/Undead/Goblin|
+T Crossroads Conscription |QID|842| |N|Sergra Darkthorn in The Crossroads (52.21, 30.99)| |PRE|840| |R|Orc/Troll/Undead/Goblin|
 
 A Meats to Orgrimmar |QID|6365| |N|Zargh in The Crossroads (52.58, 29.86)| |R|Orc/Troll|
 T Meats to Orgrimmar |QID|6365| |N|Devrak in The Crossroads (51.52, 30.36)| |R|Orc/Troll|

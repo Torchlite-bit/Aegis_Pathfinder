@@ -147,6 +147,50 @@ check(count(WESTFALL, "The Defias Brotherhood (Part 2)", "SOLO", false, {}) == 0
 check(count(WESTFALL, "The Defias Brotherhood (Part 2)", "SOLO", false, { DM = true }) > 0,
 	"a Deadmines quest should show with the Deadmines ticked")
 
+-- Quests only some races can take, by pfQuest's race bits (pfQuest-turtle's
+-- masks: Horde 434 has the Goblin's 256, Alliance 589 the High Elf's 512).
+-- A quest not for your race has its steps ticked done, so a Goblin who read
+-- every Horde quest that way jumped from step 1 to step 100.
+do
+	local savedRace, savedDB = UnitRace, pfDB
+	pfDB = { quests = { data = {
+		[90001] = { race = 434 },  -- every Horde race, Goblins too
+		[90002] = { race = 589 },  -- every Alliance race, High Elves too
+		[90003] = { race = 130 },  -- Orcs and Trolls
+		[90004] = { race = 16 },   -- Undead only
+	} } }
+	local function possible(token, qid)
+		UnitRace = function() return token, token end
+		return AegisPathfinder:IsQuestPossible(qid)
+	end
+	check(possible("Goblin", 90001) and not possible("Goblin", 90002), "a Goblin takes Horde quests, not Alliance ones")
+	check(possible("BloodElf", 90002) and not possible("BloodElf", 90001), "a High Elf (BloodElf to the client) takes Alliance quests")
+	check(possible("Scourge", 90004) and not possible("Scourge", 90003), "Undead (Scourge to the client) take Undead quests, not Orc and Troll ones")
+	check(possible("Orc", 90003) and possible("Troll", 90001) and not possible("Goblin", 90003), "Orcs and Trolls' own quests are theirs")
+	check(possible("Human", 90002) and not possible("Human", 90004), "a Human takes Alliance quests, not Undead ones")
+	UnitRace, pfDB = savedRace, savedDB
+end
+
+-- A Goblin, landed in Durotar from Blackstone Island, is sent to Razor Hill
+-- for Conscript of the Horde like an Orc or Troll: the steps were tagged for
+-- the three vanilla races alone, and the guide began at the Crossroads.
+do
+	local savedRace = UnitRace
+	UnitRace = function() return "Goblin", "Goblin" end
+	dofile("Parser.lua")
+	function AegisPathfinder:SmartSkipToStep() end
+	function AegisPathfinder:WarmCaches() end
+	dofile("Guides/Optimized/Horde/12_15_Barrens.lua")
+	check(count("Optimized/The Barrens (12-15)", "Conscript of the Horde", "SOLO", false) == 2,
+		"a Goblin is given Conscript of the Horde in the Barrens (12-15)")
+	check(count("Optimized/The Barrens (12-15)", "Meats to Orgrimmar", "SOLO", false) == 0,
+		"but not the Orc and Troll flight quest")
+	UnitRace = savedRace
+	dofile("Parser.lua")
+	function AegisPathfinder:SmartSkipToStep() end
+	function AegisPathfinder:WarmCaches() end
+end
+
 -- Every approved tag is still in place.
 local rc = os.execute("python3 Tools/build/apply_filter_tags.py --check > /dev/null")
 check(rc == 0, "apply_filter_tags.py --check: an approved tag is missing or a reviewed step moved")

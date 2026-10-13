@@ -1823,12 +1823,23 @@ function Theme:IsWindow(frame)
 end
 
 --- Put `frame` on top of every other open window, whole tree and all.
+--- Windows are banded only among those in its strata. One alone in its
+--- strata -- the guide, in MEDIUM with the quest log and bags -- is left to
+--- the client, which raises it over Blizzard's windows when shown or
+--- clicked: banding it would put it back at STACK_BASE, under a quest log
+--- the client had raised.
 function Theme:BringToFront(frame)
 	if not self:IsWindow(frame) then return end
+	local strata = frame.GetFrameStrata and frame:GetFrameStrata()
 	local order, index = {}, {}
 	for i, w in ipairs(self.windows) do
 		index[w] = i
-		if w ~= frame and w:IsShown() then table.insert(order, w) end
+		local same = not strata or not w.GetFrameStrata or w:GetFrameStrata() == strata
+		if w ~= frame and w:IsShown() and same then table.insert(order, w) end
+	end
+	if table.getn(order) == 0 and strata == "MEDIUM" then
+		if frame.Raise then frame:Raise() end
+		return
 	end
 	-- The order the other windows are in now, bottom first; registration
 	-- order breaks ties so two windows at one level do not swap each time.
