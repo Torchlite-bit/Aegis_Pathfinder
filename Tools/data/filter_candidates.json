@@ -5114,22 +5114,22 @@
    "title": "The Legend of Tarqsiku",
    "steps": [
     {
-     "guide": "Icepoint Rock (40-50)",
+     "guide": "Icepoint Rock (44-47)",
      "pack": "Zone guides",
      "faction": "Alliance",
-     "file": "Guides/Alliance/40_50_Icepoint_Rock.lua",
-     "line": 24,
+     "file": "Guides/Alliance/44_47_Icepoint_Rock.lua",
+     "line": 27,
      "action": "Complete",
      "title": "The Legend of Tarqsiku",
      "note": "Find and slay Tarqsiku deep in the cave beneath Kaneq'nuun (45.6, 50.1). He is a level 48 elite ice elemental that has fallen to darkness.",
      "optional": false
     },
     {
-     "guide": "Icepoint Rock (40-50)",
+     "guide": "Icepoint Rock (44-47)",
      "pack": "Zone guides",
      "faction": "Horde",
-     "file": "Guides/Horde/40_50_Icepoint_Rock.lua",
-     "line": 24,
+     "file": "Guides/Horde/44_47_Icepoint_Rock.lua",
+     "line": 27,
      "action": "Complete",
      "title": "The Legend of Tarqsiku",
      "note": "Find and slay Tarqsiku deep in the cave beneath Kaneq'nuun (45.6, 50.1). He is a level 48 elite ice elemental that has fallen to darkness.",

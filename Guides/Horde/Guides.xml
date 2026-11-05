@@ -28,13 +28,13 @@
 	<Script file="38_38_Dustwallow_Marsh.lua"/>
 	<Script file="38_40_Stranglethorn_Vale.lua"/>
 	<Script file="40_41_Badlands.lua"/>
-	<Script file="40_50_Icepoint_Rock.lua"/>
 	<Script file="41_42_Swamp_of_Sorrows.lua"/>
 	<Script file="42_43_Gilneas_Horde.lua"/>
 	<Script file="42_43_Stranglethorn_Vale.lua"/>
 	<Script file="43_44_Dustwallow_Marsh.lua"/>
 	<Script file="44_44_Desolace.lua"/>
 	<Script file="44_45_Tanaris.lua"/>
+	<Script file="44_47_Icepoint_Rock.lua"/>
 	<Script file="45_46_Feralas.lua"/>
 	<Script file="46_47_Azshara.lua"/>
 	<Script file="47_47_Hinterlands.lua"/>

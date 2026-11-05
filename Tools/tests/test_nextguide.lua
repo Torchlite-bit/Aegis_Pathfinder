@@ -60,6 +60,7 @@ guide("Northwind (28-34)")
 guide("Balor (29-34)")
 guide("Grim Reaches (33-38)")
 guide("Gilneas (39-46)")
+guide("Icepoint Rock (44-47)")
 guide("Hyjal (58-60)")
 guide("Moonwhisper Coast (52-60)")
 guide("Westfall (12-17)")
@@ -85,6 +86,7 @@ lift("AegisPathfinder.NO_GUIDE =", "---------------------------------\n--      B
 lift("--[[ Go back to the main route", "-- Turtle WoW custom zones for categorization")
 lift("-- Turtle WoW custom zones for categorization", "---------------------------------\n--      Route Functions")
 lift("function AegisPathfinder:LoadNextGuide()", "function AegisPathfinder:IsProfessionLearned")
+lift("--[[ Guides renamed between versions", "function AegisPathfinder:OnInitialize()")
 
 dofile("Theme.lua")
 dofile("NextGuideFrame.lua")
@@ -123,6 +125,42 @@ check(names(AegisPathfinder:GetCustomZoneChoices(51)) == "Moonwhisper Coast (52-
 check(names(AegisPathfinder:GetCustomZoneChoices(58)) == "Moonwhisper Coast (52-60), Hyjal (58-60)",
 	"at 58: Moonwhisper Coast still, and Hyjal; got '%s'", names(AegisPathfinder:GetCustomZoneChoices(58)))
 check(table.getn(AegisPathfinder:GetCustomZoneChoices(60)) == 0, "at 60, nothing: it is done with")
+-- Icepoint Rock's quests are level 45 to 48, and the boat there needs 40:
+-- as "40-50" it was offered at 39, and at 40 for mobs in their mid-forties.
+check(names(AegisPathfinder:GetCustomZoneChoices(39)) == "Gilneas (39-46)",
+	"at 39: Gilneas, not Icepoint Rock; got '%s'", names(AegisPathfinder:GetCustomZoneChoices(39)))
+check(names(AegisPathfinder:GetCustomZoneChoices(42)) == "Gilneas (39-46)",
+	"at 42 still not Icepoint Rock; got '%s'", names(AegisPathfinder:GetCustomZoneChoices(42)))
+check(names(AegisPathfinder:GetCustomZoneChoices(43)) == "Gilneas (39-46), Icepoint Rock (44-47)",
+	"at 43: Icepoint Rock, a level early; got '%s'", names(AegisPathfinder:GetCustomZoneChoices(43)))
+check(table.getn(AegisPathfinder:GetCustomZoneChoices(47)) == 0, "at 47, neither")
+
+-- A renamed guide keeps its progress -------------------------------------------------
+
+do
+	local saved = AegisPathfinder.db.char
+	local old, new = "Icepoint Rock (40-50)", "Icepoint Rock (44-47)"
+	check(AegisPathfinder.RENAMED_GUIDES[old] == new, "Icepoint Rock's old name maps to its new one")
+	AegisPathfinder.db.char = {
+		currentguide = old, branchsavedguide = old,
+		tabs = { { guide = "Optimized/Arathi (37-38)", step = 4 }, { guide = old, step = 9 } },
+		completion = { [old] = 0.4 }, turnins = { [old] = { [6] = true } },
+		favorites = { [old] = true }, recentguides = { new, "Northwind (28-34)", old },
+	}
+	AegisPathfinder:MigrateGuideNames()
+	local c = AegisPathfinder.db.char
+	check(c.currentguide == new and c.branchsavedguide == new, "the guide you were on is the renamed one")
+	check(c.tabs[1].guide == "Optimized/Arathi (37-38)" and c.tabs[2].guide == new and c.tabs[2].step == 9,
+		"its tab keeps its step")
+	check(c.completion[new] == 0.4 and c.completion[old] == nil, "and how far through it you were")
+	check(c.turnins[new] and c.turnins[new][6] and c.turnins[old] == nil, "and the steps it saw turned in")
+	check(c.favorites[new] and c.favorites[old] == nil, "and its star")
+	check(table.concat(c.recentguides, " | ") == new .. " | Northwind (28-34)",
+		"and its place in the recent list, once; got '%s'", table.concat(c.recentguides, " | "))
+	AegisPathfinder:MigrateGuideNames()
+	check(c.completion[new] == 0.4, "running it again changes nothing")
+	AegisPathfinder.db.char = saved
+end
 
 -- What comes next: the route's next leg, before a guide's own next link ---------------
 

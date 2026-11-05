@@ -32,12 +32,12 @@
 	<Script file="39_40_Stranglethorn.lua"/>
 	<Script file="39_46_Gilneas.lua"/>
 	<Script file="40_41_Badlands.lua"/>
-	<Script file="40_50_Icepoint_Rock.lua"/>
 	<Script file="41_42_Swamp_of_Sorrows.lua"/>
 	<Script file="42_43_Stranglethorn.lua"/>
 	<Script file="43_43_Desolace.lua"/>
 	<Script file="43_44_Tanaris.lua"/>
 	<Script file="44_46_Feralas.lua"/>
+	<Script file="44_47_Icepoint_Rock.lua"/>
 	<Script file="46_46_Azshara.lua"/>
 	<Script file="46_46_Hinterlands.lua"/>
 	<Script file="46_47_Stranglethorn.lua"/>

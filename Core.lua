@@ -615,7 +615,7 @@ AegisPathfinder.title = "Aegis: Pathfinder"
 -- the public release. It is written in five places that must agree -- here,
 -- the .toc, the README's H1 and its "Something broken?" line, and the newest
 -- CHANGELOG.md entry -- and Tools/verify.py checks they do.
-AegisPathfinder.version = "0.25.0"
+AegisPathfinder.version = "0.26.0"
 
 -- Adopt saved data written under the pre-rebrand SavedVariable name. Both
 -- globals are declared in the .toc so the old table is still loaded and can be
@@ -629,11 +629,54 @@ local function MigrateLegacySavedVariables()
     return true
 end
 
+--[[ Guides renamed between versions, old name to new.
+
+    A guide's name is the key its progress is saved under -- the tabs, how far
+    through it you are, the quests it has seen turned in, the browser's stars
+    and recent list -- so a renamed guide would otherwise open as one you had
+    never started. MigrateGuideNames carries each of those over.
+]]
+AegisPathfinder.RENAMED_GUIDES = {
+    -- 0.26.0: its quests are level 45 to 48 and its boat needs 40, so as
+    -- 40-50 "Where next?" offered it at 39.
+    ["Icepoint Rock (40-50)"] = "Icepoint Rock (44-47)",
+}
+
+function AegisPathfinder:MigrateGuideNames()
+    local db = self.db.char
+    for old, new in pairs(self.RENAMED_GUIDES) do
+        if db.currentguide == old then db.currentguide = new end
+        if db.branchsavedguide == old then db.branchsavedguide = new end
+        for _, tab in ipairs(db.tabs or {}) do
+            if tab.guide == old then tab.guide = new end
+        end
+        for _, field in ipairs({ "completion", "turnins", "favorites" }) do
+            local t = db[field]
+            if t and t[old] ~= nil then
+                if t[new] == nil then t[new] = t[old] end
+                t[old] = nil
+            end
+        end
+        if db.recentguides then
+            local list, seen = {}, {}
+            for _, name in ipairs(db.recentguides) do
+                if name == old then name = new end
+                if not seen[name] then
+                    seen[name] = true
+                    table.insert(list, name)
+                end
+            end
+            db.recentguides = list
+        end
+    end
+end
+
 function AegisPathfinder:OnInitialize()
     local migratedLegacyDB = MigrateLegacySavedVariables()
 
     self:RegisterDB("AegisPathfinderDB")
     self:RegisterDefaults("char", defaults)
+    self:MigrateGuideNames()
     -- The saved theme, before anything else paints: windows built as the
     -- files loaded are re-tinted to it (Theme.lua).
     self.Theme:ApplyTheme(self.db.profile.theme)
