@@ -108,7 +108,7 @@ end
 -- guide list has always had, and the newer Scarlet Enclave and Hyjal, which
 -- used to land under Zones.
 for _, name in ipairs({ "Thalassian Highlands (1-10)", "Blackstone Island (1-10)", "Northwind (28-34)",
-		"Balor (29-34)", "Grim Reaches (33-38)", "Gilneas (39-46)", "Icepoint Rock (40-50)",
+		"Balor (29-34)", "Grim Reaches (33-38)", "Gilneas (39-46)", "Icepoint Rock (44-47)",
 		"Lapidis Isle (48-53)", "Gillijim's Isle (48-53)", "Tel'Abim (54-60)",
 		"Scarlet Enclave (55-60)", "Hyjal (58-60)", "Moonwhisper Coast (52-60)" }) do
 	check(AegisPathfinder:GetGuideCategory(name) == "turtle", "%s belongs under Custom", name)

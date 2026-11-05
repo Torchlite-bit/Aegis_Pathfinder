@@ -1,10 +1,13 @@
-AegisPathfinder:RegisterGuide("Icepoint Rock (40-50)", "Badlands (40-41)", "Horde", function()
+AegisPathfinder:RegisterGuide("Icepoint Rock (44-47)", "Badlands (40-41)", "Alliance", function()
 
 return [[
 
-N Welcome to Icepoint Rock |N|This is a Turtle WoW custom zone - a remote glacier island in the North Sea, home to the Tuskarr of Kaneq'nuun. Access is via boat from northern Darkshore. This guide covers the main quest chain available to both factions.|
+N Welcome to Icepoint Rock |N|A Turtle WoW glacier island in the North Sea, home to the Tuskarr of Kaneq'nuun. Inunquaq on the northern coast of Darkshore takes you there through the Northeast Passage, from level 40 and once you have done his Crawling for Meat. It has five quests: four of level 45, and The Legend of Tarqsiku, a level 48 elite for a group. Ice Crawlers are level 41-43 and Icepoint Whiteclaws 44-46.|
 
-R Northern Darkshore |N|Travel to the northern coast of Darkshore to find the Tuskarr boat (56.7, 11.6)| |Z|Darkshore|
+R Northern Darkshore |N|Travel to the northern coast of Darkshore (56.7, 11.6)| |Z|Darkshore|
+A Crawling for Meat |QID|80391| |N|Inunquaq on the northern coast of Darkshore (56.7, 11.6)| |Z|Darkshore|
+C Crawling for Meat |QID|80391| |N|Collect 8 Crawler Meat from the Raging Reef Crawlers on the beach around Inunquaq (56.4, 16.3) (55.3, 17.1) (56.9, 13.1)| |Z|Darkshore|
+T Crawling for Meat |QID|80391| |N|Inunquaq (56.7, 11.6)| |Z|Darkshore|
 A The Northeast Passage |QID|40321| |N|Inunquaq on the northern coast of Darkshore (56.7, 11.6)| |Z|Darkshore|
 C The Northeast Passage |QID|40321| |N|Speak with Inunquaq to travel through the Northeast Passage to Kaneq'nuun| |Z|Darkshore|
 

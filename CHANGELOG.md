@@ -18,6 +18,26 @@ reports.
 
 ---
 
+## [0.26.0] — restart
+
+### Fixed
+- **Icepoint Rock is offered at the level its quests are for.** The guide
+  was called Icepoint Rock (40-50), so **Where next?** offered it from
+  level 39, a level before the Northeast Passage will take you, and at 40
+  sent you there for Ice Crawlers of 41-43, Icepoint Whiteclaws of 44-46
+  and a level 48 elite. Its five quests are level 45 to 48. It is now
+  **Icepoint Rock (44-47)** and is first offered at 43. Your place in it,
+  its tab, its star and its spot in the recent list carry over to the new
+  name.
+- **The guide gets you onto the boat.** Inunquaq only offers The Northeast
+  Passage once you have done his **Crawling for Meat**, which no guide sent
+  you to, so a character that had not done it at 17 found no boat at all.
+  The guide now starts with it: 8 Crawler Meat from the Raging Reef
+  Crawlers on the beach beside him. A character that has already done it
+  skips the three steps.
+- The guide's opening note says what the trip is: the level 40 boat, five
+  quests, and the one that needs a group.
+
 ## [0.25.0]
 
 ### Fixed
@@ -1797,6 +1817,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.26.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.25.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.24.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.23.4]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
