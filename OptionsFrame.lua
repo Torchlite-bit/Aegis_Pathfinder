@@ -1064,6 +1064,21 @@ function AegisPathfinder:CreateConfigPanel()
 		frame.sources[key] = box
 	end
 	place(sources, SOURCES_H, 2)
+	note("Available raids: disable raids that are not released on your server. All raids start available. The Raids source above must also be enabled.")
+	frame.raidAvailability = {}
+	for _, dungeon in ipairs((AegisPathfinder.GearData or {}).dungeons or {}) do
+		if dungeon.kind == "raid" then
+			local code = dungeon.code
+			local box = Theme:Checkbox(body, dungeon.name, function(on)
+				AegisPathfinder.GearFinder.Settings().raidAvailability[code] = on
+				AegisPathfinder:RefreshConfigPanel()
+				AegisPathfinder.GearFinder:SettingsChanged()
+			end)
+			box:Fit()
+			place(box, 24, 3)
+			frame.raidAvailability[code] = box
+		end
+	end
 	note("The first time Raids is ticked, their items load from the server: it can take a "
 		.. "minute or two, and the Gear Finder fills in as they arrive.")
 	space(6)
@@ -1427,6 +1442,10 @@ function AegisPathfinder:RefreshConfigPanel()
 	end
 	for key, box in pairs(frame.sources) do
 		box:SetOn(finder[key])
+		box:SetLocked(not finder.enabled)
+	end
+	for code, box in pairs(frame.raidAvailability or {}) do
+		box:SetOn(self.GearFinder:RaidAvailable(code))
 		box:SetLocked(not finder.enabled)
 	end
 	local advisor = self.GearAdvisor.Settings()

@@ -106,7 +106,15 @@ GetTalentTabInfo = function(tab) return ({ "Holy", "Protection", "Retribution" }
 local advisorSettings = { enabled = true, popups = true, questmark = true, bagmark = true }
 local finderSettings = { enabled = true, announce = true, dungeons = true, raids = false, quests = true, reputation = true,
 	crafted = true }
+finderSettings.raidAvailability = { MC = true, BWL = true, AQ40 = false, NAXX = false }
+AegisPathfinder.GearData = { dungeons = {
+    { code = "MC", name = "Molten Core", kind = "raid" },
+    { code = "BWL", name = "Blackwing Lair", kind = "raid" },
+    { code = "AQ40", name = "Temple of Ahn'Qiraj", kind = "raid" },
+    { code = "NAXX", name = "Naxxramas", kind = "raid" },
+} }
 AegisPathfinder.GearFinder = { Settings = function() return finderSettings end,
+    RaidAvailable = function(_, code) return finderSettings.raidAvailability[code] end,
 	SettingsChanged = function() AegisPathfinder.__finderChanged = (AegisPathfinder.__finderChanged or 0) + 1 end }
 function AegisPathfinder:ToggleGearFinder() self.__finder = (self.__finder or 0) + 1 end
 AegisPathfinder.GearAdvisor = {
@@ -150,6 +158,12 @@ AegisPathfinder:CreateConfigPanel()
 local frame = AegisPathfinder.optionsframe
 frame:Show()
 fire(frame, "OnShow")
+check(frame.raidAvailability and frame.raidAvailability.BWL and frame.raidAvailability.AQ40, "raid availability controls are built")
+check(frame.raidAvailability.BWL:IsOn() and not frame.raidAvailability.AQ40:IsOn(), "raid release controls show saved choices")
+click(frame.raidAvailability.AQ40)
+check(finderSettings.raidAvailability.AQ40 == true, "availability checkbox enables its own raid")
+click(frame.raidAvailability.AQ40)
+check(finderSettings.raidAvailability.AQ40 == false and finderSettings.raidAvailability.BWL, "disabling AQ preserves BWL availability")
 local db = AegisPathfinder.db.char
 
 -- One window: the categories on the left, the concept's pane beside them ---------

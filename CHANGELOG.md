@@ -18,6 +18,16 @@ reports.
 
 ---
 
+## [0.27.0]
+
+### Added
+- Browse the full dungeon/raid catalog from the Gear Finder and click an upgrade count to inspect its items. Lists order upgrades by percentage gain, then score gain.
+- Per-character raid availability controls also filter known raid-token hand-in quests. All raids remain available by default.
+- Optional AtlasLoot integration supplies additional loot sources and displays Pathfinder item scores on AtlasLoot tooltips without modifying AtlasLoot.
+
+### Fixed
+- Legendary and higher-quality items, including temporary quest weapons such as Andonisus, no longer appear as gearing suggestions.
+
 ## [0.26.0] — restart
 
 ### Fixed
@@ -1898,3 +1908,5 @@ on, each change gets its own entry.
 [0.3.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.2.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.1.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+
+[0.27.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

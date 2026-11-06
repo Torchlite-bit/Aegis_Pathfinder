@@ -44,6 +44,9 @@ local CREDITS = {
 		"lioryx -- Modern Spellbook, whose talent window, plans and build strings the Talent Advisor works with",
 		"The CMaNGOS team -- classic-db and mangos-classic: trainers, gathering data, quest rules and what dungeon bosses do",
 	} },
+	{ "Feature contributions", {
+		"LordDwaas, with Codex assistance -- Gear Finder browsing, raid availability and AtlasLoot integration",
+	} },
 	{ "Fonts", {
 		"Rajdhani -- (c) 2014 Indian Type Foundry, SIL OFL 1.1",
 		"Inter -- (c) 2016 The Inter Project Authors, SIL OFL 1.1",
