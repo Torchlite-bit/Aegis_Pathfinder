@@ -60,6 +60,12 @@ whoever wrote it. As of the port, that history carries commits from
 | [Modern Spellbook](https://github.com/lioryx/ModernSpellBook) | **lioryx** — its talent window, plans and build strings, which the Talent Advisor marks, saves to and reads (`TalentModern.lua`). Supported, not copied: no code of it is in this addon |
 | [CraftRoute](https://github.com/Kitymeowmeow-turt/CraftRoute) | **Kitymeowmeow** — the recipe data behind the priced crafting routes (skill thresholds, reagents, learn costs, recipe sources, vendor buy and sell prices), converted by `Tools/build/import_recipes.py`. CraftRoute is GPLv3, which is why this addon is too; the route planner itself is written separately |
 
+## Feature contributions
+
+| Contributor | Contribution |
+|---|---|
+| **LordDwaas**, with **Codex** assistance | Gear Finder dungeon browsing, upgrade ordering, configurable raid availability and hand-in filtering, legendary filtering, and optional AtlasLoot loot/tooltip integration |
+
 ## Fonts
 
 | Font | Copyright | Licence |

@@ -387,6 +387,38 @@ IS:HookTooltip(tip)
 tip:SetBagItem(0, 1)
 check(table.getn(added) == 2, "hooking twice adds the line once")
 
+-- AtlasLoot owns separate tooltip frames; support both addon load orders.
+do
+	local rows = {}
+	local function atlasTip()
+		return { SetHyperlink = function() return "atlas-original", 42 end,
+			AddDoubleLine = function(self, left) table.insert(rows, left) end,
+			Show = function() end }
+	end
+	AtlasLootTooltip, AtlasLootTooltip2 = atlasTip(), nil
+	IS:Initialize()
+	local result, extra = AtlasLootTooltip:SetHyperlink("item:11:0:0:0")
+	check(result == "atlas-original" and extra == 42, "AtlasLoot's original tooltip return values survive")
+	check(table.getn(rows) == 1 and rows[1] == "Pathfinder (Retribution)", "AtlasLoot gets the existing score line at initialization")
+	AtlasLootTooltip2 = atlasTip()
+	local onEvent = IS.events:GetScript("OnEvent")
+	local savedDB = AegisPathfinder.db
+	AegisPathfinder.db = nil
+	event, arg1 = "ADDON_LOADED", "AtlasLoot"
+	onEvent(); onEvent()
+	AegisPathfinder.db = savedDB
+	AtlasLootTooltip2:SetHyperlink("item:11:0:0:0")
+	check(table.getn(rows) == 2, "late-loaded secondary AtlasLoot tooltip is hooked once, even before Pathfinder DB initialization")
+	IS.Settings().tooltips = false
+	AtlasLootTooltip:SetHyperlink("item:11:0:0:0")
+	check(table.getn(rows) == 2, "AtlasLoot respects the existing tooltip scoring switch")
+	IS.Settings().tooltips = true
+	AtlasLootTooltip, AtlasLootTooltip2 = nil, nil
+	event, arg1 = "ADDON_LOADED", "AtlasLoot"
+	check(pcall(onEvent), "missing optional AtlasLoot tooltips are harmless")
+	event, arg1 = nil, nil
+end
+
 -- More than one spec, and the best you have worn for each (Pawn's way) --------------
 
 --[[ A Retribution paladin who tanks now and then: Protection is switched on

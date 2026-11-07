@@ -794,6 +794,13 @@ function IS:HookTooltip(tip)
 	end
 end
 
+-- AtlasLoot uses its own item and comparison tooltips. Hook the frames here
+-- so AtlasLoot can be updated independently, and remains optional.
+function IS:HookAtlasLootTooltips()
+	self:HookTooltip(AtlasLootTooltip)
+	self:HookTooltip(AtlasLootTooltip2)
+end
+
 --[[ Events ]]
 
 --[[ Registered as the file loads, so they can come before the addon has its
@@ -803,12 +810,17 @@ end
 	you wear once the settings are there. ]]
 local events = CreateFrame("Frame")
 IS.events = events
+events:RegisterEvent("ADDON_LOADED")
 events:RegisterEvent("PLAYER_LEVEL_UP")
 events:RegisterEvent("SKILL_LINES_CHANGED")
 events:RegisterEvent("SPELLS_CHANGED")
 events:RegisterEvent("CHARACTER_POINTS_CHANGED")
 events:RegisterEvent("UNIT_INVENTORY_CHANGED")
 events:SetScript("OnEvent", function()
+	if event == "ADDON_LOADED" then
+		if arg1 == "AtlasLoot" then IS:HookAtlasLootTooltips() end
+		return
+	end
 	if not AegisPathfinder.db then return end
 	if event == "UNIT_INVENTORY_CHANGED" then
 		if arg1 == "player" then IS:RecordWorn() end
@@ -828,5 +840,6 @@ function IS:Initialize()
 	end
 	self:HookTooltip(GameTooltip)
 	self:HookTooltip(ItemRefTooltip)
+	self:HookAtlasLootTooltips()
 	self:RecordWorn()
 end

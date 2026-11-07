@@ -104,9 +104,38 @@ local function settings()
 	end
 	-- The upgrade you chose for a cell, by the cell's key: { finger2 = 1156 }.
 	s.picks = s.picks or {}
+	s.raidAvailability = s.raidAvailability or {}
 	return s
 end
 GF.Settings = settings
+
+-- Preserve existing searches unless a raid is explicitly disabled.
+function GF:RaidAvailable(code)
+	local value = settings().raidAvailability[code]
+	if value ~= nil then return value and true or false end
+	return true
+end
+
+-- Raid token hand-ins are stored as quests, not boss drops. These exact
+-- quest ranges/IDs are verified against the set and hand-in rows in GearData;
+-- do not exclude whole factions (ordinary Argent Dawn/Cenarion quests exist).
+local QUEST_RAID = {}
+for raid, ranges in pairs({
+	NAXX = { { 9034, 9034 }, { 9036, 9050 }, { 9054, 9061 }, { 9068, 9075 },
+		{ 9077, 9084 }, { 9086, 9093 }, { 9095, 9118 }, { 9120, 9120 }, { 9257, 9257 }, { 9269, 9271 } },
+	AQ40 = { { 8544, 8544 }, { 8559, 8562 }, { 8592, 8594 }, { 8596, 8596 },
+		{ 8602, 8603 }, { 8621, 8634 }, { 8637, 8641 }, { 8655, 8669 }, { 8789, 8790 } },
+	AQ20 = { { 8556, 8558 }, { 8689, 8712 }, { 8791, 8791 } },
+}) do
+	for _, range in ipairs(ranges) do
+		for quest = range[1], range[2] do QUEST_RAID[quest] = raid end
+	end
+end
+
+function GF:QuestRaidAvailable(quest)
+	local raid = QUEST_RAID[quest]
+	return not raid or self:RaidAvailable(raid)
+end
 
 --- Whether an item's class mask lets your class use it.
 function GF.ForClass(mask, class)
@@ -117,7 +146,104 @@ function GF.ForClass(mask, class)
 end
 
 --- The dungeons the finder looks in, for your level and side.
+local function atlasText(text)
+	text = string.gsub(text or "", "|c%x%x%x%x%x%x%x%x", "")
+	return (string.gsub(text, "|r", ""))
+end
+
+local ATLAS_PLACE_ALIASES = {
+	lowerblackrockspire = "blackrockspire", upperblackrockspire = "blackrockspire",
+	lowerkarazhanhalls = "towerofkarazhan", upperkarazhanhalls = "towerofkarazhan",
+	cavernsoftimeblackmorass = "blackmorass",
+}
+local function atlasPlaceKey(name)
+	name = string.lower(atlasText(name))
+	name = string.gsub(name, "%b()", "") -- Dire Maul / Scarlet Monastery wings
+	name = string.gsub(name, "^the%s+", "")
+	name = string.gsub(name, "[^%w]", "")
+	return ATLAS_PLACE_ALIASES[name] or name
+end
+
+-- Read the installed AtlasLoot registry instead of copying its custom bosses.
+-- Keep bundled loot as fallback, but prefer AtlasLoot sources for listed items.
+function GF:SyncAtlasLoot()
+	local data, registry, atlas = AegisPathfinder.GearData, AtlasLoot_TableNames, AtlasLoot_Data
+	if not data or type(registry) ~= "table" or type(atlas) ~= "table" then return end
+	local cache = self.atlasCache
+	if cache and cache.data == data and cache.registry == registry and cache.items == atlas.AtlasLootItems
+		and cache.world == atlas.AtlasLootWBItems then return end
+	local places, imported = {}, {}
+	for _, d in ipairs(data.dungeons) do places[atlasPlaceKey(d.name)] = d end
+	local keys = {}
+	for key in pairs(registry) do if type(key) == "string" then table.insert(keys, key) end end
+	table.sort(keys)
+	for _, key in ipairs(keys) do
+		local entry = registry[key]
+		if type(entry) == "table" and type(entry[1]) == "string"
+			and (entry[2] == "AtlasLootItems" or entry[2] == "AtlasLootWBItems") then
+			local book = atlas[entry[2]]
+			local rows = type(book) == "table" and book[key]
+			local name, lo, hi, kind, code
+			if entry[2] == "AtlasLootWBItems" then
+				name, lo, hi, kind, code = "World bosses", 60, 60, "raid", "WORLD_BOSSES"
+			elseif type(entry[3]) == "string" then
+				local _, _, tag, title = string.find(atlasText(entry[3]), "^%[([^%]]+)%]%s*(.+)$")
+				if tag == "RAID" then name, lo, hi, kind = title, 60, 60, "raid"
+				elseif tag then
+					local _, _, low, high = string.find(tag, "^(%d+)%-(%d+)$")
+					if not low and string.find(tag, "^%d+$") then low, high = tag, tag end
+					if low then name, lo, hi, kind = title, tonumber(low), tonumber(high), "dungeon" end
+				end
+			end
+			if name and type(rows) == "table" then
+				local placeKey = atlasPlaceKey(name)
+				local d = places[placeKey]
+				if not d then
+					d = { code = code or ("ATLAS_" .. placeKey), name = name, lo = lo, hi = hi, kind = kind, loot = {} }
+					places[placeKey] = d
+					table.insert(data.dungeons, d)
+				end
+				local drops = imported[d]
+				if not drops then drops = { rows = {}, seen = {}, items = {} }; imported[d] = drops end
+				for _, row in pairs(rows) do
+					local id = type(row) == "table" and tonumber(row[2])
+					if id and id > 0 and math.mod(id, 1) == 0 then
+						local source = atlasText(entry[1])
+						local signature = id .. ":" .. source
+						if not drops.seen[signature] then
+							local chance
+							if type(row[6]) == "string" then
+								local _, _, percent = string.find(row[6], "^%s*(%d+%.?%d*)%%%s*$")
+								chance = tonumber(percent)
+							end
+							if chance and (chance < 0 or chance > 100) then chance = nil end
+							table.insert(drops.rows, { id, source, chance })
+							drops.seen[signature], drops.items[id] = true, true
+						end
+					end
+				end
+			end
+		end
+	end
+	for d, drops in pairs(imported) do
+		table.sort(drops.rows, function(a, b)
+			if a[1] ~= b[1] then return a[1] < b[1] end
+			if (a[3] or 0) ~= (b[3] or 0) then return (a[3] or 0) > (b[3] or 0) end
+			return a[2] < b[2]
+		end)
+		d.atlasBaseLoot = d.atlasBaseLoot or d.loot
+		local loot = {}
+		for _, row in ipairs(d.atlasBaseLoot) do
+			if not drops.items[row[1]] then table.insert(loot, row) end
+		end
+		for _, row in ipairs(drops.rows) do table.insert(loot, row) end
+		d.loot = loot
+	end
+	self.atlasCache = { data = data, registry = registry, items = atlas.AtlasLootItems, world = atlas.AtlasLootWBItems }
+end
+
 function GF:Dungeons()
+	self:SyncAtlasLoot()
 	local level = UnitLevel("player") or 1
 	local faction = UnitFactionGroup("player")
 	local s = settings()
@@ -128,6 +254,7 @@ function GF:Dungeons()
 		local ok = d.lo <= level + L.AHEAD
 		-- The two upgrade sources the options tick: dungeons, and raids.
 		if d.kind == "raid" and not s.raids then ok = false end
+		if d.kind == "raid" and not self:RaidAvailable(d.code) then ok = false end
 		if d.kind ~= "raid" and not s.dungeons then ok = false end
 		if d.faction and faction and d.faction ~= faction then ok = false end
 		-- Not the Dungeons page's ticks: those are which dungeons' quests the
@@ -171,7 +298,7 @@ local function describe(items, id, it)
 	if meta then return meta end
 	local _, _, quality, minLevel, _, _, _, loc = GetItemInfo(it)
 	if not quality then return nil end
-	if quality < 2 or not loc or loc == "" or not AegisPathfinder.ItemScore.SLOTS[loc] then return false end
+	if quality < 2 or quality >= 5 or not loc or loc == "" or not AegisPathfinder.ItemScore.SLOTS[loc] then return false end
 	return { loc, quality, minLevel or 0, 0 }
 end
 
@@ -207,7 +334,8 @@ function GF:Others(level, class)
 		for q, d in pairs(data.quests or {}) do
 			local done = (db.completedquestsbyid and db.completedquestsbyid[q])
 				or (AegisPathfinder.IsQuestCompletedOnServer and AegisPathfinder:IsQuestCompletedOnServer(q))
-			if not done and d[2] <= level + L.AHEAD and ours(d[3]) and GF.ForClass(d[4], class) then
+			if not done and self:QuestRaidAvailable(q)
+				and d[2] <= level + L.AHEAD and ours(d[3]) and GF.ForClass(d[4], class) then
 				local where = "Quest: " .. d[1]
 				if d[5] > 0 then where = where .. " (" .. L.RANKS[d[6]] .. ", " .. data.factions[d[5]][1] .. ")" end
 				for _, id in ipairs(d[7]) do
@@ -259,12 +387,14 @@ function GF:Find()
 			seen[id] = true
 			wantLoaded(id)
 			missing = missing + 1
-		elseif meta and math.max(meta[3], taken or 0) <= level + L.AHEAD and GF.ForClass(meta[4], class) then
+		elseif meta and (meta[2] or 0) < 5 and math.max(meta[3], taken or 0) <= level + L.AHEAD and GF.ForClass(meta[4], class) then
 			seen[id] = true
-			if not GetItemInfo(it) then
+			local itemName, _, liveQuality = GetItemInfo(it)
+			if not itemName then
 				wantLoaded(id)
 				missing = missing + 1
-			else
+			elseif (liveQuality or meta[2] or 0) < 5 then
+				-- Legendary/temporary quest weapons are not normal gearing goals.
 				local c = IS:Compare(it, weights)
 				if c and c.usable and not c.noCompare and (c.delta or 0) > 0.0001 then
 					-- Under the slot it would replace; the data's own slot if
@@ -559,10 +689,19 @@ end
 
 local events = CreateFrame("Frame")
 GF.events = events
+events:RegisterEvent("ADDON_LOADED")
 events:RegisterEvent("PLAYER_LEVEL_UP")
 events:RegisterEvent("UNIT_INVENTORY_CHANGED")
 events:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 events:SetScript("OnEvent", function()
+	if event == "ADDON_LOADED" then
+		if arg1 == "AtlasLoot" then
+			GF.atlasCache = nil
+			GF:SyncAtlasLoot()
+			if AegisPathfinder.db then GF.events.refreshAt = GetTime() end
+		end
+		return
+	end
 	-- Zoning in at login comes before the addon has its settings.
 	if not AegisPathfinder.db then return end
 	if event == "ZONE_CHANGED_NEW_AREA" then
@@ -591,6 +730,7 @@ events:SetScript("OnUpdate", function()
 end)
 
 function GF:Initialize()
+	self:SyncAtlasLoot()
 	AegisPathfinder.ItemScore:OnChange(function()
 		if GF:Showing() then GF.events.refreshAt = GetTime() end
 	end)
