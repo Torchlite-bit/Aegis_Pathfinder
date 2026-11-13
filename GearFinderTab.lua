@@ -347,20 +347,146 @@ function GF:ToggleList(key)
 	local ui = self.ui
 	if not ui then return end
 	if key == nil or ui.listKey == key then
-		ui.listKey = nil
+		ui.listKey, ui.listDungeon = nil, nil
 	else
 		local cell
 		for _, c in ipairs(self:Cells()) do if c.key == key then cell = c end end
 		-- Nothing to choose from in an empty slot.
 		if not cell or table.getn(cell.entries) == 0 then return end
-		ui.listKey, ui.listOffset = key, 0
+		ui.listKey, ui.listDungeon, ui.listOffset = key, nil, 0
 	end
 	self:Paint()
 end
 
+--- Show exactly the recommended items counted for the selected dungeon.
+function GF:ToggleDungeonList(code, name)
+	local ui = self.ui
+	if not ui or not code then return end
+	if ui.listDungeon and ui.listDungeon.code == code then
+		ui.listDungeon = nil
+	else
+		ui.listDungeon = { code = code, name = name, all = ui.browseDungeon == code }
+	end
+	ui.listKey, ui.listOffset = nil, 0
+	self:Paint()
+end
+
+-- The visible percentage gain is comparable across equipment slots; the
+-- raw score gain breaks ties. Empty slots use the finder's existing worth.
+function H.BiggerUpgrade(a, b)
+	local av, bv = GF.Worth(a), GF.Worth(b)
+	if av ~= bv then return av > bv end
+	return (a.compare.delta or 0) > (b.compare.delta or 0)
+end
+
+function GF:DungeonCatalog(cells)
+	local out = {}
+	local available, best = {}, {}
+	for _, d in ipairs(self:Dungeons()) do available[d.code] = true end
+	for _, cell in ipairs(cells or self:Cells()) do
+		for _, e in ipairs(cell.entries) do
+			if e.code and available[e.code] and (not best[e.code] or H.BiggerUpgrade(e, best[e.code])) then best[e.code] = e end
+		end
+	end
+	for _, d in ipairs(AegisPathfinder.GearData.dungeons) do table.insert(out, d) end
+	table.sort(out, function(a, b)
+		local ae, be = best[a.code], best[b.code]
+		if ae and be then
+			if H.BiggerUpgrade(ae, be) then return true end
+			if H.BiggerUpgrade(be, ae) then return false end
+		elseif ae or be then return ae ~= nil end
+		return a.name < b.name
+	end)
+	return out
+end
+
+function GF:DungeonListCell(cells, selection)
+	local out = { label = selection.name, entries = {}, entryKeys = {}, entryLabels = {}, col = 3, row = 2 }
+	local seen = {}
+	local rows = {}
+	for _, c in ipairs(cells) do
+		local entries = selection.all and c.entries or (c.shown and { c.shown } or {})
+		for _, e in ipairs(entries) do
+			if e.code == selection.code and (not selection.all or not seen[e.id]) then
+				seen[e.id] = true
+				table.insert(rows, { entry = e, key = c.key, label = c.label })
+			end
+		end
+	end
+	table.sort(rows, function(a, b)
+		if H.BiggerUpgrade(a.entry, b.entry) then return true end
+		if H.BiggerUpgrade(b.entry, a.entry) then return false end
+		if a.entry.id ~= b.entry.id then return a.entry.id < b.entry.id end
+		return a.key < b.key
+	end)
+	for _, row in ipairs(rows) do
+		table.insert(out.entries, row.entry)
+		table.insert(out.entryKeys, row.key)
+		table.insert(out.entryLabels, row.label)
+	end
+	return out
+end
+
+function GF:BrowseDungeon(code)
+	local ui = self.ui
+	if not ui then return end
+	ui.browseDungeon, ui.listKey, ui.listDungeon, ui.listOffset = nil, nil, nil, 0
+	for _, d in ipairs(self:DungeonCatalog()) do if d.code == code then ui.browseDungeon = code end end
+	self:Paint()
+end
+
+function GF:BrowseRecord(code, cells)
+	local searched = {}
+	for _, d in ipairs(self:Dungeons()) do searched[d.code] = true end
+	for index, d in ipairs(self:DungeonCatalog()) do
+		if d.code == code then
+			local list = self:DungeonListCell(cells, { code = code, name = d.name, all = true })
+			local slots, seen = {}, {}
+			for _, label in ipairs(list.entryLabels) do
+				if not seen[label] then table.insert(slots, label); seen[label] = true end
+			end
+			return { code = code, name = d.name, lo = d.lo, hi = d.hi, kind = d.kind,
+				n = table.getn(list.entries), slots = slots, searched = searched[code], index = index,
+				unreleased = d.kind == "raid" and not self:RaidAvailable(code) }
+		end
+	end
+end
+
+-- Keep the long catalog inside the screen without changing shared dropdowns.
+function H.PaintDungeonMenu(ui)
+	local b = ui.right.browse
+	local options = { { value = "suggested", label = "Suggested dungeons" } }
+	for _, d in ipairs(GF:DungeonCatalog()) do table.insert(options, { value = d.code, label = d.name }) end
+	local maxRows = 8
+	ui.dungeonMenuTotal = table.getn(options)
+	ui.dungeonMenuOffset = math.max(0, math.min(ui.dungeonMenuOffset or 0, table.getn(options) - maxRows))
+	local shown, selected = {}, "Suggested dungeons"
+	for i, option in ipairs(options) do
+		if option.value == ui.browseDungeon then selected = option.label end
+		if i > ui.dungeonMenuOffset and table.getn(shown) < maxRows then table.insert(shown, option) end
+	end
+	b:SetItems(shown)
+	b:SetValue(ui.browseDungeon or "suggested")
+	b.label:SetText(selected) -- selected entry can be outside the visible menu page
+	for _, row in ipairs(b.rows) do
+		row:EnableMouseWheel(true)
+		row:SetScript("OnMouseWheel", function() GF:ScrollDungeonMenu(arg1) end)
+	end
+	if table.getn(options) > maxRows then
+		b.menuHint:Show()
+		b.list:SetHeight(8 + table.getn(shown) * 22 + 18)
+	else b.menuHint:Hide() end
+end
+
+function GF:ScrollDungeonMenu(delta)
+	if not self.ui then return end
+	self.ui.dungeonMenuOffset = (self.ui.dungeonMenuOffset or 0) - (delta or 0)
+	H.PaintDungeonMenu(self.ui)
+end
+
 function GF:ScrollList(delta)
 	local ui = self.ui
-	if not ui or not ui.listKey then return end
+	if not ui or (not ui.listKey and not ui.listDungeon) then return end
 	ui.listOffset = math.max(0, (ui.listOffset or 0) - (delta or 0))
 	self:Paint()
 end
@@ -370,7 +496,7 @@ end
 function GF:Pick(key, id)
 	if not key then return end
 	self:SetPick(key, id)
-	if self.ui then self.ui.listKey, self.ui.sugIndex = nil, 1 end
+	if self.ui then self.ui.listKey, self.ui.listDungeon, self.ui.sugIndex = nil, nil, 1 end
 	self:Paint()
 end
 
@@ -378,8 +504,11 @@ function H.PaintList(ui, cells)
 	local list = ui.list
 	local cell
 	for _, c in ipairs(cells) do if c.key == ui.listKey then cell = c end end
+	if ui.listDungeon then
+		cell = GF:DungeonListCell(cells, ui.listDungeon)
+	end
 	if not cell or table.getn(cell.entries) == 0 then
-		ui.listKey = nil
+		ui.listKey, ui.listDungeon = nil, nil
 		list:Hide()
 		return
 	end
@@ -388,6 +517,11 @@ function H.PaintList(ui, cells)
 	local shownRows = math.min(n, G.LIST_ROWS)
 	ui.listOffset = math.min(ui.listOffset or 0, n - shownRows)
 	list.title:SetText(string.upper(cell.label))
+	-- Dungeon names need the header's width; their count is already on the
+	-- clickable panel. Restore the compact slot header when returning to it.
+	list.title:SetWidth(ui.listDungeon and (G.LIST_W - 36) or 0)
+	if ui.listDungeon then list.count:Hide() else list.count:Show() end
+	list.hint:SetText(ui.listDungeon and (ui.listDungeon.all and "All found upgrades in this dungeon" or "Recommended items for this dungeon") or "Picks are kept for this character")
 	list.count:SetText(n .. (n == 1 and " upgrade" or " upgrades") .. (n > G.LIST_ROWS and " \194\183 scroll for more" or ""))
 	local level = UnitLevel("player") or 1
 	for i, row in ipairs(list.rows) do
@@ -395,12 +529,13 @@ function H.PaintList(ui, cells)
 		if i <= shownRows and e then
 			local name, _, quality, _, _, _, _, _, texture = GetItemInfo(e.item)
 			local r, g, bl = GetItemQualityColor(quality or 2)
-			row.key, row.entry = cell.key, e
+			row.key, row.entry = cell.entryKeys and cell.entryKeys[i + ui.listOffset] or cell.key, e
 			row.icon:SetTexture(texture)
 			row.edge:SetVertexColor(r, g, bl)
 			row.name:SetText(name or ("item " .. e.id))
 			row.name:SetTextColor(r, g, bl)
 			local where = GF.Where(e)
+			if cell.entryLabels then where = cell.entryLabels[i + ui.listOffset] .. " \194\183 " .. where end
 			if e.chance then where = where .. " \194\183 " .. e.chance .. "%" end
 			if e.level > level then where = where .. " \194\183 at level " .. e.level end
 			row.where:SetText(where)
@@ -455,8 +590,16 @@ function H.NewRight(body)
 	Theme:NineSlice(rp, Theme.texture.panelBorder, "BORDER", "border")
 
 	-- The dungeon's loading screen, or the logo when there is none to suggest.
-	rp.pic = AegisPathfinder.Pictures:Create(rp, G.PIC_W, G.PIC_H)
-	rp.pic:SetPoint("TOPLEFT", rp, "TOPLEFT", 10, -10)
+	rp.browse = Theme:Dropdown(rp, G.PIC_W, function(code) GF:BrowseDungeon(code) end)
+	rp.browse:SetHeight(22)
+	rp.browse:SetPoint("TOPLEFT", rp, "TOPLEFT", 10, -8)
+	rp.browse.list:EnableMouseWheel(true)
+	rp.browse.list:SetScript("OnMouseWheel", function() GF:ScrollDungeonMenu(arg1) end)
+	rp.browse.menuHint = H.Text(rp.browse.list, "body", 9, "textDim")
+	rp.browse.menuHint:SetPoint("BOTTOMLEFT", rp.browse.list, "BOTTOMLEFT", 8, 5)
+	rp.browse.menuHint:SetText("Mouse wheel: more dungeons")
+	rp.pic = AegisPathfinder.Pictures:Create(rp, G.PIC_W, G.PIC_H - 28)
+	rp.pic:SetPoint("TOPLEFT", rp, "TOPLEFT", 10, -38)
 
 	-- The spec it scores for, shown either way: a spec with nothing to
 	-- suggest is one you may want to switch back from.
@@ -479,6 +622,7 @@ function H.NewRight(body)
 	d:SetAllPoints(rp)
 	rp.dungeon = d
 	local label = H.Text(d, "display", 10, "textDim")
+	rp.dungeonLabel = label
 	label:SetPoint("TOPLEFT", line, "BOTTOMLEFT", 0, -7)
 	label:SetText("SUGGESTED DUNGEON")
 	rp.prev = Theme:GlyphButton(d, "chevronLeft", 10, 22)
@@ -499,6 +643,21 @@ function H.NewRight(body)
 	rp.count:SetJustifyH("CENTER")
 	rp.count:SetPoint("TOPLEFT", rp.levels, "BOTTOMLEFT", -24, -8)
 	rp.count:SetPoint("RIGHT", rp.levels, "RIGHT", 24, 0)
+	-- FontStrings do not receive clicks; overlay only the count's bounds.
+	rp.upgrades = CreateFrame("Button", nil, d)
+	rp.upgrades:SetPoint("TOPLEFT", rp.count, "TOPLEFT", -2, 2)
+	rp.upgrades:SetPoint("BOTTOMRIGHT", rp.count, "BOTTOMRIGHT", 2, -2)
+	local countHL = rp.upgrades:CreateTexture(nil, "HIGHLIGHT")
+	countHL:SetTexture(Theme.texture.solid)
+	countHL:SetAllPoints(rp.upgrades)
+	countHL:SetVertexColor(1, 1, 1, 0.08)
+	rp.upgrades:SetScript("OnClick", function() GF:ToggleDungeonList(this.code, this.dungeonName) end)
+	rp.upgrades:SetScript("OnEnter", function()
+		GameTooltip:SetOwner(this, "ANCHOR_RIGHT")
+		GameTooltip:SetText("Click to view the upgrades counted for this dungeon")
+		GameTooltip:Show()
+	end)
+	rp.upgrades:SetScript("OnLeave", function() GameTooltip:Hide() end)
 	rp.slots = H.Text(d, "body", 10, "textDim", 2)
 	rp.slots:SetJustifyH("CENTER")
 	rp.slots:SetPoint("TOPLEFT", rp.count, "BOTTOMLEFT", 0, -3)
@@ -533,14 +692,26 @@ end
 function GF:StepDungeon(by)
 	local ui = self.ui
 	if not ui then return end
+	if ui.browseDungeon then
+		local catalog = self:DungeonCatalog()
+		for i, d in ipairs(catalog) do
+			if d.code == ui.browseDungeon then
+				local index = math.mod(math.mod(i - 1 + by, table.getn(catalog)) + table.getn(catalog), table.getn(catalog)) + 1
+				self:BrowseDungeon(catalog[index].code); return
+			end
+		end
+	end
 	ui.sugIndex = (ui.sugIndex or 1) + by
+	ui.listDungeon = nil
 	self:Paint()
 end
 
-function H.PaintRight(ui, ranked, any, nothing)
+function H.PaintRight(ui, ranked, any, nothing, cells)
 	local rp = ui.right
 	local n = table.getn(ranked)
 	local cur = ranked[ui.sugIndex]
+	H.PaintDungeonMenu(ui)
+	if ui.browseDungeon then cur = GF:BrowseRecord(ui.browseDungeon, cells); n = table.getn(GF:DungeonCatalog()) end
 	local IS = AegisPathfinder.ItemScore
 	local items = {}
 	for _, spec in ipairs(IS:Specs()) do table.insert(items, { value = spec, label = IS:SpecLabel(spec) }) end
@@ -548,19 +719,26 @@ function H.PaintRight(ui, ranked, any, nothing)
 	rp.spec:SetValue((IS:Spec()))
 	rp.pic:SetDungeon(cur and cur.name)
 	if cur then
+		rp.dungeonLabel:SetText(ui.browseDungeon and "DUNGEON / RAID" or "SUGGESTED DUNGEON")
 		rp.dungeon:Show()
 		rp.empty:Hide()
 		rp.name:SetText(cur.name)
 		rp.levels:SetText(cur.lo and ((cur.kind == "raid" and "Raid, level " or "Levels ") .. cur.lo
 			.. (cur.hi and cur.hi ~= cur.lo and ("\226\128\147" .. cur.hi) or "")) or "")
 		rp.count:SetText(cur.n .. (cur.n == 1 and " upgrade here" or " upgrades here"))
+		if ui.browseDungeon and not cur.searched then rp.count:SetText("Not searched (filters / level)") end
+		if cur.unreleased then rp.count:SetText("Unavailable on this server") end
+		rp.upgrades.code, rp.upgrades.dungeonName = cur.code, cur.name
+		if ui.browseDungeon and (not cur.searched or cur.n == 0) then rp.upgrades:Disable() else rp.upgrades:Enable() end
 		rp.slots:SetText(table.concat(cur.slots, ", "))
 		rp.rank:SetText(ui.sugIndex .. " of " .. n .. (n == 1 and " dungeon with upgrades" or " dungeons with upgrades"))
+		if ui.browseDungeon then rp.rank:SetText("Browsing " .. cur.index .. " of " .. n .. " dungeons / raids") end
 		if n > 1 then rp.prev:Show(); rp.next:Show() else rp.prev:Hide(); rp.next:Hide() end
 		local guide = GF:DungeonGuide(cur.name)
 		rp.guide.guideName = guide
 		if guide then rp.guide:Show() else rp.guide:Hide() end
 	else
+		rp.upgrades.code, rp.upgrades.dungeonName = nil, nil
 		rp.dungeon:Hide()
 		rp.empty:Show()
 		if any then
@@ -640,13 +818,14 @@ function GF:Paint()
 	if n > 0 then ui.sugIndex = math.mod(math.mod((ui.sugIndex or 1) - 1, n) + n, n) + 1 end
 	local cur = ranked[ui.sugIndex]
 	local any = false
+	if ui.browseDungeon then cur = self:BrowseRecord(ui.browseDungeon, cells) end
 	for i, cell in ipairs(cells) do
 		if cell.shown then any = true end
 		H.PaintCell(ui.cells[i], cell, ui.listKey == cell.key,
 			cur and cell.shown and cell.shown.code == cur.code)
 	end
 	local status, nothing = self:Status()
-	H.PaintRight(ui, ranked, any, nothing)
+	H.PaintRight(ui, ranked, any, nothing, cells)
 	H.PaintList(ui, cells)
 	ui.status:SetText(status)
 	local _, class = UnitClass("player")
@@ -677,7 +856,7 @@ if CharacterFrame then
 		GF:AnchorPage()
 		GF:PlaceTab()
 		if not GF.ui then GF:BuildPage() end
-		GF.ui.listKey, GF.ui.sugIndex = nil, 1
+		GF.ui.listKey, GF.ui.listDungeon, GF.ui.sugIndex = nil, nil, 1
 		-- pfUI turns the mouse off on the panel's pages, for its own
 		-- dragging; this one drags itself, and has buttons.
 		page:EnableMouse(true)
@@ -691,7 +870,7 @@ if CharacterFrame then
 		GF:Refresh()
 	end)
 	page:SetScript("OnHide", function()
-		if GF.ui then GF.ui.listKey = nil end
+		if GF.ui then GF.ui.listKey, GF.ui.listDungeon = nil, nil end
 		if GF.hidClose then
 			CharacterFrameCloseButton:Show()
 			GF.hidClose = nil

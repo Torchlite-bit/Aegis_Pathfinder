@@ -422,6 +422,29 @@ local function found()
 	return out
 end
 local f = found()
+-- Legendary quest/conjured weapons are not normal gearing recommendations.
+for _, id in ipairs({ 9001, 9002, 9004 }) do meta(id, "INVTYPE_WAIST") end
+data.items[9001][2] = 5
+data.items[9004][2] = 4
+item(9001, "INVTYPE_WAIST", 90, 5); item(9002, "INVTYPE_WAIST", 90, 5)
+item(9003, "INVTYPE_WAIST", 90, 5); item(9004, "INVTYPE_WAIST", 90, 4)
+data.quests[399] = { "Temporary legendary rewards", 18, "", 0, 0, 0, { 9001, 9002, 9003, 9004 } }
+local originalDungeons = GF.Dungeons
+GF.Dungeons = function(self)
+    local list = {}
+    for _, dungeon in ipairs(originalDungeons(self)) do table.insert(list, dungeon) end
+    table.insert(list, { name = "Legendary test", code = "TEST", loot = { { 9003, "Test boss", 100 } } })
+    return list
+end
+local legendary = found()
+GF.Dungeons = originalDungeons
+check(not legendary[9001], "static legendary metadata is excluded")
+check(not legendary[9002], "live legendary quality overrides ordinary cached metadata")
+check(not legendary[9003], "legendary client-only items are excluded")
+check(legendary[9004], "epic upgrades remain suggested")
+data.quests[399] = nil
+for _, id in ipairs({ 9001, 9002, 9003, 9004 }) do data.items[id] = nil end
+found()
 check(f[311] and f[311].where == "Quest: The Hard Way", "a quest reward, and the quest, got %s", tostring(f[311] and f[311].where))
 check(not f[312], "not the other side's quest")
 check(not f[313], "not a quest for another class")
@@ -682,7 +705,140 @@ check(head.name:GetText() == "Item 112" and not head.chip:IsShown(), "cleared, i
 run(ui.cells[2], "OnClick")
 check(not list:IsShown(), "an empty slot has no list")
 
+-- The dungeon count opens the exact recommended items counted for it.
+check(ui.right.upgrades ~= nil, "dungeon upgrade count is clickable")
+if ui.right.upgrades then
+    local cur = GF:Suggest(GF:Cells())[ui.sugIndex]
+    local expected = {}
+    for _, cell in ipairs(GF:Cells()) do
+        if cell.shown and cell.shown.code == cur.code then expected[cell.key] = cell.shown.id end
+    end
+    run(ui.right.upgrades, "OnClick")
+    check(list:IsShown() and ui.listDungeon and ui.listDungeon.code == cur.code, "count opens its dungeon list")
+    check(list.title:GetText() == string.upper(cur.name), "dungeon popup names its dungeon")
+    local shown = 0
+    for _, row in ipairs(list.rows) do
+        if row:IsShown() then
+            shown = shown + 1
+            check(row.entry and expected[row.key] == row.entry.id, "each counted upgrade has its real slot key")
+        end
+    end
+    check(shown == cur.n, "popup shows exactly the upgrades counted, got %d expected %d", shown, cur.n)
+    check(not list.clear:IsShown(), "dungeon list has no invalid aggregate pick to clear")
+    run(list.rows[1], "OnEnter")
+    check(GameTooltip.__link == list.rows[1].entry.item, "dungeon rows retain real item tooltips")
+    run(ui.right.upgrades, "OnClick")
+    check(not list:IsShown(), "clicking dungeon count again closes the list")
+    run(ui.right.upgrades, "OnClick")
+    run(ui.right.next, "OnClick")
+    check(not list:IsShown() and not ui.listDungeon, "changing dungeon closes the old dungeon popup")
+    run(ui.right.upgrades, "OnClick")
+    run(head, "OnClick")
+    check(ui.listKey == "head" and not ui.listDungeon, "slot popup replaces the dungeon popup")
+    GF:ToggleList(nil)
+end
+
 -- Nothing found, switched off, and going.
+do
+    local oldQuests, oldEnabled = A.GearData.quests, GF.Settings().quests
+    local oldItems = {}
+    for id = 9901, 9904 do oldItems[id] = A.GearData.items[id]; A.GearData.items[id] = { "INVTYPE_HEAD", 4, 60, 0 } end
+    A.GearData.quests = {
+        [9034] = { "Dreadnaught Breastplate", 60, "", 0, 0, 0, { 9901 } },
+        [8544] = { "Conqueror's Spaulders", 60, "", 0, 0, 0, { 9902 } },
+        [8556] = { "Signet of Unyielding Strength", 60, "", 0, 0, 0, { 9903 } },
+        [99999] = { "Ordinary quest", 60, "", 0, 0, 0, { 9904 } },
+    }
+    GF.Settings().quests = true
+    GF.Settings().raidAvailability.NAXX, GF.Settings().raidAvailability.AQ40, GF.Settings().raidAvailability.AQ20 = false, false, false
+    local function questRewards()
+        local found = {}
+        for _, reward in ipairs(GF:Others(60, "WARRIOR")) do found[reward[1]] = true end
+        return found
+    end
+    local found = questRewards()
+    check(not found[9901] and not found[9902] and not found[9903] and found[9904], "unreleased T3, T2.5 and AQ20 hand-ins cannot bypass raid availability; ordinary quests remain")
+    GF.Settings().raidAvailability.NAXX = true
+    found = questRewards()
+    check(found[9901] and not found[9902], "enabling Naxx restores its hand-in rewards only")
+    GF.Settings().raidAvailability.AQ40, GF.Settings().raidAvailability.AQ20 = true, true
+    found = questRewards()
+    check(found[9902] and found[9903], "AQ rewards return when their raid becomes available")
+    GF.Settings().raidAvailability.NAXX, GF.Settings().raidAvailability.AQ40, GF.Settings().raidAvailability.AQ20 = false, false, false
+    check(not GF:QuestRaidAvailable(9056) and not GF:QuestRaidAvailable(8656) and not GF:QuestRaidAvailable(8712), "hunter T3, T2.5 and AQ20 hand-ins obey the same release gates")
+    A.GearData.quests, GF.Settings().quests = oldQuests, oldEnabled
+    for id = 9901, 9904 do A.GearData.items[id] = oldItems[id] end
+end
+
+do
+    local low = { id = 9001, code = "DM", compare = { pct = 5, delta = 100 } }
+    local high = { id = 9002, code = "DM", compare = { pct = 50, delta = 1 } }
+    local other = { id = 9003, code = "WC", compare = { pct = 80, delta = 2 } }
+    local cells = {
+        { key = "head", label = "Head", shown = low, entries = { low } },
+        { key = "chest", label = "Chest", shown = high, entries = { high, other } },
+    }
+    local list = GF:DungeonListCell(cells, { name = "The Deadmines", code = "DM", all = true })
+    check(list.entries[1].id == 9002 and list.entryKeys[1] == "chest", "dungeon items sort by biggest percentage gain while preserving slot keys")
+    local ranked = GF:DungeonCatalog(cells)
+    check(ranked[1].code == "WC" and ranked[2].code == "DM", "dungeon browser puts the biggest available upgrade first")
+end
+
+if GF.BrowseDungeon then
+    local catalog = A.GearData.dungeons
+    local originalCount = table.getn(catalog)
+    for i = 1, 10 do table.insert(catalog, { code = "TEST" .. i, name = "zz test dungeon " .. i, lo = 1, hi = 60, kind = "dungeon", loot = {} }) end
+    GF:BrowseDungeon(nil)
+    check(table.getn(ui.right.browse.items) == 8, "long dungeon catalog is displayed in bounded menu rows")
+    GF:ScrollDungeonMenu(-1000)
+    check(ui.dungeonMenuOffset == originalCount + 11 - 8, "scroll reaches the last catalog entries")
+    local last = ui.right.browse.rows[8]
+    local code = last.value
+    run(last, "OnClick")
+    check(ui.browseDungeon == code and ui.right.browse.label:GetText() ~= "", "last menu entry is selectable and retains its label")
+    check(ui.right.count:GetText() == "0 upgrades here", "searched dungeon without upgrades remains browsable, got %s", tostring(ui.right.count:GetText()))
+    GF:BrowseDungeon(nil)
+    while table.getn(catalog) > originalCount do table.remove(catalog) end
+    GF:Paint()
+end
+
+check(type(GF.RaidAvailable) == "function", "raid releases can be configured individually")
+if GF.RaidAvailable then
+    GF.Settings().raidAvailability = {}
+    check(GF:RaidAvailable("AQ20") and GF:RaidAvailable("AQ40") and GF:RaidAvailable("NAXX"), "existing raid searches remain available by default")
+    check(GF:RaidAvailable("BWL") and GF:RaidAvailable("MC") and GF:RaidAvailable("ONY"), "through-BWL raids default available")
+    local oldLevel, oldRaids = level, GF.Settings().raids
+    level = 60; GF.Settings().raids = true
+    GF.Settings().raidAvailability.ZG = false
+    local found = false
+    for _, d in ipairs(GF:Dungeons()) do if d.code == "ZG" then found = true end end
+    check(not found, "disabled raid is excluded from upgrade searches")
+    GF.Settings().raidAvailability.ZG = true
+    found = false
+    for _, d in ipairs(GF:Dungeons()) do if d.code == "ZG" then found = true end end
+    check(found, "available raid is included when raid source is enabled")
+    GF.Settings().raidAvailability.AQ20 = true
+    check(GF:RaidAvailable("AQ20"), "user can enable a raid after release")
+    GF.Settings().raidAvailability.AQ20 = false
+    level, GF.Settings().raids = oldLevel, oldRaids
+end
+
+check(type(GF.BrowseDungeon) == "function", "finder can browse an arbitrary catalog dungeon")
+if GF.BrowseDungeon then
+    GF:BrowseDungeon("SFK")
+    check(ui.right.name:GetText() == "Shadowfang Keep", "browse includes dungeons absent from recommended slots")
+    check(ui.right.count:GetText() == "1 upgrade here", "browse counts all found upgrades in the selected dungeon")
+    run(ui.right.upgrades, "OnClick")
+    check(list:IsShown() and list.rows[1].entry.id == 131, "browse popup shows the dungeon's non-best upgrade")
+    GF:BrowseDungeon("ZG")
+    check(ui.right.name:GetText() == "Zul'Gurub", "catalog includes high-level raids outside current filters")
+    check(string.find(ui.right.count:GetText(), "Not searched", 1, true), "unsearched dungeon is not misreported as zero upgrades")
+    GF:BrowseDungeon("RFC")
+    check(ui.right.name:GetText() == "Ragefire Chasm", "full catalog remains browsable across faction filters")
+    GF:BrowseDungeon(nil)
+    check(not ui.browseDungeon and ui.right.name:GetText() ~= "Ragefire Chasm", "can return to recommendations")
+end
+
 GF.Settings().dungeons = false
 GF.Settings().quests, GF.Settings().reputation, GF.Settings().crafted = false, false, false
 GF:SettingsChanged()
@@ -729,6 +885,68 @@ GF.Settings().announce = false
 printed = {}
 GF:Announce("Wailing Caverns")
 check(printed[1] == nil, "and not at all when switched off")
+
+-- Optional AtlasLoot data supplements bundled loot without changing AtlasLoot.
+do
+	local savedData, savedLevel = A.GearData, level
+	local mc = { code = "MC", name = "Molten Core", kind = "raid", lo = 60, hi = 60,
+		loot = { { 16849, "Old source", 1 }, { 900001, "Bundled fallback", 5 } } }
+	local aq = { code = "AQ40", name = "Temple of Ahn'Qiraj", kind = "raid", lo = 60, hi = 60, loot = {} }
+	A.GearData = { dungeons = { mc, aq }, items = {} }
+	AtlasLoot_TableNames = {
+		MCIncindis = { "Incindis", "AtlasLootItems", "|cffff0000[RAID]|r Molten Core" },
+		AQBoss = { "AQ boss", "AtlasLootItems", "[RAID] Temple of Ahn'Qiraj" },
+		NewDungeon = { "New boss", "AtlasLootItems", "[25-33] New Hollow" },
+		SetPage = { "Tier set", "AtlasLootSetItems", "[RAID] Molten Core" },
+		WorldBoss = { "Octo world boss", "AtlasLootWBItems" },
+	}
+	AtlasLoot_Data = { AtlasLootItems = {
+		MCIncindis = { { 1, 16849, "icon", "Boots", "armor", "25%" },
+			{ 2, 58208, "icon", "Cape", "armor", "20%" },
+			{ 3, 58208, "icon", "Cape", "armor", "20%" },
+			{ 4, 0, "icon", "Heading" }, { 5, "OtherPage", "icon", "Navigation" } },
+		AQBoss = { { 1, 900002, "icon", "AQ loot", "armor", "unknown" } },
+		NewDungeon = { { 1, 900003, "icon", "New loot", "armor", "12.5%" } },
+	}, AtlasLootSetItems = { SetPage = { { 1, 900004 } } },
+	AtlasLootWBItems = { WorldBoss = { { 1, 900005, "icon", "World loot" } } } }
+	local originalRow = AtlasLoot_Data.AtlasLootItems.MCIncindis[1]
+	check(type(GF.SyncAtlasLoot) == "function", "AtlasLoot import is available")
+	if GF.SyncAtlasLoot then
+		GF:SyncAtlasLoot()
+		check(table.getn(mc.loot) == 3, "imports custom boss loot, deduplicates rows, retains bundled-only items")
+		local drops = {}; for _, row in ipairs(mc.loot) do drops[row[1]] = row end
+		check(drops[16849][2] == "Incindis" and drops[16849][3] == 25, "AtlasLoot corrects existing item sources and rates")
+		check(drops[58208][2] == "Incindis" and drops[58208][3] == 20, "new Octo item keeps its actual boss")
+		check(not drops[0] and not drops[900004], "ignores headings, navigation and set pages")
+		check(aq.loot[1] and aq.loot[1][3] == nil, "unknown drop rates remain unknown")
+		GF:SyncAtlasLoot()
+		check(table.getn(mc.loot) == 3, "repeated imports do not duplicate loot")
+		check(originalRow[2] == 16849 and originalRow[6] == "25%", "AtlasLoot data stays unchanged")
+		local names = {}; for _, d in ipairs(A.GearData.dungeons) do names[d.name] = d end
+		check(names["New Hollow"] and names["New Hollow"].lo == 25, "imports new AtlasLoot dungeon locations and levels")
+		check(names["World bosses"] and names["World bosses"].loot[1][2] == "Octo world boss", "imports custom world bosses")
+		level = 60; GF.Settings().raids = true; GF.Settings().raidAvailability.AQ40 = false
+		local allowed = {}; for _, d in ipairs(GF:Dungeons()) do allowed[d.code] = true end
+		check(allowed.MC and not allowed.AQ40, "imported drops respect existing raid availability")
+		check(GF:RaidAvailable("WORLD_BOSSES"), "AtlasLoot world bosses are available by default")
+		ITEMS[58208] = { loc = "INVTYPE_CLOAK", lines = { "Custom cape", "+999 Strength" } }
+		local found
+		for _, group in ipairs((GF:Find())) do
+			for _, row in ipairs(group.entries) do if row.id == 58208 then found = row end end
+		end
+		check(found and found.code == "MC" and found.source == "Incindis", "new custom loot reaches scored upgrade results with the correct boss")
+		ITEMS[58208] = nil
+		table.insert(AtlasLoot_Data.AtlasLootItems.MCIncindis, { 6, 900006, "icon", "Later loot", "armor", "10%" })
+		local oldThis, oldEvent, oldArg = this, event, arg1
+		this, event, arg1 = GF.events, "ADDON_LOADED", "AtlasLoot"
+		GF.events:GetScript("OnEvent")()
+		this, event, arg1 = oldThis, oldEvent, oldArg
+		check(table.getn(mc.loot) == 4, "late AtlasLoot loading refreshes the import without duplicating existing drops")
+	end
+	AtlasLoot_TableNames, AtlasLoot_Data = nil, nil
+	check(not GF.SyncAtlasLoot or pcall(function() GF:SyncAtlasLoot() end), "AtlasLoot remains optional")
+	A.GearData, level = savedData, savedLevel
+end
 
 for _, e in ipairs(stub.report()) do table.insert(failures, "API misuse: " .. e) end
 print(string.format("GearFinder: %d checks", checks))

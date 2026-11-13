@@ -18,7 +18,7 @@ reports.
 
 ---
 
-## [0.27.0]
+## [0.28.0]
 
 ### Changed
 - **Where next? no longer offers Icepoint Rock.** Its five quests, one of
@@ -26,6 +26,16 @@ reports.
   trip to suggest to anyone who has not chosen it. The guide browser's Home
   tab no longer suggests it either. Icepoint Rock (44-47) is still under the
   guide list's **Custom** tab.
+
+## [0.27.0]
+
+### Added
+- Browse the full dungeon/raid catalog from the Gear Finder and click an upgrade count to inspect its items. Lists order upgrades by percentage gain, then score gain.
+- Per-character raid availability controls also filter known raid-token hand-in quests. All raids remain available by default.
+- Optional AtlasLoot integration supplies additional loot sources and displays Pathfinder item scores on AtlasLoot tooltips without modifying AtlasLoot.
+
+### Fixed
+- Legendary and higher-quality items, including temporary quest weapons such as Andonisus, no longer appear as gearing suggestions.
 
 ## [0.26.0] — restart
 
@@ -1826,6 +1836,7 @@ on, each change gets its own entry.
 
 ---
 
+[0.28.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.27.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.26.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.25.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
