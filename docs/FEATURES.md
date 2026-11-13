@@ -329,7 +329,9 @@ zone opens in a tab beside the route, with the route's next guide waiting in the
 first tab. Finish the custom zone and it asks again: back to the route, at the
 guide for the level you are by then, or on to the next custom zone that fits. A
 zone fits when you are inside its level range or one short of it, below its top,
-and have not finished it; with none that fit, nothing is asked. Closing the
+and have not finished it; with none that fit, nothing is asked. Icepoint Rock
+is never offered: five quests, one of them for a group, is a long trip for
+anyone who has not chosen it. Closing the
 window carries on with the route. The options window can switch it off (*Offer
 custom zones between guides*, under **Step Display**). The custom zones are also under the guide
 list's **Custom** tab at any time.

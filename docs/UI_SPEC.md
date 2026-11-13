@@ -866,7 +866,9 @@ guide waits for the answer instead of `LoadNextGuide` or `ReturnFromBranch`.
 It is asked only when a custom zone fits (`GetCustomZoneChoices`): a guide in
 the `turtle` category, not the one just finished, not finished before
 (`db.char.completion`), with the player at least one level short of its bottom
-and below its top. Up to five, lowest first. With `offerdungeons` on (the
+and below its top, and not in `NOT_OFFERED` (Icepoint Rock, which stays in the
+guide list). Up to five, lowest first. The guide browser's Home suggestions
+use the same list. With `offerdungeons` on (the
 Dungeons page's *Offer dungeon guides along the way*, off by default, held off
 by Solo Self-Found) it is also asked when a dungeon guide fits
 (`GetDungeonGuideChoices`): the guide under `Dungeons/` of a ticked dungeon,

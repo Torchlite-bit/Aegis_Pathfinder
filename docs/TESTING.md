@@ -77,11 +77,12 @@ are only found at startup.
       skip Alliance quests either.
 - [ ] Full bags with a stack of greys and a single cheaper grey: Delete
       cheapest item offers the single one.
-- [ ] Finish a guide at 39 or 42: Where next? does not offer Icepoint Rock.
-      At 43 it offers Icepoint Rock (44-47), which starts with Crawling for
+- [ ] Finish a guide anywhere from 39 to 46: Where next? never offers
+      Icepoint Rock, and neither does the guide browser's Home tab. Opened
+      from the Custom tab, Icepoint Rock (44-47) starts with Crawling for
       Meat beside Inunquaq in northern Darkshore, then the Northeast Passage.
       A character that had Icepoint Rock (40-50) open keeps its tab and its
-      place in it after the update.
+      place in it.
 - [ ] Boats: Optimized Darkshore (12-14) says to take the boat from
       Stormwind Harbor to Auberdine, not from Menethil. Its "Stormwind Harbor"
       steps tick on stepping into the harbor, and the boat lands at
