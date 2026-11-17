@@ -18,6 +18,15 @@ reports.
 
 ---
 
+## [0.28.0]
+
+### Changed
+- **Where next? no longer offers Icepoint Rock.** Its five quests, one of
+  them for a group, are at the far end of the Northeast Passage: too long a
+  trip to suggest to anyone who has not chosen it. The guide browser's Home
+  tab no longer suggests it either. Icepoint Rock (44-47) is still under the
+  guide list's **Custom** tab.
+
 ## [0.27.0]
 
 ### Added
@@ -1827,6 +1836,8 @@ on, each change gets its own entry.
 
 ---
 
+[0.28.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
+[0.27.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.26.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.25.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.24.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
@@ -1908,5 +1919,3 @@ on, each change gets its own entry.
 [0.3.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.2.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
 [0.1.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases
-
-[0.27.0]: https://github.com/Torchlite-bit/Aegis_Pathfinder/releases

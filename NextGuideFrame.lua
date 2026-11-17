@@ -18,6 +18,8 @@
 	A custom zone fits when you are inside its level range or one level short
 	of it, are not already at its top, and have not finished it. With none
 	that fit, nothing is asked and the guide moves on as it always has.
+	Icepoint Rock is never offered (NOT_OFFERED below); it is still in the
+	guide list for whoever wants to go.
 	Closing the window without choosing carries on with the route. The
 	options panel can switch the question off.
 
@@ -43,6 +45,14 @@ local MAX_ZONES = 5
 local MAX_DUNGEONS = 4
 local CHROME_TOP = 30 + 18
 
+-- Custom zones never offered, here or as a suggestion on the guide browser's
+-- Home tab; the guide list's Custom tab still has them. Icepoint Rock is five
+-- quests, one of them for a group, at the far end of the Northeast Passage:
+-- too far to send anyone who has not chosen to go.
+local NOT_OFFERED = {
+	["Icepoint Rock (44-47)"] = true,
+}
+
 -- "Optimized/Duskwood (28-29)" reads as "Duskwood (28-29)".
 local function DisplayName(guide)
 	return (string.gsub(guide or "", "^[%w_]+/", ""))
@@ -55,7 +65,8 @@ function AegisPathfinder:GetCustomZoneChoices(level, except)
 	local out = {}
 	local completion = self.db.char.completion or {}
 	for _, name in ipairs(self.guidelist or {}) do
-		if name ~= except and self.guides[name] and self:GetGuideCategory(name) == "turtle" then
+		if name ~= except and not NOT_OFFERED[name] and self.guides[name]
+			and self:GetGuideCategory(name) == "turtle" then
 			local lo, hi = self:ParseGuideLevelRange(name)
 			local done = (completion[name] or 0) >= 1
 			if lo and hi and not done and level >= lo - 1 and level < hi then

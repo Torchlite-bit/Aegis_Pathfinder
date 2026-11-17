@@ -125,15 +125,14 @@ check(names(AegisPathfinder:GetCustomZoneChoices(51)) == "Moonwhisper Coast (52-
 check(names(AegisPathfinder:GetCustomZoneChoices(58)) == "Moonwhisper Coast (52-60), Hyjal (58-60)",
 	"at 58: Moonwhisper Coast still, and Hyjal; got '%s'", names(AegisPathfinder:GetCustomZoneChoices(58)))
 check(table.getn(AegisPathfinder:GetCustomZoneChoices(60)) == 0, "at 60, nothing: it is done with")
--- Icepoint Rock's quests are level 45 to 48, and the boat there needs 40:
--- as "40-50" it was offered at 39, and at 40 for mobs in their mid-forties.
-check(names(AegisPathfinder:GetCustomZoneChoices(39)) == "Gilneas (39-46)",
-	"at 39: Gilneas, not Icepoint Rock; got '%s'", names(AegisPathfinder:GetCustomZoneChoices(39)))
-check(names(AegisPathfinder:GetCustomZoneChoices(42)) == "Gilneas (39-46)",
-	"at 42 still not Icepoint Rock; got '%s'", names(AegisPathfinder:GetCustomZoneChoices(42)))
-check(names(AegisPathfinder:GetCustomZoneChoices(43)) == "Gilneas (39-46), Icepoint Rock (44-47)",
-	"at 43: Icepoint Rock, a level early; got '%s'", names(AegisPathfinder:GetCustomZoneChoices(43)))
-check(table.getn(AegisPathfinder:GetCustomZoneChoices(47)) == 0, "at 47, neither")
+-- Icepoint Rock is never offered: five quests, one for a group, at the far
+-- end of the Northeast Passage. As "40-50" it was offered at 39, before the
+-- boat would take you; now it is not offered at any level.
+for _, lvl in ipairs({ 39, 43, 45 }) do
+	check(names(AegisPathfinder:GetCustomZoneChoices(lvl)) == "Gilneas (39-46)",
+		"at %d: Gilneas, never Icepoint Rock; got '%s'", lvl, names(AegisPathfinder:GetCustomZoneChoices(lvl)))
+end
+check(table.getn(AegisPathfinder:GetCustomZoneChoices(47)) == 0, "at 47, nothing")
 
 -- A renamed guide keeps its progress -------------------------------------------------
 
